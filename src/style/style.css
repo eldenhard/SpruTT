@@ -99,3 +99,27 @@ h2 {
   text-align: center;
   padding-top: 2%;
 }
+
+#loading-page-lk {
+  width: 100vw;
+  height: 100vh;
+  background: rgb(17, 17, 17, 0.1);
+  display: flex;
+  position: fixed;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999999999999;
+}
+#loading-page-lk svg {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,0);
+  margin-top: 15%;
+
+}
