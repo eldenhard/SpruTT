@@ -1,6 +1,6 @@
 <template>
   <div id="id01" class="modal" :style="{'display': user.token ? 'none' : 'block'}">
-    <div class="modal-content animate">
+    <div class="modal-content animate" style=" width: 40%;">
       <div class="container">
         <label for="uname"><b>Логин</b></label>
         <input type="text" required placeholder="Введите логин" v-model="email">
