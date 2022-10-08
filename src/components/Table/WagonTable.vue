@@ -62,7 +62,7 @@
                 </div>       
             </b-card-text>
         </b-tab> -->
-        <b-tab title="Тип" :click="WagonType()">
+        <b-tab title="Тип" @click="WagonType()">
                 <b-card-text style="margin-top: -30px;">
                     <div style="width:100%; overflow: auto; ">
                     <table>
@@ -88,7 +88,7 @@
                 </div>                                       
                 </b-card-text>
         </b-tab>
-        <b-tab title="Паспорт" :click="passport()">
+        <b-tab title="Паспорт" @click="passport()">
             <b-card-text style="margin-top: -30px;">
                 <div style="width:100%; overflow: auto;">
                 <table>
@@ -122,7 +122,7 @@
                 </div>
             </b-card-text>
         </b-tab>
-        <b-tab title="Принадлежность" :click="belong()">
+        <b-tab title="Принадлежность" @click="belong()">
             <b-card-text style="margin-top: -30px;">
                 <div style="width:100%; overflow: auto;">
                 <table>
@@ -238,7 +238,7 @@
                 </div>                                   
                 </b-card-text>
         </b-tab>
-        <b-tab title="Аренда" :click="arenda()">
+        <b-tab title="Аренда" @click="arenda()">
             <b-card-text style="margin-top: -30px;">
                 <div style="width:100%; overflow: auto;">
                 <table>
