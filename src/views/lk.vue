@@ -38,7 +38,14 @@
         </tbody>
     </table>
 
-
+    <div class="wrapper-alert" id="notifications-2" style="display: none;">
+<div class="card">
+    <div class="subject">
+    <h5>Ошибка</h5>
+    <p>Попробуйте получить доступ к личному кабинету позже</p>
+    </div>
+</div>
+</div>
 
 <section id="loading-page-report" style="display:none">
 <svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -103,26 +110,26 @@ export default {
 
     document.getElementById('loading-page-report').style.display = 'block'
 
-    //    fetch('http://10.1.5.65/api/reports/kpi/', {
-    //     headers: {
-    //         'Authorization': `Basic ${token}` 
-    //     },
-    //     method: 'GET'
-    // })
-    // .then((response) => {
-    //     if (response.ok){
-    //         return response.json().then(r=>{
-    //             this.all_reports = r.data.data;
-    //             document.getElementById('loading-page-report').style.display = 'none'
-    //             console.log(this.all_reports)
-    //     })
-    // }
-    //        else{
-    //            console.log('NOT OK')
-    //            document.getElementById('loading-page-report').style.display = 'none'
+       fetch('http://10.1.5.65/api/reports/kpi/', {
+        headers: {
+            'Authorization': `Basic ${token}` 
+        },
+        method: 'GET'
+    })
+    .then((response) => {
+        if (response.ok){
+            return response.json().then(r=>{
+                this.all_reports = r.data.data;
+                document.getElementById('loading-page-report').style.display = 'none'
+                console.log(this.all_reports)
+        })
+    }
+           else{
+               console.log('NOT OK')
+               document.getElementById('loading-page-report').style.display = 'none'
 
-    //        }
-    //    }),
+           }
+       }),
      
     fetch('http://10.1.5.65/api/personal/users/'+ `${id}`, {
     headers: {
@@ -141,10 +148,18 @@ export default {
            else{
                console.log('NOT OK')
                document.getElementById('loading-page-report').style.display = 'none'
+               document.getElementById('notifications-2').style.display = 'block'
+               setTimeout(this.Notif, 2500)
 
            }
        })
     },
+    methods: {
+        Notif(){
+            document.getElementById('notifications-2').style.display = 'none'
+
+        }
+    }
 
 
 }
