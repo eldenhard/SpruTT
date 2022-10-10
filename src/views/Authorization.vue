@@ -11,12 +11,7 @@
         <button @click="submitEntry()">Войти</button>
       </div>
     </div>
-
-
-
-
-
-
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage"/>
   </div>
 </template>
 
@@ -24,40 +19,59 @@
 <script>
 import axios from "axios";
 import {mapState} from "vuex";
+import Notifications from "@/components/notifications/Notifications.vue";
 export default {
-  name: 'Authorization',
-  data() {
-    return {
-      email: "",
-      password: ""
-    }
-  },
-  methods: {
-    submitEntry: function () {
-      const api = "http://10.1.5.65/api/personal/login/"
-      axios
-      .post(api, {
-          email: this.email,
-          password: this.password,
+    name: "Authorization",
+    data() {
+        return {
+            email: "",
+            password: "",
+            showNotify: false,
+            notifyHead: '',
+            notifyMessage: ''
+        };
+    },
+    methods: {
+        submitEntry: function () {
+            const api = "http://10.1.5.65/api/personal/login/";
+            axios
+                .post(api, {
+                email: this.email,
+                password: this.password,
+            })
+                .then(resp => {
+                let user = resp.data;
+                console.log(user);
+                if (user.token) {
+                    this.$store.commit("setUser", user);
+                    this.showNotify = true
+                    this.notifyHead = 'Здравствуйте'
+                    this.notifyMessage = 'Вы успешно авторизированы'
+                }
+            })
+            .catch(err => {
+              this.showNotify = true
+              this.notifyHead = 'Ошибка авторизации'
+              this.notifyMessage = 'Пожалуйста, проверьте ваши введенные данные'
+            })
+            return false;
+        }
+    },
+    computed: {
+        ...mapState({
+            user: state => state.user
         })
-      .then(resp => {
-        let user = resp.data
-        console.log(user)
-
-           if (user.token) {
-            this.$store.commit('setUser', user);
-
-          }
-        })
-      return false
-      
-    }
-  },
-  computed: {
-    ...mapState({
-      user: state => state.user
-    })
-  }
+    },
+    watch: {
+      showNotify: function(v){
+        if(v){
+          setTimeout(() => {
+            this.showNotify = false
+          }, 1500)
+        }
+      }
+    },
+    components: { Notifications }
 }
     </script>
 

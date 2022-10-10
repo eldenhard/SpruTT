@@ -1,21 +1,39 @@
 <template>
-    <div>
-<div class="wrapper-success" id="notifications" style="display:none">
-<div class="card">
-    <div class="subject">
-    <h5>Здравствуйте</h5>
-    <p>Вы успешно авторизированы</p>
-    </div>
+<div v-if="show" class="wrapper-success" id="notifications">
+  <div class="card">
+      <div class="subject">
+      <h5>{{header}}</h5>
+      <p>{{message}}</p>
+      </div>
+  </div>
 </div>
-</div>
-
-
-    </div>
 </template>
 
 <script>
 export default{
-    name: 'Notifications'
+    name: 'Notifications',
+    props: {
+      show: {
+        type: Boolean,
+        required: false,
+        default: false
+      },
+      header: {
+        type: String,
+        default: 'Здравствуйте',
+        required: false
+      },
+      message: {
+        type: String,
+        default: 'Вы успешно авторизированы',
+        required: false
+      }
+    },
+    data(){
+      return {
+
+      }
+    }
 }
 </script>
 
