@@ -13,10 +13,13 @@ export const mutationTypes = {
     loginStart: `[${resource}] loginStart`,
     loginSuccess: `[${resource}] loginSuccess`,
     loginFailure: `[${resource}] loginFailure`,
+    // у нас форма авторизации показываетс когда isLoggedIn = false. Когда авторизация успешна - там тру. Нам нужен отдельный обработчик чтобы сделать логаут
+    logout: `[${resource}] logout`
 }
 
 export const actionTypes = {
-    login: `${resource} login`
+    login: `${resource} login`,
+    logout: `${resource} logout`,
 }
 
 const mutations = {
@@ -25,6 +28,12 @@ const mutations = {
         state.uid = user.user.id
         state.isLoggedIn = true
         setItem('accessToken', user.token)
+      },
+      [mutationTypes.logout](state){
+        state.user = {}
+        state.uid = null
+        state.isLoggedIn = false
+        setItem('accessToken', '')
       }
 }
 
@@ -40,6 +49,11 @@ const actions = {
             })
             
         })
+    },
+    async [actionTypes.logout](context){
+        return new Promise(resolve => {
+            context.commit(mutationTypes.logout)
+        }) 
     }
 }
 

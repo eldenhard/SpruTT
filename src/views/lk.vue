@@ -109,10 +109,10 @@ export default {
     },
     mounted(){
     const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.user.token
-    // const preid = JSON.parse(localStorage.getItem('vuex'))
-    // const id = preid.user.user.id
-    // console.log(id, token)
+    // const token = pretoken.user.token
+    // // const preid = JSON.parse(localStorage.getItem('vuex'))
+    // // const id = preid.user.user.id
+    // // console.log(id, token)
 
     document.getElementById('loading-page-report').style.display = 'block'
 

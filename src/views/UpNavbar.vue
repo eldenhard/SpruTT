@@ -34,12 +34,13 @@
   </div>
 </template>
 <script>
-
+import {actionTypes} from '@/store/modules/auth'
 export default {
   name: 'UpNavbar',
   methods: {
     logout() {
-      this.$store.commit('setUser', {})
+      //this.$store.commit('setUser', {})
+      this.$store.dispatch(actionTypes.logout)
     }
   }
 }
