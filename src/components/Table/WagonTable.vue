@@ -541,8 +541,8 @@ export default{
 methods: {
     Wagon(){
     document.getElementById('loading-page-lk').style.display = 'block'
-    const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.auth.user.token
+    // const pretoken = JSON.parse(localStorage.getItem("vuex"))
+    // const token = pretoken.auth.user.token
 
     api.getWagons()
     // fetch('http://10.1.5.65/api/wagon-park/wagons/', {
@@ -567,38 +567,24 @@ methods: {
        })
     },
     WagonType(){
-        document.getElementById('loading-page-lk').style.display = 'block'
-        const pretoken = JSON.parse(localStorage.getItem("vuex"))
-        const token = pretoken.user.token
-        fetch('http://10.1.5.65/api/wagon-park/wagon-type/', {
-        headers: {
-            'Authorization': `Basic ${token}` 
-        },
-        method: 'GET'
-    })
-    .then((response) => {
-                if (response.ok){
-                    return response.json().then(r=>{
-                        this.WagonsType = r.data.data;
-                        document.getElementById('loading-page-lk').style.display = 'none'
-                        console.log(this.WagonsType)
-               })
-           }
-           else{
-               console.log('NOT OK')
-           }
-       })
+        document.getElementById('loading-page-lk').style.display = 'block';
+        api.getWagonType()
+        .then((response) => {
+                    if (response.ok){
+                        return response.json().then(r=>{
+                            this.WagonsType = r.data.data;
+                            document.getElementById('loading-page-lk').style.display = 'none'
+                            console.log(this.WagonsType)
+                })
+            }
+            else{
+                console.log('NOT OK')
+            }
+        })
     },
     passport(){
-        document.getElementById('loading-page-lk').style.display = 'block'
-    const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.user.token
-        fetch('http://10.1.5.65/api/wagon-park/wagon-passport/', {
-        headers: {
-            'Authorization': `Basic ${token}` 
-        },
-        method: 'GET'
-    })
+    document.getElementById('loading-page-lk').style.display = 'block'
+    api.getPassport()
     .then((response) => {
                 if (response.ok){
                     return response.json().then(r=>{
@@ -613,15 +599,8 @@ methods: {
        })
     },
     arenda() {
-        document.getElementById('loading-page-lk').style.display = 'block'
-    const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.user.token
-        fetch('http://10.1.5.65/api/wagon-park/wagon-rent/', {
-        headers: {
-            'Authorization': `Basic ${token}` 
-        },
-        method: 'GET'
-    })
+    document.getElementById('loading-page-lk').style.display = 'block'
+    api.getArenda()
     .then((response) => {
                 if (response.ok){
                     return response.json().then(r=>{
@@ -636,15 +615,8 @@ methods: {
        })
     },
     belong(){
-        document.getElementById('loading-page-lk').style.display = 'block'
-    const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.user.token
-        fetch('http://10.1.5.65/api/wagon-park/wagon-belong/', {
-        headers: {
-            'Authorization': `Basic ${token}` 
-        },
-        method: 'GET'
-    })
+    document.getElementById('loading-page-lk').style.display = 'block'
+    api.getBelong()
     .then((response) => {
                 if (response.ok){
                     return response.json().then(r=>{

@@ -297,8 +297,11 @@ box-shadow:  10px 10px 30px #d0d0d0,
 
 <script>
 import {mapState} from "vuex";
+import api from "@/api/report"
+
 export default{
 name: 'report',
+
 data(){
     return{
         'staff': [],
@@ -314,14 +317,7 @@ data(){
 },
 mounted(){
     document.getElementById('loading-page-lk').style.display = 'block'
-    const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.user.token
-            fetch('http://10.1.5.65/api/personal/users/', {
-        headers: {
-            'Authorization': `Basic ${token}` 
-        },
-        method: 'GET'
-    })
+    api.getUsers()
     .then((response) => {
                 if (response.ok){
                     return response.json().then(r=>{
@@ -400,7 +396,8 @@ methods: {
 },
 computed: {
     ...mapState({
-      user: state => state.user
+      user: state => state.user,
+      id: state=> state.auth.uid
     })
   }
 }

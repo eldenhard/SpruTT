@@ -10,7 +10,23 @@ const getWagonType = () => {
     return api.get(`${resource}/wagon-type`)
 }
 
+const getPassport = () => {
+    return api.get(`${resource}/wagon-passport`)
+}
+
+const getArenda = () => {
+    return api.get(`${resource}/wagon-rent`)
+}
+
+const getBelong = () => {
+    return api.get(`${resource}/wagon-belong`)
+}
+
 export default {
     getWagons,
-    getWagonType
+    getWagonType,
+    getPassport,
+    getArenda,
+    getBelong
+
 }
