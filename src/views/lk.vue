@@ -92,8 +92,14 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
     name: 'lk',
+    computed: {
+        ...mapState({
+            id: state=> state.auth.uid
+        })
+    },
     data(){
         return{
             'all_reports': [],
@@ -104,8 +110,8 @@ export default {
     mounted(){
     const pretoken = JSON.parse(localStorage.getItem("vuex"))
     const token = pretoken.user.token
-    const preid = JSON.parse(localStorage.getItem('vuex'))
-    const id = preid.user.user.id
+    // const preid = JSON.parse(localStorage.getItem('vuex'))
+    // const id = preid.user.user.id
     // console.log(id, token)
 
     document.getElementById('loading-page-report').style.display = 'block'

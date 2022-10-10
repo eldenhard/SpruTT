@@ -400,9 +400,18 @@
     
     
 <script>
+import { mapState } from 'vuex'
+
+import api from "@/api/wagonPark"
 
 export default{
     name: 'WagonTable',
+    computed: {
+        ...mapState({
+            user: state => state.auth.user,
+            uid: state => state.auth.uid
+        })
+    },
     data(){
         return{
             WagonModel:{
@@ -533,8 +542,10 @@ methods: {
     Wagon(){
     document.getElementById('loading-page-lk').style.display = 'block'
     const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.user.token
-    fetch('http://10.1.5.65/api/wagon-park/wagons?is_active=True', {
+    const token = pretoken.auth.user.token
+
+    //api.getWagons()
+    fetch('http://10.1.5.65/api/wagon-park/wagons/', {
         headers: {
             'Authorization': `Basic ${token}` 
         },

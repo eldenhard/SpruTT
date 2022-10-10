@@ -1,6 +1,6 @@
 <template>
     <div>
-  <div id="id01" class="modal" v-if="showAuthForm">
+  <div id="id01" class="modal" v-if="showAuthForm" style="display: block;">
     <div class="modal-content animate" style=" width: 40%;">
       <div class="container">
         <label for="uname"><b>Email</b></label>
@@ -13,7 +13,7 @@
       </div>
     </div>
     
-  </div><Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage"/>
+  </div><Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"/>
 </div>
 </template>
 
@@ -21,6 +21,7 @@
 <script>
 import axios from "axios";
 import {mapState} from "vuex";
+import {actionTypes} from '@/store/modules/auth'
 import Notifications from "@/components/notifications/Notifications.vue";
 export default {
     name: "Authorization",
@@ -31,41 +32,63 @@ export default {
             showNotify: false,
             notifyHead: '',
             notifyMessage: '',
+            notifyClass: '',
             showAuthForm: true
         };
     },
     methods: {
         submitEntry: function () {
-            const api = "http://10.1.5.65/api/personal/login/";
-            axios
-                .post(api, {
+
+            this.$store.dispatch(actionTypes.login, {
                 email: this.email,
-                password: this.password,
-            })
-                .then(resp => {
-                    console.log('in then');
-                let user = resp.data;
-                console.log(user);
-                if (user.token) {
-                    
-                    this.$store.commit("setUser", user);
+                password: this.password
+            }).then((user) => {
+                if(this.$store.state.auth.isLoggedIn){
                     this.showNotify = true
                     this.notifyHead = 'Здравствуйте'
                     this.notifyMessage = 'Вы успешно авторизированы'
+                    this.notifyClass = 'wrapper-success'
                 }
-            })
-            .catch(err => {
-                console.log('in catch');
-              this.showNotify = true
+            }).catch((e) => {
+                this.showNotify = true
               this.notifyHead = 'Ошибка авторизации'
               this.notifyMessage = 'Пожалуйста, проверьте ваши введенные данные'
+              this.notifyClass = 'wrapper-error'
             })
+
+            //const api = "http://10.1.5.65/api/personal/login/";
+            // axios
+            //     .post(api, {
+            //     email: this.email,
+            //     password: this.password,
+            // })
+            //     .then(resp => {
+            //         console.log('in then');
+            //     let user = resp.data;
+            //     console.log(user);
+            //     if (user.token) {
+                    
+            //         this.$store.commit("setUser", user);
+            //         this.showNotify = true
+            //         this.notifyHead = 'Здравствуйте'
+            //         this.notifyMessage = 'Вы успешно авторизированы'
+            //         this.notifyClass = 'wrapper-success'
+            //     }
+            // })
+            // .catch(err => {
+            //     console.log('in catch');
+            //   this.showNotify = true
+            //   this.notifyHead = 'Ошибка авторизации'
+            //   this.notifyMessage = 'Пожалуйста, проверьте ваши введенные данные'
+            //   this.notifyClass = 'wrapper-error'
+            // })
             return false;
         }
     },
     computed: {
         ...mapState({
-            user: state => state.user
+            user: state => state.auth.user,
+            authStatus: state => state.auth.isLoggedIn
         }),
         // authStatus: function(){
         //     if(this.user.token) return true
@@ -77,18 +100,21 @@ export default {
         if(v){
           setTimeout(() => {
             this.showNotify = false
-          }, 1500)
+          }, 15000)
         }
       },
-    //   authStatus: function(newVal, oldVal){
-    //     // if(oldVal === false && newVal === true){
-    //     //     setTimeout(() => {
-    //     //         this.showAuthForm = false
-    //     //     }, 1500) 
-    //     // }
-    //   }
+    authStatus: function(newVal, oldVal){
+        if(oldVal === false && newVal === true){
+            setTimeout(() => {
+                this.showAuthForm = false
+            }, 1500) 
+        }
+      }
     },
-    components: { Notifications }
+    components: { Notifications },
+    mounted(){
+        if(this.authStatus) this.showAuthForm = false
+    }
 }
     </script>
 
@@ -142,7 +168,7 @@ span.psw {
     padding-top: 16px;
 }
 .modal {
-    display: none;
+    display: block;
     position: fixed;
     z-index: 1;
     left: 0;
