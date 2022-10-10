@@ -1,5 +1,6 @@
 <template>
-  <div id="id01" class="modal" :style="{'display': user.token ? 'none' : 'block'}">
+    <div>
+  <div id="id01" class="modal" v-if="showAuthForm">
     <div class="modal-content animate" style=" width: 40%;">
       <div class="container">
         <label for="uname"><b>Email</b></label>
@@ -11,8 +12,9 @@
         <button @click="submitEntry()">Войти</button>
       </div>
     </div>
-    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage"/>
-  </div>
+    
+  </div><Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage"/>
+</div>
 </template>
 
 
@@ -28,7 +30,8 @@ export default {
             password: "",
             showNotify: false,
             notifyHead: '',
-            notifyMessage: ''
+            notifyMessage: '',
+            showAuthForm: true
         };
     },
     methods: {
@@ -40,9 +43,11 @@ export default {
                 password: this.password,
             })
                 .then(resp => {
+                    console.log('in then');
                 let user = resp.data;
                 console.log(user);
                 if (user.token) {
+                    
                     this.$store.commit("setUser", user);
                     this.showNotify = true
                     this.notifyHead = 'Здравствуйте'
@@ -50,6 +55,7 @@ export default {
                 }
             })
             .catch(err => {
+                console.log('in catch');
               this.showNotify = true
               this.notifyHead = 'Ошибка авторизации'
               this.notifyMessage = 'Пожалуйста, проверьте ваши введенные данные'
@@ -60,7 +66,11 @@ export default {
     computed: {
         ...mapState({
             user: state => state.user
-        })
+        }),
+        // authStatus: function(){
+        //     if(this.user.token) return true
+        //     return false
+        // }
     },
     watch: {
       showNotify: function(v){
@@ -69,7 +79,14 @@ export default {
             this.showNotify = false
           }, 1500)
         }
-      }
+      },
+    //   authStatus: function(newVal, oldVal){
+    //     // if(oldVal === false && newVal === true){
+    //     //     setTimeout(() => {
+    //     //         this.showAuthForm = false
+    //     //     }, 1500) 
+    //     // }
+    //   }
     },
     components: { Notifications }
 }
