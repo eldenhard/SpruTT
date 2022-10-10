@@ -2,8 +2,8 @@
   <div id="id01" class="modal" :style="{'display': user.token ? 'none' : 'block'}">
     <div class="modal-content animate" style=" width: 40%;">
       <div class="container">
-        <label for="uname"><b>Логин</b></label>
-        <input type="text" required placeholder="Введите логин" v-model="email">
+        <label for="uname"><b>Email</b></label>
+        <input type="text" required placeholder="i.ivanov@tehtrans.com" v-model="email">
 
         <label for="psw"><b>Пароль</b></label>
         <input type="password" required placeholder="Введите пароль" v-model="password">
@@ -11,6 +11,12 @@
         <button @click="submitEntry()">Войти</button>
       </div>
     </div>
+
+
+
+
+
+
   </div>
 </template>
 
@@ -37,12 +43,14 @@ export default {
       .then(resp => {
         let user = resp.data
         console.log(user)
+
            if (user.token) {
-            this.$store.commit('setUser', user)
+            this.$store.commit('setUser', user);
 
           }
         })
       return false
+      
     }
   },
   computed: {
@@ -58,6 +66,10 @@ export default {
 
 
 <style>
+
+
+
+
 
 input[type=text], input[type=password] {
     width: 100%;

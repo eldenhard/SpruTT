@@ -7,7 +7,7 @@
                     <div @click="newTab('Дислокация')">
                         <img src="@/assets/map.png" class="image">
                     </div>
-                    <b-dropdown text="Дислокация"style="width: 100%">
+                    <b-dropdown text="Дислокация" style="width: 100%">
                         <b-dropdown-item @click="newTab('Дислокация-таблица')" >дислокация 1</b-dropdown-item>
                     </b-dropdown>
                 </li>

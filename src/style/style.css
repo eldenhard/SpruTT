@@ -32,6 +32,8 @@
   }
 .Action{
     background: #ed925e;
+    height: 60px;
+    cursor: pointer;
   }
 .Action:hover{
     background: #c27549;
@@ -40,7 +42,7 @@
 .Cancel{
     background: #8388A4;
   }
-  .Cancel:hover{
+.Cancel:hover{
       background: #63677c;
       cursor: pointer;
   }
@@ -121,5 +123,47 @@ h2 {
   left: 50%;
   transform: translate(-50%,0);
   margin-top: 15%;
+}
+input, label{
+  cursor: pointer;
+}
+
+
+
+.wrapper-success {
+  margin: 50px;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+}
+.wrapper-success .card {
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #fff;
+  padding: 10px 20px;
+  padding-right: 100px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-left: 5px solid #4CAF50;
+  border-radius: 3px;
+  border-radius: 10px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.wrapper-alert {
+  border-left: 5px solid #ED5E68;
 
 }
+.wrapper-success .card .subject {
+  margin-right: 10px;
+}
+.wrapper-success .card .subject p {
+  color: #909092;
+}  
+@media screen and (max-width:550px) {
+    .wrapper-success {
+       width: 90%; 
+       margin-left: 5%;
+    }
+} 
