@@ -100,7 +100,7 @@ export default {
         if(v){
           setTimeout(() => {
             this.showNotify = false
-          }, 15000)
+          }, 2100)
         }
       },
     authStatus: function(newVal, oldVal){

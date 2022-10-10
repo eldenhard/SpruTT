@@ -134,7 +134,7 @@ input, label{
   margin: 50px;
   position: fixed;
   top: 0;
-  z-index: 10;
+  z-index: 999999999999999999999999999 !important;
 }
 .wrapper-success .card {
   width: 100%;

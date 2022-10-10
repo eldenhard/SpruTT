@@ -80,25 +80,25 @@
             Dislocation:[]
         }
     },
-mounted(){
-    fetch('http://10.1.5.65/api/wagon-park/dislocations/', {
-        headers: {
-            'Authorization': 'Basic YS5yZXNoZXRpbG9AdGVodHJhbnMuY29tOlRlaHRyYW5zMjAyMg=='
-        },
-        method: 'GET'
-    })
-    .then((response) => {
-                if (response.ok){
-                    return response.json().then(r=>{
-                        this.Dislocation = r.data;
-                        console.log(this.Dislocation)
-               })
-           }
-           else{
-               console.log('NOT OK')
-           }
-       })
-}
+// mounted(){
+//     fetch('http://10.1.5.65/api/wagon-park/dislocations/', {
+//         headers: {
+//             'Authorization': 'Basic YS5yZXNoZXRpbG9AdGVodHJhbnMuY29tOlRlaHRyYW5zMjAyMg=='
+//         },
+//         method: 'GET'
+//     })
+//     .then((response) => {
+//                 if (response.ok){
+//                     return response.json().then(r=>{
+//                         this.Dislocation = r.data;
+//                         console.log(this.Dislocation)
+//                })
+//            }
+//            else{
+//                console.log('NOT OK')
+//            }
+//        })
+// }
     }
 </script>
 

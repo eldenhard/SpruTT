@@ -13,7 +13,7 @@ const store = new Vuex.Store({
     
   },
   mutations: {
-    
+ 
   },
   actions: {},
   plugins: [createPersistedState()],

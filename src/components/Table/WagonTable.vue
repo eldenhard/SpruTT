@@ -544,13 +544,13 @@ methods: {
     const pretoken = JSON.parse(localStorage.getItem("vuex"))
     const token = pretoken.auth.user.token
 
-    //api.getWagons()
-    fetch('http://10.1.5.65/api/wagon-park/wagons/', {
-        headers: {
-            'Authorization': `Basic ${token}` 
-        },
-        method: 'GET'
-    })
+    api.getWagons()
+    // fetch('http://10.1.5.65/api/wagon-park/wagons/', {
+    //     headers: {
+    //         'Authorization': `Basic ${token}` 
+    //     },
+    //     method: 'GET'
+    // })
     .then((response) => {
                 if (response.ok){
                     return response.json().then(r=>{

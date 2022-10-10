@@ -3,7 +3,7 @@ import {api} from "@/helpers/axios"
 export const resource = "wagon-park" 
 
 const getWagons = () => {
-    return api.get(`${resource}/wagons`, {params: {is_active:'True'}})
+    return api.get(`${resource}/wagons`)
 }
 
 const getWagonType = () => {

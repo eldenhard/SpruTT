@@ -27,7 +27,7 @@
           <router-link to="/report">Отчеты</router-link>
         </li>
         <li class="UpNavList-item">
-          <a href="/" @click="logout">Выход</a>
+          <a href="" @click="logout">Выход</a>
         </li>
       </ul>
     </div>
