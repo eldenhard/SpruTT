@@ -7,7 +7,7 @@
     <p class="contact-var"> <span class="contact-header">ФИО: </span>{{PersonalData.last_name}} {{PersonalData.first_name}} {{PersonalData.middle_name}}</p>
     <p class="contact-var"><span class="contact-header">Должность: </span>{{PersonalData.post}}</p>
     <p class="contact-var"> <span class="contact-header">Отдел: </span>{{PersonalData.groups}}</p>
-    <p class="contact-var"> <span class="contact-header">Начальник: </span>{{PersonalData.manager}}</p>
+    <p class="contact-var"> <span class="contact-header">Начальник: </span></p>
     <p class="contact-var"><span class="contact-header">Почта: </span>{{PersonalData.email}}</p>
 
     </div>
@@ -107,21 +107,18 @@ export default {
             PersonalData: ''
         }
     },
-    mounted(){
-    const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.user.token
+mounted(){
+    const token = JSON.parse(localStorage.getItem("accessToken"))
+    // const token = pretoken.user.token
     const preid = JSON.parse(localStorage.getItem('vuex'))
-    // const id = preid.user.user.id
-    const id = preid.user.auth.user.user.id
-    console.log(id, token)
+    const id = preid.auth.uid
 
     document.getElementById('loading-page-report').style.display = 'block'
-
-       fetch('http://10.1.5.65/api/reports/kpi/', {
-        headers: {
-            'Authorization': `Basic ${token}` 
-        },
-        method: 'GET'
+    fetch('http://10.1.5.65/api/reports/kpi/', {
+    headers: {
+        'Authorization': `Basic ${token}` 
+    },
+    method: 'GET'
     })
     .then((response) => {
         if (response.ok){

@@ -9,7 +9,7 @@
 
     <select id="admin" required style="width: 50% !important;" >
         <option value="" disabled="disabled" selected="selected">Начальник</option>
-        <option  v-for="staf in staff" :key="staf.id">{{staf.id}} {{staf.first_name}} {{staf.last_name}}</option>
+        <option >{{admin.id}} {{admin.first_name}} {{admin.last_name}}</option>
     </select>
     </label>
 
@@ -309,7 +309,8 @@ data(){
         'answer4': [],
         'answer5': [],
         'answer6': [],
-        btnName : 'Создать отчет по KPI сотрудника'
+        btnName : 'Создать отчет по KPI сотрудника',
+        'admin': []
 
     }
 },
@@ -319,7 +320,7 @@ mounted(){
      const pretoken = JSON.parse(localStorage.getItem("vuex"))
     const token = pretoken.auth.user.token
 
-    fetch('http://10.1.5.65/api/personal/users/', {
+    fetch('http://10.1.5.65/api/personal/users', {
         headers: {
             'Authorization': `Basic ${token}` 
         },
@@ -331,6 +332,24 @@ mounted(){
                         this.staff = r.data;
                         document.getElementById('loading-page-lk').style.display = 'none'
                         console.log(this.staff)
+                })
+            }
+            else{
+                console.log('NOT OK')
+            }
+        })
+    fetch('http://10.1.5.65/api/personal/users/104', {
+    headers: {
+        'Authorization': `Basic ${token}` 
+    },
+    method: 'GET'
+    })
+    .then((response) => {
+                if (response.ok){
+                    return response.json().then(r=>{
+                        this.admin = r;
+                        document.getElementById('loading-page-lk').style.display = 'none'
+                        console.log(this.admin)
                 })
             }
             else{
