@@ -8,8 +8,7 @@
     <label  for="admin" style=" position: relative; left: 50%; transform: translate(-50%, 0); width: 100% !important;">
 
     <select id="admin" required style="width: 50% !important;" >
-        <option value="" disabled="disabled" selected="selected">Начальник</option>
-        <option >{{admin.id}} {{admin.first_name}} {{admin.last_name}}</option>
+        <option selected="selected">{{admin.id}} {{admin.first_name}} {{admin.last_name}}</option>
     </select>
     </label>
 
@@ -125,10 +124,9 @@
 <hr> 
 
       <br>
-        <button style="position: relative; left: 50%; width: 90%; transform: translate(-50%,0);  margin-bottom: 2%;
-    margin-top: 3%;
-    height: 80px;
-    font-size: 22px;" type="submit" @click="Send()">Отправить</button>
+        <button style="position: relative; left: 50%; width: 90%; transform: translate(-50%,0);  margin-bottom: 2%;margin-top: 3%;height: 80px;font-size: 22px;"
+         type="submit" @click="Send()">Отправить
+        </button>
     </div>
     <br><br><br>
 
@@ -299,7 +297,12 @@ import api from "@/api/report"
 
 export default{
 name: 'report',
-
+computed: {
+...mapState({
+    user: state => state.auth.user,
+    uid: state => state.auth.uid
+})
+    },
 data(){
     return{
         'staff': [],
@@ -320,7 +323,7 @@ mounted(){
      const pretoken = JSON.parse(localStorage.getItem("vuex"))
     const token = pretoken.auth.user.token
 
-    fetch('http://10.1.5.65/api/personal/users', {
+    fetch('http://10.1.5.65/api/personal/users/?page_size=200', {
         headers: {
             'Authorization': `Basic ${token}` 
         },
@@ -419,13 +422,8 @@ methods: {
     }
 })
  }
-},
-computed: {
-    ...mapState({
-      user: state => state.user,
-      id: state=> state.auth.uid
-    })
-  }
+}
+
 }
 
 </script>
