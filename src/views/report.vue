@@ -125,9 +125,7 @@
 <hr> 
 
       <br>
-        <button style="position: relative; left: 50%; width: 90%;
-    transform: translate(-50%,0);
-    margin-bottom: 2%;
+        <button style="position: relative; left: 50%; width: 90%; transform: translate(-50%,0);  margin-bottom: 2%;
     margin-top: 3%;
     height: 80px;
     font-size: 22px;" type="submit" @click="Send()">Отправить</button>
@@ -317,7 +315,16 @@ data(){
 },
 mounted(){
     document.getElementById('loading-page-lk').style.display = 'block'
-    api.getUsers()
+    // api.getUsers()
+     const pretoken = JSON.parse(localStorage.getItem("vuex"))
+    const token = pretoken.auth.user.token
+
+    fetch('http://10.1.5.65/api/personal/users/', {
+        headers: {
+            'Authorization': `Basic ${token}` 
+        },
+        method: 'GET'
+    })
     .then((response) => {
                 if (response.ok){
                     return response.json().then(r=>{

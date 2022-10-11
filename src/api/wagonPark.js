@@ -21,7 +21,9 @@ const getArenda = () => {
 const getBelong = () => {
     return api.get(`${resource}/wagon-belong`)
 }
-
+// const getWagons = () => {
+//     return api.get(`${resource}/wagons`, {params: {is_active:'True'}})
+// }
 export default {
     getWagons,
     getWagonType,

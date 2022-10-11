@@ -532,8 +532,6 @@ export default{
            WagonsLeasingModel: [],
            WagonsInsuranceModel: [],
            WagonsEtranInfoModel: [],
-
-
         }
     },
 
