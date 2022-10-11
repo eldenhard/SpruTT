@@ -207,7 +207,7 @@
     <tr v-for="reports in reports_creator" :key="reports.id" >
        <td style="text-align:center; font-size: 17px;"> Кто создал: {{reports.creator.first_name}} {{reports.creator.last_name}} <br>
             На кого создано: {{reports.employee.first_name}}  {{reports.employee.last_name}}  <br>
-            Дата создания: {{reports.created_at}} <br>
+            Дата создания: `{{new Date(reports.created_at).toLocaleString()}}` <br>
             Файл: <a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a>
         </td>
     </tr>
@@ -221,7 +221,7 @@
             <tr v-for="reporte in reports_employee" :key="reporte.id" >
                 <td style="text-align:center; font-size: 17px;">Кто создал: {{reporte.creator.first_name}} {{reporte.creator.last_name}}<br>
                     На кого создано: {{reporte.employee.first_name}} {{reporte.employee.last_name}} <br>
-                    Дата создания:  {{reporte.created_at}} <br>
+                    Дата создания:  `{{new Date(reporte.created_at).toLocaleString()}}` <br>
                     Файл: <a download target="_blank" :href="reporte.file" v-if="reporte.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> 
                 </td>
             </tr> 
