@@ -58,7 +58,7 @@ export default{
             }
             localStorage.setItem('tabs', JSON.stringify([...this.tabs]))
             
-            localStorage.clear()
+           
         },
     },
     mounted() {

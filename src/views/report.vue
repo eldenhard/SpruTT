@@ -190,10 +190,59 @@
     </div>
 </div>
 </div>
+
+
+
+
+    <button class="button Action" @click="OpenReport()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">Загрузить отчеты</button>
+<div style="display:none" id="tables">
+    <div class="row" style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%; width: 100%;">
+<div class="col-md-6">
+        <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 100%;">
+    <tr>
+        <td><h5>Созданные Вами отчеты</h5></td>
+        <!-- <td><h5>Созданные на Вас отчеты</h5></td> -->
+    </tr>
+
+    <tr v-for="reports in reports_creator" :key="reports.id" >
+       <td style="text-align:center; font-size: 17px;"> Кто создал: {{reports.creator.first_name}} {{reports.creator.last_name}} <br>
+            На кого создано: {{reports.employee.first_name}}  {{reports.employee.last_name}}  <br>
+            Дата создания: {{reports.created_at.slit('.')}} <br>
+            Файл: <a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a>
+        </td>
+    </tr>
+</table>  
+</div>
+    <div class="col-md-6">
+        <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 100%;">
+            <tr>
+                <td><h5>Созданные на Вас отчеты</h5></td>
+            </tr>
+            <tr v-for="reporte in reports_employee" :key="reporte.id" >
+                <td style="text-align:center; font-size: 17px;">Кто создал: {{reporte.creator.first_name}} {{reporte.creator.last_name}}<br>
+                    На кого создано: {{reporte.employee.first_name}} {{reporte.employee.last_name}} <br>
+                    Дата создания:  {{reporte.created_at}} <br>
+                    Файл: <a download target="_blank" :href="reporte.file" v-if="reporte.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> 
+                </td>
+            </tr> 
+        </table>
+    </div>
+</div>
+</div>
+
+    
+
+
     </div>
 </template>
 
 <style>
+#tables {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 90%;
+}
 #loading-page-lk {
   width: 100vw;
   height: 100vh;
@@ -313,52 +362,115 @@ data(){
         'answer5': [],
         'answer6': [],
         btnName : 'Создать отчет по KPI сотрудника',
-        'admin': []
+        'admin': [],
+        'reports_creator': [],
+        'reports_employee': []
 
     }
 },
 mounted(){
-    document.getElementById('loading-page-lk').style.display = 'block'
-    // api.getUsers()
-     const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.auth.user.token
-
-    fetch('http://10.1.5.65/api/personal/users/?page_size=200', {
-        headers: {
-            'Authorization': `Basic ${token}` 
-        },
-        method: 'GET'
-    })
-    .then((response) => {
-                if (response.ok){
-                    return response.json().then(r=>{
-                        this.staff = r.data;
-                        document.getElementById('loading-page-lk').style.display = 'none'
-                        // console.log(this.staff)
-                })
-            }
-            else{
-                console.log('NOT OK')
-            }
-        })
-    fetch('http://10.1.5.65/api/personal/users/104', {
+document.getElementById('loading-page-lk').style.display = 'block'
+// api.getUsers()
+const pretoken = JSON.parse(localStorage.getItem("vuex"))
+const token = pretoken.auth.user.token
+const preid = JSON.parse(localStorage.getItem('vuex'))
+    const id = preid.auth.uid
+fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
     headers: {
         'Authorization': `Basic ${token}` 
     },
     method: 'GET'
     })
     .then((response) => {
-                if (response.ok){
-                    return response.json().then(r=>{
-                        this.admin = r;
-                        document.getElementById('loading-page-lk').style.display = 'none'
-                        // console.log(this.admin)
-                })
-            }
-            else{
-                console.log('NOT OK')
-            }
-        })
+    if (response.ok){
+        return response.json().then(r=>{
+            this.reports_creator = r.data;
+            // document.getElementById('loading-page-report').style.display = 'none'
+            console.log(this.reports_creator)
+    })
+}
+    else{
+        console.log('NOT OK')
+        // document.getElementById('loading-page-report').style.display = 'none'
+
+    }
+}),
+fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
+    headers: {
+        'Authorization': `Basic ${token}` 
+    },
+    method: 'GET'
+    })
+    .then((response) => {
+    if (response.ok){
+        return response.json().then(r=>{
+            this.reports_employee = r.data;
+            // document.getElementById('loading-page-report').style.display = 'none'
+            console.log(this.reports_employee)
+    })
+}
+    else{
+        console.log('NOT OK')
+        // document.getElementById('loading-page-report').style.display = 'none'
+
+    }
+}),     
+fetch('http://10.1.5.65/api/personal/users/?page_size=200', {
+    headers: {
+        'Authorization': `Basic ${token}` 
+    },
+    method: 'GET'
+})
+.then((response) => {
+            if (response.ok){
+                return response.json().then(r=>{
+                    this.staff = r.data;
+                    document.getElementById('loading-page-lk').style.display = 'none'
+                    // console.log(this.staff)
+            })
+        }
+        else{
+            console.log('NOT OK')
+        }
+    }),
+fetch('http://10.1.5.65/api/personal/users/104', {
+headers: {
+    'Authorization': `Basic ${token}` 
+},
+method: 'GET'
+})
+.then((response) => {
+            if (response.ok){
+                return response.json().then(r=>{
+                    this.admin = r;
+                    // document.getElementById('loading-page-lk').style.display = 'none'
+                    // console.log(this.admin)
+            })
+        }
+        else{
+            console.log('NOT OK')
+        }
+    }),
+    fetch('http://10.1.5.65/api/reports/kpi/', {
+    headers: {
+        'Authorization': `Basic ${token}` 
+    },
+    method: 'GET'
+    })
+    .then((response) => {
+    if (response.ok){
+        return response.json().then(r=>{
+            this.all_reports = r.data;
+            document.getElementById('loading-page-report').style.display = 'none'
+            console.log(this.all_reports)
+    })
+}
+    else{
+        console.log('NOT OK')
+        document.getElementById('loading-page-report').style.display = 'none'
+
+    }
+})    
 },
 methods: { 
  Not(){
@@ -366,19 +478,29 @@ methods: {
  },
  Not2(){
     document.getElementById('notifications-2').style.display = 'none'
- },  
- OpenKPI(){
-    if (document.getElementById("Anketa").style.display == 'block') { 
-        document.getElementById("Anketa").style.display = "none";
-        this.btnName = 'Создать отчет по KPI сотрудника'
+ }, 
+
+OpenKPI(){
+if (document.getElementById("Anketa").style.display == 'block') { 
+    document.getElementById("Anketa").style.display = "none";
+    this.btnName = 'Создать отчет по KPI сотрудника'
+}
+else {
+    document.getElementById("Anketa").style.display = "block";
+    this.btnName = 'Скрыть отчет по KPI сотрудника'
+    }
+ },
+
+OpenReport(){
+    if (document.getElementById("tables").style.display == 'block') { 
+        document.getElementById("tables").style.display = "none";
     }
     else {
-        document.getElementById("Anketa").style.display = "block";
-        this.btnName = 'Скрыть отчет по KPI сотрудника'
-
+        document.getElementById("tables").style.display = "block";
         }
-     
- },    
+
+ },
+    
  Send(){
     event.preventDefault()
     const pretoken = JSON.parse(localStorage.getItem("vuex"))
