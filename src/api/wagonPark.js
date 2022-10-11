@@ -2,8 +2,8 @@ import {api} from "@/helpers/axios"
 
 export const resource = "wagon-park" 
 
-const getWagons = () => {
-    return api.get(`${resource}/wagons`)
+const getWagons = data => {
+    return api.get(`${resource}/wagons`, data)
 }
 
 const getWagonType = () => {

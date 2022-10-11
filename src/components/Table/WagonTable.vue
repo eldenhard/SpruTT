@@ -541,20 +541,20 @@ methods: {
     document.getElementById('loading-page-lk').style.display = 'block'
     // const pretoken = JSON.parse(localStorage.getItem("vuex"))
     // const token = pretoken.auth.user.token
-
-    api.getWagons()
     // fetch('http://10.1.5.65/api/wagon-park/wagons/', {
     //     headers: {
     //         'Authorization': `Basic ${token}` 
     //     },
     //     method: 'GET'
     // })
+
+    api.getWagons()
     .then((response) => {
                 if (response.ok){
                     return response.json().then(r=>{
                         //console.log(data);
                         // 1-е это сваойство Respone, второе свойство JSON
-                        this.WagonsModel = r.data;
+                        this.WagonsModel = r.data.data;
                         document.getElementById('loading-page-lk').style.display = 'none'
                         console.log(this.WagonsModel)
                })
