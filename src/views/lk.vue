@@ -1,19 +1,20 @@
 <template>
     <div>
     <h2>Личный кабинет</h2>
-
+<br><br>
     <div class="contact-information">
     <h4>Контактная информация</h4>
+    <br>
     <p class="contact-var"> <span class="contact-header">ФИО: </span>{{PersonalData.last_name}} {{PersonalData.first_name}} {{PersonalData.middle_name}}</p>
     <p class="contact-var"><span class="contact-header">Должность: </span>{{PersonalData.post}}</p>
     <p class="contact-var"> <span class="contact-header">Отдел: </span>{{PersonalData.groups}}</p>
-    <p class="contact-var"> <span class="contact-header">Начальник: </span></p>
+    <!-- <p class="contact-var"> <span class="contact-header">Начальник: </span>{{PersonalData.manager}}</p> -->
     <p class="contact-var"><span class="contact-header">Почта: </span>{{PersonalData.email}}</p>
 
     </div>
 
     <br><br>
-    <table style="position: relative; left:50%; transform: translate(-50%,0); width: 90%;" class="table1">
+    <!-- <table style="position: relative; left:50%; transform: translate(-50%,0); width: 90%;" class="table1">
         <thead style="border-bottom: 2px solid #C04945; background:#EEEEEE">
             <tr>
                 <th>Имя менеджера</th>
@@ -36,7 +37,7 @@
             <td><a download target="_blank" :href="report.file" v-if="report.file"><img src="../assets/excel.png" alt="" width="30%"></a></td>
         </tr>
         </tbody>
-    </table>
+    </table> -->
 
     <div class="wrapper-alert" id="notifications-2" style="display: none;">
 <div class="card">
@@ -114,26 +115,26 @@ mounted(){
     const id = preid.auth.uid
 
     document.getElementById('loading-page-report').style.display = 'block'
-    fetch('http://10.1.5.65/api/reports/kpi/', {
-    headers: {
-        'Authorization': `Basic ${token}` 
-    },
-    method: 'GET'
-    })
-    .then((response) => {
-        if (response.ok){
-            return response.json().then(r=>{
-                this.all_reports = r.data.data;
-                document.getElementById('loading-page-report').style.display = 'none'
-                console.log(this.all_reports)
-        })
-    }
-           else{
-               console.log('NOT OK')
-               document.getElementById('loading-page-report').style.display = 'none'
+    // fetch('http://10.1.5.65/api/reports/kpi/', {
+    // headers: {
+    //     'Authorization': `Basic ${token}` 
+    // },
+    // method: 'GET'
+    // })
+    // .then((response) => {
+    //     if (response.ok){
+    //         return response.json().then(r=>{
+    //             this.all_reports = r.data.data;
+    //             document.getElementById('loading-page-report').style.display = 'none'
+    //             console.log(this.all_reports)
+    //     })
+    // }
+    //        else{
+    //            console.log('NOT OK')
+    //            document.getElementById('loading-page-report').style.display = 'none'
 
-           }
-       }),
+    //        }
+    //    }),
      
     fetch('http://10.1.5.65/api/personal/users/'+ `${id}`, {
     headers: {

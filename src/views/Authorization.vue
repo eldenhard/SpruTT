@@ -4,10 +4,10 @@
     <div class="modal-content animate" style=" width: 40%;">
       <div class="container">
         <label for="uname"><b>Email</b></label>
-        <input type="text" required placeholder="i.ivanov@tehtrans.com" v-model="email">
+        <input type="text" placeholder="i.ivanov@tehtrans.com" v-model="email">
 
         <label for="psw"><b>Пароль</b></label>
-        <input type="password" required placeholder="Введите пароль" v-model="password">
+        <input type="password" placeholder="Введите пароль" v-model="password">
 
         <button @click="submitEntry()">Войти</button>
       </div>
@@ -48,6 +48,7 @@ export default {
                     this.notifyHead = 'Здравствуйте'
                     this.notifyMessage = 'Вы успешно авторизированы'
                     this.notifyClass = 'wrapper-success'
+                    document.location.href = '/'
                 }
             }).catch((e) => {
                 this.showNotify = true
@@ -170,7 +171,7 @@ span.psw {
 .modal {
     display: block;
     position: fixed;
-    z-index: 1;
+    z-index: 99999999999999999999999999999999 !important;
     left: 0;
     top: 0;
     width: 100%;

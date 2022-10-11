@@ -334,7 +334,7 @@ mounted(){
                     return response.json().then(r=>{
                         this.staff = r.data;
                         document.getElementById('loading-page-lk').style.display = 'none'
-                        console.log(this.staff)
+                        // console.log(this.staff)
                 })
             }
             else{
@@ -352,7 +352,7 @@ mounted(){
                     return response.json().then(r=>{
                         this.admin = r;
                         document.getElementById('loading-page-lk').style.display = 'none'
-                        console.log(this.admin)
+                        // console.log(this.admin)
                 })
             }
             else{
@@ -374,7 +374,7 @@ methods: {
     }
     else {
         document.getElementById("Anketa").style.display = "block";
-        this.btnName = 'Скрыть отчет'
+        this.btnName = 'Скрыть отчет по KPI сотрудника'
 
         }
      
@@ -382,7 +382,7 @@ methods: {
  Send(){
     event.preventDefault()
     const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.user.token
+    const token = pretoken.auth.user.token
     document.getElementById('loading-page-lk').style.display = 'block'
    let admin = document.getElementById('admin').value.split(' ')[0] 
    let staff = document.getElementById('staff').value.split(' ')[0] 
