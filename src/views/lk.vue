@@ -14,31 +14,7 @@
     </div>
 
     <br><br>
-    <!-- <table style="position: relative; left:50%; transform: translate(-50%,0); width: 90%;" class="table1">
-        <thead style="border-bottom: 2px solid #C04945; background:#EEEEEE">
-            <tr>
-                <th>Имя менеджера</th>
-                <th>Фамилия менеджера</th>
-    
-                <th>Имя сотрудника</th>
-                <th>Фамилия сотрудника</th>
-  
-                <th>Создатель</th>
-                <th>Файл</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr  v-for="report in all_reports" :key="report.id">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><a download target="_blank" :href="report.file" v-if="report.file"><img src="../assets/excel.png" alt="" width="30%"></a></td>
-        </tr>
-        </tbody>
-    </table> -->
-
+ 
     <div class="wrapper-alert" id="notifications-2" style="display: none;">
 <div class="card">
     <div class="subject">

@@ -5,8 +5,10 @@
         <button class="button Action" @click="OpenKPI()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{ btnName }}</button>
         <br><br>
     <form id="Anketa" method="post" style="display: none">
+        <br>
     <label  for="admin" style=" position: relative; left: 50%; transform: translate(-50%, 0); width: 100% !important;">
 
+    <p style="text-align:center;">Копия письма: кадровая служба (обязательное поле)</p>    
     <select id="admin" required style="width: 50% !important;" >
         <option selected="selected">{{admin.id}} {{admin.first_name}} {{admin.last_name}}</option>
     </select>

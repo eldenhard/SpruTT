@@ -7,7 +7,9 @@
 
 <br><br>
     <div class="table1" style="display: flex;">
+  
     <table style="margin-top: -0.1px;">
+ 
       <thead>
         <tr>
           <th>{{WagonModel.number}}</th>
@@ -32,13 +34,13 @@
 
        
       </tbody>
-
-    </table>
-
-    <div>
+      <div style="display: flex; position: relative;">
     <button v-if="prevLink" @click="goToPage(prevLink)"> << </button>
     <button v-if="nextLink" @click="goToPage(nextLink)"> >> </button>
 </div>
+    </table>
+
+
 
 
 
@@ -549,28 +551,12 @@ export default{
         },
         passport(wagonNumber = null) {
             document.getElementById("loading-page-lk").style.display = "block";
-            // const pretoken = JSON.parse(localStorage.getItem("vuex"));
-            // const token = pretoken.auth.user.token;
-            // fetch("http://10.1.5.65/api/wagon-park/wagon-passport/", {
-            //     headers: {
-            //         "Authorization": `Basic ${token}`
-            //     },
-            //     method: "GET"
-            // })
+   
             api.getPassport({wagon: wagonNumber})
                 .then((response) => {
                     this.WagonsPassportModel = response.data.data.data;
                     document.getElementById("loading-page-lk").style.display = "none";
-                // if (response.ok) {
-                //     return response.json().then(r => {
-                //         this.WagonsPassportModel = r.data.data;
-                //         document.getElementById("loading-page-lk").style.display = "none";
-                //         console.log(this.WagonsPassportModel);
-                //     });
-                // }
-                // else {
-                //     console.log("NOT OK");
-                // }
+     
             });
         },
         arenda() {
