@@ -39,13 +39,13 @@ const mutations = {
 
 const actions = {
     async [actionTypes.login](context, data){
-        return new Promise(resolve => {
+        return new Promise((resolve,reject) => {
             api.login(data).then(response => {
                 context.commit(mutationTypes.loginSuccess, response.data)
                 resolve(response.data)
             }).catch(error => {
                 setItem('accessToken', '')
-                resolve(error)
+                reject(error)
             })
             
         })

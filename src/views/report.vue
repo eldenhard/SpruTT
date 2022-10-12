@@ -35,7 +35,7 @@
         <label for="first-question-1">&nbsp;Неисполнителен, склонен под любыми предлогами избегать получения новых заданий. Были случаи прямого отказа от выполнения заданий.</label><br>
 
         <input type="radio" name="first-question" id="first-question-2" value="c2"  v-model="answer1">
-        <label  for="first-question-2">&nbsp;Низкий уровень исполнительности. Иногда пытается избе-жать получения новых заданий, умело находя предлоги</label><br>
+        <label  for="first-question-2">&nbsp;Низкий уровень исполнительности. Иногда пытается избежать получения новых заданий, умело находя предлоги</label><br>
 
         <input type="radio" name="first-question" id="first-question-3"  value="c3"  v-model="answer1">
         <label for="first-question-3" >&nbsp;Хороший уровень исполнительности, но нельзя сказать, что каждый день без исключений. Берется за выполнение любых производственных заданий, но не всегда охотно.</label><br>
@@ -59,7 +59,7 @@
      
         <hr>
 
-    <p class="answer"  name="a3">Компетентность. Знание используемых приемов и мето-дов работы и умение в точности им следовать, наличие необходимых навыков</p>
+    <p class="answer"  name="a3">Компетентность. Знание используемых приемов и методов работы и умение в точности им следовать, наличие необходимых навыков</p>
 
      
         <input type="radio" name="third-question" id="third-question-1"   value="c1"  v-model="answer3">
@@ -86,7 +86,7 @@
         <label  for="fourth-question-2">&nbsp;Не сопротивляется, но и не проявляет интереса к вопросам повышения качества и производительности труда</label><br>
 
         <input type="radio" name="fourth-question" id="fourth-question-3"  value="c3" v-model="answer4">
-        <label for="fourth-question-3" >&nbsp;Всегда поддерживает все нововведения, помогает осваивать новые методы работы, но не в достаточной сте-пени активно</label><br>
+        <label for="fourth-question-3" >&nbsp;Всегда поддерживает все нововведения, помогает осваивать новые методы работы, но не в достаточной степени активно</label><br>
 
         <input type="radio" name="fourth-question" id="fourth-question-4"  value="c4" v-model="answer4">
         <label for="fourth-question-4" > &nbsp;Не только активно помогает осваивать новые методы работы, но и сам часто выдвигает различные рационализаторские предложения</label><br>

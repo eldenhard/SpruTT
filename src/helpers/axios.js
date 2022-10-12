@@ -31,7 +31,7 @@ _axios.interceptors.response.use(
             if(error.response.status === 401 && !originalRequest._retry){
                 originalRequest._retry = true
                 setItem("accessToken", "")
-                window.location.href = "/"
+                //.location.href = "/"
             }
             return Promise.reject(error);
         }

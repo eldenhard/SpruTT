@@ -1,7 +1,10 @@
 <template>
 <div id="tableMain">
-    <br>
+
+<FilterWagon @updateFilters="updateFilters"></FilterWagon>
+
 <button class="button Accept" style="width: 20%; height: 60px;" @click="Wagon()">Запросить данные</button>
+
 <br><br>
     <div class="table1" style="display: flex;">
     <table style="margin-top: -0.1px;">
@@ -16,13 +19,13 @@
       </thead>
       <tbody>
         <!-- v-for="wagon in WagonsModel" :key="wagon.id" -->
-        <tr v-for="wagon in WagonsModel" :key="wagon.id">
+        <tr v-for="wagon in WagonsModel" :key="wagon.id" @click="getMoreData(wagon.number)">
           <td>{{wagon.number}}</td>
           <td v-if="wagon.is_problem == false">нет</td>
           <td v-else>да</td>
           <td>{{wagon.volume}}</td>
           <td>{{wagon.wagon_type}}</td>
-          <td v-if="wagon.is_active = true">☑️</td>
+          <td v-if="wagon.is_active == true">☑️</td>
           <td v-else>🚫</td>
           
        </tr>
@@ -32,9 +35,15 @@
 
     </table>
 
+    <div>
+    <button v-if="prevLink" @click="goToPage(prevLink)"> << </button>
+    <button v-if="nextLink" @click="goToPage(nextLink)"> >> </button>
+</div>
+
+
 
 <b-card no-body style="background: #ECECEC; border: none; text-decoration: none; width: 100%;">
-    <b-tabs card  style="background: #ECECEC;"  small card>
+    <b-tabs card  style="background: #ECECEC; font-size: 12px !important;">
         <!-- <b-tab title="Состояние" active style="color: black;" >
                 <b-card-text style="margin-top: -30px;">
                 <div style="width:100%; overflow: auto;">
@@ -62,36 +71,11 @@
                 </div>       
             </b-card-text>
         </b-tab> -->
-        <b-tab title="Тип" @click="WagonType()">
-                <b-card-text style="margin-top: -30px;">
-                    <div style="width:100%; overflow: auto; ">
-                    <table>
-                        <thead>
-                            <tr>
-                            <th>{{WagonTypeModel.name}}</th>
-                            <th>{{WagonTypeModel.short_name}}</th>
-                            <th>{{WagonTypeModel.in_use}}</th>
-
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for=" wagontype in WagonsType" :key="wagontype.id" >
-                                <td>{{wagontype.name}}</td>
-                                <td>{{wagontype.short_name}}</td>
-                                <td v-if="wagontype.in_use = true">☑️</td>
-                                <td v-else>🚫</td>
-                            </tr>
-                        
-                        </tbody>
-                    </table>  
-                </div>                                       
-                </b-card-text>
-        </b-tab>
-        <b-tab title="Паспорт" @click="passport()">
+      
+        <b-tab title="Паспорт">
             <b-card-text style="margin-top: -30px;">
                 <div style="width:100%; overflow: auto;">
-                <table>
+                <table v-if="WagonPassportModel.count > 0">
                         <thead>
                         <tr>
                             <th>{{WagonPassportModel.next_planed_repair_date}}</th>
@@ -119,10 +103,12 @@
                         </tr>
                         </tbody>
                     </table>
+                    
+                    <p v-else><br>Нет данных</p>
                 </div>
             </b-card-text>
         </b-tab>
-        <b-tab title="Принадлежность" @click="belong()">
+        <b-tab title="Принадлежность">
             <b-card-text style="margin-top: -30px;">
                 <div style="width:100%; overflow: auto;">
                 <table>
@@ -152,7 +138,6 @@
                             <td>{{wagonbelong.created_at}}</td>
                             <td>{{wagonbelong.description}}</td>
                             <td>{{wagonbelong.wagon}}</td>
-
                         </tr>
                         </tbody>
                     </table>  
@@ -403,264 +388,242 @@
 import { mapState } from 'vuex'
 
 import api from "@/api/wagonPark"
-
+import FilterWagon from '@/components/filter/FilterWagon.vue'
 export default{
-    name: 'WagonTable',
+    name: "WagonTable",
     computed: {
         ...mapState({
             user: state => state.auth.user,
             uid: state => state.auth.uid
         })
     },
-    data(){
-        return{
-            WagonModel:{
-                number: 'Номер вагона',
-                is_problem : 'Проблемность',
-                volume: 'Объем вагона',
-                type: 'Тип вагона'
+    components: {FilterWagon},
+    data() {
+        return {
+            nextLink: null,
+            prevLink: null,
+            activeWagonId: null,
+            filters:null,
+            // checked: [],
+            WagonModel: {
+                number: "Номер вагона",
+                is_problem: "Проблемность",
+                volume: "Объем вагона",
+                type: "Тип вагона"
             },
-            WagonStateModel:{
-                number: 'Номер вагона',
-                state: 'Состояние',
-                state_value: 'Значение "Состояние"',
-                state_value_digital: 'Значение "Состояние" числовое',
+            WagonStateModel: {
+                number: "Номер вагона",
+                state: "Состояние",
+                state_value: "Значение \"Состояние\"",
+                state_value_digital: "Значение \"Состояние\" числовое",
                 updated_at: "Дата изменения состояния"
             },
-            WagonTypeModel:{
-                name: 'Наименование',
-                short_name: 'Краткое наименование',
-                in_use: 'Используется',
-                name_rp: 'Наименование в р.п.',
-                foot_length: 'Футовость контейнера',
-                code_ustng_empty: 'Код УСТНГ для порожнего',
-                code_gng_empty: 'Код ГНГ для порожнего',
-                code_etsng_empty_repair: 'Код ЕСТНГ для порожнего в ремонте',
-                trf_code: 'Код типа п.с. в Рейл-Тариф',
-                rtf_equal_container_code: 'Код экв. типа кнт. в Рейл-Тариф'
+            WagonPassportModel: {
+                next_planed_repair_date: "Дата следующего планового ремонта",
+                last_planed_repair_date: "Дата последнего планового ремонта",
+                capacity: "Грузоподъемность",
+                model: "Модель вагона",
+                days_before_date_plan_repair: "Дней до следующего планового ремонта",
+                next_plan_repair_kind: "Вид следующего планового ремонта",
+                build_date: "Дата постройки",
+                lifetime: "Срок службы",
+                wagon: "Вагон"
             },
-            WagonPassportModel:{
-                next_planed_repair_date: 'Дата следующего планового ремонта',
-                last_planed_repair_date: 'Дата последнего планового ремонта',
-                capacity: 'Грузоподъемность',
-                model: 'Модель вагона',
-                days_before_date_plan_repair: 'Дней до следующего планового ремонта',
-                next_plan_repair_kind: 'Вид следующего планового ремонта',
-                build_date: 'Дата постройки', 
-                lifetime: 'Срок службы',
-                wagon: 'Вагон'
-
+            WagonBelongModel: {
+                hash_value: "Значение",
+                name: "Принадлежность",
+                owner: "Собственник",
+                in_company_control: "В управлении",
+                wagon_source_company: "Источник поступления вагона, организация",
+                event_name: "",
+                agreement: "",
+                created_at: "Дата создания",
+                description: "Описание",
+                wagon: "Вагон"
             },
-            WagonBelongModel:{
-                hash_value: 'Значение',
-                name: 'Принадлежность',
-                owner: 'Собственник',
-                in_company_control: 'В управлении',
-                wagon_source_company: 'Источник поступления вагона, организация',
-                event_name: '',
-                agreement: '',
-                created_at: 'Дата создания',
-                description : 'Описание',
-                wagon : 'Вагон'
-            },
-            WagonRepairModel:{
-                nrp: 'НРП (вагон в нерабочем парке)',
-                malfunction_current: 'Неисправность текущая',
-                repair_type: 'Тип ремонта (для НРП)',
-                nrp_date: 'Дата НРП (перевода в нерабочий парк)',
+            WagonRepairModel: {
+                nrp: "НРП (вагон в нерабочем парке)",
+                malfunction_current: "Неисправность текущая",
+                repair_type: "Тип ремонта (для НРП)",
+                nrp_date: "Дата НРП (перевода в нерабочий парк)",
                 REPAIR_TYPES: [
-                    ('Текущий', 'current'),
-                    ('Плановый', 'plan')
+                    ("Текущий", "current"),
+                    ("Плановый", "plan")
                 ],
-                repair_kind: 'Текущий/Плановый',
-                next_planed_repair_date: 'Дата следующего запланированного ремонта',
-                next_planed_repair_depot: 'Депо следующего запланированного ремонта',
-                status: 'Статус ремонта',
-                repair_station_downtime: 'Простой на станции рмонта (дни)',
-                malfunction_code: 'Код неисправности (НРП)',
-                malfunction_kind: 'Вид неисправности (НРП)',
-                repair_compensation: 'Ремонт возмещается (текущий)'
-
+                repair_kind: "Текущий/Плановый",
+                next_planed_repair_date: "Дата следующего запланированного ремонта",
+                next_planed_repair_depot: "Депо следующего запланированного ремонта",
+                status: "Статус ремонта",
+                repair_station_downtime: "Простой на станции рмонта (дни)",
+                malfunction_code: "Код неисправности (НРП)",
+                malfunction_kind: "Вид неисправности (НРП)",
+                repair_compensation: "Ремонт возмещается (текущий)"
             },
-            WagonRestRunModel:{
-                actual_run: 'Фактический пробег',
-                rest_run: 'Остаточный пробег',
-                run_limit: 'Лимит пробега',
-                run_over_limit: 'Пробег свыше лимита'
+            WagonRestRunModel: {
+                actual_run: "Фактический пробег",
+                rest_run: "Остаточный пробег",
+                run_limit: "Лимит пробега",
+                run_over_limit: "Пробег свыше лимита"
             },
-            WagonModernisationModel:{
-                last_date: 'Дата последней модернизации'
+            WagonModernisationModel: {
+                last_date: "Дата последней модернизации"
             },
-            WagonRentModel:{
-                rent_doc: 'Договор аренды',
-                rent_doc_counterparty: 'Контрагент по договору',
-                acceptance_certificate_number: 'Номер акта приема-передачи',
-                acceptance_certificate_date: 'Дата акта приема-передачи',
-                rent_start_date: 'Дата аренды',
-                wagon: 'Вагон',
-                acceptance_station: 'Станция приема-передачи'
-
+            WagonRentModel: {
+                rent_doc: "Договор аренды",
+                rent_doc_counterparty: "Контрагент по договору",
+                acceptance_certificate_number: "Номер акта приема-передачи",
+                acceptance_certificate_date: "Дата акта приема-передачи",
+                rent_start_date: "Дата аренды",
+                wagon: "Вагон",
+                acceptance_station: "Станция приема-передачи"
             },
-            WagonLeasingModel:{
-                leasing_doc: 'Договор лизинга',
-                leasing_doc_lifetime: 'Срок действия договора лизинга',
-
+            WagonLeasingModel: {
+                leasing_doc: "Договор лизинга",
+                leasing_doc_lifetime: "Срок действия договора лизинга",
             },
-            WagonInsuranceModel:{
-                insurance_doc: 'Договор страхования',
-                insurance_doc_lifetime: 'Срок действия договора страхования'
+            WagonInsuranceModel: {
+                insurance_doc: "Договор страхования",
+                insurance_doc_lifetime: "Срок действия договора страхования"
             },
-           WagonEtranInfoModel:{
-            owner: 'Собственник (по данным ЭТРАН, ГВЦ)',
-            tenant: 'Арендатор (по данным ЭТРАН, ГВЦ)',
-            signing: 'Визирование',
-            parking: 'Отстой',
-            telegram_number: '№ телеграммы',
-            number_from_expeditor: '№ от экспедитора'
-
-           },
-           
-           WagonsModel:[],
-           WagonsType:[],
-           WagonStatesModel: [],
-           WagonsPassportModel: [],
-           WagonsBelongModel: [],
-           WagonsRepairModel: [],
-           WagonsRestRunModel: [],
-           WagonsModernisationModel: [],
-           WagonsRentModel: [],
-           WagonsLeasingModel: [],
-           WagonsInsuranceModel: [],
-           WagonsEtranInfoModel: [],
-        }
+            WagonEtranInfoModel: {
+                owner: "Собственник (по данным ЭТРАН, ГВЦ)",
+                tenant: "Арендатор (по данным ЭТРАН, ГВЦ)",
+                signing: "Визирование",
+                parking: "Отстой",
+                telegram_number: "№ телеграммы",
+                number_from_expeditor: "№ от экспедитора"
+            },
+            WagonsModel: [],
+            WagonStatesModel: [],
+            WagonsPassportModel: [],
+            WagonsBelongModel: [],
+            WagonsRepairModel: [],
+            WagonsRestRunModel: [],
+            WagonsModernisationModel: [],
+            WagonsRentModel: [],
+            WagonsLeasingModel: [],
+            WagonsInsuranceModel: [],
+            WagonsEtranInfoModel: [],
+        };
     },
-
-
-methods: {
-    Wagon(){
-    document.getElementById('loading-page-lk').style.display = 'block'
-    const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.auth.user.token
-    fetch('http://10.1.5.65/api/wagon-park/wagons/', {
-        headers: {
-            'Authorization': `Basic ${token}` 
-        },
-        method: 'GET'
-    })
-
-    // api.getWagons()
-    .then((response) => {
-                if (response.ok){
-                    return response.json().then(r=>{
-                        //console.log(data);
-                        // 1-е это сваойство Respone, второе свойство JSON
-                        this.WagonsModel = r.data;
-                        document.getElementById('loading-page-lk').style.display = 'none'
-                        console.log(this.WagonsModel)
-               })
-           }
-           else{
-               console.log('NOT OK')
-           }
-       })
-    },
-    WagonType(){
-        document.getElementById('loading-page-lk').style.display = 'block';
-        const pretoken = JSON.parse(localStorage.getItem("vuex"))
-        const token = pretoken.auth.user.token
-        fetch('http://10.1.5.65/api/wagon-park/wagon-type/', {
-            headers: {
-                'Authorization': `Basic ${token}` 
-            },
-            method: 'GET'
-        })
-        // api.getWagonType()
-        .then((response) => {
-                    if (response.ok){
-                        return response.json().then(r=>{
-                            this.WagonsType = r.data.data;
-                            document.getElementById('loading-page-lk').style.display = 'none'
-                            console.log(this.WagonsType)
-                })
+    methods: {
+        goToPage(link){
+        
+            let url = new URL(link)
+            let pageNumber  = url.searchParams.get("page")
+            if(pageNumber != null){
+                this.filters.page = pageNumber 
+            }else{
+                delete(this.filters.page)
             }
-            else{
-                console.log('NOT OK')
-            }
-        })
-    },
-    passport(){
-    document.getElementById('loading-page-lk').style.display = 'block'
-    // api.getPassport()
-    const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.auth.user.token
-        fetch('http://10.1.5.65/api/wagon-park/wagon-passport/', {
-            headers: {
-                'Authorization': `Basic ${token}` 
-            },
-            method: 'GET'
-        })
-    .then((response) => {
-                if (response.ok){
-                    return response.json().then(r=>{
-                        this.WagonsPassportModel = r.data.data;
-                        document.getElementById('loading-page-lk').style.display = 'none'
-                        console.log(this.WagonsPassportModel)
-               })
-           }
-           else{
-               console.log('NOT OK')
-           }
-       })
-    },
-    arenda() {
-    document.getElementById('loading-page-lk').style.display = 'block'
-    // api.getArenda()
-    const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.auth.user.token
-    fetch('http://10.1.5.65/api/wagon-park/wagon-rent/', {
-        headers: {
-            'Authorization': `Basic ${token}` 
+            this.Wagon()
         },
-        method: 'GET'
-    })
-    .then((response) => {
-                if (response.ok){
-                    return response.json().then(r=>{
+        getMoreData(wagonNumber){
+    
+            this.passport(wagonNumber)
+            this.belong(wagonNumber)
+        },
+        updateFilters(filters){
+            this.filters = filters
+        },
+        Wagon() {
+            document.getElementById("loading-page-lk").style.display = "block";
+            // const pretoken = JSON.parse(localStorage.getItem("vuex"));
+            // const token = pretoken.auth.user.token;
+            // fetch("http://10.1.5.65/api/wagon-park/wagons/", {
+            //     headers: {
+            //         "Authorization": `Basic ${token}`
+            //     },
+            //     method: "GET"
+            // })
+        
+                api.getWagons(this.filters)
+                .then((response) => {
+                    this.WagonsModel = response.data.data;
+                    this.nextLink = response.data.links.next
+                    this.prevLink = response.data.links.previous
+                    document.getElementById("loading-page-lk").style.display = "none";
+            }).catch(err => {
+                console.log(err)
+            });
+        },
+        passport(wagonNumber = null) {
+            document.getElementById("loading-page-lk").style.display = "block";
+            // const pretoken = JSON.parse(localStorage.getItem("vuex"));
+            // const token = pretoken.auth.user.token;
+            // fetch("http://10.1.5.65/api/wagon-park/wagon-passport/", {
+            //     headers: {
+            //         "Authorization": `Basic ${token}`
+            //     },
+            //     method: "GET"
+            // })
+            api.getPassport({wagon: wagonNumber})
+                .then((response) => {
+                    this.WagonsPassportModel = response.data.data.data;
+                    document.getElementById("loading-page-lk").style.display = "none";
+                // if (response.ok) {
+                //     return response.json().then(r => {
+                //         this.WagonsPassportModel = r.data.data;
+                //         document.getElementById("loading-page-lk").style.display = "none";
+                //         console.log(this.WagonsPassportModel);
+                //     });
+                // }
+                // else {
+                //     console.log("NOT OK");
+                // }
+            });
+        },
+        arenda() {
+            document.getElementById("loading-page-lk").style.display = "block";
+            api.getArenda()
+            // const pretoken = JSON.parse(localStorage.getItem("vuex"));
+            // const token = pretoken.auth.user.token;
+            // fetch("http://10.1.5.65/api/wagon-park/wagon-rent/", {
+            //     headers: {
+            //         "Authorization": `Basic ${token}`
+            //     },
+            //     method: "GET"
+            // })
+                .then((response) => {
+                if (response.ok) {
+                    return response.json().then(r => {
                         this.WagonsRentModel = r.data;
-                        document.getElementById('loading-page-lk').style.display = 'none'
-                        console.log(this.WagonsRentModel)
-               })
-           }
-           else{
-               console.log('NOT OK')
-           }
-       })
-    },
-    belong(){
-    document.getElementById('loading-page-lk').style.display = 'block'
-    // api.getBelong()
-    const pretoken = JSON.parse(localStorage.getItem("vuex"))
-    const token = pretoken.auth.user.token
-    fetch('http://10.1.5.65/api/wagon-park/wagon-belong/', {
-        headers: {
-            'Authorization': `Basic ${token}` 
+                        document.getElementById("loading-page-lk").style.display = "none";
+                        console.log(this.WagonsRentModel);
+                    });
+                }
+                else {
+                    console.log("NOT OK");
+                }
+            });
         },
-        method: 'GET'
-    })
-    .then((response) => {
-                if (response.ok){
-                    return response.json().then(r=>{
-                        this.WagonsBelongModel = r.data.data;
-                        document.getElementById('loading-page-lk').style.display = 'none'
-                        console.log(this.WagonsBelongModel)
-               })
-           }
-           else{
-               console.log('NOT OK')
-           }
-       })
+        belong(wagonNumber = null) {
+            document.getElementById("loading-page-lk").style.display = "block";
+            api.getBelong({wagon: wagonNumber})
+            // const pretoken = JSON.parse(localStorage.getItem("vuex"));
+            // const token = pretoken.auth.user.token;
+            // fetch("http://10.1.5.65/api/wagon-park/wagon-belong/", {
+            //     headers: {
+            //         "Authorization": `Basic ${token}`
+            //     },
+            //     method: "GET"
+            // })
+                .then((response) => {
+                    this.WagonsBelongModel = response.data.data.data;
+                    document.getElementById("loading-page-lk").style.display = "none";
+                // if (response.ok) {
+                //     return response.json().then(r => {
+                //         this.WagonsBelongModel = r.data.data;
+                //         document.getElementById("loading-page-lk").style.display = "none";
+                //         console.log(this.WagonsBelongModel);
+                //     });
+                // }
+                // else {
+                //     console.log("NOT OK");
+                // }
+            });
+        }
     }
-}
 }
 
    

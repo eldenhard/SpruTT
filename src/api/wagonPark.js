@@ -2,31 +2,27 @@ import {api} from "@/helpers/axios"
 
 export const resource = "wagon-park" 
 
-const getWagons = () => {
-    return api.get(`${resource}/wagons`)
+const getWagons = (filters) => {
+    return api.get(`${resource}/wagons`, {params: filters})
 }
 
-const getWagonType = () => {
-    return api.get(`${resource}/wagon-type`)
-}
 
-const getPassport = () => {
-    return api.get(`${resource}/wagon-passport`)
+const getPassport = (filter) => {
+    return api.get(`${resource}/wagon-passport`, {params: filter})
 }
 
 const getArenda = () => {
     return api.get(`${resource}/wagon-rent`)
 }
 
-const getBelong = () => {
-    return api.get(`${resource}/wagon-belong`)
+const getBelong = (filter) => {
+    return api.get(`${resource}/wagon-belong`, {params: filter})
 }
 // const getWagons = () => {
 //     return api.get(`${resource}/wagons`, {params: {is_active:'True'}})
 // }
 export default {
     getWagons,
-    getWagonType,
     getPassport,
     getArenda,
     getBelong

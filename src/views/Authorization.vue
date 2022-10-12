@@ -38,24 +38,31 @@ export default {
     },
     methods: {
         submitEntry: function () {
-
-            this.$store.dispatch(actionTypes.login, {
-                email: this.email,
-                password: this.password
-            }).then((user) => {
-                if(this.$store.state.auth.isLoggedIn){
+            if(this.email.length > 0){
+                this.$store.dispatch(actionTypes.login, {
+                    email: this.email,
+                    password: this.password
+                }).then((user) => {
+                    if(this.$store.state.auth.isLoggedIn){
+                        this.showNotify = true
+                        this.notifyHead = 'Здравствуйте'
+                        this.notifyMessage = 'Вы успешно авторизированы'
+                        this.notifyClass = 'wrapper-success'
+                        document.location.href = '/'
+                    }
+                }).catch((e) => {
                     this.showNotify = true
-                    this.notifyHead = 'Здравствуйте'
-                    this.notifyMessage = 'Вы успешно авторизированы'
-                    this.notifyClass = 'wrapper-success'
-                    document.location.href = '/'
-                }
-            }).catch((e) => {
+                    this.notifyHead = 'Ошибка авторизации'
+                    this.notifyMessage = 'Пожалуйста, проверьте ваши введенные данные'
+                    this.notifyClass = 'wrapper-error'
+                })
+            }else{
                 this.showNotify = true
-              this.notifyHead = 'Ошибка авторизации'
-              this.notifyMessage = 'Пожалуйста, проверьте ваши введенные данные'
-              this.notifyClass = 'wrapper-error'
-            })
+                    this.notifyHead = 'Ошибка авторизации'
+                    this.notifyMessage = 'Введите Email'
+                    this.notifyClass = 'wrapper-error'
+            }
+           
 
             //const api = "http://10.1.5.65/api/personal/login/";
             // axios
