@@ -6,9 +6,8 @@ const getWagons = (filters) => {
     return api.get(`${resource}/wagons`, {params: filters})
 }
 
-
 const getPassport = (filter) => {
-    return api.get(`${resource}/wagon-passport`, {params: filter})
+    return api.get(`${resource}/wagon-passport/`, {params: filter})
 }
 
 const getArenda = () => {
@@ -18,13 +17,15 @@ const getArenda = () => {
 const getBelong = (filter) => {
     return api.get(`${resource}/wagon-belong`, {params: filter})
 }
-// const getWagons = () => {
-//     return api.get(`${resource}/wagons`, {params: {is_active:'True'}})
-// }
+const getCurrentWagon = (numberWagon) => {
+    return api.get(`${resource}/wagons`+ `?number=${numberWagon}`)
+}
+
 export default {
     getWagons,
     getPassport,
     getArenda,
-    getBelong
+    getBelong,
+    getCurrentWagon
 
 }

@@ -6,10 +6,16 @@
 <button class="button Accept" style="width: 20%; height: 60px;" @click="Wagon()">Запросить данные</button>
 
 <br><br>
+<div style="display: flex; width: 30%; height: 30px;">
+    <br>
+        <input type="number" v-model="numberWagon" placeholder="найти вагон">
+        <button @click="searchWagon()" style="width: 20%; display: flex; align-items: center; justify-content: center;">поиск</button>
+    </div>
     <div class="table1" style="display: flex;">
-  
     <table style="margin-top: -0.1px;">
- 
+
+
+
       <thead>
         <tr>
           <th>{{WagonModel.number}}</th>
@@ -34,7 +40,7 @@
 
        
       </tbody>
-      <div style="display: flex; position: relative;">
+      <div style="display: flex; position: relative; margin-top: 10%; height: 50px;">
     <button v-if="prevLink" @click="goToPage(prevLink)"> << </button>
     <button v-if="nextLink" @click="goToPage(nextLink)"> >> </button>
 </div>
@@ -73,11 +79,11 @@
                 </div>       
             </b-card-text>
         </b-tab> -->
-      
+      <!--  v-if="WagonPassportModel.count > 0" -->
         <b-tab title="Паспорт">
             <b-card-text style="margin-top: -30px;">
                 <div style="width:100%; overflow: auto;">
-                <table v-if="WagonPassportModel.count > 0">
+                <table>
                         <thead>
                         <tr>
                             <th>{{WagonPassportModel.next_planed_repair_date}}</th>
@@ -89,6 +95,8 @@
                             <th>{{WagonPassportModel.build_date}}</th>
                             <th>{{WagonPassportModel.lifetime}}</th>
                             <th>{{WagonPassportModel.wagon}}</th>
+                            <th>{{WagonPassportModel.document}}</th>
+                            
                         </tr>
                         </thead>
                         <tbody>
@@ -102,11 +110,12 @@
                             <td>{{wagonpasport.build_date}}</td>
                             <td>{{wagonpasport.lifetime}}</td>
                             <th>{{wagonpasport.wagon}}</th>
+                            <td><a target="_blank" :href="wagonpasport.document" v-if="wagonpasport.document"><img src="@/assets/pdf.png" alt="" width="50px!important"></a></td>
                         </tr>
                         </tbody>
                     </table>
                     
-                    <p v-else><br>Нет данных</p>
+                    <!-- <p v-else><br>Нет данных</p> -->
                 </div>
             </b-card-text>
         </b-tab>
@@ -116,7 +125,6 @@
                 <table>
                         <thead>
                         <tr>
-                            <th>{{WagonBelongModel.hash_value}}</th>
                             <th>{{WagonBelongModel.name}}</th>
                             <th>{{WagonBelongModel.owner}}</th>
                             <th>{{WagonBelongModel.in_company_control}}</th>
@@ -130,7 +138,6 @@
                         </thead>
                         <tbody>
                         <tr v-for="wagonbelong in WagonsBelongModel" :key="wagonbelong.id">
-                            <td>{{wagonbelong.hash_value}}</td>
                             <td>{{wagonbelong.name}}</td>
                             <td>{{wagonbelong.owner}}</td>
                             <td>{{wagonbelong.in_company_control}}</td>
@@ -384,7 +391,8 @@
 </div>
 </template>
     
-    
+
+
     
 <script>
 import { mapState } from 'vuex'
@@ -406,6 +414,7 @@ export default{
             prevLink: null,
             activeWagonId: null,
             filters:null,
+            numberWagon: null,
             // checked: [],
             WagonModel: {
                 number: "Номер вагона",
@@ -429,6 +438,7 @@ export default{
                 next_plan_repair_kind: "Вид следующего планового ремонта",
                 build_date: "Дата постройки",
                 lifetime: "Срок службы",
+                document: "Скан паспорта",
                 wagon: "Вагон"
             },
             WagonBelongModel: {
@@ -528,17 +538,9 @@ export default{
         updateFilters(filters){
             this.filters = filters
         },
+
         Wagon() {
             document.getElementById("loading-page-lk").style.display = "block";
-            // const pretoken = JSON.parse(localStorage.getItem("vuex"));
-            // const token = pretoken.auth.user.token;
-            // fetch("http://10.1.5.65/api/wagon-park/wagons/", {
-            //     headers: {
-            //         "Authorization": `Basic ${token}`
-            //     },
-            //     method: "GET"
-            // })
-        
                 api.getWagons(this.filters)
                 .then((response) => {
                     this.WagonsModel = response.data.data;
@@ -549,71 +551,76 @@ export default{
                 console.log(err)
             });
         },
+
         passport(wagonNumber = null) {
             document.getElementById("loading-page-lk").style.display = "block";
-   
             api.getPassport({wagon: wagonNumber})
                 .then((response) => {
-                    this.WagonsPassportModel = response.data.data.data;
+                    this.WagonsPassportModel = response.data.data;
                     document.getElementById("loading-page-lk").style.display = "none";
      
             });
         },
+
         arenda() {
             document.getElementById("loading-page-lk").style.display = "block";
             api.getArenda()
-            // const pretoken = JSON.parse(localStorage.getItem("vuex"));
-            // const token = pretoken.auth.user.token;
-            // fetch("http://10.1.5.65/api/wagon-park/wagon-rent/", {
-            //     headers: {
-            //         "Authorization": `Basic ${token}`
-            //     },
-            //     method: "GET"
-            // })
-                .then((response) => {
-                if (response.ok) {
-                    return response.json().then(r => {
-                        this.WagonsRentModel = r.data;
-                        document.getElementById("loading-page-lk").style.display = "none";
-                        console.log(this.WagonsRentModel);
-                    });
-                }
-                else {
-                    console.log("NOT OK");
-                }
+            .then((response) => {
+                    this.WagonsBelongModel = response.data.data;
+                    document.getElementById("loading-page-lk").style.display = "none";
+    
             });
         },
         belong(wagonNumber = null) {
             document.getElementById("loading-page-lk").style.display = "block";
             api.getBelong({wagon: wagonNumber})
-            // const pretoken = JSON.parse(localStorage.getItem("vuex"));
-            // const token = pretoken.auth.user.token;
-            // fetch("http://10.1.5.65/api/wagon-park/wagon-belong/", {
-            //     headers: {
-            //         "Authorization": `Basic ${token}`
-            //     },
-            //     method: "GET"
-            // })
                 .then((response) => {
-                    this.WagonsBelongModel = response.data.data.data;
+                    this.WagonsBelongModel = response.data.data;
                     document.getElementById("loading-page-lk").style.display = "none";
-                // if (response.ok) {
-                //     return response.json().then(r => {
-                //         this.WagonsBelongModel = r.data.data;
-                //         document.getElementById("loading-page-lk").style.display = "none";
-                //         console.log(this.WagonsBelongModel);
-                //     });
-                // }
-                // else {
-                //     console.log("NOT OK");
-                // }
+    
             });
+        },
+        searchWagon(){
+            document.getElementById("loading-page-lk").style.display = "block";
+                api.getCurrentWagon(this.numberWagon)
+                .then((response) => {
+                    this.WagonsModel = response.data.data;
+                    document.getElementById("loading-page-lk").style.display = "none";
+            }).catch(err => {
+                console.log(err)
+            });
+
         }
     }
 }
 
    
-        
+// belong(wagonNumber = null) {
+//             document.getElementById("loading-page-lk").style.display = "block";
+//             api.getBelong({wagon: wagonNumber})
+//             const pretoken = JSON.parse(localStorage.getItem("vuex"));
+//             const token = pretoken.auth.user.token;
+//             fetch("http://10.1.5.65/api/wagon-park/wagon-belong/", {
+//                 headers: {
+//                     "Authorization": `Basic ${token}`
+//                 },
+//                 method: "GET"
+//             })
+//                 .then((response) => {
+//                     this.WagonsBelongModel = response.data.data.data;
+//                     document.getElementById("loading-page-lk").style.display = "none";
+//                 if (response.ok) {
+//                     return response.json().then(r => {
+//                         this.WagonsBelongModel = r.data.data;
+//                         document.getElementById("loading-page-lk").style.display = "none";
+//                         console.log(this.WagonsBelongModel);
+//                     });
+//                 }
+//                 else {
+//                     console.log("NOT OK");
+//                 }
+//             });
+//         }        
 
 </script>
     

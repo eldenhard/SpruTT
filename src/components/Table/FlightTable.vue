@@ -1,6 +1,6 @@
 <template>
     <div id="tableMain">
-        <!-- <input v-model="name" @input="getName" @keyup.enter="limits(param)" type="number" placeholder="Количество"> -->
+        <input v-model="name" @input="getName" @keyup.enter="limits(param)" type="number" placeholder="Количество">
 
                     <table border="1" id="info-table">
                     <tr>

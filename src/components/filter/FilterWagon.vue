@@ -13,17 +13,11 @@
     
     </td>
 
-    <td style="width: 150px !important; height: 80px !important;"> 
+    <!-- <td style="width: 150px !important; height: 80px !important;"> 
     <p>Номер вагона</p>
     <input type="number" v-model="filters.number" @input="updateFilterData">
-    </td>
-                <!-- <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td> -->
-
-            </tr>
+    </td> -->
+ </tr>
         </table>
       
     </div>
@@ -35,7 +29,7 @@ export default{
         return{
             filters: {
                 is_active: false,
-                number: '',
+                // number: '',
                 
             }
         }
@@ -50,8 +44,8 @@ export default{
             this.$emit('updateFilters', this.filters)
         }
     },
-    mounted: function() {
-        this.updateFilterData()
-    }
+    // mounted: function() {
+    //     this.updateFilterData()
+    // }
 }
 </script>
