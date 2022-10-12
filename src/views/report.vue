@@ -203,14 +203,16 @@
         <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 100%;">
     <tr>
         <td><h5>Созданные Вами отчеты</h5></td>
-        <!-- <td><h5>Созданные на Вас отчеты</h5></td> -->
     </tr>
 
     <tr v-for="reports in reports_creator" :key="reports.id" >
        <td style="text-align:center; font-size: 17px;"> Кто создал: {{reports.creator.first_name}} {{reports.creator.last_name}} <br>
             На кого создано: {{reports.employee.first_name}}  {{reports.employee.last_name}}  <br>
             Дата создания: `{{new Date(reports.created_at).toLocaleString()}}` <br>
+            Доплата:  <br>
             Файл: <a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a>
+           <br>
+           <button class="button Request" style="height: 50px; width: 50%; font-size:18px">Подробнее</button>
         </td>
     </tr>
 </table>  
@@ -224,7 +226,11 @@
                 <td style="text-align:center; font-size: 17px;">Кто создал: {{reporte.creator.first_name}} {{reporte.creator.last_name}}<br>
                     На кого создано: {{reporte.employee.first_name}} {{reporte.employee.last_name}} <br>
                     Дата создания:  `{{new Date(reporte.created_at).toLocaleString()}}` <br>
+                    Доплата:   <br>
                     Файл: <a download target="_blank" :href="reporte.file" v-if="reporte.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> 
+                    <br>
+                    <button class="button Request" style="height: 50px; width: 50%; font-size:18px">Подробнее</button>
+
                 </td>
             </tr> 
         </table>
