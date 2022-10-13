@@ -2,23 +2,23 @@
   <div>
     <div id="navbar">
       <ul class="UpNavList">
-        <li class="UpNavList-item">
-          <router-link  to="/home" class="disabled">Справочники</router-link>
+        <li class="UpNavList-item disabled">
+          <router-link  to="/home" class="disabled" style="color: grey;">Справочники</router-link>
         </li>
-        <li class="UpNavList-item">
-          <router-link to="/wagonpark" class="disabled"> Вагонный парк</router-link>
+        <li class="UpNavList-item disabled">
+          <router-link to="/wagonpark" class="disabled"  style="color: grey;"> Вагонный парк</router-link>
         </li>
-        <li class="UpNavList-item">
-          <router-link to="/bookkeeping" class="disabled">Бухгалтерия</router-link>
+        <li class="UpNavList-item disabled">
+          <router-link to="/bookkeeping" class="disabled"  style="color: grey;">Бухгалтерия</router-link>
         </li>
         <!-- <li class="UpNavList-item">
           <router-link to="#">Документооборот</router-link>
         </li> -->
-        <li class="UpNavList-item">
-          <router-link to="/presentation" class="disabled">Презентации</router-link>
+        <li class="UpNavList-item disabled" >
+          <router-link to="/presentation" class="disabled"  style="color: grey;">Презентации</router-link>
         </li>
-        <li class="UpNavList-item">
-          <router-link to="/rates" class="disabled">Ставки</router-link>
+        <li class="UpNavList-item disabled">
+          <router-link to="/rates" class="disabled"  style="color: grey;">Ставки</router-link>
         </li>
         <li class="UpNavList-item">
           <router-link to="/lk">Личный кабинет</router-link>
