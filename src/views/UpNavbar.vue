@@ -3,22 +3,22 @@
     <div id="navbar">
       <ul class="UpNavList">
         <li class="UpNavList-item">
-          <router-link to="/home">Справочники</router-link>
+          <router-link  to="/home" class="disabled">Справочники</router-link>
         </li>
         <li class="UpNavList-item">
-          <router-link to="/wagonpark"> Вагонный парк</router-link>
+          <router-link to="/wagonpark" class="disabled"> Вагонный парк</router-link>
         </li>
         <li class="UpNavList-item">
-          <router-link to="/bookkeeping">Бухгалтерия</router-link>
+          <router-link to="/bookkeeping" class="disabled">Бухгалтерия</router-link>
         </li>
         <!-- <li class="UpNavList-item">
           <router-link to="#">Документооборот</router-link>
         </li> -->
         <li class="UpNavList-item">
-          <router-link to="/presentation">Презентации</router-link>
+          <router-link to="/presentation" class="disabled">Презентации</router-link>
         </li>
         <li class="UpNavList-item">
-          <router-link to="/rates">Ставки</router-link>
+          <router-link to="/rates" class="disabled">Ставки</router-link>
         </li>
         <li class="UpNavList-item">
           <router-link to="/lk">Личный кабинет</router-link>
@@ -37,6 +37,11 @@
 import {actionTypes} from '@/store/modules/auth'
 export default {
   name: 'UpNavbar',
+  data(){
+    return{
+      isDisabled
+    }
+  },
   methods: {
     logout() {
       //this.$store.commit('setUser', {})
@@ -48,6 +53,10 @@ export default {
 
 
 <style scoped>
+.disabled{
+  pointer-events: none;
+  background: #E4E4E4;
+}
 /* Выделение активной ссылки */
 a.router-link-active, li.router-link-active {
 border-bottom: 2px solid #EC2332;

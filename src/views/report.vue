@@ -1,5 +1,6 @@
 <template>
     <div class="lk">
+<wagonModal v-if="showReportModal" :OnceReport="OnceReport" @close="closeChangeReport"></wagonModal>
         <h2>Отчеты</h2>
    
         <button class="button Action" @click="OpenKPI()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{ btnName }}</button>
@@ -30,7 +31,7 @@
 
         <div id="block-answer">
             <h2>Анкета сотрудника</h2>
-      <p class="answer" name="a1">Готовность неукоснительно выполнять все производственные задания, порученные руководителем.</p>
+      <p class="answer" name="a1">1. Готовность неукоснительно выполнять все производственные задания, порученные руководителем.</p>
 
      
         <input type="radio" name="first-question" id="first-question-1"  value="c1" v-model="answer1">
@@ -45,7 +46,7 @@
         <input type="radio" name="first-question" id="first-question-4"  value="c4"  v-model="answer1">
         <label for="first-question-4" >&nbsp;Безукоризненный уровень исполнительности. Всегда охотно берется за выполнение всех производственных заданий, порученных руководителем.</label><br>
 <hr>
-       <p class="answer"  name="a2">Способность справляться со своими обязанностями и поручениями. Умение выявлять и решать возникающие в работе проблемы</p>
+       <p class="answer"  name="a2">2. Способность справляться со своими обязанностями и поручениями. Умение выявлять и решать возникающие в работе проблемы</p>
      
         <input type="radio" name="second-question" id="second-question-1"  value="c1"  v-model="answer2">
         <label for="second-question-1" >&nbsp;Часто не справляется со своими обязанностями и поручениями или заданиями. Не умеет выявлять проблемы и с трудом решает их</label><br>
@@ -61,7 +62,7 @@
      
         <hr>
 
-    <p class="answer"  name="a3">Компетентность. Знание используемых приемов и методов работы и умение в точности им следовать, наличие необходимых навыков</p>
+    <p class="answer"  name="a3">3. Компетентность. Знание используемых приемов и методов работы и умение в точности им следовать, наличие необходимых навыков</p>
 
      
         <input type="radio" name="third-question" id="third-question-1"   value="c1"  v-model="answer3">
@@ -78,7 +79,7 @@
         <hr>
 
 
-      <p class="answer" name="a4">Заинтересованность и активность в вопросах повышения качества, производительности труда и освоения эффективных методов работы</p>
+      <p class="answer" name="a4">4. Заинтересованность и активность в вопросах повышения качества, производительности труда и освоения эффективных методов работы</p>
 
      
         <input type="radio" name="fourth-question" id="fourth-question-1"  value="c1" v-model="answer4">
@@ -94,7 +95,7 @@
         <label for="fourth-question-4" > &nbsp;Не только активно помогает осваивать новые методы работы, но и сам часто выдвигает различные рационализаторские предложения</label><br>
         <hr>
 
-      <p class="answer"  name="a5">Выполнение планового объема работ по выданным производственным заданиям.</p>
+      <p class="answer"  name="a5">5. Выполнение планового объема работ по выданным производственным заданиям.</p>
 
      
         <input type="radio" name="fifth-question" id="fifth-question-1"  value="c1" v-model="answer5">
@@ -110,7 +111,7 @@
         <label for="fifth-question-4" >&nbsp;Все запланированные работы по заданиям выполнялись в полном объеме и в установленные сроки </label><br>
         <hr>
 
-      <p class="answer" name="a6">Качество выполненных работ, поручений.</p>
+      <p class="answer" name="a6">6. Качество выполненных работ, поручений.</p>
 
         <input type="radio" name="sixth-question" id="sixth-question-1"  value="c1" v-model="answer6">
         <label for="sixth-question-1">&nbsp;Работы выполнялись некачественно. Имелись случаи брака и возврата заданий на доработку</label><br>
@@ -135,7 +136,7 @@
     </form>
     
 
-    <section id="loading-page-lk" style="display:none">
+    <section id="loading-page-lk" style="display:block" v-if="loaderReport">
 
 <svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
   viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
@@ -196,48 +197,62 @@
 
 
 
-    <button class="button Action" @click="OpenReport()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">Загрузить отчеты</button>
+<button class="button Action" @click="OpenReport()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{downloadReport}}</button>
+
 <div style="display:none" id="tables">
     <div class="row" style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%; width: 100%;">
 <div class="col-md-6">
         <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 100%;">
     <tr>
-        <td><h5>Созданные Вами отчеты</h5></td>
+        <td colspan="7"><h5>Созданные Вами отчеты</h5></td>
     </tr>
+<tr>
+    <td style="text-align:center; font-size: 15px;">Кто создал</td>
+    <td style="text-align:center; font-size: 15px;">На кого создано</td>
+    <td style="text-align:center; font-size: 15px;">Дата создания</td>
+    <td style="text-align:center; font-size: 15px;">Дата последнего изменения</td>
+    <td style="text-align:center; font-size: 15px;">Доплата</td>
+    <td style="text-align:center; font-size: 15px;">Файл</td>
+    <td style="text-align:center; font-size: 15px;">Действие</td>
+</tr>
 
-    <tr v-for="reports in reports_creator" :key="reports.id" >
-       <td style="text-align:center; font-size: 17px;"> Кто создал: {{reports.creator.first_name}} {{reports.creator.last_name}} <br>
-            На кого создано: {{reports.employee.first_name}}  {{reports.employee.last_name}}  <br>
-            Дата создания: `{{new Date(reports.created_at).toLocaleString()}}` <br>
-            Доплата: {{reports.rate}} %<br>
-            Файл: <a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a>
-           <br>
-           <button class="button Request" style="height: 50px; width: 50%; font-size:18px">Подробнее</button>
-        </td>
-    </tr>
+<tr v-for="reports in reports_creator" :key="reports.id" >
+    <td>{{reports.creator.first_name}} {{reports.creator.last_name}} <br></td>
+    <td>{{reports.employee.first_name}}  {{reports.employee.last_name}}  <br></td> 
+    <td>{{new Date(reports.created_at).toLocaleString()}}<br> </td> 
+    <td>{{new Date(reports.updated_at).toLocaleString()}}<br> </td> 
+    <td>{{reports.rate}} %<br></td> 
+    <td><a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> </td> 
+    <td><button class="button Request" style="height: 40px; width: 100%; font-size:15px;" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
+</tr>
+
 </table>  
 </div>
     <div class="col-md-6">
         <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 100%;">
-            <tr>
-                <td><h5>Созданные на Вас отчеты</h5></td>
-            </tr>
-            <tr v-for="reporte in reports_employee" :key="reporte.id" >
-                <td style="text-align:center; font-size: 17px;">Кто создал: {{reporte.creator.first_name}} {{reporte.creator.last_name}}<br>
-                    На кого создано: {{reporte.employee.first_name}} {{reporte.employee.last_name}} <br>
-                    Дата создания:  `{{new Date(reporte.created_at).toLocaleString()}}` <br>
-                    Доплата:{{reporte.rate}} %   <br>
-                    Файл: <a download target="_blank" :href="reporte.file" v-if="reporte.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> 
-                    <br>
-                    <button class="button Request" style="height: 50px; width: 50%; font-size:18px">Подробнее</button>
-
-                </td>
-            </tr> 
+<tr>
+    <td colspan="6"><h5>Созданные на Вас отчеты</h5></td>
+</tr>
+<tr>
+    <td style="text-align:center; font-size: 15px;">Кто создал</td>
+    <td style="text-align:center; font-size: 15px;">На кого создано</td>
+    <td style="text-align:center; font-size: 15px;">Дата создания</td>
+    <td style="text-align:center; font-size: 15px;">Дата последнего изменения</td>
+    <td style="text-align:center; font-size: 15px;">Доплата</td>
+    <td style="text-align:center; font-size: 15px;">Файл</td>
+</tr>
+    <tr v-for="reporte in reports_employee" :key="reporte.id" >
+        <td>{{reporte.creator.first_name}} {{reporte.creator.last_name}}<br></td>
+        <td>{{reporte.employee.first_name}} {{reporte.employee.last_name}} <br></td>
+        <td>{{new Date(reporte.created_at).toLocaleString()}}<br></td>
+        <td>{{new Date(reporte.updated_at).toLocaleString()}}<br></td>
+        <td>{{reporte.rate}} %   <br></td>
+        <td><a download target="_blank" :href="reporte.file" v-if="reporte.file"><img src="../assets/excel.png" alt="" width="50px !important"></a></td>
+    </tr> 
         </table>
     </div>
 </div>
 </div>
-
 
 
     </div>
@@ -318,9 +333,9 @@ box-shadow:  10px 10px 30px #d0d0d0,
     transform: translate(-50%, 0);
 }
 .answer {
-    text-align: center;
+    text-align: left;
     padding-top: 5%;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
 }
  .lk h2{
@@ -350,14 +365,17 @@ box-shadow:  10px 10px 30px #d0d0d0,
 <script>
 import {mapState} from "vuex";
 import api from "@/api/report"
+import wagonModal from '@/components/modalReport/modal.vue'
 
 export default{
 name: 'report',
+components: {wagonModal},
+
 computed: {
-...mapState({
-    user: state => state.auth.user,
-    uid: state => state.auth.uid
-})
+    ...mapState({
+        user: state => state.auth.user,
+        uid: state => state.auth.uid
+    })
     },
 data(){
     return{
@@ -369,19 +387,23 @@ data(){
         'answer5': [],
         'answer6': [],
         btnName : 'Создать отчет по KPI сотрудника',
+        downloadReport: 'Загрузить отчеты',
         'admin': [],
         'reports_creator': [],
-        'reports_employee': []
+        'reports_employee': [],
+        showReportModal: false,
+        loaderReport: false,
+        OnceReport: null
 
     }
 },
 mounted(){
-document.getElementById('loading-page-lk').style.display = 'block'
+this.loaderReport = true
 // api.getUsers()
 const pretoken = JSON.parse(localStorage.getItem("vuex"))
 const token = pretoken.auth.user.token
 const preid = JSON.parse(localStorage.getItem('vuex'))
-    const id = preid.auth.uid
+const id = preid.auth.uid
 fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
     headers: {
         'Authorization': `Basic ${token}` 
@@ -422,7 +444,7 @@ fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
 
     }
 }),     
-fetch('http://10.1.5.65/api/personal/users/?page_size=200', {
+fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
     headers: {
         'Authorization': `Basic ${token}` 
     },
@@ -432,7 +454,8 @@ fetch('http://10.1.5.65/api/personal/users/?page_size=200', {
             if (response.ok){
                 return response.json().then(r=>{
                     this.staff = r.data;
-                    document.getElementById('loading-page-lk').style.display = 'none'
+                    this.loaderReport = false
+                    // document.getElementById('loading-page-lk').style.display = 'none'
                     // console.log(this.staff)
             })
         }
@@ -468,7 +491,7 @@ method: 'GET'
     if (response.ok){
         return response.json().then(r=>{
             this.all_reports = r.data;
-            document.getElementById('loading-page-report').style.display = 'none'
+            // document.getElementById('loading-page-report').style.display = 'none'
             console.log(this.all_reports)
     })
 }
@@ -477,7 +500,8 @@ method: 'GET'
         document.getElementById('loading-page-report').style.display = 'none'
 
     }
-})    
+})
+
 },
 methods: { 
  Not(){
@@ -501,13 +525,29 @@ else {
 OpenReport(){
     if (document.getElementById("tables").style.display == 'block') { 
         document.getElementById("tables").style.display = "none";
+        this.downloadReport = 'Загрузить отчеты'
     }
     else {
         document.getElementById("tables").style.display = "block";
+        this.downloadReport = 'Скрыть отчеты'
         }
 
  },
+OpenChangeReport(id) {
+    this.loaderReport = true
+    api.getReportById(id)
+    .then(response => {
+        this.showReportModal = true
+        this.loaderReport = false
+        this.OnceReport = response.data
+    })
     
+},
+ 
+closeChangeReport(){
+    this.showReportModal = false
+},
+
  Send(){
     event.preventDefault()
     const pretoken = JSON.parse(localStorage.getItem("vuex"))

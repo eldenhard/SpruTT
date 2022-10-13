@@ -3,13 +3,32 @@
     <h2>Личный кабинет</h2>
 <br><br>
     <div class="contact-information">
-    <h4>Контактная информация</h4>
+
+    <h4><span style="border-bottom: 2px solid #EC2332">Контактная информация</span></h4>
+
     <br>
     <p class="contact-var"> <span class="contact-header">ФИО: </span>{{PersonalData.last_name}} {{PersonalData.first_name}} {{PersonalData.middle_name}}</p>
     <p class="contact-var"><span class="contact-header">Должность: </span>{{PersonalData.post}}</p>
-    <p class="contact-var"> <span class="contact-header">Отдел: </span>{{PersonalData.groups}}</p>
+    <p class="contact-var" v-for="group in PersonalData.groups" :key="group.id">
+         <span class="contact-header" >Отдел: </span>{{group}}</p>
     <!-- <p class="contact-var"> <span class="contact-header">Начальник: </span>{{PersonalData.manager}}</p> -->
     <p class="contact-var"><span class="contact-header">Почта: </span>{{PersonalData.email}}</p>
+    <h4><span style="border-bottom: 2px solid #EC2332">Сотрудники в подчинении</span></h4>
+    <br>
+    <table style="width: 50%">
+        <tr>
+            <td style="font-weight: bold">ФИО</td>
+            <td style="font-weight: bold">Должность</td>
+            <td style="font-weight: bold">Почта</td>
+        </tr>
+        <tr  v-for="em in emp" :key="em.id">
+            <td>{{em.last_name}} {{em.first_name}} {{em.middle_name}}</td>
+            <td>{{em.post}}</td>
+            <td>{{em.email}}</td>
+        </tr>
+    </table>
+    
+
 
     </div>
 
@@ -65,6 +84,13 @@
 
 </section>
 
+
+<!-- <footer style="margin-top: 10%; ">
+    <div style="width: 100%; height: 300px;  position: relative;text-align: center;color: white;">
+    <img src="../assets/Train.jpg" style="object-fit: cover; width: 100%; height: 100%; filter: grayscale(0.9); ">
+    <img src="../assets/photo.png" alt="" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+</div>
+</footer> -->
 </div>
 </template>
 
@@ -79,8 +105,9 @@ export default {
     },
     data(){
         return{
-            'id': [],
-            PersonalData: ''
+            id: [],
+            PersonalData: '',
+            emp: ''
         }
     },
 mounted(){
@@ -127,12 +154,35 @@ mounted(){
            }
            else{
                console.log('NOT OK')
+            //    document.getElementById('loading-page-report').style.display = 'none'
+               document.getElementById('notifications-2').style.display = 'block'
+               setTimeout(this.Notif, 2500)
+
+           }
+       }),
+
+fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
+    headers: {
+        'Authorization': `Basic ${token}` 
+    },
+    method: 'GET'
+    })
+    .then((response) => {
+                if (response.ok){
+                    return response.json().then(r=>{
+                        this.emp = r.data;
+                        document.getElementById('loading-page-report').style.display = 'none'
+                        console.log(this.emp)
+               })
+           }
+           else{
+               console.log('NOT OK')
                document.getElementById('loading-page-report').style.display = 'none'
                document.getElementById('notifications-2').style.display = 'block'
                setTimeout(this.Notif, 2500)
 
            }
-       })
+       })       
     },
     methods: {
         Notif(){

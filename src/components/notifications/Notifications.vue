@@ -80,7 +80,7 @@ export default{
     margin: 50px;
     position: fixed;
     top: 0;
-    z-index: 1060;
+    z-index: 9999999999999 !important;
   }
   .wrapper-error .card {
     width: 100%;

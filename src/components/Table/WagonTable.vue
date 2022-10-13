@@ -8,7 +8,7 @@
 <br><br>
 <div style="display: flex; width: 30%; height: 30px;">
     <br>
-        <input type="number" v-model="numberWagon" placeholder="найти вагон">
+        <input type="number" v-model="numberWagon" placeholder="найти вагон" id="searchWagonPlace">
         <button @click="searchWagon()" style="width: 20%; display: flex; align-items: center; justify-content: center;">поиск</button>
     </div>
     <div class="table1" style="display: flex;">
@@ -586,6 +586,7 @@ export default{
                 .then((response) => {
                     this.WagonsModel = response.data.data;
                     document.getElementById("loading-page-lk").style.display = "none";
+                    document.getElementById("searchWagonPlace").reset();
             }).catch(err => {
                 console.log(err)
             });
