@@ -552,7 +552,8 @@ closeChangeReport(){
     event.preventDefault()
     const pretoken = JSON.parse(localStorage.getItem("vuex"))
     const token = pretoken.auth.user.token
-    document.getElementById('loading-page-lk').style.display = 'block'
+    this.loaderReport = true
+    // document.getElementById('loading-page-lk').style.display = 'block'
    let admin = document.getElementById('admin').value.split(' ')[0] 
    let staff = document.getElementById('staff').value.split(' ')[0] 
    fetch('http://10.1.5.65/api/reports/kpi/create/', {
@@ -576,7 +577,8 @@ closeChangeReport(){
     if (response.ok){
         return response.json().then((data)=>{
             console.log(data);
-            document.getElementById('loading-page-lk').style.display = 'none';
+            this.loaderReport = false
+
             document.getElementById('notifications').style.display = 'block';
             setTimeout(this.Not, 1500);
             document.getElementById("Anketa").reset();
