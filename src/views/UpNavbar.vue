@@ -37,11 +37,6 @@
 import {actionTypes} from '@/store/modules/auth'
 export default {
   name: 'UpNavbar',
-  data(){
-    return{
-      isDisabled
-    }
-  },
   methods: {
     logout() {
       //this.$store.commit('setUser', {})
