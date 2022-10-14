@@ -377,6 +377,9 @@ box-shadow:  10px 10px 30px #d0d0d0,
         transform: translate(-50%,0);
     }
      .tablesRep {
+        position: relative;
+        left: 50%;
+        transform: translate(-50%,0);
         width: 80%;
         overflow-x: auto !important;
    
