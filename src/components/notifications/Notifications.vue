@@ -70,12 +70,7 @@ export default{
   .wrapper-success .card .subject p {
     color: #909092;
   }  
-  @media screen and (max-width:550px) {
-      .wrapper-success {
-         width: 90%; 
-         margin-left: 5%;
-      }
-  } 
+
   .wrapper-error {
     margin: 50px;
     position: fixed;
@@ -104,9 +99,21 @@ export default{
   }  
   @media screen and (max-width:550px) {
       .wrapper-error {
-         width: 90%; 
-         margin-left: 5%;
+         width: 70%; 
+         position: relative;
+         left: 50%;
+         transform: translate(-50%,0);
+         margin: 0 !important;
+
+      }
+      .wrapper-success {
+         width: 70%; 
+         position: relative;
+         left: 50%;
+         transform: translate(-50%,0);
+         margin: 0 !important;
       }
   } 
+
 
 </style>

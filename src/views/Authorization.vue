@@ -1,7 +1,7 @@
 <template>
     <div>
   <div id="id01" class="modal" v-if="showAuthForm" style="display: block;">
-    <div class="modal-content animate" style=" width: 40%;">
+    <div class="modal-content animate" style=" width: 60%;">
       <div class="container">
         <label for="uname"><b>Email</b></label>
         <input type="text" placeholder="i.ivanov@tehtrans.com" v-model="email">
@@ -13,7 +13,8 @@
       </div>
     </div>
     
-  </div><Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"/>
+  </div>
+  <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"/>
 </div>
 </template>
 
@@ -234,5 +235,10 @@ span.psw {
     .cancelbtn {
        width: 100%;
     }
+}
+@media screen and (max-width: 550px){
+   .modal-content .modal {
+    width: 90% !important;
+   } 
 }
 </style>

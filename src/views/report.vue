@@ -200,9 +200,9 @@
 <button class="button Action" @click="OpenReport()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{downloadReport}}</button>
 
 <div style="display:none" id="tables">
-    <div class="row tablesRep" style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%; width: 100%;">
+    <div class="row" style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%; width: 100%;">
 <div class="col-md-6 tablesRep">
-        <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 90%;" class="tablesRep">
+        <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 90%; " >
     <tr>
         <td colspan="8"><h5>Созданные Вами отчеты</h5></td>
     </tr>
@@ -232,7 +232,7 @@
 </table>  
 </div>
     <div class="col-md-6 tablesRep">
-        <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 100%;" class="tablesRep">
+        <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 90%;  overflow-x: auto;" >
 <tr>
     <td colspan="6"><h5>Созданные на Вас отчеты</h5></td>
 </tr>
@@ -268,6 +268,7 @@
     left: 50%;
     transform: translate(-50%, 0);
     width: 90%;
+
 }
 #loading-page-lk {
   width: 100vw;
@@ -375,11 +376,10 @@ box-shadow:  10px 10px 30px #d0d0d0,
         left: 50%;
         transform: translate(-50%,0);
     }
-    #tables, .tablesRep {
-        max-width: 90% !important;
-        position: relative;
-        left: 50%;
-        transform: translate(-50%,0);
+     .tablesRep {
+        width: 80%;
+        overflow-x: auto !important;
+   
     }
 }
 </style>
