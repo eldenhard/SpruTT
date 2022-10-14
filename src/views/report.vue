@@ -415,7 +415,7 @@ fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
         return response.json().then(r=>{
             this.reports_creator = r.data;
             // document.getElementById('loading-page-report').style.display = 'none'
-            console.log(this.reports_creator)
+            // console.log(this.reports_creator)
     })
 }
     else{
@@ -435,7 +435,7 @@ fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
         return response.json().then(r=>{
             this.reports_employee = r.data;
             // document.getElementById('loading-page-report').style.display = 'none'
-            console.log(this.reports_employee)
+            // console.log(this.reports_employee)
     })
 }
     else{
@@ -492,7 +492,7 @@ method: 'GET'
         return response.json().then(r=>{
             this.all_reports = r.data;
             // document.getElementById('loading-page-report').style.display = 'none'
-            console.log(this.all_reports)
+            // console.log(this.all_reports)
     })
 }
     else{
@@ -526,12 +526,55 @@ OpenReport(){
     if (document.getElementById("tables").style.display == 'block') { 
         document.getElementById("tables").style.display = "none";
         this.downloadReport = 'Загрузить отчеты'
+
     }
     else {
         document.getElementById("tables").style.display = "block";
         this.downloadReport = 'Скрыть отчеты'
         }
+this.loaderReport = true
+const pretoken = JSON.parse(localStorage.getItem("vuex"))
+const token = pretoken.auth.user.token
+const preid = JSON.parse(localStorage.getItem('vuex'))
+const id = preid.auth.uid
+fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
+    headers: {
+        'Authorization': `Basic ${token}` 
+    },
+    method: 'GET'
+    })
+    .then((response) => {
+    if (response.ok){
+        return response.json().then(r=>{
+            this.reports_creator = r.data;
+    })
+}
+    else{
+        console.log('NOT OK')
 
+    }
+}),
+fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
+    headers: {
+        'Authorization': `Basic ${token}` 
+    },
+    method: 'GET'
+    })
+    .then((response) => {
+    if (response.ok){
+        return response.json().then(r=>{
+            this.reports_employee = r.data;
+            this.loaderReport = false
+            // document.getElementById('loading-page-report').style.display = 'none'
+            // console.log(this.reports_employee)
+    })
+}
+    else{
+        console.log('NOT OK')
+        // document.getElementById('loading-page-report').style.display = 'none'
+
+    }
+})    
  },
 OpenChangeReport(id) {
     this.loaderReport = true
@@ -576,7 +619,7 @@ closeChangeReport(){
   .then((response) => {
     if (response.ok){
         return response.json().then((data)=>{
-            console.log(data);
+            // console.log(data);
             this.loaderReport = false
 
             document.getElementById('notifications').style.display = 'block';
