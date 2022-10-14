@@ -3,20 +3,22 @@
     <div>
         <div id="navbarMain">
             <ul class="navbarul">
-                <li class="navbarList">
-                    <div @click="newTab('Дислокация')">
+                <li class="navbarList" style="filter:brightness(0.8)">
+                    <div>
+                    <!-- <div @click="newTab('Дислокация')"> -->
                         <img src="@/assets/map.png" class="image">
                     </div>
-                    <b-dropdown text="Дислокация" style="width: 100%">
+                    <b-dropdown text="Дислокация" style="width: 100%" disabled>
                         <b-dropdown-item @click="newTab('Дислокация-таблица')" >дислокация 1</b-dropdown-item>
                     </b-dropdown>
                 </li>
   
-                <li class="navbarList" >
-                    <div @click="newTab('Рейсы')">
+                <li class="navbarList" style="filter:brightness(0.8)">
+                    <!-- <div @click="newTab('Рейсы')"> -->
+                        <div>
                         <img src="@/assets/flight.png" class="image">
                     </div>
-                    <b-dropdown text="Рейсы" style="width: 100%">
+                    <b-dropdown text="Рейсы" style="width: 100%" disabled>
                         <b-dropdown-item @click="newTab('Рейсы-таблица')">Рейсы 1</b-dropdown-item>
                     </b-dropdown>
                 </li>
@@ -26,15 +28,16 @@
                         <img src="@/assets/wagon.png" class="image">
                     </div>
                     <b-dropdown  text="Вагоны" style="width: 100%">
-                        <b-dropdown-item @click="newTab('Полигоны')">По полигонам</b-dropdown-item>
+                        <!-- <b-dropdown-item @click="newTab('Полигоны')">По полигонам</b-dropdown-item> -->
                     </b-dropdown>
                 </li>
   
-                <li class="navbarList" >
-                    <div @click="newTab('Отчеты')">
+                <li class="navbarList" style="filter:brightness(0.8)">
+                    <div>
+                    <!-- <div @click="newTab('Отчеты')"> -->
                         <img src="@/assets/report.png" class="image">
                     </div>
-                    <b-dropdown text="Отчеты" style="width: 100%">
+                    <b-dropdown text="Отчеты" style="width: 100%" disabled>
                         <b-dropdown-item @click="newTab('Отчеты-таблица')">Отчеты 1</b-dropdown-item>
                         <b-dropdown-item @click="newTab('Брошенные вагоны')">БРОС. вагоны</b-dropdown-item>
                         <b-dropdown-item @click="newTab('Брошенные вагоны')">План факт. по дог.</b-dropdown-item>

@@ -3,20 +3,26 @@
 
 <FilterWagon @updateFilters="updateFilters"></FilterWagon>
 
-<button class="button Accept" style="width: 93%; height: 40px; position: relative;
-left: 50%; transform: translate(-50%,0);" @click="Wagon()">Запросить данные</button>
+<button class="button Accept" style="width: 93%; height: 40px; position: relative; left: 50%; transform: translate(-50%,0);" @click="Wagon()">Запросить данные</button>
 
 
-    <div class="searchWagon">
+    <div class="searchWagon" style="
+    display: flex;
+    width: 30%;
+    height: 30px;
+    margin-bottom: 10px;
+    margin-top: 1%;
+    margin-left: 1%;">
         <input type="number" v-model="numberWagon" placeholder="введите номер вагона" id="searchWagonPlace">
         <button @click="searchWagon()" style="width: 20%; display: flex; align-items: center; justify-content: center;">поиск</button>
     </div>
    
-    <p class="amount">всего: {{amount}}</p>
-    
+
+
+
+<p class="amount">всего: {{amount}}</p>
 <div class="table1" style="display: flex;">
 <table style="margin-top: -0.1px;">
-
 
     <thead>
     <tr>
@@ -40,12 +46,8 @@ left: 50%; transform: translate(-50%,0);" @click="Wagon()">Запросить д
         
     </tr>
 
-    
     </tbody>
-    <div style="display: flex; position: relative; margin-top: 10%; height: 50px;" id="pagination">
-<button class="button Cancel" v-if="prevLink" @click="goToPage(prevLink)"> << </button>
-<button class="button Cancel" v-if="nextLink" @click="goToPage(nextLink)"> >> </button>
-</div>
+ 
 </table>
 
 
@@ -389,7 +391,18 @@ left: 50%; transform: translate(-50%,0);" @click="Wagon()">Запросить д
   </path>
 </svg>
   
-  </section>
+ 
+</section>
+ 
+<div style="display: flex; position: relative; left: 50%; transform: translate(-50%,0); margin-top: 1%; height: 50px; width: 100%" id="pagination">
+<div class="row" style="display: flex; position: relative; left: 10%; transform: translate(-10%,0);">
+    <div class="col-md-6"><button style="float: left" class="button Cancel" v-if="prevLink" @click="goToPage(prevLink)"> << </button>
+</div>
+    <div class="col-md-6"><button style="float: right; margin-left: 20%;" class="button Cancel" v-if="nextLink" @click="goToPage(nextLink)"> >> </button>
+</div>
+
+</div>
+    </div>
 
 </div>
 </template>
@@ -407,7 +420,6 @@ left: 50%; transform: translate(-50%,0);" @click="Wagon()">Запросить д
     height: 30px;
     margin-bottom: 10px;
     margin-top: 1%;
-    margin-top: 5%;
     margin-left: 1%;
 
 
