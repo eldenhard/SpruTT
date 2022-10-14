@@ -224,7 +224,23 @@
     margin-left: 5%;
     text-align: justify;
 }
-
+@media screen and (max-width: 550px) {
+    .btn_group_report {
+        position: relative !important;
+        left: 50% !important;
+        transform: translate(-50%, 0) !important;
+        margin-left: -30%;
+        width: 60% !important;
+    }
+    .apply_report {
+        margin-top: 2%;
+        width: 300px !important;
+    }
+    .close_report {
+        margin-top: 2%;
+        width: 300px !important;
+    }
+}
 </style>
 
 
