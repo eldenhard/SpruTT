@@ -3,48 +3,50 @@
 
 <FilterWagon @updateFilters="updateFilters"></FilterWagon>
 
-<button class="button Accept" style="width: 20%; height: 60px;" @click="Wagon()">Запросить данные</button>
+<button class="button Accept" style="width: 93%; height: 40px; position: relative;
+left: 50%; transform: translate(-50%,0);" @click="Wagon()">Запросить данные</button>
 
-<br><br>
-<div style="display: flex; width: 30%; height: 30px;">
-    <br>
-        <input type="number" v-model="numberWagon" placeholder="найти вагон" id="searchWagonPlace">
+
+    <div class="searchWagon">
+        <input type="number" v-model="numberWagon" placeholder="введите номер вагона" id="searchWagonPlace">
         <button @click="searchWagon()" style="width: 20%; display: flex; align-items: center; justify-content: center;">поиск</button>
     </div>
-    <div class="table1" style="display: flex;">
-    <table style="margin-top: -0.1px;">
+   
+    <p class="amount">всего: {{amount}}</p>
+    
+<div class="table1" style="display: flex;">
+<table style="margin-top: -0.1px;">
 
 
+    <thead>
+    <tr>
+        <th>{{WagonModel.number}}</th>
+        <th> {{WagonModel.is_problem}}</th>
+        <th>{{WagonModel.volume}}</th>
+        <th>{{WagonModel.type}}</th>
+        <th>Актуальность</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- v-for="wagon in WagonsModel" :key="wagon.id" -->
+    <tr v-for="wagon in WagonsModel" :key="wagon.id" @click="getMoreData(wagon.number)">
+        <td>{{wagon.number}}</td>
+        <td v-if="wagon.is_problem == false">нет</td>
+        <td v-else>да</td>
+        <td>{{wagon.volume}}</td>
+        <td>{{wagon.wagon_type}}</td>
+        <td v-if="wagon.is_active == true">☑️</td>
+        <td v-else>🚫</td>
+        
+    </tr>
 
-      <thead>
-        <tr>
-          <th>{{WagonModel.number}}</th>
-          <th> {{WagonModel.is_problem}}</th>
-          <th>{{WagonModel.volume}}</th>
-          <th>{{WagonModel.type}}</th>
-          <th>Актуальность</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- v-for="wagon in WagonsModel" :key="wagon.id" -->
-        <tr v-for="wagon in WagonsModel" :key="wagon.id" @click="getMoreData(wagon.number)">
-          <td>{{wagon.number}}</td>
-          <td v-if="wagon.is_problem == false">нет</td>
-          <td v-else>да</td>
-          <td>{{wagon.volume}}</td>
-          <td>{{wagon.wagon_type}}</td>
-          <td v-if="wagon.is_active == true">☑️</td>
-          <td v-else>🚫</td>
-          
-       </tr>
-
-       
-      </tbody>
-      <div style="display: flex; position: relative; margin-top: 10%; height: 50px;">
-    <button v-if="prevLink" @click="goToPage(prevLink)"> << </button>
-    <button v-if="nextLink" @click="goToPage(nextLink)"> >> </button>
+    
+    </tbody>
+    <div style="display: flex; position: relative; margin-top: 10%; height: 50px;" id="pagination">
+<button class="button Cancel" v-if="prevLink" @click="goToPage(prevLink)"> << </button>
+<button class="button Cancel" v-if="nextLink" @click="goToPage(nextLink)"> >> </button>
 </div>
-    </table>
+</table>
 
 
 
@@ -111,7 +113,7 @@
                             <td>{{wagonpasport.next_plan_repair_kind}}</td>
                             <td>{{wagonpasport.build_date}}</td>
                             <td>{{wagonpasport.lifetime}}</td>
-                            <th>{{wagonpasport.wagon}}</th>
+                            <th style="font-weight: normal">{{wagonpasport.wagon}}</th>
                         </tr>
                         </tbody>
                     </table>
@@ -392,7 +394,25 @@
 </div>
 </template>
     
+<style>
+.amount {
+    color: grey;
+    margin-bottom: -0.1%;
+    padding-left: 1%;
 
+}
+.searchWagon {
+    display: flex;
+    width: 30%;
+    height: 30px;
+    margin-bottom: 10px;
+    margin-top: 1%;
+    margin-top: 5%;
+    margin-left: 1%;
+
+
+}
+</style>
 
     
 <script>
@@ -416,6 +436,7 @@ export default{
             activeWagonId: null,
             filters:null,
             numberWagon: null,
+            amount: null,
             // checked: [],
             WagonModel: {
                 number: "Номер вагона",
@@ -448,8 +469,8 @@ export default{
                 owner: "Собственник",
                 in_company_control: "В управлении",
                 wagon_source_company: "Источник поступления вагона, организация",
-                event_name: "",
-                agreement: "",
+                event_name: "Событие",
+                agreement: "Соглашение",
                 created_at: "Дата создания",
                 description: "Описание",
                 wagon: "Вагон"
@@ -547,6 +568,7 @@ export default{
                     this.WagonsModel = response.data.data;
                     this.nextLink = response.data.links.next
                     this.prevLink = response.data.links.previous
+                    this.amount = response.data.total_objects
                     document.getElementById("loading-page-lk").style.display = "none";
             }).catch(err => {
                 console.log(err)
@@ -584,10 +606,16 @@ export default{
         searchWagon(){
             document.getElementById("loading-page-lk").style.display = "block";
                 api.getCurrentWagon(this.numberWagon)
+
                 .then((response) => {
                     this.WagonsModel = response.data.data;
+                    this.amount = response.data.total_objects
+                    this.passport(this.numberWagon)
+                    this.belong(this.numberWagon)
+
+                    document.getElementById('pagination').style.display = 'hidden'
                     document.getElementById("loading-page-lk").style.display = "none";
-                    document.getElementById("searchWagonPlace").reset();
+                    document.getElementById("searchWagonPlace").value = '';
             }).catch(err => {
                 console.log(err)
             });

@@ -3,14 +3,15 @@
     <div id="navbar">
       <ul class="UpNavList">
         <li class="UpNavList-item disabled">
-          <router-link  to="/home" class="disabled" style="color: grey;">Справочники</router-link>
+          <router-link  to="/home" class="disabled"  style="color: grey;">Справочники</router-link>
         </li>
-        <li class="UpNavList-item disabled">
-          <router-link to="/wagonpark" class="disabled"  style="color: grey;"> Вагонный парк</router-link>
+        <li class="UpNavList-item ">
+          <router-link to="/wagonpark"> Вагонный парк</router-link>
         </li>
         <li class="UpNavList-item disabled">
           <router-link to="/bookkeeping" class="disabled"  style="color: grey;">Бухгалтерия</router-link>
         </li>
+        <!-- class="disabled"  style="color: grey;" -->
         <!-- <li class="UpNavList-item">
           <router-link to="#">Документооборот</router-link>
         </li> -->

@@ -21,11 +21,17 @@ const getCurrentWagon = (numberWagon) => {
     return api.get(`${resource}/wagons`+ `?number=${numberWagon}`)
 }
 
+// получить вагоны для селекта в фильтре 
+const getWagonType = () => {
+    return api.get(`${resource}/wagon-type`)
+}
+
 export default {
     getWagons,
     getPassport,
     getArenda,
     getBelong,
-    getCurrentWagon
+    getCurrentWagon,
+    getWagonType
 
 }
