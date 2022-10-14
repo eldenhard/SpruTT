@@ -86,6 +86,7 @@
                 <table>
                         <thead>
                         <tr>
+                            <th>{{WagonPassportModel.document}}</th>
                             <th>{{WagonPassportModel.next_planed_repair_date}}</th>
                             <th>{{WagonPassportModel.last_planed_repair_date}}</th>
                             <th>{{WagonPassportModel.capacity}}</th>
@@ -95,12 +96,13 @@
                             <th>{{WagonPassportModel.build_date}}</th>
                             <th>{{WagonPassportModel.lifetime}}</th>
                             <th>{{WagonPassportModel.wagon}}</th>
-                            <th>{{WagonPassportModel.document}}</th>
+                          
                             
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="wagonpasport in WagonsPassportModel" :key="wagonpasport.id">
+                            <td><a target="_blank" :href="wagonpasport.document" v-if="wagonpasport.document"><img src="@/assets/pdf.png" alt="" width="50px!important"></a></td>
                             <td>{{wagonpasport.next_planed_repair_date}}</td>
                             <td>{{wagonpasport.last_planed_repair_date}}</td>
                             <td>{{wagonpasport.capacity}}</td>
@@ -110,7 +112,6 @@
                             <td>{{wagonpasport.build_date}}</td>
                             <td>{{wagonpasport.lifetime}}</td>
                             <th>{{wagonpasport.wagon}}</th>
-                            <td><a target="_blank" :href="wagonpasport.document" v-if="wagonpasport.document"><img src="@/assets/pdf.png" alt="" width="50px!important"></a></td>
                         </tr>
                         </tbody>
                     </table>

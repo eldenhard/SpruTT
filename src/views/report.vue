@@ -645,11 +645,9 @@ DeleteReport(id){
     api.deleteReport(id)
     .then((response) => {
         window.location.reload()
-        // this.WagonsBelongModel = response.data.data;
         this.loaderReport = false
-    
-            });
-}
+    });
+ }
 }
 
 }

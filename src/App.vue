@@ -2,7 +2,7 @@
   <div>
     <UpNavbar/>
     <router-view/>
-    <Authorization></Authorization>
+    <Authorization style="z-index: 999999999999999999999999999999999999999"></Authorization>
   </div>
 </template>
 
