@@ -13,10 +13,13 @@
     margin-bottom: 10px;
     margin-top: 1%;
     margin-left: 1%;">
-        <input type="number" v-model="numberWagon" placeholder="введите номер вагона" id="searchWagonPlace">
+    <form>
+        <input type="number" v-model="numberWagon" placeholder="введите номер вагона" id="searchWagonPlace" required>
         <button @click="searchWagon()" style="width: 20%; display: flex; align-items: center; justify-content: center;">поиск</button>
+    </form>
     </div>
-   
+   <br><br>
+   <br>
 
 
 

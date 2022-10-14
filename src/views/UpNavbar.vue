@@ -11,8 +11,8 @@
           <router-link  to="/home" style="color: grey; font-size: 15px;">Справочники</router-link>
         </b-nav-item>
 
-        <b-nav-item >
-          <router-link to="/wagonpark" style="color: black; text-decoration: none; font-size: 15px;"> Вагонный парк</router-link>
+        <b-nav-item disabled>
+          <router-link to="/wagonpark" style="color: grey; font-size: 15px;"> Вагонный парк</router-link>
         </b-nav-item>
 
         <b-nav-item disabled> 
