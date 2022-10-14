@@ -14,6 +14,11 @@ const getReportById = (id) => {
 const saveReport = (id, data) => {
     return api.put(`${reports}/kpi/update/` + `${id}`, data)
 }
+
+const deleteReport = (id) => {
+    return api.delete(`${reports}/kpi/delete/` + `${id}`)
+
+}
 // const postReport = () => {
 //     return.post(`${resource}/`)
 // }
@@ -21,5 +26,6 @@ const saveReport = (id, data) => {
 export default {
     getUsers,
     getReportById,
-    saveReport
+    saveReport,
+    deleteReport
 }

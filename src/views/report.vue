@@ -202,18 +202,19 @@
 <div style="display:none" id="tables">
     <div class="row" style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%; width: 100%;">
 <div class="col-md-6">
-        <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 100%;">
+        <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 90%;">
     <tr>
-        <td colspan="7"><h5>Созданные Вами отчеты</h5></td>
+        <td colspan="8"><h5>Созданные Вами отчеты</h5></td>
     </tr>
 <tr>
-    <td style="text-align:center; font-size: 15px;">Кто создал</td>
-    <td style="text-align:center; font-size: 15px;">На кого создано</td>
-    <td style="text-align:center; font-size: 15px;">Дата создания</td>
-    <td style="text-align:center; font-size: 15px;">Дата последнего изменения</td>
-    <td style="text-align:center; font-size: 15px;">Доплата</td>
-    <td style="text-align:center; font-size: 15px;">Файл</td>
-    <td style="text-align:center; font-size: 15px;">Действие</td>
+    <td style="text-align:center; font-size: 12px;">Кто создал</td>
+    <td style="text-align:center; font-size: 12px;">На кого создано</td>
+    <td style="text-align:center; font-size: 12px;">Дата создания</td>
+    <td style="text-align:center; font-size: 12px;">Дата последнего изменения</td>
+    <td style="text-align:center; font-size: 12px;">Доплата</td>
+    <td style="text-align:center; font-size: 12px;">Файл</td>
+    <td style="text-align:center; font-size: 12px;">Действие</td>
+    <td style="text-align:center; font-size: 12px;">Удалить</td>
 </tr>
 
 <tr v-for="reports in reports_creator" :key="reports.id" >
@@ -223,7 +224,9 @@
     <td>{{new Date(reports.updated_at).toLocaleString()}}<br> </td> 
     <td>{{reports.rate}} %<br></td> 
     <td><a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> </td> 
-    <td><button class="button Request" style="height: 40px; width: 100%; font-size:15px;" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
+    <td><button class="button Request" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
+    <td><button class="button Delete" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="DeleteReport(reports.id)">Удалить</button> </td> 
+
 </tr>
 
 </table>  
@@ -234,12 +237,12 @@
     <td colspan="6"><h5>Созданные на Вас отчеты</h5></td>
 </tr>
 <tr>
-    <td style="text-align:center; font-size: 15px;">Кто создал</td>
-    <td style="text-align:center; font-size: 15px;">На кого создано</td>
-    <td style="text-align:center; font-size: 15px;">Дата создания</td>
-    <td style="text-align:center; font-size: 15px;">Дата последнего изменения</td>
-    <td style="text-align:center; font-size: 15px;">Доплата</td>
-    <td style="text-align:center; font-size: 15px;">Файл</td>
+    <td style="text-align:center; font-size: 12px;">Кто создал</td>
+    <td style="text-align:center; font-size: 12px;">На кого создано</td>
+    <td style="text-align:center; font-size: 12px;">Дата создания</td>
+    <td style="text-align:center; font-size: 12px;">Дата последнего изменения</td>
+    <td style="text-align:center; font-size: 12px;">Доплата</td>
+    <td style="text-align:center; font-size: 12px;">Файл</td>
 </tr>
     <tr v-for="reporte in reports_employee" :key="reporte.id" >
         <td>{{reporte.creator.first_name}} {{reporte.creator.last_name}}<br></td>
@@ -636,7 +639,17 @@ closeChangeReport(){
 
     }
 })
- }
+ },
+DeleteReport(id){
+    this.loaderReport = true
+    api.deleteReport(id)
+    .then((response) => {
+        window.location.reload()
+        // this.WagonsBelongModel = response.data.data;
+        this.loaderReport = false
+    
+            });
+}
 }
 
 }
