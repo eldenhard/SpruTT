@@ -1,6 +1,54 @@
 <template>
   <div>
-    <div id="navbar">
+
+    <b-navbar toggleable="lg" type="light" style="background: #F8F9FA !important;">
+
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+    <b-collapse id="nav-collapse" is-nav>
+      <b-navbar-nav>
+        <b-nav-item disabled>
+          <router-link  to="/home" style="color: grey; font-size: 15px;">Справочники</router-link>
+        </b-nav-item>
+
+        <b-nav-item >
+          <router-link to="/wagonpark" style="color: black; text-decoration: none; font-size: 15px;"> Вагонный парк</router-link>
+        </b-nav-item>
+
+        <b-nav-item disabled> 
+          <router-link to="/bookkeeping"  style="color: grey; font-size: 15px;">Бухгалтерия</router-link>
+        </b-nav-item>
+
+        <b-nav-item disabled>
+          <router-link to="/presentation"  style="color: grey;font-size: 15px;">Презентации</router-link>
+        </b-nav-item>
+
+        <b-nav-item disabled>
+          <router-link to="/rates"  style="color: grey;font-size: 15px;">Ставки</router-link>
+        </b-nav-item>
+
+        <b-nav-item >
+          <router-link to="/lk"  style="color: black; text-decoration: none; font-size: 15px;">Личный кабинет</router-link>
+        </b-nav-item>
+
+        <b-nav-item>
+          <router-link to="/report"  style="color: black; text-decoration: none; font-size: 15px;">Отчеты</router-link>
+        </b-nav-item>
+
+        <!-- <b-nav-item>
+          <a href="/" @click="logout" style="color: black; text-decoration: none; font-size: 13px;">Выход</a>
+        </b-nav-item> -->
+        <li class="nav-item" style="padding-top: 1px">
+          <a class="nav-link" href="/" @click="logout" style="color: black; text-decoration: none; font-size: 15px;">Выход</a>
+        </li>
+      </b-navbar-nav>
+
+
+    </b-collapse>
+  </b-navbar>
+
+
+    <!-- <div id="navbar">
       <ul class="UpNavList">
         <li class="UpNavList-item disabled">
           <router-link  to="/home" class="disabled"  style="color: grey;">Справочники</router-link>
@@ -11,10 +59,6 @@
         <li class="UpNavList-item disabled">
           <router-link to="/bookkeeping" class="disabled"  style="color: grey;">Бухгалтерия</router-link>
         </li>
-        <!-- class="disabled"  style="color: grey;" -->
-        <!-- <li class="UpNavList-item">
-          <router-link to="#">Документооборот</router-link>
-        </li> -->
         <li class="UpNavList-item disabled" >
           <router-link to="/presentation" class="disabled"  style="color: grey;">Презентации</router-link>
         </li>
@@ -31,7 +75,7 @@
           <a href="/" @click="logout">Выход</a>
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -51,26 +95,32 @@ export default {
 <style scoped>
 .disabled{
   pointer-events: none;
-  background: #E4E4E4;
+  /* background: #E4E4E4; */
+  color: #E4E4E4;
+  background: #F8F9FA !important;
 }
-/* Выделение активной ссылки */
+a:hover{
+  color: rgb(73, 73, 73) !important;
+}
 a.router-link-active, li.router-link-active {
 border-bottom: 2px solid #EC2332;
-
-
+}
+a.router-link{
+  text-decoration: none;
+  border-bottom: none;
 }
 
-#navbar {
+/* #navbar {
   background: #e4e4e4;
   width: 100%;
   height: 3vh;
 
-}
+} */
 
 /* .UpNavList{
     height: 30px;
 } */
-ul.UpNavList li {
+/* ul.UpNavList li {
   color: rgb(0, 0, 0);
   display: inline;
 
@@ -98,6 +148,6 @@ ul.UpNavList li {
 .UpNavList-item a:hover {
   cursor: pointer;
   color: #ffffff;
-}
+} */
 
 </style>
