@@ -229,7 +229,7 @@
         position: relative !important;
         left: 50% !important;
         transform: translate(-50%, 0) !important;
-        margin-left: -30%;
+        margin-left: -25%;
         width: 60% !important;
     }
     .apply_report {
