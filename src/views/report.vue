@@ -221,8 +221,8 @@
                     <td>{{new Date(reports.updated_at).toLocaleString()}}<br> </td> 
                     <td>{{reports.rate}} %<br></td> 
                     <td><a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> </td> 
-                    <td><button class="button Request" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #2196F3 !important;" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
-                    <td><button class="button Delete" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #ED5E68 !important;" @click="DeleteReport(reports.id)">Удалить</button> </td> 
+                    <td><button class="button Request" style="height: 30px; width: 90%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #2196F3 !important;" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
+                    <td><button class="button Delete" style="height: 30px; width: 90%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #ED5E68 !important;" @click="DeleteReport(reports.id)">Удалить</button> </td> 
                 </tr>
             </table>  
     </div>
