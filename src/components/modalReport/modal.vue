@@ -236,10 +236,16 @@
         margin-top: 2%;
         width: 300px !important;
     }
+    .change_report input[type=radio]{
+        position: relative;
+        left: 50%;
+        transform: translate(-50%,0);
+    }
     .close_report {
         margin-top: 2%;
         width: 300px !important;
     }
+ 
 }
 </style>
 

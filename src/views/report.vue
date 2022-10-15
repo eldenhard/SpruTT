@@ -200,66 +200,70 @@
 <button class="button Action" @click="OpenReport()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{downloadReport}}</button>
 
 <div style="display:none" id="tables">
-    <div class="row" style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%; width: 100%;">
-<div class="col-md-6 tablesRep">
-        <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 100%; " >
-    <tr>
-        <td colspan="8"><h5>Созданные Вами отчеты</h5></td>
-    </tr>
-<tr>
-    <td style="text-align:center; font-size: 12px;">Кто создал</td>
-    <td style="text-align:center; font-size: 12px;">На кого создано</td>
-    <td style="text-align:center; font-size: 12px;">Дата создания</td>
-    <td style="text-align:center; font-size: 12px;">Дата последнего изменения</td>
-    <td style="text-align:center; font-size: 12px;">Доплата</td>
-    <td style="text-align:center; font-size: 12px;">Файл</td>
-    <td style="text-align:center; font-size: 12px;">Действие</td>
-    <td style="text-align:center; font-size: 12px;">Удалить</td>
-</tr>
+    <br>
+    <div class="row">
+        <div class="col-md-6 tablesRep">
+            <table class="tableRep">
+                <tr>
+                    <td colspan="8"><h5>Созданные Вами отчеты</h5></td>
+                </tr>
 
-<tr v-for="reports in reports_creator" :key="reports.id" >
-    <td>{{reports.creator.first_name}} {{reports.creator.last_name}} <br></td>
-    <td>{{reports.employee.first_name}}  {{reports.employee.last_name}}  <br></td> 
-    <td>{{new Date(reports.created_at).toLocaleString()}}<br> </td> 
-    <td>{{new Date(reports.updated_at).toLocaleString()}}<br> </td> 
-    <td>{{reports.rate}} %<br></td> 
-    <td><a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> </td> 
-    <td><button class="button Request" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
-    <td><button class="button Delete" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="DeleteReport(reports.id)">Удалить</button> </td> 
+                <tr>
+                    <td style="text-align:center; font-size: 12px;">Кто создал</td>
+                    <td style="text-align:center; font-size: 12px;">На кого создано</td>
+                    <td style="text-align:center; font-size: 12px;">Дата создания</td>
+                    <td style="text-align:center; font-size: 12px;">Дата последнего изменения</td>
+                    <td style="text-align:center; font-size: 12px;">Доплата</td>
+                    <td style="text-align:center; font-size: 12px;">Файл</td>
+                    <td style="text-align:center; font-size: 12px;">Действие</td>
+                    <td style="text-align:center; font-size: 12px;">Удалить</td>
+                </tr>
 
-</tr>
+                <tr v-for="reports in reports_creator" :key="reports.id" >
+                    <td>{{reports.creator.first_name}} {{reports.creator.last_name}} <br></td>
+                    <td>{{reports.employee.first_name}}  {{reports.employee.last_name}}  <br></td> 
+                    <td>{{new Date(reports.created_at).toLocaleString()}}<br> </td> 
+                    <td>{{new Date(reports.updated_at).toLocaleString()}}<br> </td> 
+                    <td>{{reports.rate}} %<br></td> 
+                    <td><a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> </td> 
+                    <td><button class="button Request" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
+                    <td><button class="button Delete" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="DeleteReport(reports.id)">Удалить</button> </td> 
+                </tr>
+            </table>  
+        </div>
 
-</table>  
-</div>
-    <div class="col-md-6 tablesRep">
-        <table style="position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; width: 100%;  overflow-x: auto;" >
-<tr>
-    <td colspan="6"><h5>Созданные на Вас отчеты</h5></td>
-</tr>
-<tr>
-    <td style="text-align:center; font-size: 12px;">Кто создал</td>
-    <td style="text-align:center; font-size: 12px;">На кого создано</td>
-    <td style="text-align:center; font-size: 12px;">Дата создания</td>
-    <td style="text-align:center; font-size: 12px;">Дата последнего изменения</td>
-    <td style="text-align:center; font-size: 12px;">Доплата</td>
-    <td style="text-align:center; font-size: 12px;">Файл</td>
-</tr>
-    <tr v-for="reporte in reports_employee" :key="reporte.id" >
-        <td>{{reporte.creator.first_name}} {{reporte.creator.last_name}}<br></td>
-        <td>{{reporte.employee.first_name}} {{reporte.employee.last_name}} <br></td>
-        <td>{{new Date(reporte.created_at).toLocaleString()}}<br></td>
-        <td>{{new Date(reporte.updated_at).toLocaleString()}}<br></td>
-        <td>{{reporte.rate}} %   <br></td>
-        <td><a download target="_blank" :href="reporte.file" v-if="reporte.file"><img src="../assets/excel.png" alt="" width="50px !important"></a></td>
-    </tr> 
-        </table>
+        <br><br>
+
+        <div class="col-md-6 tablesRep2">
+            <table class="tableRep">
+                <tr>
+                    <td colspan="6"><h5>Созданные на Вас отчеты</h5></td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center; font-size: 12px;">Кто создал</td>
+                    <td style="text-align:center; font-size: 12px;">На кого создано</td>
+                    <td style="text-align:center; font-size: 12px;">Дата создания</td>
+                    <td style="text-align:center; font-size: 12px;">Дата последнего изменения</td>
+                    <td style="text-align:center; font-size: 12px;">Доплата</td>
+                    <td style="text-align:center; font-size: 12px;">Файл</td>
+                </tr>
+
+                <tr v-for="reporte in reports_employee" :key="reporte.id" >
+                    <td>{{reporte.creator.first_name}} {{reporte.creator.last_name}}<br></td>
+                    <td>{{reporte.employee.first_name}} {{reporte.employee.last_name}} <br></td>
+                    <td>{{new Date(reporte.created_at).toLocaleString()}}<br></td>
+                    <td>{{new Date(reporte.updated_at).toLocaleString()}}<br></td>
+                    <td>{{reporte.rate}} %   <br></td>
+                    <td><a download target="_blank" :href="reporte.file" v-if="reporte.file"><img src="../assets/excel.png" alt="" width="50px !important"></a></td>
+                </tr> 
+            </table>
+        </div>
     </div>
-</div>
 </div>
 <br><br>
 
-
-    </div>
+</div>
 </template>
 
 <style>
@@ -364,6 +368,19 @@ box-shadow:  10px 10px 30px #d0d0d0,
 .block-answer h2{
     text-align: center;
 }
+.tablesRep {
+    width: 100%;
+}
+.tablesRep2{
+    width: 100%;
+}
+.tableRep {
+    position: relative;
+     left: 50%;
+      transform: translate(-50%,0);
+       font-size: 17px;
+        width: 100%; 
+}
 @media screen and (max-width: 550px){
     .Action{
         width: 90% !important;
@@ -376,14 +393,34 @@ box-shadow:  10px 10px 30px #d0d0d0,
         left: 50%;
         transform: translate(-50%,0);
     }
-     .tablesRep {
-        position: relative;
+
+    .tablesRep {
+        width: 100% !important;
+        margin: 0 !important;
+        overflow-x: auto;
+        position: absolute;
         left: 50%;
         transform: translate(-50%,0);
-        width: 100%;
-        overflow-x: auto !important;
-   
+        font-size: 9px;
     }
+    .tablesRep2 {
+        width: 100% !important;
+        margin: 0 !important;
+        overflow-x: auto;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%,0);
+        font-size: 9px;
+        margin-top: 5% !important;
+    }
+    .tableRep {
+    position: relative;
+     left:0;
+      transform: translate(0%,0);
+       font-size: 12px;
+        /* width: 100%;  */
+}
+
 }
 </style>
 
