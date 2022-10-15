@@ -420,10 +420,9 @@ box-shadow:  10px 10px 30px #d0d0d0,
     }
     .tableRep {
     position: relative;
-     left:0;
-      transform: translate(0%,0);
-       font-size: 12px;
-        /* width: 100%;  */
+    left:0;
+    transform: translate(0%,0);
+    font-size: 12px;
 }
 .PK {
     display: none;
@@ -434,7 +433,9 @@ box-shadow:  10px 10px 30px #d0d0d0,
     text-align: center !important;
     margin-top: 5% !important;
 }
-
+#tables {
+    display: none;
+}
 }
 </style>
 

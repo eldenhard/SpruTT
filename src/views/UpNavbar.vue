@@ -8,23 +8,23 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item disabled>
-          <router-link  to="/home" style="color: grey; font-size: 15px;">Справочники</router-link>
+          <router-link  to="/home" style="color: grey; font-size: 15px; text-decoration: none;">Справочники</router-link>
         </b-nav-item>
 
         <b-nav-item disabled>
-          <router-link to="/wagonpark" style="color: grey; font-size: 15px;"> Вагонный парк</router-link>
+          <router-link to="/wagonpark" style="color: grey; font-size: 15px; text-decoration: none;"> Вагонный парк</router-link>
         </b-nav-item>
 
         <b-nav-item disabled> 
-          <router-link to="/bookkeeping"  style="color: grey; font-size: 15px;">Бухгалтерия</router-link>
+          <router-link to="/bookkeeping"  style="color: grey; font-size: 15px; text-decoration: none;">Бухгалтерия</router-link>
         </b-nav-item>
 
         <b-nav-item disabled>
-          <router-link to="/presentation"  style="color: grey;font-size: 15px;">Презентации</router-link>
+          <router-link to="/presentation"  style="color: grey;font-size: 15px; text-decoration: none;">Презентации</router-link>
         </b-nav-item>
 
         <b-nav-item disabled>
-          <router-link to="/rates"  style="color: grey;font-size: 15px;">Ставки</router-link>
+          <router-link to="/rates"  style="color: grey;font-size: 15px; text-decoration: none;">Ставки</router-link>
         </b-nav-item>
 
         <b-nav-item >
