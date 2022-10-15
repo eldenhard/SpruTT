@@ -199,13 +199,55 @@
 
 <button class="button Action" @click="OpenReport()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{downloadReport}}</button>
 <br><br>
-<div class="row">
-    <div class="col-md-6">
+<div class="row container-fluid">
+    <div class="col-md-6 w-90" style="overflow-x: auto;">
         <h5 align="center">Созданные Вами отчеты</h5>
+        <table class="table">
+                <tr>
+                    <td style="text-align:center; font-size: 12px;">Кто создал</td>
+                    <td style="text-align:center; font-size: 12px;">На кого создано</td>
+                    <td style="text-align:center; font-size: 12px;">Дата создания</td>
+                    <td style="text-align:center; font-size: 12px;">Дата последнего изменения</td>
+                    <td style="text-align:center; font-size: 12px;">Доплата</td>
+                    <td style="text-align:center; font-size: 12px;">Файл</td>
+                    <td style="text-align:center; font-size: 12px;">Действие</td>
+                    <td style="text-align:center; font-size: 12px;">Удалить</td>
+                </tr>
+
+                <tr v-for="reports in reports_creator" :key="reports.id" >
+                    <td>{{reports.creator.first_name}} {{reports.creator.last_name}} <br></td>
+                    <td>{{reports.employee.first_name}}  {{reports.employee.last_name}}  <br></td> 
+                    <td>{{new Date(reports.created_at).toLocaleString()}}<br> </td> 
+                    <td>{{new Date(reports.updated_at).toLocaleString()}}<br> </td> 
+                    <td>{{reports.rate}} %<br></td> 
+                    <td><a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> </td> 
+                    <td><button class="button Request" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
+                    <td><button class="button Delete" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="DeleteReport(reports.id)">Удалить</button> </td> 
+                </tr>
+            </table>  
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6 w-90" style="overflow-x: auto;">
             <h5 align="center">Созданные на Вас отчеты</h5>
+            <table class="table">
+            <tr>
+                <td style="text-align:center; font-size: 12px;">Кто создал</td>
+                <td style="text-align:center; font-size: 12px;">На кого создано</td>
+                <td style="text-align:center; font-size: 12px;">Дата создания</td>
+                <td style="text-align:center; font-size: 12px;">Дата последнего изменения</td>
+                <td style="text-align:center; font-size: 12px;">Доплата</td>
+                <td style="text-align:center; font-size: 12px;">Файл</td>
+            </tr>
+
+            <tr v-for="reporte in reports_employee" :key="reporte.id" >
+                <td>{{reporte.creator.first_name}} {{reporte.creator.last_name}}<br></td>
+                <td>{{reporte.employee.first_name}} {{reporte.employee.last_name}} <br></td>
+                <td>{{new Date(reporte.created_at).toLocaleString()}}<br></td>
+                <td>{{new Date(reporte.updated_at).toLocaleString()}}<br></td>
+                <td>{{reporte.rate}} %   <br></td>
+                <td><a download target="_blank" :href="reporte.file" v-if="reporte.file"><img src="../assets/excel.png" alt="" width="50px !important"></a></td>
+            </tr> 
+            </table>
     </div>
 </div>
 
@@ -398,10 +440,14 @@ box-shadow:  10px 10px 30px #d0d0d0,
     display: none;
 }
 @media screen and (max-width: 550px){
-    .Action{
+    .table {
+        width: 90% !important;
+        overflow-x: auto;
+    }
+ .Action{
         width: 90% !important;
     }
-    #block-answer label{
+     /*   #block-answer label{
         font-size: 12px;
     }
     #block-answer input[type=radio]{
@@ -443,7 +489,7 @@ box-shadow:  10px 10px 30px #d0d0d0,
     width: 100%;
     text-align: center !important;
     margin-top: 5% !important;
-}
+} */
 /* #tables {
     display: none;
 } */
