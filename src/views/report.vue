@@ -221,8 +221,8 @@
                     <td>{{new Date(reports.updated_at).toLocaleString()}}<br> </td> 
                     <td>{{reports.rate}} %<br></td> 
                     <td><a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> </td> 
-                    <td><button class="button Request" style="height: 30px; width: 90%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #2196F3 !important;" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
-                    <td><button class="button Delete" style="height: 30px; width: 90%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #ED5E68 !important;" @click="DeleteReport(reports.id)">Удалить</button> </td> 
+                    <td><button class="button Request" style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #2196F3 !important;" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
+                    <td><button class="button Delete" style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #ED5E68 !important;" @click="DeleteReport(reports.id)">Удалить</button> </td> 
                 </tr>
             </table>  
     </div>
@@ -657,60 +657,60 @@ else {
     }
  },
 
-// OpenReport(){
-//     // document.getElementById("tables").style.display == 'block'
-//     // this.downloadReport = 'Загрузить отчеты'
-// // if (document.getElementById("tables").style.display == 'block') { 
-// //     document.getElementById("tables").style.display = "none";
-// //     this.downloadReport = 'Загрузить отчеты'
-// // }
-// // else {
-// //     document.getElementById("tables").style.display = "block";
-// //     this.downloadReport = 'Скрыть отчеты'
-// //     }
-// this.loaderReport = true
-// const pretoken = JSON.parse(localStorage.getItem("vuex"))
-// const token = pretoken.auth.user.token
-// const preid = JSON.parse(localStorage.getItem('vuex'))
-// const id = preid.auth.uid
-// document.getElementById("tables").style.display = 'block'
-// this.downloadReport = 'Загрузить отчеты'
-// fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
-//     headers: {
-//         'Authorization': `Basic ${token}` 
-//     },
-//     method: 'GET'
-//     })
-//     .then((response) => {
-//     if (response.ok, document.getElementById("tables").style.display == 'block'){
-//         return response.json().then(r=>{
-//             this.reports_creator = r.data;
+OpenReport(){
+    // document.getElementById("tables").style.display == 'block'
+    // this.downloadReport = 'Загрузить отчеты'
+// if (document.getElementById("tables").style.display == 'block') { 
+//     document.getElementById("tables").style.display = "none";
+//     this.downloadReport = 'Загрузить отчеты'
+// }
+// else {
+//     document.getElementById("tables").style.display = "block";
+//     this.downloadReport = 'Скрыть отчеты'
+//     }
+this.loaderReport = true
+const pretoken = JSON.parse(localStorage.getItem("vuex"))
+const token = pretoken.auth.user.token
+const preid = JSON.parse(localStorage.getItem('vuex'))
+const id = preid.auth.uid
+document.getElementById("tables").style.display = 'block'
+this.downloadReport = 'Загрузить отчеты'
+fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
+    headers: {
+        'Authorization': `Basic ${token}` 
+    },
+    method: 'GET'
+    })
+    .then((response) => {
+    if (response.ok, document.getElementById("tables").style.display == 'block'){
+        return response.json().then(r=>{
+            this.reports_creator = r.data;
             
-//     })
-// }
-//     else{
-//         console.log('NOT OK')
+    })
+}
+    else{
+        console.log('NOT OK')
 
-//     }
-// }),
-// fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
-//     headers: {
-//         'Authorization': `Basic ${token}` 
-//     },
-//     method: 'GET'
-//     })
-//     .then((response) => {
-//     if (response.ok){
-//         return response.json().then(r=>{
-//             this.reports_employee = r.data;
-//             this.loaderReport = false
-//     })
-// }
-//     else{
-//         console.log('NOT OK')
-//     }
-// })    
-//  },
+    }
+}),
+fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
+    headers: {
+        'Authorization': `Basic ${token}` 
+    },
+    method: 'GET'
+    })
+    .then((response) => {
+    if (response.ok){
+        return response.json().then(r=>{
+            this.reports_employee = r.data;
+            this.loaderReport = false
+    })
+}
+    else{
+        console.log('NOT OK')
+    }
+})    
+ },
 OpenChangeReport(id) {
     this.loaderReport = true
     api.getReportById(id)
