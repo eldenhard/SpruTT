@@ -203,8 +203,10 @@
     <br>
     <div class="row">
         <div class="col-md-6 tablesRep">
+            <h5 class="phone">Созданные Вами отчеты</h5>
             <table class="tableRep">
-                <tr>
+
+                <tr class="PK">
                     <td colspan="8"><h5>Созданные Вами отчеты</h5></td>
                 </tr>
 
@@ -229,14 +231,18 @@
                     <td><button class="button Request" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
                     <td><button class="button Delete" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="DeleteReport(reports.id)">Удалить</button> </td> 
                 </tr>
-            </table>  
+            </table> 
         </div>
 
         <br><br>
 
         <div class="col-md-6 tablesRep2">
+
+            <h5 class="phone">Созданные на Вас отчеты</h5>
+
             <table class="tableRep">
-                <tr>
+
+                <tr class="PK">
                     <td colspan="6"><h5>Созданные на Вас отчеты</h5></td>
                 </tr>
 
@@ -258,6 +264,7 @@
                     <td><a download target="_blank" :href="reporte.file" v-if="reporte.file"><img src="../assets/excel.png" alt="" width="50px !important"></a></td>
                 </tr> 
             </table>
+            
         </div>
     </div>
 </div>
@@ -381,6 +388,9 @@ box-shadow:  10px 10px 30px #d0d0d0,
        font-size: 17px;
         width: 100%; 
 }
+.phone {
+    display: none;
+}
 @media screen and (max-width: 550px){
     .Action{
         width: 90% !important;
@@ -411,7 +421,7 @@ box-shadow:  10px 10px 30px #d0d0d0,
         left: 50%;
         transform: translate(-50%,0);
         font-size: 9px;
-        margin-top: 5% !important;
+        margin-top: 10% !important;
     }
     .tableRep {
     position: relative;
@@ -420,7 +430,16 @@ box-shadow:  10px 10px 30px #d0d0d0,
        font-size: 12px;
         /* width: 100%;  */
 }
-
+.PK {
+    display: none;
+}
+.phone {
+    display: block;
+    text-align: center;
+}
+.phonetablesRep2 {
+    margin-top: 30%;
+}
 }
 </style>
 
