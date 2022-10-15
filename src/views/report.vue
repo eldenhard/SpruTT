@@ -198,7 +198,18 @@
 
 
 <button class="button Action" @click="OpenReport()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{downloadReport}}</button>
+<br><br>
+<div class="row">
+    <div class="col-md-6">
+        <h5 align="center">Созданные Вами отчеты</h5>
+    </div>
 
+    <div class="col-md-6">
+            <h5 align="center">Созданные на Вас отчеты</h5>
+    </div>
+</div>
+
+<!-- 
 <div style="display:none" id="tables">
     <br>
     <div class="row">
@@ -263,19 +274,19 @@
         </div>
     </div>
 </div>
-<br><br>
+<br><br> -->
 
 </div>
 </template>
 
 <style>
-#tables {
+/* #tables {
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
     width: 90%;
 
-}
+} */
 #loading-page-lk {
   width: 100vw;
   height: 100vh;
@@ -433,9 +444,9 @@ box-shadow:  10px 10px 30px #d0d0d0,
     text-align: center !important;
     margin-top: 5% !important;
 }
-#tables {
+/* #tables {
     display: none;
-}
+} */
 }
 </style>
 
@@ -600,60 +611,60 @@ else {
     }
  },
 
-OpenReport(){
-    // document.getElementById("tables").style.display == 'block'
-    // this.downloadReport = 'Загрузить отчеты'
-// if (document.getElementById("tables").style.display == 'block') { 
-//     document.getElementById("tables").style.display = "none";
-//     this.downloadReport = 'Загрузить отчеты'
-// }
-// else {
-//     document.getElementById("tables").style.display = "block";
-//     this.downloadReport = 'Скрыть отчеты'
-//     }
-this.loaderReport = true
-const pretoken = JSON.parse(localStorage.getItem("vuex"))
-const token = pretoken.auth.user.token
-const preid = JSON.parse(localStorage.getItem('vuex'))
-const id = preid.auth.uid
-document.getElementById("tables").style.display = 'block'
-this.downloadReport = 'Загрузить отчеты'
-fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
-    headers: {
-        'Authorization': `Basic ${token}` 
-    },
-    method: 'GET'
-    })
-    .then((response) => {
-    if (response.ok, document.getElementById("tables").style.display == 'block'){
-        return response.json().then(r=>{
-            this.reports_creator = r.data;
+// OpenReport(){
+//     // document.getElementById("tables").style.display == 'block'
+//     // this.downloadReport = 'Загрузить отчеты'
+// // if (document.getElementById("tables").style.display == 'block') { 
+// //     document.getElementById("tables").style.display = "none";
+// //     this.downloadReport = 'Загрузить отчеты'
+// // }
+// // else {
+// //     document.getElementById("tables").style.display = "block";
+// //     this.downloadReport = 'Скрыть отчеты'
+// //     }
+// this.loaderReport = true
+// const pretoken = JSON.parse(localStorage.getItem("vuex"))
+// const token = pretoken.auth.user.token
+// const preid = JSON.parse(localStorage.getItem('vuex'))
+// const id = preid.auth.uid
+// document.getElementById("tables").style.display = 'block'
+// this.downloadReport = 'Загрузить отчеты'
+// fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
+//     headers: {
+//         'Authorization': `Basic ${token}` 
+//     },
+//     method: 'GET'
+//     })
+//     .then((response) => {
+//     if (response.ok, document.getElementById("tables").style.display == 'block'){
+//         return response.json().then(r=>{
+//             this.reports_creator = r.data;
             
-    })
-}
-    else{
-        console.log('NOT OK')
+//     })
+// }
+//     else{
+//         console.log('NOT OK')
 
-    }
-}),
-fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
-    headers: {
-        'Authorization': `Basic ${token}` 
-    },
-    method: 'GET'
-    })
-    .then((response) => {
-    if (response.ok){
-        return response.json().then(r=>{
-            this.reports_employee = r.data;
-            this.loaderReport = false
-    })
-}
-    else{
-        console.log('NOT OK')
-    }
-})    
- },
+//     }
+// }),
+// fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
+//     headers: {
+//         'Authorization': `Basic ${token}` 
+//     },
+//     method: 'GET'
+//     })
+//     .then((response) => {
+//     if (response.ok){
+//         return response.json().then(r=>{
+//             this.reports_employee = r.data;
+//             this.loaderReport = false
+//     })
+// }
+//     else{
+//         console.log('NOT OK')
+//     }
+// })    
+//  },
 OpenChangeReport(id) {
     this.loaderReport = true
     api.getReportById(id)
