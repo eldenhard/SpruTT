@@ -199,10 +199,10 @@
 
 <button class="button Action" @click="OpenReport()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{downloadReport}}</button>
 <br><br>
-<div class="row container-fluid" style="display: block;" v-if="allReportHistory">
-    <div class="col-md-6 w-90" style="overflow-x: auto;">
+<div class="row container-fluid" v-if="allReportHistory">
+    <div class="col-md-6 w-90" style="overflow-x: auto">
         <h5 align="center">Созданные Вами отчеты</h5>
-        <table class="table">
+        <table class="table" border="1">
                 <tr>
                     <td style="text-align:center; font-size: 12px;">Кто создал</td>
                     <td style="text-align:center; font-size: 12px;">На кого создано</td>
@@ -230,7 +230,7 @@
             </table>  
     </div>
 
-    <div class="col-md-6 w-90" style="overflow-x: auto;">
+    <div class="col-md-6 w-90" style="overflow-x: auto">
             <h5 align="center">Созданные на Вас отчеты</h5>
             <table class="table">
             <tr>
