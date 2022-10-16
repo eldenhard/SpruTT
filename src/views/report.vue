@@ -199,8 +199,8 @@
 
 <button class="button Action" @click="OpenReport()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{downloadReport}}</button>
 <br><br>
-<div class="row container-fluid">
-    <div class="col-md-6 w-90" style="overflow-x: auto;">
+<div class="row container-fluid" style="display: block">
+    <div class="col-md-6">
         <h5 align="center">Созданные Вами отчеты</h5>
         <table class="table">
                 <tr>
@@ -227,7 +227,7 @@
             </table>  
     </div>
 
-    <div class="col-md-6 w-90" style="overflow-x: auto;">
+    <div class="col-md-6" style="overflow-x: auto;">
             <h5 align="center">Созданные на Вас отчеты</h5>
             <table class="table">
             <tr>
