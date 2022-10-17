@@ -23,38 +23,7 @@
     </option>
     </select>
 </td>
-<!-- <td style="width: 150px !important; height: 80px !important;">
-    <p>Фильтр</p>
 
-</td>
-<td style="width: 150px !important; height: 80px !important;">
-    <p>Фильтр</p>
-
-</td>
-<td style="width: 150px !important; height: 80px !important;">
-    <p>Фильтр</p>
-
-</td>
-<td style="width: 150px !important; height: 80px !important;">
-    <p>Фильтр</p>
-
-</td>
-<td style="width: 150px !important; height: 80px !important;">
-    <p>Фильтр</p>
-
-</td>
-<td style="width: 150px !important; height: 80px !important;">
-    <p>Фильтр</p>
-
-</td>
-<td style="width: 150px !important; height: 80px !important;">
-    <p>Фильтр</p>
-
-</td> -->
-    <!-- <td style="width: 150px !important; height: 80px !important;"> 
-    <p>Номер вагона</p>
-    <input type="number" v-model="filters.number" @input="updateFilterData">
-    </td> -->
  </tr>
 
         </table>

@@ -507,7 +507,7 @@ import wagonModal from '@/components/modalReport/modal.vue'
 export default{
 name: 'report',
 components: {wagonModal},
-
+title: 'Отчеты',
 computed: {
     ...mapState({
         user: state => state.auth.user,
@@ -759,7 +759,6 @@ closeChangeReport(){
   .then((response) => {
     if (response.ok){
         return response.json().then((data)=>{
-            // console.log(data);
             this.loaderReport = false
 
             document.getElementById('notifications').style.display = 'block';

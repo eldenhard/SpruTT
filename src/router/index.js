@@ -9,6 +9,7 @@ import authorization from '../views/Authorization';
 import Bookkeeping from '../views/Bookkeeping';
 import lk from '../views/lk';
 import report from '../views/report';
+import Staff from '../views/Staff';
 
 
 Vue.use(Router)
@@ -55,6 +56,11 @@ export default new Router({
       path: '/report',
       name: 'report',
       component: report
+    },
+    {
+      path: '/personnel-service',
+      name: 'personnel-service',
+      component: Staff
     },
     {
       path: '*',

@@ -2,7 +2,7 @@
     color: white;
     border: none;
     outline: none;
-    width: 130px;
+    /* width: 130px; */
     height: 25px;
     letter-spacing: 1px;
     border-radius: 7px;
@@ -61,14 +61,12 @@ tr,td,th{
     border: 1px solid rgb(184, 184, 184);
     background: white;
     text-align: center;
-    padding: 5px 10px;
 }
 .info-table{
     margin-top: 66px;
     width: 50vw;
 }
 .table1 table {
-  /* width: 35% !important; */
   border-spacing: 0 !important;
   margin-top: 3%;
 }

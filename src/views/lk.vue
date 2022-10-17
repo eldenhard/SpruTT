@@ -137,7 +137,8 @@ mounted(){
 
     //        }
     //    }),
-     
+
+    // ${id}
     fetch('http://10.1.5.65/api/personal/users/'+ `${id}`, {
     headers: {
         'Authorization': `Basic ${token}` 

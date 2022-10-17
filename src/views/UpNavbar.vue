@@ -35,6 +35,9 @@
           <router-link to="/report"  style="color: black; text-decoration: none; font-size: 15px;">Отчеты</router-link>
         </b-nav-item>
 
+        <b-nav-item>
+          <router-link to="/personnel-service"  style="color: black; text-decoration: none; font-size: 15px;">Кадровая служба</router-link>
+        </b-nav-item>
         <!-- <b-nav-item>
           <a href="/" @click="logout" style="color: black; text-decoration: none; font-size: 13px;">Выход</a>
         </b-nav-item> -->

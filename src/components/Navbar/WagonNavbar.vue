@@ -27,8 +27,8 @@
                     <div @click="newTab('Вагоны')">
                         <img src="@/assets/wagon.png" class="image">
                     </div>
-                    <b-dropdown  text="Вагоны" style="width: 100%">
-                        <!-- <b-dropdown-item @click="newTab('Полигоны')">По полигонам</b-dropdown-item> -->
+                    <b-dropdown  text="Вагоны" style="width: 100%" disabled>
+                        <b-dropdown-item @click="newTab('Полигоны')">По полигонам</b-dropdown-item>
                     </b-dropdown>
                 </li>
   

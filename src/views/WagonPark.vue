@@ -57,8 +57,6 @@ export default{
                 }
             }
             localStorage.setItem('tabs', JSON.stringify([...this.tabs]))
-            
-           
         },
     },
     mounted() {

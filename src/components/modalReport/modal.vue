@@ -369,8 +369,6 @@ export default {
                 this.loaderReportModal = false
                 document.getElementById('notifications').style.display = 'block'
                 setTimeout(this.closeNotif, 1500)
-                // this.successModal = true
-                // console.log(response)
                 this.$emit('close')
             })
             } else{

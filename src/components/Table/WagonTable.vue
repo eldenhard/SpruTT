@@ -6,30 +6,21 @@
 <button class="button Accept" style="width: 93%; height: 40px; position: relative; left: 50%; transform: translate(-50%,0);" @click="Wagon()">Запросить данные</button>
 
 
-    <div class="searchWagon" style="
-    display: flex;
-    width: 30%;
-    height: 30px;
-    margin-bottom: 10px;
-    margin-top: 1%;
-    margin-left: 1%;">
-    <form>
-        <input type="number" v-model="numberWagon" placeholder="введите номер вагона" id="searchWagonPlace" required>
-        <button @click="searchWagon()" style="width: 20%; display: flex; align-items: center; justify-content: center;">поиск</button>
-    </form>
-    </div>
+
    <br><br>
    <br>
 
 
 
+
 <p class="amount">всего: {{amount}}</p>
-<div class="table1" style="display: flex;">
+<div class="table1" style="display: flex;" >
 <table style="margin-top: -0.1px;">
 
     <thead>
     <tr>
-        <th>{{WagonModel.number}}</th>
+        <th><input type="number" v-model="numberWagon" placeholder="номер вагона" id="searchWagonPlace" @keydown.enter="searchWagon()" style="width: 100px"></th>
+        <!-- <th>{{WagonModel.number}}</th> -->
         <th> {{WagonModel.is_problem}}</th>
         <th>{{WagonModel.volume}}</th>
         <th>{{WagonModel.type}}</th>
@@ -59,33 +50,7 @@
 
 <b-card no-body style="background: #ECECEC; border: none; text-decoration: none; width: 100%;">
     <b-tabs card  style="background: #ECECEC; font-size: 12px !important;">
-        <!-- <b-tab title="Состояние" active style="color: black;" >
-                <b-card-text style="margin-top: -30px;">
-                <div style="width:100%; overflow: auto;">
-                <table>
-                        <thead>
-                            <tr>
-                            <th>{{WagonModel.number}}</th>
-                            <th> {{WagonStateModel.state}}</th>
-                            <th>{{WagonStateModel.state_value}}</th>
-                            <th>{{WagonStateModel.state_value_digital}}</th>
-                            <th>{{WagonStateModel.updated_at}}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="wagontype in WagonStatesModel" :key="wagontype.id">
-                            <td>{{wagontype.number}}</td>
-                            <td>{{wagontype.state}}</td>
-                            <td>{{wagontype.state_value}}</td>
-                            <td>{{wagontype.state_value_digital}}</td>
-                            <td>{{wagontype.updated_at}}</td>
-
-                            </tr>
-                        </tbody>
-                    </table>  
-                </div>       
-            </b-card-text>
-        </b-tab> -->
+      
       <!--  v-if="WagonPassportModel.count > 0" -->
         <b-tab title="Паспорт">
             <b-card-text style="margin-top: -30px;">
@@ -355,7 +320,7 @@
 
 
 
-<section id="loading-page-lk" style="display:none">
+<section  style="display:block" id="loaderWagonTable" v-if="loaderWagonTable">
 
 <svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
   viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
@@ -398,14 +363,15 @@
 </section>
  
 <div style="display: flex; position: relative; left: 50%; transform: translate(-50%,0); margin-top: 1%; height: 50px; width: 100%" id="pagination">
-<div class="row" style="display: flex; position: relative; left: 10%; transform: translate(-10%,0);">
-    <div class="col-md-6"><button style="float: left" class="button Cancel" v-if="prevLink" @click="goToPage(prevLink)"> << </button>
-</div>
-    <div class="col-md-6"><button style="float: right; margin-left: 20%;" class="button Cancel" v-if="nextLink" @click="goToPage(nextLink)"> >> </button>
-</div>
-
-</div>
+    <div class="row" style="display: flex; position: relative; left: 10%; transform: translate(-10%,0);">
+        <div class="col-md-6">
+            <button style="float: left" class="button Cancel" v-if="prevLink" @click="goToPage(prevLink)">назад</button>
+        </div>
+        <div class="col-md-6">
+            <button style="float: right; margin-left: 20%;" class="button Cancel" v-if="nextLink" @click="goToPage(nextLink)">вперед</button>
+        </div>
     </div>
+</div>
 
 </div>
 </template>
@@ -424,15 +390,34 @@
     margin-bottom: 10px;
     margin-top: 1%;
     margin-left: 1%;
+}
+#loaderWagonTable{
+    width: 100vw;
+    height: 100vh;
+    background: rgb(17, 17, 17, 0.1);
+    display: flex;
+    position: fixed;
+    top: 0;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999999999999;
 
-
+}
+#loaderWagonTable svg{
+    width: 120px;
+    height: 120px;
+    display: inline-block;
+    position: relative !important;
+    left: 50% !important;
+    transform: translate(-50%,0) !important;
+    margin-top: 15%;
 }
 </style>
 
     
 <script>
 import { mapState } from 'vuex'
-
 import api from "@/api/wagonPark"
 import FilterWagon from '@/components/filter/FilterWagon.vue'
 export default{
@@ -452,6 +437,7 @@ export default{
             filters:null,
             numberWagon: null,
             amount: null,
+            loaderWagonTable : false,
             // checked: [],
             WagonModel: {
                 number: "Номер вагона",
@@ -577,62 +563,71 @@ export default{
         },
 
         Wagon() {
-            document.getElementById("loading-page-lk").style.display = "block";
+            this.loaderWagonTable = true
                 api.getWagons(this.filters)
                 .then((response) => {
                     this.WagonsModel = response.data.data;
                     this.nextLink = response.data.links.next
                     this.prevLink = response.data.links.previous
                     this.amount = response.data.total_objects
-                    document.getElementById("loading-page-lk").style.display = "none";
+                    this.loaderWagonTable = false
             }).catch(err => {
                 console.log(err)
+                this.loaderWagonTable = false
             });
         },
 
         passport(wagonNumber = null) {
-            document.getElementById("loading-page-lk").style.display = "block";
+            this.loaderWagonTable = true
             api.getPassport({wagon: wagonNumber})
                 .then((response) => {
                     this.WagonsPassportModel = response.data.data;
-                    document.getElementById("loading-page-lk").style.display = "none";
+                    this.loaderWagonTable = false
      
-            });
+            }).catch(error => {
+                console.log(error)
+                this.loaderWagonTable = false
+            })
         },
 
         arenda() {
-            document.getElementById("loading-page-lk").style.display = "block";
+            this.loaderWagonTable = true
             api.getArenda()
             .then((response) => {
                     this.WagonsBelongModel = response.data.data;
-                    document.getElementById("loading-page-lk").style.display = "none";
-    
-            });
+                    this.loaderWagonTable = false
+            }).catch(error => {
+                console.log(error)
+                this.loaderWagonTable = false
+            })
         },
         belong(wagonNumber = null) {
-            document.getElementById("loading-page-lk").style.display = "block";
+           this.loaderWagonTable = true
             api.getBelong({wagon: wagonNumber})
                 .then((response) => {
                     this.WagonsBelongModel = response.data.data;
-                    document.getElementById("loading-page-lk").style.display = "none";
-    
-            });
+                    this.loaderWagonTable = false
+            }).catch(error => {
+                console.log(error)
+                this.loaderWagonTable = false
+            })
         },
         searchWagon(){
-            document.getElementById("loading-page-lk").style.display = "block";
+            this.loaderWagonTable = true
                 api.getCurrentWagon(this.numberWagon)
-
+                
                 .then((response) => {
                     this.WagonsModel = response.data.data;
                     this.amount = response.data.total_objects
                     this.passport(this.numberWagon)
                     this.belong(this.numberWagon)
 
-                    document.getElementById('pagination').style.display = 'hidden'
-                    document.getElementById("loading-page-lk").style.display = "none";
+                    // document.getElementById('pagination').style.display = 'none'
+                    this.loaderWagonTable = false
                     document.getElementById("searchWagonPlace").value = '';
-            }).catch(err => {
-                console.log(err)
+            }).catch(error => {
+                console.log(error)
+                this.loaderWagonTable = false
             });
 
         }
