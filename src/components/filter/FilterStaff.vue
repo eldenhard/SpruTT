@@ -6,6 +6,8 @@
 
     <input type="text" class="input_filter_staff" placeholder="введите почту сотрудника"  v-model="filter_staff.email" @change="updateFilterDataStaff">
 
+    <!-- <input type="text" class="input_filter_staff" placeholder="введите отдел сотрудника"  v-model="filter_staff.groups" @change="updateFilterDataStaff"> -->
+
 </div>
 </template>
 
@@ -38,7 +40,8 @@ export default {
             filter_staff : {
                 first_name: '',
                 last_name: '',
-                email: ''
+                email: '',
+                // groups: ''
             }
         }
     },
