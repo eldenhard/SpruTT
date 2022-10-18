@@ -1,13 +1,19 @@
 <template>
 <div class="filterStaff">
-    <input type="text" class="input_filter_staff" placeholder="введите имя сотрудника" v-model="filter_staff.first_name" @change="updateFilterDataStaff">
-
+    <input type="text" id="input-filter-staff"  class="input_filter_staff" placeholder="введите данные сотрудника" v-model="filter_staff.search" @change="updateFilterDataStaff">
+<!-- 
     <input type="text" class="input_filter_staff" placeholder="введите фамилию сотрудника"  v-model="filter_staff.last_name" @change="updateFilterDataStaff">
 
-    <input type="text" class="input_filter_staff" placeholder="введите почту сотрудника"  v-model="filter_staff.email" @change="updateFilterDataStaff">
+    <input type="text" class="input_filter_staff" placeholder="введите почту сотрудника"  v-model="filter_staff.email" @change="updateFilterDataStaff"> -->
 
     <!-- <input type="text" class="input_filter_staff" placeholder="введите отдел сотрудника"  v-model="filter_staff.groups" @change="updateFilterDataStaff"> -->
-
+    <select class="input_filter_staff" id="select-filter-staff" style="margin-top: 7px; cursor: pointer;" v-model="filter_staff.groups"  @change="updateFilterDataStaff">
+        <option value="" style="text-align: center">--Выберите отдел--</option>
+        <option
+        v-for="groupsFilter in groupsFilterStaff" :key="groupsFilter.id"  :value="groupsFilter.id">
+        {{groupsFilter.name}}
+    </option>
+    </select>
 </div>
 </template>
 
@@ -33,22 +39,39 @@ box-shadow:  20px 20px 60px #cecece,
 </style>
 
 <script>
+import { mapState } from 'vuex'
+import api from '@/api/staff'
 export default {
     name: 'FilterStaff',
     data(){
         return {
             filter_staff : {
-                first_name: '',
-                last_name: '',
-                email: '',
-                // groups: ''
-            }
+                search: '',
+                groups: [],
+                // first_name: '',
+                // last_name: '',
+                // email: '',
+            },
+            groupsFilterStaff: ''
         }
+    },
+    computed: {
+        ...mapState({
+            user: state => state.auth.user,
+            uid: state => state.auth.uid
+        })
     },
     methods: {
         updateFilterDataStaff(){
             this.$emit('updateFiltersStaff', this.filter_staff)
-        },
+        }
+    },
+    mounted() {
+        api.getStaffGroup()
+        .then((response) => {
+            this.groupsFilterStaff = response.data.data
+        })
     }
+
 }
 </script>
