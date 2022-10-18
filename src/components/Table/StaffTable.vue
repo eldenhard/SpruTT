@@ -54,6 +54,7 @@
                 <td><button class="Delete" @click="getCurrentUser(staff.id)">Удалить</button></td>
             </tr>
         </tbody>
+
     </table>
 </div>
 
@@ -362,6 +363,7 @@ export default {
                 this.all_staff = response.data.data
                 this.loaderStaff = false
                 this.filter_staff.groups = Array[0]
+                this.filter_staff.search = ""
 
             }).catch(err => {
                 console.log(err)
