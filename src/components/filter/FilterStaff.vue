@@ -7,7 +7,9 @@
     <input type="text" class="input_filter_staff" placeholder="введите почту сотрудника"  v-model="filter_staff.email" @change="updateFilterDataStaff"> -->
 
     <!-- <input type="text" class="input_filter_staff" placeholder="введите отдел сотрудника"  v-model="filter_staff.groups" @change="updateFilterDataStaff"> -->
-    <select class="input_filter_staff" id="select-filter-staff" style="margin-top: 8px; cursor: pointer;" v-model="filter_staff.groups"  @change="updateFilterDataStaff">
+    <select class="input_filter_staff" id="select-filter-staff" style="margin-top: 8px; cursor: pointer;"
+     v-model="filter_staff.groups"
+    @change="updateFilterDataStaff">
         <option value="" style="text-align: center">--Выберите отдел--</option>
         <option
         v-for="groupsFilter in groupsFilterStaff" :key="groupsFilter.id"  :value="groupsFilter.id">
@@ -52,13 +54,13 @@ export default {
                 // last_name: '',
                 // email: '',
             },
-            groupsFilterStaff: ''
         }
     },
     computed: {
         ...mapState({
             user: state => state.auth.user,
-            uid: state => state.auth.uid
+            uid: state => state.auth.uid,
+            groupsFilterStaff: state => state.auth.groups
         })
     },
     methods: {
@@ -66,12 +68,5 @@ export default {
             this.$emit('updateFiltersStaff', this.filter_staff)
         }
     },
-    mounted() {
-        api.getStaffGroup()
-        .then((response) => {
-            this.groupsFilterStaff = response.data.data
-        })
-    }
-
 }
 </script>

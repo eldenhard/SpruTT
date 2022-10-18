@@ -1,4 +1,5 @@
 import api from "@/api/auth"
+import staff_api from '@/api/staff'
 import {setItem} from "@/helpers/persistanseStorage"
 
 const resource = api.resource
@@ -6,7 +7,8 @@ const resource = api.resource
 const state = {
     user: {},
     uid: null,
-    isLoggedIn: false
+    isLoggedIn: false,
+    groups: null,
 }
 
 export const mutationTypes = {
@@ -14,12 +16,14 @@ export const mutationTypes = {
     loginSuccess: `[${resource}] loginSuccess`,
     loginFailure: `[${resource}] loginFailure`,
     // у нас форма авторизации показываетс когда isLoggedIn = false. Когда авторизация успешна - там тру. Нам нужен отдельный обработчик чтобы сделать логаут
-    logout: `[${resource}] logout`
+    logout: `[${resource}] logout`,
+    getStaffGroups: `[${resource}] getStaffGroups`
 }
 
 export const actionTypes = {
     login: `${resource} login`,
     logout: `${resource} logout`,
+    getStaffGroups: `${resource} getStaffGroups`
 }
 
 const mutations = {
@@ -34,6 +38,9 @@ const mutations = {
         state.uid = null
         state.isLoggedIn = false
         setItem('accessToken', '')
+      },
+      [mutationTypes.getStaffGroups](state, data){
+            state.groups = data
       }
 }
 
@@ -54,6 +61,18 @@ const actions = {
         return new Promise(resolve => {
             context.commit(mutationTypes.logout)
         }) 
+    },
+    async [actionTypes.getStaffGroups](context){
+        return new Promise((resolve, reject) => {
+            staff_api.getStaffGroup()
+            .then((response) => {
+                context.commit(mutationTypes.getStaffGroups, response.data.data)
+                resolve(response.data.data)
+            }).catch(err => {
+                
+                reject(err)
+            })
+        })
     }
 }
 

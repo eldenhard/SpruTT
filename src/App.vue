@@ -9,10 +9,14 @@
 <script>
 import UpNavbar from './views/UpNavbar.vue'
 import Authorization from './views/Authorization.vue'
+import { actionTypes } from './store/modules/auth';
 
 export default {
   name: 'App',
-  components: {UpNavbar, Authorization}
+  components: {UpNavbar, Authorization},
+  mounted(){
+    this.$store.dispatch(actionTypes.getStaffGroups)
+  }
 }
 </script>
 
