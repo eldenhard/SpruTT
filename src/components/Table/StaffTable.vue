@@ -1,96 +1,97 @@
 <template>
     <div>
-        <FilterStaff  @updateFiltersStaff="updateFiltersStaff"></FilterStaff>
-        <button class="Accept staffButton" @click="allStaff()">Запросить всех сотрудников</button>
-        <br><br>
-        <br><br>
-        <button class="Cancel staffButton" style="width: 50%; border-top-left-radius: 10px; border-top-right-radius: 10px;" @click="addStaff() ">Добавить сотрудника</button>
+<FilterStaff  @updateFiltersStaff="updateFiltersStaff"></FilterStaff>
 
-        <div style=" width: 95% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
-<table class="staff_table table">
-    <thead class="head-staff"> 
-    <th>Фото</th>
-      <th>Фамилия</th>
-      <th>Имя</th>
-      <th>Отчество</th>
-      <th>Должность</th>
-      <th>Почта</th>
-      <th>Отдел</th>
-      <th>Телефон корпоративный</th>
-      <th>Телефон личный</th>
-      <th>Внутренний номер</th>
-      <th>Время работы</th>
-      <th>Начальник</th>
-      <th>Редактировать</th>
-      <th>Удалить</th>
-    </thead>
+<button class="Accept staffButton" @click="allStaff()">Запросить всех сотрудников</button>
+    <br><br>
+    <br><br>
+<button class="Cancel staffButton" style="width: 50%; border-top-left-radius: 10px; border-top-right-radius: 10px;" @click="addStaff() ">Добавить сотрудника</button>
 
-    <tbody style="max-width: 90% !important;">
-        <tr v-for="staff in all_staff" :key="staff.id">
-            <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.manager.photo}}</td>
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>
+<div style=" width: 95% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
+    <table class="staff_table table">
+        <thead class="head-staff"> 
+        <th>Фото</th>
+        <th>Фамилия</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+        <th>Должность</th>
+        <th>Почта</th>
+        <th>Отдел</th>
+        <th>Телефон корпоративный</th>
+        <th>Телефон личный</th>
+        <th>Внутренний номер</th>
+        <th>Время работы</th>
+        <th>Начальник</th>
+        <th>Редактировать</th>
+        <th>Удалить</th>
+        </thead>
 
-            <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.last_name}}</td>
-            <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.first_name}}</td>
-            <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">{{staff.middle_name}}</td>
-            <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">{{staff.post}}</td>
-            <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.email}}</td>
-            <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">
-        <span v-if="staff.groups[0] == 1">admin</span>
-        <span v-if="staff.groups[0] == 3">Бухгалтерия</span> 
-        <span v-if="staff.groups[0] ==  4">Коммерческий департамент</span>
-        <span v-if="staff.groups[0] == 5">Коммерческий отдел</span>
-        <span v-if="staff.groups[0] ==  6">Сектор по работе с универсальными грузами</span>
-        <span v-if="staff.groups[0] == 7">Административно-хозяйственный отдел</span>
-        <span v-if="staff.groups[0] == 8">Обособленное подразделение в г. Нижнекамске</span>
-        <span v-if="staff.groups[0] == 9">Департамент логистики</span>
-        <span v-if="staff.groups[0] == 10">Отдел логистики</span>
-        <span v-if="staff.groups[0] == 11">Руководство</span>
-        <span v-if="staff.groups[0] ==  12">Обособленное подразделение в г. Набережные Челны</span>
-        <span v-if="staff.groups[0] ==  13">Отдел по работе с персоналом</span>
-        <span v-if="staff.groups[0] == 14">Управление эксплуатации и ремонта подвижного состава</span>
-        <span v-if="staff.groups[0] == 15">Отдел материально-технического обеспечения</span>
-        <span v-if="staff.groups[0] ==  16">Сектор по заготовке и реализации металлолома</span>
-        <span v-if="staff.groups[0] ==  17">Отдел ремонта подвижного состава</span>
-        <span v-if="staff.groups[0] == 18">Отдел по организации взаиморасчетов с ремонтными предприятиями</span>
-        <span v-if="staff.groups[0] ==  19">Финансовая служба</span>
-        <span v-if="staff.groups[0] ==  20">Отдел по работе с банками</span>
-        <span v-if="staff.groups[0] ==  21">Финансово-экономический отдел</span>
-        <span v-if="staff.groups[0] ==  22">Департамент организации перевозок</span>
-        <span v-if="staff.groups[0] ==  23">Отдел по перевозке наливных грузов</span>
-        <span v-if="staff.groups[0] ==  24">Диспетчерский центр</span>
-        <span v-if="staff.groups[0] ==  25">Отдел аренды и приобретения подвижного состава</span>
-        <span v-if="staff.groups[0] == 26"> Отдел маркетинга и рекламы</span>
-        <span v-if="staff.groups[0] ==  27">Отдел информационных технологий</span>
-        <span v-if="staff.groups[0] ==  28">Обособленное подразделение в г. Кемерово</span>
-        <span v-if="staff.groups[0] ==  29">Отдел по работе с нефтеналивными грузами</span>
-        <span v-if="staff.groups[0] ==  30">Правовое управление</span>
-        <span v-if="staff.groups[0] ==  31">Обособленное подразделение в г. Москва</span>
-        <span v-if="staff.groups[0] ==  32">Служба охраны труда</span>
-        <span v-if="staff.groups[0] ==  33">Отдел перевозок в универсальном подвижном составе</span>
-        <span v-if="staff.groups[0] ==  34">Служба безопасности</span>
-        <span v-if="staff.groups[0] ==  35">Отдел экономической безопасности</span>
-        <span v-if="staff.groups[0] ==  36"> Управление взаиморасчетов</span>
-        <span v-if="staff.groups[0] ==  37">Сектор обеспечения перевозок</span>
-        <span v-if="staff.groups[0] ==  38">Сектор взаиморасчетов с клиентами</span>
-        <span v-if="staff.groups[0] ==  39"> 1С:БУ</span>
-        <span v-if="staff.groups[0] ==  40">Отдел кадров</span>
-                 </td>
-            <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.phone_corp}}</td>
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>
-            <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.phone_personal}}</td>
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>
-            <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; " v-if="staff.manager != null">{{staff.inner_number}}</td>
-                <td v-else>—</td>
-            <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; " v-if="staff.manager != null">{{staff.schedule}}</td>
-                <td v-else>—</td>  
-            <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.manager}}</td>
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>  
-            <td><button class="Request" @click="openChangePage(staff.id)" disabled>Редактировать</button></td>
-            <td><button class="Delete" @click="getCurrentUser(staff.id)">Удалить</button></td>
-        </tr>
-    </tbody>
-</table>
+        <tbody style="max-width: 90% !important;">
+            <tr v-for="staff in all_staff" :key="staff.id">
+                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.manager.photo}}</td>
+                    <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>
+
+                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.last_name}}</td>
+                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.first_name}}</td>
+                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">{{staff.middle_name}}</td>
+                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">{{staff.post}}</td>
+                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.email}}</td>
+                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">
+            <span v-if="staff.groups[0] == 1">admin</span>
+            <span v-if="staff.groups[0] == 3">Бухгалтерия</span> 
+            <span v-if="staff.groups[0] ==  4">Коммерческий департамент</span>
+            <span v-if="staff.groups[0] == 5">Коммерческий отдел</span>
+            <span v-if="staff.groups[0] ==  6">Сектор по работе с универсальными грузами</span>
+            <span v-if="staff.groups[0] == 7">Административно-хозяйственный отдел</span>
+            <span v-if="staff.groups[0] == 8">Обособленное подразделение в г. Нижнекамске</span>
+            <span v-if="staff.groups[0] == 9">Департамент логистики</span>
+            <span v-if="staff.groups[0] == 10">Отдел логистики</span>
+            <span v-if="staff.groups[0] == 11">Руководство</span>
+            <span v-if="staff.groups[0] ==  12">Обособленное подразделение в г. Набережные Челны</span>
+            <span v-if="staff.groups[0] ==  13">Отдел по работе с персоналом</span>
+            <span v-if="staff.groups[0] == 14">Управление эксплуатации и ремонта подвижного состава</span>
+            <span v-if="staff.groups[0] == 15">Отдел материально-технического обеспечения</span>
+            <span v-if="staff.groups[0] ==  16">Сектор по заготовке и реализации металлолома</span>
+            <span v-if="staff.groups[0] ==  17">Отдел ремонта подвижного состава</span>
+            <span v-if="staff.groups[0] == 18">Отдел по организации взаиморасчетов с ремонтными предприятиями</span>
+            <span v-if="staff.groups[0] ==  19">Финансовая служба</span>
+            <span v-if="staff.groups[0] ==  20">Отдел по работе с банками</span>
+            <span v-if="staff.groups[0] ==  21">Финансово-экономический отдел</span>
+            <span v-if="staff.groups[0] ==  22">Департамент организации перевозок</span>
+            <span v-if="staff.groups[0] ==  23">Отдел по перевозке наливных грузов</span>
+            <span v-if="staff.groups[0] ==  24">Диспетчерский центр</span>
+            <span v-if="staff.groups[0] ==  25">Отдел аренды и приобретения подвижного состава</span>
+            <span v-if="staff.groups[0] == 26"> Отдел маркетинга и рекламы</span>
+            <span v-if="staff.groups[0] ==  27">Отдел информационных технологий</span>
+            <span v-if="staff.groups[0] ==  28">Обособленное подразделение в г. Кемерово</span>
+            <span v-if="staff.groups[0] ==  29">Отдел по работе с нефтеналивными грузами</span>
+            <span v-if="staff.groups[0] ==  30">Правовое управление</span>
+            <span v-if="staff.groups[0] ==  31">Обособленное подразделение в г. Москва</span>
+            <span v-if="staff.groups[0] ==  32">Служба охраны труда</span>
+            <span v-if="staff.groups[0] ==  33">Отдел перевозок в универсальном подвижном составе</span>
+            <span v-if="staff.groups[0] ==  34">Служба безопасности</span>
+            <span v-if="staff.groups[0] ==  35">Отдел экономической безопасности</span>
+            <span v-if="staff.groups[0] ==  36"> Управление взаиморасчетов</span>
+            <span v-if="staff.groups[0] ==  37">Сектор обеспечения перевозок</span>
+            <span v-if="staff.groups[0] ==  38">Сектор взаиморасчетов с клиентами</span>
+            <span v-if="staff.groups[0] ==  39"> 1С:БУ</span>
+            <span v-if="staff.groups[0] ==  40">Отдел кадров</span>
+                    </td>
+                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.phone_corp}}</td>
+                    <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>
+                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.phone_personal}}</td>
+                    <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>
+                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; " v-if="staff.manager != null">{{staff.inner_number}}</td>
+                    <td v-else>—</td>
+                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; " v-if="staff.manager != null">{{staff.schedule}}</td>
+                    <td v-else>—</td>  
+                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.manager}}</td>
+                    <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>  
+                <td><button class="Request" @click="openChangePage(staff.id)">Редактировать</button></td>
+                <td><button class="Delete" @click="getCurrentUser(staff.id)">Удалить</button></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 <section  style="display:block" id="loaderStaff" v-if="loaderStaff">
@@ -178,57 +179,88 @@
                         <th>Должность</th>
                         <th>Почта</th>
                         <th>Отдел</th>
-                        <th>Телефон корпоративный</th>
-                        <th>Телефон личный</th>
-                        <th>Внутренний номер</th>
-                        <th>Время работы</th>
-                        <th>Начальник</th>
+            
                     </tr>
                     <tr>
-                        <td>{{current_user_staff.last_name}}</td>
-                        <td>{{current_user_staff.first_name}}</td>
-                        <td>{{current_user_staff.middle_name}}</td>
-                        <td>{{current_user_staff.post}}</td>
-                        <td>{{current_user_staff.groups[0]}}</td>
-                        <!-- <td v-if="current_user_staff.manager != null">{{current_user_staff.manager.phone_corp}}</td>
-                        <td v-if="current_user_staff.manager != null">{{current_user_staff.manager.phone_personal}}</td>
-                        <td v-if="current_user_staff.manager != null">{{current_user_staff.manager.inner_number}}</td>
-                        <td v-if="current_user_staff.manager != null">{{current_user_staff.manager.schedule}}</td>
-                        <td v-if="current_user_staff.manager != null">{{current_user_staff.manager.last_name}} {{current_user_staff_change.manager.first_name}} {{current_user_staff_change.manager.middle_name}}</td> -->
-        
+                        <td>{{current_user_staff.last_name}}<input type="text" v-model="last_name_change"></td>
+                        <td>{{current_user_staff.first_name}}<input type="text" v-model="first_name_change"></td>
+                        <td>{{current_user_staff.middle_name}}<input type="text" v-model="middle_name_change"></td>
+                        <td>{{current_user_staff.post}}<input type="text" v-model="post_change"></td>
+                        <td>{{current_user_staff.email}}<input type="text" v-model="email_change"></td>
+                        <td>
+                            <span v-if="current_user_staff.groups[0] == 1">admin</span>
+                            <span v-if="current_user_staff.groups[0] == 3">Бухгалтерия</span> 
+                            <span v-if="current_user_staff.groups[0] ==  4">Коммерческий департамент</span>
+                            <span v-if="current_user_staff.groups[0] == 5">Коммерческий отдел</span>
+                            <span v-if="current_user_staff.groups[0] ==  6">Сектор по работе с универсальными грузами</span>
+                            <span v-if="current_user_staff.groups[0] == 7">Административно-хозяйственный отдел</span>
+                            <span v-if="current_user_staff.groups[0] == 8">Обособленное подразделение в г. Нижнекамске</span>
+                            <span v-if="current_user_staff.groups[0] == 9">Департамент логистики</span>
+                            <span v-if="current_user_staff.groups[0] == 10">Отдел логистики</span>
+                            <span v-if="current_user_staff.groups[0] == 11">Руководство</span>
+                            <span v-if="current_user_staff.groups[0] ==  12">Обособленное подразделение в г. Набережные Челны</span>
+                            <span v-if="current_user_staff.groups[0] ==  13">Отдел по работе с персоналом</span>
+                            <span v-if="current_user_staff.groups[0] == 14">Управление эксплуатации и ремонта подвижного состава</span>
+                            <span v-if="current_user_staff.groups[0] == 15">Отдел материально-технического обеспечения</span>
+                            <span v-if="current_user_staff.groups[0] ==  16">Сектор по заготовке и реализации металлолома</span>
+                            <span v-if="current_user_staff.groups[0] ==  17">Отдел ремонта подвижного состава</span>
+                            <span v-if="current_user_staff.groups[0] == 18">Отдел по организации взаиморасчетов с ремонтными предприятиями</span>
+                            <span v-if="current_user_staff.groups[0] ==  19">Финансовая служба</span>
+                            <span v-if="current_user_staff.groups[0] ==  20">Отдел по работе с банками</span>
+                            <span v-if="current_user_staff.groups[0] ==  21">Финансово-экономический отдел</span>
+                            <span v-if="current_user_staff.groups[0] ==  22">Департамент организации перевозок</span>
+                            <span v-if="current_user_staff.groups[0] ==  23">Отдел по перевозке наливных грузов</span>
+                            <span v-if="current_user_staff.groups[0] ==  24">Диспетчерский центр</span>
+                            <span v-if="current_user_staff.groups[0] ==  25">Отдел аренды и приобретения подвижного состава</span>
+                            <span v-if="current_user_staff.groups[0] == 26"> Отдел маркетинга и рекламы</span>
+                            <span v-if="current_user_staff.groups[0] ==  27">Отдел информационных технологий</span>
+                            <span v-if="current_user_staff.groups[0] ==  28">Обособленное подразделение в г. Кемерово</span>
+                            <span v-if="current_user_staff.groups[0] ==  29">Отдел по работе с нефтеналивными грузами</span>
+                            <span v-if="current_user_staff.groups[0] ==  30">Правовое управление</span>
+                            <span v-if="current_user_staff.groups[0] ==  31">Обособленное подразделение в г. Москва</span>
+                            <span v-if="current_user_staff.groups[0] ==  32">Служба охраны труда</span>
+                            <span v-if="current_user_staff.groups[0] ==  33">Отдел перевозок в универсальном подвижном составе</span>
+                            <span v-if="current_user_staff.groups[0] ==  34">Служба безопасности</span>
+                            <span v-if="current_user_staff.groups[0] ==  35">Отдел экономической безопасности</span>
+                            <span v-if="current_user_staff.groups[0] ==  36"> Управление взаиморасчетов</span>
+                            <span v-if="current_user_staff.groups[0] ==  37">Сектор обеспечения перевозок</span>
+                            <span v-if="current_user_staff.groups[0] ==  38">Сектор взаиморасчетов с клиентами</span>
+                            <span v-if="current_user_staff.groups[0] ==  39"> 1С:БУ</span>
+                            <span v-if="current_user_staff.groups[0] ==  40">Отдел кадров</span>
+                            <!-- {{current_user_staff.groups[0]}} -->
+                            <select v-model="groups_change" style="height:40px; margin-top: 10px; cursor: pointer;">
+                                <option 
+                                v-for="userGroup in addUserGroups"
+                                :key="userGroup.id"
+                                :value="[userGroup.id]">{{userGroup.name}}</option>
+                            </select>
+                            
+                        
+                        </td>
                     </tr>
-                    <!-- <tr>
-                        <th>Фамилия</th>
-                        <th>Имя</th>
-                        <th>Отчество</th>
-                        <th>Должность</th>
-                        <th>Почта</th>
-                        <th>Отдел</th>
+                </table>   
+
+                <table  class="staff_table table">
+                    <tr> 
                         <th>Телефон корпоративный</th>
                         <th>Телефон личный</th>
                         <th>Внутренний номер</th>
                         <th>Время работы</th>
                         <th>Начальник</th>
                     </tr>
-                    <tr v-for="current_user_staff_change in current_user_staff_change_all" :key="current_user_staff_change">
-                        <td><input type="text" v-bind="current_user_staff_change.last_name"></td>
-                        <td><input type="text" v-bind="current_user_staff_change.first_name"></td>
-                        <td>{{current_user_staff_change.middle_name}}</td>
-                        <td>{{current_user_staff_change.post}}</td>
-                        <td>{{current_user_staff_change.email}}</td>
-                        <td>{{current_user_staff_change.groups}}</td>
-                        <td v-if="staff.manager != null">{{current_user_staff_change.manager.phone_corp}}</td>
-                        <td v-if="staff.manager != null">{{current_user_staff_change.manager.phone_personal}}</td>
-                        <td v-if="staff.manager != null">{{current_user_staff_change.manager.inner_number}}</td>
-                        <td v-if="staff.manager != null">{{current_user_staff_change.manager.schedule}}</td>
-                        <td v-if="staff.manager != null">{{current_user_staff_change.manager.last_name}} {{current_user_staff_change.manager.first_name}} {{current_user_staff_change.manager.middle_name}}</td>
-                      
-                    </tr> -->
-                </table>   
+
+                    <tr>
+                        <td>{{current_user_staff.phone_corp}}<input type="text"  v-model="phone_corp_change"></td>
+                        <td>{{current_user_staff.phone_personal}}<input type="text"  v-model="phone_personal_change"></td>
+                        <td>{{current_user_staff.inner_number}}<input type="text" v-model="inner_number_change"></td>
+                        <td>{{current_user_staff.schedule}}<input type="text"  v-model="schedule_change"></td>
+                        <td>{{current_user_staff.manager}}<input type="text"  v-model="manager_change"></td>
+                    </tr>
+                </table>
             </div>  
             <div class="btn-staff-group container">
                 <button class="Cancel" style="width: 30%" @click="closeStaffModalChange()">Отмена</button>
-                <button class="Accept" style="width: 30%">Подтвердить</button>
+                <button class="Accept" style="width: 30%" @click="changeStaff(current_user_staff.id)">Подтвердить</button>
             </div>  
     </div>
 </div>
@@ -239,21 +271,25 @@
             <div style=" width: 98% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
                 <table class="staff_table table">
                     <tr>
-                        <th  style="background: #EBEBEB">Фото</th>
-                        <th  style="background: #EBEBEB">Фамилия</th>
-                        <th  style="background: #EBEBEB">Имя</th>
-                        <th  style="background: #EBEBEB">Отчество</th>
-                        <th  style="background: #EBEBEB">Должность</th>
-                        <th  style="background: #EBEBEB">Почта</th>
+                        <th  style="background: #EBEBEB; width: 5% !important;">Фото</th>
+                        <th  style="background: #EBEBEB; width: 10% !important;">Фамилия</th>
+                        <th  style="background: #EBEBEB; width: 10% !important;">Имя</th>
+                        <th  style="background: #EBEBEB; width: 10% !important;">Отчество</th>
+                        <th  style="background: #EBEBEB; width: 10% !important;">Должность</th>
+                        <th  style="background: #EBEBEB; width: 10% !important;">Почта</th>
                        
                     </tr>
                     <tr>
-                        <td><input type="file" name="user_photo"></td>
-                        <td><input type="text" v-model="last_name" placeholder="Иванов"></td>
-                        <td><input type="text" v-model="first_name" placeholder="Иван"></td>
-                        <td><input type="text" v-model="middle_name" placeholder="Иванович"></td>
-                        <td><input type="text" v-model="post" placeholder="Логист"></td>
-                        <td><input type="text" v-model="email" placeholder="i.ivanov@tehtrans.com"></td>
+                        <td style=" width: 5% !important;">
+                            
+                            <input type="file" @change="onFileSelected" multiple>
+                        
+                        </td>
+                        <td style=" width: 10% !important;"><input type="text" v-model="last_name" placeholder="Иванов"></td>
+                        <td style=" width: 10% !important;"><input type="text" v-model="first_name" placeholder="Иван"></td>
+                        <td style=" width: 10% !important;"><input type="text" v-model="middle_name" placeholder="Иванович"></td>
+                        <td style=" width: 10% !important;"><input type="text" v-model="post" placeholder="Логист"></td>
+                        <td style=" width: 10% !important;"><input type="text" v-model="email" placeholder="i.ivanov@tehtrans.com"></td>
                     </tr>
           
                 </table>   
@@ -273,7 +309,7 @@
                             <option 
                                 v-for="userGroup in addUserGroups"
                                 :key="userGroup.id"
-                                :value="[userGroup.id]">{{userGroup.name}}</option>
+                                :value="userGroup.id">{{userGroup.name}}</option>
                         </select></td>
                         <td><input type="text" v-model="phone_corp"  placeholder="89999999999"></td>
                         <td><input type="text" v-model="phone_personal"  placeholder="89999999999"></td>
@@ -298,6 +334,7 @@
             </div>  
     </div>
 </div>
+
 <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
 
     </div>
@@ -319,6 +356,19 @@ export default {
     },
     data(){
         return {
+            // v-model редактирования
+            last_name_change: '',
+            first_name_change: '',
+            middle_name_change: '',
+            post_change: '',
+            email_change: '',
+            groups_change: '',
+            phone_corp_change: '',
+            phone_personal_change: '',
+            inner_number_change: '',
+            schedule_change: '',
+            manager_change: '',
+
             all_staff: '',
             loaderStaff: false,
             current_user_staff: '',
@@ -327,7 +377,7 @@ export default {
             staff_change: false,
             add_staff: false,
 
-            // photo: '',
+            photo: null,
             first_name: '',
             second_name: '',
             last_name: '',
@@ -353,6 +403,8 @@ export default {
             notifyMessage: '',
             notifyClass: '',
 
+           
+
         }
     },
     mounted() {
@@ -372,9 +424,17 @@ export default {
             this.loaderStaff = false
             console.log(err)
         })
+        // api.staffGlobal()
+        // .then((response) => {
+        //     this.staffGlobal = response.data
+        // })
+        
 
     },
     methods: {
+        onFileSelected(event){
+            this.photo = event.target.photo[0]
+        },
         updateFiltersStaff(filter_staff){
             this.filter_staff = filter_staff
         },
@@ -385,8 +445,6 @@ export default {
             .then((response) => {
                 this.all_staff = response.data.data
                 this.loaderStaff = false
-                // document.getElementById('select-filter-staff').value= ''
-                // document.getElementById('input-filter-staff').value=''
             }).catch(err => {
                 console.log(err)
                 this.loaderStaff = false
@@ -418,16 +476,17 @@ export default {
             this.loaderStaff = true
             api.deleteUser(id)
             .then((response) => {
-                this.loaderStaff = false
                 this.wrapper_staff = false
                 this.showNotify = true
                 this.notifyHead = 'Успешно'
                 this.notifyMessage = 'Пользователь удален'
                 this.notifyClass = 'wrapper-success'
+                this.loaderStaff = false
                 setTimeout(this.closeNotification, 1500)
                 this.allStaff()
             })
         },
+        // Открыть страницу редактирования
         openChangePage(id){
            this.loaderStaff = true
            this.staff_change = true
@@ -435,6 +494,34 @@ export default {
                 .then((response) => {
                 this.loaderStaff = false
                 this.current_user_staff = response.data
+                })
+        },
+        // Подтвердить редактирование
+        changeStaff(id){
+            this.loaderStaff = true
+            this.staff_change = true
+            api.changeUserData(id, {
+            "last_name":this.last_name_change,
+            "first_name" : this.first_name_change,
+            "middle_name" : this.middle_name_change,
+            "post": this.post_change,
+            "email":this.email_change,
+            "groups":this.groups_change,
+            "phone_corp":this.phone_corp_change,
+            "phone_personal": this.phone_personal_change,
+            "inner_number":this.inner_number_change,
+            "schedule":this.schedule_change,
+            "manager":this.manager_change,
+            })
+                .then((response) => {
+                    this.showNotify = true
+                    this.notifyHead = 'Успешно'
+                    this.notifyMessage = 'Пользователь изменен'
+                    this.notifyClass = 'wrapper-success'
+                    setTimeout(this.closeNotification, 1500)
+                    this.allStaff()
+                    this.loaderStaff = false
+                    this.staff_change = false
                 })
         },
         closeNotification(){
@@ -450,6 +537,8 @@ export default {
             const pretoken = JSON.parse(localStorage.getItem("vuex"))
             const token = pretoken.auth.user.token
             this.loaderStaff = true
+            const fd = new FormData()
+            fd.append('image', this.photo)
 
         fetch('http://10.1.5.65/api/personal/users/create/', {
             method: 'POST',
@@ -458,13 +547,13 @@ export default {
                 'Authorization': `Basic ${token}` 
             },
             body: JSON.stringify({
-            "photo": this.photo,
+            "photo": fd,
             "email": this.email,
             "first_name": this.first_name,
             "last_name": this.last_name,
             "middle_name": this.middle_name,
             "post": this.post,
-            "groups": this.groups,
+            "groups": [this.groups],
             "phone_corp": this.phone_corp,
             "phone_personal": this.phone_personal,
             "inner_number": this.inner_number,
@@ -479,7 +568,7 @@ export default {
                     this.notifyHead = 'Успешно'
                     this.notifyMessage = 'Пользователь добавлен'
                     this.notifyClass = 'wrapper-success'
-                    
+                    this.allStaff()
                     setTimeout(this.closeNotification, 1500)
                     this.add_staff = false
                     this.loaderStaff = false
@@ -500,6 +589,9 @@ export default {
 
 
 <style>
+th {
+    background: #EBEBEB !important;
+}
 .staff_table {
     position: relative;
     left: 50%;

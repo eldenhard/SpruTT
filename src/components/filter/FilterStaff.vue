@@ -7,7 +7,7 @@
     <input type="text" class="input_filter_staff" placeholder="введите почту сотрудника"  v-model="filter_staff.email" @change="updateFilterDataStaff"> -->
 
     <!-- <input type="text" class="input_filter_staff" placeholder="введите отдел сотрудника"  v-model="filter_staff.groups" @change="updateFilterDataStaff"> -->
-    <select class="input_filter_staff" id="select-filter-staff" style="margin-top: 7px; cursor: pointer;" v-model="filter_staff.groups"  @change="updateFilterDataStaff">
+    <select class="input_filter_staff" id="select-filter-staff" style="margin-top: 8px; cursor: pointer;" v-model="filter_staff.groups"  @change="updateFilterDataStaff">
         <option value="" style="text-align: center">--Выберите отдел--</option>
         <option
         v-for="groupsFilter in groupsFilterStaff" :key="groupsFilter.id"  :value="groupsFilter.id">
