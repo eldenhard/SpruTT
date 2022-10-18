@@ -1,13 +1,13 @@
 <template>
 <div class="filterStaff">
-    <input type="text" id="input-filter-staff"  class="input_filter_staff" placeholder="введите данные сотрудника" v-model="filter_staff.search" @change="updateFilterDataStaff">
+    <input type="text" id="input-filter-staff1"  class="input_filter_staff" placeholder="введите данные сотрудника" v-model="filter_staff.search" @change="updateFilterDataStaff">
 <!-- 
     <input type="text" class="input_filter_staff" placeholder="введите фамилию сотрудника"  v-model="filter_staff.last_name" @change="updateFilterDataStaff">
 
     <input type="text" class="input_filter_staff" placeholder="введите почту сотрудника"  v-model="filter_staff.email" @change="updateFilterDataStaff"> -->
 
     <!-- <input type="text" class="input_filter_staff" placeholder="введите отдел сотрудника"  v-model="filter_staff.groups" @change="updateFilterDataStaff"> -->
-    <select class="input_filter_staff" id="select-filter-staff" style="margin-top: 8px; cursor: pointer;"
+    <select class="input_filter_staff" id="select-filter-staff2" style="margin-top: 8px; cursor: pointer;"
      v-model="filter_staff.groups"
     @change="updateFilterDataStaff">
         <option value="" style="text-align: center">--Выберите отдел--</option>

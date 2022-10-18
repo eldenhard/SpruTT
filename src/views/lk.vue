@@ -9,49 +9,9 @@
     <br>
     <p class="contact-var"> <span class="contact-header">ФИО: </span>{{PersonalData.last_name}} {{PersonalData.first_name}} {{PersonalData.middle_name}}</p>
     <p class="contact-var"><span class="contact-header">Должность: </span>{{PersonalData.post}}</p>
-    <p class="contact-var" v-for="group in PersonalData.groups" :key="group.id">
-         <span class="contact-header" >Отдел: </span>
-         <span v-if="group == 1">admin</span>
-         <span v-if="group == 3">Бухгалтерия</span> 
-       <span v-if="group ==  4">Коммерческий департамент</span>
-        <span v-if="group == 5">Коммерческий отдел</span>
-       <span v-if="group ==  6">Сектор по работе с универсальными грузами</span>
-        <span v-if="group == 7">Административно-хозяйственный отдел</span>
-        <span v-if="group == 8">Обособленное подразделение в г. Нижнекамске</span>
-        <span v-if="group == 9">Департамент логистики</span>
-        <span v-if="group == 10">Отдел логистики</span>
-        <span v-if="group == 11">Руководство</span>
-       <span v-if="group ==  12">Обособленное подразделение в г. Набережные Челны</span>
-       <span v-if="group ==  13">Отдел по работе с персоналом</span>
-        <span v-if="group == 14">Управление эксплуатации и ремонта подвижного состава</span>
-        <span v-if="group == 15">Отдел материально-технического обеспечения</span>
-       <span v-if="group ==  16">Сектор по заготовке и реализации металлолома</span>
-       <span v-if="group ==  17">Отдел ремонта подвижного состава</span>
-        <span v-if="group == 18">Отдел по организации взаиморасчетов с ремонтными предприятиями</span>
-       <span v-if="group ==  19">Финансовая служба</span>
-       <span v-if="group ==  20">Отдел по работе с банками</span>
-       <span v-if="group ==  21">Финансово-экономический отдел</span>
-       <span v-if="group ==  22">Департамент организации перевозок</span>
-       <span v-if="group ==  23">Отдел по перевозке наливных грузов</span>
-       <span v-if="group ==  24">Диспетчерский центр</span>
-       <span v-if="group ==  25">Отдел аренды и приобретения подвижного состава</span>
-        <span v-if="group == 26"> Отдел маркетинга и рекламы</span>
-       <span v-if="group ==  27">Отдел информационных технологий</span>
-       <span v-if="group ==  28">Обособленное подразделение в г. Кемерово</span>
-       <span v-if="group ==  29">Отдел по работе с нефтеналивными грузами</span>
-       <span v-if="group ==  30">Правовое управление</span>
-       <span v-if="group ==  31">Обособленное подразделение в г. Москва</span>
-       <span v-if="group ==  32">Служба охраны труда</span>
-       <span v-if="group ==  33">Отдел перевозок в универсальном подвижном составе</span>
-       <span v-if="group ==  34">Служба безопасности</span>
-       <span v-if="group ==  35">Отдел экономической безопасности</span>
-       <span v-if="group ==  36"> Управление взаиморасчетов</span>
-       <span v-if="group ==  37">Сектор обеспечения перевозок</span>
-       <span v-if="group ==  38">Сектор взаиморасчетов с клиентами</span>
-       <span v-if="group ==  39"> 1С:БУ</span>
-       <span v-if="group ==  40">Отдел кадров</span>
-       </p>
-    <!-- <p class="contact-var"> <span class="contact-header">Начальник: </span>{{PersonalData.manager}}</p> -->
+    <p class="contact-var" v-for="personal in PersonalData.groups" :key="personal.id">
+        <span class="contact-header" style="font-weight: 500; font-size: 15px;">Отдел:  {{getGroupName(personal)}}</span>
+    </p>
     <p class="contact-var"><span class="contact-header">Почта: </span>{{PersonalData.email}}</p>
     <h4><span style="border-bottom: 2px solid #EC2332">Сотрудники в подчинении</span></h4>
     <br>
@@ -138,11 +98,15 @@
 
 <script>
 import {mapState} from 'vuex'
+import {getGroupName} from '@/helpers/getGroupName'
 export default {
     name: 'lk',
     computed: {
         ...mapState({
-            id: state=> state.auth.uid
+            // id: state=> state.auth.uid
+            user: state => state.auth.user,
+            uid: state => state.auth.uid,
+            allGroups: state => state.auth.groups
         })
     },
     data(){
@@ -230,7 +194,10 @@ fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
     methods: {
         Notif(){
             document.getElementById('notifications-2').style.display = 'none'
-
+        },
+        getGroupName(id){
+            const group =  getGroupName(this.allGroups, id)
+            return group[0]?.name
         }
     }
 

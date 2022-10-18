@@ -284,19 +284,6 @@ export default {
     },
     data(){
         return {
-            // v-model редактирования
-            last_name_change: '',
-            first_name_change: '',
-            middle_name_change: '',
-            post_change: '',
-            email_change: '',
-            groups_change: '',
-            phone_corp_change: '',
-            phone_personal_change: '',
-            inner_number_change: '',
-            schedule_change: '',
-            manager_change: '',
-
             all_staff: '',
             loaderStaff: false,
             current_user_staff: '',
@@ -374,6 +361,8 @@ export default {
             .then((response) => {
                 this.all_staff = response.data.data
                 this.loaderStaff = false
+                this.filter_staff.groups = Array[0]
+
             }).catch(err => {
                 console.log(err)
                 this.loaderStaff = false
