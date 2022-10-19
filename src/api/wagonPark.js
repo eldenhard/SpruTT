@@ -26,12 +26,19 @@ const getWagonType = () => {
     return api.get(`${resource}/wagon-type`)
 }
 
+// ------------- ЗАПРОСЫ ДЛЯ БРОШЕННЫХ ВАГОНОВ ---------------
+const getWagonsThrow = () => {
+    return api.get(`${resource}/dislocations?operation=БРОС`)
+}
 export default {
     getWagons,
     getPassport,
     getArenda,
     getBelong,
     getCurrentWagon,
-    getWagonType
+    getWagonType,
+    
+// Брошенные вагоны
+    getWagonsThrow
 
 }
