@@ -9,6 +9,8 @@ const state = {
     uid: null,
     isLoggedIn: false,
     groups: null,
+
+    users: null
 }
 
 export const mutationTypes = {
@@ -17,13 +19,19 @@ export const mutationTypes = {
     loginFailure: `[${resource}] loginFailure`,
     // у нас форма авторизации показываетс когда isLoggedIn = false. Когда авторизация успешна - там тру. Нам нужен отдельный обработчик чтобы сделать логаут
     logout: `[${resource}] logout`,
-    getStaffGroups: `[${resource}] getStaffGroups`
+    getStaffGroups: `[${resource}] getStaffGroups`,
+
+    staffGlobal: `[${resource}] staffGlobal`
+
 }
 
 export const actionTypes = {
     login: `${resource} login`,
     logout: `${resource} logout`,
-    getStaffGroups: `${resource} getStaffGroups`
+    getStaffGroups: `${resource} getStaffGroups`,
+
+    staffGlobal: `[${resource}] staffGlobal`
+
 }
 
 const mutations = {
@@ -41,7 +49,10 @@ const mutations = {
       },
       [mutationTypes.getStaffGroups](state, data){
             state.groups = data
-      }
+      },
+      [mutationTypes.staffGlobal](state, data){
+        state.users = data
+  }
 }
 
 const actions = {
@@ -69,7 +80,17 @@ const actions = {
                 context.commit(mutationTypes.getStaffGroups, response.data.data)
                 resolve(response.data.data)
             }).catch(err => {
-                
+                reject(err)
+            })
+        })
+    },
+    async [actionTypes.staffGlobal](context){
+        return new Promise((resolve, reject) => {
+            staff_api.staffGlobal()
+            .then((response) => {
+                context.commit(mutationTypes.staffGlobal, response.data.data)
+                resolve(response.data.data)
+            }).catch(err => {
                 reject(err)
             })
         })

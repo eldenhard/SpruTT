@@ -38,7 +38,7 @@
                 <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">{{staff.middle_name}}</td>
                 <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">{{staff.post}}</td>
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.email}}</td>
-                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">
+                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center;" >
                     {{getGroupName(staff.groups[0])}}
             <!-- <span v-if="staff.groups[0] ==  40">Отдел кадров</span> -->
                     </td>
@@ -50,7 +50,7 @@
                     <td v-else>—</td>
                 <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; " v-if="staff.manager != null">{{staff.schedule}}</td>
                     <td v-else>—</td>  
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.manager}}</td>
+                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{getUserById(staff.manager)}}</td>
                     <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>  
                 <td><button class="Request" @click="openChangePage(staff.id)">Редактировать</button></td>
                 <td><button class="Delete" @click="getCurrentUser(staff.id)">Удалить</button></td>
@@ -139,35 +139,29 @@
              <div style=" width: 98% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
                 <table class="staff_table table">
                     <tr>
+                        <th>Фото</th>
                         <th>Фамилия</th>
                         <th>Имя</th>
                         <th>Отчество</th>
                         <th>Должность</th>
                         <th>Почта</th>
-                        <th>Отдел</th>
-            
                     </tr>
                     <tr>
+                        <td style=" width: 5% !important;">
+                            <input type="file" @change="onFileSelected" name="photo"  ref="photo">
+                        </td>
                         <td><input type="text" v-model="current_user_staff.last_name"></td>
                         <td><input type="text" v-model="current_user_staff.first_name"></td>
                         <td><input type="text" v-model="current_user_staff.middle_name"></td>
                         <td><input type="text" v-model="current_user_staff.post"></td>
                         <td><input type="text" v-model="current_user_staff.email"></td>
-                        <td>
-                            <select v-model="current_user_staff.groups[0]" style="height:40px; margin-top: 10px; cursor: pointer;">
-                                <option 
-                                v-for="userGroup in allGroups"
-                                :key="userGroup.id"
-                                :value="userGroup.id">{{userGroup.name}}</option>
-                            </select>
-                            
-                        
-                        </td>
+                
                     </tr>
                 </table>   
 
                 <table  class="staff_table table">
-                    <tr> 
+                    <tr>   
+                        <th>Отдел</th>
                         <th>Телефон корпоративный</th>
                         <th>Телефон личный</th>
                         <th>Внутренний номер</th>
@@ -176,11 +170,28 @@
                     </tr>
 
                     <tr>
-                        <td><input type="text"  v-model="current_user_staff.phone_corp"></td>
-                        <td><input type="text"  v-model="current_user_staff.phone_personal"></td>
-                        <td><input type="text"  v-model="current_user_staff.inner_number"></td>
-                        <td><input type="text"  v-model="current_user_staff.schedule"></td>
-                        <td><input type="text"  v-model="current_user_staff.manager"></td>
+                        <td>
+                            <select v-model="current_user_staff.groups" style="height:40px; margin-top: 10px; cursor: pointer; border: 1px solid #CCCCCC">
+                                <option 
+                                v-for="userGroup in allGroups"
+                                :key="userGroup.id"
+                                :value="userGroup.id">{{userGroup.name}}</option>
+                            </select>
+                        </td>
+
+                        <td><input type="text" v-model="current_user_staff.phone_corp"></td>
+                        <td><input type="text" v-model="current_user_staff.phone_personal"></td>
+                        <td><input type="text" v-model="current_user_staff.inner_number"></td>
+                        <td><input type="text" v-model="current_user_staff.schedule"></td>
+                        <td>
+                            <select v-model="current_user_staff.manager" style="height:40px; margin-top: 10px; cursor: pointer; border: 1px solid #CCCCCC">
+                                <option 
+                                v-for="global in staffGlobal"
+                                :key="global.id"
+                                :value="global.id">{{global.first_name}} {{global.last_name}}</option>
+                            </select>
+                        </td>
+                        <!-- <td><input type="text"  v-model="current_user_staff.manager"></td> -->
                     </tr>
                 </table>
             </div>  
@@ -190,6 +201,9 @@
             </div>  
     </div>
 </div>
+
+
+
 
 <div class="wrapper_staff" style="display: block;" v-if="add_staff">
     <div class="modal_staff" style="width: 95%;">
@@ -218,7 +232,13 @@
                         <td style=" width: 10% !important;"><input type="text" v-model="first_name" placeholder="Иван"></td>
                         <td style=" width: 10% !important;"><input type="text" v-model="middle_name" placeholder="Иванович"></td>
                         <td style=" width: 10% !important;"><input type="text" v-model="post" placeholder="Логист"></td>
-                        <td style=" width: 10% !important;"><input type="text" v-model="email" placeholder="i.ivanov@tehtrans.com"></td>
+                        <td style=" width: 10% !important;">
+                            <input type="text" v-model="email"
+                             placeholder="i.ivanov@tehtrans.com"
+                            :class="{'error': checkError('email')}"
+                            @input="deleteErrorOnline('email')">
+                            <p v-if="checkError('email')">{{formErrorsMess['email'][0]}}</p>
+                        </td>
                     </tr>
           
                 </table>   
@@ -233,19 +253,25 @@
                         <th  style="background: #EBEBEB" >Начальник</th>
                     </tr>
                     <tr>
-                        <td><select v-model="groups" style="margin-top: 5%; height: 45px; cursor: pointer">
+                        <td>
+                        <select v-model="groups" style="margin-top: 5%; height: 45px; cursor: pointer; border: 1px solid #CCCCCC"
+                         :class="{'error': checkError('groups')}"
+                         @change="deleteErrorOnline('groups')">
                             <option value="">Выберите отдел</option>
                             <option 
                                 v-for="userGroup in allGroups"
                                 :key="userGroup.id"
                                 :value="userGroup.id">{{userGroup.name}}</option>
-                        </select></td>
+                        </select>
+                        <p v-if="checkError('groups')">Выберите отдел</p>
+
+                    </td>
                         <td><input type="text" v-model="phone_corp"  placeholder="89999999999"></td>
                         <td><input type="text" v-model="phone_personal"  placeholder="89999999999"></td>
                         <td><input type="text" v-model="inner_number"  placeholder="007"></td>
                         <td><input type="text" v-model="schedule"  placeholder="9:00 - 18:00"></td>
                         <td>
-                            <select type="text" v-model="manager"  style="margin-top: 5%; height: 45px; cursor: pointer">
+                            <select type="text" v-model="manager"  style="margin-top: 3%; height: 43px; cursor: pointer; border: 1px solid #CCCCCC" >
                             <option value="">Выберите начальника</option>
                             <option
                                 v-for="manager in allManagerStaff"
@@ -277,6 +303,7 @@ import api from '@/api/staff'
 import FilterStaff from '@/components/filter/FilterStaff.vue'
 import Notifications from '@/components/notifications/Notifications.vue'
 import {getGroupName} from '@/helpers/getGroupName'
+import {getUserById} from '@/helpers/getAllUsers'
 export default {
     name: 'StaffTable',
     components: {FilterStaff, Notifications},
@@ -284,11 +311,15 @@ export default {
         ...mapState({
             user: state => state.auth.user,
             uid: state => state.auth.uid,
-            allGroups: state => state.auth.groups
+            allGroups: state => state.auth.groups,
+            staffGlobal: state => state.auth.users
         })
     },
     data(){
         return {
+            formErrors: [],
+            formErrorsMess: '',
+
             all_staff: '',
             loaderStaff: false,
             current_user_staff: '',
@@ -311,7 +342,10 @@ export default {
             schedule: '',
             manager: '',
 
-            filter_staff: null,
+            filter_staff: {
+                groups: [],
+                search: ''
+            },
 
             addUserGroups: '',
 
@@ -346,9 +380,33 @@ export default {
 
     },
     methods: {
+        deleteErrorOnline(key){
+  
+        const index = this.formErrors.indexOf(key);
+            if (index > -1) { 
+                this.formErrors.splice(index, 1); 
+            }
+        if (key == 'email') {
+            if (this.email.length == 0) {
+            this.formErrors.push('email')
+            }
+        }
+        if (key == 'groups') {
+            if (this.groups.length == 0) {
+            this.formErrors.push('groups')
+            }
+        }
+        },
         getGroupName(id){
             const group =  getGroupName(this.allGroups, id)
             return group[0]?.name
+        },
+
+        getUserById(id) {
+            const manager = getUserById(this.staffGlobal, id)
+            if(manager[0]) {
+            return manager[0]?.last_name + ' ' +  manager[0]?.first_name[0] + '.'
+            } return ''
         },
         updateFiltersStaff(filter_staff){
             this.filter_staff = filter_staff
@@ -359,7 +417,7 @@ export default {
             .then((response) => {
                 this.all_staff = response.data.data
                 this.loaderStaff = false
-                this.filter_staff.groups = Array[0]
+                this.filter_staff.groups = []
                 this.filter_staff.search = ""
 
             }).catch(err => {
@@ -373,9 +431,7 @@ export default {
         closeStaffModalChange(){
             this.staff_change = false
         },
-        closeAddUser(){
-            this.add_staff = false
-        },
+
         // получение пользователя подлежащего удалению
         getCurrentUser(id){
           this.loaderStaff = true
@@ -410,8 +466,11 @@ export default {
                 .then((response) => {
                 this.loaderStaff = false
                 this.current_user_staff = response.data
-                if(this.current_user_staff.groups[0]){
-                    this.current_user_staff.groups[0] + ''
+                if(this.current_user_staff.groups.length){
+                    this.current_user_staff.groups = this.current_user_staff.groups[0] + ''
+                }
+                if(this.current_user_staff.manager){
+                    this.current_user_staff.manager = this.current_user_staff.manager + ''
                 }
 
                 })
@@ -420,19 +479,19 @@ export default {
         changeStaff(id){
             this.loaderStaff = true
             this.staff_change = true
-            api.changeUserData(id, {
-            "last_name":this.current_user_staff.last_name,
-            "first_name" : this.current_user_staff.first_name_change,
-            "middle_name" : this.current_user_staff.middle_name_change,
-            "post": this.current_user_staff.post_change,
-            "email":this.current_user_staff.email_change,
-            "groups":this.current_user_staff.groups_change,
-            "phone_corp":this.current_user_staff.phone_corp_change,
-            "phone_personal": this.current_user_staff.phone_personal_change,
-            "inner_number":this.current_user_staff.inner_number_change,
-            "schedule":this.current_user_staff.schedule_change,
-            "manager":this.current_user_staff.manager_change,
-            })
+
+            let formData = new FormData();
+            formData.append('photo', this.photo)
+            formData.append( "last_name",this.current_user_staff.last_name),
+            formData.append( "first_name", this.current_user_staff.first_name),
+            formData.append( "middle_name", this.current_user_staff.middle_name),
+            formData.append("post", this.current_user_staff.post),
+            formData.append("email", this.current_user_staff.email),
+            formData.append("groups", [this.current_user_staff.groups]),
+            formData.append("phone_corp", this.current_user_staff.phone_corp),
+            formData.append( "schedule", this.current_user_staff.schedule),
+            formData.append("manager", this.current_user_staff.manager)
+            api.changeUserData(id, formData)
                 .then((response) => {
                     this.notifyHead = 'Успешно'
                     this.notifyMessage = 'Пользователь изменен'
@@ -454,9 +513,17 @@ export default {
             this.photo = this.$refs.photo.files[0];
             console.log(event)
         },
+        checkError(key){
+            return this.formErrors.includes(key)
+        },
         // ОТКРЫТЬ ОКНО ДОБАВЛЕНИЯ ПОЛЬЗОВАТЕЛЯ
         addStaff(){
             this.add_staff = true
+        },
+        closeAddUser(){
+            this.add_staff = false
+            this.formErrors = []
+            this.formErrorsMess = ''
         },
         // ДОБАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ
         addUser(){
@@ -477,19 +544,25 @@ export default {
             formData.append("phone_personal", this.phone_personal)
             formData.append("inner_number", this.inner_number)
             formData.append("schedule", this.schedule)
-
-        
         api.createStuff(formData)
-        .then((response) => {
-            this.notifyHead = 'Успешно'
-            this.notifyMessage = 'Пользователь добавлен'
-            this.notifyClass = 'wrapper-success'
-            this.showNotify = true
-            setTimeout(this.closeNotification, 1500)
-            this.allStaff()
-            this.loaderStaff = false
-            this.add_staff = false
-        })
+            .then((response) => {
+                this.notifyHead = 'Успешно'
+                this.notifyMessage = 'Пользователь добавлен'
+                this.notifyClass = 'wrapper-success'
+                this.showNotify = true
+                setTimeout(this.closeNotification, 1500)
+                this.allStaff()
+                this.loaderStaff = false
+                this.closeAddUser()
+            }).catch(err => {
+                this.loaderStaff = false
+                let error = err.response.data
+                this.formErrors = Object.keys(error)
+                this.formErrorsMess = error
+                
+                
+
+            })
             
     
                 }
@@ -500,6 +573,10 @@ export default {
 
 
 <style>
+.error {
+    border: 1px solid red !important;
+    color: black !important;
+}
 th {
     background: #EBEBEB !important;
 }

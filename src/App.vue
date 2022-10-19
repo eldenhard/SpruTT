@@ -16,6 +16,8 @@ export default {
   components: {UpNavbar, Authorization},
   mounted(){
     this.$store.dispatch(actionTypes.getStaffGroups)
+    this.$store.dispatch(actionTypes.staffGlobal)
+
   }
 }
 </script>
