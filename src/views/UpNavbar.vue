@@ -11,8 +11,8 @@
           <router-link  to="/home" style="color: grey; font-size: 15px; text-decoration: none;">Справочники</router-link>
         </b-nav-item>
 
-        <b-nav-item disabled>
-          <router-link to="/wagonpark" style="color: grey; font-size: 15px; text-decoration: none;"> Вагонный парк</router-link>
+        <b-nav-item >
+          <router-link to="/wagonpark" style="color: black; text-decoration: none; font-size: 15px;"> Вагонный парк</router-link>
         </b-nav-item>
 
         <b-nav-item disabled> 
@@ -36,7 +36,7 @@
         </b-nav-item>
 
         <b-nav-item >
-          <router-link to="/personnel-service"style="color: black; text-decoration: none; font-size: 15px;">Кадровая служба</router-link>
+          <router-link to="/personnel-service" style="color: black; text-decoration: none; font-size: 15px;">Кадровая служба</router-link>
         </b-nav-item>
         <!-- <b-nav-item>
           <a href="/" @click="logout" style="color: black; text-decoration: none; font-size: 13px;">Выход</a>

@@ -28,9 +28,11 @@
 
         <tbody style="max-width: 90% !important;">
             <tr v-for="staff in all_staff" :key="staff.id">
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.manager.photo}}</td>
-                    <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>
-
+                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
+                    <a download target="_blank" :href="staff.photo" v-if="staff.photo">
+                        <img src="@/assets/user.png" alt="" width="35px !important">
+                    </a>
+                </td>
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.last_name}}</td>
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.first_name}}</td>
                 <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">{{staff.middle_name}}</td>
@@ -193,7 +195,8 @@
     <div class="modal_staff" style="width: 95%;">
         <h2>Добавление сотрудника</h2>
             <div style=" width: 98% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
-                <form enctype="multipart/form-data">
+
+            <!-- <form enctype="multipart/form-data"> -->
                 <table class="staff_table table">
                     <tr>
                         <th  style="background: #EBEBEB; width: 5% !important;">Фото</th>
@@ -207,7 +210,7 @@
                     <tr>
                         <td style=" width: 5% !important;">
                             
-                            <input type="file" @change="onFileSelected" name="file" ref="fileUploader">
+                            <input type="file" @change="onFileSelected" name="photo"  ref="photo">
                         
                         </td>
 
@@ -253,12 +256,13 @@
 
                     </tr>
                 </table>
-            </form>
-            </div>  
-            <div class="btn-staff-group container">
+                <div class="btn-staff-group container">
                 <button class="Cancel" style="width: 30%" @click="closeAddUser()">Отмена</button>
-                <button class="Accept" style="width: 30%" @click="addUser()">Добавить</button>
+                <button  class="Accept" style="width: 30%" @click="addUser()">Добавить</button>
             </div>  
+        <!-- </form> -->
+    </div>  
+
     </div>
 </div>
 
@@ -293,7 +297,7 @@ export default {
             staff_change: false,
             add_staff: false,
 
-            photo: null,
+            photo: '',
             first_name: '',
             second_name: '',
             last_name: '',
@@ -346,16 +350,9 @@ export default {
             const group =  getGroupName(this.allGroups, id)
             return group[0]?.name
         },
-        onFileSelected(){
-            this.photo = this.$refs.fileUploader.files[0]
-
-            var form = new FormData()
-            form.append('file', this.photo)
-        },
         updateFiltersStaff(filter_staff){
             this.filter_staff = filter_staff
         },
-
         allStaff(){
             this.loaderStaff = true
             api.getAllStaff(this.filter_staff)
@@ -370,11 +367,9 @@ export default {
                 this.loaderStaff = false
             })
         },
-
         closeStaffModalDelete() {
             this.wrapper_staff = false
         },
-
         closeStaffModalChange(){
             this.staff_change = false
         },
@@ -452,59 +447,51 @@ export default {
         closeNotification(){
             this.showNotify = false
         },
+
+
+
+        onFileSelected(event){
+            this.photo = this.$refs.photo.files[0];
+            console.log(event)
+        },
         // ОТКРЫТЬ ОКНО ДОБАВЛЕНИЯ ПОЛЬЗОВАТЕЛЯ
         addStaff(){
             this.add_staff = true
         },
         // ДОБАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ
-    addUser(){
+        addUser(){
             event.preventDefault()
-            const pretoken = JSON.parse(localStorage.getItem("vuex"))
-            const token = pretoken.auth.user.token
             this.loaderStaff = true
+            
+            let formData = new FormData();
+            formData.append('photo', this.photo)
+            formData.append("email", this.email)
+            formData.append("groups", [this.groups])
+            formData.append("manager", this.manager)
 
+            formData.append("first_name", this.first_name)
+            formData.append("last_name", this.last_name)
+            formData.append("middle_name", this.middle_name)
+            formData.append("post", this.post)
+            formData.append("phone_corp", this.phone_corp)
+            formData.append("phone_personal", this.phone_personal)
+            formData.append("inner_number", this.inner_number)
+            formData.append("schedule", this.schedule)
 
-        fetch('http://10.1.5.65/api/personal/users/create/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': `Basic ${token}` 
-            },
-            body: JSON.stringify({
-            "photo": this.photo,
-            "email": this.email,
-            "first_name": this.first_name,
-            "last_name": this.last_name,
-            "middle_name": this.middle_name,
-            "post": this.post,
-            "groups": [this.groups],
-            "phone_corp": this.phone_corp,
-            "phone_personal": this.phone_personal,
-            "inner_number": this.inner_number,
-            "schedule": this.schedule,
-            "manager": this.manager 
-        })
-        })
+        
+        api.createStuff(formData)
         .then((response) => {
-            if (response.ok){
-                return response.json().then((data)=>{
-                    this.showNotify = true
-                    this.notifyHead = 'Успешно'
-                    this.notifyMessage = 'Пользователь добавлен'
-                    this.notifyClass = 'wrapper-success'
-                    this.allStaff()
-                    setTimeout(this.closeNotification, 1500)
-                    this.add_staff = false
-                    this.loaderStaff = false
-                })
-            }
-            else{
-                console.log(response)
-                this.loaderStaff = false
-                this.add_staff = false
-
-            }
+            this.notifyHead = 'Успешно'
+            this.notifyMessage = 'Пользователь добавлен'
+            this.notifyClass = 'wrapper-success'
+            this.showNotify = true
+            setTimeout(this.closeNotification, 1500)
+            this.allStaff()
+            this.loaderStaff = false
+            this.add_staff = false
         })
+            
+    
                 }
      
     }

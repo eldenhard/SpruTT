@@ -24,6 +24,15 @@ const getStaffGroup = () => {
     return api.get(`${resource}/groups`)
 }
 
+const createStuff = (form) => {
+    return api.post(`${resource}/users/create/`, form, {
+        headers: {
+            //'Content-Type': 'application/json;charset=utf-8',
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+}
+
 export default {
     staffGlobal,
     getAllStaff,
@@ -31,5 +40,6 @@ export default {
     currentUser,
     changeUserData,
     getStaffGroup,
-    getAllManager
+    getAllManager,
+    createStuff
 }
