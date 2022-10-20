@@ -148,7 +148,7 @@
                     </tr>
                     <tr>
                         <td style=" width: 5% !important;">
-                            <input type="file" @change="onFileSelected" name="photo"  ref="photo">
+                            <input type="file" @change="onFileSelected" name="photo" ref="photo">
                         </td>
                         <td><input type="text" v-model="current_user_staff.last_name"></td>
                         <td><input type="text" v-model="current_user_staff.first_name"></td>

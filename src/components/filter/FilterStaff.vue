@@ -1,24 +1,31 @@
 <template>
 <div class="filterStaff">
-    <input type="text" id="input-filter-staff1"  class="input_filter_staff" placeholder="введите данные сотрудника" v-model="filter_staff.search" @change="updateFilterDataStaff">
-<!-- 
+
+<div>
+    <label for="input-filter-staff1" >Данные сотрудника</label>
+    <br>
+    <input type="text" id="input-filter-staff1" style="width: 100% !important; margin-top: -20px;"  class="input_filter_staff" placeholder="введите данные сотрудника" v-model="filter_staff.search" @change="updateFilterDataStaff">
+</div>
+    <!-- 
     <input type="text" class="input_filter_staff" placeholder="введите фамилию сотрудника"  v-model="filter_staff.last_name" @change="updateFilterDataStaff">
 
     <input type="text" class="input_filter_staff" placeholder="введите почту сотрудника"  v-model="filter_staff.email" @change="updateFilterDataStaff"> -->
 
    
     <!-- <input type="text" class="input_filter_staff" placeholder="введите отдел сотрудника"  v-model="filter_staff.groups" @change="updateFilterDataStaff"> -->
-
-    <select class="input_filter_staff" id="select-filter-staff2" style="margin-top: 8px; cursor: pointer;"
+<div style="width: 20%">
+    <label for="select-filter-staff2">Выберите отдел</label>
+    <br>
+    <select class="input_filter_staff" id="select-filter-staff2" style="cursor: pointer; width: 100% !important;"
      v-model="filter_staff.groups"
     @change="updateFilterDataStaff" >
-        <!-- <option value="" style="text-align: center">--Выберите отдел--</option> -->
+        <!-- <option  style="text-align: center">--Выберите отдел--</option> -->
         <option
-        v-for="groupsFilter in groupsFilterStaff" :key="groupsFilter.id"  :value="groupsFilter.id">
+        v-for="groupsFilter in groupsFilterStaff" :key="groupsFilter.id"  :value="groupsFilter.id" >
         {{groupsFilter.name}}
     </option>
     </select>
-
+</div>
 </div>
 </template>
 
