@@ -182,4 +182,7 @@ input, label{
     }
 
 } 
-
+.all-label {
+  color: rgb(76, 76, 76);
+padding-top: 1%;
+}

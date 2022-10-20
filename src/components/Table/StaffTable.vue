@@ -28,10 +28,11 @@
 
         <tbody style="max-width: 90% !important;">
             <tr v-for="staff in all_staff" :key="staff.id">
+
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
                         <img :src="staff.photo" alt="" width="55px !important">
-                 
                 </td>
+
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.last_name}}</td>
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.first_name}}</td>
                 <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">{{staff.middle_name}}</td>
@@ -60,7 +61,6 @@
 </div>
 
 <section  style="display:block" id="loaderStaff" v-if="loaderStaff">
-
 <svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
   viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
  <path fill="#C04945" d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3
@@ -134,7 +134,6 @@
     <div class="modal_staff" style="width: 90%">
         <h2>Редактирование</h2>
         <p>Кликните на поле которое необходимо редактировать</p>
-
              <div style=" width: 98% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
                 <table class="staff_table table">
                     <tr>

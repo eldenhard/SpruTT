@@ -71,6 +71,8 @@ export default{
         const pretoken = JSON.parse(localStorage.getItem("vuex"));
             const token = pretoken.auth.user.token;
             fetch("http://10.1.5.65/api/wagon-park/wagon-type/", {
+                // fetch("/api/wagon-park/wagon-type/", {
+
                 headers: {
                     "Authorization": `Basic ${token}`
                 },
