@@ -24,6 +24,9 @@
                             <div v-if="i.name==='Брошенные вагоны'"> 
                                 <AbandonTable/>
                             </div>
+                            <div v-if="i.name==='Полигоны'"> 
+                                <WagonTablePoligon/>
+                            </div>
                             <div v-if="i.name === 'Дислокация'">
                                <DislocationTable/>
                             </div>
@@ -48,10 +51,11 @@
   import DislocationTable from '../components/Table/DislocationTable.vue'
   import AbandonTable from '../components/Table/AbandonTable.vue'
   import ReportAbandoned from '../components/Table/ReportAbandoned.vue'
+  import WagonTablePoligon from '../components/Table/WagonTablePoligon.vue'
     
 export default{
     name: 'WagonPark',
-    components:{WagonTable, FlightTable, WagonNavbar, DislocationTable, AbandonTable, ReportAbandoned},
+    components:{WagonTable, FlightTable, WagonNavbar, DislocationTable, AbandonTable, ReportAbandoned, WagonTablePoligon},
     data() {
         return {
             tabs: [],

@@ -1,9 +1,9 @@
 <template>
     <div>
-        <FilterAbadon @updateFilterDataAbadon="updateFilterDataAbadon"></FilterAbadon>
-        <button class="Accept" @click="ThrowWagons()">Запросить вагоны</button>
+        <FilterWagonTablePoligon @updateFilterDataWagonDislocation="updateFilterDataWagonDislocation"></FilterWagonTablePoligon>
+        <button class="Accept" @click="getWagonPolygon()">Запросить вагоны</button>
         <br><br>
-<section  style="display:block" id="loaderAbandon" v-if="loaderAbandon">
+<section  style="display:block" id="loaderAbandon" v-if="loaderPoligon">
 <svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
   viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
  <path fill="#C04945" d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3
@@ -41,10 +41,8 @@
   </path>
 </svg>
   
-</section>        
-
-    <p class="amount">всего: {{amount}}</p>
-    <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto;"> 
+</section>   
+  <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto;"> 
     <table class="table" style="table-layout: fixed;">
         <thead>
             <tr>
@@ -137,120 +135,122 @@
                 </tr>
         </thead>
         <tbody>
-            <tr v-for="broc in throwWagons" :key="broc.id">
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.receipt}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station_downtime}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.last_operation_downtime}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.documents_registration_downtime}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.distance_left_from_current_dislocation}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.distance_all_from_departure_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.train_index}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.is_loaded}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.weight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_country}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.polygon}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{new Date(broc.last_operation_datetime).toLocaleString()}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{new Date(broc.calc_arrival_date).toLocaleString()}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{new Date(broc.current_station_arrival).toLocaleString()}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.arrival_date}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station_arrival}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station_arrival}}</td>
+            <tr v-for="polygon in polygonWagon" :key="polygon.id">
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.receipt}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station_downtime}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.last_operation_downtime}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.documents_registration_downtime}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.distance_left_from_current_polygon}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.distance_all_from_departure_station}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.train_index}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.is_loaded}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.weight}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_country}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.polygon}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{new Date(polygon.last_operation_datetime).toLocaleString()}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{new Date(polygon.calc_arrival_date).toLocaleString()}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{new Date(polygon.current_station_arrival).toLocaleString()}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.arrival_date}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station_arrival}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station_arrival}}</td>
 
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.number}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.invoice_type}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.shipment_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.number}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.invoice_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.shipment_type}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">
-                    <textarea name="" id="" cols="15" rows="1" :value="broc.invoice.shipper_company"></textarea>
+                    <textarea name="" id="" cols="15" rows="1" :value="polygon.invoice.shipper_company"></textarea>
                 </td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.shipper_okpo}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.shipper_okpo}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">
-                    <textarea name="" id="" cols="15" rows="1" :value="broc.invoice.consignee_company"></textarea>
+                    <textarea name="" id="" cols="15" rows="1" :value="polygon.invoice.consignee_company"></textarea>
                 </td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.consignee_okpo}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.tariff}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.payer_name}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.consignee_okpo}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.tariff}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.payer_name}}</td>
 
                 <!-- departure_station -->
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.name}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.code}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.is_port}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.is_repairing}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.latitude}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.longitude}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.road}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.name}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.code}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.code6}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.name_en}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.is_washing_station}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.build_flight}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.latitude}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.longitude}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.road}}</td>
                 
 
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.name}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.code}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.is_port}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.is_repairing}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.latitude}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.longitude}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.road}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.name}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.code}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.code6}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.name_en}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.is_washing_station}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.build_flight}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.latitude}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.longitude}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.road}}</td>
 
 
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.name}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.code}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.is_port}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.is_repairing}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.latitude}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.longitude}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.road}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.name}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.code}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.code6}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.name_en}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.is_washing_station}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.build_flight}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.latitude}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.longitude}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.road}}</td>
                
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.wagon.number}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.wagon.is_problem}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.wagon.volume}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.wagon.is_active}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.wagon.wagon_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon.number}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon.is_problem}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon.volume}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon.is_active}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon.wagon_type}}</td>
                 
 
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.cargo.name}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.cargo.cargo_class}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.wagon.volume}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.cargo.code}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.cargo.code6}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.cargo.name}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.cargo.cargo_class}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon.volume}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.cargo.code}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.cargo.code6}}</td>
 
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.operation.name}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.operation.full_name}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.operation.name}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.operation.full_name}}</td>
 
-                <td v-if="broc.drop != null" style="height: 50px !important; vertical-align: middle !important;">{{broc.drop.code}}</td>
+                <td v-if="polygon.drop != null" style="height: 50px !important; vertical-align: middle !important;">{{polygon.drop.code}}</td>
                 <td v-else> </td>
-                <td v-if="broc.drop != null" style="height: 50px !important; vertical-align: middle !important;">
-                    <textarea name="" id="" cols="15" rows="1" :value="broc.drop.reason"></textarea>
+                <td v-if="polygon.drop != null" style="height: 50px !important; vertical-align: middle !important;">
+                    <textarea name="" id="" cols="15" rows="1" :value="polygon.drop.reason"></textarea>
                     </td>
                 <td v-else> </td>
             </tr>
 
         </tbody>
-    </table>
-</div>
-<Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
+</table>
+  </div>
+  <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
 
     </div>
 </template>
 
+<style>
+
+</style>
 
 <script>
+import {mapState} from 'vuex'
 import api from '@/api/wagonPark'
-import { mapState } from 'vuex'
-import FilterAbadon from '@/components/filter/FilterAbadon.vue'
+import FilterWagonTablePoligon from '../filter/FilterWagonTablePoligon.vue'
 import Notifications from '@/components/notifications/Notifications.vue'
-
 export default {
-    name: 'Abandon',
-    components: {FilterAbadon, Notifications},
+    name: 'WagonTablePoligon',
+    components: {FilterWagonTablePoligon, Notifications},
     computed: {
         ...mapState({
             user: state => state.auth.user,
@@ -258,77 +258,43 @@ export default {
         })
     },
     data(){
-        return{
-            throwWagons: '',
-            loaderAbandon: false,
-            amount: null,
-            
-            filter_abadon: {
+        return {
+            loaderPoligon: false,
+            filter_wagonpolygon:{
                 wagon__wagon_type: '',
-                page_size: ''
-            }
+                polygon: ''
+            },
+            polygonWagon: '',
+            showNotify: false,
+            notifyHead: '',
+            notifyMessage: '',
+            notifyClass: '',
         }
     },
-
     methods: {
+        updateFilterDataWagonDislocation(filter_wagonpolygon){
+            this.filter_wagonpolygon = filter_wagonpolygon
+        },
         closeNotification(){
             this.showNotify = false
         },
-        ThrowWagons(){
-            this.loaderAbandon = true
-            api.getWagonsThrow(this.filter_abadon)
+        getWagonPolygon(){
+            this.loaderPoligon = true
+            api.getPolygon(this.filter_wagonpolygon)
             .then((response) => {
-                this.throwWagons = response.data.data
-                this.amount = response.data.amount
+                this.polygonWagon = response.data.data
+                this.loaderPoligon = false
                 this.notifyHead = 'Успешно'
                 this.notifyMessage = 'Данные отфильтрованы'
                 this.notifyClass = 'wrapper-success'
                 this.showNotify = true
                 setTimeout(this.closeNotification, 1500)
-                this.loaderAbandon = false
-                this.filter_abadon = ''
+                this.filter_wagonpolygon.wagon__wagon_type = ''
+                this.filter_wagonpolygon.polygon = ''
+
+
             })
-        },
-        updateFilterDataAbadon(filter_abadon){
-            this.filter_abadon = filter_abadon
-        },
+        }
     }
 }
 </script>
-
-<style>
-.tablAbadon {
-    table-layout: fixed;
-}
-#loaderAbandon{
-    width: 100vw;
-    height: 100vh;
-    background: rgb(17, 17, 17, 0.1);
-    display: flex;
-    position: fixed !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 9999999999999;
-
-}
-#loaderAbandon svg{
-    width: 120px;
-    height: 120px;
-    display: inline-block;
-    position: relative !important;
-    left: 50% !important;
-    transform: translate(-50%,0) !important;
-    margin-top: 15%;
-}
-thead th {
-  position: sticky;
-  top: 0;
-  /* background: white; */
-}
-</style>
-

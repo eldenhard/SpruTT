@@ -41,6 +41,11 @@ const getwagonDislocation = (filter_dislocation) => {
     return api.get(`${resource}/dislocations`, {params: filter_dislocation})
 }
 
+// Запросы для вагонов полигоны
+const getPolygon = (filter_wagonpolygon) => {
+    return api.get(`${resource}/dislocations`, {params: filter_wagonpolygon})
+}
+
 export default {
     getWagons,
     getPassport,
@@ -54,5 +59,9 @@ export default {
     getWagonsThrowTypes,
 
 // Дислокация вагонов
-getwagonDislocation
+getwagonDislocation,
+
+
+// полигоны вагонов
+getPolygon
 }
