@@ -29,9 +29,8 @@
         <tbody style="max-width: 90% !important;">
             <tr v-for="staff in all_staff" :key="staff.id">
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
-                    <a download target="_blank" :href="staff.photo" v-if="staff.photo">
-                        <img src="@/assets/user.png" alt="" width="35px !important">
-                    </a>
+                        <img :src="staff.photo" alt="" width="55px !important">
+                 
                 </td>
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.last_name}}</td>
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.first_name}}</td>
