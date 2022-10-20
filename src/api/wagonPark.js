@@ -37,8 +37,8 @@ const getWagonsThrowTypes = () => {
 
 
 // Запросы для дислокации
-const getwagonDislocation = () => {
-    return api.get(`${resource}/dislocations`)
+const getwagonDislocation = (filter_dislocation) => {
+    return api.get(`${resource}/dislocations`, {params: filter_dislocation})
 }
 
 export default {

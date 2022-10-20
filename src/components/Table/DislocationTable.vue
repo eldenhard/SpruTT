@@ -1,5 +1,6 @@
 <template>
 <div>
+  <FilterDislocation @updateFilterDataDislocation="updateFilterDataDislocation"></FilterDislocation>
   <button class="Accept" @click="getAllDislocationWagon()">Запросить вагоны</button>
         <br><br>
 <section  style="display:block" id="loaderAbandon" v-if="loaderDislocation">
@@ -41,7 +42,7 @@
 </svg>
   
 </section>   
-  <div style="width: 100%; overflow-x: auto; height: 70vh; overflow-y: auto;"> 
+  <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto;"> 
     <table class="table" style="table-layout: fixed;">
         <thead>
             <tr>
@@ -239,23 +240,37 @@
 <script>
 import {mapState} from 'vuex'
 import api from '@/api/wagonPark'
+import FilterDislocation from '@/components/filter/FilterDislocation.vue'
     export default {
     name: 'DislocatoinTable',
+    components: {FilterDislocation},
+    computed: {
+        ...mapState({
+            user: state => state.auth.user,
+            uid: state => state.auth.uid,
+        })
+    },
     data(){
         return{
           DislocationAllWagon: '',
-          loaderDislocation: false
+          loaderDislocation: false,
+          filter_dislocation:{
+                polygon: ''
+            },
 
         }
     },
     methods: {
       getAllDislocationWagon(){
         this.loaderDislocation = true
-        api.getwagonDislocation()
+        api.getwagonDislocation(this.filter_dislocation)
         .then((response) => {
           this.DislocationAllWagon = response.data.data
           this.loaderDislocation = false
         })
+      },
+      updateFilterDataDislocation(filter_dislocation){
+        this.filter_dislocation = filter_dislocation
       }
     }
 
