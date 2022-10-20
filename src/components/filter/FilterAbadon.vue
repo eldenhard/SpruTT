@@ -102,20 +102,20 @@ export default {
             uid: state => state.auth.uid,
         })
     },
-//     mounted(){
-//         this.loaderAbandon = true
-//         api.getWagonsThrowTypes()
-//         .then((response) => {
-//             this.wagonFilterAbadon = response.data.data
-//             this.loaderAbandon = false
-//         })
-//         api.getWagonsThrow()
-//             .then((response) => {
-//                 this.all_object = response.data.total_objects
-//                 this.loaderAbandon = false
+    mounted(){
+        this.loaderAbandon = true
+        api.getWagonsThrowTypes()
+        .then((response) => {
+            this.wagonFilterAbadon = response.data.data
+            this.loaderAbandon = false
+        })
+        api.getWagonsThrow()
+            .then((response) => {
+                this.all_object = response.data.total_objects
+                this.loaderAbandon = false
 
-//     })
-// },
+    })
+},
     methods: {
         updateFilterDataAbadon(){
             this.$emit('updateFilterDataAbadon', this.filter_abadon)

@@ -44,7 +44,7 @@
 </section>        
 
     <p class="amount">всего: {{amount}}</p>
-    <div style="width: 100%; overflow-x: auto; height: 70vh; overflow-y: auto;">
+    <div style="width: 100%; overflow-x: auto; height: 70vh; overflow-y: auto;"> 
     <table class="table" style="table-layout: fixed;">
         <thead>
             <tr>

@@ -222,7 +222,7 @@
                     <td>{{reports.rate}} %<br></td> 
                     <td><a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> </td> 
                     <td><button class="button Request" style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #2196F3 !important;   display: flex; align-items: center;
-  justify-content: center;" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
+justify-content: center;" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
                     <td><button class="button Delete" style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #ED5E68 !important;   display: flex;
   align-items: center;
   justify-content: center;" @click="DeleteReport(reports.id)">Удалить</button> </td> 
@@ -253,73 +253,6 @@
             </table>
     </div>
 </div>
-<!-- 
-<div sstyle="display: block" v-if="ReportSabeSee">
-    <br>
-    <div class="row">
-        <h5 class="phone">Созданные Вами отчеты</h5>
-        <div class="col-md-6 tablesRep">
-            <table class="tableRep">
-                <tr class="PK">
-                    <td colspan="8"><h5>Созданные Вами отчеты</h5></td>
-                </tr>
-
-                <tr>
-                    <td style="text-align:center; font-size: 12px;">Кто создал</td>
-                    <td style="text-align:center; font-size: 12px;">На кого создано</td>
-                    <td style="text-align:center; font-size: 12px;">Дата создания</td>
-                    <td style="text-align:center; font-size: 12px;">Дата последнего изменения</td>
-                    <td style="text-align:center; font-size: 12px;">Доплата</td>
-                    <td style="text-align:center; font-size: 12px;">Файл</td>
-                    <td style="text-align:center; font-size: 12px;">Действие</td>
-                    <td style="text-align:center; font-size: 12px;">Удалить</td>
-                </tr>
-
-                <tr v-for="reports in reports_creator" :key="reports.id" >
-                    <td>{{reports.creator.first_name}} {{reports.creator.last_name}} <br></td>
-                    <td>{{reports.employee.first_name}}  {{reports.employee.last_name}}  <br></td> 
-                    <td>{{new Date(reports.created_at).toLocaleString()}}<br> </td> 
-                    <td>{{new Date(reports.updated_at).toLocaleString()}}<br> </td> 
-                    <td>{{reports.rate}} %<br></td> 
-                    <td><a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> </td> 
-                    <td><button class="button Request" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
-                    <td><button class="button Delete" style="height: 30px; width: 80%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0);" @click="DeleteReport(reports.id)">Удалить</button> </td> 
-                </tr>
-            </table>  
-        </div>
-
-        <br><br>
-        <h5 class="phone">Созданные на Вас отчеты</h5>
-        <div class="col-md-6 tablesRep2">
-            <table class="tableRep">
-
-                <tr class="PK">
-                    <td colspan="6"><h5>Созданные на Вас отчеты</h5></td>
-                </tr>
-
-                <tr>
-                    <td style="text-align:center; font-size: 12px;">Кто создал</td>
-                    <td style="text-align:center; font-size: 12px;">На кого создано</td>
-                    <td style="text-align:center; font-size: 12px;">Дата создания</td>
-                    <td style="text-align:center; font-size: 12px;">Дата последнего изменения</td>
-                    <td style="text-align:center; font-size: 12px;">Доплата</td>
-                    <td style="text-align:center; font-size: 12px;">Файл</td>
-                </tr>
-
-                <tr v-for="reporte in reports_employee" :key="reporte.id" >
-                    <td>{{reporte.creator.first_name}} {{reporte.creator.last_name}}<br></td>
-                    <td>{{reporte.employee.first_name}} {{reporte.employee.last_name}} <br></td>
-                    <td>{{new Date(reporte.created_at).toLocaleString()}}<br></td>
-                    <td>{{new Date(reporte.updated_at).toLocaleString()}}<br></td>
-                    <td>{{reporte.rate}} %   <br></td>
-                    <td><a download target="_blank" :href="reporte.file" v-if="reporte.file"><img src="../assets/excel.png" alt="" width="50px !important"></a></td>
-                </tr> 
-            </table>
-        </div>
-    </div>
-</div>
-<br><br> -->
-
 </div>
 </template>
 
@@ -625,17 +558,6 @@ else {
  },
 
 OpenReport(){
-    // document.getElementById("tables").style.display == 'block'
-    // this.downloadReport = 'Загрузить отчеты'
-// if (document.getElementById("tables").style.display == 'block') { 
-//     document.getElementById("tables").style.display = "none";
-//     this.downloadReport = 'Загрузить отчеты'
-// }
-// else {
-//     document.getElementById("tables").style.display = "block";
-//     this.downloadReport = 'Скрыть отчеты'
-//     }
-
 const pretoken = JSON.parse(localStorage.getItem("vuex"))
 const token = pretoken.auth.user.token
 const preid = JSON.parse(localStorage.getItem('vuex'))
