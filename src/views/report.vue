@@ -542,7 +542,8 @@ const pretoken = JSON.parse(localStorage.getItem("vuex"))
 const token = pretoken.auth.user.token
 const preid = JSON.parse(localStorage.getItem('vuex'))
 const id = preid.auth.uid
-fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
+// fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
+    fetch('/api/reports/kpi?'+ `creator=${id}`, {
     headers: {
         'Authorization': `Basic ${token}` 
     },
@@ -562,7 +563,8 @@ fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
 
     }
 }),
-fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
+// fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
+    fetch('/api/reports/kpi?'+ `employee=${id}`, {
     headers: {
         'Authorization': `Basic ${token}` 
     },
@@ -582,7 +584,9 @@ fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
 
     }
 }),     
-fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
+// fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
+ fetch('/api/personal/users/?page_size=200&manager='+ `${id}`, {
+
     headers: {
         'Authorization': `Basic ${token}` 
     },
@@ -601,7 +605,8 @@ fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
             console.log('NOT OK')
         }
     }),
-fetch('http://10.1.5.65/api/personal/users/104', {
+// fetch('http://10.1.5.65/api/personal/users/104', {
+    fetch('/api/personal/users/104', {
 headers: {
     'Authorization': `Basic ${token}` 
 },
@@ -619,7 +624,8 @@ method: 'GET'
             console.log('NOT OK')
         }
     }),
-    fetch('http://10.1.5.65/api/reports/kpi/', {
+    // fetch('http://10.1.5.65/api/reports/kpi/', {
+    fetch('/api/reports/kpi/', {
     headers: {
         'Authorization': `Basic ${token}` 
     },
@@ -680,7 +686,9 @@ const id = preid.auth.uid
 this.loaderReport = true
 this.allReportHistory = true
 this.downloadReport = 'Загрузить отчеты'
-fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
+// fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
+    fetch('api/reports/kpi?'+ `creator=${id}`, {
+
     headers: {
         'Authorization': `Basic ${token}` 
     },
@@ -698,7 +706,8 @@ fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
 
     }
 }),
-fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
+// fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
+    fetch('/api/reports/kpi?'+ `employee=${id}`, {
     headers: {
         'Authorization': `Basic ${token}` 
     },
@@ -739,7 +748,8 @@ closeChangeReport(){
     // document.getElementById('loading-page-lk').style.display = 'block'
    let admin = document.getElementById('admin').value.split(' ')[0] 
    let staff = document.getElementById('staff').value.split(' ')[0] 
-   fetch('http://10.1.5.65/api/reports/kpi/create/', {
+//    fetch('http://10.1.5.65/api/reports/kpi/create/', {
+    fetch('/api/reports/kpi/create/', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json;charset=utf-8',

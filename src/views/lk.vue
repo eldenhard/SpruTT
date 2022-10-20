@@ -145,7 +145,8 @@ mounted(){
     //    }),
 
     // ${id}
-    fetch('http://10.1.5.65/api/personal/users/'+ `${id}`, {
+    // fetch('http://10.1.5.65/api/personal/users/'+ `${id}`, {
+    fetch('/api/personal/users/'+ `${id}`, {
     headers: {
         'Authorization': `Basic ${token}` 
     },
@@ -168,7 +169,8 @@ mounted(){
            }
        }),
 
-fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
+// fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
+    fetch('/api/personal/users/?page_size=200&manager='+ `${id}`, {
     headers: {
         'Authorization': `Basic ${token}` 
     },

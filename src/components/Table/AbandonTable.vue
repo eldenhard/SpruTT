@@ -1,7 +1,6 @@
 <template>
     <div>
         <button class="Accept" @click="ThrowWagons()">Запросить вагоны</button>
-        <button>Я просто кнопка</button>
     {{throwWagons}}
     <table class="table">
         <thead>
