@@ -267,6 +267,7 @@ import FilterDislocation from '@/components/filter/FilterDislocation.vue'
         .then((response) => {
           this.DislocationAllWagon = response.data.data
           this.loaderDislocation = false
+          this.filter_dislocation.polygon = ''
         })
       },
       updateFilterDataDislocation(filter_dislocation){

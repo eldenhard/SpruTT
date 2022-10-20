@@ -47,13 +47,61 @@
      v-model="filter_dislocation.polygon"
     @change="updateFilterDataDislocation"
     >
-
-        <option
+    <option value="Анжерская">Анжерская</option>
+    <option value="Аренда РТС">Аренда РТС</option>
+    <option value="Аренда Рутгерс">Аренда Рутгерс</option>
+    <option value="Аренда (склад) Энергоресурсы">Аренда (склад) Энергоресурсы</option>
+    <option value="Аренда СМС">Аренда СМС</option>
+    <option value="Аренда Софит">Аренда Софит</option>
+    <option value="Аренда Стелла (Промгипсовая)">Аренда Стелла (Промгипсовая)</option>
+    <option value="Аренда ТрансОйл">Аренда ТрансОйл</option>
+    <option value="Багахангай">Багахангай</option>
+    <option value="Бензин (Девон)">Бензин (Девон)</option>
+    <option value="Биклянь">Биклянь</option>
+    <option value="Биклянь (Техн ТНТ)">Биклянь (Техн ТНТ)</option>
+    <option value="Бузулук">Бузулук</option>
+    <option value="Бузулук (Роста Терминал)">Бузулук (Роста Терминал)</option>
+    <option value="Вагоны едут на вывод из аренды">Вагоны едут на вывод из аренды</option>
+    <option value="Вагоны на резку">Вагоны на резку</option>
+    <option value="Вератек">Вератек</option> 
+    <option value="В работе Газпромтранс">В работе Газпромтранс</option>
+    <option value="ГПТ по договору ТЭО">ГПТ по договору ТЭО</option>
+    <option value="Дельта Трейд">Дельта Трейд</option>
+    <option value="ЕвроХим">ЕвроХим</option>
+    <option value="Загородняя (Тайга)">Загородняя (Тайга)</option>
+    <option value="Китой-Комбинатская">Китой-Комбинатская</option>
+    <option value="Комбинатская (КОКС)">Комбинатская (КОКС)</option>
+    <option value="Комбинатская (СЕРА)">Комбинатская (СЕРА)</option>
+    <option value="Копылово (ГарантОйл)">Копылово (ГарантОйл)</option>
+    <option value="Копылово (НХТК)">Копылово (НХТК)</option>
+    <option value="Круглое Поле (ВСТ)">Круглое Поле (ВСТ)</option>
+    <option value="Круглое поле (ПВ)">Круглое поле (ПВ)</option>
+    <option value="Курбакинская">Курбакинская</option>
+    <option value="Мечел-Транс ЦС">Мечел-Транс ЦС</option>
+    <option value="НАЦИО">НАЦИО</option>
+    <option value="Новоотрадная">Новоотрадная</option> 
+    <option value="Обнинское">Обнинское</option>
+    <option value="Оперативный контроль">Оперативный контроль</option>
+    <option value="Петропавловск">Петропавловск</option>
+    <option value="Планируем прием в аренду">Планируем прием в аренду</option>
+    <option value="Покровск-Приволжский">Покровск-Приволжский</option>
+    <option value="Попутки ПВ">Попутки ПВ</option>
+    <option value="Разрез ТТ">Разрез ТТ</option>
+    <option value="Соболеково (ННБ)">Соболеково (ННБ)</option>
+    <option value="Соболеково (НХТК)">Соболеково (НХТК)</option>
+    <option value="Тобольск (НХТК)">Тобольск (НХТК)</option>
+    <option value="ТонжЛогистик">ТонжЛогистик</option>
+    <option value="Хабаровск-1">Хабаровск-1</option>
+    <option value="Химичесие цс">Химичесие цс</option>
+    <option value="ЦС по мелким клиентам">ЦС по мелким клиентам</option>
+    <option value="Энергоресурсы">Энергоресурсы</option>
+    <option value="Яничкино">Яничкино</option>
+        <!-- <option
             v-for="wagonDislocation in wagonFilterDislocation"
             :key="wagonDislocation"
             :value="wagonDislocation.polygon">
             {{wagonDislocation.polygon}}
-        </option>
+        </option> -->
     </select>
 </div>
 
@@ -84,15 +132,15 @@ export default {
         })
     },
     
-    mounted(){
-        this.loaderDislocation = true
-        api.getwagonDislocation()
-            .then((response) => {
-                this.wagonFilterDislocation = response.data.data
-                this.loaderDislocation = false
+//     mounted(){
+//         this.loaderDislocation = true
+//         api.getwagonDislocation()
+//             .then((response) => {
+//                 this.wagonFilterDislocation = response.data.data
+//                 this.loaderDislocation = false
 
-    })
-},
+//     })
+// },
     methods: {
         updateFilterDataDislocation(){
             this.$emit('updateFilterDataDislocation', this.filter_dislocation)
