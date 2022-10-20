@@ -3,9 +3,9 @@
     <div>
         <div id="navbarMain">
             <ul class="navbarul">
-                <li class="navbarList" style="filter:brightness(0.8)">
-                    <div>
-                    <!-- <div @click="newTab('Дислокация')"> -->
+                <li class="navbarList" >
+                    
+                    <div @click="newTab('Дислокация')">
                         <img src="@/assets/map.png" class="image">
                     </div>
                     <b-dropdown text="Дислокация" style="width: 100%" disabled>

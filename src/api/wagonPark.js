@@ -35,6 +35,12 @@ const getWagonsThrowTypes = () => {
     return api.get(`${resource}/wagon-type`)
 }
 
+
+// Запросы для дислокации
+const getwagonDislocation = () => {
+    return api.get(`${resource}/dislocations`)
+}
+
 export default {
     getWagons,
     getPassport,
@@ -45,6 +51,8 @@ export default {
     
 // Брошенные вагоны
     getWagonsThrow,
-    getWagonsThrowTypes
+    getWagonsThrowTypes,
 
+// Дислокация вагонов
+getwagonDislocation
 }
