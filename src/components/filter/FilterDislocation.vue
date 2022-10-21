@@ -98,6 +98,7 @@
             <option value="Энергоресурсы">Энергоресурсы</option>
             <option value="Яничкино">Яничкино</option>
         </select>
+    </div>
     <div style="display: flex; flex-direction: column">
         <label for="amoutRecordsDislocation" class="all-label">Кол-во записей</label>
             <select name="" id="amoutRecordsDislocation"
@@ -110,7 +111,7 @@
                 <option value="250">250</option>
                 <option value="500">500</option>
             </select>
-    </div>
+
 </div>
 
  

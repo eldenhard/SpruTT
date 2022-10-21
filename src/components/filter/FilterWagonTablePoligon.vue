@@ -120,7 +120,20 @@
         </option> -->
     </select>
 </div>
+<div style="display: flex; flex-direction: column">
+        <label for="amoutRecordsDislocation" class="all-label">Кол-во записей</label>
+            <select name="" id="amoutRecordsDislocation"
+            v-model="filter_wagonpolygon.page_size"
+            @change="updateFilterDataWagonDislocation"
+            >  
+                <option value="" selected>100</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="250">250</option>
+                <option value="500">500</option>
+            </select>
 
+</div>
  
 
 </div>
@@ -136,7 +149,8 @@ export default {
         return {
             filter_wagonpolygon:{
                 wagon__wagon_type: '',
-                polygon: ''
+                polygon: '',
+                page_size: ''
             },
             wagonFilterDislocation: '',
             wagonDislocation: '',

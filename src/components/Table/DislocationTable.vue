@@ -66,15 +66,15 @@
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Прибытие на станцию назначения</th>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Дата прибытия на станцию отправления</th>
 
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Номер накладная</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Тип накладной</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Тип отправки</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузоотправитель, наименование организации</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузоотправитель, ОКПО</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузополучатель, наименование организации</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузополучатель, ОКПО</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Тариф</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Наименование плательщика</th>
+                    <th style="background: darkslategrey !important; color: white !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Номер накладная</th>
+                    <th style="background: darkslategrey !important; color: white !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Тип накладной</th>
+                    <th style="background: darkslategrey !important; color: white !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Тип отправки</th>
+                    <th style="background: darkslategrey !important; color: white !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузоотправитель, наименование организации</th>
+                    <th style="background: darkslategrey !important; color: white !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузоотправитель, ОКПО</th>
+                    <th style="background: darkslategrey !important; color: white !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузополучатель, наименование организации</th>
+                    <th style="background: darkslategrey !important; color: white !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузополучатель, ОКПО</th>
+                    <th style="background: darkslategrey !important; color: white !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Тариф</th>
+                    <th style="background: darkslategrey !important; color: white !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Наименование плательщика</th>
 
                     <th style="background: black !important; color: white !important;  width: 150px !important; height: 50px !important; vertical-align: middle !important;">Наименование</th>
                     <th style="background: black !important; color: white !important;  width: 150px !important; height: 50px !important; vertical-align: middle !important;">Код</th>
@@ -145,7 +145,9 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.distance_left_from_current_dislocation}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.distance_all_from_departure_station}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.train_index}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.is_loaded}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.is_loaded = true">Груженый</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>Порожний</td>
+
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.weight}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_country}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.polygon}}</td>
@@ -174,11 +176,17 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.name}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.code}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.current_station.is_port = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.current_station.is_washing_station = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.current_station.build_flight = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.current_station.is_repairing = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.latitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.longitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.road}}</td>
@@ -187,11 +195,15 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station.name}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station.code}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.departure_station.is_port = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.departure_station.is_washing_station = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.departure_station.build_flight = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.departure_station.is_repairing = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station.latitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station.longitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station.road}}</td>
@@ -200,19 +212,26 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.name}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.code}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.destination_station.is_port = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.destination_station.is_washing_station">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.destination_station.build_flight">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.destination_station.is_repairing">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.latitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.longitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.road}}</td>
                
-                <!-- <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.wagon.number != 0">{{dislocation.wagon.number}}</td> -->
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.wagon.is_problem}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.wagon.number}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.wagon.is_problem">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.wagon.volume}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.wagon.is_active}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.wagon.is_active = true">активный</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>неактивный</td>
+
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.wagon.wagon_type}}</td>
                 
 
