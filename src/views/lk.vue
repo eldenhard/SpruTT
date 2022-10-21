@@ -22,7 +22,7 @@
             <td style="font-weight: bold">Почта</td>
         </tr>
 
-        <tr  v-for="em in emp" :key="em">
+        <tr  v-for="em in emp" :key="em.post">
             <td>{{em.last_name}} {{em.first_name}} {{em.middle_name}}</td>
             <td>{{em.post}}</td>
 
@@ -45,7 +45,7 @@
 </div>
 </div>
 
-<section id="loading-page-report" style="display:block">
+<section id="loading-page-report" style="display:block" v-if="loaderLK">
 <svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
   viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
  <path fill="#C04945" d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3
@@ -97,7 +97,6 @@ export default {
     name: 'lk',
     computed: {
         ...mapState({
-            // id: state=> state.auth.uid
             user: state => state.auth.user,
             uid: state => state.auth.uid,
             allGroups: state => state.auth.groups
@@ -105,81 +104,82 @@ export default {
     },
     data(){
         return{
-            id: [],
+            // id: [],
             PersonalData: '',
             emp: '',
-            // loaderLK: false
+            loaderLK: false
         }
     },
 mounted(){
-//     this.loaderLK = true
-//     api.getUsersLK()
-//     .then((response) => {
-//         this.PersonalData = response.data
-    
-//     }),
-//     api.getManagerLK()
-//     .then((response) => {
-//         this.emp= response.data
-//         this.loaderLK = false
-//     })
-// }
-// }
-    const token = JSON.parse(localStorage.getItem("accessToken"))
-
-    const preid = JSON.parse(localStorage.getItem('vuex'))
-    const id = preid.auth.uid
-
-    document.getElementById('loading-page-report').style.display = 'block'
-
-    fetch('/api/personal/users/'+ `${id}`, {
-
-    headers: {
-        'Authorization': `Basic ${token}` 
-    },
-    method: 'GET'
-    })
+    this.loaderLK = true
+    api.getUsersLK(this.uid)
     .then((response) => {
-                if (response.ok){
-                    return response.json().then(r=>{
-                        this.PersonalData = r;
-                        document.getElementById('loading-page-report').style.display = 'none'
-                        console.log(this.PersonalData)
-               })
-           }
-           else{
-               console.log('NOT OK')
-               document.getElementById('notifications-2').style.display = 'block'
-               setTimeout(this.Notif, 2500)
+        this.PersonalData = response.data
+    
+    })
+    api.getManagerLK(this.uid)
+    .then((response) => {
+        this.emp= response.data.data
+        this.loaderLK = false
+    })
+   
+},
 
-           }
-       }),
+    // const token = JSON.parse(localStorage.getItem("accessToken"))
+
+    // const preid = JSON.parse(localStorage.getItem('vuex'))
+    // const id = preid.auth.uid
+
+    // document.getElementById('loading-page-report').style.display = 'block'
+
+    // fetch('/api/personal/users/'+ `${id}`, {
+
+    // headers: {
+    //     'Authorization': `Basic ${token}` 
+    // },
+    // method: 'GET'
+    // })
+    // .then((response) => {
+    //             if (response.ok){
+    //                 return response.json().then(r=>{
+    //                     this.PersonalData = r;
+    //                     document.getElementById('loading-page-report').style.display = 'none'
+    //                     console.log(this.PersonalData)
+    //            })
+    //        }
+    //        else{
+    //            console.log('NOT OK')
+    //            document.getElementById('notifications-2').style.display = 'block'
+    //            setTimeout(this.Notif, 2500)
+
+    //        }
+    //    }),
 
 // fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
-    fetch('/api/personal/users/?page_size=200&manager='+ `${id}`, {
+    // fetch('/api/personal/users/?page_size=200&manager='+ `${id}`, {
 
-    headers: {
-        'Authorization': `Basic ${token}` 
-    },
-    method: 'GET'
-    })
-    .then((response) => {
-                if (response.ok){
-                    return response.json().then(r=>{
-                        this.emp = r.data;
-                        document.getElementById('loading-page-report').style.display = 'none'
-                        console.log(this.emp)
-               })
-           }
-           else{
-               console.log('NOT OK')
-               document.getElementById('loading-page-report').style.display = 'none'
-               document.getElementById('notifications-2').style.display = 'block'
-               setTimeout(this.Notif, 2500)
+    // headers: {
+    //     'Authorization': `Basic ${token}` 
+    // },
+    // method: 'GET'
+    // })
+    // .then((response) => {
+    //             if (response.ok){
+    //                 return response.json().then(r=>{
+    //                     this.emp = r.data;
+    //                     document.getElementById('loading-page-report').style.display = 'none'
+    //                     console.log(this.emp)
+    //            })
+    //        }
+    //        else{
+    //            console.log('NOT OK')
+    //            document.getElementById('loading-page-report').style.display = 'none'
+    //            document.getElementById('notifications-2').style.display = 'block'
+    //            setTimeout(this.Notif, 2500)
 
-           }
-       })       
-    },
+    //        }
+    //    })       
+    // },
     methods: {
         Notif(){
             document.getElementById('notifications-2').style.display = 'none'
