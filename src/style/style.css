@@ -186,3 +186,6 @@ input, label{
   color: rgb(76, 76, 76);
 padding-top: 1%;
 }
+option select {
+  cursor: pointer !important;
+}

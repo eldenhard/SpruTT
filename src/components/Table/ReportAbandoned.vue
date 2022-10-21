@@ -40,6 +40,7 @@
   
 </section>    
         <button class="button Action" @click="CreateReportAbandones()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">Создать отчет</button>
+        <button class="button Action" @click="DownloadReportAbandones()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">Загрузить отчеты</button>
 
 <br><br>
 <h2>Созданные отчеты</h2>
@@ -69,6 +70,7 @@
     </table>
 </div>            
 
+<Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
 
     </div>
 </template>
@@ -80,12 +82,20 @@
 <script>
 import api from '@/api/report'
 import {mapState} from 'vuex'
+import Notifications from '@/components/notifications/Notifications.vue'
+
 export default {
     name: 'ReportAbandoned',
+    components: {Notifications},
     data() {
         return {
             report_abandoned : '',
-            loaderAbandonReport: false
+            loaderAbandonReport: false,
+
+            showNotify: false,
+            notifyHead: '',
+            notifyMessage: '',
+            notifyClass: '',
         }
     },
     methods: {
@@ -93,13 +103,30 @@ export default {
             this.loaderAbandonReport = true
             api.CreateReportAbandone()
             .then((response) => {
-                api.GetReportAbandone()
-                    .then((response) => {
-                        this.report_abandoned = response.data.data
-                        this.loaderAbandonReport = false
-                    })
+              this.loaderAbandonReport = false
+              this.notifyHead = 'Успешно'
+                this.notifyMessage = 'Отчет создан'
+                this.notifyClass = 'wrapper-success'
+                this.showNotify = true
+                setTimeout(this.closeNotification, 1500)
             })
 
+        },
+        DownloadReportAbandones(){
+            this.loaderAbandonReport = true
+            api.GetReportAbandone()
+            .then((response) => {
+                this.report_abandoned = response.data.data
+                this.loaderAbandonReport = false
+                this.notifyHead = 'Успешно'
+                this.notifyMessage = 'Отчеты загружены'
+                this.notifyClass = 'wrapper-success'
+                this.showNotify = true
+                setTimeout(this.closeNotification, 1500)
+                        })
+        },
+        closeNotification(){
+            this.showNotify = false
         }
     },
     computed: {

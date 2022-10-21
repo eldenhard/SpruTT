@@ -262,6 +262,7 @@ export default {
             throwWagons: '',
             loaderAbandon: false,
             amount: null,
+            
             showNotify: false,
             notifyHead: '',
             notifyMessage: '',
@@ -290,7 +291,6 @@ export default {
                 this.showNotify = true
                 setTimeout(this.closeNotification, 1500)
                 this.loaderAbandon = false
-                this.filter_abadon = ''
             })
         },
         updateFilterDataAbadon(filter_abadon){

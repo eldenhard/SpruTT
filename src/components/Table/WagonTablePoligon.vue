@@ -43,6 +43,8 @@
   
 </section>   
   <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto;"> 
+    <p class="amount">всего: {{amount}}</p>
+
     <table class="table" style="table-layout: fixed;">
         <thead>
             <tr>
@@ -154,19 +156,19 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station_arrival}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station_arrival}}</td>
 
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.number}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.invoice_type}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.shipment_type}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.number}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.invoice_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.shipment_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">
                     <textarea name="" id="" cols="15" rows="1" :value="polygon.invoice.shipper_company"></textarea>
                 </td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.shipper_okpo}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.shipper_okpo}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">
                     <textarea name="" id="" cols="15" rows="1" :value="polygon.invoice.consignee_company"></textarea>
                 </td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.consignee_okpo}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.tariff}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.invoice.payer_name}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.consignee_okpo}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.tariff}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.payer_name}}</td>
 
                 <!-- departure_station -->
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.name}}</td>
@@ -269,6 +271,8 @@ export default {
             notifyHead: '',
             notifyMessage: '',
             notifyClass: '',
+
+            amount: null
         }
     },
     methods: {
@@ -284,13 +288,12 @@ export default {
             .then((response) => {
                 this.polygonWagon = response.data.data
                 this.loaderPoligon = false
+                this.amount = response.data.amount
                 this.notifyHead = 'Успешно'
                 this.notifyMessage = 'Данные отфильтрованы'
                 this.notifyClass = 'wrapper-success'
                 this.showNotify = true
                 setTimeout(this.closeNotification, 1500)
-                this.filter_wagonpolygon.wagon__wagon_type = ''
-                this.filter_wagonpolygon.polygon = ''
 
 
             })

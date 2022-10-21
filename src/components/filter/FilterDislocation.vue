@@ -47,6 +47,7 @@
      v-model="filter_dislocation.polygon"
     @change="updateFilterDataDislocation"
     >
+    <option value="">Все полигоны</option>
     <option value="Анжерская">Анжерская</option>
     <option value="Аренда РТС">Аренда РТС</option>
     <option value="Аренда Рутгерс">Аренда Рутгерс</option>
@@ -96,12 +97,7 @@
     <option value="ЦС по мелким клиентам">ЦС по мелким клиентам</option>
     <option value="Энергоресурсы">Энергоресурсы</option>
     <option value="Яничкино">Яничкино</option>
-        <!-- <option
-            v-for="wagonDislocation in wagonFilterDislocation"
-            :key="wagonDislocation"
-            :value="wagonDislocation.polygon">
-            {{wagonDislocation.polygon}}
-        </option> -->
+    
     </select>
 </div>
 
@@ -132,15 +128,6 @@ export default {
         })
     },
     
-//     mounted(){
-//         this.loaderDislocation = true
-//         api.getwagonDislocation()
-//             .then((response) => {
-//                 this.wagonFilterDislocation = response.data.data
-//                 this.loaderDislocation = false
-
-//     })
-// },
     methods: {
         updateFilterDataDislocation(){
             this.$emit('updateFilterDataDislocation', this.filter_dislocation)

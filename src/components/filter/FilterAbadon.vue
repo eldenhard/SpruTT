@@ -47,7 +47,7 @@
      v-model="filter_abadon.wagon__wagon_type"
     @change="updateFilterDataAbadon"
     >
-
+<option value="">Все вагоны</option>
         <option
             v-for="wagonFilter in wagonFilterAbadon"
             :key="wagonFilter.name"
@@ -61,13 +61,15 @@
 <select name="" id="amoutRecords"
 v-model="filter_abadon.page_size"
 @change="updateFilterDataAbadon"
->
-    <option value="10">10</option>
+>  
+    <option value="10" selected>10</option>
     <option value="25">25</option>
     <option value="50">50</option>
     <option value="100">100</option>
     <option value="250">250</option>
-    <option :value="this.all_object">Все</option>
+    <option value="500">500</option>
+
+    <!-- <option :value="this.all_object">Все</option> -->
 
 
 </select>

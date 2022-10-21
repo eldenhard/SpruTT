@@ -16,9 +16,11 @@
     <select class="input_filter_staff" id="select-filter-staff2" style="margin-top: -1px; width: 50% !important; cursor: pointer;"
      v-model="filter_staff.groups"
     @change="updateFilterDataStaff">
-
+    <option value="">Все отделы</option>
         <option
-        v-for="groupsFilter in groupsFilterStaff" :key="groupsFilter.id"  :value="groupsFilter.id">
+        v-for="groupsFilter in groupsFilterStaff"
+         :key="groupsFilter.id"
+           :value="groupsFilter.id">
         {{groupsFilter.name}}
     </option>
     </select>

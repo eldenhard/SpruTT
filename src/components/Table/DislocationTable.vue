@@ -41,7 +41,9 @@
   </path>
 </svg>
   
-</section>   
+</section> 
+<p class="amount">всего записей: {{total_objects}}</p>
+<p class="amount">всего на странице: {{amount}}</p>
   <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto;"> 
     <table class="table" style="table-layout: fixed;">
         <thead>
@@ -154,19 +156,19 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station_arrival}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.departure_station_arrival}}</td>
 
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.invoice.number}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.invoice.invoice_type}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.invoice.shipment_type}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.invoice">{{dislocation.invoice.number}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.invoice">{{dislocation.invoice.invoice_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.invoice">{{dislocation.invoice.shipment_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.invoice">
                     <textarea name="" id="" cols="15" rows="1" :value="dislocation.invoice.shipper_company"></textarea>
                 </td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.invoice.shipper_okpo}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="dislocation.invoice">{{dislocation.invoice.shipper_okpo}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="dislocation.invoice">
                     <textarea name="" id="" cols="15" rows="1" :value="dislocation.invoice.consignee_company"></textarea>
                 </td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.invoice.consignee_okpo}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.invoice.tariff}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.invoice.payer_name}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="dislocation.invoice">{{dislocation.invoice.consignee_okpo}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="dislocation.invoice">{{dislocation.invoice.tariff}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="dislocation.invoice">{{dislocation.invoice.payer_name}}</td>
 
                 <!-- departure_station -->
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.current_station.name}}</td>
@@ -207,7 +209,7 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.longitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.destination_station.road}}</td>
                
-                <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.wagon.number}}</td>
+                <!-- <td style="height: 50px !important; vertical-align: middle !important;" v-if="dislocation.wagon.number != 0">{{dislocation.wagon.number}}</td> -->
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.wagon.is_problem}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.wagon.volume}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{dislocation.wagon.is_active}}</td>
@@ -234,6 +236,15 @@
         </tbody>
 </table>
   </div>
+
+ 
+<div style="display: flex; justify-content: space-around; margin-top: 2%;">
+            <button class="Cancel" style="width: 20%"  v-if="prevLink" @click="goToPage(prevLink)">назад</button>
+            <button class="Cancel" style="width: 20%" v-if="nextLink" @click="goToPage(nextLink)">вперед</button>
+</div> 
+
+  <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
+
 </div>
 </template>
 
@@ -241,9 +252,11 @@
 import {mapState} from 'vuex'
 import api from '@/api/wagonPark'
 import FilterDislocation from '@/components/filter/FilterDislocation.vue'
+import Notifications from '@/components/notifications/Notifications.vue'
+
     export default {
     name: 'DislocatoinTable',
-    components: {FilterDislocation},
+    components: {FilterDislocation, Notifications},
     computed: {
         ...mapState({
             user: state => state.auth.user,
@@ -252,6 +265,15 @@ import FilterDislocation from '@/components/filter/FilterDislocation.vue'
     },
     data(){
         return{
+          nextLink: null,
+          prevLink: null,
+
+          showNotify: false,
+          notifyHead: '',
+          notifyMessage: '',
+          notifyClass: '',
+          amount: null,
+          total_objects: null,
           DislocationAllWagon: '',
           loaderDislocation: false,
           filter_dislocation:{
@@ -261,18 +283,46 @@ import FilterDislocation from '@/components/filter/FilterDislocation.vue'
         }
     },
     methods: {
+      goToPage(link){
+        let url = new URL(link)
+        let pageNumber  = url.searchParams.get("page")
+        if(pageNumber != null){
+            this.filter_dislocation.page = pageNumber 
+        }else{
+            delete(this.filter_dislocation.page)
+        }
+        this.getAllDislocationWagon()
+    },
       getAllDislocationWagon(){
         this.loaderDislocation = true
         api.getwagonDislocation(this.filter_dislocation)
         .then((response) => {
           this.DislocationAllWagon = response.data.data
+          this.amount = response.data.amount
+          this.total_objects = response.data.total_objects
+
+          this.nextLink = response.data.links.next
+          this.prevLink = response.data.links.previous
           this.loaderDislocation = false
-          this.filter_dislocation.polygon = ''
+          this.notifyHead = 'Успешно'
+          this.notifyMessage = 'Данные отфильтрованы'
+          this.notifyClass = 'wrapper-success'
+          this.showNotify = true
+          setTimeout(this.closeNotification, 1500)
+        }).catch(error => {
+            this.loaderDislocation = false
+            this.notifyHead = 'Ошибка'
+            this.notifyMessage = 'Попробуйте позднее'
+            this.notifyClass = 'wrapper-success'
+
         })
       },
       updateFilterDataDislocation(filter_dislocation){
         this.filter_dislocation = filter_dislocation
-      }
+      },
+      closeNotification(){
+            this.showNotify = false
+        }
     }
 
     }

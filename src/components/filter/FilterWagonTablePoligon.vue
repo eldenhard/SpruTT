@@ -47,7 +47,7 @@
      v-model="filter_wagonpolygon.wagon__wagon_type"
     @change="updateFilterDataWagonDislocation"
     >
-
+<option value="">Все вагоны</option>
         <option
             v-for="wagonDisl in wagonDislocation"
             :key="wagonDisl.name"
@@ -62,6 +62,7 @@
      v-model="filter_wagonpolygon.polygon"
     @change="updateFilterDataWagonDislocation"
     >
+    <option value="">Все полигоны</option>
     <option value="Анжерская">Анжерская</option>
     <option value="Аренда РТС">Аренда РТС</option>
     <option value="Аренда Рутгерс">Аренда Рутгерс</option>
@@ -138,6 +139,7 @@ export default {
                 polygon: ''
             },
             wagonFilterDislocation: '',
+            wagonDislocation: '',
             loaderWagonDislocation: false,
             showNotify: false,
             notifyHead: '',
