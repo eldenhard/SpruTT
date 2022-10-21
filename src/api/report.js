@@ -28,12 +28,23 @@ const GetReportAbandone = () => {
 // const postReport = () => {
 //     return.post(`${resource}/`)
 // }
-
+// для личного кабинета
+const getUsersLK = (id) => {
+    return api.get(`${resource}/users/`  + `${id}`)
+}
+const getManagerLK = (id) => {
+    return api.get(`${resource}/users/?page_size=200&manager='` + `${id}`)
+}
 export default {
     getUsers,
     getReportById,
     saveReport,
     deleteReport,
     CreateReportAbandone,
-    GetReportAbandone
+    GetReportAbandone,
+
+    // Личный кабинет 
+
+    getUsersLK,
+    getManagerLK
 }
