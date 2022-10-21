@@ -10,7 +10,6 @@ import Bookkeeping from '../views/Bookkeeping';
 import lk from '../views/lk';
 import report from '../views/report';
 import Staff from '../views/Staff';
-import DislocationTable from '@/components/Table/DislocationTable'
 
 Vue.use(Router)
 
@@ -25,6 +24,7 @@ export default new Router({
       path: '/wagonpark',
       component: wagonpark,
     },
+
     {
       path: '/home',
       component: home

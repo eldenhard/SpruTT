@@ -34,8 +34,8 @@
                 </li>
   
                 <li class="navbarList">
-                  
-                    <div @click="newTab('Отчеты')">
+                  <div style="filter:brightness(0.8)">
+                    <!-- <div @click="newTab('Отчеты')"> -->
                         <img src="@/assets/report.png" class="image">
                     </div>
                     <b-dropdown text="Отчеты" style="width: 100%" >
