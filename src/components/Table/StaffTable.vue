@@ -30,8 +30,7 @@
             <tr v-for="staff in all_staff" :key="staff.id">
 
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
-                   
-                        <img :src="staff.photo" alt="" width="55px !important" class="image" @click="open_photo(`${staff.photo}`)">
+                        <img :src="staff.photo"  width="55px !important" class="image" @click="open_photo(`${staff.photo}`)">
                 </td>
 
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.last_name}}</td>
@@ -147,7 +146,21 @@
                     </tr>
                     <tr>
                         <td style=" width: 5% !important;">
-                            <input type="file" @change="onFileSelected" name="photo"  ref="photo">
+                            <div class="uploader" style="display: block;position: relative;width: 120px;height: 60px;">
+                                <button v-if="current_user_staff.photo" style="display: block;position: absolute;top: 0;z-index: 10;">Заменить</button>
+                                <button v-else>Загрузить</button>
+                                <input type="file" @change="onFileSelected" name="photo"   ref="photo"
+                                style="display: inline-block;
+                                position:absolute;
+                                top:-5%;
+                                bottom: 0;
+                                left: 0; right: 0;
+                                width:100%; height: 100%;
+                                z-index:101;opacity: 0;"
+                                >
+                            </div>
+                            
+                            <img :src="current_user_staff.photo" alt="" v-if="current_user_staff.photo" style="width: 55px">
                         </td>
                         <td><input type="text" v-model="current_user_staff.last_name"></td>
                         <td><input type="text" v-model="current_user_staff.first_name"></td>

@@ -59,7 +59,7 @@ export default {
         return {
             filter_staff : {
                 search: '',
-                groups: [],
+                groups: '',
                 // first_name: '',
                 // last_name: '',
                 // email: '',
@@ -71,11 +71,15 @@ export default {
             user: state => state.auth.user,
             uid: state => state.auth.uid,
             groupsFilterStaff: state => state.auth.groups
-        })
+        }),
     },
     methods: {
         updateFilterDataStaff(){
-            this.$emit('updateFiltersStaff', this.filter_staff)
+            const filters = {...this.filter_staff}
+            if(filters.groups.length == 0){
+                delete(filters.groups)
+            }
+            this.$emit('updateFiltersStaff', filters)
         }
     },
 }
