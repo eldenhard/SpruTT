@@ -33,7 +33,7 @@ const getUsersLK = (id) => {
     return api.get(`${resource}/users/`  + `${id}`)
 }
 const getManagerLK = (id) => {
-    return api.get(`${resource}/users/?page_size=200&manager='` + `${id}`)
+    return api.get(`${resource}/users/?page_size=200&manager=` + `${id}`)
 }
 export default {
     getUsers,
