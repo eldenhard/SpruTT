@@ -112,17 +112,19 @@ export default {
         }
     },
 mounted(){
-    // this.loaderLK = true
-    // api.getUsersLK()
-    // .then((response) => {
-    //     this.PersonalData = response.data
+//     this.loaderLK = true
+//     api.getUsersLK()
+//     .then((response) => {
+//         this.PersonalData = response.data
     
-    // }),
-    // api.getManagerLK()
-    // .then((response) => {
-    //     this.emp= response.data
-    //     this.loaderLK = false
-    // })
+//     }),
+//     api.getManagerLK()
+//     .then((response) => {
+//         this.emp= response.data
+//         this.loaderLK = false
+//     })
+// }
+// }
     const token = JSON.parse(localStorage.getItem("accessToken"))
 
     const preid = JSON.parse(localStorage.getItem('vuex'))
