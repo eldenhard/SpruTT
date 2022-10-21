@@ -6,7 +6,7 @@
     <br><br>
     <br><br>
 <button class="Cancel staffButton" style="width: 50%; border-top-left-radius: 10px; border-top-right-radius: 10px;" @click="addStaff() ">Добавить сотрудника</button>
-
+<span id="big-photo" @click="close_photo"></span>
 <div style=" width: 95% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
     <table class="staff_table table">
         <thead class="head-staff"> 
@@ -30,7 +30,7 @@
             <tr v-for="staff in all_staff" :key="staff.id">
 
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
-                    <span id="big-photo" @click="close_photo"></span>
+                   
                         <img :src="staff.photo" alt="" width="55px !important" class="image" @click="open_photo(`${staff.photo}`)">
                 </td>
 
@@ -384,7 +384,7 @@ export default {
     methods: {
         open_photo(photo){
         document.getElementById("big-photo").innerHTML =
-        ("<img @click='close_photo()' style='position: absolute; left: 50%; transform:translate(-50%,0); cursor: zoom-out' src='" + photo + "'>")
+        ("<img @click='close_photo()' style='position: fixed; top:8%; z-index:999999999999999999999; left: 50%; transform:translate(-50%,0); cursor: zoom-out' src='" + photo + "'>")
         },
 
         close_photo() {
