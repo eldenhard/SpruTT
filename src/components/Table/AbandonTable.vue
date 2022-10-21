@@ -143,10 +143,12 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station_downtime}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.last_operation_downtime}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.documents_registration_downtime}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.distance_left_from_current_dislocation}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.distance_left_from_current_broc}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.distance_all_from_departure_station}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.train_index}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.is_loaded}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.is_loaded = true">Груженый</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>Порожний</td>
+
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.weight}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_country}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.polygon}}</td>
@@ -157,29 +159,35 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station_arrival}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station_arrival}}</td>
 
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.number}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.invoice_type}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.shipment_type}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.invoice">{{broc.invoice.number}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.invoice">{{broc.invoice.invoice_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.invoice">{{broc.invoice.shipment_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.invoice">
                     <textarea name="" id="" cols="15" rows="1" :value="broc.invoice.shipper_company"></textarea>
                 </td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.shipper_okpo}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="broc.invoice">{{broc.invoice.shipper_okpo}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="broc.invoice">
                     <textarea name="" id="" cols="15" rows="1" :value="broc.invoice.consignee_company"></textarea>
                 </td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.consignee_okpo}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.tariff}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.invoice.payer_name}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="broc.invoice">{{broc.invoice.consignee_okpo}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="broc.invoice">{{broc.invoice.tariff}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="broc.invoice">{{broc.invoice.payer_name}}</td>
 
                 <!-- departure_station -->
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.name}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.code}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.current_station.is_port = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.current_station.is_washing_station = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.current_station.build_flight = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.current_station.is_repairing = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.latitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.longitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.current_station.road}}</td>
@@ -188,11 +196,15 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.name}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.code}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.departure_station.is_port = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.departure_station.is_washing_station = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.departure_station.build_flight = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.departure_station.is_repairing = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.latitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.longitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.departure_station.road}}</td>
@@ -201,19 +213,26 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.name}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.code}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.destination_station.is_port = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.destination_station.is_washing_station">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.destination_station.build_flight">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.destination_station.is_repairing">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.latitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.longitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.destination_station.road}}</td>
                
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.wagon.number}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.wagon.is_problem}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.wagon.is_problem">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.wagon.volume}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{broc.wagon.is_active}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc.wagon.is_active = true">активный</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>неактивный</td>
+
                 <td style="height: 50px !important; vertical-align: middle !important;">{{broc.wagon.wagon_type}}</td>
                 
 

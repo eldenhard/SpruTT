@@ -47,6 +47,14 @@
   <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto;"> 
     <table class="table" style="table-layout: fixed;">
         <thead>
+            <!-- <tr>
+                <th colspan="17">Данные</th>
+                <th colspan="9">Инвойс</th>
+                <th colspan="11">Текущая станция</th>
+                <th colspan="11">Станция прибытия</th>
+                <th colspan="11">destination_station</th>
+                <th colspan="5">Вагон</th>
+            </tr> -->
             <tr>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Квитанция</th>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Простой на станции дислокации</th>
@@ -145,7 +153,9 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.distance_left_from_current_polygon}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.distance_all_from_departure_station}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.train_index}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.is_loaded}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.is_loaded = true">Груженый</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>Порожний</td>
+
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.weight}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_country}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.polygon}}</td>
@@ -156,10 +166,10 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station_arrival}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station_arrival}}</td>
 
-                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.number}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.invoice_type}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.shipment_type}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.invoice">{{polygon.invoice.number}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.invoice">{{polygon.invoice.invoice_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.invoice">{{polygon.invoice.shipment_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.invoice">
                     <textarea name="" id="" cols="15" rows="1" :value="polygon.invoice.shipper_company"></textarea>
                 </td>
                 <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.shipper_okpo}}</td>
@@ -174,11 +184,17 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.name}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.code}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.current_station.is_port = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.current_station.is_washing_station = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.current_station.build_flight = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.current_station.is_repairing = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.latitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.longitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.road}}</td>
@@ -187,11 +203,15 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.name}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.code}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.departure_station.is_port = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.departure_station.is_washing_station = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.departure_station.build_flight = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.departure_station.is_repairing = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.latitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.longitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.departure_station.road}}</td>
@@ -200,19 +220,26 @@
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.name}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.code}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.code6}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.is_port}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.destination_station.is_port = true">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.name_en}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.is_washing_station}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.build_flight}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.is_repairing}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.destination_station.is_washing_station">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.destination_station.build_flight">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.destination_station.is_repairing">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.latitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.longitude}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.destination_station.road}}</td>
                
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon.number}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon.is_problem}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.wagon.is_problem">да</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>нет</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon.volume}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon.is_active}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-if="polygon.wagon.is_active = true">активный</td>
+                <td style="height: 50px !important; vertical-align: middle !important;" v-else>неактивный</td>
+
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon.wagon_type}}</td>
                 
 
