@@ -262,6 +262,10 @@ export default {
             throwWagons: '',
             loaderAbandon: false,
             amount: null,
+            showNotify: false,
+            notifyHead: '',
+            notifyMessage: '',
+            notifyClass: '',
             
             filter_abadon: {
                 wagon__wagon_type: '',

@@ -253,148 +253,23 @@ justify-content: center;" @click="OpenChangeReport(reports.id)">Подробне
             </table>
     </div>
 </div>
+
+<hr>
+<BDRreport></BDRreport>
 </div>
 </template>
 
-<style>
-/* #tables {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-    width: 90%;
-
-} */
-#loading-page-lk {
-  width: 100vw;
-  height: 100vh;
-  background: rgb(17, 17, 17, 0.1);
-  display: flex;
-  position: fixed;
-  top: 0;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 9999999999999;
-}
-#loading-page-lk svg {
-  width: 100px;
-  height: 100px;
-  margin: 20px;
-  display: inline-block;
-  position: relative;
-  left: 50%;
-  transform: translate(-50%,0);
-  margin-top: 15%;
-
-}
-
-.form-btn{
-    position: relative;
-    left: 50%;
-    transform: translate(-50%,0);
-    margin-bottom: 2%;
-    margin-top: 3%;
-    height: 80px;
-    font-size: 22px;
-}
-#block-answer{
-    border-radius: 2px;
-background: #ffffff;
-box-shadow:  10px 10px 30px #d0d0d0,
-             -10px -10px 30px #ffffff;
-             width: 90%;
-             position: relative;
-             left: 50%;
-             transform: translate(-50%,0);
-             margin-top: 2%;
-             padding: 3% 2%;
-         
-}
-.staffs {
-    margin-left: 25%;
-}
-.borough {
-    font-size: 17px;
-}
-.form-btn {
-    width: 90%;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%,0);
-    margin-bottom: 2%;
-    margin-top: 3%;
-    height: 80px;
-    font-size: 22px;
-}
-#admin, #staff {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
-.answer {
-    text-align: left;
-    padding-top: 5%;
-    font-size: 18px;
-    font-weight: 600;
-}
- .lk h2{
-    text-align: center;
-    padding-top: 2%;
-}
-.form {
-    width: 70%;
-    border: 1px solid black;
-}
-.select-form {
-    width: 50%;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%,0);
-    margin-top: 2%;
-}
-.description-form {
-    text-align: center;
-}
-.block-answer h2{
-    text-align: center;
-}
-.tablesRep {
-    width: 100%;
-}
-.tablesRep2{
-    width: 100%;
-}
-.tableRep {
-    position: relative;
-     left: 50%;
-      transform: translate(-50%,0);
-       font-size: 17px;
-        width: 100%; 
-}
-.phone {
-    display: none;
-}
-@media screen and (max-width: 550px){
-    .table {
-        width: 90% !important;
-        overflow-x: auto;
-    }
- .Action{
-        width: 90% !important;
-    }
-
-}
-</style>
 
 
 <script>
 import {mapState} from "vuex";
 import api from "@/api/report"
 import wagonModal from '@/components/modalReport/modal.vue'
+import BDRreport from '@/views/BDRreport.vue'
 
 export default{
 name: 'report',
-components: {wagonModal},
+components: {wagonModal, BDRreport},
 title: 'Отчеты',
 computed: {
     ...mapState({
@@ -681,5 +556,134 @@ DeleteReport(id){
 
 </script>
 
+<style>
+/* #tables {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 90%;
+
+} */
+#loading-page-lk {
+  width: 100vw;
+  height: 100vh;
+  background: rgb(17, 17, 17, 0.1);
+  display: flex;
+  position: fixed;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999999999999;
+}
+#loading-page-lk svg {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,0);
+  margin-top: 15%;
+
+}
+
+.form-btn{
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0);
+    margin-bottom: 2%;
+    margin-top: 3%;
+    height: 80px;
+    font-size: 22px;
+}
+#block-answer{
+    border-radius: 2px;
+background: #ffffff;
+box-shadow:  10px 10px 30px #d0d0d0,
+             -10px -10px 30px #ffffff;
+             width: 90%;
+             position: relative;
+             left: 50%;
+             transform: translate(-50%,0);
+             margin-top: 2%;
+             padding: 3% 2%;
+         
+}
+.staffs {
+    margin-left: 25%;
+}
+.borough {
+    font-size: 17px;
+}
+.form-btn {
+    width: 90%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0);
+    margin-bottom: 2%;
+    margin-top: 3%;
+    height: 80px;
+    font-size: 22px;
+}
+#admin, #staff {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.answer {
+    text-align: left;
+    padding-top: 5%;
+    font-size: 18px;
+    font-weight: 600;
+}
+ .lk h2{
+    text-align: center;
+    padding-top: 2%;
+}
+.form {
+    width: 70%;
+    border: 1px solid black;
+}
+.select-form {
+    width: 50%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0);
+    margin-top: 2%;
+}
+.description-form {
+    text-align: center;
+}
+.block-answer h2{
+    text-align: center;
+}
+.tablesRep {
+    width: 100%;
+}
+.tablesRep2{
+    width: 100%;
+}
+.tableRep {
+    position: relative;
+     left: 50%;
+      transform: translate(-50%,0);
+       font-size: 17px;
+        width: 100%; 
+}
+.phone {
+    display: none;
+}
+@media screen and (max-width: 550px){
+    .table {
+        width: 90% !important;
+        overflow-x: auto;
+    }
+ .Action{
+        width: 90% !important;
+    }
+
+}
+</style>
 
     
