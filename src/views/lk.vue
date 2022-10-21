@@ -124,62 +124,6 @@ mounted(){
     })
    
 },
-
-    // const token = JSON.parse(localStorage.getItem("accessToken"))
-
-    // const preid = JSON.parse(localStorage.getItem('vuex'))
-    // const id = preid.auth.uid
-
-    // document.getElementById('loading-page-report').style.display = 'block'
-
-    // fetch('/api/personal/users/'+ `${id}`, {
-
-    // headers: {
-    //     'Authorization': `Basic ${token}` 
-    // },
-    // method: 'GET'
-    // })
-    // .then((response) => {
-    //             if (response.ok){
-    //                 return response.json().then(r=>{
-    //                     this.PersonalData = r;
-    //                     document.getElementById('loading-page-report').style.display = 'none'
-    //                     console.log(this.PersonalData)
-    //            })
-    //        }
-    //        else{
-    //            console.log('NOT OK')
-    //            document.getElementById('notifications-2').style.display = 'block'
-    //            setTimeout(this.Notif, 2500)
-
-    //        }
-    //    }),
-
-// fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
-    // fetch('/api/personal/users/?page_size=200&manager='+ `${id}`, {
-
-    // headers: {
-    //     'Authorization': `Basic ${token}` 
-    // },
-    // method: 'GET'
-    // })
-    // .then((response) => {
-    //             if (response.ok){
-    //                 return response.json().then(r=>{
-    //                     this.emp = r.data;
-    //                     document.getElementById('loading-page-report').style.display = 'none'
-    //                     console.log(this.emp)
-    //            })
-    //        }
-    //        else{
-    //            console.log('NOT OK')
-    //            document.getElementById('loading-page-report').style.display = 'none'
-    //            document.getElementById('notifications-2').style.display = 'block'
-    //            setTimeout(this.Notif, 2500)
-
-    //        }
-    //    })       
-    // },
     methods: {
         Notif(){
             document.getElementById('notifications-2').style.display = 'none'

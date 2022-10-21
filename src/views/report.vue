@@ -557,13 +557,7 @@ DeleteReport(id){
 </script>
 
 <style>
-/* #tables {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-    width: 90%;
 
-} */
 #loading-page-lk {
   width: 100vw;
   height: 100vh;

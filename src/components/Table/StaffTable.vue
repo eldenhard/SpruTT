@@ -30,7 +30,8 @@
             <tr v-for="staff in all_staff" :key="staff.id">
 
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
-                        <img :src="staff.photo" alt="" width="55px !important">
+                    <span id="big-photo" @click="close_photo"></span>
+                        <img :src="staff.photo" alt="" width="55px !important" class="image" @click="open_photo(`${staff.photo}`)">
                 </td>
 
                 <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.last_name}}</td>
@@ -375,9 +376,20 @@ export default {
         //     this.staffGlobal = response.data
         // })
         
+    //  $(document).ready(function() { 
+	
+	
 
     },
     methods: {
+        open_photo(photo){
+        document.getElementById("big-photo").innerHTML =
+        ("<img @click='close_photo()' style='position: absolute; left: 50%; transform:translate(-50%,0); cursor: zoom-out' src='" + photo + "'>")
+        },
+
+        close_photo() {
+        document.getElementById("big-photo").innerHTML = ""
+        },
         deleteErrorOnline(key){
   
         const index = this.formErrors.indexOf(key);
@@ -571,6 +583,12 @@ export default {
 
 
 <style>
+
+
+.image {
+	cursor:zoom-in;
+}
+
 .error {
     border: 1px solid red !important;
     color: black !important;
