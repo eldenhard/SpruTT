@@ -42,9 +42,9 @@
 </svg>
   
 </section>   
+<p class="amount">всего записей: {{total_objects}}</p>
+<p class="amount">всего на странице: {{amount}}</p>
   <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto;"> 
-    <p class="amount">всего: {{amount}}</p>
-
     <table class="table" style="table-layout: fixed;">
         <thead>
             <tr>
@@ -236,6 +236,10 @@
         </tbody>
 </table>
   </div>
+  <div style="display: flex; justify-content: space-around; margin-top: 2%;">
+            <button class="Cancel" style="width: 20%"  v-if="prevLink" @click="goToPage(prevLink)">назад</button>
+            <button class="Cancel" style="width: 20%" v-if="nextLink" @click="goToPage(nextLink)">вперед</button>
+</div>   
   <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
 
     </div>
@@ -261,6 +265,8 @@ export default {
     },
     data(){
         return {
+            nextLink: null,
+            prevLink: null,
             loaderPoligon: false,
             filter_wagonpolygon:{
                 wagon__wagon_type: '',
@@ -272,10 +278,24 @@ export default {
             notifyMessage: '',
             notifyClass: '',
 
-            amount: null
+            amount: null,
+            total_objects: null
         }
     },
     methods: {
+        goToPage(link){
+            let url = new URL(link)
+            let pageNumber  = url.searchParams.get("page")
+        if(pageNumber != null){
+            this.filter_wagonpolygon.page = pageNumber 
+        }else{
+            delete(this.filter_wagonpolygon.page)
+        }
+        this.getWagonPolygon()
+        },
+        closeNotification(){
+            this.showNotify = false
+        },
         updateFilterDataWagonDislocation(filter_wagonpolygon){
             this.filter_wagonpolygon = filter_wagonpolygon
         },
@@ -288,7 +308,10 @@ export default {
             .then((response) => {
                 this.polygonWagon = response.data.data
                 this.loaderPoligon = false
+                this.nextLink = response.data.links.next
+                this.prevLink = response.data.links.previous
                 this.amount = response.data.amount
+                this.total_objects = response.data.total_objects
                 this.notifyHead = 'Успешно'
                 this.notifyMessage = 'Данные отфильтрованы'
                 this.notifyClass = 'wrapper-success'

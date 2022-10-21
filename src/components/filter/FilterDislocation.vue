@@ -40,65 +40,77 @@
   
 </section>  
 
-<div class="filterDislocation">
-    <div style="display:flex; flex-direction:column;">
-    <label for="input_filter_dislocation" class="all-label">Полигон</label>
-    <select class="input_filter_dislocation" id="input_filter_dislocation" style="cursor: pointer;"
-     v-model="filter_dislocation.polygon"
-    @change="updateFilterDataDislocation"
-    >
-    <option value="">Все полигоны</option>
-    <option value="Анжерская">Анжерская</option>
-    <option value="Аренда РТС">Аренда РТС</option>
-    <option value="Аренда Рутгерс">Аренда Рутгерс</option>
-    <option value="Аренда (склад) Энергоресурсы">Аренда (склад) Энергоресурсы</option>
-    <option value="Аренда СМС">Аренда СМС</option>
-    <option value="Аренда Софит">Аренда Софит</option>
-    <option value="Аренда Стелла (Промгипсовая)">Аренда Стелла (Промгипсовая)</option>
-    <option value="Аренда ТрансОйл">Аренда ТрансОйл</option>
-    <option value="Багахангай">Багахангай</option>
-    <option value="Бензин (Девон)">Бензин (Девон)</option>
-    <option value="Биклянь">Биклянь</option>
-    <option value="Биклянь (Техн ТНТ)">Биклянь (Техн ТНТ)</option>
-    <option value="Бузулук">Бузулук</option>
-    <option value="Бузулук (Роста Терминал)">Бузулук (Роста Терминал)</option>
-    <option value="Вагоны едут на вывод из аренды">Вагоны едут на вывод из аренды</option>
-    <option value="Вагоны на резку">Вагоны на резку</option>
-    <option value="Вератек">Вератек</option> 
-    <option value="В работе Газпромтранс">В работе Газпромтранс</option>
-    <option value="ГПТ по договору ТЭО">ГПТ по договору ТЭО</option>
-    <option value="Дельта Трейд">Дельта Трейд</option>
-    <option value="ЕвроХим">ЕвроХим</option>
-    <option value="Загородняя (Тайга)">Загородняя (Тайга)</option>
-    <option value="Китой-Комбинатская">Китой-Комбинатская</option>
-    <option value="Комбинатская (КОКС)">Комбинатская (КОКС)</option>
-    <option value="Комбинатская (СЕРА)">Комбинатская (СЕРА)</option>
-    <option value="Копылово (ГарантОйл)">Копылово (ГарантОйл)</option>
-    <option value="Копылово (НХТК)">Копылово (НХТК)</option>
-    <option value="Круглое Поле (ВСТ)">Круглое Поле (ВСТ)</option>
-    <option value="Круглое поле (ПВ)">Круглое поле (ПВ)</option>
-    <option value="Курбакинская">Курбакинская</option>
-    <option value="Мечел-Транс ЦС">Мечел-Транс ЦС</option>
-    <option value="НАЦИО">НАЦИО</option>
-    <option value="Новоотрадная">Новоотрадная</option> 
-    <option value="Обнинское">Обнинское</option>
-    <option value="Оперативный контроль">Оперативный контроль</option>
-    <option value="Петропавловск">Петропавловск</option>
-    <option value="Планируем прием в аренду">Планируем прием в аренду</option>
-    <option value="Покровск-Приволжский">Покровск-Приволжский</option>
-    <option value="Попутки ПВ">Попутки ПВ</option>
-    <option value="Разрез ТТ">Разрез ТТ</option>
-    <option value="Соболеково (ННБ)">Соболеково (ННБ)</option>
-    <option value="Соболеково (НХТК)">Соболеково (НХТК)</option>
-    <option value="Тобольск (НХТК)">Тобольск (НХТК)</option>
-    <option value="ТонжЛогистик">ТонжЛогистик</option>
-    <option value="Хабаровск-1">Хабаровск-1</option>
-    <option value="Химичесие цс">Химичесие цс</option>
-    <option value="ЦС по мелким клиентам">ЦС по мелким клиентам</option>
-    <option value="Энергоресурсы">Энергоресурсы</option>
-    <option value="Яничкино">Яничкино</option>
-    
-    </select>
+<div class="filterDislocation" >
+    <div style="display: flex; flex-direction: column">
+        <label for="input_filter_dislocation" class="all-label">Полигон</label>
+        <select class="input_filter_dislocation" id="input_filter_dislocation" style="cursor: pointer;"
+        v-model="filter_dislocation.polygon"
+        @change="updateFilterDataDislocation"
+        >
+            <option value="">Все полигоны</option>
+            <option value="Анжерская">Анжерская</option>
+            <option value="Аренда РТС">Аренда РТС</option>
+            <option value="Аренда Рутгерс">Аренда Рутгерс</option>
+            <option value="Аренда (склад) Энергоресурсы">Аренда (склад) Энергоресурсы</option>
+            <option value="Аренда СМС">Аренда СМС</option>
+            <option value="Аренда Софит">Аренда Софит</option>
+            <option value="Аренда Стелла (Промгипсовая)">Аренда Стелла (Промгипсовая)</option>
+            <option value="Аренда ТрансОйл">Аренда ТрансОйл</option>
+            <option value="Багахангай">Багахангай</option>
+            <option value="Бензин (Девон)">Бензин (Девон)</option>
+            <option value="Биклянь">Биклянь</option>
+            <option value="Биклянь (Техн ТНТ)">Биклянь (Техн ТНТ)</option>
+            <option value="Бузулук">Бузулук</option>
+            <option value="Бузулук (Роста Терминал)">Бузулук (Роста Терминал)</option>
+            <option value="Вагоны едут на вывод из аренды">Вагоны едут на вывод из аренды</option>
+            <option value="Вагоны на резку">Вагоны на резку</option>
+            <option value="Вератек">Вератек</option> 
+            <option value="В работе Газпромтранс">В работе Газпромтранс</option>
+            <option value="ГПТ по договору ТЭО">ГПТ по договору ТЭО</option>
+            <option value="Дельта Трейд">Дельта Трейд</option>
+            <option value="ЕвроХим">ЕвроХим</option>
+            <option value="Загородняя (Тайга)">Загородняя (Тайга)</option>
+            <option value="Китой-Комбинатская">Китой-Комбинатская</option>
+            <option value="Комбинатская (КОКС)">Комбинатская (КОКС)</option>
+            <option value="Комбинатская (СЕРА)">Комбинатская (СЕРА)</option>
+            <option value="Копылово (ГарантОйл)">Копылово (ГарантОйл)</option>
+            <option value="Копылово (НХТК)">Копылово (НХТК)</option>
+            <option value="Круглое Поле (ВСТ)">Круглое Поле (ВСТ)</option>
+            <option value="Круглое поле (ПВ)">Круглое поле (ПВ)</option>
+            <option value="Курбакинская">Курбакинская</option>
+            <option value="Мечел-Транс ЦС">Мечел-Транс ЦС</option>
+            <option value="НАЦИО">НАЦИО</option>
+            <option value="Новоотрадная">Новоотрадная</option> 
+            <option value="Обнинское">Обнинское</option>
+            <option value="Оперативный контроль">Оперативный контроль</option>
+            <option value="Петропавловск">Петропавловск</option>
+            <option value="Планируем прием в аренду">Планируем прием в аренду</option>
+            <option value="Покровск-Приволжский">Покровск-Приволжский</option>
+            <option value="Попутки ПВ">Попутки ПВ</option>
+            <option value="Разрез ТТ">Разрез ТТ</option>
+            <option value="Соболеково (ННБ)">Соболеково (ННБ)</option>
+            <option value="Соболеково (НХТК)">Соболеково (НХТК)</option>
+            <option value="Тобольск (НХТК)">Тобольск (НХТК)</option>
+            <option value="ТонжЛогистик">ТонжЛогистик</option>
+            <option value="Хабаровск-1">Хабаровск-1</option>
+            <option value="Химичесие цс">Химичесие цс</option>
+            <option value="ЦС по мелким клиентам">ЦС по мелким клиентам</option>
+            <option value="Энергоресурсы">Энергоресурсы</option>
+            <option value="Яничкино">Яничкино</option>
+        </select>
+    <div style="display: flex; flex-direction: column">
+        <label for="amoutRecordsDislocation" class="all-label">Кол-во записей</label>
+            <select name="" id="amoutRecordsDislocation"
+            v-model="filter_dislocation.page_size"
+            @change="updateFilterDataDislocation"
+            >  
+                <option value="" selected>100</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="250">250</option>
+                <option value="500">500</option>
+            </select>
+    </div>
 </div>
 
  
@@ -116,6 +128,7 @@ export default {
         return {
             filter_dislocation:{
                 polygon: '',
+                page_size: ''
             },
             wagonFilterDislocation: '',
             loaderDislocation: false,
@@ -143,11 +156,11 @@ export default {
 }
 .filterDislocation {
     width: 100% !important;
-    display: flex;
+    flex-direction: row;
+    display: flex !important;
     justify-content: space-around;
-    /* border-radius: 50px; */
-background: #e0e0e0;
-box-shadow:  20px 20px 60px #cecece,
+    background: #e0e0e0;
+    box-shadow:  20px 20px 60px #cecece,
              -20px -20px 60px #f2f2f2;
              position: relative;
              left: 50%;

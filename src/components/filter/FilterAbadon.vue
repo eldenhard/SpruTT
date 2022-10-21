@@ -57,21 +57,16 @@
     </select>
 </div>
 <div style="display:flex; flex-direction:column;">
-    <label for="amoutRecords" class="all-label">Кол-во записией</label>
+    <label for="amoutRecords" class="all-label">Кол-во записей</label>
 <select name="" id="amoutRecords"
 v-model="filter_abadon.page_size"
 @change="updateFilterDataAbadon"
 >  
-    <option value="10" selected>10</option>
+    <option value="" selected>100</option>
     <option value="25">25</option>
     <option value="50">50</option>
-    <option value="100">100</option>
     <option value="250">250</option>
     <option value="500">500</option>
-
-    <!-- <option :value="this.all_object">Все</option> -->
-
-
 </select>
     </div>
  

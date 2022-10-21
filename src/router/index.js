@@ -10,7 +10,7 @@ import Bookkeeping from '../views/Bookkeeping';
 import lk from '../views/lk';
 import report from '../views/report';
 import Staff from '../views/Staff';
-
+import DislocationTable from '@/components/Table/DislocationTable'
 
 Vue.use(Router)
 
@@ -19,52 +19,42 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'authorization',
       component: authorization
     },
     {
       path: '/wagonpark',
-      name: 'wagonpark',
-      component: wagonpark
+      component: wagonpark,
     },
     {
       path: '/home',
-      name: 'home',
       component: home
     },
     {
       path: '/presentation',
-      name: 'presentation',
       component: presentation
     },
     {
       path: '/rates',
-      name: 'rates',
       component: rates
     },
     {
       path: '/bookkeeping',
-      name: 'bookkeeping',
       component: Bookkeeping
     },
     {
       path: '/lk',
-      name: 'lk',
       component: lk
     },
     {
       path: '/report',
-      name: 'report',
       component: report
     },
     {
       path: '/personnel-service',
-      name: 'personnel-service',
       component: Staff
     },
     {
       path: '*',
-      name: 'errorPage',
       component: errorPage
     }
   ]
