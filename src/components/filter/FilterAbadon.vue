@@ -56,7 +56,7 @@
         </option>
     </select>
 </div>
-<div style="display:flex; flex-direction:column;">
+<!-- <div style="display:flex; flex-direction:column;">
     <label for="amoutRecords" class="all-label">Кол-во записей</label>
 <select name="" id="amoutRecords"
 v-model="filter_abadon.page_size"
@@ -68,7 +68,7 @@ v-model="filter_abadon.page_size"
     <option value="250">250</option>
     <option value="500">500</option>
 </select>
-    </div>
+    </div> -->
  
 
 </div>
@@ -76,7 +76,6 @@ v-model="filter_abadon.page_size"
 </template>
 
 <script>
-// import { api } from '@/helpers/axios';
 import { mapState } from 'vuex'
 import api from '@/api/wagonPark'
 
@@ -106,12 +105,7 @@ export default {
             this.wagonFilterAbadon = response.data.data
             this.loaderAbandon = false
         })
-        api.getWagonsThrow()
-            .then((response) => {
-                this.all_object = response.data.total_objects
-                this.loaderAbandon = false
 
-    })
 },
     methods: {
         updateFilterDataAbadon(){

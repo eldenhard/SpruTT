@@ -27,8 +27,8 @@ const getWagonType = () => {
 }
 
 // ------------- ЗАПРОСЫ ДЛЯ БРОШЕННЫХ ВАГОНОВ ---------------
-const getWagonsThrow = (filter_abadon) => {
-    return api.get(`${resource}/dislocations?operation=БРОС`, {params: filter_abadon})
+const getWagonsThrow = (url, filter_abadon) => {
+    return api.get(url, {params: filter_abadon})
 }
 
 const getWagonsThrowTypes = () => {

@@ -255,6 +255,7 @@ justify-content: center;" @click="OpenChangeReport(reports.id)">Подробне
 </div>
 
 <hr>
+
 <BDRreport></BDRreport>
 </div>
 </template>

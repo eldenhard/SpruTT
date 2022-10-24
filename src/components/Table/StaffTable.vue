@@ -147,7 +147,8 @@
                     <tr>
                         <td style=" width: 5% !important;">
                             <div class="uploader" style="display: block;position: relative;width: 120px;height: 60px;">
-                                <button v-if="current_user_staff.photo" style="display: block;position: absolute;top: 0;z-index: 10;">Заменить</button>
+                                <button v-if="current_user_staff.photo"
+                                 style="display: block;position: absolute;top: 0;z-index: 10;">Заменить</button>
                                 <button v-else>Загрузить</button>
                                 <input type="file" @change="onFileSelected" name="photo"   ref="photo"
                                 style="display: inline-block;
@@ -333,6 +334,7 @@ export default {
             formErrorsMess: '',
 
             all_staff: '',
+            
             loaderStaff: false,
             current_user_staff: '',
             wrapper_staff: false,
@@ -439,10 +441,17 @@ export default {
             api.getAllStaff(this.filter_staff)
             .then((response) => {
                 this.all_staff = response.data.data
+                    this.all_staff.forEach(element => {
+                        if(element.photo != null){
+                            element.photo = element.photo.replace('10.1.5.65' ,'10.1.5.76')
+                        }
+                    }); 
+              
+                // this.all_staff = response.data.data
                 this.loaderStaff = false
                 this.filter_staff.groups = []
                 this.filter_staff.search = ""
-
+                
             }).catch(err => {
                 console.log(err)
                 this.loaderStaff = false

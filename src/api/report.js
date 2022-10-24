@@ -35,6 +35,15 @@ const getUsersLK = (id) => {
 const getManagerLK = (id) => {
     return api.get(`${resource}/users/?page_size=200&manager=` + `${id}`)
 }
+
+
+// БДР отчеты
+const createBDRreport = () => {
+    return api.post(`${reports}/bdr/create/`)
+}
+const getBDRreport = () => {
+    return api.get(`${reports}/bdr`)
+}
 export default {
     getUsers,
     getReportById,
@@ -44,7 +53,10 @@ export default {
     GetReportAbandone,
 
     // Личный кабинет 
-
     getUsersLK,
-    getManagerLK
+    getManagerLK,
+
+    // БДР отчет
+    createBDRreport,
+    getBDRreport,
 }

@@ -44,7 +44,7 @@
 </section>        
 
 <p class="amount">всего записей: {{total_objects}}</p>
-<p class="amount">всего на странице: {{amount}}</p>
+
     <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto;"> 
     <table class="table" style="table-layout: fixed;">
         <thead>
@@ -67,15 +67,15 @@
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Прибытие на станцию назначения</th>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Дата прибытия на станцию отправления</th>
 
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Номер накладная</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Тип накладной</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Тип отправки</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузоотправитель, наименование организации</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузоотправитель, ОКПО</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузополучатель, наименование организации</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Грузополучатель, ОКПО</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Тариф</th>
-                    <th style="background: darkslategrey !important; width: 150px !important; height: 50px !important; vertical-align: middle !important;">Наименование плательщика</th>
+                    <th style="background: darkslategrey !important; width: 150px !important; color: white; height: 50px !important; vertical-align: middle !important;">Номер накладная</th>
+                    <th style="background: darkslategrey !important; width: 150px !important; color: white; height: 50px !important; vertical-align: middle !important;">Тип накладной</th>
+                    <th style="background: darkslategrey !important; width: 150px !important; color: white; height: 50px !important; vertical-align: middle !important;">Тип отправки</th>
+                    <th style="background: darkslategrey !important; width: 150px !important; color: white; height: 50px !important; vertical-align: middle !important;">Грузоотправитель, наименование организации</th>
+                    <th style="background: darkslategrey !important; width: 150px !important; color: white; height: 50px !important; vertical-align: middle !important;">Грузоотправитель, ОКПО</th>
+                    <th style="background: darkslategrey !important; width: 150px !important; color: white; height: 50px !important; vertical-align: middle !important;">Грузополучатель, наименование организации</th>
+                    <th style="background: darkslategrey !important; width: 150px !important; color: white; height: 50px !important; vertical-align: middle !important;">Грузополучатель, ОКПО</th>
+                    <th style="background: darkslategrey !important; width: 150px !important; color: white; height: 50px !important; vertical-align: middle !important;">Тариф</th>
+                    <th style="background: darkslategrey !important; width: 150px !important; color: white; height: 50px !important; vertical-align: middle !important;">Наименование плательщика</th>
 
                     <th style="background: black !important; color: white !important;  width: 150px !important; height: 50px !important; vertical-align: middle !important;">Наименование</th>
                     <th style="background: black !important; color: white !important;  width: 150px !important; height: 50px !important; vertical-align: middle !important;">Код</th>
@@ -257,10 +257,10 @@
     </table>
 </div>
 
-<div style="display: flex; justify-content: space-around; margin-top: 2%;">
+<!-- <div style="display: flex; justify-content: space-around; margin-top: 2%;">
             <button class="Cancel" style="width: 20%"  v-if="prevLink" @click="goToPage(prevLink)">назад</button>
             <button class="Cancel" style="width: 20%" v-if="nextLink" @click="goToPage(nextLink)">вперед</button>
-</div> 
+</div>  -->
 <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
 
     </div>
@@ -284,60 +284,74 @@ export default {
     },
     data(){
         return{
-            nextLink: null,
-            prevLink: null,
+            start_page: 0,
+            link: '',
+            next_link: 0,
+            throwWagons: [],
 
-            throwWagons: '',
             loaderAbandon: false,
-            amount: null,
             total_objects: null,
             
             showNotify: false,
             notifyHead: '',
             notifyMessage: '',
             notifyClass: '',
-            
+
+
             filter_abadon: {
                 wagon__wagon_type: '',
-                page_size: ''
+                page_size: 100
             }
         }
     },
+    // mounted(){
 
+    //     this.loaderAbandon = true
+    //     api.getWagonsThrow(this.filter_abadon)
+    //     .then((response) => {
+    //         // while(response.data.links.next != 'null'){
+    //         //     this.throwWagons = response.data.data
+    //         //     response.data.links.next++
+    //         // }
+    //         this.throwWagons = response.data.data
+    //         this.amount = response.data.amount
+    //         this.total_objects = response.data.total_objects
+    //         this.total_pages = response.data.total_pages
+    //         this.loaderAbandon = false
+    //     })
+    // },
     methods: {
-        goToPage(link){
-        let url = new URL(link)
-        let pageNumber  = url.searchParams.get("page")
-        if(pageNumber != null){
-            this.filter_abadon.page = pageNumber 
-        }else{
-            delete(this.filter_abadon.page)
-        }
-        this.ThrowWagons()
-    },
         closeNotification(){
             this.showNotify = false
         },
-        ThrowWagons(){
+        ThrowWagons(url = null){
+            if(url == null) url = 'wagon-park/dislocations?operation=БРОС'
+
             this.loaderAbandon = true
-            api.getWagonsThrow(this.filter_abadon)
-            .then((response) => {
-                this.throwWagons = response.data.data
-                this.amount = response.data.amount
-                this.total_objects = response.data.total_objects
-                this.nextLink = response.data.links.next
-                this.prevLink = response.data.links.previous
-                this.notifyHead = 'Успешно'
-                this.notifyMessage = 'Данные отфильтрованы'
-                this.notifyClass = 'wrapper-success'
-                this.showNotify = true
-                setTimeout(this.closeNotification, 1500)
-                this.loaderAbandon = false
-            })
+
+            api.getWagonsThrow(url, this.filter_abadon)
+            .then(response => {
+                this.throwWagons = [...this.throwWagons, ...response.data.data]
+                    if(response.data.links.next != null){
+                        this.ThrowWagons(response.data.links.next)
+                        this.loaderAbandon = false
+                    }else{
+                        this.loaderAbandon = false
+                        this.throwWagons = response.data.data
+                        this.total_objects = response.data.total_objects
+                        this.notifyHead = 'Успешно'
+                        this.notifyMessage = 'Данные отфильтрованы'
+                        this.notifyClass = 'wrapper-success'
+                        this.showNotify = true
+                        setTimeout(this.closeNotification, 1500)
+                    }
+            })        
         },
         updateFilterDataAbadon(filter_abadon){
-            this.filter_abadon = filter_abadon
+        this.filter_abadon = filter_abadon
+            
         },
+        
     }
 }
 </script>
