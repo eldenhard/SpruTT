@@ -44,6 +44,9 @@ const createBDRreport = () => {
 const getBDRreport = () => {
     return api.get(`${reports}/bdr`)
 }
+const getBDRreportByID = () => {
+    return api.get(`${reports}/bdr/` + `32`)
+}
 export default {
     getUsers,
     getReportById,
@@ -59,4 +62,5 @@ export default {
     // БДР отчет
     createBDRreport,
     getBDRreport,
+    getBDRreportByID
 }

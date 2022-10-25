@@ -10,7 +10,7 @@ import Bookkeeping from '../views/Bookkeeping';
 import lk from '../views/lk';
 import report from '../views/report';
 import Staff from '../views/Staff';
-import BRDreportExcel from '../views/BRDreportExcel'
+import editBDR from '../views/editBDR'
 Vue.use(Router)
 
 export default new Router({
@@ -47,15 +47,15 @@ export default new Router({
     },
     {
       path: '/report',
-      component: report
+      component: report,
+    },
+    {
+      path: '/edit-bdr/:id',
+      component: editBDR
     },
     {
       path: '/personnel-service',
       component: Staff
-    },
-    {
-      path: '/BRDreportExcel',
-      component: BRDreportExcel
     },
     {
       path: '*',

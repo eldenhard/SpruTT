@@ -66,7 +66,7 @@
             </tr>
         </thead>
         <tbody>
-                <tr v-for="bdr in BDRreport" :key="bdr.id">
+                <tr v-for="bdr in BDRreport" :key="bdr.id" @click="openCurrentReport(bdr.id)">
                     <td style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">{{bdr.name}}</td>
                     <td style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">{{new Date(bdr.created_at).toLocaleString()}}</td>
                     <td style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">{{new Date(bdr.updated_at).toLocaleString()}}</td>
@@ -80,6 +80,7 @@
      
      
 <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
+<editBDR v-if="showEditbdr"></editBDR>
 </div>
 </template>
 
@@ -87,15 +88,18 @@
 import api from '@/api/report'
 import { mapState } from 'vuex';
 import Notifications from '@/components/notifications/Notifications.vue'
+import editBDR from '@/views/editBDR.vue';
 
 export default {
     name: 'BDRreport',
-    components: {Notifications},
+    components: {Notifications, editBDR},
+
     data(){
         return{
             BDRreport: '',
             loaderBDR: false,
             showNotify: false,
+            showEditbdr: false,
             notifyHead: '',
             notifyMessage: '',
             notifyClass: '',
@@ -109,6 +113,10 @@ export default {
         })
     },
     methods: {
+        openCurrentReport(id){
+            window.open('/edit-bdr/' + `${id}`, '_blank');
+            
+        },
         createBDRreport(){
             this.loaderBDR = true
             api.createBDRreport()
