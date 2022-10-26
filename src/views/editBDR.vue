@@ -5,32 +5,55 @@
 <!-- PUT /api/reports/bdr-row/update/365 -->
 <br>
 <div style="width: 95%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0);"> 
-    <table class="table" style="table-layout: fixed;">
+    <table class="table" style="table-layout: fixed; z-index: 2;">
 <thead>
      <tr>
-          <th style=" vertical-align: middle !important; table-layout: fixed;">Название</th>
-          <th style=" vertical-align: middle !important; table-layout: fixed;">План</th>
-          <th style=" vertical-align: middle !important; table-layout: fixed;">Ожидаемый факт</th>
-          <th style=" vertical-align: middle !important; table-layout: fixed;">Отклонение</th>
-          <th style=" vertical-align: middle !important; table-layout: fixed;">Комментарии по отклонениям</th>
-          <th style=" vertical-align: middle !important; table-layout: fixed;">Ответственный за статью в целом</th>
-          <th style=" vertical-align: middle !important; table-layout: fixed;">Лицо, которому Ответственный делегировал заполнение</th>
-          <th style=" vertical-align: middle !important; table-layout: fixed;">Заполняет ожидаемый факт</th>
-          <th style=" vertical-align: middle !important; table-layout: fixed;">Дата последнего обновления</th>
-          <th style=" vertical-align: middle !important; table-layout: fixed;">Действие</th>
+          <th style=" vertical-align: middle !important; table-layout: fixed; z-index:100;">Название</th>
+          <th style=" vertical-align: middle !important; table-layout: fixed;  z-index:100">План</th>
+          <th style=" vertical-align: middle !important; table-layout: fixed;  z-index:100">Ожидаемый факт</th>
+          <th style=" vertical-align: middle !important; table-layout: fixed;  z-index:100">Отклонение</th>
+          <th style=" vertical-align: middle !important; table-layout: fixed;  z-index:100">Комментарии по отклонениям</th>
+          <th style=" vertical-align: middle !important; table-layout: fixed;  z-index:100">Ответственный за статью в целом</th>
+          <th style=" vertical-align: middle !important; table-layout: fixed;  z-index:100">Лицо, которому Ответственный делегировал заполнение</th>
+          <th style=" vertical-align: middle !important; table-layout: fixed;  z-index:100">Заполняет ожидаемый факт</th>
+          <th style=" vertical-align: middle !important; table-layout: fixed;  z-index:100">Дата последнего обновления</th>
+          <th style=" vertical-align: middle !important; table-layout: fixed;  z-index:100">Действие</th>
      </tr>
 </thead>
 <tbody >
-   <tr v-for="(bdr, index) in data" :key="bdr.id" :class="{'level0': bdr.level === 0, 'l1': bdr.level === 1}">  
+   <tr v-for="(bdr, index) in data" :key="bdr.id" :class="{'l0': bdr.level === 0, 'l1': bdr.level === 1, 'l2': bdr.level === 2}">  
           <td clas="lc groups">{{bdr.name}}</td>
           <td class="td-btr"><input class="input-filter"  v-model="data[index].plan"></td>
           <td class="td-btr"><input class="input-filter" v-model="data[index].fact"></td>
           <td class="td-btr"><input class="input-filter" v-model="data[index].deviation"></td>
           <td class="td-btr"><input class="input-filter" v-model="data[index].comment"></td>
-          <td class="td-btr"><input class="input-filter" v-model="data[index].responsible_users"></td>
-          <td class="td-btr"><input class="input-filter" v-model="data[index].delegated_users"></td>
-          <td class="td-btr"><input class="input-filter" v-model="data[index].filling_users"></td>
-          <td class="td-btr">{{new Date(bdr.updated_at).toLocaleString()}}</td>
+          <td class="td-btr">
+            <span class="" v-for="user in data[index].responsible_users" :key="user">
+            {{getName(user)}}<br></span>  
+
+
+            <MultiSelect :selected="data[index].responsible_users" :variants="staffGlobal"></MultiSelect>
+            </td>
+
+          <td class="td-btr" style="position: relative">
+            <span class="" v-for="user in data[index].delegated_users" :key="user">
+            {{getName(user)}}<br></span>  
+             
+           
+
+            <MultiSelect :selected="data[index].delegated_users" :variants="staffGlobal"></MultiSelect>
+        </td>
+          <td class="td-btr">
+            <span class="" v-for="user in data[index].filling_users" :key="user">
+            {{getName(user)}}<br></span> 
+
+           
+             
+            <MultiSelect :selected="data[index].filling_users" :variants="staffGlobal"></MultiSelect>
+
+          </td>
+          <!-- <td class="td-btr"><input class="input-filter" v-model="data[index].filling_users"></td> -->
+          <td class="td-btr" style="font-weight: normal !important;">{{new Date(bdr.updated_at).toLocaleString()}}</td>
           <td class="td-btr"><button class="Accept" style="height: 100%" @click="saveBDRchange(index)">Сохранить</button></td>
 
  </tr>
@@ -51,8 +74,11 @@ import { mapState } from 'vuex';
 import api from '@/api/report'
 import Notifications from '@/components/notifications/Notifications.vue';
 import Loader from '@/components/loader/loader.vue'
+import MultiSelect from '@/components/ui/MultiSelect.vue';
+import { getUserById } from '@/helpers/getAllUsers';
 export default {
      template:`{{ $route.params.id }}`,
+     
     data(){
         return{
             data : {},
@@ -65,21 +91,23 @@ export default {
             level: '',
             updated_at: '',
 
-          showNotify: false,
-          notifyHead: '',
-          notifyMessage: '',
-          notifyClass: '',
+            showNotify: false,
+            notifyHead: '',
+            notifyMessage: '',
+            notifyClass: '',
 
-          loader: false,
+            loader: false,
       
             
         }
     },
-    components:{Notifications, Loader},
+    components:{ Notifications, Loader, MultiSelect },
     computed: {
         ...mapState({
             user: state => state.auth.user,
-            uid: state => state.auth.uid
+            uid: state => state.auth.uid,
+            allGroups: state => state.auth.groups,
+            staffGlobal: state => state.auth.users
         })
     },
     mounted(){
@@ -97,16 +125,29 @@ export default {
 
     },
     methods:{
+        getName(id){
+            const user = getUserById(this.staffGlobal, id)
+            console.log(user)
+            return user[0].first_name  +' '+  user[0].last_name
+        },
+
      saveBDRchange(index){
+        this.loader = true
         const dateForSave = this.data[index]
         console.log(dateForSave)
           api.putBDRreportsave(index,dateForSave)
           .then(response => {
-            console.log(response)
+          this.notifyHead = 'Успешно'
+          this.notifyMessage = 'Данные сохранены'
+          this.notifyClass = 'wrapper-success'
+          this.showNotify = true
+          setTimeout(this.closeNotification, 1500)
+          this.loader = false
           })
 
      },
      saveBDRreport(){
+        this.loader = true
         let dataForAllSave = []
         Object.entries(this.data).forEach(element => {
             const [key, value] = element
@@ -115,7 +156,12 @@ export default {
         console.log(dataForAllSave)
         api.saveBDRreport(this.$route.params.id, dataForAllSave)
         .then(response => {
-            console.log(response)
+            this.notifyHead = 'Успешно'
+          this.notifyMessage = 'Данные Преобразованы в отчет'
+          this.notifyClass = 'wrapper-success'
+          this.showNotify = true
+          setTimeout(this.closeNotification, 1500)
+          this.loader = false
         })
      },
      closeNotification(){
@@ -129,12 +175,10 @@ export default {
 .lc {
     background: #EBEBEB;
     font-size: normal;
-    font-size: 13px;
 }
 .groups {
     text-align: left;
     font-weight: bold;
-    font-size: 13px;
 }
 .groups-amount{
     background: #DDEBF7;
@@ -154,4 +198,17 @@ export default {
     padding: 0 !important;
     vertical-align: middle !important;
 }
+.l0{
+    font-weight: bold;
+    font-size: 15px !important;
+
+}
+.l0 input{
+    font-size: 13px !important;
+    text-align: center !important;
+    background: #DDEBF7 !important;
+    
+    
+}
+
 </style>

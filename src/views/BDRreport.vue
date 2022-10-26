@@ -63,16 +63,20 @@
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Дата создания</th>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Дата последнего обновления</th>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Файл</th>
+                    <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Действие</th>
+
             </tr>
         </thead>
         <tbody>
-                <tr v-for="bdr in BDRreport" :key="bdr.id" @click="openCurrentReport(bdr.id)">
+                <tr v-for="bdr in BDRreport" :key="bdr.id">
                     <td style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">{{bdr.name}}</td>
                     <td style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">{{new Date(bdr.created_at).toLocaleString()}}</td>
                     <td style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">{{new Date(bdr.updated_at).toLocaleString()}}</td>
                     <td style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
                         <a target="_blank" :href="bdr.file" v-if="bdr.file"><img src="@/assets/excel.png" alt="" width="50px!important"></a>
                     </td>
+                    <td style="width: 150px !important; height: 50px !important; vertical-align: middle !important;"><button class="Accept"  @click="openCurrentReport(bdr.id)">Редактировать</button></td>
+
                 </tr>
         </tbody>
     </table>

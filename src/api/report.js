@@ -25,6 +25,9 @@ const CreateReportAbandone = () => {
 const GetReportAbandone = () => {
     return api.get(`${reports}/drop`)
 }
+const getAllgrades = () => {
+    return api.get(`${reports}/kpi/total`)
+}
 // const postReport = () => {
 //     return.post(`${resource}/`)
 // }
@@ -60,7 +63,7 @@ export default {
     deleteReport,
     CreateReportAbandone,
     GetReportAbandone,
-
+    getAllgrades,
     // Личный кабинет 
     getUsersLK,
     getManagerLK,

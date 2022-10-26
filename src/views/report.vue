@@ -254,6 +254,20 @@ justify-content: center;" @click="OpenChangeReport(reports.id)">Подробне
     </div>
 </div>
 
+<button class="button Action" @click=allGrades()  style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 2%">Все оценки</button>
+<div style="width: 50%; overflow-x: auto; height: 80vh; overflow-y: auto;
+position: relative; left: 50%; transform: translate(-50%,0); display: block;" v-if="file_port"> 
+    <table class="table" style="table-layout: fixed; z-index: 2;">
+        <tr>
+            <th style=" vertical-align: middle !important; table-layout: fixed; z-index:100;">Файл</th>
+        </tr>
+        <tr>
+            <td clas="lc groups">
+                <a target="_blank" :href="this.all_grades.file" v-if="this.all_grades.file"><img src="@/assets/excel.png" alt="" width="50px!important"></a>
+            </td>
+        </tr>
+  </table>
+</div> 
 <hr>
 
 <BDRreport></BDRreport>
@@ -295,7 +309,9 @@ data(){
         showReportModal: false,
         loaderReport: false,
         OnceReport: null,
-        allReportHistory: false
+        allReportHistory: false,
+        all_grades: '',
+        file_port: false,
 
     }
 },
@@ -432,7 +448,16 @@ else {
     this.btnName = 'Скрыть отчет по KPI сотрудника'
     }
  },
+ allGrades(){
+    this.loaderReport = true
+    this.file_port = true
+    api.getAllgrades()
+    .then(response => {
+        this.all_grades = response.data
+        this.loaderReport = false
 
+    })
+ },
 OpenReport(){
 const pretoken = JSON.parse(localStorage.getItem("vuex"))
 const token = pretoken.auth.user.token
