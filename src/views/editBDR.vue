@@ -28,7 +28,7 @@
           <td class="td-btr"><input class="input-filter" v-model="data[index].deviation"></td>
           <td class="td-btr"><input class="input-filter" v-model="data[index].comment"></td>
           <td class="td-btr">
-            <span class="" v-for="user in data[index].responsible_users" :key="user">
+            <span class="" v-for="user in data[index].responsible_users" :key="user" style="margin-bottom:5px">
             {{getName(user)}}<br></span>  
 
 
@@ -36,7 +36,7 @@
             </td>
 
           <td class="td-btr" style="position: relative">
-            <span class="" v-for="user in data[index].delegated_users" :key="user">
+            <span class="" v-for="user in data[index].delegated_users" :key="user" style="margin-bottom:5px">
             {{getName(user)}}<br></span>  
              
            
@@ -44,7 +44,7 @@
             <MultiSelect :selected="data[index].delegated_users" :variants="staffGlobal"></MultiSelect>
         </td>
           <td class="td-btr">
-            <span class="" v-for="user in data[index].filling_users" :key="user">
+            <span class="" v-for="user in data[index].filling_users" :key="user" style="margin-bottom:5px">
             {{getName(user)}}<br></span> 
 
            
@@ -199,7 +199,7 @@ export default {
     vertical-align: middle !important;
 }
 .l0{
-    font-weight: bold;
+    font-weight: 700;
     font-size: 15px !important;
 
 }

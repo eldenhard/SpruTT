@@ -3,8 +3,8 @@
         <div class="multipleSelection">
             <div class="selectBox" 
                 @click="show=!show">
-                <select style="font-weight: 300 !important;">
-                    <option">Сотрудник</option>
+                <select style="font-weight: 500 !important; text-align: center;">
+                    <option>Сотрудник</option>
                 </select>
                 <div class="overSelect"></div>
             </div>
