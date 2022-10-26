@@ -44,8 +44,14 @@ const createBDRreport = () => {
 const getBDRreport = () => {
     return api.get(`${reports}/bdr`)
 }
-const getBDRreportByID = () => {
-    return api.get(`${reports}/bdr/` + `32`)
+const getBDRreportByID = (id) => {
+    return api.get(`${reports}/bdr/` + `${id}`)
+}
+const putBDRreportsave = (id,data) => {
+    return api.put(`${reports}/bdr-row/update/` + `${id}`, data)
+}
+const saveBDRreport = (id, data) => {
+    return api.post(`${reports}/bdr/save/` + `${id}`, data)
 }
 export default {
     getUsers,
@@ -62,5 +68,7 @@ export default {
     // БДР отчет
     createBDRreport,
     getBDRreport,
-    getBDRreportByID
+    getBDRreportByID,
+    putBDRreportsave,
+    saveBDRreport
 }
