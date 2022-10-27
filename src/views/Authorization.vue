@@ -7,7 +7,7 @@
         <input type="text" placeholder="i.ivanov@tehtrans.com" v-model="email">
 
         <label for="psw"><b>Пароль</b></label>
-        <input type="password" placeholder="Введите пароль" v-model="password">
+        <input type="text" placeholder="Введите пароль" v-model="password">
 
         <button @click="submitEntry()">Войти</button>
       </div>
@@ -124,6 +124,7 @@ export default {
     mounted(){
         if(this.authStatus) this.showAuthForm = false
     }
+    
 }
     </script>
 

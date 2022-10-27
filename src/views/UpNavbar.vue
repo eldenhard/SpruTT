@@ -7,8 +7,8 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item disabled>
-          <router-link  to="/home" style="color: grey; font-size: 15px; text-decoration: none;">Справочники</router-link>
+        <b-nav-item>
+          <router-link  to="/home"  style="color: black; text-decoration: none; font-size: 15px;">Справочники</router-link>
         </b-nav-item>
 
         <b-nav-item >

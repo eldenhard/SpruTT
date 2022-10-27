@@ -1,38 +1,38 @@
 <template>
-<div id="home">
-   
-  <DirectoryNavbar></DirectoryNavbar>  
-  <br>
-  <SideBarHome></SideBarHome>
-    </div>
 
-    <!-- <div>
- <p>Текст запроса</p> {{ info }}
-</div> -->
 
+  <b-card no-body style="margin-top: 1%">
+
+    <b-tabs pills card vertical style="background: white">
+      <b-container class="bv-example-row">
+            <b-tab title="Справочник контрагенты" active>
+                <b-card-text>
+                    <partnerTable/>
+              </b-card-text>
+              </b-tab>
+            <b-tab title="Справочник договора">
+              <b-card-text>
+                <contractTable/>
+              </b-card-text>
+            </b-tab>
+      </b-container>
+    </b-tabs>
+  </b-card>
 
 </template>
 
 
 
 <script>
-import DirectoryNavbar from '../components/Navbar/DirectoryNavbar.vue';
-import SideBarHome from '../components/Navbar/SideBarHome.vue';
+import partnerTable from '@/components/Table/PartnerTable.vue'
+import contractTable from '@/components/Table/ContractTable.vue'
 export default{
     name: 'Home',
-    components: {DirectoryNavbar,SideBarHome}
-    // data(){
-    //     return{
-    //         info: []
-    //     }
-        }
-//         mounted(){ 
-//         axios
-//       .get('https://jsonplaceholder.typicode.com/posts')
-//       .then(response => (this.info = response));
-//   }
-    
-  
+    components: {partnerTable,contractTable}
+
+}
 
 </script>
+
+
 

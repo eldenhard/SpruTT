@@ -3,7 +3,7 @@
 <wagonModal v-if="showReportModal" :OnceReport="OnceReport" @close="closeChangeReport"></wagonModal>
         <h2>Отчеты</h2>
    
-        <button class="button Action" @click="OpenKPI()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{ btnName }}</button>
+        <button class="button Action" @click="OpenKPI()" style="width: 53%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{ btnName }}</button>
         <br><br>
     <form id="Anketa" method="post" style="display: none">
         <br>
@@ -196,9 +196,22 @@
 
 
 
+<b-container class="bv-example-row">
+     <b-row>
+    <b-col>
+        <button class="button Action" @click="OpenReport()" style="width: 60%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{downloadReport}}</button>
+    </b-col>
 
-<button class="button Action" @click="OpenReport()" style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{downloadReport}}</button>
+    <b-col>
+        <a href="http://10.1.5.65/api/reports/kpi/total" class="button Action"   style="width: 60%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 2%; text-decoration: none; color: white; outline: none;">Все оценки</a>
+        <br>
+    </b-col>
+  </b-row>
+
+</b-container>
 <br><br>
+
+
 <div class="row container-fluid" v-if="allReportHistory">
     <div class="col-md-6 w-90" style="overflow-x: auto">
         <h5 align="center">Созданные Вами отчеты</h5>
@@ -221,8 +234,7 @@
                     <td>{{new Date(reports.updated_at).toLocaleString()}}<br> </td> 
                     <td>{{reports.rate}} %<br></td> 
                     <td><a download target="_blank" :href="reports.file" v-if="reports.file"><img src="../assets/excel.png" alt="" width="50px!important"></a> </td> 
-                    <td><button class="button Request" style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #2196F3 !important;   display: flex; align-items: center;
-justify-content: center;" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
+                    <td><button class="button Request" style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #2196F3 !important;   display: flex; align-items: center;justify-content: center;" @click="OpenChangeReport(reports.id)">Подробнее</button> </td> 
                     <td><button class="button Delete" style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #ED5E68 !important;   display: flex;
   align-items: center;
   justify-content: center;" @click="DeleteReport(reports.id)">Удалить</button> </td> 
@@ -254,20 +266,7 @@ justify-content: center;" @click="OpenChangeReport(reports.id)">Подробне
     </div>
 </div>
 
-<button class="button Action" @click=allGrades()  style="width: 40%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 2%">Все оценки</button>
-<div style="width: 50%; overflow-x: auto; height: 80vh; overflow-y: auto;
-position: relative; left: 50%; transform: translate(-50%,0); display: block;" v-if="file_port"> 
-    <table class="table" style="table-layout: fixed; z-index: 2;">
-        <tr>
-            <th style=" vertical-align: middle !important; table-layout: fixed; z-index:100;">Файл</th>
-        </tr>
-        <tr>
-            <td clas="lc groups">
-                <a target="_blank" :href="this.all_grades.file" v-if="this.all_grades.file"><img src="@/assets/excel.png" alt="" width="50px!important"></a>
-            </td>
-        </tr>
-  </table>
-</div> 
+
 <hr>
 
 <BDRreport></BDRreport>
@@ -450,12 +449,11 @@ else {
  },
  allGrades(){
     this.loaderReport = true
-    this.file_port = true
     api.getAllgrades()
     .then(response => {
         this.all_grades = response.data
-        this.loaderReport = false
-
+        window.open(this.all_grades)
+            this.loaderReport = false
     })
  },
 OpenReport(){

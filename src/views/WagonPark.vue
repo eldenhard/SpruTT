@@ -14,6 +14,7 @@
                         </template>
   
                         <b-card-text>
+                          
                             {{i.name}}
                             <div v-if="i.name==='Рейсы'"> 
                                 <FlightTable/>
@@ -52,6 +53,7 @@
   import AbandonTable from '../components/Table/AbandonTable.vue'
   import ReportAbandoned from '../components/Table/ReportAbandoned.vue'
   import WagonTablePoligon from '../components/Table/WagonTablePoligon.vue'
+
     
 export default{
     name: 'WagonPark',
