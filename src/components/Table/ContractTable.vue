@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 
   <div>
       <b-tabs content-class="mt-3" align="center">
@@ -42,4 +42,4 @@ export default {
   name: 'ContractTable',
   components: { farmsContract, financeContract, buyerContract, renovationContract, providerContract }
 }
-</script>
+</script> -->

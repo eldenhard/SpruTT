@@ -337,7 +337,7 @@ const pretoken = JSON.parse(localStorage.getItem("vuex"))
 const token = pretoken.auth.user.token
 const preid = JSON.parse(localStorage.getItem('vuex'))
 const id = preid.auth.uid
-// fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
+// ('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
     fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
     headers: {
