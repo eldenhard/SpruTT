@@ -45,7 +45,7 @@
                       <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].phone"></td>
                       <td class="td-btr">
                                     
-                         <select v-model="counterparties[index].group">
+                         <select v-model="counterparties[index].group" class="input-filter">
                             <option value="all">Все</option>
                                  <option :value="g[0]" v-for="g in Object.entries(groups)" :key="g[0]">{{g[1]}}</option>
                             </select>
@@ -196,6 +196,7 @@ export default {
     outline: none;
     text-align: center;
     font-size: 13px;
+    cursor: pointer;
 }
 </style>
 

@@ -10,11 +10,11 @@
                     <partnerTable/>
               </b-card-text>
               </b-tab>
-            <b-tab title="Справочник договора">
+            <!-- <b-tab title="Справочник договора">
               <b-card-text>
                 <contractTable/>
               </b-card-text>
-            </b-tab>
+            </b-tab> -->
       </b-container>
     </b-tabs>
   </b-card>

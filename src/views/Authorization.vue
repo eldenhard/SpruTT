@@ -124,7 +124,6 @@ export default {
     components: { Notifications },
     mounted(){
         if(this.authStatus) this.showAuthForm = false
-        document.title = 'Авторизация'
 
     }
     
