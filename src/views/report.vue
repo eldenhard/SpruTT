@@ -9,7 +9,7 @@
         <br>
     <label  for="admin" style=" position: relative; left: 50%; transform: translate(-50%, 0); width: 100% !important;">
 
-    <p style="text-align:center;">Копия письма: кадровая служба (обязательное поле)</p>    
+    <p style="text-align:center;">Копия письма: кадровая служба <span style="color: red; font-weight: bold; font-size: 18px">*</span></p>    
     <select id="admin" required style="width: 50% !important;" >
         <option selected="selected">{{admin.id}} {{admin.first_name}} {{admin.last_name}}</option>
     </select>
@@ -18,20 +18,22 @@
 <br>
 <br>
 
-    <label  for="staff" style=" position: relative; left: 50%; transform: translate(-50%, 0); width: 100% !important;">
-        
-        <select id="staff" required style="width: 50% !important;">
-            <option value="" disabled="disabled" selected="selected">Сотрудник</option>
+    <label  for="staff" style=" position: relative; left: 50%; transform: translate(-50%, 0); width: 100% !important;" >
+        <p style="text-align:center;">Выберите сотрудника <span style="color: red; font-weight: bold; font-size: 18px">*</span></p>    
+
+        <select id="staff" required style="width: 50% !important;" v-model="emplyee" :class="{error: this.errors.staff}">
+            <option value="" disabled="disabled" selected="selected" >Сотрудник</option>
             <option  v-for="staf in staff" :key="staf.id">{{staf.id}} {{staf.first_name}} {{staf.last_name}}</option>
         </select>
     </label>
 
 
-
+<!-- :class="{error: this.errors.answer1}" -->
 
         <div id="block-answer">
             <h2>Анкета сотрудника</h2>
-      <p class="answer" name="a1">1. Готовность неукоснительно выполнять все производственные задания, порученные руководителем.</p>
+      <p class="answer" name="a1" >1. Готовность неукоснительно выполнять все производственные задания, порученные руководителем.</p>
+      <p v-if="this.errors.answer1" style="font-weight: bold; color: red">{{this.errors.answer1}}</p>
 
      
         <input type="radio" name="first-question" id="first-question-1"  value="c1" v-model="answer1">
@@ -46,8 +48,9 @@
         <input type="radio" name="first-question" id="first-question-4"  value="c4"  v-model="answer1">
         <label for="first-question-4" >&nbsp;Безукоризненный уровень исполнительности. Всегда охотно берется за выполнение всех производственных заданий, порученных руководителем.</label><br>
 <hr>
-       <p class="answer"  name="a2">2. Способность справляться со своими обязанностями и поручениями. Умение выявлять и решать возникающие в работе проблемы</p>
-     
+       <p class="answer"  name="a2" >2. Способность справляться со своими обязанностями и поручениями. Умение выявлять и решать возникающие в работе проблемы</p>
+       <p v-if="this.errors.answer2" style="font-weight: bold; color: red">{{this.errors.answer2}}</p>
+
         <input type="radio" name="second-question" id="second-question-1"  value="c1"  v-model="answer2">
         <label for="second-question-1" >&nbsp;Часто не справляется со своими обязанностями и поручениями или заданиями. Не умеет выявлять проблемы и с трудом решает их</label><br>
 
@@ -63,7 +66,7 @@
         <hr>
 
     <p class="answer"  name="a3">3. Компетентность. Знание используемых приемов и методов работы и умение в точности им следовать, наличие необходимых навыков</p>
-
+    <p v-if="this.errors.answer3" style="font-weight: bold; color: red">{{this.errors.answer3}}</p>
      
         <input type="radio" name="third-question" id="third-question-1"   value="c1"  v-model="answer3">
         <label for="third-question-1">&nbsp;Некомпетентен. Не знает используемые приемы и методы работы и не стремится быстро освоить их</label><br>
@@ -79,9 +82,9 @@
         <hr>
 
 
-      <p class="answer" name="a4">4. Заинтересованность и активность в вопросах повышения качества, производительности труда и освоения эффективных методов работы</p>
+      <p class="answer" name="a4" >4. Заинтересованность и активность в вопросах повышения качества, производительности труда и освоения эффективных методов работы</p>
+      <p v-if="this.errors.answer4" style="font-weight: bold; color: red">{{this.errors.answer4}}</p>
 
-     
         <input type="radio" name="fourth-question" id="fourth-question-1"  value="c1" v-model="answer4">
         <label for="fourth-question-1">&nbsp;Часто сопротивляется внедрению новых технологий, методов работы, направленных на повышение качества и производительности труда</label><br>
 
@@ -95,8 +98,8 @@
         <label for="fourth-question-4" > &nbsp;Не только активно помогает осваивать новые методы работы, но и сам часто выдвигает различные рационализаторские предложения</label><br>
         <hr>
 
-      <p class="answer"  name="a5">5. Выполнение планового объема работ по выданным производственным заданиям.</p>
-
+      <p class="answer"  name="a5" >5. Выполнение планового объема работ по выданным производственным заданиям.</p>
+      <p v-if="this.errors.answer5" style="font-weight: bold; color: red">{{this.errors.answer5}}</p>
      
         <input type="radio" name="fifth-question" id="fifth-question-1"  value="c1" v-model="answer5">
         <label for="fifth-question-1" >&nbsp;Не выполнялись запланированные работы по заданиям в срок</label><br>
@@ -112,6 +115,7 @@
         <hr>
 
       <p class="answer" name="a6">6. Качество выполненных работ, поручений.</p>
+        <p v-if="this.errors.answer6" style="font-weight: bold; color: red">{{this.errors.answer6}}</p>
 
         <input type="radio" name="sixth-question" id="sixth-question-1"  value="c1" v-model="answer6">
         <label for="sixth-question-1">&nbsp;Работы выполнялись некачественно. Имелись случаи брака и возврата заданий на доработку</label><br>
@@ -270,6 +274,8 @@
 <hr>
 
 <BDRreport></BDRreport>
+<Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
+
 </div>
 </template>
 
@@ -280,10 +286,11 @@ import {mapState} from "vuex";
 import api from "@/api/report"
 import wagonModal from '@/components/modalReport/modal.vue'
 import BDRreport from '@/views/BDRreport.vue'
+import Notifications from '@/components/notifications/Notifications.vue'
 
 export default{
 name: 'report',
-components: {wagonModal, BDRreport},
+components: {wagonModal, BDRreport,Notifications},
 title: 'Отчеты',
 computed: {
     ...mapState({
@@ -293,24 +300,33 @@ computed: {
     },
 data(){
     return{
-        'staff': [],
-        'answer1': [],
-        'answer2': [],
-        'answer3': [],
-        'answer4': [],
-        'answer5': [],
-        'answer6': [],
+        emplyee: '',
+        staff: [],
+        answer1: '',
+        answer2: '',
+        answer3: '',
+        answer4: '',
+        answer5: '',
+        answer6: '',
         btnName : 'Создать отчет по KPI сотрудника',
         downloadReport: 'Загрузить отчеты',
-        'admin': [],
-        'reports_creator': [],
-        'reports_employee': [],
+        admin: [],
+        reports_creator: [],
+        reports_employee: [],
         showReportModal: false,
         loaderReport: false,
         OnceReport: null,
         allReportHistory: false,
         all_grades: '',
         file_port: false,
+        errors : {},
+
+        // Уведомления
+        showNotify: false,
+        notifyHead: '',
+        notifyMessage: '',
+        notifyClass: '',
+
 
     }
 },
@@ -427,6 +443,7 @@ method: 'GET'
 
     }
 })
+document.title = 'Отчеты'
 
 },
 methods: { 
@@ -524,11 +541,36 @@ closeChangeReport(){
     event.preventDefault()
     const pretoken = JSON.parse(localStorage.getItem("vuex"))
     const token = pretoken.auth.user.token
-    this.loaderReport = true
     // document.getElementById('loading-page-lk').style.display = 'block'
    let admin = document.getElementById('admin').value.split(' ')[0] 
    let staff = document.getElementById('staff').value.split(' ')[0] 
-   fetch('http://10.1.5.65/api/reports/kpi/create/', {
+   this.errors = {}
+
+   if(this.answer1 == ''){
+    this.errors = {...this.errors, answer1: 'Выберите ответ',}
+   }
+   if(this.answer2 == ''){
+    this.errors = {...this.errors, answer2: 'Выберите ответ'}
+   }
+
+   if(this.answer3 == ''){
+    this.errors = {...this.errors, answer3: 'Выберите ответ'}
+   }
+   if(this.answer4 == ''){
+    this.errors = {...this.errors, answer4: 'Выберите ответ'}
+   }if(this.answer5 == ''){
+    this.errors = {...this.errors, answer5: 'Выберите ответ'}
+   }if(this.answer6 == ''){
+    this.errors = {...this.errors, answer6: 'Выберите ответ'}
+   }
+   if(this.emplyee == ''){
+    this.errors = {...this.errors, staff: 'Выберите ответ'}
+   }
+
+
+   if(!Object.keys(this.errors).length){
+    this.loaderReport = true
+    fetch('http://10.1.5.65/api/reports/kpi/create/', {
     // fetch('/api/reports/kpi/create/', {
 
     method: 'POST',
@@ -547,25 +589,43 @@ closeChangeReport(){
     "a6": this.answer6
  })
 })
-  .then((response) => {
+    .then((response) => {
     if (response.ok){
         return response.json().then((data)=>{
             this.loaderReport = false
 
-            document.getElementById('notifications').style.display = 'block';
-            setTimeout(this.Not, 1500);
+            this.notifyHead = 'Успешно'
+            this.notifyMessage = 'Ваша анкета отправлена'
+            this.notifyClass = 'wrapper-success'
+            this.showNotify = true
+            setTimeout(this.closeNotification, 1500)
             document.getElementById("Anketa").reset();
         })
     }
     else{
-        document.getElementById('loading-page-lk').style.display = 'none';
-        document.getElementById('notifications-2').style.display = 'block';
-        setInterval(this.Not2, 1500)
-        console.log(response)
+    this.loaderReport = false
+    this.notifyHead = 'Ошибка'
+    this.notifyMessage = 'У вас нет прав доступа на предоставление'
+    this.notifyClass = 'wrapper-alert'
+    this.showNotify = true
+    setTimeout(this.closeNotification, 1500)
 
     }
-})
- },
+    })
+ }else{
+    this.loaderReport = false
+    this.notifyHead = 'Ошибка'
+    this.notifyMessage = 'Заполните все поля анкеты'
+    this.notifyClass = 'wrapper-alert'
+    this.showNotify = true
+    setTimeout(this.closeNotification, 1500)
+    // TODO: Нотификатор
+ }
+},
+closeNotification(){
+            this.showNotify = false
+},
+
 DeleteReport(id){
     this.loaderReport = true
     api.deleteReport(id)
@@ -654,6 +714,13 @@ box-shadow:  10px 10px 30px #d0d0d0,
     padding-top: 5%;
     font-size: 18px;
     font-weight: 600;
+}
+.answer.error{
+    color: red;
+}
+.error{
+    color: red;
+    font-weight: bold;
 }
  .lk h2{
     text-align: center;

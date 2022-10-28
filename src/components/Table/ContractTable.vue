@@ -2,9 +2,11 @@
 
 <div>
   <b-tabs content-class="mt-3" align="center">
-    <b-tab title="First" active><p>я первая вкладка</p></b-tab>
-    <b-tab title="Second"><p>я вторая вкладка</p></b-tab>
-    <b-tab title="Disabled" disabled><p>я отключенная вкладка!</p></b-tab>
+    <b-tab title="Общехозяйственные" active><p>я Общехозяйственные вкладка</p></b-tab>
+    <b-tab title="Ремонтные"><p>я Ремонтные вкладка</p></b-tab>
+    <b-tab title="С покупателем" active><p>я покупателем вкладка</p></b-tab>
+    <b-tab title="С поставщиком"><p>я поставщиком вкладка</p></b-tab>
+    <b-tab title="Финансовые" ><p>я Финансовые вкладка!</p></b-tab>
   </b-tabs>
 </div>
 

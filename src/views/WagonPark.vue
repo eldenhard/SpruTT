@@ -79,6 +79,7 @@ export default{
         if (tabs) {
             this.tabs = JSON.parse(tabs)
         }
+        document.title = 'Вагонный парк'
     } 
 }
   

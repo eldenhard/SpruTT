@@ -122,7 +122,8 @@ mounted(){
         this.emp= response.data.data
         this.loaderLK = false
     })
-   
+    document.title = 'Личный кабинет'
+
 },
     methods: {
         Notif(){

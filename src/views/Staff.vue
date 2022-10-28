@@ -55,6 +55,8 @@ export default {
          if (tabs) {
              this.tabs = JSON.parse(tabs)
          }
+         document.title = 'Кадровая служба'
+
      } 
 }
 </script>

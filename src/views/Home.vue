@@ -28,7 +28,11 @@ import partnerTable from '@/components/Table/PartnerTable.vue'
 import contractTable from '@/components/Table/ContractTable.vue'
 export default{
     name: 'Home',
-    components: {partnerTable,contractTable}
+    components: {partnerTable,contractTable},
+    mounted(){
+      document.title = 'Справочники'
+
+    }
 
 }
 

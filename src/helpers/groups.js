@@ -1,0 +1,34 @@
+const groups = {
+    agent: 'Агенты',
+renter: 'Арендодатель',
+rail_tariff_supplier: 'Поставщики',
+product_supplier: 'Поставщики',
+service_supplier: 'Поставщики',
+client: 'Клиенты',
+tenant: 'Арендатор',
+retail: 'Розничные',
+bank: 'Банки',
+depot: 'Депо',
+our_firm: 'Наши',
+individual: 'Физические',
+other: 'Прочие',
+branch: 'Филиалы',
+specific: 'Специфические',
+budget: 'Бюджет',
+extra_budgetary_fond: 'Внебюджетные',
+founder: 'Учредители',
+consignee: 'Грузополучатели',
+warehouse_or_terminal: 'Склады',
+new_counterparty_by_edo: 'Новые',
+edo_operator: 'Операторы',
+court: 'Суды',
+potential_customer: 'Потенциальные',
+new_counterparty: 'Новый',
+employee: 'Сотрудники',
+archive: 'Архив',
+deleted: 'Удаленные',
+}
+
+export default {
+    groups
+}

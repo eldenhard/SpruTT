@@ -37,7 +37,7 @@
         <input type="radio" name="first-question" id="first-question-4"  value="c4"  v-model="answer1">
         <label for="first-question-4" >&nbsp;Безукоризненный уровень исполнительности. Всегда охотно берется за выполнение всех производственных заданий, порученных руководителем.</label><br>
         <textarea name="" id="" rows="1" style="resize: none; width: 50%;" placeholder="Причина изменения" v-model="reason1"></textarea>
-        <p class="error" v-if="r1">Заполните причину</p>
+        <p style="color:red; font-weight: bold" v-if="r1">Заполните причину</p>
         <hr>
         
        <p class="answer"  name="a2">2. Способность справляться со своими обязанностями и поручениями. Умение выявлять и решать возникающие в работе проблемы</p>
@@ -55,7 +55,7 @@
         <label for="second-question-4" > &nbsp;Проявляет отличную способность справляться со всеми обязанностями и производственными заданиями. Всегда умело выявляет и быстро решает возникающие проблемы</label><br>
         
         <textarea name="" id="" rows="1" style="resize: none; width: 50%;" placeholder="Причина изменения"  v-model="reason2"></textarea>
-        <p class="error" v-if="r2">Заполните причину</p>
+        <p style="color:red; font-weight: bold" v-if="r2">Заполните причину</p>
         <hr>
 
     <p class="answer"  name="a3">3. Компетентность. Знание используемых приемов и методов работы и умение в точности им следовать, наличие необходимых навыков</p>
@@ -74,7 +74,7 @@
         <label for="third-question-4" >&nbsp;Компетентен. Отлично знает все методы работы и неукоснительно следует им каждый рабочий день</label><br>
         
         <textarea name="" id="" rows="1" style="resize: none; width: 50%;" placeholder="Причина изменения"  v-model="reason3"></textarea>
-        <p class="error" v-if="r3">Заполните причину</p>
+        <p style="color:red; font-weight: bold" v-if="r3">Заполните причину</p>
         <hr>
 
 
@@ -94,7 +94,7 @@
         <label for="fourth-question-4" > &nbsp;Не только активно помогает осваивать новые методы работы, но и сам часто выдвигает различные рационализаторские предложения</label><br>
         
         <textarea name="" id="" rows="1" style="resize: none; width: 50%;" placeholder="Причина изменения"  v-model="reason4"></textarea>
-        <p class="error" v-if="r4">Заполните причину</p>
+        <p style="color:red; font-weight: bold" v-if="r4">Заполните причину</p>
         <hr>
 
       <p class="answer"  name="a5">5. Выполнение планового объема работ по выданным производственным заданиям.</p>
@@ -113,7 +113,7 @@
         <label for="fifth-question-4" >&nbsp;Все запланированные работы по заданиям выполнялись в полном объеме и в установленные сроки </label><br>
         
         <textarea name="" id=""  rows="1" style="resize: none; width: 50%;" placeholder="Причина изменения"  v-model="reason5"></textarea>
-        <p class="error" v-if="r5">Заполните причину</p>
+        <p style="color:red; font-weight: bold" v-if="r5">Заполните причину</p>
         <hr>
 
       <p class="answer" name="a6">6. Качество выполненных работ, поручений.</p>
@@ -131,7 +131,7 @@
         <label for="sixth-question-4">&nbsp;Работы выполнялись безукоризненно, аккуратно, четко, без брака, всегда в строгом соответствии со стандартами</label><br>
 
         <textarea name="" id="" rows="1" style="resize: none; width: 50%;" placeholder="Причина изменения"  v-model="reason6"></textarea>
-        <p class="error" v-if="r6">Заполните причину</p>
+        <p style="color:red; font-weight: bold" v-if="r6">Заполните причину</p>
         <hr> 
 </div>
         <div class="btn_group_report">

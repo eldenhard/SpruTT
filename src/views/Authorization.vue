@@ -7,7 +7,7 @@
         <input type="text" placeholder="i.ivanov@tehtrans.com" v-model="email">
 
         <label for="psw"><b>Пароль</b></label>
-        <input type="text" placeholder="Введите пароль" v-model="password">
+        <input type="text" placeholder="Введите пароль" v-model.trim="password">
 
         <button @click="submitEntry()">Войти</button>
       </div>
@@ -39,6 +39,7 @@ export default {
     },
     methods: {
         submitEntry: function () {
+            
             if(this.email.length > 0){
                 this.$store.dispatch(actionTypes.login, {
                     email: this.email,
@@ -123,6 +124,8 @@ export default {
     components: { Notifications },
     mounted(){
         if(this.authStatus) this.showAuthForm = false
+        document.title = 'Авторизация'
+
     }
     
 }
