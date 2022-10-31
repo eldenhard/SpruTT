@@ -56,11 +56,44 @@
                             Примечание</th>
                         <th
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
-                            Примечание</th>
+                            Рабочее наименование</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Краткое наименование</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Полное наименование</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            ЕЛС</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            ОГРН/ЕГРПОУ/БИН</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            ИНН/РНН</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            КПП/№ Св-ва НДС</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Юридический адрес</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Дата создания</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Руководитель</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Телефон</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Группа</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="farm in farmDirecory" :key="farm.id">
+                    <tr v-for="(farm) in farmDirecory" :key="farm.id">
                         <td class="td-btr">{{ farm.number }}</td>
                         <td class="td-btr">{{ farm.company_status }}</td>
                         <td class="td-btr">{{ farm.created_at }}</td>
@@ -69,30 +102,115 @@
                         <td class="td-btr">{{ farm.contract_object }}</td>
                         <td class="td-btr">{{ farm.fiat_amount }}</td>
                         <td class="td-btr">{{ farm.expiration_date }}</td>
-                        <td class="td-btr">{{ farm.prolongation }}</td>
-                        <td class="td-btr">{{ farm.is_active }}</td>
+                        <td class="td-btr" v-if="farm.prolongation == true">Да</td>
+                        <td class="td-btr" v-else>Нет</td>
+                        <td class="td-btr" v-if="farm.is_active == true">Да</td>
+                        <td class="td-btr" v-else>Нет</td>
                         <td class="td-btr"><a :href="farm.scan" target="_blank"><img style="height: 50px"
                                     src="@/assets/pdf.png" alt="скан"></a></td>
                         <td class="td-btr">{{ farm.category }}</td>
                         <td class="td-btr">{{ farm.comment }}</td>
 
-                        <td class="td-btr">{{ farm.counterparty }}</td>
-                        <!-- <td class="td-btr">{{ farm.company_status }}</td>
-                        <td class="td-btr">{{ farm.created_at }}</td>
-                        <td class="td-btr">{{ farm.department }}</td>
-                        <td class="td-btr">{{ farm.contract_type }}</td>
-                        <td class="td-btr">{{ farm.contract_object }}</td>
-                        <td class="td-btr">{{ farm.fiat_amount }}</td>
-                        <td class="td-btr">{{ farm.expiration_date }}</td>
-                        <td class="td-btr">{{ farm.prolongation }}</td>
-                        <td class="td-btr">{{ farm.is_active }}</td>
-                        <td class="td-btr"><a :href="farm.scan" target="_blank"><img style="height: 50px" src="@/assets/pdf.png" alt="скан"></a></td>
-                        <td class="td-btr">{{ farm.category }}</td>
-                         <td class="td-btr">{{ farm.comment }}</td> -->
-                        <!-- <td class="td-btr">{{ farm.counterparty }}</td> -->
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.work_name }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.short_name }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.full_name }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.els }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.ogrn }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.inn }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.kpp }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.legal_address }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ new
+                                Date(farm.counterparty.created_at).toLocaleString()
+                        }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.manager }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.phone }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.group }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <!-- <td class="td-btr" v-else-if="farm.counterparty.group == 'agent'">Агенты</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'renter'">Арендодатель</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'rail_tariff_supplier'">Поставщики</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'product_supplier'">Поставщики</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'service_supplier'">Поставщики</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'client'">Клиенты</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'tenant'">Арендатор</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'retail'">Розничные</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'bank'">Банки</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'depot'">Депо</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'our_firm'">Наши</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'individual'">Физические</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'other'">Прочие</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'branch'">Филиалы</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'specific'">Специфические</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'budget'">Бюджет</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'extra_budgetary_fond'">Внебюджетные</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'founder'">Учредители</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'consignee'">Грузополучатели</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'warehouse_or_terminal'">Склады</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'new_counterparty_by_edo'">Новые</td>
+                        <td class="td-btr"  v-else-if="farm.counterparty.group ==   'edo_operator'">Операторы</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'court'">Суды</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'potential_customer'">Потенциальные</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'new_counterparty'">Новый</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'employee'">Сотрудники</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'archive'">Архив</td>
+                        <td class="td-btr" v-else-if="farm.counterparty.group ==  'deleted'">Удаленные</td> -->
 
 
                     </tr>
+                    <!-- <tr v-for="(farm, index) in farmDirecory" :key="farm.id">
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="farmDirecory[index].number"></td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="farmDirecory[index].company_status"></td>
+                        <td class="td-btr">{{new Date(farm.created_at).toLocaleString()}}</td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="farmDirecory[index].department"></td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="farmDirecory[index].contract_type"></td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="farmDirecory[index].contract_object"></td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="farmDirecory[index].fiat_amount"></td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="farmDirecory[index].expiration_date"></td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="farmDirecory[index].prolongation"></td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="farmDirecory[index].is_active"></td>
+                        <td class="td-btr"><a :href="farm.scan" target="_blank"><img style="height: 50px"
+                                    src="@/assets/pdf.png" alt="скан"></a></td>
+                        <td class="td-btr">{{ farm.category }}</td>
+                        <td class="td-btr">{{ farm.comment }}</td>
+
+                        <td class="td-btr" v-if="farm.counterparty != null"><input class="input-filter" type="text" v-model="farmDirecory[index].counterparty.work_name"></td>
+                        <td class="td-btr" v-if="farm.counterparty != null"><input class="input-filter" type="text" v-model="farmDirecory[index].counterparty.short_name"></td>
+                        <td class="td-btr" v-if="farm.counterparty != null"><input class="input-filter" type="text" v-model="farmDirecory[index].counterparty.full_name"></td>
+                        <td class="td-btr" v-if="farm.counterparty != null"><input class="input-filter" type="text" v-model="farmDirecory[index].counterparty.els"></td>
+                        <td class="td-btr" v-if="farm.counterparty != null"><input class="input-filter" type="text" v-model="farmDirecory[index].counterparty.ogrn"></td>
+                        <td class="td-btr" v-if="farm.counterparty != null"><input class="input-filter" type="text" v-model="farmDirecory[index].counterparty.inn"></td>
+                        <td class="td-btr" v-if="farm.counterparty != null"><input class="input-filter" type="text" v-model="farmDirecory[index].counterparty.kpp"></td>
+                        <td class="td-btr" v-if="farm.counterparty != null"><input class="input-filter" type="text" v-model="farmDirecory[index].counterparty.legal_address"></td>
+                        <td class="td-btr" v-if="farm.counterparty != null">{{ new
+                                Date(farm.counterparty.created_at).toLocaleString()
+                        }}</td>
+                        <td class="td-btr" v-if="farm.counterparty != null"><input class="input-filter" type="text" v-model="farmDirecory[index].counterparty.manager"></td>
+                        <td class="td-btr" v-if="farm.counterparty != null"><input class="input-filter" type="text" v-model="farmDirecory[index].counterparty.phone"></td>
+                        <td class="td-btr" v-if="farm.counterparty != null"><input class="input-filter" type="text" v-model="farmDirecory[index].counterparty.group"></td>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -109,7 +227,7 @@ import api from '@/api/directory'
 import { mapState } from 'vuex';
 import Loader from '@/components/loader/loader.vue'
 import Notifications from '@/components/notifications/Notifications.vue'
-
+import groups from '@/helpers/groups'
 export default {
     name: 'PartnerTable',
     components: { Loader, Notifications },
@@ -121,33 +239,61 @@ export default {
             total_objects: '',
             amount: '',
             farmDirecory: '',
-
+            groups: groups.groups,
             // Уведомления
             showNotify: false,
             notifyHead: '',
             notifyMessage: '',
             notifyClass: '',
 
+            name: '',
+            number: '',
+            company_status: '',
+            created_at: '',
+            department: '',
+            contract_type: '',
+            contract_object: '',
+            fiat_amount: '',
+            expiration_date: '',
+            prolongation: '',
+            is_active: '',
+            category: '',
+            comment: '',
 
+            work_name: '',
+            short_name: '',
+            full_name: '',
+            els: '',
+            ogrn: '',
+            inn: '',
+            kpp: '',
+            legal_address: '',
+            manager: '',
+            phone: '',
+            group: '',
+
+            filter_farms: {
+
+            }
         }
     },
     methods: {
-        // goToPage(link) {
-        //     let url = new URL(link)
-        //     let pageNumber = url.searchParams.get("page")
-        //     if (pageNumber != null) {
-        //         this.filter_directory.page = pageNumber
-        //     } else {
-        //         delete (this.filter_directory.page)
-        //     }
-        //     this.getFarmContract()
-        // },
+        goToPage(link) {
+            let url = new URL(link)
+            let pageNumber = url.searchParams.get("page")
+            if (pageNumber != null) {
+                this.filter_farms.page = pageNumber
+            } else {
+                delete (this.filter_farms.page)
+            }
+            this.getFarmContract()
+        },
         getFarmContract() {
             this.loader = true
-            api.getDirectoryFarm()
+            api.getDirectoryFarm(this.filter_farms)
                 .then(response => {
-                    // this.nextLink = response.data.links.next
-                    // this.prevLink = response.data.links.previous
+                    this.nextLink = response.data.links.next
+                    this.prevLink = response.data.links.previous
                     this.farmDirecory = response.data.data
                     this.total_objects = response.data.total_objects
                     this.amount = response.data.amount

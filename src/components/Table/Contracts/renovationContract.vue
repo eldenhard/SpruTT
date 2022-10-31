@@ -4,7 +4,7 @@
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
         <Loader :loader="loader"></Loader>
-        <button class="Accept" @click="getFarmContract()"
+        <button class="Accept" @click="getRenovationContract()"
             style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0)">Запросить
             договора на ремонт</button>
         <br><br>
@@ -17,15 +17,142 @@
                     <tr>
                         <th
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Номер договора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Статус ТТ по договору</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Дата заключения</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Подразделение инициатора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Вид договора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Предмет договора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Сумма договора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Срок действия договора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Пролонгация</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Статус</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Скан-копия</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Категория</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Примечание</th>
+
+
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Рабочее наименование</th>
-
-
-
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
+                            Краткое наименование</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
+                            Полное наименование</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
+                            ЕЛС</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
+                            ОГРН/ЕГРПОУ/БИН</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
+                            ИНН/РНН</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
+                            КПП/№ Св-ва НДС</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
+                            Юридический адрес</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
+                            Дата создания</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
+                            Руководитель</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
+                            Телефон</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
+                            Группа</th>
                     </tr>
+
+
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="td-btr"><input class="input-filter" type="text">{{ renovationDirectory }}</td>
+                   
+                    <tr v-for="(renovation) in renovationDirectory" :key="renovation.id">
+                        <td class="td-btr">{{ renovation.number }}</td>
+                        <td class="td-btr">{{ renovation.company_status }}</td>
+                        <td class="td-btr">{{ renovation.created_at }}</td>
+                        <td class="td-btr">{{ renovation.department }}</td>
+                        <td class="td-btr">{{ renovation.contract_type }}</td>
+                        <td class="td-btr">{{ renovation.contract_object }}</td>
+                        <td class="td-btr">{{ renovation.fiat_amount }}</td>
+                        <td class="td-btr">{{ renovation.expiration_date }}</td>
+                        <td class="td-btr" v-if="renovation.prolongation == true">Да</td>
+                        <td class="td-btr" v-else>Нет</td>
+                        <td class="td-btr" v-if="renovation.is_active == true">Да</td>
+                        <td class="td-btr" v-else>Нет</td>
+                        <td class="td-btr"><a :href="renovation.scan" target="_blank"><img style="height: 50px"
+                                    src="@/assets/pdf.png" alt="скан"></a></td>
+                        <td class="td-btr">{{ renovation.category }}</td>
+                        <td class="td-btr">{{ renovation.comment }}</td>
+
+                        <td class="td-btr"  v-if="renovation.counterparty != null">{{ renovation.counterparty.work_name }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.short_name }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.full_name }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.els }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.ogrn }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.inn }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.kpp }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.legal_address }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ new
+                                Date(renovation.counterparty.created_at).toLocaleString()
+                        }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.manager }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.phone }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.group }}</td>
+                        <td class="td-btr" v-else>—</td>
 
                     </tr>
                 </tbody>
@@ -56,34 +183,38 @@ export default {
             total_objects: '',
             amount: '',
             renovationDirectory: '',
-            
+
             // Уведомления
             showNotify: false,
             notifyHead: '',
             notifyMessage: '',
             notifyClass: '',
 
+            filter_renovation: {
+
+            }
+
 
         }
     },
     methods: {
-        // goToPage(link) {
-        //     let url = new URL(link)
-        //     let pageNumber = url.searchParams.get("page")
-        //     if (pageNumber != null) {
-        //         this.filter_directory.page = pageNumber
-        //     } else {
-        //         delete (this.filter_directory.page)
-        //     }
-        //     this.getFarmContract()
-        // },
-        getFarmContract() {
+        goToPage(link) {
+            let url = new URL(link)
+            let pageNumber = url.searchParams.get("page")
+            if (pageNumber != null) {
+                this.filter_renovation.page = pageNumber
+            } else {
+                delete (this.filter_renovation.page)
+            }
+            this.getRenovationContract()
+        },
+        getRenovationContract() {
             this.loader = true
-            api.getDirectoryFarm()
+            api.getDirectoryRenovation(this.filter_renovation)
                 .then(response => {
-                    // this.nextLink = response.data.links.next
-                    // this.prevLink = response.data.links.previous
-                    this.renovationDirectory = response.data
+                    this.nextLink = response.data.links.next
+                    this.prevLink = response.data.links.previous
+                    this.renovationDirectory = response.data.data
                     this.total_objects = response.data.total_objects
                     this.amount = response.data.amount
 

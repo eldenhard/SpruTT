@@ -83,7 +83,7 @@ export default {
             counterparties: [],
             loader: false,
             filter_directory:{
-                search: ''
+                search: '',
             },
             loader: false,
             total_objects: '',

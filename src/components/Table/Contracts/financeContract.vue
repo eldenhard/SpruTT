@@ -4,7 +4,7 @@
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
         <Loader :loader="loader"></Loader>
-        <button class="Accept" @click="getFarmContract()"
+        <button class="Accept" @click="getFinanceContract()"
             style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0)">Запросить
             финансовые договора</button>
         <br><br>
@@ -17,16 +17,138 @@
                     <tr>
                         <th
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Номер договора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Статус ТТ по договору</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Дата заключения</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Подразделение инициатора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Вид договора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Предмет договора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Сумма договора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Срок действия договора</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Пролонгация</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Статус</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Скан-копия</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Категория</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Примечание</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
                             Рабочее наименование</th>
-
-
-
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Краткое наименование</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Полное наименование</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            ЕЛС</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            ОГРН/ЕГРПОУ/БИН</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            ИНН/РНН</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            КПП/№ Св-ва НДС</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Юридический адрес</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Дата создания</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Руководитель</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Телефон</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Группа</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="td-btr"><input class="input-filter" type="text">{{ financeDirecory }}</td>
+                    <tr v-for="(finance) in financeDirecory" :key="finance.id">
+                        <td class="td-btr">{{ finance.number }}</td>
+                        <td class="td-btr">{{ finance.company_status }}</td>
+                        <td class="td-btr">{{new Date(finance.created_at).toLocaleString()}}</td>
+                        <td class="td-btr">{{ finance.department }}</td>
+                        <td class="td-btr">{{ finance.contract_type }}</td>
+                        <td class="td-btr">{{ finance.contract_object }}</td>
+                        <td class="td-btr">{{ finance.fiat_amount }}</td>
+                        <td class="td-btr">{{ finance.expiration_date }}</td>
+                        <td class="td-btr" v-if="finance.prolongation == true">Да</td>
+                        <td class="td-btr" v-else>Нет</td>
+                        <td class="td-btr" v-if="finance.is_active == true">Да</td>
+                        <td class="td-btr" v-else>Нет</td>
+                        <td class="td-btr" v-if="finance.scan != null"><a :href="finance.scan" target="_blank"><img
+                                    style="height: 50px" src="@/assets/pdf.png" alt="скан"></a></td>
+                        <td class="td-btr" v-else>—</td>
+                        <td class="td-btr">{{ finance.category }}</td>
+                        <td class="td-btr">{{ finance.comment }}</td>
 
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.work_name }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.short_name }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.full_name }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.els }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.ogrn }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.inn }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.kpp }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.legal_address }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ new
+                                Date(finance.counterparty.created_at).toLocaleString()
+                        }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.manager }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.phone }}</td>
+                        <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.group }}</td>
+                        <td class="td-btr" v-else>—</td>
                     </tr>
                 </tbody>
             </table>
@@ -63,27 +185,31 @@ export default {
             notifyMessage: '',
             notifyClass: '',
 
+            filter_finance: {
+
+            }
+
 
         }
     },
     methods: {
-        // goToPage(link) {
-        //     let url = new URL(link)
-        //     let pageNumber = url.searchParams.get("page")
-        //     if (pageNumber != null) {
-        //         this.filter_directory.page = pageNumber
-        //     } else {
-        //         delete (this.filter_directory.page)
-        //     }
-        //     this.getFarmContract()
-        // },
-        getFarmContract() {
+        goToPage(link) {
+            let url = new URL(link)
+            let pageNumber = url.searchParams.get("page")
+            if (pageNumber != null) {
+                this.filter_finance.page = pageNumber
+            } else {
+                delete (this.filter_finance.page)
+            }
+            this.getFinanceContract()
+        },
+        getFinanceContract() {
             this.loader = true
-            api.getDirectoryFarm()
+            api.getDirectoryFinance(this.filter_finance)
                 .then(response => {
-                    // this.nextLink = response.data.links.next
-                    // this.prevLink = response.data.links.previous
-                    this.financeDirecory = response.data
+                    this.nextLink = response.data.links.next
+                    this.prevLink = response.data.links.previous
+                    this.financeDirecory = response.data.data
                     this.total_objects = response.data.total_objects
                     this.amount = response.data.amount
 

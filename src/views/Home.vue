@@ -10,11 +10,11 @@
                     <partnerTable/>
               </b-card-text>
               </b-tab>
-            <!-- <b-tab title="Справочник договора">
+            <b-tab title="Справочник договора">
               <b-card-text>
                 <contractTable/>
               </b-card-text>
-            </b-tab> -->
+            </b-tab>
       </b-container>
     </b-tabs>
   </b-card>
@@ -25,10 +25,10 @@
 
 <script>
 import partnerTable from '@/components/Table/PartnerTable.vue'
-// import contractTable from '@/components/Table/ContractTable.vue'
+import contractTable from '@/components/Table/ContractTable.vue'
 export default{
     name: 'Home',
-    components: {partnerTable},
+    components: {partnerTable, contractTable},
     mounted(){
       document.title = 'Справочники'
 
