@@ -96,7 +96,7 @@
                     <tr v-for="(provider) in providerDirectory" :key="provider.id">
                         <td class="td-btr">{{ provider.number }}</td>
                         <td class="td-btr">{{ provider.company_status }}</td>
-                        <td class="td-btr">{{new Date( provider.created_at ).toLocaleString()}}</td>
+                        <td class="td-btr">{{new Date(provide.created_at).toLocaleString()}}</td>
                         <td class="td-btr">{{ provider.department }}</td>
                         <td class="td-btr">{{ provider.contract_type }}</td>
                         <td class="td-btr">{{ provider.contract_object }}</td>
