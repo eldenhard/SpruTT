@@ -1,6 +1,7 @@
 <template>
 
     <div>
+        <FilterFarms @updateFilterDataFarms = "updateFilterDataFarms"></FilterFarms>
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
         <Loader :loader="loader"></Loader>
@@ -54,41 +55,42 @@
                         <th
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
                             Примечание</th>
+
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Рабочее наименование</th>
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Краткое наименование</th>
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Полное наименование</th>
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             ЕЛС</th>
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             ОГРН/ЕГРПОУ/БИН</th>
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             ИНН/РНН</th>
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             КПП/№ Св-ва НДС</th>
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Юридический адрес</th>
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Дата создания</th>
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Руководитель</th>
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Телефон</th>
                         <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Группа</th>
                     </tr>
                 </thead>
@@ -228,9 +230,10 @@ import { mapState } from 'vuex';
 import Loader from '@/components/loader/loader.vue'
 import Notifications from '@/components/notifications/Notifications.vue'
 import groups from '@/helpers/groups'
+import FilterFarms from '@/components/filter/contractFilter/filter_farms.vue'
 export default {
     name: 'PartnerTable',
-    components: { Loader, Notifications },
+    components: { Loader, Notifications, FilterFarms },
     data() {
         return {
             nextLink: null,
@@ -273,6 +276,9 @@ export default {
             group: '',
 
             filter_farms: {
+                groups: [],
+                number: '',
+                counterparty__full_name: ''
 
             }
         }
@@ -317,6 +323,9 @@ export default {
 
         closeNotification() {
             this.showNotify = false
+        },
+        updateFilterDataFarms(filter_farms){
+            this.filter_farms = filter_farms
         },
 
     },

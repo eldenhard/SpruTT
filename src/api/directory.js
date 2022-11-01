@@ -20,10 +20,10 @@ const getDirectoryBuyer = (filter_buyer) => {
     return api.get(`${documents}/contract/?category=С+Покупателями`,  {params: filter_buyer})
 }
 const getDirectoryProvider = (filter_provider) => {
-    return api.get(`${documents}/contract/?category=С+Покупателями`,  {params: filter_provider})
+    return api.get(`${documents}/contract/?category=С+Поставщиками`,  {params: filter_provider})
 }
 const getDirectoryFinance = (filter_finance) => {
-    return api.get(`${documents}/contract/?category=С+Покупателями`,  {params: filter_finance})
+    return api.get(`${documents}/contract/?category=Финансовые`,  {params: filter_finance})
 }
 
 export default {

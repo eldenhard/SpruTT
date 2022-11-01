@@ -1,6 +1,7 @@
 <template>
 
     <div>
+        <FilterRenovation @updateFilterDataRenovation="updateFilterDataRenovation"></FilterRenovation>
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
         <Loader :loader="loader"></Loader>
@@ -171,10 +172,10 @@ import api from '@/api/directory'
 import { mapState } from 'vuex';
 import Loader from '@/components/loader/loader.vue'
 import Notifications from '@/components/notifications/Notifications.vue'
-
+import FilterRenovation from '@/components/filter/contractFilter/renovation_filter.vue'
 export default {
     name: 'PartnerTable',
-    components: { Loader, Notifications },
+    components: { Loader, Notifications, FilterRenovation },
     data() {
         return {
             nextLink: null,
@@ -191,6 +192,11 @@ export default {
             notifyClass: '',
 
             filter_renovation: {
+                groups: [],
+                number: '',
+                counterparty: {
+                    full_name: ''
+                }
 
             }
 
@@ -237,6 +243,9 @@ export default {
 
         closeNotification() {
             this.showNotify = false
+        },
+        updateFilterDataRenovation(filter_renovation){
+            this.filter_renovation = filter_renovation
         },
 
     },
