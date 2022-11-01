@@ -55,7 +55,7 @@
                         <th
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
                             Примечание</th>
-                            
+
                         <th
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Рабочее наименование</th>
@@ -92,13 +92,32 @@
                         <th
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Группа</th>
+
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Тип приложения</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Номер приложения</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Дата</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Примечание</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Скан-копия</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Номер договора</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(provider) in providerDirectory" :key="provider.id">
                         <td class="td-btr">{{ provider.number }}</td>
                         <td class="td-btr">{{ provider.company_status }}</td>
-                        <td class="td-btr">{{new Date(provider.created_at).toLocaleString()}}</td>
+                        <td class="td-btr">{{ new Date(provider.created_at).toLocaleString() }}</td>
                         <td class="td-btr">{{ provider.department }}</td>
                         <td class="td-btr">{{ provider.contract_type }}</td>
                         <td class="td-btr">{{ provider.contract_object }}</td>
@@ -114,13 +133,16 @@
                         <td class="td-btr">{{ provider.category }}</td>
                         <td class="td-btr">{{ provider.comment }}</td>
 
-                        <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.work_name }}</td>
+                        <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.work_name }}
+                        </td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.short_name }}</td>
+                        <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.short_name }}
+                        </td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.full_name }}</td>
+                        <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.full_name }}
+                        </td>
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.els }}</td>
@@ -135,7 +157,8 @@
                         <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.kpp }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.legal_address }}</td>
+                        <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.legal_address
+                        }}</td>
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-if="provider.counterparty != null">{{ new
@@ -151,6 +174,16 @@
 
                         <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.group }}</td>
                         <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-for="f in provider.annexes" :key="f.id">{{ f.doc_type }}</td>
+                        <td class="td-btr" v-for="f in provider.annexes" :key="f.id">{{ f.number }}</td>
+                        <td class="td-btr" v-for="f in provider.annexes" :key="f.id">{{ new
+                                Date(f.created_at).toLocaleString()
+                        }}</td>
+                        <td class="td-btr" v-for="f in provider.annexes" :key="f.id">{{ f.comment }}</td>
+                        <td class="td-btr" v-for="f in provider.annexes" :key="f.id"><a :href="f.scan"
+                                target="_blank"><img src="@/assets/excel.png"></a></td>
+                        <td class="td-btr" v-for="f in provider.annexes" :key="f.id">{{ f.contract }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -237,7 +270,7 @@ export default {
         closeNotification() {
             this.showNotify = false
         },
-        updateFilterDataProvider(filter_provider){
+        updateFilterDataProvider(filter_provider) {
             this.filter_provider = filter_provider
         },
 

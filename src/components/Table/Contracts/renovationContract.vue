@@ -93,12 +93,31 @@
                         <th
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
                             Группа</th>
+
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Тип приложения</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Номер приложения</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Дата</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Примечание</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Скан-копия</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Номер договора</th>
                     </tr>
 
 
                 </thead>
                 <tbody>
-                   
+
                     <tr v-for="(renovation) in renovationDirectory" :key="renovation.id">
                         <td class="td-btr">{{ renovation.number }}</td>
                         <td class="td-btr">{{ renovation.company_status }}</td>
@@ -117,19 +136,23 @@
                         <td class="td-btr">{{ renovation.category }}</td>
                         <td class="td-btr">{{ renovation.comment }}</td>
 
-                        <td class="td-btr"  v-if="renovation.counterparty != null">{{ renovation.counterparty.work_name }}</td>
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.work_name
+                        }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.short_name }}</td>
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.short_name
+                        }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.full_name }}</td>
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.full_name
+                        }}</td>
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.els }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.ogrn }}</td>
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.ogrn }}
+                        </td>
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.inn }}</td>
@@ -138,7 +161,9 @@
                         <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.kpp }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.legal_address }}</td>
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{
+                                renovation.counterparty.legal_address
+                        }}</td>
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-if="renovation.counterparty != null">{{ new
@@ -146,14 +171,27 @@
                         }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.manager }}</td>
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.manager }}
+                        </td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.phone }}</td>
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.phone }}
+                        </td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.group }}</td>
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.group }}
+                        </td>
                         <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id">{{ f.doc_type }}</td>
+                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id">{{ f.number }}</td>
+                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id">{{ new
+                                Date(f.created_at).toLocaleString()
+                        }}</td>
+                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id">{{ f.comment }}</td>
+                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id"><a :href="f.scan"
+                                target="_blank"><img src="@/assets/excel.png"></a></td>
+                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id">{{ f.contract }}</td>
 
                     </tr>
                 </tbody>
@@ -244,7 +282,7 @@ export default {
         closeNotification() {
             this.showNotify = false
         },
-        updateFilterDataRenovation(filter_renovation){
+        updateFilterDataRenovation(filter_renovation) {
             this.filter_renovation = filter_renovation
         },
 

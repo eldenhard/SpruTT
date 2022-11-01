@@ -2,27 +2,27 @@
 
   <div>
       <b-tabs content-class="mt-3" align="center">
-        <b-tab title="Общехозяйственные" active>
+        <b-tab title="Общехозяйственные" active style="color: black !important" >
           <b-card-text>
             <farmsContract />
           </b-card-text>
         </b-tab>
-        <b-tab title="Ремонтные">
+        <b-tab title="Ремонтные" style="color: black  !important">
           <b-card-text>
             <renovationContract />
           </b-card-text>
         </b-tab>
-        <b-tab title="С покупателем" active>
+        <b-tab title="С покупателем" style="color: black  !important">
           <b-card-text>
             <buyerContract />
           </b-card-text>
         </b-tab>
-        <b-tab title="С поставщиком">
+        <b-tab title="С поставщиком" style="color: black  !important">
           <b-card-text>
             <providerContract />
           </b-card-text>
         </b-tab>
-        <b-tab title="Финансовые">
+        <b-tab title="Финансовые" style="color: black  !important">
           <b-card-text>
             <financeContract />
           </b-card-text>

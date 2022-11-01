@@ -2,6 +2,7 @@
 
     <div>
         <FilterFinance @updateFilterDataFinance="updateFilterDataFinance"></FilterFinance>
+
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
         <Loader :loader="loader"></Loader>
@@ -92,13 +93,41 @@
                         <th
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Группа</th>
+
+                        <!-- <template v-if="countAnnexes"> -->
+
+                        <template v-for="(el, idx) in countAnnexes">
+
+
+                            <th :key="idx"
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Тип приложения</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Номер приложения</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Дата</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Примечание</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Скан-копия</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Номер договора</th>
+                        </template>
+                        <!-- </template> -->
                     </tr>
+
+
                 </thead>
                 <tbody>
                     <tr v-for="(finance) in financeDirecory" :key="finance.id">
                         <td class="td-btr">{{ finance.number }}</td>
                         <td class="td-btr">{{ finance.company_status }}</td>
-                        <td class="td-btr">{{new Date(finance.created_at).toLocaleString()}}</td>
+                        <td class="td-btr">{{ new Date(finance.created_at).toLocaleString() }}</td>
                         <td class="td-btr">{{ finance.department }}</td>
                         <td class="td-btr">{{ finance.contract_type }}</td>
                         <td class="td-btr">{{ finance.contract_object }}</td>
@@ -117,7 +146,8 @@
                         <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.work_name }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.short_name }}</td>
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.short_name }}
+                        </td>
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.full_name }}</td>
@@ -135,7 +165,8 @@
                         <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.kpp }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.legal_address }}</td>
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.legal_address }}
+                        </td>
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-if="finance.counterparty != null">{{ new
@@ -143,14 +174,28 @@
                         }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.manager }}</td>
+                        <td class="td-btr" v-if="finance.counterparty != null">
+                            {{ finance.counterparty.manager }}
+                        </td>
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.phone }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.group }}</td>
+                        <td class="td-btr" v-if="finance.counterparty != null">{{ getGroupName(finance.counterparty.group) }}</td>
                         <td class="td-btr" v-else>—</td>
+
+                        <template v-for="f in finance.annexes">
+
+                            <td class="td-btr">{{ f.doc_type }}</td>
+                            <td class="td-btr">{{ f.number }}</td>
+                            <td class="td-btr">{{ new
+                                    Date(f.created_at).toLocaleString()
+                            }}</td>
+                            <td class="td-btr">{{ f.comment }}</td>
+                            <td class="td-btr"><a :href="f.scan" target="_blank"><img src="@/assets/excel.png"></a></td>
+                            <td class="td-btr">{{ f.contract }}</td>
+                        </template>
                     </tr>
                 </tbody>
             </table>
@@ -169,8 +214,9 @@ import { mapState } from 'vuex';
 import Loader from '@/components/loader/loader.vue'
 import Notifications from '@/components/notifications/Notifications.vue'
 import FilterFinance from '@/components/filter/contractFilter/filter_finance.vue'
+import groups from '@/helpers/groups'
 export default {
-    name: 'PartnerTable',
+    name: 'FinanceContract',
     components: { Loader, Notifications, FilterFinance },
     data() {
         return {
@@ -179,8 +225,8 @@ export default {
             loader: false,
             total_objects: '',
             amount: '',
-            financeDirecory: '',
-            
+            financeDirecory: [],
+
             // Уведомления
             showNotify: false,
             notifyHead: '',
@@ -190,12 +236,17 @@ export default {
             filter_finance: {
                 counterparty__full_name: '',
                 number: ''
-            }
+            },
 
 
         }
     },
+
     methods: {
+        getGroupName(group){
+            console.log(groups)
+            return groups.groups[group];
+        },
         goToPage(link) {
             let url = new URL(link)
             let pageNumber = url.searchParams.get("page")
@@ -236,7 +287,7 @@ export default {
         closeNotification() {
             this.showNotify = false
         },
-        updateFilterDataFinance(filter_finance){
+        updateFilterDataFinance(filter_finance) {
             this.filter_finance = filter_finance
         },
     },
@@ -246,7 +297,17 @@ export default {
             uid: state => state.auth.uid,
             allGroups: state => state.auth.groups,
             staffGlobal: state => state.auth.users
-        })
+        }),
+        countAnnexes() {
+            let count = 0;
+            if (this.financeDirecory.length) {
+                this.financeDirecory.forEach(el => {
+                    if (el.annexes.length > count) count = el.annexes.length
+                })
+            }
+
+            return count
+        }
     },
 }
 </script>

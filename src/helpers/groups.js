@@ -1,4 +1,5 @@
 const groups = {
+    all: 'Все',
     agent: 'Агенты',
 renter: 'Арендодатель',
 rail_tariff_supplier: 'Поставщики',

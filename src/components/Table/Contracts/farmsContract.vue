@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <FilterFarms @updateFilterDataFarms = "updateFilterDataFarms"></FilterFarms>
+        <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
         <Loader :loader="loader"></Loader>
@@ -92,6 +92,24 @@
                         <th
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Группа</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Тип приложения</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Номер приложения</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Дата</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Примечание</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Скан-копия</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            Номер договора</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -150,6 +168,23 @@
 
                         <td class="td-btr" v-if="farm.counterparty != null">{{ farm.counterparty.group }}</td>
                         <td class="td-btr" v-else>—</td>
+
+                        <td class="td-btr" v-for="f in farm.annexes" :key="f.id">{{ f.doc_type }}</td>
+                        <td class="td-btr" v-for="f in farm.annexes" :key="f.id">{{ f.number }}</td>
+                        <td class="td-btr" v-for="f in farm.annexes" :key="f.id">{{ new
+                                Date(f.created_at).toLocaleString()
+                        }}</td>
+                        <td class="td-btr" v-for="f in farm.annexes" :key="f.id">{{ f.comment }}</td>
+                        <td class="td-btr" v-for="f in farm.annexes" :key="f.id"><a :href="f.scan" target="_blank"><img
+                                    src="@/assets/excel.png"></a></td>
+                        <td class="td-btr" v-for="f in farm.annexes" :key="f.id">{{ f.contract }}</td>
+
+
+
+
+
+
+
 
                         <!-- <td class="td-btr" v-else-if="farm.counterparty.group == 'agent'">Агенты</td>
                         <td class="td-btr" v-else-if="farm.counterparty.group ==  'renter'">Арендодатель</td>
@@ -324,7 +359,7 @@ export default {
         closeNotification() {
             this.showNotify = false
         },
-        updateFilterDataFarms(filter_farms){
+        updateFilterDataFarms(filter_farms) {
             this.filter_farms = filter_farms
         },
 
