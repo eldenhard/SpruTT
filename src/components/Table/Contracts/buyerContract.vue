@@ -167,7 +167,7 @@
                         <td class="td-btr" v-if="buyer.counterparty != null">{{ buyer.counterparty.phone }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="buyer.counterparty != null">{{ buyer.counterparty.group }}</td>
+                        <td class="td-btr" v-if="buyer.counterparty != null">{{ getGroupName(buyer.counterparty.group) }}</td>
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-for="f in buyer.annexes" :key="f.id">{{ f.doc_type }}</td>
@@ -198,6 +198,7 @@ import { mapState } from 'vuex';
 import Loader from '@/components/loader/loader.vue'
 import Notifications from '@/components/notifications/Notifications.vue'
 import FilterBuyer from '@/components/filter/contractFilter/filter_buyer.vue'
+import groups from '@/helpers/groups'
 
 export default {
     name: 'PartnerTable',
@@ -225,6 +226,10 @@ export default {
         }
     },
     methods: {
+        getGroupName(group){
+            console.log(groups)
+            return groups.groups[group];
+        },
         goToPage(link) {
             let url = new URL(link)
             let pageNumber = url.searchParams.get("page")

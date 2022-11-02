@@ -179,7 +179,7 @@
                         </td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="renovation.counterparty != null">{{ renovation.counterparty.group }}
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{ getGroupName(renovation.counterparty.group) }}
                         </td>
                         <td class="td-btr" v-else>—</td>
 
@@ -211,6 +211,8 @@ import { mapState } from 'vuex';
 import Loader from '@/components/loader/loader.vue'
 import Notifications from '@/components/notifications/Notifications.vue'
 import FilterRenovation from '@/components/filter/contractFilter/renovation_filter.vue'
+import groups from '@/helpers/groups'
+
 export default {
     name: 'PartnerTable',
     components: { Loader, Notifications, FilterRenovation },
@@ -242,6 +244,10 @@ export default {
         }
     },
     methods: {
+        getGroupName(group){
+            console.log(groups)
+            return groups.groups[group];
+        },
         goToPage(link) {
             let url = new URL(link)
             let pageNumber = url.searchParams.get("page")

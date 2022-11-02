@@ -172,7 +172,7 @@
                         <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.phone }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="provider.counterparty != null">{{ provider.counterparty.group }}</td>
+                        <td class="td-btr" v-if="provider.counterparty != null">{{ getGroupName(provider.counterparty.group) }}</td>
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-for="f in provider.annexes" :key="f.id">{{ f.doc_type }}</td>
@@ -202,6 +202,8 @@ import { mapState } from 'vuex';
 import Loader from '@/components/loader/loader.vue'
 import Notifications from '@/components/notifications/Notifications.vue'
 import FilterProvider from '@/components/filter/contractFilter/filter_provider.vue'
+import groups from '@/helpers/groups'
+
 export default {
     name: 'PartnerTable',
     components: { Loader, Notifications, FilterProvider },
@@ -221,7 +223,6 @@ export default {
             notifyClass: '',
 
             filter_provider: {
-                groups: [],
                 number: '',
                 counterparty__full_name: ''
 
@@ -230,6 +231,10 @@ export default {
         }
     },
     methods: {
+        getGroupName(group){
+            console.log(groups)
+            return groups.groups[group];
+        },
         goToPage(link) {
             let url = new URL(link)
             let pageNumber = url.searchParams.get("page")

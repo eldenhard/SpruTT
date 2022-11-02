@@ -102,7 +102,7 @@
                             <th :key="idx"
                                 style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
                                 Тип приложения</th>
-                            <th
+                             <th
                                 style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
                                 Номер приложения</th>
                             <th
@@ -182,7 +182,9 @@
                         <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.phone }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ getGroupName(finance.counterparty.group) }}</td>
+                        <td class="td-btr" v-if="finance.counterparty != null">{{
+                                getGroupName(finance.counterparty.group)
+                        }}</td>
                         <td class="td-btr" v-else>—</td>
 
                         <template v-for="f in finance.annexes">
@@ -243,7 +245,7 @@ export default {
     },
 
     methods: {
-        getGroupName(group){
+        getGroupName(group) {
             console.log(groups)
             return groups.groups[group];
         },

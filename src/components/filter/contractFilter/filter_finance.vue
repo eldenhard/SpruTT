@@ -6,12 +6,12 @@
                 v-model="filter_finance.number" @change="updateFilterDataFinance" style="margin-top: -1px">
         </div>
 
-        <div style="display:flex; flex-direction:column; margin-left: 15%;">
+        <!-- <div style="display:flex; flex-direction:column; margin-left: 15%;">
             <label for="input_filter_staff">Полное наименование</label>
             <input type="text" id="input-filter-staff1" class="input_filter_staff" placeholder="ООО СК ВТБ СТРАХОВАНИЕ"
                 v-model="filter_finance.counterparty__full_name" @change="updateFilterDataFinance"
                 style="margin-top: -1px">
-        </div>
+        </div> -->
     </div>
 </template>
     
@@ -41,7 +41,7 @@
 import { mapState } from 'vuex'
 import api from '@/api/staff'
 export default {
-    name: 'FilterStaff',
+    name: 'FilterFinance',
     data() {
         return {
             filter_finance: {

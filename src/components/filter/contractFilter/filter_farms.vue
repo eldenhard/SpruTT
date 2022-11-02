@@ -5,11 +5,11 @@
             <input type="text" id="input-filter-staff1" class="input_filter_staff" placeholder="127/01/80ур"
                 v-model="filter_farms.number" @change="updateFilterDataFarms" style="margin-top: -1px">
         </div>
-        <div style="display:flex; flex-direction:column; margin-left: 15%;">
+        <!-- <div style="display:flex; flex-direction:column; margin-left: 15%;">
             <label for="input_filter_staff">Полное наименование</label>
             <input type="text" id="input-filter-staff1" class="input_filter_staff" placeholder="ООО СК ВТБ СТРАХОВАНИЕ"
                 v-model="filter_farms.counterparty__full_name" @change="updateFilterDataFarms" style="margin-top: -1px">
-        </div>
+        </div> -->
     </div>
 </template>
     
@@ -39,12 +39,11 @@
 import { mapState } from 'vuex'
 import api from '@/api/staff'
 export default {
-    name: 'FilterStaff',
+    name: 'FilterFarms',
     data() {
         return {
             filter_farms: {
                 number: '',
-                groups: '',
 
             },
         }
@@ -58,11 +57,8 @@ export default {
     },
     methods: {
         updateFilterDataFarms() {
-            const filters = { ...this.filter_farms }
-            if (filters.groups.length == 0) {
-                delete (filters.groups)
-            }
-            this.$emit('updateFilterDataFarms', filters)
+
+            this.$emit('updateFilterDataFarms', this.filter_farms)
         }
     },
 }
