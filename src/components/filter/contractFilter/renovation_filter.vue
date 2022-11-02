@@ -1,6 +1,6 @@
 <template>
     <div class="filterContract">
-        <div style="display:flex; flex-direction:column; margin-left: 15%;">
+        <div style="display:flex; flex-direction:column;">
             <label for="input_filter_staff">Номер договора</label>
             <input type="text" id="input-filter-staff1" class="input_filter_staff" placeholder="127/01/80ур"
                 v-model="filter_renovation.number" @change="updateFilterDataRenovation" style="margin-top: -1px">

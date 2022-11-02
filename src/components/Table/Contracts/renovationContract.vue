@@ -94,24 +94,28 @@
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important;background: burlywood !important;">
                             Группа</th>
 
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Тип приложения</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Номер приложения</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Дата</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Примечание</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Скан-копия</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Номер договора</th>
+                        <template v-for="(el, idx) in countAnnexes">
+
+
+                            <th :key="idx"
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Тип приложения</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Номер приложения</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Дата</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Примечание</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Скан-копия</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Номер договора</th>
+                        </template>
                     </tr>
 
 
@@ -179,19 +183,23 @@
                         </td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="renovation.counterparty != null">{{ getGroupName(renovation.counterparty.group) }}
+                        <td class="td-btr" v-if="renovation.counterparty != null">{{
+                                getGroupName(renovation.counterparty.group)
+                        }}
                         </td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id">{{ f.doc_type }}</td>
-                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id">{{ f.number }}</td>
-                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id">{{ new
-                                Date(f.created_at).toLocaleString()
-                        }}</td>
-                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id">{{ f.comment }}</td>
-                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id"><a :href="f.scan"
-                                target="_blank"><img src="@/assets/excel.png"></a></td>
-                        <td class="td-btr" v-for="f in renovation.annexes" :key="f.id">{{ f.contract }}</td>
+                        <template v-for="f in renovation.annexes">
+
+                            <td class="td-btr">{{ f.doc_type }}</td>
+                            <td class="td-btr">{{ f.number }}</td>
+                            <td class="td-btr">{{ new
+                                    Date(f.created_at).toLocaleString()
+                            }}</td>
+                            <td class="td-btr">{{ f.comment }}</td>
+                            <td class="td-btr"><a :href="f.scan" target="_blank"><img src="@/assets/excel.png"></a></td>
+                            <td class="td-btr">{{ f.contract }}</td>
+                        </template>
 
                     </tr>
                 </tbody>
@@ -223,7 +231,7 @@ export default {
             loader: false,
             total_objects: '',
             amount: '',
-            renovationDirectory: '',
+            renovationDirectory: [],
 
             // Уведомления
             showNotify: false,
@@ -244,7 +252,7 @@ export default {
         }
     },
     methods: {
-        getGroupName(group){
+        getGroupName(group) {
             console.log(groups)
             return groups.groups[group];
         },
@@ -299,7 +307,17 @@ export default {
             uid: state => state.auth.uid,
             allGroups: state => state.auth.groups,
             staffGlobal: state => state.auth.users
-        })
+        }),
+        countAnnexes() {
+            let count = 0;
+            if (this.renovationDirectory.length) {
+                this.renovationDirectory.forEach(el => {
+                    if (el.annexes.length > count) count = el.annexes.length
+                })
+            }
+
+            return count
+        }
     },
 }
 </script>

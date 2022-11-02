@@ -92,31 +92,35 @@
                         <th
                             style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
                             Группа</th>
+                        <template v-for="(el, idx) in countAnnexes">
+
+
+                            <th :key="idx"
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Тип приложения</th>
                             <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Тип приложения</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Номер приложения</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Дата</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Примечание</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Скан-копия</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
-                            Номер договора</th>
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Номер приложения</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Дата</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Примечание</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Скан-копия</th>
+                            <th
+                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                                Номер договора</th>
+                        </template>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(buyer) in buyerDirectory" :key="buyer.id">
                         <td class="td-btr">{{ buyer.number }}</td>
                         <td class="td-btr">{{ buyer.company_status }}</td>
-                        <td class="td-btr">{{new Date( buyer.created_at ).toLocaleString()}}</td>
+                        <td class="td-btr">{{ new Date(buyer.created_at).toLocaleString() }}</td>
                         <td class="td-btr">{{ buyer.department }}</td>
                         <td class="td-btr">{{ buyer.contract_type }}</td>
                         <td class="td-btr">{{ buyer.contract_object }}</td>
@@ -157,8 +161,8 @@
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-if="buyer.counterparty != null">
-                        {{ new Date(buyer.counterparty.created_at).toLocaleString()
-                        }}</td>
+                            {{ new Date(buyer.counterparty.created_at).toLocaleString()
+                            }}</td>
                         <td class="td-btr" v-else>—</td>
 
                         <td class="td-btr" v-if="buyer.counterparty != null">{{ buyer.counterparty.manager }}</td>
@@ -167,18 +171,21 @@
                         <td class="td-btr" v-if="buyer.counterparty != null">{{ buyer.counterparty.phone }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-if="buyer.counterparty != null">{{ getGroupName(buyer.counterparty.group) }}</td>
+                        <td class="td-btr" v-if="buyer.counterparty != null">{{ getGroupName(buyer.counterparty.group)
+                        }}</td>
                         <td class="td-btr" v-else>—</td>
 
-                        <td class="td-btr" v-for="f in buyer.annexes" :key="f.id">{{ f.doc_type }}</td>
-                        <td class="td-btr" v-for="f in buyer.annexes" :key="f.id">{{ f.number }}</td>
-                        <td class="td-btr" v-for="f in buyer.annexes" :key="f.id">{{ new
-                                Date(f.created_at).toLocaleString()
-                        }}</td>
-                        <td class="td-btr" v-for="f in buyer.annexes" :key="f.id">{{ f.comment }}</td>
-                        <td class="td-btr" v-for="f in buyer.annexes" :key="f.id"><a :href="f.scan" target="_blank"><img
-                                    src="@/assets/excel.png"></a></td>
-                        <td class="td-btr" v-for="f in buyer.annexes" :key="f.id">{{ f.contract }}</td>
+                        <template v-for="f in buyer.annexes">
+
+                            <td class="td-btr">{{ f.doc_type }}</td>
+                            <td class="td-btr">{{ f.number }}</td>
+                            <td class="td-btr">{{ new
+                                    Date(f.created_at).toLocaleString()
+                            }}</td>
+                            <td class="td-btr">{{ f.comment }}</td>
+                            <td class="td-btr"><a :href="f.scan" target="_blank"><img src="@/assets/excel.png"></a></td>
+                            <td class="td-btr">{{ f.contract }}</td>
+                        </template>
                     </tr>
                 </tbody>
             </table>
@@ -210,7 +217,7 @@ export default {
             loader: false,
             total_objects: '',
             amount: '',
-            buyerDirectory: '',
+            buyerDirectory: [],
 
             // Уведомления
             showNotify: false,
@@ -226,7 +233,7 @@ export default {
         }
     },
     methods: {
-        getGroupName(group){
+        getGroupName(group) {
             console.log(groups)
             return groups.groups[group];
         },
@@ -270,9 +277,9 @@ export default {
         closeNotification() {
             this.showNotify = false
         },
-        updateFilterDataBuyer(filter_buyer){
+        updateFilterDataBuyer(filter_buyer) {
             this.filter_buyer = filter_buyer
-        },  
+        },
 
     },
     computed: {
@@ -281,7 +288,17 @@ export default {
             uid: state => state.auth.uid,
             allGroups: state => state.auth.groups,
             staffGlobal: state => state.auth.users
-        })
+        }),
+        countAnnexes() {
+            let count = 0;
+            if (this.buyerDirectory.length) {
+                this.buyerDirectory.forEach(el => {
+                    if (el.annexes.length > count) count = el.annexes.length
+                })
+            }
+
+            return count
+        }
     },
 }
 </script>
