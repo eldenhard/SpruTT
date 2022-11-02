@@ -38,8 +38,12 @@ const getUsersLK = (id) => {
 const getManagerLK = (id) => {
     return api.get(`${resource}/users/?page_size=200&manager=` + `${id}`)
 }
-
-
+const getUser104 = () => {
+    return api.get(`${resource}/users/104`)
+}
+const getAllKPI = () => {
+    return api.get(`${reports}/kpi`)
+}
 // БДР отчеты
 const createBDRreport = () => {
     return api.post(`${reports}/bdr/create/`)
@@ -64,6 +68,8 @@ export default {
     CreateReportAbandone,
     GetReportAbandone,
     getAllgrades,
+    getUser104,
+    getAllKPI,
     // Личный кабинет 
     getUsersLK,
     getManagerLK,

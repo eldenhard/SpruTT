@@ -349,14 +349,10 @@ fetch('http://10.1.5.65/api/reports/kpi?'+ `creator=${id}`, {
     if (response.ok){
         return response.json().then(r=>{
             this.reports_creator = r.data;
-            // document.getElementById('loading-page-report').style.display = 'none'
-            // console.log(this.reports_creator)
     })
 }
     else{
         console.log('NOT OK')
-        // document.getElementById('loading-page-report').style.display = 'none'
-
     }
 }),
 fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
@@ -371,14 +367,10 @@ fetch('http://10.1.5.65/api/reports/kpi?'+ `employee=${id}`, {
     if (response.ok){
         return response.json().then(r=>{
             this.reports_employee = r.data;
-            // document.getElementById('loading-page-report').style.display = 'none'
-            // console.log(this.reports_employee)
     })
 }
     else{
         console.log('NOT OK')
-        // document.getElementById('loading-page-report').style.display = 'none'
-
     }
 }),     
 fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
@@ -394,55 +386,22 @@ fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager='+ `${id}`, {
                 return response.json().then(r=>{
                     this.staff = r.data;
                     this.loaderReport = false
-                    // document.getElementById('loading-page-lk').style.display = 'none'
-                    // console.log(this.staff)
             })
         }
         else{
             console.log('NOT OK')
         }
     }),
-fetch('http://10.1.5.65/api/personal/users/104', {
-    // fetch('/api/personal/users/104', {
 
-headers: {
-    'Authorization': `Basic ${token}` 
-},
-method: 'GET'
+api.getUser104()
+.then(response => {
+    this.admin = response.data
 })
-.then((response) => {
-            if (response.ok){
-                return response.json().then(r=>{
-                    this.admin = r;
-                    // document.getElementById('loading-page-lk').style.display = 'none'
-                    // console.log(this.admin)
-            })
-        }
-        else{
-            console.log('NOT OK')
-        }
-    }),
-    fetch('http://10.1.5.65/api/reports/kpi/', {
-        // fetch('/api/reports/kpi/', {
-    headers: {
-        'Authorization': `Basic ${token}` 
-    },
-    method: 'GET'
-    })
-    .then((response) => {
-    if (response.ok){
-        return response.json().then(r=>{
-            this.all_reports = r.data;
-            // document.getElementById('loading-page-report').style.display = 'none'
-            // console.log(this.all_reports)
-    })
-}
-    else{
-        console.log('NOT OK')
-        document.getElementById('loading-page-report').style.display = 'none'
+api.getAllKPI()
+.then(response => {
+    this.all_reports = response.data
+})
 
-    }
-})
 document.title = 'Отчеты'
 
 },

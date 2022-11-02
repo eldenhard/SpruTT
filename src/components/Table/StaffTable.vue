@@ -145,15 +145,14 @@
                         <th>Почта</th>
                     </tr>
                     <tr>
-                        <td style=" width: 5% !important;">
-                            <div class="uploader" style="display: block;position: relative;width: 120px;height: 60px;">
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important">
+                            <div class="uploader" style="display: block;position: relative; left:50%; transform:translate(-50%,0);width: 120px;height: 60px;">
                                 <button v-if="current_user_staff.photo"
-                                 style="display: block;position: absolute;top: 0;z-index: 10;">Заменить</button>
+                                 style="display: block;position: absolute;top: 0;z-index: 10; left:50%; transform:translate(-50%,0)">Заменить</button>
                                 <button v-else>Загрузить</button>
                                 <input type="file" @change="onFileSelected" name="photo"   ref="photo"
-                                style="display: inline-block;
-                                position:absolute;
-                                top:-5%;
+                                style="display: inline-block; position:absolute;
+                                top:0%;
                                 bottom: 0;
                                 left: 0; right: 0;
                                 width:100%; height: 100%;
@@ -161,13 +160,13 @@
                                 >
                             </div>
                             
-                            <img :src="current_user_staff.photo" alt="" v-if="current_user_staff.photo" style="width: 55px">
+                            <!-- <img :src="current_user_staff.photo" alt="" v-if="current_user_staff.photo" style="width: 55px"> -->
                         </td>
-                        <td><input type="text" v-model="current_user_staff.last_name"></td>
-                        <td><input type="text" v-model="current_user_staff.first_name"></td>
-                        <td><input type="text" v-model="current_user_staff.middle_name"></td>
-                        <td><input type="text" v-model="current_user_staff.post"></td>
-                        <td><input type="text" v-model="current_user_staff.email"></td>
+                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.last_name"></td>
+                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.first_name"></td>
+                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.middle_name"></td>
+                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.post"></td>
+                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.email"></td>
                 
                     </tr>
                 </table>   
@@ -183,8 +182,8 @@
                     </tr>
 
                     <tr>
-                        <td>
-                            <select v-model="current_user_staff.groups" style="height:40px; margin-top: 10px; cursor: pointer; border: 1px solid #CCCCCC">
+                        <td  class="td-btr" style="height: 100px !important; width: 200px !important">
+                            <select v-model="current_user_staff.groups" class="input-filter">
                                 <option 
                                 v-for="userGroup in allGroups"
                                 :key="userGroup.id"
@@ -192,12 +191,12 @@
                             </select>
                         </td>
 
-                        <td><input type="text" v-model="current_user_staff.phone_corp"></td>
-                        <td><input type="text" v-model="current_user_staff.phone_personal"></td>
-                        <td><input type="text" v-model="current_user_staff.inner_number"></td>
-                        <td><input type="text" v-model="current_user_staff.schedule"></td>
-                        <td>
-                            <select v-model="current_user_staff.manager" style="height:40px; margin-top: 10px; cursor: pointer; border: 1px solid #CCCCCC">
+                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.phone_corp"></td>
+                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.phone_personal"></td>
+                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.inner_number"></td>
+                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.schedule"></td>
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important">
+                            <select v-model="current_user_staff.manager" class="input-filter">
                                 <option 
                                 v-for="global in staffGlobal"
                                 :key="global.id"
@@ -241,15 +240,15 @@
                         
                         </td>
 
-                        <td style=" width: 10% !important;"><input type="text" v-model="last_name" placeholder="Иванов"></td>
-                        <td style=" width: 10% !important;"><input type="text" v-model="first_name" placeholder="Иван"></td>
-                        <td style=" width: 10% !important;"><input type="text" v-model="middle_name" placeholder="Иванович"></td>
-                        <td style=" width: 10% !important;"><input type="text" v-model="post" placeholder="Логист"></td>
-                        <td style=" width: 10% !important;">
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="last_name" placeholder="Иванов"></td>
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="first_name" placeholder="Иван"></td>
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="middle_name" placeholder="Иванович"></td>
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="post" placeholder="Логист"></td>
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important">
                             <input type="text" v-model="email"
                              placeholder="i.ivanov@tehtrans.com"
                             :class="{'error': checkError('email')}"
-                            @input="deleteErrorOnline('email')">
+                            @input="deleteErrorOnline('email')"  class="input-filter">
                             <p v-if="checkError('email')">{{formErrorsMess['email'][0]}}</p>
                         </td>
                     </tr>
@@ -266,8 +265,8 @@
                         <th  style="background: #EBEBEB" >Начальник</th>
                     </tr>
                     <tr>
-                        <td>
-                        <select v-model="groups" style="margin-top: 5%; height: 45px; cursor: pointer; border: 1px solid #CCCCCC"
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important">
+                        <select v-model="groups" class="input-filter"
                          :class="{'error': checkError('groups')}"
                          @change="deleteErrorOnline('groups')">
                             <option value="">Выберите отдел</option>
@@ -279,12 +278,12 @@
                         <p v-if="checkError('groups')">Выберите отдел</p>
 
                     </td>
-                        <td><input type="text" v-model="phone_corp"  placeholder="89999999999"></td>
-                        <td><input type="text" v-model="phone_personal"  placeholder="89999999999"></td>
-                        <td><input type="text" v-model="inner_number"  placeholder="007"></td>
-                        <td><input type="text" v-model="schedule"  placeholder="9:00 - 18:00"></td>
-                        <td>
-                            <select type="text" v-model="manager"  style="margin-top: 3%; height: 43px; cursor: pointer; border: 1px solid #CCCCCC" >
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="phone_corp"  placeholder="89999999999"></td>
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="phone_personal"  placeholder="89999999999"></td>
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="inner_number"  placeholder="007"></td>
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="schedule"  placeholder="9:00 - 18:00"></td>
+                        <td class="td-btr" style="height: 100px !important; width: 200px !important">
+                            <select type="text" v-model="manager" class="input-filter" >
                             <option value="">Выберите начальника</option>
                             <option
                                 v-for="manager in allManagerStaff"
@@ -605,7 +604,17 @@ export default {
 
 
 <style>
-
+.input-filter {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    border: none;
+    text-decoration: none;
+    outline: none;
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer;
+}
 
 .image {
 	cursor:zoom-in;
