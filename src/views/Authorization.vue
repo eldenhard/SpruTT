@@ -1,28 +1,29 @@
 <template>
     <div>
-  <div id="id01" class="modal" v-if="showAuthForm" style="display: block;">
-    <div class="modal-content animate" style=" width: 60%;">
-      <div class="container">
-        <label for="uname"><b>Email</b></label>
-        <input type="text" placeholder="i.ivanov@tehtrans.com" v-model="email">
+        <div id="id01" class="modal" v-if="showAuthForm" style="display: block;">
+            <div class="modal-content animate" style=" width: 60%;">
+                <div class="container">
+                    <label for="uname"><b>Email</b></label>
+                    <input type="text" placeholder="i.ivanov@tehtrans.com" v-model="email"
+                        v-on:keyup="handleInputOnKeyup">
 
-        <label for="psw"><b>Пароль</b></label>
-        <input type="text" placeholder="Введите пароль" v-model.trim="password">
+                    <label for="psw"><b>Пароль</b></label>
+                    <input type="text" placeholder="Введите пароль" v-model.trim="password">
 
-        <button @click="submitEntry()">Войти</button>
-      </div>
+                    <button @click="submitEntry()">Войти</button>
+                </div>
+            </div>
+
+        </div>
+        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
     </div>
-    
-  </div>
-  <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"/>
-</div>
 </template>
 
 
 <script>
 import axios from "axios";
-import {mapState} from "vuex";
-import {actionTypes} from '@/store/modules/auth'
+import { mapState } from "vuex";
+import { actionTypes } from '@/store/modules/auth'
 import Notifications from "@/components/notifications/Notifications.vue";
 export default {
     name: "Authorization",
@@ -39,13 +40,13 @@ export default {
     },
     methods: {
         submitEntry: function () {
-            
-            if(this.email.length > 0){
+
+            if (this.email.length > 0) {
                 this.$store.dispatch(actionTypes.login, {
                     email: this.email,
                     password: this.password
                 }).then((user) => {
-                    if(this.$store.state.auth.isLoggedIn){
+                    if (this.$store.state.auth.isLoggedIn) {
                         this.showNotify = true
                         this.notifyHead = 'Здравствуйте'
                         this.notifyMessage = 'Вы успешно авторизированы'
@@ -58,13 +59,13 @@ export default {
                     this.notifyMessage = 'Пожалуйста, проверьте ваши введенные данные'
                     this.notifyClass = 'wrapper-error'
                 })
-            }else{
+            } else {
                 this.showNotify = true
-                    this.notifyHead = 'Ошибка авторизации'
-                    this.notifyMessage = 'Введите Email'
-                    this.notifyClass = 'wrapper-error'
+                this.notifyHead = 'Ошибка авторизации'
+                this.notifyMessage = 'Введите Email'
+                this.notifyClass = 'wrapper-error'
             }
-           
+
 
             //const api = "http://10.1.5.65/api/personal/login/";
             // axios
@@ -77,7 +78,7 @@ export default {
             //     let user = resp.data;
             //     console.log(user);
             //     if (user.token) {
-                    
+
             //         this.$store.commit("setUser", user);
             //         this.showNotify = true
             //         this.notifyHead = 'Здравствуйте'
@@ -93,54 +94,56 @@ export default {
             //   this.notifyClass = 'wrapper-error'
             // })
             return false;
-        }
+        },
+        handleInputOnKeyup() {
+            this.email = this.email.toLowerCase()
+        },
     },
     computed: {
         ...mapState({
             user: state => state.auth.user,
             authStatus: state => state.auth.isLoggedIn
         }),
+
+
+
         // authStatus: function(){
         //     if(this.user.token) return true
         //     return false
         // }
     },
     watch: {
-      showNotify: function(v){
-        if(v){
-          setTimeout(() => {
-            this.showNotify = false
-          }, 2100)
+        showNotify: function (v) {
+            if (v) {
+                setTimeout(() => {
+                    this.showNotify = false
+                }, 2100)
+            }
+        },
+        authStatus: function (newVal, oldVal) {
+            if (oldVal === false && newVal === true) {
+                setTimeout(() => {
+                    this.showAuthForm = false
+                }, 1500)
+            }
         }
-      },
-    authStatus: function(newVal, oldVal){
-        if(oldVal === false && newVal === true){
-            setTimeout(() => {
-                this.showAuthForm = false
-            }, 1500) 
-        }
-      }
     },
     components: { Notifications },
-    mounted(){
-        if(this.authStatus) this.showAuthForm = false
+    mounted() {
+        if (this.authStatus) this.showAuthForm = false
 
     }
-    
+
 }
-    </script>
+</script>
 
 
 
 
 
 <style>
-
-
-
-
-
-input[type=text], input[type=password] {
+input[type=text],
+input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -148,6 +151,7 @@ input[type=text], input[type=password] {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
+
 button {
     background-color: #4CAF50;
     color: white;
@@ -157,14 +161,17 @@ button {
     cursor: pointer;
     width: 100%;
 }
+
 button:hover {
     opacity: 0.8;
 }
+
 .cancelbtn {
     width: auto;
     padding: 10px 18px;
     background-color: #f44336;
 }
+
 .imgcontainer {
     text-align: center;
     margin: 24px 0 12px 0;
@@ -179,6 +186,7 @@ span.psw {
     float: right;
     padding-top: 16px;
 }
+
 .modal {
     display: block;
     position: fixed;
@@ -188,8 +196,8 @@ span.psw {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
     padding-top: 60px;
 }
 
@@ -221,27 +229,39 @@ span.psw {
 }
 
 @-webkit-keyframes animatezoom {
-    from {-webkit-transform: scale(0)}
-    to {-webkit-transform: scale(1)}
+    from {
+        -webkit-transform: scale(0)
+    }
+
+    to {
+        -webkit-transform: scale(1)
+    }
 }
 
 @keyframes animatezoom {
-    from {transform: scale(0)}
-    to {transform: scale(1)}
+    from {
+        transform: scale(0)
+    }
+
+    to {
+        transform: scale(1)
+    }
 }
 
 @media screen and (max-width: 300px) {
     span.psw {
-       display: block;
-       float: none;
+        display: block;
+        float: none;
     }
+
     .cancelbtn {
-       width: 100%;
+        width: 100%;
     }
 }
-@media screen and (max-width: 550px){
-   .modal-content .modal {
-    width: 90% !important;
-   } 
+
+@media screen and (max-width: 550px) {
+    .modal-content .modal {
+        width: 90% !important;
+    }
 }
 </style>
