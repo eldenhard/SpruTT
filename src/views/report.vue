@@ -55,34 +55,34 @@
 
                                 <!-- :class="{error: this.errors.answer1}" -->
 
-                                <div id="block-answer">
+                                <div id="block-answer" style="width: 120% !important">
                                     <h2>Анкета сотрудника</h2>
                                     <p class="answer" name="a1">1. Готовность неукоснительно выполнять все
                                         производственные задания, порученные руководителем.</p>
                                     <p v-if="this.errors.answer1" style="font-weight: bold; color: red">
                                         {{ this.errors.answer1 }}</p>
 
-
-                                    <input type="radio" name="first-question" id="first-question-1" value="c1"
-                                        v-model="answer1" >
-                                    <label for="first-question-1">&nbsp;Неисполнителен, склонен под любыми предлогами
-                                        избегать получения новых заданий. Были случаи прямого отказа от выполнения
-                                        заданий.</label><br>
-
+                                    
+                                        <input type="radio" name="first-question" id="first-question-1" value="c1"
+                                            v-model="answer1">
+                                        <label for="first-question-1" style="font-size: 15px">&nbsp;Неисполнителен, склонен под любыми предлогами
+                                            избегать получения новых заданий. Были случаи прямого отказа от выполнения
+                                            заданий.</label><br>
+                        
                                     <input type="radio" name="first-question" id="first-question-2" value="c2"
                                         v-model="answer1">
-                                    <label for="first-question-2">&nbsp;Низкий уровень исполнительности. Иногда пытается
+                                    <label for="first-question-2" style="font-size: 15px">&nbsp;Низкий уровень исполнительности. Иногда пытается
                                         избежать получения новых заданий, умело находя предлоги</label><br>
 
                                     <input type="radio" name="first-question" id="first-question-3" value="c3"
                                         v-model="answer1">
-                                    <label for="first-question-3">&nbsp;Хороший уровень исполнительности, но нельзя
+                                    <label for="first-question-3" style="font-size: 15px">&nbsp;Хороший уровень исполнительности, но нельзя
                                         сказать, что каждый день без исключений. Берется за выполнение любых
                                         производственных заданий, но не всегда охотно.</label><br>
 
                                     <input type="radio" name="first-question" id="first-question-4" value="c4"
                                         v-model="answer1">
-                                    <label for="first-question-4">&nbsp;Безукоризненный уровень исполнительности. Всегда
+                                    <label for="first-question-4" style="font-size: 15px">&nbsp;Безукоризненный уровень исполнительности. Всегда
                                         охотно берется за выполнение всех производственных заданий, порученных
                                         руководителем.</label><br>
                                     <hr>
@@ -93,25 +93,25 @@
 
                                     <input type="radio" name="second-question" id="second-question-1" value="c1"
                                         v-model="answer2">
-                                    <label for="second-question-1">&nbsp;Часто не справляется со своими обязанностями и
+                                    <label for="second-question-1" style="font-size: 15px">&nbsp;Часто не справляется со своими обязанностями и
                                         поручениями или заданиями. Не умеет выявлять проблемы и с трудом решает
                                         их</label><br>
 
                                     <input type="radio" name="second-question" id="second-question-2" value="c2"
                                         v-model="answer2">
-                                    <label for="second-question-2">&nbsp;Как правило справляется со своими
+                                    <label for="second-question-2" style="font-size: 15px">&nbsp;Как правило справляется со своими
                                         обязанностями, но порой не выполняет их так как надо или с трудом решает
                                         возникающие проблемы</label><br>
 
                                     <input type="radio" name="second-question" id="second-question-3" value="c3"
                                         v-model="answer2">
-                                    <label for="second-question-3"> &nbsp;Практически всегда хорошо справляется со всеми
+                                    <label for="second-question-3" style="font-size: 15px"> &nbsp;Практически всегда хорошо справляется со всеми
                                         обязанностями, умело решает проблемы, но нельзя сказать, что каждый день без
                                         исключений</label><br>
 
                                     <input type="radio" name="second-question" id="second-question-4" value="c4"
                                         v-model="answer2">
-                                    <label for="second-question-4"> &nbsp;Проявляет отличную способность справляться со
+                                    <label for="second-question-4" style="font-size: 15px"> &nbsp;Проявляет отличную способность справляться со
                                         всеми обязанностями и производственными заданиями. Всегда умело выявляет и
                                         быстро решает возникающие проблемы</label><br>
 
@@ -124,22 +124,22 @@
 
                                     <input type="radio" name="third-question" id="third-question-1" value="c1"
                                         v-model="answer3">
-                                    <label for="third-question-1">&nbsp;Некомпетентен. Не знает используемые приемы и
+                                    <label for="third-question-1" style="font-size: 15px">&nbsp;Некомпетентен. Не знает используемые приемы и
                                         методы работы и не стремится быстро освоить их</label><br>
 
                                     <input type="radio" name="third-question" id="third-question-2" value="c2"
                                         v-model="answer3">
-                                    <label for="third-question-2">&nbsp;Недостаточно хорошо знает нужные приемы работы,
+                                    <label for="third-question-2" style="font-size: 15px">&nbsp;Недостаточно хорошо знает нужные приемы работы,
                                         пока имеет слабые навыки и медленно их развивает</label><br>
 
                                     <input type="radio" name="third-question" id="third-question-3" value="c3"
                                         v-model="answer3">
-                                    <label for="third-question-3">&nbsp;Хорошо знает используемые методы работы, но
+                                    <label for="third-question-3" style="font-size: 15px">&nbsp;Хорошо знает используемые методы работы, но
                                         нельзя сказать, что всегда в точности следует им</label><br>
 
                                     <input type="radio" name="third-question" id="third-question-4" value="c4"
                                         v-model="answer3">
-                                    <label for="third-question-4">&nbsp;Компетентен. Отлично знает все методы работы и
+                                    <label for="third-question-4" style="font-size: 15px">&nbsp;Компетентен. Отлично знает все методы работы и
                                         неукоснительно следует им каждый рабочий день</label><br>
                                     <hr>
 
@@ -151,23 +151,23 @@
 
                                     <input type="radio" name="fourth-question" id="fourth-question-1" value="c1"
                                         v-model="answer4">
-                                    <label for="fourth-question-1">&nbsp;Часто сопротивляется внедрению новых
+                                    <label for="fourth-question-1" style="font-size: 15px">&nbsp;Часто сопротивляется внедрению новых
                                         технологий, методов работы, направленных на повышение качества и
                                         производительности труда</label><br>
 
                                     <input type="radio" name="fourth-question" id="fourth-question-2" value="c2"
                                         v-model="answer4">
-                                    <label for="fourth-question-2">&nbsp;Не сопротивляется, но и не проявляет интереса к
+                                    <label for="fourth-question-2" style="font-size: 15px">&nbsp;Не сопротивляется, но и не проявляет интереса к
                                         вопросам повышения качества и производительности труда</label><br>
 
                                     <input type="radio" name="fourth-question" id="fourth-question-3" value="c3"
                                         v-model="answer4">
-                                    <label for="fourth-question-3">&nbsp;Всегда поддерживает все нововведения, помогает
+                                    <label for="fourth-question-3" style="font-size: 15px">&nbsp;Всегда поддерживает все нововведения, помогает
                                         осваивать новые методы работы, но не в достаточной степени активно</label><br>
 
                                     <input type="radio" name="fourth-question" id="fourth-question-4" value="c4"
                                         v-model="answer4">
-                                    <label for="fourth-question-4"> &nbsp;Не только активно помогает осваивать новые
+                                    <label for="fourth-question-4" style="font-size: 15px"> &nbsp;Не только активно помогает осваивать новые
                                         методы работы, но и сам часто выдвигает различные рационализаторские
                                         предложения</label><br>
                                     <hr>
@@ -179,22 +179,22 @@
 
                                     <input type="radio" name="fifth-question" id="fifth-question-1" value="c1"
                                         v-model="answer5">
-                                    <label for="fifth-question-1">&nbsp;Не выполнялись запланированные работы по
+                                    <label for="fifth-question-1" style="font-size: 15px">&nbsp;Не выполнялись запланированные работы по
                                         заданиям в срок</label><br>
 
                                     <input type="radio" name="fifth-question" id="fifth-question-2" value="c2"
                                         v-model="answer5">
-                                    <label for="fifth-question-2">&nbsp;Имели место случаи недовы-полнения в полном
+                                    <label for="fifth-question-2" style="font-size: 15px">&nbsp;Имели место случаи недовы-полнения в полном
                                         объеме запланированных работ по заданиям</label><br>
 
                                     <input type="radio" name="fifth-question" id="fifth-question-3" value="c3"
                                         v-model="answer5">
-                                    <label for="fifth-question-3">&nbsp;Выполнялся весь объем запланированных работ, но
+                                    <label for="fifth-question-3" style="font-size: 15px">&nbsp;Выполнялся весь объем запланированных работ, но
                                         были случаи нарушения сроков</label><br>
 
                                     <input type="radio" name="fifth-question" id="fifth-question-4" value="c4"
                                         v-model="answer5">
-                                    <label for="fifth-question-4">&nbsp;Все запланированные работы по заданиям
+                                    <label for="fifth-question-4" style="font-size: 15px">&nbsp;Все запланированные работы по заданиям
                                         выполнялись в полном объеме и в установленные сроки </label><br>
                                     <hr>
 
@@ -204,22 +204,22 @@
 
                                     <input type="radio" name="sixth-question" id="sixth-question-1" value="c1"
                                         v-model="answer6">
-                                    <label for="sixth-question-1">&nbsp;Работы выполнялись некачественно. Имелись случаи
+                                    <label for="sixth-question-1" style="font-size: 15px">&nbsp;Работы выполнялись некачественно. Имелись случаи
                                         брака и возврата заданий на доработку</label><br>
 
                                     <input type="radio" name="sixth-question" id="sixth-question-2" value="c2"
                                         v-model="answer6">
-                                    <label for="sixth-question-2">&nbsp;Хотя и очень редки случаи брака в работе, но
+                                    <label for="sixth-question-2" style="font-size: 15px">&nbsp;Хотя и очень редки случаи брака в работе, но
                                         были погрешности и недоработки</label><br>
 
                                     <input type="radio" name="sixth-question" id="sixth-question-3" value="c3"
                                         v-model="answer6">
-                                    <label for="sixth-question-3">&nbsp;Работы выполнялись достаточно качественно, но
+                                    <label for="sixth-question-3" style="font-size: 15px">&nbsp;Работы выполнялись достаточно качественно, но
                                         имели место небольшие погрешности.</label><br>
 
                                     <input type="radio" name="sixth-question" id="sixth-question-4" value="c4"
                                         v-model="answer6">
-                                    <label for="sixth-question-4">&nbsp;Работы выполнялись безукоризненно, аккуратно,
+                                    <label for="sixth-question-4" style="font-size: 15px">&nbsp;Работы выполнялись безукоризненно, аккуратно,
                                         четко, без брака, всегда в строгом соответствии со стандартами</label><br>
                                     <hr>
 
