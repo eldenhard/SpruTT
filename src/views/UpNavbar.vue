@@ -11,21 +11,22 @@
           <router-link  to="/home"  style="color: black; text-decoration: none; font-size: 15px;">Справочники</router-link>
         </b-nav-item>
 
-        <b-nav-item >
+        <!-- <b-nav-item >
           <router-link to="/wagonpark" style="color: black; text-decoration: none; font-size: 15px;"> Вагонный парк</router-link>
-        </b-nav-item>
+        </b-nav-item> -->
 
-        <b-nav-item disabled> 
+        <!-- <b-nav-item disabled> 
           <router-link to="/bookkeeping"  style="color: grey; font-size: 15px; text-decoration: none;">Бухгалтерия</router-link>
-        </b-nav-item>
+        </b-nav-item> -->
 
-        <b-nav-item disabled>
+        <!-- <b-nav-item disabled>
           <router-link to="/presentation"  style="color: grey;font-size: 15px; text-decoration: none;">Презентации</router-link>
-        </b-nav-item>
-
+        </b-nav-item> -->
+        
+        <!-- 
         <b-nav-item disabled>
           <router-link to="/rates"  style="color: grey;font-size: 15px; text-decoration: none;">Ставки</router-link>
-        </b-nav-item>
+        </b-nav-item> -->
 
         <b-nav-item >
           <router-link to="/lk"  style="color: black; text-decoration: none; font-size: 15px;">Личный кабинет</router-link>

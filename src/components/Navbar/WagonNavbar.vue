@@ -33,19 +33,19 @@
                     </b-dropdown>
                 </li>
   
-                <li class="navbarList">
+                <!-- <li class="navbarList">
                   <div style="filter:brightness(0.8)">
-                    <!-- <div @click="newTab('Отчеты')"> -->
+                    <div @click="newTab('Отчеты')">
                         <img src="@/assets/report.png" class="image">
                     </div>
                     <b-dropdown text="Отчеты" style="width: 100%" >
-                        <!-- <b-dropdown-item @click="newTab('Отчеты-таблица')">Отчеты 1</b-dropdown-item> -->
+                        <b-dropdown-item @click="newTab('Отчеты-таблица')">Отчеты 1</b-dropdown-item>
                         <b-dropdown-item @click="newTab('Отчет брошенные вагоны')">БРОС. вагоны</b-dropdown-item>
-                        <!-- <b-dropdown-item @click="newTab('Брошенные вагоны')">План факт. по дог.</b-dropdown-item> -->
+                        <b-dropdown-item @click="newTab('Брошенные вагоны')">План факт. по дог.</b-dropdown-item>
 
 
                     </b-dropdown>
-                </li>
+                </li> -->
             </ul>
         </div>
 

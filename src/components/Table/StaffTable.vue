@@ -616,9 +616,7 @@ export default {
     cursor: pointer;
 }
 
-.image {
-	cursor:zoom-in;
-}
+
 
 .error {
     border: 1px solid red !important;
