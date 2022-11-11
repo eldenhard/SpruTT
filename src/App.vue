@@ -10,6 +10,7 @@
 import UpNavbar from './views/UpNavbar.vue'
 import Authorization from './views/Authorization.vue'
 import { actionTypes } from './store/modules/auth';
+import { actionTypes as cpActionTypes } from './store/modules/counterparties';
 
 export default {
   name: 'App',
@@ -17,7 +18,7 @@ export default {
   mounted(){
     this.$store.dispatch(actionTypes.getStaffGroups)
     this.$store.dispatch(actionTypes.staffGlobal)
-
+    this.$store.dispatch(cpActionTypes.getCounterparties, {url: 'personal/counterparties/?page_size=1000', clear: true})
   }
 }
 </script>

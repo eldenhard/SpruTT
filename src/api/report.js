@@ -6,7 +6,9 @@ export const reports = "reports"
 const getUsers = () => {
     return api.get(`${resource}/users/`)
 }
-
+const getReportAbandoneAll = () => {
+    return api.get(``)
+}
 const getReportById = (id) => {
     return api.get(`${reports}/kpi/` + `${id}`)
 }

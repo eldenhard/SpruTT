@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate";
 
 import auth from "@/store/modules/auth"
+import counterparties from '@/store/modules/counterparties'
 
 Vue.use(Vuex);
 
@@ -14,9 +15,10 @@ const store = new Vuex.Store({
   mutations: {
   },
   actions: {},
-  plugins: [createPersistedState()],
+  plugins: [createPersistedState({paths: ['auth']})],
   modules: {
-    auth
+    auth,
+    counterparties
   }
 })
 

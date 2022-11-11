@@ -27,8 +27,11 @@ const getWagonType = () => {
 }
 
 // ------------- ЗАПРОСЫ ДЛЯ БРОШЕННЫХ ВАГОНОВ ---------------
-const getWagonsThrow = (url, filter_abadon) => {
-    return api.get(url, {params: filter_abadon})
+// const getWagonsThrow = (url, filter_abadon) => {
+//     return api.get(url, {params: filter_abadon})
+// }
+const getWagonsThrow = (url, filter) => {
+    return api.get(url, {params: filter})
 }
 
 const getWagonsThrowTypes = () => {
@@ -44,6 +47,11 @@ const getwagonDislocation = (filter_dislocation) => {
 // Запросы для вагонов полигоны
 const getPolygon = (filter_wagonpolygon) => {
     return api.get(`${resource}/dislocations`, {params: filter_wagonpolygon})
+}
+
+///api/wagon-park/dislocations/get-filters/
+const getFilters = () => {
+    return api.get(`${resource}/dislocations/get-filters/`)
 }
 
 export default {
@@ -63,5 +71,6 @@ getwagonDislocation,
 
 
 // полигоны вагонов
-getPolygon
+getPolygon,
+getFilters
 }
