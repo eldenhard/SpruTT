@@ -37,8 +37,8 @@ import farmsContract from '@/components/Table/Contracts/farmsContract.vue'
 import financeContract from '@/components/Table/Contracts/financeContract.vue'
 import buyerContract from '@/components/Table/Contracts/buyerContract.vue'
 import renovationContract from '@/components/Table/Contracts/renovationContract.vue'
-// import providerContract from '../components/Table/Contracts/providerContract.vue'
-import providerContract from './Contracts/providerContract.vue'
+import providerContract from '@/components/Table/Contracts/providerContract.vue'
+
 export default {
   name: 'ContractTable',
   components: { farmsContract, financeContract, buyerContract, renovationContract, providerContract }
