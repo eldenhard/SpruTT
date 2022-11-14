@@ -184,10 +184,9 @@
                         <template v-for="f in provider.annexes">
 
                             <td class="td-btr" v-if="f !== null">{{ f.doc_type }} </td>
-                           
+
                             <td class="td-btr">{{ f.number }}</td>
-                            <td class="td-btr">{{ new
-                                    Date(f.created_at).toLocaleString()
+                            <td class="td-btr">{{ new Date(f.created_at).toLocaleString()
                             }}</td>
                             <td class="td-btr">{{ f.comment }}</td>
                             <td class="td-btr"><a :href="f.scan" target="_blank"><img src="@/assets/excel.png"></a></td>

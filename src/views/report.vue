@@ -501,8 +501,8 @@ export default {
             this.loader = true
             this.allReportHistory = true
             this.downloadReport = 'Загрузить отчеты'
-            // fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
-                fetch('/api/reports/kpi?'+ `creator=${id}`, {
+            fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
+                // fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -521,8 +521,8 @@ export default {
 
                     }
                 }),
-                // fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
-                    fetch('/api/reports/kpi?'+ `employee=${id}`, {
+                fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
+                    // fetch('/api/reports/kpi?'+ `employee=${id}`, {
 
                     headers: {
                         'Authorization': `Basic ${token}`

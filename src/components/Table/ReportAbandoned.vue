@@ -18,6 +18,9 @@
                             Тип вагона</th>
                         <th
                             style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                            Номер вагона</th>
+                        <th
+                            style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
                             Полигон обращения</th>
                         <th
                             style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
@@ -37,6 +40,8 @@
                     <tr v-for="broc in throwWagons" :key="broc.id">
                         <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc != null">
                             {{ broc.wagon_type }}</td>
+                        <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc != null">
+                            {{ broc.wagon }}</td>
                         <td style="height: 50px !important; vertical-align: middle !important;">
                             {{ broc.polygon }}</td>
                         <td style="height: 50px !important; vertical-align: middle !important;">
@@ -79,7 +84,7 @@
 
         </b-container>
         <br><br>
-        <p class="amount">всего отчетов: {{total_objects}}</p>
+        <p class="amount">всего отчетов: {{ total_objects }}</p>
         <b-container class="bv-example-row">
             <b-row>
                 <b-col>
