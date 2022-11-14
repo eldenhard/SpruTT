@@ -47,15 +47,16 @@
   <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto;"> 
     <table class="table" style="table-layout: fixed;">
         <thead>
-            <!-- <tr>
-                <th colspan="17">Данные</th>
-                <th colspan="9">Инвойс</th>
-                <th colspan="11">Текущая станция</th>
-                <th colspan="11">Станция прибытия</th>
-                <th colspan="11">destination_station</th>
-                <th colspan="5">Вагон</th>
-            </tr> -->
             <tr>
+                    <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Тип вагона</th>
+                    <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">№ вагона</th>
+                    <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Полигон</th>
+                    <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Государство</th>
+                    <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Операция</th>
+
+
+
+<!-- 
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Квитанция</th>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Простой на станции дислокации</th>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Простой от последней операции</th>
@@ -138,7 +139,7 @@
                     <th style="background: darkolivegreen !important; color: white !important;  width: 150px !important; height: 50px !important; vertical-align: middle !important;">Полное наименование</th>
                    
                     <th style="background: darkkhaki !important; color: white !important;  width: 150px !important; height: 50px !important; vertical-align: middle !important;">Код причины бросания</th>
-                    <th style="background: darkkhaki !important; color: white !important;  width: 150px !important; height: 50px !important; vertical-align: middle !important;">Причина бросания</th>
+                    <th style="background: darkkhaki !important; color: white !important;  width: 150px !important; height: 50px !important; vertical-align: middle !important;">Причина бросания</th> -->
 
 
 
@@ -146,6 +147,13 @@
         </thead>
         <tbody>
             <tr v-for="polygon in polygonWagon" :key="polygon.id">
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon_type}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.polygon}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_country}}</td>
+                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.operation}}</td>
+            </tr>
+            <!-- <tr v-for="polygon in polygonWagon" :key="polygon.id">
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.receipt}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station_downtime}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.last_operation_downtime}}</td>
@@ -180,7 +188,7 @@
                 <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.tariff}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;"  v-if="polygon.invoice">{{polygon.invoice.payer_name}}</td>
 
-                <!-- departure_station -->
+                
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.name}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.code}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station.code6}}</td>
@@ -258,7 +266,7 @@
                     <textarea name="" id="" cols="15" rows="1" :value="polygon.drop.reason"></textarea>
                     </td>
                 <td v-else> </td>
-            </tr>
+            </tr> -->
 
         </tbody>
 </table>

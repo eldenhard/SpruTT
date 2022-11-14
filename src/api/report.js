@@ -20,9 +20,14 @@ const saveReport = (id, data) => {
 const deleteReport = (id) => {
     return api.delete(`${reports}/kpi/delete/` + `${id}`)
 }
-
-const CreateReportAbandone = () => {
-    return api.post(`${reports}/drop/cs/create/`)
+const deleteReportAbandon = (id) => {
+    return api.delete(`${reports}/drop/delete/`+ `${id}`)
+}
+// const CreateReportAbandone = () => {
+//     return api.post(`${reports}/drop/cs/create/`)
+// }
+const getFilterWafonAbadone = (filter) => {
+    return api.get(`${reports}/drop/create/`, {params: filter})
 }
 const GetReportAbandone = () => {
     return api.get(`${reports}/drop`)
@@ -67,16 +72,19 @@ export default {
     getReportById,
     saveReport,
     deleteReport,
-    CreateReportAbandone,
+    // CreateReportAbandone,
+    getFilterWafonAbadone, //замена верхнему
     GetReportAbandone,
     getAllgrades,
     getUser104,
     getAllKPI,
+    deleteReportAbandon,
     // Личный кабинет 
     getUsersLK,
     getManagerLK,
 
     // БДР отчет
+
     createBDRreport,
     getBDRreport,
     getBDRreportByID,

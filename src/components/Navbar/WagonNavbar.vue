@@ -3,11 +3,12 @@
     <div>
         <div id="navbarMain">
             <ul class="navbarul">
-                <li class="navbarList" >
+                <li class="navbarList"  style="filter:brightness(0.8)">
                     
-                    <div @click="newTab('Дислокация')">
-                        <img src="@/assets/map.png" class="image">
-                    </div>
+                    <!-- <div @click="newTab('Дислокация')" style="filter:brightness(0.8)">
+                      
+                    </div> -->
+                    <img src="@/assets/map.png" class="image">
                     <b-dropdown text="Дислокация" style="width: 100%" disabled>
                         <b-dropdown-item @click="newTab('Дислокация-таблица')" >дислокация 1</b-dropdown-item>
                     </b-dropdown>
@@ -28,7 +29,7 @@
                         <img src="@/assets/wagon.png" class="image">
                     </div>
                     <b-dropdown  text="Вагоны" style="width: 100%" >
-                        <b-dropdown-item @click="newTab('Брошенные вагоны')">БРОС. вагоны</b-dropdown-item>
+                        <!-- <b-dropdown-item @click="newTab('Брошенные вагоны')">БРОС. вагоны</b-dropdown-item> -->
                         <b-dropdown-item @click="newTab('Полигоны')">По полигонам</b-dropdown-item>
                     </b-dropdown>
                 </li>

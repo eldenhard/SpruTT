@@ -19,7 +19,7 @@
 
     <thead>
     <tr>
-        <th><input type="number" v-model="numberWagon" placeholder="номер вагона" id="searchWagonPlace" @keydown.enter="searchWagon()" style="width: 100px"></th>
+        <th><input type="number"  v-model="numberWagon" placeholder="номер вагона" id="searchWagonPlace" @keydown.enter="searchWagon()" style="width: 100px"></th>
         <!-- <th>{{WagonModel.number}}</th> -->
         <th> {{WagonModel.is_problem}}</th>
         <th>{{WagonModel.volume}}</th>
@@ -34,7 +34,7 @@
         <td v-if="wagon.is_problem == false">нет</td>
         <td v-else>да</td>
         <td>{{wagon.volume}}</td>
-        <td>{{wagon.wagon_type}}</td>
+        <td>{{wagon.wagon_type.name}}</td>
         <td v-if="wagon.is_active == true">☑️</td>
         <td v-else>🚫</td>
         
@@ -435,7 +435,7 @@ export default{
             prevLink: null,
             activeWagonId: null,
             filters:null,
-            numberWagon: null,
+            numberWagon: '57135303',
             amount: null,
             loaderWagonTable : false,
             // checked: [],

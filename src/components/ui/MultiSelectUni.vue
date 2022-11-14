@@ -3,7 +3,7 @@
     <div class="multipleSelection">
         <div class="selectBox" 
             @click="show=!show">
-            <select style="font-weight: 500 !important; text-align: center;">
+            <select style="font-weight: 400 !important; text-align: center; width: 170px; color: grey;">
                 <option>{{placeholder}}</option>
             </select>
             <div class="overSelect"></div>

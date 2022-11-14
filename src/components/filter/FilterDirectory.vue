@@ -59,7 +59,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import api from '@/api/wagonPark'
 export default {
     name: 'FilterAbadon',
     data() {
