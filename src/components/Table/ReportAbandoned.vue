@@ -48,12 +48,12 @@
                             {{ broc.current_country }}</td>
                         <td style="height: 50px !important; vertical-align: middle !important;"
                             v-if="broc.drop != null">
-                            {{ broc.drop.code }}</td>
+                            {{ broc.drop }}</td>
                         <td style="height: 50px !important; vertical-align: middle !important;" v-else>—</td>
 
                         <td style="height: 50px !important; vertical-align: middle !important;"
                             v-if="broc.drop != null">
-                            <textarea name="" id="" cols="20" rows="1" :value="broc.drop.reason"></textarea>
+                            <textarea name="" id="" cols="20" rows="1" :value="broc.drop_reason"></textarea>
                         </td>
                         <td style="height: 50px !important; vertical-align: middle !important;" v-else>—</td>
 
