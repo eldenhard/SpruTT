@@ -1,6 +1,6 @@
-import {api} from "@/helpers/axios"
+import { api } from "@/helpers/axios"
 
-export const resource = "personal" 
+export const resource = "personal"
 export const reports = "reports"
 
 const getUsers = () => {
@@ -16,18 +16,20 @@ const getReportById = (id) => {
 const saveReport = (id, data) => {
     return api.put(`${reports}/kpi/update/` + `${id}`, data)
 }
-
+const getLastDataReports = (id) => {
+    return api.get(`${reports}/kpi/last/` + `${id}`)
+}
 const deleteReport = (id) => {
     return api.delete(`${reports}/kpi/delete/` + `${id}`)
 }
 const deleteReportAbandon = (id) => {
-    return api.delete(`${reports}/drop/delete/`+ `${id}`)
+    return api.delete(`${reports}/drop/delete/` + `${id}`)
 }
 // const CreateReportAbandone = () => {
 //     return api.post(`${reports}/drop/cs/create/`)
 // }
-const getFilterWafonAbadone = (filter) => {
-    return api.get(`${reports}/drop/create/`, {params: filter})
+const getFilterWafonAbadone = (format,filter) => {
+    return api.get(`${reports}/drop/create/${format}/`, { params: filter })
 }
 const GetReportAbandone = () => {
     return api.get(`${reports}/drop`)
@@ -40,7 +42,7 @@ const getAllgrades = () => {
 // }
 // для личного кабинета
 const getUsersLK = (id) => {
-    return api.get(`${resource}/users/`  + `${id}`)
+    return api.get(`${resource}/users/` + `${id}`)
 }
 const getManagerLK = (id) => {
     return api.get(`${resource}/users/?page_size=200&manager=` + `${id}`)
@@ -61,11 +63,15 @@ const getBDRreport = () => {
 const getBDRreportByID = (id) => {
     return api.get(`${reports}/bdr/` + `${id}`)
 }
-const putBDRreportsave = (id,data) => {
+const putBDRreportsave = (id, data) => {
     return api.put(`${reports}/bdr-row/update/` + `${id}`, data)
 }
 const saveBDRreport = (id, data) => {
     return api.post(`${reports}/bdr/save/` + `${id}`, data)
+}
+// справочник контрагенты
+const createCounterparties = (data) => {
+    return api.post(`${resource}/counterparties/create/`, data)
 }
 export default {
     getUsers,
@@ -79,6 +85,7 @@ export default {
     getUser104,
     getAllKPI,
     deleteReportAbandon,
+    getLastDataReports,
     // Личный кабинет 
     getUsersLK,
     getManagerLK,
@@ -89,5 +96,8 @@ export default {
     getBDRreport,
     getBDRreportByID,
     putBDRreportsave,
-    saveBDRreport
+    saveBDRreport,
+
+    // справовчник
+    createCounterparties,
 }

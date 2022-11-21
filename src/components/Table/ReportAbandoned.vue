@@ -5,6 +5,30 @@
         <Loader :loader="loader"></Loader>
         <FilterReportAbandon @update-filter="updateFilter"></FilterReportAbandon>
 
+
+        <b-modal ref="ModalTypeReport" hide-footer title="Выберите тип создаваемого отчета" id="modal-lg" size="lg">
+            <select name="" id="" v-model="format" style="margin: 5% 0">
+                <option disabled>Выберите тип создаваемого отчета</option>
+                <option value="classic">Стандартный</option>
+                <option value="disp">Диспетчерский</option>
+                <option value="legal">Юридический</option>
+                <br>
+
+            </select>
+            <div style="display: flex; justify-content: space-between">
+                <input type="date" v-model="filter.current_station_arrival_begin" style="width: 40%">
+                
+                <input type="date" v-model="filter.current_station_arrival_end" style="width: 40%">
+                
+
+            </div>
+            <b-button class="mt-2" variant="success" block @click="CreateReportAbandones">Создать отчет
+            </b-button>
+            <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button>
+
+        </b-modal>
+
+
         <button class="button Action"
             style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin: 2% 0 1%"
             @click="ThrowWagons()">Предварительный запрос вагонов</button>
@@ -68,9 +92,10 @@
         <b-container class="bv-example-row">
             <b-row>
                 <b-col>
-                    <button class="button Action" @click="CreateReportAbandones()"
-                        style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">Создать
-                        отчет</button>
+                    <b-button class="button Action" @click="showModal()"
+                        style="background: #ED925E; border: none; font-weight: 500; width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">
+                        Создать
+                        отчет</b-button>
 
                 </b-col>
 
@@ -84,7 +109,7 @@
 
         </b-container>
         <br><br>
-        <p class="amount">всего отчетов: {{ total_objects }}</p>
+        <p class="amount">всего отчетов: {{ total_objects_report }}</p>
         <b-container class="bv-example-row">
             <b-row>
                 <b-col>
@@ -167,20 +192,36 @@ export default {
             notifyMessage: '',
             notifyClass: '',
             total_objects: '',
-            total_objects: '',
+            total_objects_report: '',
 
             throwWagons: [],
             filter_FilterReportAbandon: {
 
             },
-            filter: {},
+            filter: {
+                current_station_arrival_begin: '',
+                current_station_arrival_end: ''
+            },
+            format: '',
+
 
         }
     },
     methods: {
+        showModal() {
+            this.$refs['ModalTypeReport'].show()
+        },
+        hideModal() {
+            this.$refs['ModalTypeReport'].hide()
+        },
+        toggleModal() {
+            // We pass the ID of the button that we want to return focus to
+            // when the modal has hidden
+            this.$refs['ModalTypeReport'].toggle('#toggle-btn')
+        },
         CreateReportAbandones() {
             this.loader = true
-            api.getFilterWafonAbadone(this.filter)
+            api.getFilterWafonAbadone(this.format, this.filter)
                 .then((response) => {
                     this.loader = false
                     this.DownloadReportAbandones()
@@ -190,6 +231,7 @@ export default {
                     this.notifyClass = 'wrapper-success'
                     this.showNotify = true
                     setTimeout(this.closeNotification, 1500)
+                    this.hideModal()
                 }).catch(error => {
                     this.loader = false
                     this.notifyHead = 'Ошибка'
@@ -205,7 +247,7 @@ export default {
             api.GetReportAbandone()
                 .then((response) => {
                     this.report_abandoned = response.data.data
-                    this.total_objects = response.data.total_objects
+                    this.total_objects_report = response.data.total_objects
                     this.loader = false
                     this.notifyHead = 'Успешно'
                     this.notifyMessage = 'Отчеты загружены'

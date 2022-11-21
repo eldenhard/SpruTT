@@ -10,7 +10,9 @@ import Bookkeeping from '../views/Bookkeeping';
 import lk from '../views/lk';
 import report from '../views/report';
 import Staff from '../views/Staff';
-import editBDR from '../views/editBDR'
+import editBDR from '../views/editBDR';
+import keyFact from '../views/KeyFacts';
+
 Vue.use(Router)
 
 export default new Router({
@@ -56,6 +58,10 @@ export default new Router({
     {
       path: '/personnel-service',
       component: Staff
+    },
+    {
+      path: '/key-facts',
+      component: keyFact
     },
     {
       path: '*',

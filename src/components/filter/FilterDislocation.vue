@@ -154,14 +154,15 @@ export default {
 .input_filter_dislocation{
     width: 100% !important;
     height: 30px;
+    background:transparent !important;
 }
 .filterDislocation {
     width: 100% !important;
     flex-direction: row;
     display: flex !important;
     justify-content: space-around;
-    background: #e0e0e0;
-    box-shadow:  20px 20px 60px #cecece,
+    background: #EFEFEF  !important;
+box-shadow:  20px 20px 60px #cecece,
              -20px -20px 60px #f2f2f2;
              position: relative;
              left: 50%;

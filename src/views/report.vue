@@ -2,7 +2,7 @@
     <div class="lk">
         <wagonModal v-if="showReportModal" :OnceReport="OnceReport" @close="closeChangeReport"></wagonModal>
         <Loader :loader="loader"></Loader>
-
+        <Modal v-if="ShowCreatedReport" :CreatedReport="CreatedReport" @close="closeCreatedReport"></Modal>
 
         <b-card no-body style="margin-top: 1%">
 
@@ -11,7 +11,8 @@
                     <b-tab title="Отчеты KPI" active>
                         <b-card-text style="min-height: 100vh !important;">
                             <h2>Отчеты KPI</h2>
-                            <br><br>
+
+
                             <b-container class="bv-example-row">
                                 <b-row>
                                     <b-col>
@@ -23,9 +24,19 @@
                                 </b-row>
                             </b-container>
                             <br><br>
-                            <form id="Anketa" method="post" style="display: none;" >
+                            <form id="Anketa" method="post" style="display: none;">
                                 <br>
-                                <label for="admin"
+                                <div class="filterStaff" style="width: 100% !important;">
+                                    <div class='bg'>
+                                        <select class='textarea' id="admin" name='Pwd'>
+                                            <option selected="selected">{{ admin.id }} {{ admin.first_name }}
+                                                {{ admin.last_name }}</option>
+                                        </select>
+                                        <br>
+                                        <label for="admin" class='label'>Копия письма: кадровая служба</label>
+                                    </div>
+
+                                    <!-- <label for="admin"
                                     style=" position: relative; left: 50%; transform: translate(-50%, 0); width: 100% !important;">
 
                                     <p style="text-align:center;">Копия письма: кадровая служба <span
@@ -34,11 +45,23 @@
                                         <option selected="selected">{{ admin.id }} {{ admin.first_name }}
                                             {{ admin.last_name }}</option>
                                     </select>
-                                </label>
+                                </label> -->
 
-                                <br>
-                                <br>
-
+                                    <br>
+                                    <br>
+                                    <div class='bg'>
+                                        <select class='textarea' id="staff" name='Pwd' v-model="emplyee"
+                                            :class="{ error: this.errors.staff }">
+                                            <option value="" disabled="disabled" selected="selected">Сотрудник</option>
+                                            <option v-for="staf in staff" :key="staf.id">
+                                                {{ staf.id }} 
+                                                {{  staf.first_name }}
+                                                {{ staf.last_name }}</option>
+                                        </select>
+                                        <br>
+                                        <label for="staff" class='label'>Выберите сотрудника</label>
+                                    </div>
+                                    <!-- 
                                 <label for="staff"
                                     style=" position: relative; left: 50%; transform: translate(-50%, 0); width: 100% !important;">
                                     <p style="text-align:center;">Выберите сотрудника <span
@@ -50,9 +73,24 @@
                                         <option v-for="staf in staff" :key="staf.id">{{ staf.id }} {{ staf.first_name }}
                                             {{ staf.last_name }}</option>
                                     </select>
-                                </label>
+                                </label> -->
+                                </div>
+                                <br>
+                                <div v-if="aboutThisReport"
+                                    style="display: flex; justify-content: space-between; margin: 2% 0 -2%;">
+                                    <p style="color: grey !important">Ранее созданый отчет:</p>
+                                    <p style="color: grey !important">Доплата: {{ currentUserReport.rate }}%</p>
+                                    <p style="color: grey !important">Дата: {{ new
+                                            Date(currentUserReport.created_at).toLocaleString()
+                                    }}</p>
+                                    <!-- <a download target="_blank" :href="currentUserReport.file"
+                                        v-if="currentUserReport.file"><img src="@/assets/excel.png" alt=""
+                                            width="30px !important"></a> -->
+                                    <input type="button" class="button Cancel" style="width: 15%"
+                                        @click="MoreCurrentReport(currentUserReport.employee.id)" value="Подробнее">
 
 
+                                </div>
                                 <!-- :class="{error: this.errors.answer1}" -->
 
                                 <div id="block-answer" style="width: 120% !important">
@@ -62,27 +100,31 @@
                                     <p v-if="this.errors.answer1" style="font-weight: bold; color: red">
                                         {{ this.errors.answer1 }}</p>
 
-                                    
-                                        <input type="radio" name="first-question" id="first-question-1" value="c1"
-                                            v-model="answer1">
-                                        <label for="first-question-1" style="font-size: 15px">&nbsp;Неисполнителен, склонен под любыми предлогами
-                                            избегать получения новых заданий. Были случаи прямого отказа от выполнения
-                                            заданий.</label><br>
-                        
+
+                                    <input type="radio" name="first-question" id="first-question-1" value="c1"
+                                        v-model="answer1">
+                                    <label for="first-question-1" style="font-size: 15px">&nbsp;Неисполнителен, склонен
+                                        под любыми предлогами
+                                        избегать получения новых заданий. Были случаи прямого отказа от выполнения
+                                        заданий.</label><br>
+
                                     <input type="radio" name="first-question" id="first-question-2" value="c2"
                                         v-model="answer1">
-                                    <label for="first-question-2" style="font-size: 15px">&nbsp;Низкий уровень исполнительности. Иногда пытается
+                                    <label for="first-question-2" style="font-size: 15px">&nbsp;Низкий уровень
+                                        исполнительности. Иногда пытается
                                         избежать получения новых заданий, умело находя предлоги</label><br>
 
                                     <input type="radio" name="first-question" id="first-question-3" value="c3"
                                         v-model="answer1">
-                                    <label for="first-question-3" style="font-size: 15px">&nbsp;Хороший уровень исполнительности, но нельзя
+                                    <label for="first-question-3" style="font-size: 15px">&nbsp;Хороший уровень
+                                        исполнительности, но нельзя
                                         сказать, что каждый день без исключений. Берется за выполнение любых
                                         производственных заданий, но не всегда охотно.</label><br>
 
                                     <input type="radio" name="first-question" id="first-question-4" value="c4"
                                         v-model="answer1">
-                                    <label for="first-question-4" style="font-size: 15px">&nbsp;Безукоризненный уровень исполнительности. Всегда
+                                    <label for="first-question-4" style="font-size: 15px">&nbsp;Безукоризненный уровень
+                                        исполнительности. Всегда
                                         охотно берется за выполнение всех производственных заданий, порученных
                                         руководителем.</label><br>
                                     <hr>
@@ -93,25 +135,29 @@
 
                                     <input type="radio" name="second-question" id="second-question-1" value="c1"
                                         v-model="answer2">
-                                    <label for="second-question-1" style="font-size: 15px">&nbsp;Часто не справляется со своими обязанностями и
+                                    <label for="second-question-1" style="font-size: 15px">&nbsp;Часто не справляется со
+                                        своими обязанностями и
                                         поручениями или заданиями. Не умеет выявлять проблемы и с трудом решает
                                         их</label><br>
 
                                     <input type="radio" name="second-question" id="second-question-2" value="c2"
                                         v-model="answer2">
-                                    <label for="second-question-2" style="font-size: 15px">&nbsp;Как правило справляется со своими
+                                    <label for="second-question-2" style="font-size: 15px">&nbsp;Как правило справляется
+                                        со своими
                                         обязанностями, но порой не выполняет их так как надо или с трудом решает
                                         возникающие проблемы</label><br>
 
                                     <input type="radio" name="second-question" id="second-question-3" value="c3"
                                         v-model="answer2">
-                                    <label for="second-question-3" style="font-size: 15px"> &nbsp;Практически всегда хорошо справляется со всеми
+                                    <label for="second-question-3" style="font-size: 15px"> &nbsp;Практически всегда
+                                        хорошо справляется со всеми
                                         обязанностями, умело решает проблемы, но нельзя сказать, что каждый день без
                                         исключений</label><br>
 
                                     <input type="radio" name="second-question" id="second-question-4" value="c4"
                                         v-model="answer2">
-                                    <label for="second-question-4" style="font-size: 15px"> &nbsp;Проявляет отличную способность справляться со
+                                    <label for="second-question-4" style="font-size: 15px"> &nbsp;Проявляет отличную
+                                        способность справляться со
                                         всеми обязанностями и производственными заданиями. Всегда умело выявляет и
                                         быстро решает возникающие проблемы</label><br>
 
@@ -124,22 +170,26 @@
 
                                     <input type="radio" name="third-question" id="third-question-1" value="c1"
                                         v-model="answer3">
-                                    <label for="third-question-1" style="font-size: 15px">&nbsp;Некомпетентен. Не знает используемые приемы и
+                                    <label for="third-question-1" style="font-size: 15px">&nbsp;Некомпетентен. Не знает
+                                        используемые приемы и
                                         методы работы и не стремится быстро освоить их</label><br>
 
                                     <input type="radio" name="third-question" id="third-question-2" value="c2"
                                         v-model="answer3">
-                                    <label for="third-question-2" style="font-size: 15px">&nbsp;Недостаточно хорошо знает нужные приемы работы,
+                                    <label for="third-question-2" style="font-size: 15px">&nbsp;Недостаточно хорошо
+                                        знает нужные приемы работы,
                                         пока имеет слабые навыки и медленно их развивает</label><br>
 
                                     <input type="radio" name="third-question" id="third-question-3" value="c3"
                                         v-model="answer3">
-                                    <label for="third-question-3" style="font-size: 15px">&nbsp;Хорошо знает используемые методы работы, но
+                                    <label for="third-question-3" style="font-size: 15px">&nbsp;Хорошо знает
+                                        используемые методы работы, но
                                         нельзя сказать, что всегда в точности следует им</label><br>
 
                                     <input type="radio" name="third-question" id="third-question-4" value="c4"
                                         v-model="answer3">
-                                    <label for="third-question-4" style="font-size: 15px">&nbsp;Компетентен. Отлично знает все методы работы и
+                                    <label for="third-question-4" style="font-size: 15px">&nbsp;Компетентен. Отлично
+                                        знает все методы работы и
                                         неукоснительно следует им каждый рабочий день</label><br>
                                     <hr>
 
@@ -151,23 +201,27 @@
 
                                     <input type="radio" name="fourth-question" id="fourth-question-1" value="c1"
                                         v-model="answer4">
-                                    <label for="fourth-question-1" style="font-size: 15px">&nbsp;Часто сопротивляется внедрению новых
+                                    <label for="fourth-question-1" style="font-size: 15px">&nbsp;Часто сопротивляется
+                                        внедрению новых
                                         технологий, методов работы, направленных на повышение качества и
                                         производительности труда</label><br>
 
                                     <input type="radio" name="fourth-question" id="fourth-question-2" value="c2"
                                         v-model="answer4">
-                                    <label for="fourth-question-2" style="font-size: 15px">&nbsp;Не сопротивляется, но и не проявляет интереса к
+                                    <label for="fourth-question-2" style="font-size: 15px">&nbsp;Не сопротивляется, но и
+                                        не проявляет интереса к
                                         вопросам повышения качества и производительности труда</label><br>
 
                                     <input type="radio" name="fourth-question" id="fourth-question-3" value="c3"
                                         v-model="answer4">
-                                    <label for="fourth-question-3" style="font-size: 15px">&nbsp;Всегда поддерживает все нововведения, помогает
+                                    <label for="fourth-question-3" style="font-size: 15px">&nbsp;Всегда поддерживает все
+                                        нововведения, помогает
                                         осваивать новые методы работы, но не в достаточной степени активно</label><br>
 
                                     <input type="radio" name="fourth-question" id="fourth-question-4" value="c4"
                                         v-model="answer4">
-                                    <label for="fourth-question-4" style="font-size: 15px"> &nbsp;Не только активно помогает осваивать новые
+                                    <label for="fourth-question-4" style="font-size: 15px"> &nbsp;Не только активно
+                                        помогает осваивать новые
                                         методы работы, но и сам часто выдвигает различные рационализаторские
                                         предложения</label><br>
                                     <hr>
@@ -179,22 +233,26 @@
 
                                     <input type="radio" name="fifth-question" id="fifth-question-1" value="c1"
                                         v-model="answer5">
-                                    <label for="fifth-question-1" style="font-size: 15px">&nbsp;Не выполнялись запланированные работы по
+                                    <label for="fifth-question-1" style="font-size: 15px">&nbsp;Не выполнялись
+                                        запланированные работы по
                                         заданиям в срок</label><br>
 
                                     <input type="radio" name="fifth-question" id="fifth-question-2" value="c2"
                                         v-model="answer5">
-                                    <label for="fifth-question-2" style="font-size: 15px">&nbsp;Имели место случаи недовы-полнения в полном
+                                    <label for="fifth-question-2" style="font-size: 15px">&nbsp;Имели место случаи
+                                        недовы-полнения в полном
                                         объеме запланированных работ по заданиям</label><br>
 
                                     <input type="radio" name="fifth-question" id="fifth-question-3" value="c3"
                                         v-model="answer5">
-                                    <label for="fifth-question-3" style="font-size: 15px">&nbsp;Выполнялся весь объем запланированных работ, но
+                                    <label for="fifth-question-3" style="font-size: 15px">&nbsp;Выполнялся весь объем
+                                        запланированных работ, но
                                         были случаи нарушения сроков</label><br>
 
                                     <input type="radio" name="fifth-question" id="fifth-question-4" value="c4"
                                         v-model="answer5">
-                                    <label for="fifth-question-4" style="font-size: 15px">&nbsp;Все запланированные работы по заданиям
+                                    <label for="fifth-question-4" style="font-size: 15px">&nbsp;Все запланированные
+                                        работы по заданиям
                                         выполнялись в полном объеме и в установленные сроки </label><br>
                                     <hr>
 
@@ -204,22 +262,26 @@
 
                                     <input type="radio" name="sixth-question" id="sixth-question-1" value="c1"
                                         v-model="answer6">
-                                    <label for="sixth-question-1" style="font-size: 15px">&nbsp;Работы выполнялись некачественно. Имелись случаи
+                                    <label for="sixth-question-1" style="font-size: 15px">&nbsp;Работы выполнялись
+                                        некачественно. Имелись случаи
                                         брака и возврата заданий на доработку</label><br>
 
                                     <input type="radio" name="sixth-question" id="sixth-question-2" value="c2"
                                         v-model="answer6">
-                                    <label for="sixth-question-2" style="font-size: 15px">&nbsp;Хотя и очень редки случаи брака в работе, но
+                                    <label for="sixth-question-2" style="font-size: 15px">&nbsp;Хотя и очень редки
+                                        случаи брака в работе, но
                                         были погрешности и недоработки</label><br>
 
                                     <input type="radio" name="sixth-question" id="sixth-question-3" value="c3"
                                         v-model="answer6">
-                                    <label for="sixth-question-3" style="font-size: 15px">&nbsp;Работы выполнялись достаточно качественно, но
+                                    <label for="sixth-question-3" style="font-size: 15px">&nbsp;Работы выполнялись
+                                        достаточно качественно, но
                                         имели место небольшие погрешности.</label><br>
 
                                     <input type="radio" name="sixth-question" id="sixth-question-4" value="c4"
                                         v-model="answer6">
-                                    <label for="sixth-question-4" style="font-size: 15px">&nbsp;Работы выполнялись безукоризненно, аккуратно,
+                                    <label for="sixth-question-4" style="font-size: 15px">&nbsp;Работы выполнялись
+                                        безукоризненно, аккуратно,
                                         четко, без брака, всегда в строгом соответствии со стандартами</label><br>
                                     <hr>
 
@@ -238,7 +300,9 @@
                                 <b-row>
                                     <b-col>
                                         <button class="button Action" @click="OpenReport()"
-                                            style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{ downloadReport }}</button>
+                                            style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{
+                                                    downloadReport
+                                            }}</button>
                                     </b-col>
 
                                     <b-col>
@@ -270,8 +334,10 @@
                                         </tr>
 
                                         <tr v-for="reports in reports_creator" :key="reports.id">
-                                            <td>{{ reports.creator.first_name }} {{ reports.creator.last_name }} <br></td>
-                                            <td>{{ reports.employee.first_name }} {{ reports.employee.last_name }} <br></td>
+                                            <td>{{ reports.creator.first_name }} {{ reports.creator.last_name }} <br>
+                                            </td>
+                                            <td>{{ reports.employee.first_name }} {{ reports.employee.last_name }} <br>
+                                            </td>
                                             <td>{{ new Date(reports.created_at).toLocaleString() }}<br> </td>
                                             <td>{{ new Date(reports.updated_at).toLocaleString() }}<br> </td>
                                             <td>{{ reports.rate }} %<br></td>
@@ -281,9 +347,9 @@
                                             <td><button class="button Request"
                                                     style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #2196F3 !important;   display: flex; align-items: center;justify-content: center;"
                                                     @click="OpenChangeReport(reports.id)">Подробнее</button> </td>
-                                            <td><button class="button Delete" style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #ED5E68 !important;   display: flex;
-  align-items: center;
-  justify-content: center;" @click="DeleteReport(reports.id)">Удалить</button> </td>
+                                            <td><button class="button Delete"
+                                                    style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #ED5E68 !important;   display: flex; align-items: center; justify-content: center;"
+                                                    @click="DeleteReport(reports.id)">Удалить</button> </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -302,8 +368,10 @@
                                         </tr>
 
                                         <tr v-for="reporte in reports_employee" :key="reporte.id">
-                                            <td>{{ reporte.creator.first_name }} {{ reporte.creator.last_name }}<br></td>
-                                            <td>{{ reporte.employee.first_name }} {{ reporte.employee.last_name }} <br></td>
+                                            <td>{{ reporte.creator.first_name }} {{ reporte.creator.last_name }}<br>
+                                            </td>
+                                            <td>{{ reporte.employee.first_name }} {{ reporte.employee.last_name }} <br>
+                                            </td>
                                             <td>{{ new Date(reporte.created_at).toLocaleString() }}<br></td>
                                             <td>{{ new Date(reporte.updated_at).toLocaleString() }}<br></td>
                                             <td>{{ reporte.rate }} % <br></td>
@@ -316,6 +384,7 @@
                             </div>
                         </b-card-text>
                     </b-tab>
+
                     <b-tab title="Отчеты BDR">
                         <b-card-text>
                             <BDRreport></BDRreport>
@@ -348,18 +417,20 @@
 import { mapState } from "vuex";
 import api from "@/api/report"
 import wagonModal from '@/components/modalReport/modal.vue'
+import Modal from '@/components/ui/Modal.vue'
 import BDRreport from '@/views/BDRreport.vue'
 import ReportAbandoned from "@/components/Table/ReportAbandoned.vue";
 import Notifications from '@/components/notifications/Notifications.vue'
 import Loader from '@/components/loader/loader.vue'
 export default {
     name: 'report',
-    components: { wagonModal, BDRreport, Notifications, Loader, ReportAbandoned },
+    components: { wagonModal, BDRreport, Notifications, Loader, ReportAbandoned, Modal },
     title: 'Отчеты',
     computed: {
         ...mapState({
             user: state => state.auth.user,
-            uid: state => state.auth.uid
+            uid: state => state.auth.uid,
+
         })
     },
     data() {
@@ -372,14 +443,23 @@ export default {
             answer4: '',
             answer5: '',
             answer6: '',
+
+            answer11: '',
+            answer22: '',
+            answer33: '',
+            answer44: '',
+            answer55: '',
+            answer66: '',
             btnName: 'Создать отчет по KPI сотрудника',
             downloadReport: 'Загрузить отчеты',
             admin: [],
             reports_creator: [],
             reports_employee: [],
             showReportModal: false,
+            ShowCreatedReport: false,
             loader: false,
             OnceReport: null,
+            CreatedReport: null,
             allReportHistory: false,
             all_grades: '',
             file_port: false,
@@ -391,12 +471,44 @@ export default {
             notifyMessage: '',
             notifyClass: '',
 
+            aboutThisReport: false,
+            currentUserReport: ''
+
 
         }
     },
-    mounted() {
-   
+    watch: {
+        emplyee() {
+            // this.aboutThisReport = true
+            this.loader = true
+            let id = this.emplyee.split(' ')[0]
+            api.getLastDataReports(id).then(response => {
+                if (response.data == '404') {
+                    this.aboutThisReport = false
+                    this.loader = false
+                } else {
+                    this.aboutThisReport = true
+                    this.currentUserReport = response.data
+                    this.loader = false
 
+                }
+            }).catch(error => {
+                this.loader = false,
+                    notifyHead = 'Ошибка',
+                    notifyMessage = 'Данные не получены',
+                    this.notifyClass = 'wrapper-alert'
+                this.showNotify = true
+                setTimeout(this.closeNotification, 1500)
+                showNotify = true
+            })
+
+        }
+    },
+
+    mounted() {
+
+
+        // console.log(this.date)
         this.loader = true
         // api.getUsers()
         const pretoken = JSON.parse(localStorage.getItem("vuex"))
@@ -439,8 +551,9 @@ export default {
                         console.log('NOT OK')
                     }
                 }),
-            // fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager=' + `${id}`, {
-                fetch('/api/personal/users/?page_size=200&manager='+ `${id}`, {
+            // /api/personal/users?last_kpi_graded__lte=01.11.2022
+            // fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
+                fetch('/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -452,9 +565,11 @@ export default {
                         return response.json().then(r => {
                             this.staff = r.data;
                             this.loader = false
+
                         })
                     }
                     else {
+
                         console.log('NOT OK')
                     }
                 }),
@@ -473,6 +588,25 @@ export default {
 
     },
     methods: {
+        MoreCurrentReport() {
+            // console.log('я работаю')
+            this.ShowCreatedReport = true
+            let id = this.emplyee.split(' ')[0]
+            api.getLastDataReports(id, {
+            }).then(response => {
+                this.answer11 = response.data.attrib11
+                this.answer22 = response.data.attrib22
+                this.answer33 = response.data.attrib33
+                this.answer44 = response.data.attrib44
+                this.answer55 = response.data.attrib55
+                this.answer66 = response.data.attrib66
+
+                this.loader = false
+
+            }).catch(error => {
+                this.loader = false
+            })
+        },
         OpenKPI() {
             if (document.getElementById("Anketa").style.display == 'block') {
                 document.getElementById("Anketa").style.display = "none";
@@ -501,8 +635,8 @@ export default {
             this.loader = true
             this.allReportHistory = true
             this.downloadReport = 'Загрузить отчеты'
-            fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
-                // fetch('/api/reports/kpi?'+ `creator=${id}`, {
+            // fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
+                fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -554,6 +688,9 @@ export default {
 
         closeChangeReport() {
             this.showReportModal = false
+        },
+        closeCreatedReport() {
+            this.ShowCreatedReport = false
         },
 
         Send() {
@@ -660,7 +797,6 @@ export default {
 </script>
 
 <style>
-
 .form-btn {
     position: relative;
     left: 50%;

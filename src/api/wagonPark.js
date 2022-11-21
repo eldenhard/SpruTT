@@ -54,6 +54,10 @@ const getFilters = () => {
     return api.get(`${resource}/dislocations/get-filters/`)
 }
 
+// Для ключевых фактов
+const getKeyFacts = () => {
+    return api.get(`${resource}/key-facts/`)
+}
 export default {
     getWagons,
     getPassport,
@@ -72,5 +76,8 @@ getwagonDislocation,
 
 // полигоны вагонов
 getPolygon,
-getFilters
+getFilters,
+
+// ключевы факты
+getKeyFacts,
 }

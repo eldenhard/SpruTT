@@ -4,10 +4,10 @@
         <!-- <Loader :loader="loader"></Loader> -->
         <div class="FilterReportAbandon">
 
-            <div style="display:flex; flex-direction:column; margin-bottom: 1%">
+            <div style="display:flex; flex-direction:column; margin-bottom: 1%; ">
                 <label for="input_FilterReportAbandon" style="cursor: pointer">Вагон</label>
                 <multi-select-uni @change="updateSelectedWagonType" :placeholder="'Выберите...'"
-                    :variants="wagontypeObj" :variant-title="'value'" style="width: 170px !important">
+                    :variants="wagontypeObj" :variant-title="'value'" style="width: 170px !important; ">
                 </multi-select-uni>
 
             </div>
@@ -78,7 +78,7 @@
     display: flex;
     justify-content: space-around;
     /* border-radius: 50px; */
-    background: #e0e0e0;
+    background: #EFEFEF;
     box-shadow: 20px 20px 30px #cecece,
         -20px -20px 30px #f2f2f2;
     position: relative;

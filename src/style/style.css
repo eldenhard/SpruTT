@@ -1,75 +1,92 @@
-.button{
-    color: white;
-    border: none;
-    outline: none;
-    /* width: 130px; */
-    height: 25px;
-    letter-spacing: 1px;
-    border-radius: 7px;
-    font-weight: 500;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-.Delete{
-    background: #ED5E68;
-  }
-.Delete:hover{
-    background: #c04850;
-    cursor: pointer;
-  }
-.Request{
-    background: #2196F3;
-  }
-.Request:hover{
-    background: #1a70b6;
-    cursor: pointer;
-  }
-.Accept{
-    background: #45AC53;
-  }
-.Accept:hover{
-    background: #2e7a38;
-    cursor: pointer;
-  }
-.Action{
-    background: #ed925e;
-    height: 60px;
-    cursor: pointer;
-  }
-.Action:hover{
-    background: #c27549;
-    cursor: pointer;
-  }
-.Cancel{
-    background: #8388A4;
-  }
-.Cancel:hover{
-      background: #63677c;
-      cursor: pointer;
-  }
+.button {
+  color: white;
+  border: none;
+  outline: none;
+  /* width: 130px; */
+  height: 25px;
+  letter-spacing: 1px;
+  border-radius: 7px;
+  font-weight: 500;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Delete {
+  background: rgb(231, 76, 60, 0.7);
+}
+
+.Delete:hover {
+  background: rgb(181, 50, 36, 0.7);
+  cursor: pointer;
+}
+
+.Request {
+  background: #3498DB;
+}
+
+.Request:hover {
+  background: #2b7eb4;
+  cursor: pointer;
+}
+
+.Accept {
+  background:#158127;
+}
+
+.Accept:hover {
+  background:#10691f;
+  cursor: pointer;
+}
+
+.Action {
+  background:#FF9F55;
+  height: 60px;
+  cursor: pointer;
+}
+
+.Action:hover {
+  background: #e48f4d;
+  cursor: pointer;
+}
+
+.Cancel {
+  background: #2C3E50;
+}
+
+.Cancel:hover {
+  background: #22303d;
+  cursor: pointer;
+}
 
 
-#tableMain, #tableDislocation{
-    background: rgb(236, 236, 236);
-    width: 100% !important;
-    
-    }
-tr,td,th{
-    font-size: 12px;
-    border: 1px solid rgb(184, 184, 184);
-    background: white;
-    text-align: center;
+#tableMain,
+#tableDislocation {
+  background: rgb(236, 236, 236);
+  width: 100% !important;
+
 }
-.info-table{
-    margin-top: 66px;
-    width: 50vw;
+
+tr,
+td,
+th {
+  font-size: 12px;
+  border: 1px solid rgb(184, 184, 184);
+  background: white;
+  text-align: center;
 }
+
+.info-table {
+  margin-top: 66px;
+  width: 50vw;
+}
+
 .table1 table {
   border-spacing: 0 !important;
   margin-top: 3%;
 }
+
 .table1 table thead tr th {
   text-align: left !important;
   border-bottom: solid 3px #c04945 !important;
@@ -78,27 +95,33 @@ tr,td,th{
   background-color: #eee !important;
   color: #000000 !important;
 }
+
 .table1 table tbody tr td {
   transition: all 0.15s ease !important;
   padding: 8px !important;
 }
+
 .table1 table tbody td span {
   font-size: x-small;
   display: block;
 }
+
 .table1 table tbody td span:first-child {
   font-size: small;
   line-height: 1.5em;
   display: block;
 }
+
 .table1 table tbody tr:hover {
   background-color: #eee !important;
-  outline: solid 1px #c04945  !important;
+  outline: solid 1px #c04945 !important;
 }
+
 .table1 table th,
 .table1 table td:not(.wrap) {
   white-space: nowrap !important;
 }
+
 h2 {
   text-align: center;
   padding-top: 2%;
@@ -116,6 +139,7 @@ h2 {
   flex-direction: column;
   z-index: 9999999999999;
 }
+
 #loading-page-lk svg {
   width: 100px;
   height: 100px;
@@ -123,21 +147,25 @@ h2 {
   display: inline-block;
   position: relative;
   left: 50%;
-  transform: translate(-50%,0);
+  transform: translate(-50%, 0);
   margin-top: 15%;
 }
-input, label{
+
+input,
+label {
   cursor: pointer;
 }
 
 
 
-.wrapper-success, .wrapper-alert{
+.wrapper-success,
+.wrapper-alert {
   margin: 50px;
   position: fixed;
   top: 0;
   z-index: 999999999999999999999999999 !important;
 }
+
 .wrapper-success .card {
   width: 100%;
   padding-top: 20px;
@@ -153,7 +181,8 @@ input, label{
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
-.wrapper-alert .card{
+
+.wrapper-alert .card {
   width: 100%;
   padding-top: 20px;
   padding-bottom: 20px;
@@ -169,23 +198,111 @@ input, label{
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
 }
+
 .wrapper-success .wrapper-alert .card .subject {
   margin-right: 10px;
 }
+
 .wrapper-success .wrapper-alert .card .subject p {
   color: #909092;
-}  
-@media screen and (max-width:550px) {
-    .wrapper-success .wrapper-alert {
-       width: 90%; 
-       margin-left: 5%;
-    }
+}
 
-} 
+@media screen and (max-width:550px) {
+  .wrapper-success .wrapper-alert {
+    width: 90%;
+    margin-left: 5%;
+  }
+
+}
+
 .all-label {
   color: rgb(76, 76, 76);
-padding-top: 1%;
+  padding-top: 1%;
 }
+
 option select {
   cursor: pointer !important;
+}
+
+
+input[type="text"] {
+  border: none !important;
+  border-bottom: 1px solid black !important;
+  outline: none !important;
+  color: #757575;
+}
+
+input[type="text"]:focus {
+  border-color: rgb(0, 0, 0) !important;
+}
+
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  outline: 0;
+  font: inherit;
+
+  width: 20em;
+  height: 3em;
+  padding: 0 4em 0 1em;
+  background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right 0.8em center/1.4em, linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em);
+  /* background: #E6E6E6; */
+  color: #000000;
+  border-radius: 0.25em;
+  /* box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2); */
+  cursor: pointer;
+
+}
+
+select option {
+  color: black;
+  background-color: #E6E6E6;
+  border: none;
+  cursor: pointer
+}
+
+select:focus {
+  outline: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+/* Поля Input */
+.bg {
+
+  background-color: #EFEFEF;
+  text-align: center;
+  display: block;
+  justify-items: center;
+  margin: 5% 0;
+}
+
+.label {
+  position: absolute; 
+  transform: translate(-9.8rem, -3.8rem);
+  font-size: 1rem;
+  padding: 0 5px;
+  background-color: #EFEFEF; 
+  color:#757575
+}
+.textarea {
+  position: relative; 
+  border-radius: 0.4rem;
+  background-color: #EFEFEF; 
+  border: #BDC3C7 0.1rem solid;
+  width: 20rem;
+  height: 3rem;
+  padding: 0rem 1rem;
+  font-size: 1.4rem;
+  font-size: 15px;
+}
+
+.textarea:focus {
+  outline: none;
+  border: #303030 0.1rem solid;
+
 }

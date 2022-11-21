@@ -1,9 +1,9 @@
 <template>
-<div id="tableMain">
+<div id="tableMain" style="background: white">
 
 <FilterWagon @updateFilters="updateFilters"></FilterWagon>
 
-<button class="button Accept" style="width: 93%; height: 40px; position: relative; left: 50%; transform: translate(-50%,0);" @click="Wagon()">Запросить данные</button>
+<button class="Accept" style="width: 80%; position: relative; left: 50%; transform: translate(-50%,0);" @click="Wagon()">Запросить данные</button>
 
 
 

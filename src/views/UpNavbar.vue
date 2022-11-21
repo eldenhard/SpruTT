@@ -39,6 +39,10 @@
         <b-nav-item >
           <router-link to="/personnel-service" style="color: black; text-decoration: none; font-size: 15px;">Кадровая служба</router-link>
         </b-nav-item>
+
+        <b-nav-item >
+          <router-link to="/key-facts" style="color: black; text-decoration: none; font-size: 15px;">Ключевые факты</router-link>
+        </b-nav-item>
         <!-- <b-nav-item>
           <a href="/" @click="logout" style="color: black; text-decoration: none; font-size: 13px;">Выход</a>
         </b-nav-item> -->

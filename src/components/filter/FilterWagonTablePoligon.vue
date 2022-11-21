@@ -24,7 +24,18 @@
 
         <div class="filterWagonDislocation">
             <div style="display:flex; flex-direction:column;">
-                <label for="input_filter_wagon_dislocation" class="all-label">Тип вагона</label>
+                <div class='bg'>
+                    <select class='textarea' id='input_filter_wagon_dislocation' name='Pwd'
+                        v-model="filter_wagonpolygon.wagon__wagon_type" @change="updateFilterDataWagonDislocation">
+                        <option value="">Все вагоны</option>
+                        <option v-for="wagonDisl in wagonDislocation" :key="wagonDisl.name" :value="wagonDisl.name">
+                            {{ wagonDisl.name }}
+                        </option>
+                    </select>
+                    <br>
+                    <label for='input_filter_wagon_dislocation' class='label'>Тип вагона</label>
+                </div>
+                <!-- <label for="input_filter_wagon_dislocation" class="all-label">Тип вагона</label>
                 <select class="input_filter_wagon_dislocation" id="input_filter_wagon_dislocation"
                     style="cursor: pointer;" v-model="filter_wagonpolygon.wagon__wagon_type"
                     @change="updateFilterDataWagonDislocation">
@@ -32,36 +43,59 @@
                     <option v-for="wagonDisl in wagonDislocation" :key="wagonDisl.name" :value="wagonDisl.name">
                         {{ wagonDisl.name }}
                     </option>
-                </select>
+                </select> -->
             </div>
             <div style="display:flex; flex-direction:column;">
-                <label for="input_filter_dislocation" class="all-label">Полигон</label>
+                <div class='bg'>
+                    <select class='textarea' id='input_filter_dislocation' name='Pwd'
+                        v-model="filter_wagonpolygon.polygon" @change="updateFilterDataWagonDislocation">
+                        <option value="">Все полигоны</option>
+                        <option v-for="polygon in polygonDislocations" :key="polygon" :value="polygon">
+                            {{ polygon }}
+                        </option>
+                    </select>
+                    <br>
+                    <label for='input_filter_dislocation' class='label'>Полигон</label>
+                </div>
+            </div>
+            <!-- <label for="input_filter_dislocation" class="all-label">Полигон</label>
                 <select class="input_filter_wagon_dislocation" id="input_filter_dislocation" style="cursor: pointer;"
                     v-model="filter_wagonpolygon.polygon" @change="updateFilterDataWagonDislocation">
 
 
-                    <option v-for="polygon in polygonDislocations" :key="polygon"
-                        :value="polygon">
+                    <option v-for="polygon in polygonDislocations" :key="polygon" :value="polygon">
                         {{ polygon }}
                     </option>
-                </select>
-            </div>
+                </select> -->
+
             <div style="display: flex; flex-direction: column">
-                <label for="amoutRecordsDislocation" class="all-label">Кол-во записей</label>
-                <select name="" id="amoutRecordsDislocation" v-model="filter_wagonpolygon.page_size"
-                    @change="updateFilterDataWagonDislocation">
-                    <option value="" selected>100</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="250">250</option>
-                    <option value="500">500</option>
-                </select>
+                <div class='bg'>
+                    <select class='textarea' id="amoutRecordsDislocation" name='Pwd'
+                        v-model="filter_wagonpolygon.page_size" @change="updateFilterDataWagonDislocation">
+                        <option value="" selected>100</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="250">250</option>
+                        <option value="500">500</option>
+                    </select>
+                    <br>
+                    <label for="amoutRecordsDislocation" class='label'>Кол-во записей</label>
+                </div>
+                <!-- <label for="amoutRecordsDislocation" class="all-label">Кол-во записей</label>
+            <select name="" id="amoutRecordsDislocation" v-model="filter_wagonpolygon.page_size"
+                @change="updateFilterDataWagonDislocation">
+                <option value="" selected>100</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="250">250</option>
+                <option value="500">500</option>
+            </select> -->
 
             </div>
-
 
         </div>
     </div>
+
 </template>
 
 <script>
@@ -122,14 +156,15 @@ export default {
 .input_filter_wagon_dislocation {
     width: 100% !important;
     height: 30px;
+    background: transparent !important;
 }
 
 .filterWagonDislocation {
-    width: 100% !important;
+    width: 80% !important;
     display: flex;
     justify-content: space-around;
     /* border-radius: 50px; */
-    background: #e0e0e0;
+    background: #EFEFEF !important;
     box-shadow: 20px 20px 60px #cecece,
         -20px -20px 60px #f2f2f2;
     position: relative;

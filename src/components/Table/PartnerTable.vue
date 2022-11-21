@@ -1,71 +1,218 @@
 <template>
-    
-<div>
-    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
-    <Loader :loader="loader"></Loader>
-    <filterDirectory @updateFilterDataDirectory ="updateFilterDataDirectory"></filterDirectory>
-    <button class="Accept" @click="getCounterparties()" style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0)">Запросить контрагентов</button>
-    <br><br>
-    <p class="amount">всего записей: {{total_objects}}</p>
-    <p class="amount">всего на странице: {{amount}}</p>  
-    <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;"> 
-    <table class="table" style="table-layout: fixed;">
-        <thead>
-            <tr>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">Рабочее наименование</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">Кратное наименование</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">Полное наименование</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">ЕЛС</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">ОГРН/ЕГРПОУ/БИН</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">ИНН/РНН</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">КПП/№ Св-ва НДС</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">Юридический адрес</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">Дата создания</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">Руководитель</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">Телефон</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">Группа</th>
-                    <th style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">Действие</th>
+
+    <div>
+        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+            id="notif" />
+        <Loader :loader="loader"></Loader>
+        <filterDirectory @updateFilterDataDirectory="updateFilterDataDirectory"></filterDirectory>
+
+        <div>
+            <b-modal ref="my-modal" hide-footer title="Добавление контрагента" id="modal-xl" size="xl" >
+
+
+                <div style="height: 60vh;overflow-y: auto; margin-bottom: 3%;">
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-3 col-form-label">Рабочее наименование</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control-plaintext" v-model="work_name">
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label">Краткое наименование</label>
+                        <div class="col-sm-8">
+                            <input  class="form-control" id="inputPassword" v-model="short_name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-3 col-form-label">Полное наименование</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control-plaintext"  v-model="full_name">
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label">ЕЛС</label>
+                        <div class="col-sm-8">
+                            <input  class="form-control"  v-model="els">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-3 col-form-label">ОГРН/ЕГРПОУ/БИН</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control-plaintext" v-model="ogrn">
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label">ИНН/РНН</label>
+                        <div class="col-sm-8">
+                            <input  class="form-control" v-model="inn">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-3 col-form-label">КПП/№ Св-ва НДС</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control-plaintext" v-model="kpp">
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label">Юридический адрес</label>
+                        <div class="col-sm-8">
+                            <input  class="form-control" v-model="legal_address">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-3 col-form-label"> Руководитель</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control-plaintext" v-model="manager">
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-3 col-form-label">Телефон</label>
+                        <div class="col-sm-8">
+                            <input  class="form-control"  v-model="phone">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-3 col-form-label">Группа</label>
+                        <div class="col-sm-8">
+                            <select v-model="group" class="input-filter" style="border: 1px solid grey">
+                                       
+                                       <option :value="g[0]" v-for="g in Object.entries(groups)" :key="g[0]">{{
+                                               g[1]
+                                       }}
+                                       </option>
+                                   </select>
+
+                        </div>
+
+                    </div>
+                </div>
+                <b-button class="mt-2" variant="success" block @click="CreateCounterparties()">Сохранить
+                </b-button>
+                <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button>
 
 
 
-            </tr>
-        </thead>
-        <tbody>
-                <tr v-for="(part, index) in counterparties" :key="part.id">
-                      <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].work_name"></td>
-                      <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].short_name"></td>
-                      <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].full_name"></td>
-                      <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].els"></td>
-                      <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].ogrn"></td>
-                      <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].inn"></td>
-                      <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].kpp"></td>
-                      <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].legal_address"></td>
-                      <td class="td-btr">{{new Date(part.created_at).toLocaleString()}}</td>
-                      <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].manager"></td>
-                      <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].phone"></td>
-                      <td class="td-btr">
-                                    
-                         <select v-model="counterparties[index].group" class="input-filter">
-                            <option value="all">Все</option>
-                                 <option :value="g[0]" v-for="g in Object.entries(groups)" :key="g[0]">{{g[1]}}</option>
+            </b-modal>
+        </div>
+
+        <button class="Accept" @click="getCounterparties()"
+            style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0)">Запросить
+            контрагентов</button>
+        <br><br>
+
+        <p class="amount">всего записей: {{ total_objects }}</p>
+        <p class="amount">всего на странице: {{ amount }}</p>
+
+
+        <button class="Cancel" style="border-top-left-radius: 10px; border-top-right-radius: 10px;"
+            @click="showModal">Добавить
+            контрагента</button>
+
+        <div
+            style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
+            <table class="table" style="table-layout: fixed;">
+                <thead>
+                    <tr>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Рабочее наименование</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Кратное наименование</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Полное наименование</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            ЕЛС</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            ОГРН/ЕГРПОУ/БИН</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            ИНН/РНН</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            КПП/№ Св-ва НДС</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Юридический адрес</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Дата создания</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Руководитель</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Телефон</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Группа</th>
+                        <th
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            Действие</th>
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(part, index) in counterparties" :key="part.id">
+                        <td class="td-btr"><input class="input-filter" type="text"
+                                v-model="counterparties[index].work_name"></td>
+                        <td class="td-btr"><input class="input-filter" type="text"
+                                v-model="counterparties[index].short_name"></td>
+                        <td class="td-btr"><input class="input-filter" type="text"
+                                v-model="counterparties[index].full_name"></td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].els">
+                        </td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].ogrn">
+                        </td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].inn">
+                        </td>
+                        <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].kpp">
+                        </td>
+                        <td class="td-btr"><input class="input-filter" type="text"
+                                v-model="counterparties[index].legal_address"></td>
+                        <td class="td-btr">{{ new Date(part.created_at).toLocaleString() }}</td>
+                        <td class="td-btr"><input class="input-filter" type="text"
+                                v-model="counterparties[index].manager"></td>
+                        <td class="td-btr"><input class="input-filter" type="text"
+                                v-model="counterparties[index].phone"></td>
+                        <td class="td-btr">
+
+                            <select v-model="counterparties[index].group" class="input-filter">
+                                <option value="all">Все</option>
+                                <option :value="g[0]" v-for="g in Object.entries(groups)" :key="g[0]">{{ g[1] }}
+                                </option>
                             </select>
-                         </td>
-                         <td style="width:  200px !important; height: 50px !important; vertical-align: middle !important;"><button class="Accept" @click="savePartner(part)">Сохранить</button></td> 
+                        </td>
+                        <td
+                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                            <button class="Accept" @click="savePartner(part)">Сохранить</button>
+                        </td>
 
-                </tr>
-        </tbody>
-    </table> 
-</div>
-<div style="display: flex; justify-content: space-around; margin-top: 2%;">
-            <button class="Cancel" style="width: 20%"  v-if="prevLink" @click="goToPage(prevLink)">назад</button>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="display: flex; justify-content: space-around; margin-top: 2%;">
+            <button class="Cancel" style="width: 20%" v-if="prevLink" @click="goToPage(prevLink)">назад</button>
             <button class="Cancel" style="width: 20%" v-if="nextLink" @click="goToPage(nextLink)">вперед</button>
-    </div>
+        </div>
 
-</div>    
+    </div>
 </template>
 
 <script>
 import api from '@/api/directory'
+import apiReport from '@/api/report'
 import { mapState } from 'vuex';
 import Loader from '@/components/loader/loader.vue'
 import filterDirectory from '@/components/filter/FilterDirectory.vue'
@@ -74,22 +221,22 @@ import Notifications from '@/components/notifications/Notifications.vue'
 
 export default {
     name: 'PartnerTable',
-    components: {Loader,filterDirectory, Notifications},
-    data(){
-        return{
+    components: { Loader, filterDirectory, Notifications },
+    data() {
+        return {
             groups: groups.groups,
             nextLink: null,
             prevLink: null,
             counterparties: [],
             loader: false,
-            filter_directory:{
+            filter_directory: {
                 search: '',
             },
             loader: false,
             total_objects: '',
             amount: '',
             work_name: '',
-            short_name:'',
+            short_name: '',
             full_name: '',
             els: '',
             ogrn: '',
@@ -98,80 +245,134 @@ export default {
             legal_address: '',
             manager: '',
             phone: '',
+            group: '',
 
-              // Уведомления
+            // Уведомления
             showNotify: false,
             notifyHead: '',
             notifyMessage: '',
             notifyClass: '',
 
+            name: ''
+
+
 
         }
     },
-    methods:{ 
-        goToPage(link){
-        let url = new URL(link)
-        let pageNumber  = url.searchParams.get("page")
-        if(pageNumber != null){
-            this.filter_directory.page = pageNumber 
-        }else{
-            delete(this.filter_directory.page)
-        }
-        this.getCounterparties()
+    methods: {
+        goToPage(link) {
+            let url = new URL(link)
+            let pageNumber = url.searchParams.get("page")
+            if (pageNumber != null) {
+                this.filter_directory.page = pageNumber
+            } else {
+                delete (this.filter_directory.page)
+            }
+            this.getCounterparties()
         },
-        getCounterparties(){
+        getCounterparties() {
             this.loader = true
             api.getAllcounterparties(this.filter_directory)
-            .then(response => {
-                this.counterparties = response.data.data
-                this.nextLink = response.data.links.next
-                this.prevLink = response.data.links.previous
+                .then(response => {
+                    this.counterparties = response.data.data
+                    this.nextLink = response.data.links.next
+                    this.prevLink = response.data.links.previous
 
-                this.total_objects = response.data.total_objects
-                this.amount = response.data.amount
+                    this.total_objects = response.data.total_objects
+                    this.amount = response.data.amount
 
-                this.notifyHead = 'Успешно'
-                this.notifyMessage = 'Данные отфильтрованы'
-                this.notifyClass = 'wrapper-success'
-                this.showNotify = true
-                setTimeout(this.closeNotification, 1500)
-                this.loader = false
-            }).catch((err) => {
-                this.loader = false
-                this.notifyHead = 'Ошибка'
-                this.notifyMessage = 'Данные не отфильтрованы, попробуйте еще раз'
-                this.notifyClass = 'wrapper-alert'
-                this.showNotify = true
-                setTimeout(this.closeNotification, 1500)
-            })
+                    this.notifyHead = 'Успешно'
+                    this.notifyMessage = 'Данные отфильтрованы'
+                    this.notifyClass = 'wrapper-success'
+                    this.showNotify = true
+                    setTimeout(this.closeNotification, 1500)
+                    this.loader = false
+                }).catch((err) => {
+                    this.loader = false
+                    this.notifyHead = 'Ошибка'
+                    this.notifyMessage = 'Данные не отфильтрованы, попробуйте еще раз'
+                    this.notifyClass = 'wrapper-alert'
+                    this.showNotify = true
+                    setTimeout(this.closeNotification, 1500)
+                })
 
         },
-        savePartner(part){
+        savePartner(part) {
             this.loader = true
             api.putCounterparties(part.id, part)
-            .then(response => {
-                console.log(response)
-                this.loader = false
-                this.notifyHead = 'Успешно'
-                this.notifyMessage = 'Данные о контрагенте сохранены'
-                this.notifyClass = 'wrapper-success'
-                this.showNotify = true
-                setTimeout(this.closeNotification, 1500)
-            }).catch((err => {
-                this.loader = false
-                this.notifyHead = 'Ошибка'
-                this.notifyMessage = 'Данные не сохранены'
-                this.notifyClass = 'wrapper-alert'
-                this.showNotify = true
-                setTimeout(this.closeNotification, 1500)
-            }))
+                .then(response => {
+                    // console.log(response)
+                    this.loader = false
+                    this.notifyHead = 'Успешно'
+                    this.notifyMessage = 'Данные о контрагенте сохранены'
+                    this.notifyClass = 'wrapper-success'
+                    this.showNotify = true
+                    setTimeout(this.closeNotification, 1500)
+                }).catch((err => {
+                    this.loader = false
+                    this.notifyHead = 'Ошибка'
+                    this.notifyMessage = 'Данные не сохранены'
+                    this.notifyClass = 'wrapper-alert'
+                    this.showNotify = true
+                    setTimeout(this.closeNotification, 1500)
+                }))
 
         },
-        closeNotification(){
+        closeNotification() {
             this.showNotify = false
         },
-        updateFilterDataDirectory(filter_directory){
+        updateFilterDataDirectory(filter_directory) {
             this.filter_directory = filter_directory
+        },
+        showModal() {
+            this.$refs['my-modal'].show()
+        },
+        hideModal() {
+            this.$refs['my-modal'].hide()
+        },
+        toggleModal() {
+            // We pass the ID of the button that we want to return focus to
+            // when the modal has hidden
+            this.$refs['my-modal'].toggle('#toggle-btn')
+        },
+        CreateCounterparties() {
+            this.loader = true
+            event.preventDefault()
+            this.loaderStaff = true
+
+            let formData = new FormData();
+            formData.append('work_name', this.work_name)
+            formData.append("short_name", this.short_name)
+            formData.append("full_name", this.full_name)
+            formData.append("els", this.els)
+
+            formData.append("ogrn", this.ogrn)
+            formData.append("inn", this.inn)
+            formData.append("kpp", this.kpp)
+            formData.append("legal_address", this.legal_address)
+            formData.append("manager", this.manager)
+            formData.append("phone", this.phone)
+            formData.append("group", this.group)
+
+            apiReport.createCounterparties(formData)
+                .then(response => {
+
+                    this.loader = false
+                    this.notifyHead = 'Успешно'
+                    this.notifyMessage = 'Контрагент добавлен'
+                    this.notifyClass = 'wrapper-success'
+                    this.showNotify = true
+                    setTimeout(this.closeNotification, 1500)
+                    this.hideModal()
+                }).catch(error => {
+                    this.loader = false
+                    this.notifyHead = 'Ошибка'
+                    this.notifyMessage = 'Контрагент с таким именем уже существует'
+                    this.notifyClass = 'wrapper-alert'
+                    this.showNotify = true
+                    setTimeout(this.closeNotification, 1500)
+                });
+
         }
     },
     computed: {
@@ -187,7 +388,7 @@ export default {
 
 
 <style>
-.input-filter{
+.input-filter {
     width: 100% !important;
     height: 100% !important;
     margin: 0 !important;

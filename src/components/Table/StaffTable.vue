@@ -2,7 +2,7 @@
     <div>
 <FilterStaff  @updateFiltersStaff="updateFiltersStaff"></FilterStaff>
 
-<button class="Accept staffButton" @click="allStaff()">Запросить всех сотрудников</button>
+<button class="Accept staffButton" @click="allStaff()" style="width: 80% !important; transform: translate(-50%,0)">Запросить всех сотрудников</button>
     <br><br>
     <br><br>
 <button class="Cancel staffButton" style="width: 50%; border-top-left-radius: 10px; border-top-right-radius: 10px;" @click="addStaff() ">Добавить сотрудника</button>

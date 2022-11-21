@@ -123,13 +123,14 @@ export default {
 .input_filter_abadon {
     width: 100% !important;
     height: 30px;
+    background:transparent !important;
 }
 .filterAbadon {
     width: 100% !important;
     display: flex;
     justify-content: space-around;
     /* border-radius: 50px; */
-background: #e0e0e0;
+    background: #EFEFEF  !important;
 box-shadow:  20px 20px 60px #cecece,
              -20px -20px 60px #f2f2f2;
              position: relative;

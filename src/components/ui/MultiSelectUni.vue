@@ -1,17 +1,20 @@
 <template>
     
-    <div class="multipleSelection">
+    <div class="multipleSelection" style="background: #EFEFEF !important">
         <div class="selectBox" 
             @click="show=!show">
-            <select style="font-weight: 400 !important; text-align: center; width: 170px; color: grey;">
+            <div class='bg'>
+                <select style="font-weight: 400 !important; text-align: center; width: 170px; color: grey;" class="textarea" id="multi"> 
                 <option>{{placeholder}}</option>
             </select>
+            <br>
+         </div>
             <div class="overSelect"></div>
         </div>
 
-        <div id="checkBoxes" v-if="show">
+        <div id="checkBoxes" v-if="show" style="background-color: #f7f7f7;">
             <label :for="'v'+v.id" v-for="v in variants" :key="v.id">
-                <input type="checkbox" :id="'v'+v.id" @change="change(v)" :checked="checkSelected(v.id)"/> 
+                <input type="checkbox" :id="'v'+v.id" @change="change(v)" :checked="checkSelected(v.id)"  /> 
                 {{v[variantTitle]}}
             </label>
         </div>
@@ -26,6 +29,8 @@
         left: 50%;
         transform: translate(-50%,0);
         z-index: 0 !important;
+        background: #EFEFEF;
+
     }
 
     .selectBox {
