@@ -7,7 +7,7 @@
         <filterDirectory @updateFilterDataDirectory="updateFilterDataDirectory"></filterDirectory>
 
 
-        <b-modal ref="my-modal" hide-footer title="Добавление контрагента" size="xl" class="modal-dialog modal-fullscreen modal-xl">
+        <b-modal ref="my-modal" hide-footer title="Добавление контрагента">
                 <div class="row">
                     <div class="col-md-6">
                         <div class='bg'>
@@ -322,7 +322,9 @@
 
     </div>
 </template>
+<style>
 
+</style>
 <script>
 import api from '@/api/directory'
 import apiReport from '@/api/report'
@@ -512,6 +514,12 @@ export default {
     text-align: center;
     font-size: 13px;
     cursor: pointer;
+}
+.modal-content{
+    width: 200% !important;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0);
 }
 </style>
 
