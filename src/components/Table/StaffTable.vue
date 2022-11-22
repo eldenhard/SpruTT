@@ -116,7 +116,7 @@
             </div>
         </div> -->
 
-        <b-modal ref="delete-user" hide-footer title="Удаление сотрудника" id="modal-xl" size="xl">
+        <b-modal ref="delete-user" hide-footer title="Удаление сотрудника">
             <div class="row">
                 <div class="col-md-6">
                     <div class='bg'>
@@ -253,7 +253,7 @@
         </div> -->
 
 
-        <b-modal ref="change-user" hide-footer title="Редактирование сотрудника" id="modal-xl" size="xl">
+        <b-modal ref="change-user" hide-footer title="Редактирование сотрудника">
             <div class="row">
                 <div class="col-md-6">
                     <div class='bg'>
@@ -378,7 +378,7 @@
 
 
         </b-modal>
-        <b-modal ref="add-user" hide-footer title="Добавление сотрудника" id="modal-xl" size="xl">
+        <b-modal ref="add-user" hide-footer title="Добавление сотрудника">
             <div class="row">
                 <div class="col-md-6">
                     <div class='bg'>
@@ -819,7 +819,12 @@ export default {
     cursor: pointer;
 }
 
-
+.modal-content{
+    width: 200% !important;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0);
+}
 
 .error {
     border: 1px solid red !important;
