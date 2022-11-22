@@ -6,8 +6,102 @@
         <Loader :loader="loader"></Loader>
         <filterDirectory @updateFilterDataDirectory="updateFilterDataDirectory"></filterDirectory>
 
-  
-            <b-modal ref="my-modal" hide-footer title="Добавление контрагента" size="lg" style="width: 100% !important">
+        <div id="__BVID__90___BV_modal_content_" tabindex="-1" class="modal-content" v-if="modalGG">
+            <header id="__BVID__90___BV_modal_header_" class="modal-header">
+                <h5 id="__BVID__90___BV_modal_title_" class="modal-title">Добавление контрагента</h5>
+            </header>
+            <div id="__BVID__90___BV_modal_body_" class="modal-body">
+                <div class="row" style="width: 100% !important;">
+                    <div class="col-md-6">
+                        <div class="bg"><input id="input-filter-staff1" name="Pwd" class="textarea"><br><label
+                                for="input-filter-staff1" class="label">Рабочее наименование</label></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="bg"><input id="input-filter-staff12" name="Pwd" class="textarea"><br><label
+                                for="input-filter-staff12" class="label">Краткое наименование</label></div>
+                    </div>
+                </div>
+                <div class="row" style="width: 100% !important;">
+                    <div class="col-md-6">
+                        <div class="bg"><input id="input-filter-staff13" name="Pwd" class="textarea"><br><label
+                                for="input-filter-staff13" class="label">Полное наименование</label></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="bg"><input id="input-filter-staff14" name="Pwd" class="textarea"><br><label
+                                for="input-filter-staff14" class="label">ЕЛС</label></div>
+                    </div>
+                </div>
+                <div class="row" style="width: 100% !important;">
+                    <div class="col-md-6">
+                        <div class="bg"><input id="input-filter-staff15" name="Pwd" class="textarea"><br><label
+                                for="input-filter-staff15" class="label">ОГРН/ЕГРПОУ/БИН</label></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="bg"><input id="input-filter-staff16" name="Pwd" class="textarea"><br><label
+                                for="input-filter-staff16" class="label">ИНН/РНН</label></div>
+                    </div>
+                </div>
+                <div class="row" style="width: 100% !important;">
+                    <div class="col-md-6">
+                        <div class="bg"><input id="input-filter-staff17" name="Pwd" class="textarea"><br><label
+                                for="input-filter-staff17" class="label">КПП/№ Св-ва НДС</label></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="bg"><input id="input-filter-staff18" name="Pwd" class="textarea"><br><label
+                                for="input-filter-staff18" class="label">Юридический адрес</label></div>
+                    </div>
+                </div>
+                <div class="row" style="width: 100% !important;">
+                    <div class="col-md-6">
+                        <div class="bg"><input id="input-filter-staff19" name="Pwd" class="textarea"><br><label
+                                for="input-filter-staff19" class="label">Руководитель</label></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="bg"><input id="input-filter-staff20" name="Pwd" class="textarea"><br><label
+                                for="input-filter-staff20" class="label">Телефон</label></div>
+                    </div>
+                </div>
+                <div class="row" style="width: 100% !important;">
+                    <div class="col-md-12">
+                        <div class="bg"><select id="input-filter-staff21" class="textarea" style="width: 80%;">
+                                <option value="all">Все </option>
+                                <option value="agent">Агенты </option>
+                                <option value="renter">Арендодатель </option>
+                                <option value="rail_tariff_supplier">Поставщики </option>
+                                <option value="product_supplier">Поставщики </option>
+                                <option value="service_supplier">Поставщики </option>
+                                <option value="client">Клиенты </option>
+                                <option value="tenant">Арендатор </option>
+                                <option value="retail">Розничные </option>
+                                <option value="bank">Банки </option>
+                                <option value="depot">Депо </option>
+                                <option value="our_firm">Наши </option>
+                                <option value="individual">Физические </option>
+                                <option value="other">Прочие </option>
+                                <option value="branch">Филиалы </option>
+                                <option value="specific">Специфические </option>
+                                <option value="budget">Бюджет </option>
+                                <option value="extra_budgetary_fond">Внебюджетные </option>
+                                <option value="founder">Учредители </option>
+                                <option value="consignee">Грузополучатели </option>
+                                <option value="warehouse_or_terminal">Склады </option>
+                                <option value="new_counterparty_by_edo">Новые </option>
+                                <option value="edo_operator">Операторы </option>
+                                <option value="court">Суды </option>
+                                <option value="potential_customer">Потенциальные </option>
+                                <option value="new_counterparty">Новый </option>
+                                <option value="employee">Сотрудники </option>
+                                <option value="archive">Архив </option>
+                                <option value="deleted">Удаленные </option>
+                            </select><br><label for="input-filter-staff21" class="label"
+                                style="margin-left: 10%;">Группа</label></div>
+                    </div>
+                </div><button type="button" class="btn mt-2 btn-success btn-block">Сохранить </button><button
+                    type="button" class="btn mt-3 btn-outline-danger btn-block">Закрыть</button>
+            </div>
+            <!---->
+        </div>
+        <!-- <b-modal ref="my-modal" hide-footer title="Добавление контрагента" size="lg" style="width: 100% !important">
                 <div class="row" style="width: 100% !important">
                     <div class="col-md-6">
                         <div class='bg'>
@@ -109,7 +203,7 @@
                         </div>
                     </div>
 
-                </div>
+                </div> -->
 
 
 
@@ -119,7 +213,7 @@
 
 
 
-                <!-- <div class='bg'>
+        <!-- <div class='bg'>
                         <select v-model="group" class="textarea" style="border: 1px solid grey" id="input-filter-staff21">
 
                             <option :value="g[0]" v-for="g in Object.entries(groups)" :key="g[0]">{{
@@ -130,72 +224,72 @@
                         <br>
                         <label for='input-filter-staff21' class='label'>Группа</label>
                     </div> -->
-                <!-- <div class="form-group row">
+        <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label">Рабочее наименование</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control-plaintext" v-model="work_name">
 
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+        <!-- <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label">Краткое наименование</label>
                         <div class="col-sm-8">
                             <input class="form-control" id="inputPassword" v-model="short_name">
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+        <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label">Полное наименование</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control-plaintext" v-model="full_name">
 
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+        <!-- <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label">ЕЛС</label>
                         <div class="col-sm-8">
                             <input class="form-control" v-model="els">
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+        <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label">ОГРН/ЕГРПОУ/БИН</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control-plaintext" v-model="ogrn">
 
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+        <!-- <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label">ИНН/РНН</label>
                         <div class="col-sm-8">
                             <input class="form-control" v-model="inn">
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+        <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label">КПП/№ Св-ва НДС</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control-plaintext" v-model="kpp">
 
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+        <!-- <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label">Юридический адрес</label>
                         <div class="col-sm-8">
                             <input class="form-control" v-model="legal_address">
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+        <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label"> Руководитель</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control-plaintext" v-model="manager">
 
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+        <!-- <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label">Телефон</label>
                         <div class="col-sm-8">
                             <input class="form-control" v-model="phone">
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+        <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label">Группа</label>
                         <div class="col-sm-8">
                             <select v-model="group" class="input-filter" style="border: 1px solid grey">
@@ -209,15 +303,15 @@
                         </div>
 
                     </div> -->
-                <!-- </div> -->
-                <b-button class="mt-2" variant="success" block @click="CreateCounterparties()">Сохранить
-                </b-button>
-                <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button>
+        <!-- </div> -->
+        <!-- <b-button class="mt-2" variant="success" block @click="CreateCounterparties()">Сохранить
+        </b-button>
+        <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button> -->
 
 
 
-            </b-modal>
-    
+        <!-- </b-modal> -->
+
 
         <button class="Accept" @click="getCounterparties()"
             style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0)">Запросить
@@ -229,7 +323,7 @@
 
 
         <button class="Cancel" style="border-top-left-radius: 10px; border-top-right-radius: 10px;"
-            @click="showModal">Добавить
+            @click="showModal()">Добавить
             контрагента</button>
 
         <div
@@ -365,6 +459,7 @@ export default {
             manager: '',
             phone: '',
             group: '',
+            modalGG: false,
 
             // Уведомления
             showNotify: false,
@@ -444,7 +539,8 @@ export default {
             this.filter_directory = filter_directory
         },
         showModal() {
-            this.$refs['my-modal'].show()
+            this.modalGG = true
+            // this.$refs['my-modal'].show()
         },
         hideModal() {
             this.$refs['my-modal'].hide()
