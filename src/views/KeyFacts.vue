@@ -54,7 +54,7 @@ export default {
 
                 }
                 keyfacts = data
-                console.log(keyfacts)
+                // console.log(keyfacts)
 
 
 

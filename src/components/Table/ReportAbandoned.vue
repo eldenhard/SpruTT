@@ -7,7 +7,7 @@
         <FilterReportAbandon @update-filter="updateFilter"></FilterReportAbandon>
 
 
-        <b-modal ref="ModalTypeReport" hide-footer title="Выберите тип создаваемого отчета" id="modal-lg" size="lg">
+        <b-modal ref="ModalTypeReport" hide-footer title="Выберите тип создаваемого отчета">
             <div class='bg'>
                 <select class='textarea' id='input-filter-staff1' name='Pwd' v-model="format" style="width: 100%">
                     <option disabled>Выберите тип создаваемого отчета</option>
@@ -16,25 +16,14 @@
                     <option value="legal">Юридический</option>
                 </select>
                 <br>
-                <label for='input-filter-staff1' class='label' style="margin-left: 13%">Тип отчета</label>
+                <label for='input-filter-staff1' class='label' style="margin-left: 10%">Тип отчета</label>
             </div>
-            <div style="display: flex; justify-content: space-between;">
 
-                <div class='bg'>
-                    <input class='textarea' id='input-filter2' name='Pwd' type="date"
-                        v-model="filter.current_station_arrival_begin" />
-                    <br>
-                    <label for='input-filter2' class='label'>От</label>
-                </div>
-                <div class='bg'>
-                    <input class='textarea' id='input-filter3' name='Pwd' type="date"
-                        v-model="filter.current_station_arrival_end" />
-                    <br>
-                    <label for='input-filter3' class='label'>До</label>
-                </div>
+
+            
                 <!-- <input type="date" v-model="filter.current_station_arrival_end" style="width: 40%"> -->
 
-            </div>
+        
             <b-button class="mt-2" variant="success" block @click="CreateReportAbandones">Создать отчет
             </b-button>
             <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button>
@@ -217,10 +206,7 @@ export default {
             filter_FilterReportAbandon: {
 
             },
-            filter: {
-                current_station_arrival_begin: '',
-                current_station_arrival_end: ''
-            },
+            filter: {},
             format: '',
 
         }

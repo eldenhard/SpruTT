@@ -24,22 +24,37 @@
             </div>
             <div style="display:flex; flex-direction:column;">
                 <div class='bg'>
-                <!-- <label for="input_FilterReportAbandon" style="cursor: pointer">Полигон</label> -->
-                <multi-select-uni @change="updateSelectedPoligons" :placeholder="'Полигон'" :variants="poligonsObj"
-                    :variant-title="'value'" style="width: 170px !important; cursor: pointer;">
-                </multi-select-uni>
+                    <!-- <label for="input_FilterReportAbandon" style="cursor: pointer">Полигон</label> -->
+                    <multi-select-uni @change="updateSelectedPoligons" :placeholder="'Полигон'" :variants="poligonsObj"
+                        :variant-title="'value'" style="width: 170px !important; cursor: pointer;">
+                    </multi-select-uni>
                 </div>
 
             </div>
             <div style="display:flex; flex-direction:column;">
                 <div class='bg'>
-                <!-- <label for="input_FilterReportAbandon" style="cursor: pointer">Контрагент</label> -->
-                <multi-select-uni @change="updateSelectedCounterparties" :placeholder="'Контрагент'"
-                    :variants="counterparties" :variant-title="'work_name'" style="width: 170px !important;cursor: pointer;" >
-                </multi-select-uni>
+                    <!-- <label for="input_FilterReportAbandon" style="cursor: pointer">Контрагент</label> -->
+                    <multi-select-uni @change="updateSelectedCounterparties" :placeholder="'Контрагент'"
+                        :variants="counterparties" :variant-title="'work_name'"
+                        style="width: 170px !important;cursor: pointer;">
+                    </multi-select-uni>
                 </div>
             </div>
 
+            <div style="display:flex; flex-direction:column;">
+                <div class='bg'>
+                    <input class='textarea' id='input-filter1' name='Pwd' type="date"
+                        v-model="filter.current_station_arrival_begin" style="width: 125px; cursor: pointer; margin-top: 10%;" />
+                </div>
+            </div>
+            <div style="display:flex; flex-direction:column;">
+                <div class='bg'>
+
+
+                    <input class='textarea' id='input-filter2' name='Pwd' type="date"
+                        v-model="filter.current_station_arrival_end" style="width: 125px;cursor: pointer;margin-top: 10%;" />
+                </div>
+            </div>
 
         </div>
 
@@ -148,7 +163,9 @@ export default {
                 polygon__in: '',
                 // operation: 'БРОС',
                 wagon_belong_owner__in: '',
-                wagon__wagon_type: ''
+                wagon__wagon_type: '',
+                current_station_arrival_begin: '',
+                current_station_arrival_end: '',
             },
             poligons: [],
             wagonsType: [],
