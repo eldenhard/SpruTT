@@ -7,7 +7,7 @@
         <filterDirectory @updateFilterDataDirectory="updateFilterDataDirectory"></filterDirectory>
 
 
-        <b-modal ref="my-modal" hide-footer title="Добавление контрагента" size="xl" class="modal-xl">
+        <b-modal ref="my-modal" hide-footer title="Добавление контрагента" size="xl" class="modal-dialog modal-fullscreen modal-xl">
                 <div class="row">
                     <div class="col-md-6">
                         <div class='bg'>
