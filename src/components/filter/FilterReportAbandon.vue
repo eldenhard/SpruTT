@@ -9,8 +9,8 @@
                     <select class='textarea' id='input_filter_wagon_dislocation' name='Pwd'
                         v-model="filter.wagon__wagon_type" @change="updateSelectedWagonType" style="cursor: pointer;">
                         <option value="">Все вагоны</option>
-                        <option v-for="wagonDisl in wagonsType" :key="wagonDisl.name" :value="wagonDisl.name">
-                            {{ wagonDisl.name }}
+                        <option v-for="wagonDisl in wagonsType" :key="wagonDisl" :value="wagonDisl">
+                            {{ wagonDisl }}
                         </option>
                     </select>
                     <br>
@@ -206,7 +206,8 @@ export default {
         },
         getWagonType() {
             api.getWagonType().then(response => {
-                this.wagonsType = response.data.data
+                this.wagonsType = response.data.wagon_types
+
 
             })
         },

@@ -6,9 +6,9 @@
         <Loader :loader="loader"></Loader>
         <filterDirectory @updateFilterDataDirectory="updateFilterDataDirectory"></filterDirectory>
 
-        <div>
-            <b-modal ref="my-modal" hide-footer title="Добавление контрагента" id="modal-xl" size="xl">
-                <div class="row">
+  
+            <b-modal ref="my-modal" hide-footer title="Добавление контрагента" size="lg" style="width: 100% !important">
+                <div class="row" style="width: 100% !important">
                     <div class="col-md-6">
                         <div class='bg'>
                             <input class='textarea' id='input-filter-staff1' name='Pwd' v-model="work_name" />
@@ -25,7 +25,7 @@
                     </div>
 
                 </div>
-                <div class="row">
+                <div class="row" style="width: 100% !important">
                     <div class="col-md-6">
                         <div class='bg'>
                             <input class='textarea' id='input-filter-staff13' name='Pwd' v-model="full_name" />
@@ -42,7 +42,7 @@
                     </div>
 
                 </div>
-                <div class="row">
+                <div class="row" style="width: 100% !important">
                     <div class="col-md-6">
                         <div class='bg'>
                             <input class='textarea' id='input-filter-staff15' name='Pwd' v-model="ogrn" />
@@ -59,7 +59,7 @@
                     </div>
 
                 </div>
-                <div class="row">
+                <div class="row" style="width: 100% !important">
                     <div class="col-md-6">
                         <div class='bg'>
                             <input class='textarea' id='input-filter-staff17' name='Pwd' v-model="kpp" />
@@ -76,7 +76,7 @@
                     </div>
 
                 </div>
-                <div class="row">
+                <div class="row" style="width: 100% !important">
                     <div class="col-md-6">
                         <div class='bg'>
                             <input class='textarea' id='input-filter-staff19' name='Pwd' v-model="manager" />
@@ -93,7 +93,7 @@
                     </div>
 
                 </div>
-                <div class="row">
+                <div class="row" style="width: 100% !important">
                     <div class="col-md-12">
                         <div class='bg'>
                             <select v-model="group" class="textarea" style="width: 80%;"
@@ -217,7 +217,7 @@
 
 
             </b-modal>
-        </div>
+    
 
         <button class="Accept" @click="getCounterparties()"
             style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0)">Запросить
