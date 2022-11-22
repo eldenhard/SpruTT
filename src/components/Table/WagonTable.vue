@@ -34,7 +34,7 @@
         <td v-if="wagon.is_problem == false">нет</td>
         <td v-else>да</td>
         <td>{{wagon.volume}}</td>
-        <td>{{wagon.wagon_type.name}}</td>
+        <td>{{wagon.wagon_type}}</td>
         <td v-if="wagon.is_active == true">☑️</td>
         <td v-else>🚫</td>
         

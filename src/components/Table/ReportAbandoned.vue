@@ -1,25 +1,38 @@
 <template>
     <div>
         <h2>Брошенные вагоны</h2>
+       
         <br><br>
         <Loader :loader="loader"></Loader>
         <FilterReportAbandon @update-filter="updateFilter"></FilterReportAbandon>
 
 
         <b-modal ref="ModalTypeReport" hide-footer title="Выберите тип создаваемого отчета" id="modal-lg" size="lg">
-            <select name="" id="" v-model="format" style="margin: 5% 0">
-                <option disabled>Выберите тип создаваемого отчета</option>
-                <option value="classic">Стандартный</option>
-                <option value="disp">Диспетчерский</option>
-                <option value="legal">Юридический</option>
+            <div class='bg'>
+                <select class='textarea' id='input-filter-staff1' name='Pwd' v-model="format" style="width: 100%">
+                    <option disabled>Выберите тип создаваемого отчета</option>
+                    <option value="classic">Стандартный</option>
+                    <option value="disp">Диспетчерский</option>
+                    <option value="legal">Юридический</option>
+                </select>
                 <br>
+                <label for='input-filter-staff1' class='label' style="margin-left: 13%">Тип отчета</label>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
 
-            </select>
-            <div style="display: flex; justify-content: space-between">
-                <input type="date" v-model="filter.current_station_arrival_begin" style="width: 40%">
-                
-                <input type="date" v-model="filter.current_station_arrival_end" style="width: 40%">
-                
+                <div class='bg'>
+                    <input class='textarea' id='input-filter2' name='Pwd' type="date"
+                        v-model="filter.current_station_arrival_begin" />
+                    <br>
+                    <label for='input-filter2' class='label'>От</label>
+                </div>
+                <div class='bg'>
+                    <input class='textarea' id='input-filter3' name='Pwd' type="date"
+                        v-model="filter.current_station_arrival_end" />
+                    <br>
+                    <label for='input-filter3' class='label'>До</label>
+                </div>
+                <!-- <input type="date" v-model="filter.current_station_arrival_end" style="width: 40%"> -->
 
             </div>
             <b-button class="mt-2" variant="success" block @click="CreateReportAbandones">Создать отчет
@@ -93,7 +106,7 @@
             <b-row>
                 <b-col>
                     <b-button class="button Action" @click="showModal()"
-                        style="background: #ED925E; border: none; font-weight: 500; width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">
+                        style="background: #FF9F55; border: none; font-weight: 500; width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">
                         Создать
                         отчет</b-button>
 
@@ -169,7 +182,13 @@
 </template>
 
 <style>
+.close {
+    display: none !important;
+}
 
+.modal-body {
+    background: #EFEFEF !important;
+}
 </style>
 
 <script>
@@ -204,14 +223,16 @@ export default {
             },
             format: '',
 
-
         }
     },
     methods: {
         showModal() {
             this.$refs['ModalTypeReport'].show()
+            // this.ModalTypeReport = true
         },
         hideModal() {
+            // this.ModalTypeReport = false
+
             this.$refs['ModalTypeReport'].hide()
         },
         toggleModal() {

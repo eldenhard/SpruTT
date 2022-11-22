@@ -5,23 +5,39 @@
         <div class="FilterReportAbandon">
 
             <div style="display:flex; flex-direction:column; margin-bottom: 1%; ">
-                <label for="input_FilterReportAbandon" style="cursor: pointer">Вагон</label>
+                <div class='bg'>
+                    <select class='textarea' id='input_filter_wagon_dislocation' name='Pwd'
+                        v-model="filter.wagon__wagon_type" @change="updateSelectedWagonType" style="cursor: pointer;">
+                        <option value="">Все вагоны</option>
+                        <option v-for="wagonDisl in wagonsType" :key="wagonDisl.name" :value="wagonDisl.name">
+                            {{ wagonDisl.name }}
+                        </option>
+                    </select>
+                    <br>
+                    <label for='input_filter_wagon_dislocation' class='label'>Тип вагона</label>
+                </div>
+                <!-- <label for="input_FilterReportAbandon" style="cursor: pointer">Вагон</label>
                 <multi-select-uni @change="updateSelectedWagonType" :placeholder="'Выберите...'"
                     :variants="wagontypeObj" :variant-title="'value'" style="width: 170px !important; ">
-                </multi-select-uni>
+                </multi-select-uni> -->
 
             </div>
             <div style="display:flex; flex-direction:column;">
-                <label for="input_FilterReportAbandon" style="cursor: pointer">Полигон</label>
-                <multi-select-uni @change="updateSelectedPoligons" :placeholder="'Выберите...'"
-                    :variants="poligonsObj" :variant-title="'value'" style="width: 170px !important">
+                <div class='bg'>
+                <!-- <label for="input_FilterReportAbandon" style="cursor: pointer">Полигон</label> -->
+                <multi-select-uni @change="updateSelectedPoligons" :placeholder="'Полигон'" :variants="poligonsObj"
+                    :variant-title="'value'" style="width: 170px !important; cursor: pointer;">
                 </multi-select-uni>
+                </div>
 
             </div>
             <div style="display:flex; flex-direction:column;">
-                <label for="input_FilterReportAbandon" style="cursor: pointer">Контрагент</label>
-                <multi-select-uni @change="updateSelectedCounterparties" :placeholder="'Выберите...'"
-                    :variants="counterparties" :variant-title="'work_name'" style="width: 170px !important"></multi-select-uni>
+                <div class='bg'>
+                <!-- <label for="input_FilterReportAbandon" style="cursor: pointer">Контрагент</label> -->
+                <multi-select-uni @change="updateSelectedCounterparties" :placeholder="'Контрагент'"
+                    :variants="counterparties" :variant-title="'work_name'" style="width: 170px !important;cursor: pointer;" >
+                </multi-select-uni>
+                </div>
             </div>
 
 
@@ -29,30 +45,30 @@
 
         <div class="option_select_block">
             <div class="row">
-              <template v-if="selectedWagonType">
-                        <span class="option_select_block_check" v-for="p in selectedWagonType" :key="p.id"
-                            @click="removeSelectedWagonType(p.id)">
-                            <span style="color: black; font-size: 15px;"> &#43;</span>
-                            {{ p.value }}
-                        </span>
-                    </template>
-             
-             
-                    <template v-if="selectedPoligons">
-                        <span class="option_select_block_check" v-for="p in selectedPoligons" :key="p.id"
-                            @click="removeSelectedPoligons(p.id)">
-                            <span style="color: black; font-size: 15px;"> &#43;</span>
-                            {{ p.value }}
-                        </span>
-                    </template>
-             
-                    <template v-if="selectedParties">
-                        <span class="option_select_block_check" v-for="p in selectedParties" :key="p.id"
-                            @click="removeSelectedParty(p.id)">
-                            <span style="color: black"> &#43;</span>
-                            {{ p.work_name }}
-                        </span>
-                    </template>
+                <!-- <template v-if="selectedWagonType">
+                    <span class="option_select_block_check" v-for="p in selectedWagonType" :key="p.id"
+                        @click="removeSelectedWagonType(p.id)">
+                        <span style="color: black; font-size: 15px;"> &#43;</span>
+                        {{ p.value }}
+                    </span>
+                </template> -->
+
+
+                <template v-if="selectedPoligons">
+                    <span class="option_select_block_check" v-for="p in selectedPoligons" :key="p.id"
+                        @click="removeSelectedPoligons(p.id)">
+                        <span style="color: black; font-size: 15px;"> &#43;</span>
+                        {{ p.value }}
+                    </span>
+                </template>
+
+                <template v-if="selectedParties">
+                    <span class="option_select_block_check" v-for="p in selectedParties" :key="p.id"
+                        @click="removeSelectedParty(p.id)">
+                        <span style="color: black"> &#43;</span>
+                        {{ p.work_name }}
+                    </span>
+                </template>
 
             </div>
 
@@ -105,12 +121,14 @@
 
 
 }
+
 .option_select_block_check:hover {
     background: #ec6f6f;
     color: white;
-    
+
 
 }
+
 .placeholder {
     font-size: 200;
 }
@@ -135,7 +153,7 @@ export default {
             poligons: [],
             wagonsType: [],
 
-            selectedWagonTypeIds: [],
+            // selectedWagonTypeIds: [],
             selectedPolingonIds: [],
             selectedPartyIds: [],
             loader: false
@@ -169,17 +187,17 @@ export default {
 
 
 
-        wagontypeObj() {
-            const result = []
-            this.wagonsType.forEach((el, idx) => {
-                el && result.push({ id: idx, value: el.name })
-            })
-            return result
+        // wagontypeObj() {
+        //     const result = []
+        //     this.wagonsType.forEach((el, idx) => {
+        //         el && result.push({ id: idx, value: el.name })
+        //     })
+        //     return result
 
-        },
-        selectedWagonType() {
-            return this.wagontypeObj.filter(el => this.selectedWagonTypeIds.includes(el.id))
-        }
+        // },
+        // selectedWagonType() {
+        //     return this.wagontypeObj.filter(el => this.selectedWagonTypeIds.includes(el.id))
+        // }
 
     },
     methods: {
@@ -253,12 +271,12 @@ export default {
 
             this.filter.wagon_belong_owner__in = arr2.join(';')
 
-            const arr3 = []
-            this.selectedWagonType.forEach(el => {
-                arr3.push(el.value)
-            })
+            // const arr3 = []
+            // this.selectedWagonType.forEach(el => {
+            //     arr3.push(el.value)
+            // })
 
-            this.filter.wagon__wagon_type = arr3.join('')
+            // this.filter.wagon__wagon_type = arr3.join('')
 
 
             this.$emit('update-filter', this.filter)

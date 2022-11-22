@@ -54,8 +54,8 @@
                                             :class="{ error: this.errors.staff }">
                                             <option value="" disabled="disabled" selected="selected">Сотрудник</option>
                                             <option v-for="staf in staff" :key="staf.id">
-                                                {{ staf.id }} 
-                                                {{  staf.first_name }}
+                                                {{ staf.id }}
+                                                {{ staf.first_name }}
                                                 {{ staf.last_name }}</option>
                                         </select>
                                         <br>
@@ -79,6 +79,13 @@
                                 <div v-if="aboutThisReport"
                                     style="display: flex; justify-content: space-between; margin: 2% 0 -2%;">
                                     <p style="color: grey !important">Ранее созданый отчет:</p>
+                                    <p style="color: grey !important">Файл:
+                                         <a target="_blank"
+                                            :href="currentUserReport.file"
+                                            v-if="currentUserReport.file">
+                                            <img src="@/assets/excel.png" alt="" width="25px !important">
+                                        </a>
+                                    </p>
                                     <p style="color: grey !important">Доплата: {{ currentUserReport.rate }}%</p>
                                     <p style="color: grey !important">Дата: {{ new
                                             Date(currentUserReport.created_at).toLocaleString()
@@ -300,7 +307,7 @@
                                 <b-row>
                                     <b-col>
                                         <button class="button Action" @click="OpenReport()"
-                                            style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{
+                                            style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 2%">{{
                                                     downloadReport
                                             }}</button>
                                     </b-col>
@@ -515,8 +522,8 @@ export default {
         const token = pretoken.auth.user.token
         const preid = JSON.parse(localStorage.getItem('vuex'))
         const id = preid.auth.uid
-        // fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
-            fetch('/api/reports/kpi?'+ `creator=${id}`, {
+        fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
+            // fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
             headers: {
                 'Authorization': `Basic ${token}`

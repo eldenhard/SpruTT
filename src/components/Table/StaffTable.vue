@@ -1,310 +1,505 @@
 <template>
     <div>
-<FilterStaff  @updateFiltersStaff="updateFiltersStaff"></FilterStaff>
+        <FilterStaff @updateFiltersStaff="updateFiltersStaff"></FilterStaff>
+        <Loader :loader="loader"></Loader>
+        <button class="Accept staffButton" @click="allStaff()"
+            style="width: 80% !important; transform: translate(-50%,0)">Запросить всех сотрудников</button>
+        <br><br>
+        <br><br>
+        <button class="Cancel staffButton"
+            style="width: 50%; border-top-left-radius: 10px; border-top-right-radius: 10px;"
+            @click="addStaff()">Добавить сотрудника</button>
+        <span id="big-photo" @click="close_photo"></span>
+        <div
+            style=" width: 95% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
+            <table class="staff_table table">
+                <thead class="head-staff">
+                    <th>Фото</th>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Должность</th>
+                    <th>Почта</th>
+                    <th>Отдел</th>
+                    <th>Телефон корпоративный</th>
+                    <th>Телефон личный</th>
+                    <th>Внутренний номер</th>
+                    <th>Время работы</th>
+                    <th>Начальник</th>
+                    <th>Редактировать</th>
+                    <th>Удалить</th>
+                </thead>
 
-<button class="Accept staffButton" @click="allStaff()" style="width: 80% !important; transform: translate(-50%,0)">Запросить всех сотрудников</button>
-    <br><br>
-    <br><br>
-<button class="Cancel staffButton" style="width: 50%; border-top-left-radius: 10px; border-top-right-radius: 10px;" @click="addStaff() ">Добавить сотрудника</button>
-<span id="big-photo" @click="close_photo"></span>
-<div style=" width: 95% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
-    <table class="staff_table table">
-        <thead class="head-staff"> 
-        <th>Фото</th>
-        <th>Фамилия</th>
-        <th>Имя</th>
-        <th>Отчество</th>
-        <th>Должность</th>
-        <th>Почта</th>
-        <th>Отдел</th>
-        <th>Телефон корпоративный</th>
-        <th>Телефон личный</th>
-        <th>Внутренний номер</th>
-        <th>Время работы</th>
-        <th>Начальник</th>
-        <th>Редактировать</th>
-        <th>Удалить</th>
-        </thead>
+                <tbody style="max-width: 90% !important;">
+                    <tr v-for="staff in all_staff" :key="staff.id">
 
-        <tbody style="max-width: 90% !important;">
-            <tr v-for="staff in all_staff" :key="staff.id">
+                        <td
+                            style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
+                            <img :src="staff.photo" width="55px !important" class="image"
+                                @click="open_photo(`${staff.photo}`)">
+                        </td>
 
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
-                        <img :src="staff.photo"  width="55px !important" class="image" @click="open_photo(`${staff.photo}`)">
-                </td>
-
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.last_name}}</td>
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.first_name}}</td>
-                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">{{staff.middle_name}}</td>
-                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">{{staff.post}}</td>
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">{{staff.email}}</td>
-                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center;" >
-                    {{getGroupName(staff.groups[0])}}
-            <!-- <span v-if="staff.groups[0] ==  40">Отдел кадров</span> -->
-                    </td>
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.phone_corp}}</td>
-                    <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{staff.phone_personal}}</td>
-                    <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>
-                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; " v-if="staff.manager != null">{{staff.inner_number}}</td>
-                    <td v-else>—</td>
-                <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; " v-if="staff.manager != null">{{staff.schedule}}</td>
-                    <td v-else>—</td>  
-                <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-if="staff.manager != null">{{getUserById(staff.manager)}}</td>
-                    <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;" v-else>—</td>  
-                <td><button class="Request" @click="openChangePage(staff.id)">Редактировать</button></td>
-                <td><button class="Delete" @click="getCurrentUser(staff.id)">Удалить</button></td>
-            </tr>
-        </tbody>
-
-    </table>
-</div>
-
-<section  style="display:block" id="loaderStaff" v-if="loaderStaff">
-<svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-  viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
- <path fill="#C04945" d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3
-  c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z">
-      <animateTransform 
-         attributeName="transform" 
-         attributeType="XML" 
-         type="rotate"
-         dur="2s" 
-         from="0 50 50"
-         to="360 50 50" 
-         repeatCount="indefinite" />
-  </path>
- <path fill="#ECECEC" d="M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7
-  c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z">
-      <animateTransform 
-         attributeName="transform" 
-         attributeType="XML" 
-         type="rotate"
-         dur="1s" 
-         from="0 50 50"
-         to="-360 50 50" 
-         repeatCount="indefinite" />
-  </path>
- <path fill="#3D70A8" d="M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5
-  L82,35.7z">
-      <animateTransform 
-         attributeName="transform" 
-         attributeType="XML" 
-         type="rotate"
-         dur="2s" 
-         from="0 50 50"
-         to="360 50 50" 
-         repeatCount="indefinite" />
-  </path>
-</svg>
-  
- 
-</section> 
-
-<div class="wrapper_staff" style="display: block" v-if="wrapper_staff">
-    <div class="modal_staff">
-        <h2>Удаление сотрудника</h2>
-        <p>Вы уверены, что хотите <span style="color: #C04945; font-weight: bold">удалить</span></p>
-            <div style=" width: 98% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
-                <table class="staff_table table">
-                    <tr>
-                        <th>Фамилия</th>
-                        <th>Имя</th>
-                        <th>Отчество</th>
-                        <th>Должность</th>
-                        <!-- <th>Отдел</th> -->
+                        <td
+                            style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
+                            {{ staff.last_name }}</td>
+                        <td
+                            style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
+                            {{ staff.first_name }}</td>
+                        <td
+                            style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">
+                            {{ staff.middle_name }}</td>
+                        <td
+                            style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">
+                            {{ staff.post }}</td>
+                        <td
+                            style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
+                            {{ staff.email }}</td>
+                        <td
+                            style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center;">
+                            {{ getGroupName(staff.groups[0]) }}
+                            <!-- <span v-if="staff.groups[0] ==  40">Отдел кадров</span> -->
+                        </td>
+                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
+                            v-if="staff.manager != null">{{ staff.phone_corp }}</td>
+                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
+                            v-else>—</td>
+                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
+                            v-if="staff.manager != null">{{ staff.phone_personal }}</td>
+                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
+                            v-else>—</td>
+                        <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; "
+                            v-if="staff.manager != null">{{ staff.inner_number }}</td>
+                        <td v-else>—</td>
+                        <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; "
+                            v-if="staff.manager != null">{{ staff.schedule }}</td>
+                        <td v-else>—</td>
+                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
+                            v-if="staff.manager != null">{{ getUserById(staff.manager) }}</td>
+                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
+                            v-else>—</td>
+                        <td><button class="Request" @click="openChangePage(staff.id)">Редактировать</button></td>
+                        <td><button class="Delete" @click="getCurrentUser(staff.id)">Удалить</button></td>
                     </tr>
-                    <tr>
-                        <td>{{current_user_staff.last_name}}</td>
-                        <td>{{current_user_staff.first_name}}</td>
-                        <td>{{current_user_staff.middle_name}}</td>
-                        <td>{{current_user_staff.post}}</td>
-                        <!-- <td>{{current_user_staff.groups[0]}}</td> -->
-                    </tr>
-                </table>   
-            </div>  
-            <div class="btn-staff-group container">
-                <button class="Cancel" style="width: 30%" @click="closeStaffModalDelete()">Отмена</button>
-                <button class="Accept" style="width: 30%" @click="deleteCurrentUser(current_user_staff.id)">Подтвердить</button>
-            </div>  
-    </div>
-</div>
+                </tbody>
 
-<div class="wrapper_staff" style="display: block" v-if="staff_change">
-    <div class="modal_staff" style="width: 90%">
-        <h2>Редактирование</h2>
-        <p>Кликните на поле которое необходимо редактировать</p>
-             <div style=" width: 98% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
-                <table class="staff_table table">
-                    <tr>
-                        <th>Фото</th>
-                        <th>Фамилия</th>
-                        <th>Имя</th>
-                        <th>Отчество</th>
-                        <th>Должность</th>
-                        <th>Почта</th>
-                    </tr>
-                    <tr>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important">
-                            <div class="uploader" style="display: block;position: relative; left:50%; transform:translate(-50%,0);width: 120px;height: 60px;">
-                                <button v-if="current_user_staff.photo"
-                                 style="display: block;position: absolute;top: 0;z-index: 10; left:50%; transform:translate(-50%,0)">Заменить</button>
-                                <button v-else>Загрузить</button>
-                                <input type="file" @change="onFileSelected" name="photo"   ref="photo"
-                                style="display: inline-block; position:absolute;
+            </table>
+        </div>
+
+
+
+        <!-- <div class="wrapper_staff" style="display: block" v-if="wrapper_staff">
+            <div class="modal_staff">
+                <h2>Удаление сотрудника</h2>
+                <p>Вы уверены, что хотите <span style="color: #C04945; font-weight: bold">удалить</span></p>
+                <div
+                    style=" width: 98% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
+                    <table class="staff_table table">
+                        <tr>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
+                            <th>Должность</th>
+                        </tr>
+                        <tr>
+                            <td>{{ current_user_staff.last_name }}</td>
+                            <td>{{ current_user_staff.first_name }}</td>
+                            <td>{{ current_user_staff.middle_name }}</td>
+                            <td>{{ current_user_staff.post }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="btn-staff-group container">
+                    <button class="Cancel" style="width: 30%" @click="closeStaffModalDelete()">Отмена</button>
+                    <button class="Accept" style="width: 30%"
+                        @click="deleteCurrentUser(current_user_staff.id)">Подтвердить</button>
+                </div>
+            </div>
+        </div> -->
+
+        <b-modal ref="delete-user" hide-footer title="Удаление сотрудника" id="modal-xl" size="xl">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff1' name='Pwd'
+                            v-model="current_user_staff.last_name" />
+                        <br>
+                        <label for='input-filter-staff1' class='label'>Фамилия</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff12' name='Pwd'
+                            v-model="current_user_staff.first_name" />
+                        <br>
+                        <label for='input-filter-staff12' class='label'>Имя</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff13' name='Pwd'
+                            v-model="current_user_staff.middle_name" />
+                        <br>
+                        <label for='input-filter-staff13' class='label'>Отчество</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff14' name='Pwd'
+                            v-model="current_user_staff.post" />
+                        <br>
+                        <label for='input-filter-staff14' class='label'>Должность</label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <b-button class="mt-2" variant="success" block @click="deleteCurrentUser(current_user_staff.id)">Удалить
+            </b-button>
+            <b-button class="mt-3" variant="outline-danger" block @click="closeStaffModalDelete()">Закрыть</b-button>
+
+
+
+        </b-modal>
+        <!-- <div class="wrapper_staff" style="display: block" v-if="staff_change">
+            <div class="modal_staff" style="width: 90%">
+                <h2>Редактирование</h2>
+                <p>Кликните на поле которое необходимо редактировать</p>
+                <div
+                    style=" width: 98% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
+                    <table class="staff_table table">
+                        <tr>
+                            <th>Фото</th>
+                            <th>Фамилия</th>
+                            <th>Имя</th>
+                            <th>Отчество</th>
+                            <th>Должность</th>
+                            <th>Почта</th>
+                        </tr>
+                        <tr>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important">
+                                <div class="uploader"
+                                    style="display: block;position: relative; left:50%; transform:translate(-50%,0);width: 120px;height: 60px;">
+                                    <button v-if="current_user_staff.photo"
+                                        style="display: block;position: absolute;top: 0;z-index: 10; left:50%; transform:translate(-50%,0)">Заменить</button>
+                                    <button v-else>Загрузить</button>
+                                    <input type="file" @change="onFileSelected" name="photo" ref="photo" style="display: inline-block; position:absolute;
                                 top:0%;
                                 bottom: 0;
                                 left: 0; right: 0;
                                 width:100%; height: 100%;
-                                z-index:101;opacity: 0;"
-                                >
-                            </div>
-                            
-                            <!-- <img :src="current_user_staff.photo" alt="" v-if="current_user_staff.photo" style="width: 55px"> -->
-                        </td>
-                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.last_name"></td>
-                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.first_name"></td>
-                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.middle_name"></td>
-                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.post"></td>
-                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.email"></td>
-                
-                    </tr>
-                </table>   
+                                z-index:101;opacity: 0;">
+                                </div>
 
-                <table  class="staff_table table">
-                    <tr>   
-                        <th>Отдел</th>
-                        <th>Телефон корпоративный</th>
-                        <th>Телефон личный</th>
-                        <th>Внутренний номер</th>
-                        <th>Время работы</th>
-                        <th>Начальник</th>
-                    </tr>
+                            </td>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important"><input
+                                    type="text" class="input-filter" v-model="current_user_staff.last_name"></td>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important"><input
+                                    type="text" class="input-filter" v-model="current_user_staff.first_name"></td>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important"><input
+                                    type="text" class="input-filter" v-model="current_user_staff.middle_name"></td>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important"><input
+                                    type="text" class="input-filter" v-model="current_user_staff.post"></td>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important"><input
+                                    type="text" class="input-filter" v-model="current_user_staff.email"></td>
 
-                    <tr>
-                        <td  class="td-btr" style="height: 100px !important; width: 200px !important">
-                            <select v-model="current_user_staff.groups" class="input-filter">
-                                <option 
-                                v-for="userGroup in allGroups"
-                                :key="userGroup.id"
-                                :value="userGroup.id">{{userGroup.name}}</option>
-                            </select>
-                        </td>
+                        </tr>
+                    </table>
 
-                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.phone_corp"></td>
-                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.phone_personal"></td>
-                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.inner_number"></td>
-                        <td  class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="current_user_staff.schedule"></td>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important">
-                            <select v-model="current_user_staff.manager" class="input-filter">
-                                <option 
-                                v-for="global in staffGlobal"
-                                :key="global.id"
-                                :value="global.id">{{global.first_name}} {{global.last_name}}</option>
-                            </select>
-                        </td>
-                        <!-- <td><input type="text"  v-model="current_user_staff.manager"></td> -->
-                    </tr>
-                </table>
-            </div>  
-            <div class="btn-staff-group container">
-                <button class="Cancel" style="width: 30%" @click="closeStaffModalChange()">Отмена</button>
-                <button class="Accept" style="width: 30%" @click="changeStaff(current_user_staff.id)">Подтвердить</button>
-            </div>  
-    </div>
-</div>
+                    <table class="staff_table table">
+                        <tr>
+                            <th>Отдел</th>
+                            <th>Телефон корпоративный</th>
+                            <th>Телефон личный</th>
+                            <th>Внутренний номер</th>
+                            <th>Время работы</th>
+                            <th>Начальник</th>
+                        </tr>
 
+                        <tr>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important">
+                                <select v-model="current_user_staff.groups" class="input-filter">
+                                    <option v-for="userGroup in allGroups" :key="userGroup.id" :value="userGroup.id">
+                                        {{ userGroup.name }}</option>
+                                </select>
+                            </td>
 
-
-
-<div class="wrapper_staff" style="display: block;" v-if="add_staff">
-    <div class="modal_staff" style="width: 95%;">
-        <h2>Добавление сотрудника</h2>
-            <div style=" width: 98% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
-
-            <!-- <form enctype="multipart/form-data"> -->
-                <table class="staff_table table">
-                    <tr>
-                        <th  style="background: #EBEBEB; width: 5% !important;">Фото</th>
-                        <th  style="background: #EBEBEB; width: 10% !important;">Фамилия</th>
-                        <th  style="background: #EBEBEB; width: 10% !important;">Имя</th>
-                        <th  style="background: #EBEBEB; width: 10% !important;">Отчество</th>
-                        <th  style="background: #EBEBEB; width: 10% !important;">Должность</th>
-                        <th  style="background: #EBEBEB; width: 10% !important;">Почта</th>
-                       
-                    </tr>
-                    <tr>
-                        <td style=" width: 5% !important;">
-                            
-                            <input type="file" @change="onFileSelected" name="photo"  ref="photo">
-                        
-                        </td>
-
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="last_name" placeholder="Иванов"></td>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="first_name" placeholder="Иван"></td>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="middle_name" placeholder="Иванович"></td>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="post" placeholder="Логист"></td>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important">
-                            <input type="text" v-model="email"
-                             placeholder="i.ivanov@tehtrans.com"
-                            :class="{'error': checkError('email')}"
-                            @input="deleteErrorOnline('email')"  class="input-filter">
-                            <p v-if="checkError('email')">{{formErrorsMess['email'][0]}}</p>
-                        </td>
-                    </tr>
-          
-                </table>   
-                <br><br>
-                <table  class="staff_table table"> 
-                    <tr>
-                        <th  style="background: #EBEBEB">Отдел</th>
-                        <th  style="background: #EBEBEB">Телефон корпоративный</th>
-                        <th  style="background: #EBEBEB">Телефон личный</th>
-                        <th  style="background: #EBEBEB">Внутренний номер</th>
-                        <th  style="background: #EBEBEB">Время работы</th>
-                        <th  style="background: #EBEBEB" >Начальник</th>
-                    </tr>
-                    <tr>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important">
-                        <select v-model="groups" class="input-filter"
-                         :class="{'error': checkError('groups')}"
-                         @change="deleteErrorOnline('groups')">
-                            <option value="">Выберите отдел</option>
-                            <option 
-                                v-for="userGroup in allGroups"
-                                :key="userGroup.id"
-                                :value="userGroup.id">{{userGroup.name}}</option>
-                        </select>
-                        <p v-if="checkError('groups')">Выберите отдел</p>
-
-                    </td>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="phone_corp"  placeholder="89999999999"></td>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="phone_personal"  placeholder="89999999999"></td>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="inner_number"  placeholder="007"></td>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important"><input type="text" class="input-filter" v-model="schedule"  placeholder="9:00 - 18:00"></td>
-                        <td class="td-btr" style="height: 100px !important; width: 200px !important">
-                            <select type="text" v-model="manager" class="input-filter" >
-                            <option value="">Выберите начальника</option>
-                            <option
-                                v-for="manager in allManagerStaff"
-                                :key="manager.id"
-                                :value="manager.id">{{manager.first_name}} {{manager.middle_name}} {{manager.last_name}}</option>
-                            </select>
-                        </td>
-
-                    </tr>
-                </table>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important"><input
+                                    type="text" class="input-filter" v-model="current_user_staff.phone_corp"></td>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important"><input
+                                    type="text" class="input-filter" v-model="current_user_staff.phone_personal"></td>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important"><input
+                                    type="text" class="input-filter" v-model="current_user_staff.inner_number"></td>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important"><input
+                                    type="text" class="input-filter" v-model="current_user_staff.schedule"></td>
+                            <td class="td-btr" style="height: 100px !important; width: 200px !important">
+                                <select v-model="current_user_staff.manager" class="input-filter">
+                                    <option v-for="global in staffGlobal" :key="global.id" :value="global.id">
+                                        {{ global.first_name }} {{ global.last_name }}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
                 <div class="btn-staff-group container">
-                <button class="Cancel" style="width: 30%" @click="closeAddUser()">Отмена</button>
-                <button  class="Accept" style="width: 30%" @click="addUser()">Добавить</button>
-            </div>  
-        <!-- </form> -->
-    </div>  
+                    <button class="Cancel" style="width: 30%" @click="closeStaffModalChange()">Отмена</button>
+                    <button class="Accept" style="width: 30%"
+                        @click="changeStaff(current_user_staff.id)">Подтвердить</button>
+                </div>
+            </div>
+        </div> -->
 
-    </div>
-</div>
 
-<Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
+        <b-modal ref="change-user" hide-footer title="Редактирование сотрудника" id="modal-xl" size="xl">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff1' name='Pwd'
+                            v-model="current_user_staff.last_name" />
+                        <br>
+                        <label for='input-filter-staff1' class='label'>Фамилия</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff12' name='Pwd'
+                            v-model="current_user_staff.first_name" />
+                        <br>
+                        <label for='input-filter-staff12' class='label'>Имя</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff13' name='Pwd'
+                            v-model="current_user_staff.middle_name" />
+                        <br>
+                        <label for='input-filter-staff13' class='label'>Отчество</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff14' name='Pwd'
+                            v-model="current_user_staff.post" />
+                        <br>
+                        <label for='input-filter-staff14' class='label'>Должность</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff15' name='Pwd' v-model="current_user_staff.email"
+                            :class="{ 'error': checkError('email') }" @input="deleteErrorOnline('email')" />
+                        <br>
+                        <label for='input-filter-staff15' class='label'>Почта</label>
+                        <p v-if="checkError('email')">{{ formErrorsMess['email'][0] }}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <select v-model="current_user_staff.groups" class="textarea" id="input-filter-staff16"
+                            :class="{ 'error': checkError('groups') }" @change="deleteErrorOnline('groups')">
+                            <option value="">Выберите отдел</option>
+                            <option v-for="userGroup in allGroups" :key="userGroup.id" :value="userGroup.id">
+                                {{ userGroup.name }}</option>
+                        </select>
+
+                        <br>
+                        <label for='input-filter-staff16' class='label'>Отдел</label>
+                        <p v-if="checkError('groups')">Выберите отдел</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff17' name='Pwd'
+                            v-model="current_user_staff.phone_corp" />
+                        <br>
+                        <label for='input-filter-staff17' class='label'>Телефон корпоративный</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff18' name='Pwd'
+                            v-model="current_user_staff.phone_personal" />
+                        <br>
+                        <label for='input-filter-staff18' class='label'>Телефон личный</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff19' name='Pwd'
+                            v-model="current_user_staff.inner_number" />
+                        <br>
+                        <label for='input-filter-staff19' class='label'>Внутренний номер</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff20' name='Pwd'
+                            v-model="current_user_staff.schedule" />
+                        <br>
+                        <label for='input-filter-staff20' class='label'>Время работы</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class='bg'>
+                        <select v-model="current_user_staff.manager" class="textarea" id="input-filter-staff21"
+                            style="width:80%">
+                            <option v-for="global in staffGlobal" :key="global.id" :value="global.id">
+                                {{ global.first_name }} {{ global.last_name }}</option>
+                        </select>
+                        <br>
+                        <label for='input-filter-staff21' class='label' style="margin-left: 10%">Начальник</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <b-button class="mt-2" variant="success" block @click="changeStaff(current_user_staff.id)">Редактировать
+            </b-button>
+            <b-button class="mt-3" variant="outline-danger" block @click="hideModalChange()">Закрыть</b-button>
+
+
+
+        </b-modal>
+        <b-modal ref="add-user" hide-footer title="Добавление сотрудника" id="modal-xl" size="xl">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff1' name='Pwd' v-model="last_name" />
+                        <br>
+                        <label for='input-filter-staff1' class='label'>Фамилия</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff12' name='Pwd' v-model="first_name" />
+                        <br>
+                        <label for='input-filter-staff12' class='label'>Имя</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff13' name='Pwd' v-model="middle_name" />
+                        <br>
+                        <label for='input-filter-staff13' class='label'>Отчество</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff14' name='Pwd' v-model="post" />
+                        <br>
+                        <label for='input-filter-staff14' class='label'>Должность</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff15' name='Pwd' v-model="email"
+                            :class="{ 'error': checkError('email') }" @input="deleteErrorOnline('email')" />
+                        <br>
+                        <label for='input-filter-staff15' class='label'>Почта</label>
+                        <p v-if="checkError('email')">{{ formErrorsMess['email'][0] }}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <select v-model="groups" class="textarea" id="input-filter-staff16"
+                            :class="{ 'error': checkError('groups') }" @change="deleteErrorOnline('groups')">
+                            <option value="">Выберите отдел</option>
+                            <option v-for="userGroup in allGroups" :key="userGroup.id" :value="userGroup.id">
+                                {{ userGroup.name }}</option>
+                        </select>
+
+                        <br>
+                        <label for='input-filter-staff16' class='label'>Отдел</label>
+                        <p v-if="checkError('groups')">Выберите отдел</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff17' name='Pwd' v-model="phone_corp" />
+                        <br>
+                        <label for='input-filter-staff17' class='label'>Телефон корпоративный</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff18' name='Pwd' v-model="phone_personal" />
+                        <br>
+                        <label for='input-filter-staff18' class='label'>Телефон личный</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff19' name='Pwd' v-model="inner_number" />
+                        <br>
+                        <label for='input-filter-staff19' class='label'>Внутренний номер</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff20' name='Pwd' v-model="schedule" />
+                        <br>
+                        <label for='input-filter-staff20' class='label'>Время работы</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class='bg'>
+                        <select type="text" v-model="manager" class="textarea" style="width: 80%;">
+                            <option value="">Выберите начальника</option>
+                            <option v-for="manager in allManagerStaff" :key="manager.id" :value="manager.id">
+                                {{ manager.first_name }} {{ manager.middle_name }} {{ manager.last_name }}</option>
+                        </select>
+                        <br>
+                        <label for='input-filter-staff21' class='label' style="margin-left: 10%">Начальник</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <b-button class="mt-2" variant="success" block @click="addUser()">Добавить
+            </b-button>
+            <b-button class="mt-3" variant="outline-danger" block @click="hideModal()">Закрыть</b-button>
+
+
+
+        </b-modal>
+
+
+
+        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+            id="notif" />
 
     </div>
 </template>
@@ -314,11 +509,12 @@ import { mapState } from 'vuex'
 import api from '@/api/staff'
 import FilterStaff from '@/components/filter/FilterStaff.vue'
 import Notifications from '@/components/notifications/Notifications.vue'
-import {getGroupName} from '@/helpers/getGroupName'
-import {getUserById} from '@/helpers/getAllUsers'
+import { getGroupName } from '@/helpers/getGroupName'
+import { getUserById } from '@/helpers/getAllUsers'
+import Loader from '@/components/loader/loader.vue'
 export default {
     name: 'StaffTable',
-    components: {FilterStaff, Notifications},
+    components: { FilterStaff, Notifications, Loader },
     computed: {
         ...mapState({
             user: state => state.auth.user,
@@ -327,17 +523,16 @@ export default {
             staffGlobal: state => state.auth.users
         })
     },
-    data(){
+    data() {
         return {
             formErrors: [],
             formErrorsMess: '',
 
             all_staff: '',
-            
-            loaderStaff: false,
+
             current_user_staff: '',
             wrapper_staff: false,
-           
+
             staff_change: false,
             add_staff: false,
 
@@ -354,6 +549,7 @@ export default {
             inner_number: '',
             schedule: '',
             manager: '',
+            loader: false,
 
             filter_staff: {
                 groups: [],
@@ -370,158 +566,167 @@ export default {
             notifyMessage: '',
             notifyClass: '',
 
-           
+
 
         }
     },
     mounted() {
-        this.loaderStaff = true
-      
-        api.getAllManager()
-        .then((response) => {
-            this.loaderStaff = false
-            this.allManagerStaff = response.data.data
-        }).catch(err => {
-            this.loaderStaff = false
-            console.log(err)
-        })
-        // api.staffGlobal()
-        // .then((response) => {
-        //     this.staffGlobal = response.data
-        // })
-        
-    //  $(document).ready(function() { 
-	
-	
+        this.loader = true
 
+        api.getAllManager()
+            .then((response) => {
+                this.loader = false
+                this.allManagerStaff = response.data.data
+            }).catch(err => {
+                this.loader = false
+                console.log(err)
+            })
     },
     methods: {
-        open_photo(photo){
-        document.getElementById("big-photo").innerHTML =
-        ("<img @click='close_photo()' style='position: fixed; top:8%; z-index:999999999999999999999; left: 50%; transform:translate(-50%,0); cursor: zoom-out' src='" + photo + "'>")
+        addStaff() {
+            this.$refs['add-user'].show()
+        },
+        hideModal() {
+            this.$refs['add-user'].hide()
+        },
+        toggleModal() {
+            this.$refs['add-user'].toggle('#toggle-btn')
+        },
+        hideModalChange() {
+            this.$refs['change-user'].hide()
+        },
+        toggleModalChange() {
+            this.$refs['change-user'].toggle('#toggle-btn')
+        },
+        hideModalDelete() {
+            this.$refs['delete-user'].hide()
+        },
+        open_photo(photo) {
+            document.getElementById("big-photo").innerHTML =
+                ("<img @click='close_photo()' style='position: fixed; top:8%; z-index:999999999999999999999; left: 50%; transform:translate(-50%,0); cursor: zoom-out' src='" + photo + "'>")
         },
 
         close_photo() {
-        document.getElementById("big-photo").innerHTML = ""
+            document.getElementById("big-photo").innerHTML = ""
         },
-        deleteErrorOnline(key){
-  
-        const index = this.formErrors.indexOf(key);
-            if (index > -1) { 
-                this.formErrors.splice(index, 1); 
+        deleteErrorOnline(key) {
+
+            const index = this.formErrors.indexOf(key);
+            if (index > -1) {
+                this.formErrors.splice(index, 1);
             }
-        if (key == 'email') {
-            if (this.email.length == 0) {
-            this.formErrors.push('email')
+            if (key == 'email') {
+                if (this.email.length == 0) {
+                    this.formErrors.push('email')
+                }
             }
-        }
-        if (key == 'groups') {
-            if (this.groups.length == 0) {
-            this.formErrors.push('groups')
+            if (key == 'groups') {
+                if (this.groups.length == 0) {
+                    this.formErrors.push('groups')
+                }
             }
-        }
         },
-        getGroupName(id){
-            const group =  getGroupName(this.allGroups, id)
+        getGroupName(id) {
+            const group = getGroupName(this.allGroups, id)
             return group[0]?.name
         },
 
         getUserById(id) {
             const manager = getUserById(this.staffGlobal, id)
-            if(manager[0]) {
-            return manager[0]?.last_name + ' ' +  manager[0]?.first_name[0] + '.'
+            if (manager[0]) {
+                return manager[0]?.last_name + ' ' + manager[0]?.first_name[0] + '.'
             } return ''
         },
-        updateFiltersStaff(filter_staff){
+        updateFiltersStaff(filter_staff) {
             this.filter_staff = filter_staff
         },
-        allStaff(){
-            this.loaderStaff = true
+        allStaff() {
+            this.loader = true
             api.getAllStaff(this.filter_staff)
-            .then((response) => {
-                this.all_staff = response.data.data
+                .then((response) => {
+                    this.all_staff = response.data.data
                     this.all_staff.forEach(element => {
-                        if(element.photo != null){
-                            element.photo = element.photo.replace('10.1.5.65' ,'10.1.5.76')
+                        if (element.photo != null) {
+                            element.photo = element.photo.replace('10.1.5.65', '10.1.5.76')
                         }
-                    }); 
-              
-                // this.all_staff = response.data.data
-                this.loaderStaff = false
-                this.filter_staff.groups = []
-                this.filter_staff.search = ""
-                
-            }).catch(err => {
-                console.log(err)
-                this.loaderStaff = false
-            })
+                    });
+
+                    // this.all_staff = response.data.data
+                    this.loader = false
+                    this.filter_staff.groups = []
+                    this.filter_staff.search = ""
+
+                }).catch(err => {
+                    console.log(err)
+                    this.loader = false
+                })
         },
         closeStaffModalDelete() {
-            this.wrapper_staff = false
+            this.$refs['delete-user'].hide()
         },
-        closeStaffModalChange(){
-            this.staff_change = false
-        },
+        // closeStaffModalChange() {
+        //     this.staff_change = false
+        // },
 
         // получение пользователя подлежащего удалению
-        getCurrentUser(id){
-          this.loaderStaff = true
-          this.wrapper_staff = true
-          api.currentUser(id)
-          .then((response) => {
-             this.loaderStaff = false
-             this.current_user_staff = response.data
-            
-          })
-        },
-        // Удаление текущего пользователя
-        deleteCurrentUser(id){
-            this.loaderStaff = true
-            api.deleteUser(id)
-            .then((response) => {
-                this.wrapper_staff = false
-                this.showNotify = true
-                this.notifyHead = 'Успешно'
-                this.notifyMessage = 'Пользователь удален'
-                this.notifyClass = 'wrapper-success'
-                this.loaderStaff = false
-                setTimeout(this.closeNotification, 1500)
-                this.allStaff()
-            })
-        },
-        // Открыть страницу редактирования
-        openChangePage(id){
-           this.loaderStaff = true
-           this.staff_change = true
+        getCurrentUser(id) {
+            this.loader = true
+            this.$refs['delete-user'].show()
             api.currentUser(id)
                 .then((response) => {
-                this.loaderStaff = false
-                this.current_user_staff = response.data
-                if(this.current_user_staff.groups.length){
-                    this.current_user_staff.groups = this.current_user_staff.groups[0] + ''
-                }
-                if(this.current_user_staff.manager){
-                    this.current_user_staff.manager = this.current_user_staff.manager + ''
-                }
+                    this.loader = false
+                    this.current_user_staff = response.data
+
+                })
+        },
+        // Удаление текущего пользователя
+        deleteCurrentUser(id) {
+            this.loader = true
+            api.deleteUser(id)
+                .then((response) => {
+                    this.wrapper_staff = false
+                    this.showNotify = true
+                    this.notifyHead = 'Успешно'
+                    this.notifyMessage = 'Пользователь удален'
+                    this.notifyClass = 'wrapper-success'
+                    this.loader = false
+                    setTimeout(this.closeNotification, 1500)
+                    this.hideModalDelete()
+                    this.allStaff()
+                })
+        },
+        // Открыть страницу редактирования
+        openChangePage(id) {
+            this.loader = true
+            // this.staff_change = true
+            this.$refs['change-user'].show()
+            api.currentUser(id)
+                .then((response) => {
+                    this.loader = false
+                    this.current_user_staff = response.data
+                    if (this.current_user_staff.groups.length) {
+                        this.current_user_staff.groups = this.current_user_staff.groups[0] + ''
+                    }
+                    if (this.current_user_staff.manager) {
+                        this.current_user_staff.manager = this.current_user_staff.manager + ''
+                    }
 
                 })
         },
         // Подтвердить редактирование
-        changeStaff(id){
-            this.loaderStaff = true
-            this.staff_change = true
-
+        changeStaff(id) {
+            this.loader = true
             let formData = new FormData();
             formData.append('photo', this.photo)
-            formData.append( "last_name",this.current_user_staff.last_name),
-            formData.append( "first_name", this.current_user_staff.first_name),
-            formData.append( "middle_name", this.current_user_staff.middle_name),
-            formData.append("post", this.current_user_staff.post),
-            formData.append("email", this.current_user_staff.email),
-            formData.append("groups", [this.current_user_staff.groups]),
-            formData.append("phone_corp", this.current_user_staff.phone_corp),
-            formData.append( "schedule", this.current_user_staff.schedule),
-            formData.append("manager", this.current_user_staff.manager)
+            formData.append("last_name", this.current_user_staff.last_name),
+                formData.append("first_name", this.current_user_staff.first_name),
+                formData.append("middle_name", this.current_user_staff.middle_name),
+                formData.append("post", this.current_user_staff.post),
+                formData.append("email", this.current_user_staff.email),
+                formData.append("groups", [this.current_user_staff.groups]),
+                formData.append("phone_corp", this.current_user_staff.phone_corp),
+                formData.append("schedule", this.current_user_staff.schedule),
+                formData.append("manager", this.current_user_staff.manager)
             api.changeUserData(id, formData)
                 .then((response) => {
                     this.notifyHead = 'Успешно'
@@ -530,37 +735,35 @@ export default {
                     this.showNotify = true
                     setTimeout(this.closeNotification, 1500)
                     this.allStaff()
-                    this.loaderStaff = false
-                    this.staff_change = false
+                    this.loader = false
+                    this.hideModalChange()
                 })
         },
-        closeNotification(){
+        closeNotification() {
             this.showNotify = false
         },
 
 
 
-        onFileSelected(event){
+        onFileSelected(event) {
             this.photo = this.$refs.photo.files[0];
             console.log(event)
         },
-        checkError(key){
+        checkError(key) {
             return this.formErrors.includes(key)
         },
         // ОТКРЫТЬ ОКНО ДОБАВЛЕНИЯ ПОЛЬЗОВАТЕЛЯ
-        addStaff(){
-            this.add_staff = true
-        },
-        closeAddUser(){
+
+        closeAddUser() {
             this.add_staff = false
             this.formErrors = []
             this.formErrorsMess = ''
         },
         // ДОБАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯ
-        addUser(){
+        addUser() {
             event.preventDefault()
-            this.loaderStaff = true
-            
+            this.loader = true
+
             let formData = new FormData();
             formData.append('photo', this.photo)
             formData.append("email", this.email)
@@ -575,29 +778,29 @@ export default {
             formData.append("phone_personal", this.phone_personal)
             formData.append("inner_number", this.inner_number)
             formData.append("schedule", this.schedule)
-        api.createStuff(formData)
-            .then((response) => {
-                this.notifyHead = 'Успешно'
-                this.notifyMessage = 'Пользователь добавлен'
-                this.notifyClass = 'wrapper-success'
-                this.showNotify = true
-                setTimeout(this.closeNotification, 1500)
-                this.allStaff()
-                this.loaderStaff = false
-                this.closeAddUser()
-            }).catch(err => {
-                this.loaderStaff = false
-                let error = err.response.data
-                this.formErrors = Object.keys(error)
-                this.formErrorsMess = error
-                
-                
+            api.createStuff(formData)
+                .then((response) => {
+                    this.notifyHead = 'Успешно'
+                    this.notifyMessage = 'Пользователь добавлен'
+                    this.notifyClass = 'wrapper-success'
+                    this.showNotify = true
+                    setTimeout(this.closeNotification, 1500)
+                    this.hideModal()
+                    this.allStaff()
+                    this.loader = false
+                }).catch(err => {
+                    this.loader = false
+                    let error = err.response.data
+                    this.formErrors = Object.keys(error)
+                    this.formErrorsMess = error
 
-            })
-            
-    
-                }
-     
+
+
+                })
+
+
+        }
+
     }
 }
 </script>
@@ -622,13 +825,15 @@ export default {
     border: 1px solid red !important;
     color: black !important;
 }
+
 th {
     background: #EBEBEB !important;
 }
+
 .staff_table {
     position: relative;
     left: 50%;
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
 
     text-align: center !important;
     border-bottom: solid 3px #c04945 !important;
@@ -646,26 +851,30 @@ th {
     transform: translate(-50%, 0);
     width: 95% !important;
 }
-.staff_table>td{
+
+.staff_table>td {
     display: flex;
     align-items: center;
-  justify-content: center;
+    justify-content: center;
 }
+
 tr:hover {
-  background-color: #eee !important;
-  outline: solid 1px #c04945  !important;
-  cursor: pointer;
+    background-color: #eee !important;
+    outline: solid 1px #c04945 !important;
+    cursor: pointer;
 }
+
 .head-staff>th {
     background: #ebebeb;
     border: 1px solid grey;
     align-items: center;
-  justify-content: center;
-  border-bottom: solid 3px #c04945 !important;
+    justify-content: center;
+    border-bottom: solid 3px #c04945 !important;
 }
+
 .wrapper_staff {
     position: fixed;
-    top:0;
+    top: 0;
     left: 0;
     bottom: 0;
     right: 0;
@@ -674,50 +883,28 @@ tr:hover {
     background: rgb(105, 105, 105, 0.7);
     z-index: 1;
 }
+
 .modal_staff {
     background: rgb(255, 255, 255);
     position: fixed;
     top: 10%;
     position: relative;
     left: 50%;
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
     width: 50%;
     z-index: 2;
     height: 80%;
 }
+
 .modal_staff>p {
-   text-align: center;
+    text-align: center;
 }
 
-#loaderStaff{
-    width: 100vw;
-    height: 100vh;
-    background: rgb(17, 17, 17, 0.1);
-    display: flex;
-    position: fixed !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 9999999999999;
-
-}
-#loaderStaff svg{
-    width: 120px;
-    height: 120px;
-    display: inline-block;
-    position: relative !important;
-    left: 50% !important;
-    transform: translate(-50%,0) !important;
-    margin-top: 15%;
-}
 .btn-staff-group {
     display: flex;
     justify-content: space-between;
 }
+
 /* td,th {
     padding: 0 !important;
     margin: 0 !important;
