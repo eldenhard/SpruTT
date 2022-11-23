@@ -1,25 +1,33 @@
 <template>
     <div>
         <Loader :loader="loader"></Loader>
-        <FilterWagonTablePoligon @updateFilterDataWagonDislocation="updateFilterDataWagonDislocation"></FilterWagonTablePoligon>
-        <button class="Accept" @click="getWagonPolygon()" style="width: 80%; position: relative; left: 50%; transform: translate(-50%,0)">Запросить вагоны</button>
+        <FilterWagonTablePoligon @updateFilterDataWagonDislocation="updateFilterDataWagonDislocation">
+        </FilterWagonTablePoligon>
+        <button class="Accept" @click="getWagonPolygon()"
+            style="width: 80%; position: relative; left: 50%; transform: translate(-50%,0)">Запросить вагоны</button>
         <br><br>
- 
-<p class="amount">всего записей: {{total_objects}}</p>
-<p class="amount">всего на странице: {{amount}}</p>
-  <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto;"> 
-    <table class="table" style="table-layout: fixed;">
-        <thead>
-            <tr>
-                    <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Тип вагона</th>
-                    <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">№ вагона</th>
-                    <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Полигон</th>
-                    <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Государство</th>
-                    <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Операция</th>
+
+        <p class="amount">всего записей: {{ total_objects }}</p>
+        <p class="amount">всего на странице: {{ amount }}</p>
+        <div
+            style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
+            <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            Тип вагона</th>
+                        <th>
+                            № вагона</th>
+                        <th>
+                            Полигон</th>
+                        <th>
+                            Государство</th>
+                        <th>
+                            Операция</th>
 
 
 
-<!-- 
+                        <!-- 
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Квитанция</th>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Простой на станции дислокации</th>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Простой от последней операции</th>
@@ -106,17 +114,21 @@
 
 
 
-                </tr>
-        </thead>
-        <tbody>
-            <tr v-for="polygon in polygonWagon" :key="polygon.id">
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon_type}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.wagon}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.polygon}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_country}}</td>
-                <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.operation}}</td>
-            </tr>
-            <!-- <tr v-for="polygon in polygonWagon" :key="polygon.id">
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="polygon in polygonWagon" :key="polygon.id">
+                        <td>{{ polygon.wagon_type }}
+                        </td>
+                        <td>{{ polygon.wagon }}</td>
+                        <td>{{ polygon.polygon }}
+                        </td>
+                        <td>
+                            {{ polygon.current_country }}</td>
+                        <td>{{ polygon.operation }}
+                        </td>
+                    </tr>
+                    <!-- <tr v-for="polygon in polygonWagon" :key="polygon.id">
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.receipt}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station_downtime}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.last_operation_downtime}}</td>
@@ -231,14 +243,15 @@
                 <td v-else> </td>
             </tr> -->
 
-        </tbody>
-</table>
-  </div>
-  <div style="display: flex; justify-content: space-around; margin-top: 2%;">
-            <button class="Cancel" style="width: 20%"  v-if="prevLink" @click="goToPage(prevLink)">назад</button>
+                </tbody>
+            </table>
+        </div>
+        <div style="display: flex; justify-content: space-around; margin-top: 2%;">
+            <button class="Cancel" style="width: 20%" v-if="prevLink" @click="goToPage(prevLink)">назад</button>
             <button class="Cancel" style="width: 20%" v-if="nextLink" @click="goToPage(nextLink)">вперед</button>
-</div>   
-  <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" id="notif"/>
+        </div>
+        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+            id="notif" />
 
     </div>
 </template>
@@ -248,26 +261,26 @@
 </style>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 import api from '@/api/wagonPark'
 import FilterWagonTablePoligon from '../filter/FilterWagonTablePoligon.vue'
 import Notifications from '@/components/notifications/Notifications.vue'
 import Loader from '@/components/loader/loader.vue'
 export default {
     name: 'WagonTablePoligon',
-    components: {FilterWagonTablePoligon, Notifications, Loader},
+    components: { FilterWagonTablePoligon, Notifications, Loader },
     computed: {
         ...mapState({
             user: state => state.auth.user,
             uid: state => state.auth.uid,
         })
     },
-    data(){
+    data() {
         return {
             nextLink: null,
             prevLink: null,
             loaderPoligon: false,
-            filter_wagonpolygon:{
+            filter_wagonpolygon: {
                 wagon__wagon_type: '',
                 polygon: ''
             },
@@ -284,43 +297,43 @@ export default {
         }
     },
     methods: {
-        goToPage(link){
+        goToPage(link) {
             let url = new URL(link)
-            let pageNumber  = url.searchParams.get("page")
-        if(pageNumber != null){
-            this.filter_wagonpolygon.page = pageNumber 
-        }else{
-            delete(this.filter_wagonpolygon.page)
-        }
-        this.getWagonPolygon()
+            let pageNumber = url.searchParams.get("page")
+            if (pageNumber != null) {
+                this.filter_wagonpolygon.page = pageNumber
+            } else {
+                delete (this.filter_wagonpolygon.page)
+            }
+            this.getWagonPolygon()
         },
-        closeNotification(){
+        closeNotification() {
             this.showNotify = false
         },
-        updateFilterDataWagonDislocation(filter_wagonpolygon){
+        updateFilterDataWagonDislocation(filter_wagonpolygon) {
             this.filter_wagonpolygon = filter_wagonpolygon
         },
-        closeNotification(){
+        closeNotification() {
             this.showNotify = false
         },
-        getWagonPolygon(){
+        getWagonPolygon() {
             this.loader = true
             api.getPolygon(this.filter_wagonpolygon)
-            .then((response) => {
-                this.polygonWagon = response.data.data
-                this.loader = false
-                this.nextLink = response.data.links.next
-                this.prevLink = response.data.links.previous
-                this.amount = response.data.amount
-                this.total_objects = response.data.total_objects
-                this.notifyHead = 'Успешно'
-                this.notifyMessage = 'Данные отфильтрованы'
-                this.notifyClass = 'wrapper-success'
-                this.showNotify = true
-                setTimeout(this.closeNotification, 1500)
+                .then((response) => {
+                    this.polygonWagon = response.data.data
+                    this.loader = false
+                    this.nextLink = response.data.links.next
+                    this.prevLink = response.data.links.previous
+                    this.amount = response.data.amount
+                    this.total_objects = response.data.total_objects
+                    this.notifyHead = 'Успешно'
+                    this.notifyMessage = 'Данные отфильтрованы'
+                    this.notifyClass = 'wrapper-success'
+                    this.showNotify = true
+                    setTimeout(this.closeNotification, 1500)
 
 
-            })
+                })
         }
     }
 }

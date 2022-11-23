@@ -10,11 +10,12 @@
             style="width: 50%; border-top-left-radius: 10px; border-top-right-radius: 10px;"
             @click="addStaff()">Добавить сотрудника</button>
         <span id="big-photo" @click="close_photo"></span>
+
         <div
-            style=" width: 95% !important; overflow: auto; position: relative; left: 50%; transform: translate(-50%,0);">
-            <table class="staff_table table">
-                <thead class="head-staff">
-                    <th>Фото</th>
+            style="width: 95%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
+            <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+                <thead class="thead-light">
+                    <!-- <th>Фото</th> -->
                     <th>Фамилия</th>
                     <th>Имя</th>
                     <th>Отчество</th>
@@ -32,53 +33,43 @@
 
                 <tbody style="max-width: 90% !important;">
                     <tr v-for="staff in all_staff" :key="staff.id">
-
+                        <!-- 
                         <td
                             style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
                             <img :src="staff.photo" width="55px !important" class="image"
                                 @click="open_photo(`${staff.photo}`)">
-                        </td>
+                        </td> -->
 
-                        <td
-                            style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
+                        <td>
                             {{ staff.last_name }}</td>
-                        <td
-                            style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
+                        <td>
                             {{ staff.first_name }}</td>
-                        <td
-                            style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">
+                        <td>
                             {{ staff.middle_name }}</td>
-                        <td
-                            style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; ">
+                        <td>
                             {{ staff.post }}</td>
-                        <td
-                            style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
+                        <td>
                             {{ staff.email }}</td>
-                        <td
-                            style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center;">
+                        <td>
                             {{ getGroupName(staff.groups[0]) }}
                             <!-- <span v-if="staff.groups[0] ==  40">Отдел кадров</span> -->
                         </td>
-                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
-                            v-if="staff.manager != null">{{ staff.phone_corp }}</td>
-                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
-                            v-else>—</td>
-                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
-                            v-if="staff.manager != null">{{ staff.phone_personal }}</td>
-                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
-                            v-else>—</td>
-                        <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; "
-                            v-if="staff.manager != null">{{ staff.inner_number }}</td>
+                        <td v-if="staff.manager != null">{{ staff.phone_corp }}</td>
                         <td v-else>—</td>
-                        <td style="padding: 0 !important;vertical-align: middle; align-items: center; justify-content: center; "
-                            v-if="staff.manager != null">{{ staff.schedule }}</td>
+                        <td v-if="staff.manager != null">{{ staff.phone_personal }}</td>
                         <td v-else>—</td>
-                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
-                            v-if="staff.manager != null">{{ getUserById(staff.manager) }}</td>
-                        <td style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;"
-                            v-else>—</td>
-                        <td><button class="Request" @click="openChangePage(staff.id)">Редактировать</button></td>
-                        <td><button class="Delete" @click="getCurrentUser(staff.id)">Удалить</button></td>
+                        <td v-if="staff.manager != null">{{ staff.inner_number }}</td>
+                        <td v-else>—</td>
+                        <td v-if="staff.manager != null">{{ staff.schedule }}</td>
+                        <td v-else>—</td>
+                        <td v-if="staff.manager != null">{{ getUserById(staff.manager) }}</td>
+                        <td v-else>—</td>
+                        <td><button
+                                style="height: 100%; vertical-align: middle; display: flex;align-items: center;justify-content: center;"
+                                class="Request" @click="openChangePage(staff.id)">Редактировать</button></td>
+                        <td><button
+                                style="height: 100%; vertical-align: middle; display: flex;align-items: center;justify-content: center;"
+                                class="Delete" @click="getCurrentUser(staff.id)">Удалить</button></td>
                     </tr>
                 </tbody>
 
@@ -819,11 +810,11 @@ export default {
     cursor: pointer;
 }
 
-.modal-content{
+.modal-content {
     width: 200% !important;
     position: relative;
     left: 50%;
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
 }
 
 .error {
@@ -831,9 +822,9 @@ export default {
     color: black !important;
 }
 
-th {
+/* th {
     background: #EBEBEB !important;
-}
+} */
 
 .staff_table {
     position: relative;
@@ -863,7 +854,7 @@ th {
     justify-content: center;
 }
 
-tr:hover {
+/* tr:hover {
     background-color: #eee !important;
     outline: solid 1px #c04945 !important;
     cursor: pointer;
@@ -875,7 +866,7 @@ tr:hover {
     align-items: center;
     justify-content: center;
     border-bottom: solid 3px #c04945 !important;
-}
+} */
 
 .wrapper_staff {
     position: fixed;

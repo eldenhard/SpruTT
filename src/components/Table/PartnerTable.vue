@@ -8,114 +8,114 @@
 
 
         <b-modal ref="my-modal" hide-footer title="Добавление контрагента">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class='bg'>
-                            <input class='textarea' id='input-filter-staff1' name='Pwd' v-model="work_name" />
-                            <br>
-                            <label for='input-filter-staff1' class='label'>Рабочее наименование</label>
-                        </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff1' name='Pwd' v-model="work_name" />
+                        <br>
+                        <label for='input-filter-staff1' class='label'>Рабочее наименование</label>
                     </div>
-                    <div class="col-md-6">
-                        <div class='bg'>
-                            <input class='textarea' id='input-filter-staff12' name='Pwd' v-model="short_name" />
-                            <br>
-                            <label for='input-filter-staff12' class='label'>Краткое наименование</label>
-                        </div>
-                    </div>
-
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class='bg'>
-                            <input class='textarea' id='input-filter-staff13' name='Pwd' v-model="full_name" />
-                            <br>
-                            <label for='input-filter-staff13' class='label'>Полное наименование</label>
-                        </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff12' name='Pwd' v-model="short_name" />
+                        <br>
+                        <label for='input-filter-staff12' class='label'>Краткое наименование</label>
                     </div>
-                    <div class="col-md-6">
-                        <div class='bg'>
-                            <input class='textarea' id='input-filter-staff14' name='Pwd' v-model="els" />
-                            <br>
-                            <label for='input-filter-staff14' class='label'>ЕЛС</label>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class='bg'>
-                            <input class='textarea' id='input-filter-staff15' name='Pwd' v-model="ogrn" />
-                            <br>
-                            <label for='input-filter-staff15' class='label'>ОГРН/ЕГРПОУ/БИН</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class='bg'>
-                            <input class='textarea' id='input-filter-staff16' name='Pwd' v-model="inn" />
-                            <br>
-                            <label for='input-filter-staff16' class='label'>ИНН/РНН</label>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class='bg'>
-                            <input class='textarea' id='input-filter-staff17' name='Pwd' v-model="kpp" />
-                            <br>
-                            <label for='input-filter-staff17' class='label'>КПП/№ Св-ва НДС</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class='bg'>
-                            <input class='textarea' id='input-filter-staff18' name='Pwd' v-model="legal_address" />
-                            <br>
-                            <label for='input-filter-staff18' class='label'>Юридический адрес</label>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class='bg'>
-                            <input class='textarea' id='input-filter-staff19' name='Pwd' v-model="manager" />
-                            <br>
-                            <label for='input-filter-staff19' class='label'>Руководитель</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class='bg'>
-                            <input class='textarea' id='input-filter-staff20' name='Pwd' v-model="phone" />
-                            <br>
-                            <label for='input-filter-staff20' class='label'>Телефон</label>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class='bg'>
-                            <select v-model="group" class="textarea" style="width: 80%;" id="input-filter-staff21">
-
-                                <option :value="g[0]" v-for="g in Object.entries(groups)" :key="g[0]">{{
-                                        g[1]
-                                }}
-                                </option>
-                            </select>
-                            <br>
-                            <label for='input-filter-staff21' class='label' style="margin-left: 10%">Группа</label>
-                        </div>
-                    </div>
-
                 </div>
 
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff13' name='Pwd' v-model="full_name" />
+                        <br>
+                        <label for='input-filter-staff13' class='label'>Полное наименование</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff14' name='Pwd' v-model="els" />
+                        <br>
+                        <label for='input-filter-staff14' class='label'>ЕЛС</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff15' name='Pwd' v-model="ogrn" />
+                        <br>
+                        <label for='input-filter-staff15' class='label'>ОГРН/ЕГРПОУ/БИН</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff16' name='Pwd' v-model="inn" />
+                        <br>
+                        <label for='input-filter-staff16' class='label'>ИНН/РНН</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff17' name='Pwd' v-model="kpp" />
+                        <br>
+                        <label for='input-filter-staff17' class='label'>КПП/№ Св-ва НДС</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff18' name='Pwd' v-model="legal_address" />
+                        <br>
+                        <label for='input-filter-staff18' class='label'>Юридический адрес</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff19' name='Pwd' v-model="manager" />
+                        <br>
+                        <label for='input-filter-staff19' class='label'>Руководитель</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class='bg'>
+                        <input class='textarea' id='input-filter-staff20' name='Pwd' v-model="phone" />
+                        <br>
+                        <label for='input-filter-staff20' class='label'>Телефон</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class='bg'>
+                        <select v-model="group" class="textarea" style="width: 80%;" id="input-filter-staff21">
+
+                            <option :value="g[0]" v-for="g in Object.entries(groups)" :key="g[0]">{{
+                                    g[1]
+                            }}
+                            </option>
+                        </select>
+                        <br>
+                        <label for='input-filter-staff21' class='label' style="margin-left: 10%">Группа</label>
+                    </div>
+                </div>
+
+            </div>
 
 
 
 
 
-                <!-- <div class='bg'>
+
+            <!-- <div class='bg'>
                         <select v-model="group" class="textarea" style="border: 1px solid grey" id="input-filter-staff21">
 
                             <option :value="g[0]" v-for="g in Object.entries(groups)" :key="g[0]">{{
@@ -126,75 +126,75 @@
                         <br>
                         <label for='input-filter-staff21' class='label'>Группа</label>
                     </div> -->
-                <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label">Рабочее наименование</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control-plaintext" v-model="work_name">
 
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label">Краткое наименование</label>
                         <div class="col-sm-8">
                             <input class="form-control" id="inputPassword" v-model="short_name">
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label">Полное наименование</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control-plaintext" v-model="full_name">
 
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label">ЕЛС</label>
                         <div class="col-sm-8">
                             <input class="form-control" v-model="els">
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label">ОГРН/ЕГРПОУ/БИН</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control-plaintext" v-model="ogrn">
 
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label">ИНН/РНН</label>
                         <div class="col-sm-8">
                             <input class="form-control" v-model="inn">
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label">КПП/№ Св-ва НДС</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control-plaintext" v-model="kpp">
 
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label">Юридический адрес</label>
                         <div class="col-sm-8">
                             <input class="form-control" v-model="legal_address">
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label"> Руководитель</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control-plaintext" v-model="manager">
 
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
                         <label for="inputPassword" class="col-sm-3 col-form-label">Телефон</label>
                         <div class="col-sm-8">
                             <input class="form-control" v-model="phone">
                         </div>
                     </div> -->
-                <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
                         <label for="staticEmail" class="col-sm-3 col-form-label">Группа</label>
                         <div class="col-sm-8">
-                            <select v-model="group" class="input-filter" style="border: 1px solid grey">
+                            <select v-model="group"  style="border: 1px solid grey">
 
                                 <option :value="g[0]" v-for="g in Object.entries(groups)" :key="g[0]">{{
                                         g[1]
@@ -205,10 +205,10 @@
                         </div>
 
                     </div> -->
-                <!-- </div> -->
-                <b-button class="mt-2" variant="success" block @click="CreateCounterparties()">Сохранить
-                </b-button>
-                <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button>
+            <!-- </div> -->
+            <b-button class="mt-2" variant="success" block @click="CreateCounterparties()">Сохранить
+            </b-button>
+            <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button>
 
         </b-modal>
 
@@ -228,47 +228,35 @@
 
         <div
             style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
-            <table class="table" style="table-layout: fixed;">
-                <thead>
+            <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+                <thead class="thead-light">
+
                     <tr>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             Рабочее наименование</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             Кратное наименование</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             Полное наименование</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             ЕЛС</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             ОГРН/ЕГРПОУ/БИН</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             ИНН/РНН</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             КПП/№ Св-ва НДС</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             Юридический адрес</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             Дата создания</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             Руководитель</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             Телефон</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             Группа</th>
-                        <th
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
+                        <th>
                             Действие</th>
 
 
@@ -277,38 +265,40 @@
                 </thead>
                 <tbody>
                     <tr v-for="(part, index) in counterparties" :key="part.id">
-                        <td class="td-btr"><input class="input-filter" type="text"
+                        <td><input class="input-filter" style="height: 10px; border: none !important;" type="text"
                                 v-model="counterparties[index].work_name"></td>
-                        <td class="td-btr"><input class="input-filter" type="text"
+                        <td><input class="input-filter" style="height: 10px; border: none !important;" type="text"
                                 v-model="counterparties[index].short_name"></td>
-                        <td class="td-btr"><input class="input-filter" type="text"
+                        <td><input class="input-filter" style="height: 10px; border: none !important;" type="text"
                                 v-model="counterparties[index].full_name"></td>
-                        <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].els">
-                        </td>
-                        <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].ogrn">
-                        </td>
-                        <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].inn">
-                        </td>
-                        <td class="td-btr"><input class="input-filter" type="text" v-model="counterparties[index].kpp">
-                        </td>
-                        <td class="td-btr"><input class="input-filter" type="text"
+                        <td><input class="input-filter" style="height: 10px; border: none !important;" type="text"
+                                v-model="counterparties[index].els"></td>
+                        <td><input class="input-filter" style="height: 10px; border: none !important;" type="text"
+                                v-model="counterparties[index].ogrn"></td>
+                        <td><input class="input-filter" style="height: 10px; border: none !important;" type="text"
+                                v-model="counterparties[index].inn"></td>
+                        <td><input class="input-filter" style="height: 10px; border: none !important;" type="text"
+                                v-model="counterparties[index].kpp"></td>
+                        <td><input class="input-filter" style="height: 10px; border: none !important;" type="text"
                                 v-model="counterparties[index].legal_address"></td>
-                        <td class="td-btr">{{ new Date(part.created_at).toLocaleString() }}</td>
-                        <td class="td-btr"><input class="input-filter" type="text"
-                                v-model="counterparties[index].manager"></td>
-                        <td class="td-btr"><input class="input-filter" type="text"
+                        <td style="font-size: 15px; text-align: center;">{{ new
+                                Date(part.created_at).toLocaleString()
+                        }}</td>
+                        <td><input class=" input-filter" style="height: 10px; border: none !important;" type="text"
+                            v-model="counterparties[index].manager"></td>
+                        <td><input class="input-filter" style="height: 10px; border: none !important;" type="text"
                                 v-model="counterparties[index].phone"></td>
-                        <td class="td-btr">
+                        <td>
 
-                            <select v-model="counterparties[index].group" class="input-filter">
+                            <select v-model="counterparties[index].group" style="height: 10px" class="input-filter">
                                 <option value="all">Все</option>
                                 <option :value="g[0]" v-for="g in Object.entries(groups)" :key="g[0]">{{ g[1] }}
                                 </option>
                             </select>
                         </td>
-                        <td
-                            style="width:  200px !important; height: 30px !important; vertical-align: middle !important;">
-                            <button class="Accept" @click="savePartner(part)">Сохранить</button>
+                        <td>
+                            <button @click="savePartner(part)"
+                                style="height: 100%; vertical-align: middle; display: flex;align-items: center;justify-content: center;">Сохранить</button>
                         </td>
 
                     </tr>
@@ -322,9 +312,7 @@
 
     </div>
 </template>
-<style>
 
-</style>
 <script>
 import api from '@/api/directory'
 import apiReport from '@/api/report'
@@ -515,11 +503,12 @@ export default {
     font-size: 13px;
     cursor: pointer;
 }
-.modal-content{
+
+.modal-content {
     width: 200% !important;
     position: relative;
     left: 50%;
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
 }
 </style>
 

@@ -24,47 +24,39 @@
             <b-row>
                 <b-col>
                     <div
-                        style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0);">
-                        <table class="table" style="table-layout: fixed;">
-                            <thead>
+                        style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
+                        <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+                            <thead class="thead-light">
                                 <tr>
-                                    <th
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <th>
                                         Название</th>
-                                    <th
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <th>
                                         Дата создания</th>
-                                    <th
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
-                                        Дата последнего обновления</th>
-                                    <th
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <th>
+                                        Последнее обновление</th>
+                                    <th>
                                         Файл</th>
-                                    <th
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <th>
                                         Действие</th>
 
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="bdr in BDRreport" :key="bdr.id">
-                                    <td
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <td>
                                         {{ bdr.name }}</td>
-                                    <td
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <td>
                                         {{ new Date(bdr.created_at).toLocaleString() }}</td>
-                                    <td
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <td>
                                         {{ new Date(bdr.updated_at).toLocaleString() }}</td>
-                                    <td
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <td>
                                         <a target="_blank" :href="bdr.file" v-if="bdr.file"><img
-                                                src="@/assets/excel.png" alt="" width="50px!important"></a>
+                                                src="@/assets/excel.png" alt="" width="20px !important"></a>
                                     </td>
-                                    <td
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
-                                        <button class="Accept" @click="openCurrentReport(bdr.id)">Редактировать</button>
+                                    <td>
+                                        <button
+                                            style="height: 100%; vertical-align: middle; display: flex;align-items: center;justify-content: center;"
+                                            class="Accept" @click="openCurrentReport(bdr.id)">Редактировать</button>
                                     </td>
 
                                 </tr>
@@ -75,9 +67,9 @@
                 </b-col>
             </b-row>
         </b-container>
-            <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
-                id="notif" />
-            <editBDR v-if="showEditbdr"></editBDR>
+        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+            id="notif" />
+        <editBDR v-if="showEditbdr"></editBDR>
     </div>
 </template>
 
@@ -110,7 +102,7 @@ export default {
             uid: state => state.auth.uid
         })
     },
-    mounted(){
+    mounted() {
         document.title = 'БДР отчеты'
     },
     methods: {

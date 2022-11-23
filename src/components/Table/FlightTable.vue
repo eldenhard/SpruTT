@@ -45,14 +45,14 @@
     overflow: auto;
 
 }
-tr,th,td{
+/* tr,th,td{
     height: 20px !important;
     width: 30px !important;
 }
 #table tr,th,td{
     height: 20px !important;
     width: 30px !important;
-}
+} */
 .form-control{
     width: 300px;
 }

@@ -3,7 +3,7 @@
   border: none;
   outline: none;
   /* width: 130px; */
-  height: 25px;
+  height: 20px;
   letter-spacing: 1px;
   border-radius: 7px;
   font-weight: 500;
@@ -11,6 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  vertical-align: middle;
 }
 
 .Delete {
@@ -32,16 +33,16 @@
 }
 
 .Accept {
-  background:#158127;
+  background: #158127;
 }
 
 .Accept:hover {
-  background:#10691f;
+  background: #10691f;
   cursor: pointer;
 }
 
 .Action {
-  background:#FF9F55;
+  background: #FF9F55;
   height: 60px;
   cursor: pointer;
 }
@@ -61,66 +62,66 @@
 }
 
 
-#tableMain,
+/* #tableMain,
 #tableDislocation {
   background: rgb(236, 236, 236);
   width: 100% !important;
 
-}
+} */
 
-tr,
+/* tr,
 td,
 th {
   font-size: 12px;
   border: 1px solid rgb(184, 184, 184);
   background: white;
   text-align: center;
-}
+} */
 
-.info-table {
+/* .info-table {
   margin-top: 66px;
   width: 50vw;
-}
+} */
 
-.table1 table {
+/* .table1 table {
   border-spacing: 0 !important;
   margin-top: 3%;
-}
+} */
 
-.table1 table thead tr th {
+/* .table1 table thead tr th {
   text-align: left !important;
   border-bottom: solid 3px #c04945 !important;
   padding: 8px !important;
   font-size: small;
   background-color: #eee !important;
   color: #000000 !important;
-}
+} */
 
-.table1 table tbody tr td {
+/* .table1 table tbody tr td {
   transition: all 0.15s ease !important;
   padding: 8px !important;
-}
+} */
 
-.table1 table tbody td span {
+/* .table1 table tbody td span {
   font-size: x-small;
   display: block;
-}
+} */
 
-.table1 table tbody td span:first-child {
+/* .table1 table tbody td span:first-child {
   font-size: small;
   line-height: 1.5em;
   display: block;
-}
+} */
 
-.table1 table tbody tr:hover {
+/* .table1 table tbody tr:hover {
   background-color: #eee !important;
   outline: solid 1px #c04945 !important;
-}
+} */
 
-.table1 table th,
+/* .table1 table th,
 .table1 table td:not(.wrap) {
   white-space: nowrap !important;
-}
+} */
 
 h2 {
   text-align: center;
@@ -271,6 +272,7 @@ select:focus {
 select::-ms-expand {
   display: none;
 }
+
 /* Поля Input */
 .bg {
 
@@ -282,17 +284,18 @@ select::-ms-expand {
 }
 
 .label {
-  position: absolute; 
+  position: absolute;
   transform: translate(-9.8rem, -3.8rem);
   font-size: 1rem;
   padding: 0 5px;
-  background-color: #EFEFEF; 
-  color:#757575
+  background-color: #EFEFEF;
+  color: #757575
 }
+
 .textarea {
-  position: relative; 
+  position: relative;
   border-radius: 0.4rem;
-  background-color: #EFEFEF; 
+  background-color: #EFEFEF;
   border: #BDC3C7 0.1rem solid;
   width: 20rem;
   height: 3rem;
@@ -305,4 +308,28 @@ select::-ms-expand {
   outline: none;
   border: #303030 0.1rem solid;
 
+}
+
+
+/* ТАБЛИЦЫ */
+th {
+  width: 200px;
+  height: 20px;
+  vertical-align: middle !important;
+  text-align: center !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+}
+
+td {
+  width: 250px;
+  height: 20px;
+  vertical-align: middle;
+  padding: 0 !important;
+  vertical-align: middle !important;
+  align-items: center;
+  justify-content: center;
+  text-align: center !important;
+  cursor: pointer !important;
+  color: #757575 !important;
 }

@@ -44,7 +44,7 @@
             <div style="display:flex; flex-direction:column;">
                 <div class='bg'>
                     <input class='textarea' id='input-filter1' name='Pwd' type="date"
-                        v-model="filter.current_station_arrival_begin" style="width: 125px; cursor: pointer; margin-top: 10%;" />
+                        v-model="filter.current_station_arrival_begin" style="width: 125px; cursor: pointer; margin-top: 9%;" />
                 </div>
             </div>
             <div style="display:flex; flex-direction:column;">
@@ -52,7 +52,7 @@
 
 
                     <input class='textarea' id='input-filter2' name='Pwd' type="date"
-                        v-model="filter.current_station_arrival_end" style="width: 125px;cursor: pointer;margin-top: 10%;" />
+                        v-model="filter.current_station_arrival_end" style="width: 125px;cursor: pointer;margin-top: 9%;" />
                 </div>
             </div>
 

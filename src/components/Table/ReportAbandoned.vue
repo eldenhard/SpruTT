@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>Брошенные вагоны</h2>
-       
+
         <br><br>
         <Loader :loader="loader"></Loader>
         <FilterReportAbandon @update-filter="updateFilter"></FilterReportAbandon>
@@ -20,10 +20,10 @@
             </div>
 
 
-            
-                <!-- <input type="date" v-model="filter.current_station_arrival_end" style="width: 40%"> -->
 
-        
+            <!-- <input type="date" v-model="filter.current_station_arrival_end" style="width: 40%"> -->
+
+
             <b-button class="mt-2" variant="success" block @click="CreateReportAbandones">Создать отчет
             </b-button>
             <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button>
@@ -35,55 +35,47 @@
             style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin: 2% 0 1%"
             @click="ThrowWagons()">Предварительный запрос вагонов</button>
         <p class="amount">всего записей: {{ total_objects }}</p>
-        <div style="width: 100%; overflow-x: auto; height: 40vh; overflow-y: auto;">
-            <table class="table" style="table-layout: fixed;">
-                <thead>
+        <div
+            style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
+            <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+                <thead class="thead-light">
                     <tr>
-                        <th
-                            style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Тип вагона</th>
-                        <th
-                            style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Номер вагона</th>
-                        <th
-                            style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
-                            Полигон обращения</th>
-                        <th
-                            style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
+                            Полигон</th>
+                        <th>
                             Государство</th>
-                        <th
-                            style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
-                            Код причины бросания</th>
-                        <th
-                            style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
+                            Код бросания</th>
+                        <th>
                             Причина бросания</th>
-                        <th
-                            style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Собственник</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="broc in throwWagons" :key="broc.id">
-                        <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc != null">
+                        <td v-if="broc != null">
                             {{ broc.wagon_type }}</td>
-                        <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc != null">
+                        <td v-if="broc != null">
                             {{ broc.wagon }}</td>
-                        <td style="height: 50px !important; vertical-align: middle !important;">
+                        <td>
                             {{ broc.polygon }}</td>
-                        <td style="height: 50px !important; vertical-align: middle !important;">
+                        <td>
                             {{ broc.current_country }}</td>
-                        <td style="height: 50px !important; vertical-align: middle !important;"
-                            v-if="broc.drop != null">
+                        <td v-if="broc.drop != null">
                             {{ broc.drop }}</td>
-                        <td style="height: 50px !important; vertical-align: middle !important;" v-else>—</td>
+                        <td v-else>—</td>
 
-                        <td style="height: 50px !important; vertical-align: middle !important;"
-                            v-if="broc.drop != null">
+                        <td v-if="broc.drop != null">
                             <textarea name="" id="" cols="20" rows="1" :value="broc.drop_reason"></textarea>
                         </td>
-                        <td style="height: 50px !important; vertical-align: middle !important;" v-else>—</td>
+                        <td v-else>—</td>
 
-                        <td style="height: 50px !important; vertical-align: middle !important;" v-if="broc != null">
+                        <td v-if="broc != null">
                             {{ broc.wagon_owner }}</td>
 
                     </tr>
@@ -115,44 +107,44 @@
         <b-container class="bv-example-row">
             <b-row>
                 <b-col>
-                    <div style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto;">
-                        <table class="table" style="table-layout: fixed;">
-                            <thead>
+                    <div
+                        style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
+                        <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+                            <thead class="thead-light">
                                 <tr>
-                                    <th
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <th>
                                         Файл</th>
-                                    <th
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <th>
                                         Дата создания</th>
-                                    <th
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <th>
                                         Создатель</th>
-                                    <th
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <th>
                                         Тип вагона</th>
-                                    <th
-                                        style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">
+                                    <th>
+                                        Формат</th>
+                                    <th>
                                         Действие</th>
 
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="reports in report_abandoned" :key="reports.id">
-                                    <td style="height: 50px !important; vertical-align: middle !important;">
+                                    <td>
                                         <a download target="_blank" :href="reports.file" v-if="reports.file"><img
-                                                src="@/assets/excel.png" alt="" width="50px !important"></a>
+                                                src="@/assets/excel.png" alt="" width="20px !important"></a>
                                     </td>
-                                    <td style="height: 50px !important; vertical-align: middle !important;">
+                                    <td style="font-size: 15px; text-align: center;">
                                         {{ new Date(reports.created_at).toLocaleString() }}</td>
-                                    <td style="height: 50px !important; vertical-align: middle !important;">
+                                    <td>
                                         {{ reports.creator.last_name }} {{ reports.creator.first_name }}</td>
-                                    <td style="height: 50px !important; vertical-align: middle !important;">{{
-                                            reports.wagon_type
-                                    }}
-                                    </td>
-                                    <td style="height: 50px !important; vertical-align: middle !important;">
+                                    <td>{{ reports.wagon_type }}</td>
+                                    <td v-if="reports.format === 'classic'">Стандартный</td>
+                                    <td v-if="reports.format === 'disp'">Диспетчерский</td>
+                                    <td v-if="reports.format === 'legal'">Юридический</td>
+                                    <td v-if="reports.format === null">—</td>
+                                    <td>
                                         <button class="Delete"
+                                            style="height: 100%;height: 20px; vertical-align: middle; display: flex;align-items: center;justify-content: center;"
                                             @click="DeleteReportAbandoned(reports.id)">Удалить</button>
                                     </td>
 

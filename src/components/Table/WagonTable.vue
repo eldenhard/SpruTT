@@ -1,379 +1,360 @@
 <template>
-<div id="tableMain" style="background: white">
+    <div id="tableMain" style="background: white">
+        <Loader :loader="loader"></Loader>
+        <FilterWagon @updateFilters="updateFilters"></FilterWagon>
 
-<FilterWagon @updateFilters="updateFilters"></FilterWagon>
-
-<button class="Accept" style="width: 80%; position: relative; left: 50%; transform: translate(-50%,0);" @click="Wagon()">Запросить данные</button>
-
-
-
-   <br><br>
-   <br>
+        <button class="Accept" style="width: 80%; position: relative; left: 50%; transform: translate(-50%,0);"
+            @click="Wagon()">Запросить данные</button>
 
 
 
-
-<p class="amount">всего: {{amount}}</p>
-<div class="table1" style="display: flex;" >
-<table style="margin-top: -0.1px;">
-
-    <thead>
-    <tr>
-        <th><input type="number"  v-model="numberWagon" placeholder="номер вагона" id="searchWagonPlace" @keydown.enter="searchWagon()" style="width: 100px"></th>
-        <!-- <th>{{WagonModel.number}}</th> -->
-        <th> {{WagonModel.is_problem}}</th>
-        <th>{{WagonModel.volume}}</th>
-        <th>{{WagonModel.type}}</th>
-        <th>Актуальность</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- v-for="wagon in WagonsModel" :key="wagon.id" -->
-    <tr v-for="wagon in WagonsModel" :key="wagon.id" @click="getMoreData(wagon.number)">
-        <td>{{wagon.number}}</td>
-        <td v-if="wagon.is_problem == false">нет</td>
-        <td v-else>да</td>
-        <td>{{wagon.volume}}</td>
-        <td>{{wagon.wagon_type}}</td>
-        <td v-if="wagon.is_active == true">☑️</td>
-        <td v-else>🚫</td>
-        
-    </tr>
-
-    </tbody>
- 
-</table>
+        <br><br>
+        <br>
 
 
 
 
+        <p class="amount">всего: {{ amount }}</p>
+        <!-- <div style="display: flex;" > -->
+        <div class="row">
+            <div class="col-md-5">
+                <table class="table table-sm table-bordered table-hover"
+                    style="table-layout: fixed;margin-top: -0.1px;">
 
-<b-card no-body style="background: #ECECEC; border: none; text-decoration: none; width: 100%;">
-    <b-tabs card  style="background: #ECECEC; font-size: 12px !important;">
-      
-      <!--  v-if="WagonPassportModel.count > 0" -->
-        <b-tab title="Паспорт">
-            <b-card-text style="margin-top: -30px;">
-                <div style="width:100%; overflow: auto;">
-                <table>
-                        <thead>
+                    <thead class="thead-light">
                         <tr>
-                            <th>{{WagonPassportModel.document}}</th>
-                            <th>{{WagonPassportModel.next_planed_repair_date}}</th>
-                            <th>{{WagonPassportModel.last_planed_repair_date}}</th>
-                            <th>{{WagonPassportModel.capacity}}</th>
-                            <th>{{WagonPassportModel.model}}</th>
-                            <th>{{WagonPassportModel.days_before_date_plan_repair}}</th>
-                            <th>{{WagonPassportModel.next_plan_repair_kind}}</th>
-                            <th>{{WagonPassportModel.build_date}}</th>
-                            <th>{{WagonPassportModel.lifetime}}</th>
-                            <th>{{WagonPassportModel.wagon}}</th>
-                          
-                            
+                            <th style="width: 70px !important"><input type="number" v-model="numberWagon"
+                                    placeholder="номер вагона" id="searchWagonPlace" @keydown.enter="searchWagon()"
+                                    class="input-filter"></th>
+                            <!-- <th>{{WagonModel.number}}</th> -->
+                            <th style="width: 70px !important"> {{ WagonModel.is_problem }}</th>
+                            <th style="width: 70px !important">{{ WagonModel.volume }}</th>
+                            <th style="width: 70px !important">{{ WagonModel.type }}</th>
+                            <th style="width: 70px !important">Актуальность</th>
                         </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="wagonpasport in WagonsPassportModel" :key="wagonpasport.id">
-                            <td><a target="_blank" :href="wagonpasport.document" v-if="wagonpasport.document"><img src="@/assets/pdf.png" alt="" width="50px!important"></a></td>
-                            <td>{{wagonpasport.next_planed_repair_date}}</td>
-                            <td>{{wagonpasport.last_planed_repair_date}}</td>
-                            <td>{{wagonpasport.capacity}}</td>
-                            <td>{{wagonpasport.model}}</td>
-                            <td>{{wagonpasport.days_before_date_plan_repair}}</td>
-                            <td>{{wagonpasport.next_plan_repair_kind}}</td>
-                            <td>{{wagonpasport.build_date}}</td>
-                            <td>{{wagonpasport.lifetime}}</td>
-                            <th style="font-weight: normal">{{wagonpasport.wagon}}</th>
+                    </thead>
+                    <tbody>
+                        <!-- v-for="wagon in WagonsModel" :key="wagon.id" -->
+                        <tr v-for="wagon in WagonsModel" :key="wagon.id" @click="getMoreData(wagon.number)">
+                            <td>{{ wagon.number }}</td>
+                            <td v-if="wagon.is_problem == false">нет</td>
+                            <td v-else>да</td>
+                            <td>{{ wagon.volume }}</td>
+                            <td>{{ wagon.wagon_type }}</td>
+                            <td v-if="wagon.is_active == true">☑️</td>
+                            <td v-else>🚫</td>
+
                         </tr>
-                        </tbody>
-                    </table>
-                    
-                    <!-- <p v-else><br>Нет данных</p> -->
+
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="col-md-7">
+                <b-card no-body style="background: #fff; border: none; text-decoration: none; width: 100%;">
+                    <b-tabs card style="background: #fff; font-size: 12px !important;">
+
+                        <!--  v-if="WagonPassportModel.count > 0" -->
+                        <b-tab title="Паспорт">
+                            <b-card-text>
+                                <div
+                                    style="width: 100%; overflow-x: auto;overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
+
+                                    <table class="table table-sm table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th style="width: 150px !important">Скан паспорта</th>
+                                                <th style="width: 150px !important">Дата следующего планового ремонта</th>
+                                                <th style="width: 150px !important"> Дата последнего
+                                                    планового ремонта</th>
+                                                <th style="width: 150px !important">Грузоподъемность</th>
+                                                <th style="width: 150px !important">Модель вагона</th>
+                                                <th style="width: 150px !important">Дней до следующего планового ремонта</th>
+                                                <th style="width: 150px !important">Вид следующего планового ремонта</th>
+                                                <th style="width: 150px !important">Дата постройки</th>
+                                                <th style="width: 150px !important">Срок службы</th>
+                                                <th style="width: 150px !important">Вагон</th>
+
+
+
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="wagonpasport in WagonsPassportModel" :key="wagonpasport.id">
+                                                <td style="width: 150px !important"><a target="_blank" :href="wagonpasport.document"
+                                                        v-if="wagonpasport.document"><img src="@/assets/pdf.png" alt=""
+                                                            width="20px!important"></a></td>
+                                                <td style="width: 150px !important">{{ wagonpasport.next_planed_repair_date }}</td>
+                                                <td style="width: 150px !important">{{ wagonpasport.last_planed_repair_date }}</td>
+                                                <td style="width: 150px !important">{{ wagonpasport.capacity }}</td>
+                                                <td style="width: 150px !important">{{ wagonpasport.model }}</td>
+                                                <td style="width: 150px !important">{{ wagonpasport.days_before_date_plan_repair }}</td>
+                                                <td style="width: 150px !important">{{ wagonpasport.next_plan_repair_kind }}</td>
+                                                <td style="width: 150px !important">{{ wagonpasport.build_date }}</td>
+                                                <td style="width: 150px !important">{{ wagonpasport.lifetime }}</td>
+                                                <td style="width: 150px !important;font-weight: normal">{{ wagonpasport.wagon }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <!-- <p v-else><br>Нет данных</p> -->
+                                </div>
+                            </b-card-text>
+                        </b-tab>
+                        <!-- <b-tab title="Принадлежность">
+                            <b-card-text>
+                                <div style="width:100%; overflow: auto;">
+                                    <table class="table table-sm table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>{{ WagonBelongModel.name }}</th>
+                                                <th>{{ WagonBelongModel.owner }}</th>
+                                                <th>{{ WagonBelongModel.in_company_control }}</th>
+                                                <th>{{ WagonBelongModel.wagon_source_company }}</th>
+                                                <th>{{ WagonBelongModel.event_name }}</th>
+                                                <th>{{ WagonBelongModel.agreement }}</th>
+                                                <th>{{ WagonBelongModel.created_at }}</th>
+                                                <th>{{ WagonBelongModel.description }}</th>
+                                                <th>{{ WagonBelongModel.wagon }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="wagonbelong in WagonsBelongModel" :key="wagonbelong.id">
+                                                <td>{{ wagonbelong.name }}</td>
+                                                <td>{{ wagonbelong.owner }}</td>
+                                                <td>{{ wagonbelong.in_company_control }}</td>
+                                                <td>{{ wagonbelong.wagon_source_company }}</td>
+                                                <td>{{ wagonbelong.event_name }}</td>
+                                                <td>{{ wagonbelong.agreement }}</td>
+                                                <td>{{ wagonbelong.created_at }}</td>
+                                                <td>{{ wagonbelong.description }}</td>
+                                                <td>{{ wagonbelong.wagon }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </b-card-text>
+                        </b-tab> -->
+                        <!-- <b-tab title="Ремонт">
+                            <b-card-text>
+                                <div style="width:100%; overflow: auto;">
+                                    <table class="table table-sm table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>{{ WagonModel.number }}</th>
+                                                <th>{{ WagonRepairModel.nrp }}</th>
+                                                <th>{{ WagonRepairModel.malfunction_current }}</th>
+                                                <th>{{ WagonRepairModel.repair_type }}</th>
+                                                <th>{{ WagonRepairModel.nrp_date }}</th>
+                                                <th>{{ WagonRepairModel.repair_kind }}</th>
+                                                <th>{{ WagonRepairModel.next_planed_repair_date }}</th>
+                                                <th>{{ WagonRepairModel.next_planed_repair_depot }}</th>
+                                                <th>{{ WagonRepairModel.status }}</th>
+                                                <th>{{ WagonRepairModel.repair_station_downtime }}</th>
+                                                <th>{{ WagonRepairModel.malfunction_code }}</th>
+                                                <th>{{ WagonRepairModel.malfunction_kind }}</th>
+                                                <th>{{ WagonRepairModel.repair_compensation }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </b-card-text>
+                        </b-tab>
+                        <b-tab title="Остаточный пробег">
+                            <b-card-text>
+                                <div style="width:100%; overflow: auto;">
+                                    <table class="table table-sm table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>{{ WagonModel.number }}</th>
+                                                <th>{{ WagonRestRunModel.actual_run }}</th>
+                                                <th>{{ WagonRestRunModel.rest_run }}</th>
+                                                <th>{{ WagonRestRunModel.run_limit }}</th>
+                                                <th>{{ WagonRestRunModel.run_over_limit }}</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="wagon in WagonsRestRunModel" :key="wagon.id">
+                                                <td>{{ wagon.number }}</td>
+                                                <td>{{ wagon.actual_run }}</td>
+                                                <td>{{ wagon.rest_run }}</td>
+                                                <td>{{ wagon.run_limit }}</td>
+                                                <td>{{ wagon.run_over_limit }}</td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </b-card-text>
+                        </b-tab>
+                        <b-tab title="Модернизация">
+                            <b-card-text>
+                                <div style="width:100%; overflow: auto;">
+                                    <table class="table table-sm table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>{{ WagonModel.number }}</th>
+                                                <th>{{ WagonModernisationModel.last_date }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="wagon in WagonsModernisationModel" :key="wagon.id">
+                                                <td>{{ wagon.number }}</td>
+                                                <td>{{ wagon.last_date }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </b-card-text>
+                        </b-tab> -->
+                        <b-tab title="Аренда" @click="arenda()">
+                            <b-card-text>
+                                <div
+                                    style="width: 100%; overflow-x: auto; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
+                                    <table class="table table-sm table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>{{ WagonRentModel.rent_doc }}</th>
+                                                <th>{{ WagonRentModel.rent_doc_counterparty }}</th>
+                                                <th>{{ WagonRentModel.acceptance_certificate_number }}</th>
+                                                <th>{{ WagonRentModel.acceptance_certificate_date }}</th>
+                                                <th>{{ WagonRentModel.rent_start_date }}</th>
+                                                <th>{{ WagonRentModel.wagon }}</th>
+                                                <th>{{ WagonRentModel.acceptance_station }}</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="wagonrent in WagonsRentModel" :key="wagonrent.id">
+                                                <td>{{ wagonrent.rent_doc }}</td>
+                                                <td>{{ wagonrent.rent_doc_counterparty }}</td>
+                                                <td>{{ wagonrent.acceptance_certificate_number }}</td>
+                                                <td>{{ wagonrent.acceptance_certificate_date }}</td>
+                                                <td>{{ wagonrent.rent_start_date }}</td>
+                                                <td>{{ wagonrent.wagon }}</td>
+                                                <td>{{ wagonrent.acceptance_station }}</td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </b-card-text>
+                        </b-tab>
+                        <!-- <b-tab title="Лизинг">
+                            <b-card-text>
+                                <div style="width:100%; overflow: auto;">
+                                    <table class="table table-sm table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>{{ WagonModel.number }}</th>
+                                                <th>{{ WagonLeasingModel.leasing_doc }}</th>
+                                                <th>{{ WagonLeasingModel.leasing_doc_lifetime }}</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="wagon in WagonsLeasingModel" :key="wagon.id">
+                                                <td>{{ wagon.number }}</td>
+                                                <td>{{ wagon.leasing_doc }}</td>
+                                                <td>{{ wagon.leasing_doc_lifetime }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </b-card-text>
+                        </b-tab>
+                        <b-tab title="Страхование">
+                            <b-card-text>
+                                <div style="width:100%; overflow: auto;">
+                                    <table class="table table-sm table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>{{ WagonModel.number }}</th>
+                                                <th>{{ WagonInsuranceModel.insurance_doc }}</th>
+                                                <th>{{ WagonInsuranceModel.insurance_doc_lifetime }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="wagon in WagonsInsuranceModel" :key="wagon.id">
+                                                <td>{{ wagon.number }}</td>
+                                                <td>{{ wagon.insurance_doc }}</td>
+                                                <td>{{ wagon.insurance_doc_lifetime }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </b-card-text>
+                        </b-tab>
+                        <b-tab title="ЭТРАН">
+                            <b-card-text>
+                                <div style="width:100%; overflow: auto;">
+                                    <table class="table table-sm table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>{{ WagonModel.number }}</th>
+                                                <th>{{ WagonEtranInfoModel.owner }}</th>
+                                                <th>{{ WagonEtranInfoModel.tenant }}</th>
+                                                <th>{{ WagonEtranInfoModel.signing }}</th>
+                                                <th>{{ WagonEtranInfoModel.parking }}</th>
+                                                <th>{{ WagonEtranInfoModel.telegram_number }}</th>
+                                                <th>{{ WagonEtranInfoModel.number_from_expeditor }}</th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="wagon in WagonsEtranInfoModel" :key="wagon.id">
+                                                <td>{{ wagon.number }}</td>
+                                                <td>{{ wagon.owner }}</td>
+                                                <td>{{ wagon.tenant }}</td>
+                                                <td>{{ wagon.signing }}</td>
+                                                <td>{{ wagon.parking }}</td>
+                                                <td>{{ wagon.telegram_number }}</td>
+                                                <td>{{ wagon.number_from_expeditor }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </b-card-text>
+                        </b-tab> -->
+                    </b-tabs>
+                </b-card>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+        <div style="display: flex; position: relative; left: 50%; transform: translate(-50%,0); margin-top: 1%; height: 50px; width: 100%"
+            id="pagination">
+            <div class="row" style="display: flex; position: relative; left: 10%; transform: translate(-10%,0);">
+                <div class="col-md-6">
+                    <button style="float: left" class="button Cancel" v-if="prevLink"
+                        @click="goToPage(prevLink)">назад</button>
                 </div>
-            </b-card-text>
-        </b-tab>
-        <b-tab title="Принадлежность">
-            <b-card-text style="margin-top: -30px;">
-                <div style="width:100%; overflow: auto;">
-                <table>
-                        <thead>
-                        <tr>
-                            <th>{{WagonBelongModel.name}}</th>
-                            <th>{{WagonBelongModel.owner}}</th>
-                            <th>{{WagonBelongModel.in_company_control}}</th>
-                            <th>{{WagonBelongModel.wagon_source_company}}</th>
-                            <th>{{WagonBelongModel.event_name}}</th>
-                            <th>{{WagonBelongModel.agreement}}</th>
-                            <th>{{WagonBelongModel.created_at}}</th>
-                            <th>{{WagonBelongModel.description}}</th>
-                            <th>{{WagonBelongModel.wagon}}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="wagonbelong in WagonsBelongModel" :key="wagonbelong.id">
-                            <td>{{wagonbelong.name}}</td>
-                            <td>{{wagonbelong.owner}}</td>
-                            <td>{{wagonbelong.in_company_control}}</td>
-                            <td>{{wagonbelong.wagon_source_company}}</td>
-                            <td>{{wagonbelong.event_name}}</td>
-                            <td>{{wagonbelong.agreement}}</td>
-                            <td>{{wagonbelong.created_at}}</td>
-                            <td>{{wagonbelong.description}}</td>
-                            <td>{{wagonbelong.wagon}}</td>
-                        </tr>
-                        </tbody>
-                    </table>  
-                </div>                                   
-                </b-card-text>
-        </b-tab>
-        <b-tab title="Ремонт">
-            <b-card-text style="margin-top: -30px;">
-                <div style="width:100%; overflow: auto;">
-                <table>
-                        <thead>
-                        <tr>
-                            <th>{{WagonModel.number}}</th>
-                            <th>{{WagonRepairModel.nrp}}</th>
-                            <th>{{WagonRepairModel.malfunction_current}}</th>
-                            <th>{{WagonRepairModel.repair_type}}</th>
-                            <th>{{WagonRepairModel.nrp_date}}</th>
-                            <th>{{WagonRepairModel.repair_kind}}</th>
-                            <th>{{WagonRepairModel.next_planed_repair_date}}</th>
-                            <th>{{WagonRepairModel.next_planed_repair_depot}}</th>
-                            <th>{{WagonRepairModel.status}}</th>
-                            <th>{{WagonRepairModel.repair_station_downtime}}</th>
-                            <th>{{WagonRepairModel.malfunction_code}}</th>
-                            <th>{{WagonRepairModel.malfunction_kind}}</th>
-                            <th>{{WagonRepairModel.repair_compensation}}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                       
-
-                        </tr>
-                        </tbody>
-                </table> 
-                </div>                                    
-            </b-card-text>
-        </b-tab>
-        <b-tab title="Остаточный пробег">
-            <b-card-text style="margin-top: -30px;">
-                <div style="width:100%; overflow: auto;">
-                <table>
-                        <thead>
-                            <tr>
-                                <th>{{WagonModel.number}}</th>
-                                <th>{{WagonRestRunModel.actual_run}}</th>
-                                <th>{{WagonRestRunModel.rest_run}}</th>
-                                <th>{{WagonRestRunModel.run_limit}}</th>
-                                <th>{{WagonRestRunModel.run_over_limit}}</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="wagon in WagonsRestRunModel" :key="wagon.id">
-                                <td>{{wagon.number}}</td>
-                                <td>{{wagon.actual_run}}</td>
-                                <td>{{wagon.rest_run}}</td>
-                                <td>{{wagon.run_limit}}</td>
-                                <td>{{wagon.run_over_limit}}</td>
-
-                            </tr>
-                        </tbody>
-                    </table>  
-                </div>                                   
-                </b-card-text>
-        </b-tab>
-        <b-tab title="Модернизация">
-            <b-card-text style="margin-top: -30px;">
-                <div style="width:100%; overflow: auto;">
-                <table>
-                        <thead>
-                        <tr>
-                            <th>{{WagonModel.number}}</th>
-                            <th>{{WagonModernisationModel.last_date}}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="wagon in WagonsModernisationModel" :key="wagon.id">
-                            <td>{{wagon.number}}</td>
-                            <td>{{wagon.last_date}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>                                   
-                </b-card-text>
-        </b-tab>
-        <b-tab title="Аренда" @click="arenda()">
-            <b-card-text style="margin-top: -30px;">
-                <div style="width:100%; overflow: auto;">
-                <table>
-                        <thead>
-                        <tr>
-                            <th>{{WagonRentModel.rent_doc}}</th>
-                            <th>{{WagonRentModel.rent_doc_counterparty}}</th>
-                            <th>{{WagonRentModel.acceptance_certificate_number}}</th>
-                            <th>{{WagonRentModel.acceptance_certificate_date}}</th>
-                            <th>{{WagonRentModel.rent_start_date}}</th>
-                            <th>{{WagonRentModel.wagon}}</th>
-                            <th>{{WagonRentModel.acceptance_station}}</th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="wagonrent in WagonsRentModel" :key="wagonrent.id">
-                            <td>{{wagonrent.rent_doc}}</td>
-                            <td>{{wagonrent.rent_doc_counterparty}}</td>
-                            <td>{{wagonrent.acceptance_certificate_number}}</td>
-                            <td>{{wagonrent.acceptance_certificate_date}}</td>
-                            <td>{{wagonrent.rent_start_date}}</td>
-                            <td>{{wagonrent.wagon}}</td>
-                            <td>{{wagonrent.acceptance_station}}</td>
-
-                        </tr>
-                        </tbody>
-                    </table>    
-                </div>                                 
-                </b-card-text>
-        </b-tab>
-        <b-tab title="Лизинг">
-            <b-card-text style="margin-top: -30px;">
-                <div style="width:100%; overflow: auto;">
-                <table>
-                        <thead>
-                        <tr>
-                            <th>{{WagonModel.number}}</th>
-                            <th>{{WagonLeasingModel.leasing_doc}}</th>
-                            <th>{{WagonLeasingModel.leasing_doc_lifetime}}</th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="wagon in WagonsLeasingModel" :key="wagon.id">
-                            <td>{{wagon.number}}</td>
-                            <td>{{wagon.leasing_doc}}</td>
-                            <td>{{wagon.leasing_doc_lifetime}}</td>
-                        </tr>
-                        </tbody>
-                    </table>  
-                </div>                                   
-                </b-card-text>
-        </b-tab>
-        <b-tab title="Страхование">
-            <b-card-text style="margin-top: -30px;">
-                <div style="width:100%; overflow: auto;">
-                <table>
-                        <thead>
-                        <tr>
-                            <th>{{WagonModel.number}}</th>
-                            <th>{{WagonInsuranceModel.insurance_doc}}</th>
-                            <th>{{WagonInsuranceModel.insurance_doc_lifetime}}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="wagon in WagonsInsuranceModel" :key="wagon.id">
-                            <td>{{wagon.number}}</td>
-                            <td>{{wagon.insurance_doc}}</td>
-                            <td>{{wagon.insurance_doc_lifetime}}</td>
-                        </tr>
-                        </tbody>
-                    </table>  
-                </div>                                   
-                </b-card-text>
-        </b-tab>
-        <b-tab title="ЭТРАН">
-            <b-card-text style="margin-top: -30px;">
-                <div style="width:100%; overflow: auto;">
-                <table>
-                        <thead>
-                            <tr>
-                                <th>{{WagonModel.number}}</th>
-                                <th>{{WagonEtranInfoModel.owner}}</th>
-                                <th>{{WagonEtranInfoModel.tenant}}</th>
-                                <th>{{WagonEtranInfoModel.signing}}</th>
-                                <th>{{WagonEtranInfoModel.parking}}</th>
-                                <th>{{WagonEtranInfoModel.telegram_number}}</th>
-                                <th>{{WagonEtranInfoModel.number_from_expeditor}}</th>
-                                
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="wagon in WagonsEtranInfoModel" :key="wagon.id">
-                                <td>{{wagon.number}}</td>
-                                <td>{{wagon.owner}}</td>
-                                <td>{{wagon.tenant}}</td>
-                                <td>{{wagon.signing}}</td>
-                                <td>{{wagon.parking}}</td>
-                                <td>{{wagon.telegram_number}}</td>
-                                <td>{{wagon.number_from_expeditor}}</td>
-                            </tr>
-                        </tbody>
-                    </table> 
-                </div>                                    
-                </b-card-text>
-        </b-tab>
-    </b-tabs>
-</b-card>
-    </div>
-
-
-
-<section  style="display:block" id="loaderWagonTable" v-if="loaderWagonTable">
-
-<svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-  viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
- <path fill="#C04945" d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3
-  c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z">
-      <animateTransform 
-         attributeName="transform" 
-         attributeType="XML" 
-         type="rotate"
-         dur="2s" 
-         from="0 50 50"
-         to="360 50 50" 
-         repeatCount="indefinite" />
-  </path>
- <path fill="#ECECEC" d="M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7
-  c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z">
-      <animateTransform 
-         attributeName="transform" 
-         attributeType="XML" 
-         type="rotate"
-         dur="1s" 
-         from="0 50 50"
-         to="-360 50 50" 
-         repeatCount="indefinite" />
-  </path>
- <path fill="#3D70A8" d="M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5
-  L82,35.7z">
-      <animateTransform 
-         attributeName="transform" 
-         attributeType="XML" 
-         type="rotate"
-         dur="2s" 
-         from="0 50 50"
-         to="360 50 50" 
-         repeatCount="indefinite" />
-  </path>
-</svg>
-  
- 
-</section>
- 
-<div style="display: flex; position: relative; left: 50%; transform: translate(-50%,0); margin-top: 1%; height: 50px; width: 100%" id="pagination">
-    <div class="row" style="display: flex; position: relative; left: 10%; transform: translate(-10%,0);">
-        <div class="col-md-6">
-            <button style="float: left" class="button Cancel" v-if="prevLink" @click="goToPage(prevLink)">назад</button>
+                <div class="col-md-6">
+                    <button style="float: right; margin-left: 20%;" class="button Cancel" v-if="nextLink"
+                        @click="goToPage(nextLink)">вперед</button>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <button style="float: right; margin-left: 20%;" class="button Cancel" v-if="nextLink" @click="goToPage(nextLink)">вперед</button>
-        </div>
-    </div>
-</div>
 
-</div>
+    </div>
 </template>
     
 <style>
@@ -383,6 +364,7 @@
     padding-left: 1%;
 
 }
+
 .searchWagon {
     display: flex;
     width: 30%;
@@ -391,28 +373,6 @@
     margin-top: 1%;
     margin-left: 1%;
 }
-#loaderWagonTable{
-    width: 100vw;
-    height: 100vh;
-    background: rgb(17, 17, 17, 0.1);
-    display: flex;
-    position: fixed;
-    top: 0;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 9999999999999;
-
-}
-#loaderWagonTable svg{
-    width: 120px;
-    height: 120px;
-    display: inline-block;
-    position: relative !important;
-    left: 50% !important;
-    transform: translate(-50%,0) !important;
-    margin-top: 15%;
-}
 </style>
 
     
@@ -420,7 +380,8 @@
 import { mapState } from 'vuex'
 import api from "@/api/wagonPark"
 import FilterWagon from '@/components/filter/FilterWagon.vue'
-export default{
+import Loader from '@/components/loader/loader.vue'
+export default {
     name: "WagonTable",
     computed: {
         ...mapState({
@@ -428,16 +389,17 @@ export default{
             uid: state => state.auth.uid
         })
     },
-    components: {FilterWagon},
+    components: { FilterWagon, Loader },
     data() {
         return {
             nextLink: null,
             prevLink: null,
             activeWagonId: null,
-            filters:null,
+            filters: null,
             numberWagon: '57135303',
             amount: null,
-            loaderWagonTable : false,
+            loader: false,
+            loader: false,
             // checked: [],
             WagonModel: {
                 number: "Номер вагона",
@@ -542,80 +504,80 @@ export default{
         };
     },
     methods: {
-        goToPage(link){
-        
+        goToPage(link) {
+
             let url = new URL(link)
-            let pageNumber  = url.searchParams.get("page")
-            if(pageNumber != null){
-                this.filters.page = pageNumber 
-            }else{
-                delete(this.filters.page)
+            let pageNumber = url.searchParams.get("page")
+            if (pageNumber != null) {
+                this.filters.page = pageNumber
+            } else {
+                delete (this.filters.page)
             }
             this.Wagon()
         },
-        getMoreData(wagonNumber){
-    
+        getMoreData(wagonNumber) {
+
             this.passport(wagonNumber)
             this.belong(wagonNumber)
         },
-        updateFilters(filters){
+        updateFilters(filters) {
             this.filters = filters
         },
 
         Wagon() {
-            this.loaderWagonTable = true
-                api.getWagons(this.filters)
+            this.loader = true
+            api.getWagons(this.filters)
                 .then((response) => {
                     this.WagonsModel = response.data.data;
                     this.nextLink = response.data.links.next
                     this.prevLink = response.data.links.previous
                     this.amount = response.data.total_objects
-                    this.loaderWagonTable = false
-            }).catch(err => {
-                console.log(err)
-                this.loaderWagonTable = false
-            });
+                    this.loader = false
+                }).catch(err => {
+                    console.log(err)
+                    this.loader = false
+                });
         },
 
         passport(wagonNumber = null) {
-            this.loaderWagonTable = true
-            api.getPassport({wagon: wagonNumber})
+            this.loader = true
+            api.getPassport({ wagon: wagonNumber })
                 .then((response) => {
                     this.WagonsPassportModel = response.data.data;
-                    this.loaderWagonTable = false
-     
-            }).catch(error => {
-                console.log(error)
-                this.loaderWagonTable = false
-            })
+                    this.loader = false
+
+                }).catch(error => {
+                    console.log(error)
+                    this.loader = false
+                })
         },
 
         arenda() {
-            this.loaderWagonTable = true
+            this.loader = true
             api.getArenda()
-            .then((response) => {
-                    this.WagonsBelongModel = response.data.data;
-                    this.loaderWagonTable = false
-            }).catch(error => {
-                console.log(error)
-                this.loaderWagonTable = false
-            })
-        },
-        belong(wagonNumber = null) {
-           this.loaderWagonTable = true
-            api.getBelong({wagon: wagonNumber})
                 .then((response) => {
                     this.WagonsBelongModel = response.data.data;
-                    this.loaderWagonTable = false
-            }).catch(error => {
-                console.log(error)
-                this.loaderWagonTable = false
-            })
+                    this.loader = false
+                }).catch(error => {
+                    console.log(error)
+                    this.loader = false
+                })
         },
-        searchWagon(){
-            this.loaderWagonTable = true
-                api.getCurrentWagon(this.numberWagon)
-                
+        belong(wagonNumber = null) {
+            this.loader = true
+            api.getBelong({ wagon: wagonNumber })
+                .then((response) => {
+                    this.WagonsBelongModel = response.data.data;
+                    this.loader = false
+                }).catch(error => {
+                    console.log(error)
+                    this.loader = false
+                })
+        },
+        searchWagon() {
+            this.loader = true
+            api.getCurrentWagon(this.numberWagon)
+
                 .then((response) => {
                     this.WagonsModel = response.data.data;
                     this.amount = response.data.total_objects
@@ -623,18 +585,18 @@ export default{
                     this.belong(this.numberWagon)
 
                     // document.getElementById('pagination').style.display = 'none'
-                    this.loaderWagonTable = false
+                    this.loader = false
                     document.getElementById("searchWagonPlace").value = '';
-            }).catch(error => {
-                console.log(error)
-                this.loaderWagonTable = false
-            });
+                }).catch(error => {
+                    console.log(error)
+                    this.loader = false
+                });
 
         }
     }
 }
 
-   
+
 // belong(wagonNumber = null) {
 //             document.getElementById("loading-page-lk").style.display = "block";
 //             api.getBelong({wagon: wagonNumber})

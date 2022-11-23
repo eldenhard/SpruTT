@@ -18,7 +18,7 @@
                                     <b-col>
                                         <button class="button Action" @click="OpenKPI()"
                                             style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">{{
-                                                    btnName
+                                            btnName
                                             }}</button>
                                     </b-col>
                                 </b-row>
@@ -80,19 +80,15 @@
                                     style="display: flex; justify-content: space-between; margin: 2% 0 -2%;">
                                     <p style="color: grey !important">Ранее созданый отчет:</p>
                                     <p style="color: grey !important">Файл:
-                                         <a target="_blank"
-                                            :href="currentUserReport.file"
-                                            v-if="currentUserReport.file">
+                                        <a target="_blank" :href="currentUserReport.file" v-if="currentUserReport.file">
                                             <img src="@/assets/excel.png" alt="" width="25px !important">
                                         </a>
                                     </p>
                                     <p style="color: grey !important">Доплата: {{ currentUserReport.rate }}%</p>
                                     <p style="color: grey !important">Дата: {{ new
-                                            Date(currentUserReport.created_at).toLocaleString()
+                                    Date(currentUserReport.created_at).toLocaleString()
                                     }}</p>
-                                    <!-- <a download target="_blank" :href="currentUserReport.file"
-                                        v-if="currentUserReport.file"><img src="@/assets/excel.png" alt=""
-                                            width="30px !important"></a> -->
+
                                     <input type="button" class="button Cancel" style="width: 15%"
                                         @click="MoreCurrentReport(currentUserReport.employee.id)" value="Подробнее">
 
@@ -308,7 +304,7 @@
                                     <b-col>
                                         <button class="button Action" @click="OpenReport()"
                                             style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 2%">{{
-                                                    downloadReport
+                                            downloadReport
                                             }}</button>
                                     </b-col>
 
@@ -324,71 +320,94 @@
                             <br><br>
 
 
-                            <div class="row container-fluid" v-if="allReportHistory">
-                                <div class="col-md-6 w-90" style="overflow-x: auto">
-                                    <h5 align="center">Созданные Вами отчеты</h5>
-                                    <table class="table" border="1">
-                                        <tr>
-                                            <td style="text-align:center; font-size: 12px;">Кто создал</td>
-                                            <td style="text-align:center; font-size: 12px;">На кого создано</td>
-                                            <td style="text-align:center; font-size: 12px;">Дата создания</td>
-                                            <td style="text-align:center; font-size: 12px;">Дата последнего изменения
-                                            </td>
-                                            <td style="text-align:center; font-size: 12px;">Доплата</td>
-                                            <td style="text-align:center; font-size: 12px;">Файл</td>
-                                            <td style="text-align:center; font-size: 12px;">Действие</td>
-                                            <td style="text-align:center; font-size: 12px;">Удалить</td>
-                                        </tr>
+                            <!-- <div class="row container-fluid" v-if="allReportHistory"> -->
+                            <div v-if="allReportHistory"
+                                style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
+                                <h5 align="center">Созданные Вами отчеты</h5>
+                                <div style="overflow-x: auto">
 
-                                        <tr v-for="reports in reports_creator" :key="reports.id">
-                                            <td>{{ reports.creator.first_name }} {{ reports.creator.last_name }} <br>
-                                            </td>
-                                            <td>{{ reports.employee.first_name }} {{ reports.employee.last_name }} <br>
-                                            </td>
-                                            <td>{{ new Date(reports.created_at).toLocaleString() }}<br> </td>
-                                            <td>{{ new Date(reports.updated_at).toLocaleString() }}<br> </td>
-                                            <td>{{ reports.rate }} %<br></td>
-                                            <td><a download target="_blank" :href="reports.file"
-                                                    v-if="reports.file"><img src="../assets/excel.png" alt=""
-                                                        width="50px!important"></a> </td>
-                                            <td><button class="button Request"
-                                                    style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #2196F3 !important;   display: flex; align-items: center;justify-content: center;"
-                                                    @click="OpenChangeReport(reports.id)">Подробнее</button> </td>
-                                            <td><button class="button Delete"
-                                                    style="height: 30px; width: 100%; font-size:12px; position: relative; left: 50%; transform: translate(-50%,0); display: block; background: #ED5E68 !important;   display: flex; align-items: center; justify-content: center;"
-                                                    @click="DeleteReport(reports.id)">Удалить</button> </td>
-                                        </tr>
+                                    <table class="table table-sm table-bordered table-hover"
+                                        style="table-layout: fixed;">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Кто создал</th>
+                                                <th>На кого создано</th>
+                                                <th>Дата создания</th>
+                                                <th>Дата последнего
+                                                    изменения
+                                                </th>
+                                                <th>Доплата</th>
+                                                <th>Файл</th>
+                                                <th>Действие</th>
+                                                <th>Удалить</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="reports in reports_creator" :key="reports.id">
+                                                <td>{{ reports.creator.first_name }} {{ reports.creator.last_name }}
+                                                    <br>
+                                                </td>
+                                                <td>{{ reports.employee.first_name }} {{ reports.employee.last_name }}
+                                                    <br>
+                                                </td>
+                                                <td>{{ new Date(reports.created_at).toLocaleString() }}<br> </td>
+                                                <td>{{ new Date(reports.updated_at).toLocaleString() }}<br> </td>
+                                                <td>{{ reports.rate }} %<br></td>
+                                                <td><a download target="_blank" :href="reports.file"
+                                                        v-if="reports.file"><img src="../assets/excel.png" alt=""
+                                                            width="50px!important"></a> </td>
+                                                <td><button class="Request"
+                                                        style="height: 100%; vertical-align: middle; display: flex;align-items: center;justify-content: center;"
+                                                        @click="OpenChangeReport(reports.id)">Подробнее</button> </td>
+                                                <td><button class="Delete"
+                                                        style="height: 100%; vertical-align: middle; display: flex;align-items: center;justify-content: center;"
+                                                        @click="DeleteReport(reports.id)">Удалить</button> </td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
+                                <br><br>
 
-                                <div class="col-md-6 w-90" style="overflow-x: auto">
-                                    <h5 align="center">Созданные на Вас отчеты</h5>
-                                    <table class="table">
-                                        <tr>
-                                            <td style="text-align:center; font-size: 12px;">Кто создал</td>
-                                            <td style="text-align:center; font-size: 12px;">На кого создано</td>
-                                            <td style="text-align:center; font-size: 12px;">Дата создания</td>
-                                            <td style="text-align:center; font-size: 12px;">Дата последнего изменения
-                                            </td>
-                                            <td style="text-align:center; font-size: 12px;">Доплата</td>
-                                            <td style="text-align:center; font-size: 12px;">Файл</td>
-                                        </tr>
+                                <h5 align="center">Созданные на Вас отчеты</h5>
+                                <div style="overflow-x: auto">
 
-                                        <tr v-for="reporte in reports_employee" :key="reporte.id">
-                                            <td>{{ reporte.creator.first_name }} {{ reporte.creator.last_name }}<br>
-                                            </td>
-                                            <td>{{ reporte.employee.first_name }} {{ reporte.employee.last_name }} <br>
-                                            </td>
-                                            <td>{{ new Date(reporte.created_at).toLocaleString() }}<br></td>
-                                            <td>{{ new Date(reporte.updated_at).toLocaleString() }}<br></td>
-                                            <td>{{ reporte.rate }} % <br></td>
-                                            <td><a download target="_blank" :href="reporte.file"
-                                                    v-if="reporte.file"><img src="../assets/excel.png" alt=""
-                                                        width="50px !important"></a></td>
-                                        </tr>
+                                    <table class="table table-sm table-bordered table-hover"
+                                        style="table-layout: fixed;">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Кто создал</th>
+                                                <th>На кого создано</th>
+                                                <th>Дата создания</th>
+                                                <th>Дата последнего
+                                                    изменения
+                                                </th>
+                                                <th>Доплата</th>
+                                                <th>Файл</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="reporte in reports_employee" :key="reporte.id">
+                                                <td>{{ reporte.creator.first_name }} {{ reporte.creator.last_name }}<br>
+                                                </td>
+                                                <td>{{ reporte.employee.first_name }} {{ reporte.employee.last_name }}
+                                                    <br>
+                                                </td>
+                                                <td style="font-size: 15px; text-align: center;">{{ new
+                                                Date(reporte.created_at).toLocaleString()
+                                                }}<br></td>
+                                                <td style="font-size: 15px; text-align: center;">{{ new
+                                                Date(reporte.updated_at).toLocaleString()
+                                                }}<br></td>
+                                                <td>{{ reporte.rate }} % <br></td>
+                                                <td><a download target="_blank" :href="reporte.file"
+                                                        v-if="reporte.file"><img src="../assets/excel.png" alt=""
+                                                            width="20px !important"></a></td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
+
                         </b-card-text>
                     </b-tab>
 
@@ -522,8 +541,8 @@ export default {
         const token = pretoken.auth.user.token
         const preid = JSON.parse(localStorage.getItem('vuex'))
         const id = preid.auth.uid
-        fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
-            // fetch('/api/reports/kpi?'+ `creator=${id}`, {
+        // fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
+            fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
             headers: {
                 'Authorization': `Basic ${token}`
@@ -540,8 +559,8 @@ export default {
                     console.log('NOT OK')
                 }
             }),
-            fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
-                // fetch('/api/reports/kpi?'+ `employee=${id}`, {
+            // fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
+                fetch('/api/reports/kpi?'+ `employee=${id}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -559,8 +578,8 @@ export default {
                     }
                 }),
             // /api/personal/users?last_kpi_graded__lte=01.11.2022
-            fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
-                // fetch('/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
+            // fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
+                fetch('/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -642,8 +661,8 @@ export default {
             this.loader = true
             this.allReportHistory = true
             this.downloadReport = 'Загрузить отчеты'
-            fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
-                // fetch('/api/reports/kpi?'+ `creator=${id}`, {
+            // fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
+                fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -662,8 +681,8 @@ export default {
 
                     }
                 }),
-                fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
-                    // fetch('/api/reports/kpi?'+ `employee=${id}`, {
+                // fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
+                    fetch('/api/reports/kpi?'+ `employee=${id}`, {
 
                     headers: {
                         'Authorization': `Basic ${token}`
@@ -733,8 +752,8 @@ export default {
 
             if (!Object.keys(this.errors).length) {
                 this.loader = true
-                fetch('http://10.1.5.65/api/reports/kpi/create/', {
-                    // fetch('/api/reports/kpi/create/', {
+                // fetch('http://10.1.5.65/api/reports/kpi/create/', {
+                    fetch('/api/reports/kpi/create/', {
 
                     method: 'POST',
                     headers: {

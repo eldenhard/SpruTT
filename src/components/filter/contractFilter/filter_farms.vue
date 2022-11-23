@@ -26,7 +26,7 @@
     position: relative !important;
     left: 50% !important;
     transform: translate(-50%, 0) !important;
-    /* margin: 1% 0; */
+    margin: 1% 0;
 }
 
 

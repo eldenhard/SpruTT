@@ -14,84 +14,59 @@
         <p class="amount">всего на странице: {{ amount }}</p>
         <div
             style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
-            <table class="table" style="table-layout: fixed;">
-                <thead>
+            <table class="table table-sm table-bordered" style="table-layout: fixed;">
+                <thead class="thead-light">
                     <tr>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Номер договора</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Статус ТТ по договору</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Дата заключения</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
-                            Подразделение инициатора</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
+                            Отдел инициатора</th>
+                        <th>
                             Вид договора</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Предмет договора</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Сумма договора</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Срок действия договора</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Пролонгация</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Статус</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Скан-копия</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Категория</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important;">
+                        <th>
                             Примечание</th>
 
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             Рабочее наименование</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             Краткое наименование</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             Полное наименование</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             ЕЛС</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             ОГРН/ЕГРПОУ/БИН</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             ИНН/РНН</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             КПП/№ Св-ва НДС</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             Юридический адрес</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             Дата создания</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             Руководитель</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             Телефон</th>
-                        <th
-                            style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: burlywood !important;">
+                        <th style="background: burlywood !important;">
                             Группа</th>
 
                         <!-- <template v-if="countAnnexes"> -->
@@ -99,23 +74,17 @@
                         <template v-for="(el, idx) in countAnnexes">
 
 
-                            <th :key="idx"
-                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            <th :key="idx" style="background: wheat !important;">
                                 Тип приложения</th>
-                            <th
-                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            <th style="background: wheat !important;">
                                 Номер приложения</th>
-                            <th
-                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            <th style="background: wheat !important;">
                                 Дата</th>
-                            <th
-                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            <th style="background: wheat !important;">
                                 Примечание</th>
-                            <th
-                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            <th style="background: wheat !important;">
                                 Скан-копия</th>
-                            <th
-                                style="width:  200px !important; height: 50px !important; vertical-align: middle !important; background: wheat !important;">
+                            <th style="background: wheat !important;">
                                 Номер договора</th>
                         </template>
                         <!-- </template> -->
@@ -125,79 +94,79 @@
                 </thead>
                 <tbody>
                     <tr v-for="(finance) in financeDirecory" :key="finance.id">
-                        <td class="td-btr">{{ finance.number }}</td>
-                        <td class="td-btr">{{ finance.company_status }}</td>
-                        <td class="td-btr">{{ new Date(finance.created_at).toLocaleString() }}</td>
-                        <td class="td-btr">{{ finance.department }}</td>
-                        <td class="td-btr">{{ finance.contract_type }}</td>
-                        <td class="td-btr">{{ finance.contract_object }}</td>
-                        <td class="td-btr">{{ finance.fiat_amount }}</td>
-                        <td class="td-btr">{{ finance.expiration_date }}</td>
-                        <td class="td-btr" v-if="finance.prolongation == true">Да</td>
-                        <td class="td-btr" v-else>Нет</td>
-                        <td class="td-btr" v-if="finance.is_active == true">Да</td>
-                        <td class="td-btr" v-else>Нет</td>
-                        <td class="td-btr" v-if="finance.scan != null"><a :href="finance.scan" target="_blank"><img
-                                    style="height: 50px" src="@/assets/pdf.png" alt="скан"></a></td>
-                        <td class="td-btr" v-else>—</td>
-                        <td class="td-btr">{{ finance.category }}</td>
-                        <td class="td-btr">{{ finance.comment }}</td>
+                        <td>{{ finance.number }}</td>
+                        <td>{{ finance.company_status }}</td>
+                        <td style="font-size: 15px; text-align: center;">{{ new Date(finance.created_at).toLocaleString() }}</td>
+                        <td>{{ finance.department }}</td>
+                        <td>{{ finance.contract_type }}</td>
+                        <td>{{ finance.contract_object }}</td>
+                        <td>{{ finance.fiat_amount }}</td>
+                        <td>{{ finance.expiration_date }}</td>
+                        <td v-if="finance.prolongation == true">Да</td>
+                        <td v-else>Нет</td>
+                        <td v-if="finance.is_active == true">Да</td>
+                        <td v-else>Нет</td>
+                        <td v-if="finance.scan != null"><a :href="finance.scan" target="_blank"><img
+                                    style="height: 20px" src="@/assets/pdf.png" alt="скан"></a></td>
+                        <td v-else>—</td>
+                        <td>{{ finance.category }}</td>
+                        <td>{{ finance.comment }}</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.work_name }}</td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-if="finance.counterparty != null">{{ finance.counterparty.work_name }}</td>
+                        <td v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.short_name }}
+                        <td v-if="finance.counterparty != null">{{ finance.counterparty.short_name }}
                         </td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.full_name }}</td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-if="finance.counterparty != null">{{ finance.counterparty.full_name }}</td>
+                        <td v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.els }}</td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-if="finance.counterparty != null">{{ finance.counterparty.els }}</td>
+                        <td v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.ogrn }}</td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-if="finance.counterparty != null">{{ finance.counterparty.ogrn }}</td>
+                        <td v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.inn }}</td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-if="finance.counterparty != null">{{ finance.counterparty.inn }}</td>
+                        <td v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.kpp }}</td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-if="finance.counterparty != null">{{ finance.counterparty.kpp }}</td>
+                        <td v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.legal_address }}
+                        <td v-if="finance.counterparty != null">{{ finance.counterparty.legal_address }}
                         </td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ new
+                        <td v-if="finance.counterparty != null" style="font-size: 15px; text-align: center;">{{ new
                                 Date(finance.counterparty.created_at).toLocaleString()
                         }}</td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">
+                        <td v-if="finance.counterparty != null">
                             {{ finance.counterparty.manager }}
                         </td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{ finance.counterparty.phone }}</td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-if="finance.counterparty != null">{{ finance.counterparty.phone }}</td>
+                        <td v-else>—</td>
 
-                        <td class="td-btr" v-if="finance.counterparty != null">{{
+                        <td v-if="finance.counterparty != null">{{
                                 getGroupName(finance.counterparty.group)
                         }}
                         </td>
-                        <td class="td-btr" v-else>—</td>
+                        <td v-else>—</td>
 
                         <template v-for="f in finance.annexes">
 
-                            <td class="td-btr">{{ f.doc_type }}</td>
-                            <td class="td-btr">{{ f.number }}</td>
-                            <td class="td-btr">{{ new
+                            <td>{{ f.doc_type }}</td>
+                            <td>{{ f.number }}</td>
+                            <td style="font-size: 15px; text-align: center;">{{ new
                                     Date(f.created_at).toLocaleString()
                             }}</td>
-                            <td class="td-btr">{{ f.comment }}</td>
-                            <td class="td-btr"><a :href="f.scan" target="_blank"><img src="@/assets/excel.png"></a></td>
-                            <td class="td-btr">{{ f.contract }}</td>
+                            <td>{{ f.comment }}</td>
+                            <td><a :href="f.scan" target="_blank"><img src="@/assets/excel.png" style="height: 20px"></a></td>
+                            <td>{{ f.contract }}</td>
                         </template>
                     </tr>
                 </tbody>
