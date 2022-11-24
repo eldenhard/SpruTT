@@ -13,7 +13,7 @@
 
         <div
             style="width: 95%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
-            <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+            <table class="table table-sm table-bordered table-hover">
                 <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
                     <!-- <th>Фото</th> -->
                     <th>Фамилия</th>

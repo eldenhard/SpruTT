@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div id="id01" class="modal" v-if="showAuthForm" style="display: block;">
-            <div class="modal-content animate" style=" width: 60%;">
+        <div id="id01" class="modal" v-if="showAuthForm" style="display: block; ">
+            <div class="modal-content animate" style=" width: 60% !important; margin: 0 !important;">
                 <div class="container">
                     <label for="uname"><b>Email</b></label>
                     <input type="text" placeholder="i.ivanov@tehtrans.com" v-model="email"

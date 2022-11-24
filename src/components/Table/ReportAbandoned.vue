@@ -37,7 +37,7 @@
         <p class="amount">всего записей: {{ total_objects }}</p>
         <div
             style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
-            <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+            <table class="table table-sm table-bordered table-hover"  >
                 <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
                     <tr>
                         <th>
@@ -109,7 +109,7 @@
                 <b-col>
                     <div
                         style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
-                        <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+                        <table class="table table-sm table-bordered table-hover">
                             <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
                                 <tr>
                                     <th>

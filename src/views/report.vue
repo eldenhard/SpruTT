@@ -327,7 +327,7 @@
                                 <div style="overflow-x: auto">
 
                                     <table class="table table-sm table-bordered table-hover"
-                                        style="table-layout: fixed;">
+                                         >
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>Кто создал</th>
@@ -372,7 +372,7 @@
                                 <div style="overflow-x: auto">
 
                                     <table class="table table-sm table-bordered table-hover"
-                                        style="table-layout: fixed;">
+                                         >
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>Кто создал</th>
