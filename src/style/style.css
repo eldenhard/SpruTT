@@ -319,6 +319,7 @@ th {
   text-align: center !important;
   font-size: 15px !important;
   font-weight: 500 !important;
+  z-index: 2 !important;
 }
 
 td {
@@ -332,6 +333,7 @@ td {
   text-align: center !important;
   cursor: pointer !important;
   color: #757575 !important;
+  z-index: 0 !important;
 }
 
 /* Цвет выбранного ТАБА */

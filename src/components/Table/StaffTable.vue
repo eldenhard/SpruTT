@@ -7,7 +7,7 @@
         <br><br>
         <br><br>
         <button class="Cancel staffButton"
-            style="width: 50%; border-top-left-radius: 10px; border-top-right-radius: 10px;"
+            style="width: 50%; border-top-left-radius: 10px; border-top-right-radius: 10px; margin: 0 !important"
             @click="addStaff()">Добавить сотрудника</button>
         <span id="big-photo" @click="close_photo"></span>
 

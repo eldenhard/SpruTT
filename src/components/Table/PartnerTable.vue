@@ -214,7 +214,7 @@
 
 
         <button class="Accept" @click="getCounterparties()"
-            style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0)">Запросить
+            style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); margin: 0 !important;">Запросить
             контрагентов</button>
         <br><br>
 
