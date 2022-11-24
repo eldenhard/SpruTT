@@ -333,3 +333,9 @@ td {
   cursor: pointer !important;
   color: #757575 !important;
 }
+
+/* Цвет выбранного ТАБА */
+.nav-pills .nav-link.active {
+  background: #2C3E50 !important;
+  color: white;
+}

@@ -20,8 +20,7 @@
             <div class="col-md-5">
                 <table class="table table-sm table-bordered table-hover"
                     style="table-layout: fixed;margin-top: -0.1px;">
-
-                    <thead class="thead-light">
+                    <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
                         <tr>
                             <th style="width: 70px !important"><input type="number" v-model="numberWagon"
                                     placeholder="номер вагона" id="searchWagonPlace" @keydown.enter="searchWagon()"
@@ -61,7 +60,7 @@
                                     style="width: 100%; overflow-x: auto;overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
 
                                     <table class="table table-sm table-bordered table-hover">
-                                        <thead class="thead-light">
+                                        <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
                                             <tr>
                                                 <th style="width: 150px !important">Скан паспорта</th>
                                                 <th style="width: 150px !important">Дата следующего планового ремонта</th>
@@ -221,7 +220,7 @@
                                 <div
                                     style="width: 100%; overflow-x: auto; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
                                     <table class="table table-sm table-bordered table-hover">
-                                        <thead class="thead-light">
+                                        <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
                                             <tr>
                                                 <th>{{ WagonRentModel.rent_doc }}</th>
                                                 <th>{{ WagonRentModel.rent_doc_counterparty }}</th>

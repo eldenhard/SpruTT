@@ -1,6 +1,6 @@
 <template>
 <div v-if="show" :class="blockClass" id="notifications">
-  <div class="card">
+  <div class="notifications-main">
       <div class="subject">
       <h5>{{header}}</h5>
       <p>{{message}}</p>
@@ -50,7 +50,7 @@ export default{
     top: 0;
     z-index: 1060;
   }
-  .wrapper-success .card {
+  .wrapper-success .notifications-main {
     width: 100%;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -59,15 +59,16 @@ export default{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-left: 5px solid #4CAF50;
+    border-left: 5px solid #4CAF50 !important;
     border-radius: 3px;
     border-radius: 10px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    z-index: 999999;
   }
-  .wrapper-success .card .subject {
+  .wrapper-success .notifications-main .subject {
     margin-right: 10px;
   }
-  .wrapper-success .card .subject p {
+  .wrapper-success .notifications-main .subject p {
     color: #909092;
   }  
 
@@ -77,7 +78,7 @@ export default{
     top: 0;
     z-index: 9999999999999 !important;
   }
-  .wrapper-error .card {
+  .wrapper-error .notifications-main {
     width: 100%;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -86,15 +87,15 @@ export default{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-left: 5px solid #fb1500;
+    border-left: 5px solid #fb1500 !important;
     border-radius: 3px;
     border-radius: 10px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   }
-  .wrapper-error .card .subject {
+  .wrapper-error .notifications-main .subject {
     margin-right: 10px;
   }
-  .wrapper-error .card .subject p {
+  .wrapper-error .notifications-main .subject p {
     color: #909092;
   }  
   @media screen and (max-width:550px) {

@@ -14,7 +14,7 @@
         <div
             style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
             <table class="table table-sm table-bordered" style="table-layout: fixed;">
-                <thead class="thead-light">
+                <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
                     <tr>
                         <th>
                             Номер договора</th>
