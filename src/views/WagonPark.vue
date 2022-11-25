@@ -20,7 +20,8 @@
                                 <FlightTable/>
                             </div>
                             <div v-if="i.name==='Вагоны'"> 
-                                <WagonTable/>
+                                <!-- <WagonTable/> -->
+                                <component :is="wt"></component>
                             </div>
                             <div v-if="i.name==='Брошенные вагоны'"> 
                                 <AbandonTable/>
@@ -62,6 +63,7 @@ export default{
         return {
             tabs: [],
             counter: 1,
+            wt: 'WagonTable'
         }
     },
     methods:{

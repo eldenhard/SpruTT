@@ -28,8 +28,8 @@
                                 <br>
                                 <div class="filterStaff" style="width: 100% !important;">
                                     <div class='bg'>
-                                        <select class='textarea' id="admin" name='Pwd'>
-                                            <option selected="selected">{{ admin.id }} {{ admin.first_name }}
+                                        <select class='textarea' id="admin" name='Pwd' v-model="selectedAdminId">
+                                            <option selected="selected" :value="admin.id">{{ admin.first_name }}
                                                 {{ admin.last_name }}</option>
                                         </select>
                                         <br>
@@ -53,8 +53,7 @@
                                         <select class='textarea' id="staff" name='Pwd' v-model="emplyee"
                                             :class="{ error: this.errors.staff }">
                                             <option value="" disabled="disabled" selected="selected">Сотрудник</option>
-                                            <option v-for="staf in staff" :key="staf.id">
-                                                {{ staf.id }}
+                                            <option v-for="staf in staff" :key="staf.id" :value="staf.id">
                                                 {{ staf.first_name }}
                                                 {{ staf.last_name }}</option>
                                         </select>
@@ -462,6 +461,7 @@ export default {
     data() {
         return {
             emplyee: '',
+            selectedAdminId : '',
             staff: [],
             answer1: '',
             answer2: '',
@@ -507,7 +507,7 @@ export default {
         emplyee() {
             // this.aboutThisReport = true
             this.loader = true
-            let id = this.emplyee.split(' ')[0]
+            let id = this.emplyee
             api.getLastDataReports(id).then(response => {
                 if (response.data == '404') {
                     this.aboutThisReport = false
@@ -541,8 +541,8 @@ export default {
         const token = pretoken.auth.user.token
         const preid = JSON.parse(localStorage.getItem('vuex'))
         const id = preid.auth.uid
-        // fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
-            fetch('/api/reports/kpi?'+ `creator=${id}`, {
+        fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
+            // fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
             headers: {
                 'Authorization': `Basic ${token}`
@@ -559,8 +559,8 @@ export default {
                     console.log('NOT OK')
                 }
             }),
-            // fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
-                fetch('/api/reports/kpi?'+ `employee=${id}`, {
+            fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
+                // fetch('/api/reports/kpi?'+ `employee=${id}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -578,8 +578,8 @@ export default {
                     }
                 }),
             // /api/personal/users?last_kpi_graded__lte=01.11.2022
-            // fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
-                fetch('/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
+            fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
+                // fetch('/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -661,8 +661,8 @@ export default {
             this.loader = true
             this.allReportHistory = true
             this.downloadReport = 'Загрузить отчеты'
-            // fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
-                fetch('/api/reports/kpi?'+ `creator=${id}`, {
+            fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
+                // fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -681,8 +681,8 @@ export default {
 
                     }
                 }),
-                // fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
-                    fetch('/api/reports/kpi?'+ `employee=${id}`, {
+                fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
+                    // fetch('/api/reports/kpi?'+ `employee=${id}`, {
 
                     headers: {
                         'Authorization': `Basic ${token}`
@@ -724,8 +724,10 @@ export default {
             const pretoken = JSON.parse(localStorage.getItem("vuex"))
             const token = pretoken.auth.user.token
             // document.getElementById('loading-page-lk').style.display = 'block'
-            let admin = document.getElementById('admin').value.split(' ')[0]
-            let staff = document.getElementById('staff').value.split(' ')[0]
+            //let admin = document.getElementById('admin').value.split(' ')[0]
+            let admin = this.selectedAdminId
+            //let staff = document.getElementById('staff').value.split(' ')[0]
+            let staff = this.emplyee
             this.errors = {}
 
             if (this.answer1 == '') {
@@ -752,8 +754,8 @@ export default {
 
             if (!Object.keys(this.errors).length) {
                 this.loader = true
-                // fetch('http://10.1.5.65/api/reports/kpi/create/', {
-                    fetch('/api/reports/kpi/create/', {
+                fetch('http://10.1.5.65/api/reports/kpi/create/', {
+                    // fetch('/api/reports/kpi/create/', {
 
                     method: 'POST',
                     headers: {

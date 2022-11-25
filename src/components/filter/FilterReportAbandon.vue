@@ -34,10 +34,10 @@
             <div style="display:flex; flex-direction:column;">
                 <div class='bg'>
                     <!-- <label for="input_FilterReportAbandon" style="cursor: pointer">Контрагент</label> -->
-                    <multi-select-uni @change="updateSelectedCounterparties" :placeholder="'Контрагент'"
+                    <multi-select-search @change="updateSelectedCounterparties" :placeholder="'Контрагент'"
                         :variants="counterparties" :variant-title="'work_name'"
                         style="width: 170px !important;cursor: pointer;">
-                    </multi-select-uni>
+                    </multi-select-search>
                 </div>
             </div>
 
@@ -153,9 +153,10 @@
 import { mapState } from 'vuex'
 import api from '@/api/wagonPark'
 import MultiSelectUni from '../ui/MultiSelectUni.vue'
+import MultiSelectSearch from '../ui/MultiSelectSearch.vue'
 // import Loader from '../loader/loader.vue'
 export default {
-    components: { MultiSelectUni },
+    components: { MultiSelectUni, MultiSelectSearch },
     name: 'FilterReportAbandon',
     data() {
         return {

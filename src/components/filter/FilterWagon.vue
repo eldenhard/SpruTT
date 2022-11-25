@@ -3,9 +3,10 @@
         <div style="display:flex; flex-direction:column; ">
             <div class='bg'>
                 <p style="color: #757575;">Активность</p>
-                <input type="checkbox" id="switch" v-model="filters.is_active" @change="updateFilterData"
+                <input type="checkbox"  v-model="filters.is_active" @change="updateFilterData"
                     class='textarea' style="  height: 0; width: 0;  visibility: hidden; margin-top: -10% !important;" />
-                <label for="switch" class="active-wagon">{{ activeWagonLabel }}
+                
+                <label  class="active-wagon" @click="filters.is_active = !filters.is_active">{{ activeWagonLabel }}
                 </label>
 
                 <!-- <input type="checkbox" id="checkbox" v-model="filters.is_active" @change="updateFilterData"
