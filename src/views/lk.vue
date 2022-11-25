@@ -31,7 +31,7 @@
                                             readonly />
                                         <br>
                                         <label for='input-filter-staff1' class='label'
-                                            style="margin-left:5% !important; background: white;">Фамилия</label>
+                                            style="margin-left:15   % !important; background: white;">Фамилия</label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -41,7 +41,7 @@
                                             readonly />
                                         <br>
                                         <label for='input-filter-staff1' class='label'
-                                            style="margin-left:5% !important; background: white;">Имя</label>
+                                            style="margin-left:15   % !important; background: white;">Имя</label>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -51,7 +51,7 @@
                                             readonly />
                                         <br>
                                         <label for='input-filter-staff1' class='label'
-                                            style="margin-left: 5% !important; background: white;">Отчество</label>
+                                            style="margin-left: 15  % !important; background: white;">Отчество</label>
                                     </div>
                                 </div>
                             </div>

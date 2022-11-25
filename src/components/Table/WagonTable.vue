@@ -18,7 +18,7 @@
         <!-- <div style="display: flex;" > -->
         <div class="row">
             <div class="col-md-5">
-                <table class="table table-sm table-bordered table-hover"
+                <table class="table table-sm table-bordered table-hover" 
                     style="table-layout: fixed;margin-top: -0.1px;">
                     <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
                         <tr>
@@ -59,7 +59,7 @@
                                 <div
                                     style="width: 100%; overflow-x: auto;overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
 
-                                    <table class="table table-sm table-bordered table-hover">
+                                    <table class="table table-sm table-bordered table-hover"  style="table-layout: fixed;">
                                         <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
                                             <tr>
                                                 <th style="width: 150px !important">Скан паспорта</th>
@@ -105,7 +105,7 @@
                         <!-- <b-tab title="Принадлежность">
                             <b-card-text>
                                 <div style="width:100%; overflow: auto;">
-                                    <table class="table table-sm table-bordered table-hover">
+                                    <table class="table table-sm table-bordered table-hover"  style="table-layout: fixed;">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>{{ WagonBelongModel.name }}</th>
@@ -139,7 +139,7 @@
                         <!-- <b-tab title="Ремонт">
                             <b-card-text>
                                 <div style="width:100%; overflow: auto;">
-                                    <table class="table table-sm table-bordered table-hover">
+                                    <table class="table table-sm table-bordered table-hover"  style="table-layout: fixed;">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>{{ WagonModel.number }}</th>
@@ -170,7 +170,7 @@
                         <b-tab title="Остаточный пробег">
                             <b-card-text>
                                 <div style="width:100%; overflow: auto;">
-                                    <table class="table table-sm table-bordered table-hover">
+                                    <table class="table table-sm table-bordered table-hover"  style="table-layout: fixed;">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>{{ WagonModel.number }}</th>
@@ -198,7 +198,7 @@
                         <b-tab title="Модернизация">
                             <b-card-text>
                                 <div style="width:100%; overflow: auto;">
-                                    <table class="table table-sm table-bordered table-hover">
+                                    <table class="table table-sm table-bordered table-hover"  style="table-layout: fixed;">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>{{ WagonModel.number }}</th>
@@ -219,7 +219,7 @@
                             <b-card-text>
                                 <div
                                     style="width: 100%; overflow-x: auto; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
-                                    <table class="table table-sm table-bordered table-hover">
+                                    <table class="table table-sm table-bordered table-hover"  style="table-layout: fixed;">
                                         <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
                                             <tr>
                                                 <th>{{ WagonRentModel.rent_doc }}</th>
@@ -251,7 +251,7 @@
                         <!-- <b-tab title="Лизинг">
                             <b-card-text>
                                 <div style="width:100%; overflow: auto;">
-                                    <table class="table table-sm table-bordered table-hover">
+                                    <table class="table table-sm table-bordered table-hover"  style="table-layout: fixed;">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>{{ WagonModel.number }}</th>
@@ -274,7 +274,7 @@
                         <b-tab title="Страхование">
                             <b-card-text>
                                 <div style="width:100%; overflow: auto;">
-                                    <table class="table table-sm table-bordered table-hover">
+                                    <table class="table table-sm table-bordered table-hover"  style="table-layout: fixed;">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>{{ WagonModel.number }}</th>
@@ -296,7 +296,7 @@
                         <b-tab title="ЭТРАН">
                             <b-card-text>
                                 <div style="width:100%; overflow: auto;">
-                                    <table class="table table-sm table-bordered table-hover">
+                                    <table class="table table-sm table-bordered table-hover"  style="table-layout: fixed;">
                                         <thead class="thead-light">
                                             <tr>
                                                 <th>{{ WagonModel.number }}</th>
