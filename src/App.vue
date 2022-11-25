@@ -18,7 +18,7 @@ export default {
   mounted(){
     this.$store.dispatch(actionTypes.getStaffGroups)
     this.$store.dispatch(actionTypes.staffGlobal)
-    this.$store.dispatch(cpActionTypes.getCounterparties, {url: 'personal/counterparties/?page_size=300', clear: true})
+    this.$store.dispatch(cpActionTypes.getCounterparties, {url: 'personal/counterparties/?page_size=500', clear: true})
   }
 }
 </script>

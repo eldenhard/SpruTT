@@ -223,8 +223,7 @@ export default {
             this.loader = true
             api.getFilterWafonAbadone(this.format, this.filter)
                 .then((response) => {
-                    this.loader = false
-                    this.DownloadReportAbandones()
+
                     // this.report_abandoned = response.data.data
                     this.notifyHead = 'Успешно'
                     this.notifyMessage = 'Отчет создан'
@@ -232,6 +231,8 @@ export default {
                     this.showNotify = true
                     setTimeout(this.closeNotification, 1500)
                     this.hideModal()
+                    this.loader = false
+                    this.DownloadReportAbandones()
                 }).catch(error => {
                     this.loader = false
                     this.notifyHead = 'Ошибка'
