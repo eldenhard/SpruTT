@@ -37,8 +37,8 @@
         <p class="amount">всего записей: {{ total_objects }}</p>
         <div
             style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
-            <table class="table table-sm table-bordered table-hover"  style="table-layout: fixed;"  >
-                <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
+            <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+                <thead class="thead-light" style="background:#E9ECEF; z-index:1">
                     <tr>
                         <th>
                             Тип вагона</th>
@@ -109,8 +109,8 @@
                 <b-col>
                     <div
                         style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
-                        <table class="table table-sm table-bordered table-hover"  style="table-layout: fixed;">
-                            <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
+                        <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
+                            <thead class="thead-light" style="background:#E9ECEF; z-index:1">
                                 <tr>
                                     <th>
                                         Файл</th>
@@ -218,6 +218,7 @@ export default {
             // when the modal has hidden
             this.$refs['ModalTypeReport'].toggle('#toggle-btn')
         },
+
         CreateReportAbandones() {
             this.loader = true
             api.getFilterWafonAbadone(this.format, this.filter)
