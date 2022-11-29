@@ -385,10 +385,10 @@ export default {
     transform: translate(-50%,0) !important;
     margin-top: 15%;
 }
-thead th {
+/* thead th {
   position: sticky;
   top: 0;
-  /* background: white; */
-}
+  background: white;
+} */
 </style>
 

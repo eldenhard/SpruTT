@@ -1,33 +1,50 @@
 <template>
-    <div>
-        <Loader :loader="loader"></Loader>
-        <FilterWagonTablePoligon @updateFilterDataWagonDislocation="updateFilterDataWagonDislocation">
-        </FilterWagonTablePoligon>
-        <button class="Accept" @click="getWagonPolygon()"
-            style="width: 80%; position: relative; left: 50%; transform: translate(-50%,0)">Запросить вагоны</button>
-        <br><br>
+  <div>
+    <Loader :loader="loader"></Loader>
+    <FilterWagonTablePoligon
+      @updateFilterDataWagonDislocation="updateFilterDataWagonDislocation"
+    >
+    </FilterWagonTablePoligon>
+    <button
+      class="Accept"
+      @click="getWagonPolygon()"
+      style="
+        width: 80%;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0);
+      "
+    >
+      Запросить вагоны
+    </button>
+    <br /><br />
 
-        <p class="amount">всего записей: {{ total_objects }}</p>
-        <p class="amount">всего на странице: {{ amount }}</p>
-        <div
-            style="width: 100%; overflow-x: auto; height: 80vh; overflow-y: auto; position: relative; left: 50%; transform: translate(-50%,0); margin-bottom: 3%;">
-            <table class="table table-sm table-bordered table-hover" style="table-layout: fixed;">
-                <thead class="thead-light"  style="background:#E9ECEF; z-index:1">
-                    <tr>
-                        <th>
-                            Тип вагона</th>
-                        <th>
-                            № вагона</th>
-                        <th>
-                            Полигон</th>
-                        <th>
-                            Государство</th>
-                        <th>
-                            Операция</th>
+    <p class="amount">всего записей: {{ total_objects }}</p>
+    <p class="amount">всего на странице: {{ amount }}</p>
+    <div
+      style="
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: auto;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0);
+        height: 80vh;
+      "
+    >
+      <table
+        class="table table-sm table-bordered table-hover"
+        style="margin: 0; border: 1px solid black"
+      >
+        <thead class="thead-light" style="background: #e9ecef !important">
+          <tr>
+            <th>Тип вагона</th>
+            <th>№ вагона</th>
+            <th>Полигон</th>
+            <th>Государство</th>
+            <th>Операция</th>
 
-
-
-                        <!-- 
+            <!-- 
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Квитанция</th>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Простой на станции дислокации</th>
                     <th style="width: 150px !important; height: 50px !important; vertical-align: middle !important;">Простой от последней операции</th>
@@ -111,24 +128,19 @@
                    
                     <th style="background: darkkhaki !important; color: white !important;  width: 150px !important; height: 50px !important; vertical-align: middle !important;">Код причины бросания</th>
                     <th style="background: darkkhaki !important; color: white !important;  width: 150px !important; height: 50px !important; vertical-align: middle !important;">Причина бросания</th> -->
-
-
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="polygon in polygonWagon" :key="polygon.id">
-                        <td>{{ polygon.wagon_type }}
-                        </td>
-                        <td>{{ polygon.wagon }}</td>
-                        <td>{{ polygon.polygon }}
-                        </td>
-                        <td>
-                            {{ polygon.current_country }}</td>
-                        <td>{{ polygon.operation }}
-                        </td>
-                    </tr>
-                    <!-- <tr v-for="polygon in polygonWagon" :key="polygon.id">
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="polygon in polygonWagon" :key="polygon.id">
+            <td>{{ polygon.wagon_type }}</td>
+            <td>{{ polygon.wagon }}</td>
+            <td>{{ polygon.polygon }}</td>
+            <td>
+              {{ polygon.current_country }}
+            </td>
+            <td>{{ polygon.operation }}</td>
+          </tr>
+          <!-- <tr v-for="polygon in polygonWagon" :key="polygon.id">
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.receipt}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.current_station_downtime}}</td>
                 <td style="height: 50px !important; vertical-align: middle !important;">{{polygon.last_operation_downtime}}</td>
@@ -242,99 +254,112 @@
                     </td>
                 <td v-else> </td>
             </tr> -->
-
-                </tbody>
-            </table>
-        </div>
-        <div style="display: flex; justify-content: space-around; margin-top: 2%;">
-            <button class="Cancel" style="width: 20%" v-if="prevLink" @click="goToPage(prevLink)">назад</button>
-            <button class="Cancel" style="width: 20%" v-if="nextLink" @click="goToPage(nextLink)">вперед</button>
-        </div>
-        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
-            id="notif" />
-
+        </tbody>
+      </table>
     </div>
+    <div style="display: flex; justify-content: space-around; margin-top: 2%">
+      <button
+        class="Cancel"
+        style="width: 20%"
+        v-if="prevLink"
+        @click="goToPage(prevLink)"
+      >
+        назад
+      </button>
+      <button
+        class="Cancel"
+        style="width: 20%"
+        v-if="nextLink"
+        @click="goToPage(nextLink)"
+      >
+        вперед
+      </button>
+    </div>
+    <Notifications
+      :show="showNotify"
+      :header="notifyHead"
+      :message="notifyMessage"
+      :block-class="notifyClass"
+      id="notif"
+    />
+  </div>
 </template>
 
 <style>
-
 </style>
 
 <script>
-import { mapState } from 'vuex'
-import api from '@/api/wagonPark'
-import FilterWagonTablePoligon from '../filter/FilterWagonTablePoligon.vue'
-import Notifications from '@/components/notifications/Notifications.vue'
-import Loader from '@/components/loader/loader.vue'
+import { mapState } from "vuex";
+import api from "@/api/wagonPark";
+import FilterWagonTablePoligon from "../filter/FilterWagonTablePoligon.vue";
+import Notifications from "@/components/notifications/Notifications.vue";
+import Loader from "@/components/loader/loader.vue";
 export default {
-    name: 'WagonTablePoligon',
-    components: { FilterWagonTablePoligon, Notifications, Loader },
-    computed: {
-        ...mapState({
-            user: state => state.auth.user,
-            uid: state => state.auth.uid,
-        })
+  name: "WagonTablePoligon",
+  components: { FilterWagonTablePoligon, Notifications, Loader },
+  computed: {
+    ...mapState({
+      user: (state) => state.auth.user,
+      uid: (state) => state.auth.uid,
+    }),
+  },
+  data() {
+    return {
+      nextLink: null,
+      prevLink: null,
+      loaderPoligon: false,
+      filter_wagonpolygon: {
+        wagon__wagon_type: "",
+        polygon: "",
+      },
+      polygonWagon: "",
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
+
+      amount: null,
+      total_objects: null,
+
+      loader: false,
+    };
+  },
+  methods: {
+    goToPage(link) {
+      let url = new URL(link);
+      let pageNumber = url.searchParams.get("page");
+      if (pageNumber != null) {
+        this.filter_wagonpolygon.page = pageNumber;
+      } else {
+        delete this.filter_wagonpolygon.page;
+      }
+      this.getWagonPolygon();
     },
-    data() {
-        return {
-            nextLink: null,
-            prevLink: null,
-            loaderPoligon: false,
-            filter_wagonpolygon: {
-                wagon__wagon_type: '',
-                polygon: ''
-            },
-            polygonWagon: '',
-            showNotify: false,
-            notifyHead: '',
-            notifyMessage: '',
-            notifyClass: '',
-
-            amount: null,
-            total_objects: null,
-
-            loader: false,
-        }
+    closeNotification() {
+      this.showNotify = false;
     },
-    methods: {
-        goToPage(link) {
-            let url = new URL(link)
-            let pageNumber = url.searchParams.get("page")
-            if (pageNumber != null) {
-                this.filter_wagonpolygon.page = pageNumber
-            } else {
-                delete (this.filter_wagonpolygon.page)
-            }
-            this.getWagonPolygon()
-        },
-        closeNotification() {
-            this.showNotify = false
-        },
-        updateFilterDataWagonDislocation(filter_wagonpolygon) {
-            this.filter_wagonpolygon = filter_wagonpolygon
-        },
-        closeNotification() {
-            this.showNotify = false
-        },
-        getWagonPolygon() {
-            this.loader = true
-            api.getPolygon(this.filter_wagonpolygon)
-                .then((response) => {
-                    this.polygonWagon = response.data.data
-                    this.loader = false
-                    this.nextLink = response.data.links.next
-                    this.prevLink = response.data.links.previous
-                    this.amount = response.data.amount
-                    this.total_objects = response.data.total_objects
-                    this.notifyHead = 'Успешно'
-                    this.notifyMessage = 'Данные отфильтрованы'
-                    this.notifyClass = 'wrapper-success'
-                    this.showNotify = true
-                    setTimeout(this.closeNotification, 1500)
-
-
-                })
-        }
-    }
-}
+    updateFilterDataWagonDislocation(filter_wagonpolygon) {
+      this.filter_wagonpolygon = filter_wagonpolygon;
+    },
+    closeNotification() {
+      this.showNotify = false;
+    },
+    getWagonPolygon() {
+      this.loader = true;
+      api.getPolygon(this.filter_wagonpolygon).then((response) => {
+        this.polygonWagon = response.data.data;
+        this.loader = false;
+        this.nextLink = response.data.links.next;
+        this.prevLink = response.data.links.previous;
+        this.amount = response.data.amount;
+        this.total_objects = response.data.total_objects;
+        this.notifyHead = "Успешно";
+        this.notifyMessage = "Данные отфильтрованы";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(this.closeNotification, 1500);
+      });
+    },
+  },
+};
 </script>
