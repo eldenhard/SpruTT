@@ -44,7 +44,7 @@
       >
     </b-modal>
 
-    <button
+    <!-- <button
       class="button Action"
       style="
         width: 100%;
@@ -57,9 +57,9 @@
       @click="ThrowWagons()"
     >
       Предварительный запрос вагонов
-    </button>
-    <p class="amount">всего записей: {{ total_objects }}</p>
-    <div
+    </button> -->
+    <!-- <p class="amount">всего записей: {{ total_objects }}</p> -->
+    <!-- <div
       style="
         width: 100%;
         overflow-x: auto;
@@ -74,7 +74,7 @@
         class="table table-sm table-bordered table-hover"
         style="margin: 0; border: 1px solid black"
       >
-        <thead class="thead-light" style="background: #e9ecef !important">
+        <thead class="thead-light" style="background: #e9ecef !important"> -->
     <!-- <div
       style="
         width: 100%;
@@ -92,7 +92,7 @@
         style="table-layout: fixed"
       >
         <thead class="thead-light" style="background: #e9ecef"> -->
-          <tr>
+          <!-- <tr>
             <th>Тип вагона</th>
             <th>Номер вагона</th>
             <th>Полигон</th>
@@ -138,7 +138,7 @@
           </tr>
         </tbody>
       </table>
-    </div>
+    </div> -->
 
     <b-container class="bv-example-row">
       <b-row>
@@ -372,42 +372,42 @@ export default {
         });
     },
 
-    ThrowWagons(url = null, clear = true) {
-      if (url == null) url = "wagon-park/dislocations?operation=БРОС";
-      if (clear) this.throwWagons = [];
+    // ThrowWagons(url = null, clear = true) {
+    //   if (url == null) url = "wagon-park/dislocations?operation=БРОС";
+    //   if (clear) this.throwWagons = [];
 
-      this.loader = true;
+    //   this.loader = true;
 
-      apiWagon
-        .getWagonsThrow(url, this.filter) //this.filter_abadon)
-        .then((response) => {
-          this.throwWagons = [...this.throwWagons, ...response.data.data];
-          if (response.data.links.next != null) {
-            this.ThrowWagons(response.data.links.next, false);
-            this.loader = false;
-            this.total_objects = response.data.total_objects;
-          } else {
-            this.loader = false;
-            this.total_objects = response.data.total_objects;
+    //   apiWagon
+    //     .getWagonsThrow(url, this.filter) //this.filter_abadon)
+    //     .then((response) => {
+    //       this.throwWagons = [...this.throwWagons, ...response.data.data];
+    //       if (response.data.links.next != null) {
+    //         this.ThrowWagons(response.data.links.next, false);
+    //         this.loader = false;
+    //         this.total_objects = response.data.total_objects;
+    //       } else {
+    //         this.loader = false;
+    //         this.total_objects = response.data.total_objects;
 
-            // this.throwWagons = response.data.data
-            // this.notifyHead = 'Успешно'
-            // this.notifyMessage = 'Данные отфильтрованы'
-            // this.notifyClass = 'wrapper-success'
-            // this.showNotify = true
-            // setTimeout(this.closeNotification, 1500)
-          }
-        })
-        .catch((error) => {
-          this.loader = false;
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Данные не получены";
-          this.notifyClass = "wrapper-alert";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 1500);
-          // console.log(error.response); вывод ошибок получаемых от сервера
-        });
-    },
+    //         // this.throwWagons = response.data.data
+    //         // this.notifyHead = 'Успешно'
+    //         // this.notifyMessage = 'Данные отфильтрованы'
+    //         // this.notifyClass = 'wrapper-success'
+    //         // this.showNotify = true
+    //         // setTimeout(this.closeNotification, 1500)
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       this.loader = false;
+    //       this.notifyHead = "Ошибка";
+    //       this.notifyMessage = "Данные не получены";
+    //       this.notifyClass = "wrapper-alert";
+    //       this.showNotify = true;
+    //       setTimeout(this.closeNotification, 1500);
+    //       // console.log(error.response); вывод ошибок получаемых от сервера
+    //     });
+    // },
     DeleteReportAbandoned(id) {
       this.loader = true;
       api
