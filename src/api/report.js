@@ -12,7 +12,9 @@ const getReportAbandoneAll = () => {
 const getReportById = (id) => {
     return api.get(`${reports}/kpi/` + `${id}`)
 }
-
+const getReportByIdCreator = (id) => {
+    return api.get(`${reports}/kpi?` + `creator=${id}`)
+}
 const saveReport = (id, data) => {
     return api.put(`${reports}/kpi/update/` + `${id}`, data)
 }
@@ -86,6 +88,7 @@ export default {
     getAllKPI,
     deleteReportAbandon,
     getLastDataReports,
+    getReportByIdCreator,
     // Личный кабинет 
     getUsersLK,
     getManagerLK,

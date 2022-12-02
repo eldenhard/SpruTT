@@ -24,7 +24,7 @@
 }
 
 .Request {
-  background: #3498DB;
+  background: #3498db;
 }
 
 .Request:hover {
@@ -42,7 +42,7 @@
 }
 
 .Action {
-  background: #FF9F55;
+  background: #ff9f55;
   height: 60px;
   cursor: pointer;
 }
@@ -53,14 +53,13 @@
 }
 
 .Cancel {
-  background: #2C3E50;
+  background: #2c3e50;
 }
 
 .Cancel:hover {
   background: #22303d;
   cursor: pointer;
 }
-
 
 /* #tableMain,
 #tableDislocation {
@@ -157,8 +156,6 @@ label {
   cursor: pointer;
 }
 
-
-
 .wrapper-success,
 .wrapper-alert {
   margin: 50px;
@@ -177,7 +174,7 @@ label {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-left: 5px solid #4CAF50;
+  border-left: 5px solid #4caf50;
   border-radius: 3px;
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -193,11 +190,10 @@ label {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-left: 5px solid #ED5E68;
+  border-left: 5px solid #ed5e68;
   border-radius: 3px;
   border-radius: 10px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-
 }
 
 .wrapper-success .wrapper-alert .card .subject {
@@ -208,12 +204,11 @@ label {
   color: #909092;
 }
 
-@media screen and (max-width:550px) {
+@media screen and (max-width: 550px) {
   .wrapper-success .wrapper-alert {
     width: 90%;
     margin-left: 5%;
   }
-
 }
 
 .all-label {
@@ -224,7 +219,6 @@ label {
 option select {
   cursor: pointer !important;
 }
-
 
 input[type="text"] {
   border: none !important;
@@ -237,7 +231,6 @@ input[type="text"]:focus {
   border-color: rgb(0, 0, 0) !important;
 }
 
-
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -249,20 +242,21 @@ select {
   width: 20em;
   height: 3em;
   padding: 0 4em 0 1em;
-  background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right 0.8em center/1.4em, linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em);
+  background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg)
+      no-repeat right 0.8em center/1.4em,
+    linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em);
   /* background: #E6E6E6; */
   color: #000000;
   border-radius: 0.25em;
   /* box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2); */
   cursor: pointer;
-
 }
 
 select option {
   color: black;
-  background-color: #E6E6E6;
+  background-color: #e6e6e6;
   border: none;
-  cursor: pointer
+  cursor: pointer;
 }
 
 select:focus {
@@ -275,8 +269,7 @@ select::-ms-expand {
 
 /* Поля Input */
 .bg {
-
-  background-color: #EFEFEF;
+  background-color: #efefef;
   text-align: center;
   display: block;
   justify-items: center;
@@ -288,15 +281,15 @@ select::-ms-expand {
   transform: translate(-9.8rem, -3.8rem);
   font-size: 1rem;
   padding: 0 5px;
-  background-color: #EFEFEF;
-  color: #757575
+  background-color: #efefef;
+  color: #757575;
 }
 
 .textarea {
   position: relative;
   border-radius: 0.4rem;
-  background-color: #EFEFEF;
-  border: #BDC3C7 0.1rem solid;
+  background-color: #efefef;
+  border: #bdc3c7 0.1rem solid;
   width: 20rem;
   height: 3rem;
   padding: 0rem 1rem;
@@ -307,12 +300,15 @@ select::-ms-expand {
 .textarea:focus {
   outline: none;
   border: #303030 0.1rem solid;
-
 }
 
-
 /* ТАБЛИЦЫ */
+table {
+  table-layout: fixed;
+}
+
 th {
+
   width: 200px;
   height: 20px;
   vertical-align: middle !important;
@@ -338,6 +334,6 @@ td {
 
 /* Цвет выбранного ТАБА */
 .nav-pills .nav-link.active {
-  background: #2C3E50 !important;
+  background: #2c3e50 !important;
   color: white;
 }
