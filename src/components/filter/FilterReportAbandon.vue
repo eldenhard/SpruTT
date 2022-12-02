@@ -43,16 +43,18 @@
 
             <div style="display:flex; flex-direction:column;">
                 <div class='bg'>
-                    <input class='textarea' id='input-filter1' name='Pwd' type="date"
-                        v-model="filter.current_station_arrival_begin" style="width: 125px; cursor: pointer; margin-top: 9%;" />
+                    <input class='textarea' type="date"
+                        v-model="filter.current_station_arrival_begin"
+                        @change="updateSelected_arrival_begin" style="width: 125px; cursor: pointer; margin-top: 9%;" />
                 </div>
             </div>
+
             <div style="display:flex; flex-direction:column;">
                 <div class='bg'>
-
-
-                    <input class='textarea' id='input-filter2' name='Pwd' type="date"
-                        v-model="filter.current_station_arrival_end" style="width: 125px;cursor: pointer;margin-top: 9%;" />
+                    <input class='textarea' type="date"
+                        v-model="filter.current_station_arrival_end"
+                        @change="updateSelectedWagonType_arrival_end"
+                        style="width: 125px;cursor: pointer;margin-top: 9%;" />
                 </div>
             </div>
 
@@ -173,6 +175,8 @@ export default {
 
             // selectedWagonTypeIds: [],
             selectedPolingonIds: [],
+            selectedArrival: '',
+            selectedEnd: '',
             selectedPartyIds: [],
             loader: false
         }
@@ -233,6 +237,14 @@ export default {
             this.selectedWagonTypeIds = selected
             this.sendEmit()
 
+        },
+        updateSelected_arrival_begin(selected){
+            this.selectedArrival = selected
+            this.sendEmit()
+        },
+        updateSelectedWagonType_arrival_end(selected){
+            this.selectedEnd= selected
+            this.sendEmit()
         },
         removeSelectedWagonType(id) {
             this.selectedWagonTypeIds.splice(this.selectedWagonTypeIds.indexOf(id), 1)
