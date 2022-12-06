@@ -28,9 +28,10 @@
             <th>Комментарии по отклонениям</th>
             <th>Ответственный за статью в целом</th>
             <th>Лицо, которому Ответственный делегировал заполнение</th>
+            <th>Заполняет план</th>
             <th>Заполняет ожидаемый факт</th>
             <th>Дата последнего обновления</th>
-            <th>Действие</th>
+            <!-- <th>Действие</th> -->
           </tr>
         </thead>
 
@@ -43,8 +44,8 @@
               l1: bdr.level === 1,
               l2: bdr.level === 2,
             }"
-          > 
-          <td>{{bdr.number}}</td>
+          >
+            <td>{{ bdr.number }}</td>
             <td clas="lc groups">{{ bdr.name }}</td>
             <td><input class="input-filter" v-model="data[index].plan" /></td>
             <td><input class="input-filter" v-model="data[index].fact" /></td>
@@ -86,6 +87,23 @@
                 :variants="staffGlobal"
               ></MultiSelect>
             </td>
+
+            <td class="td-btr">
+              <span
+                class=""
+                v-for="user in data[index].filling_plan_users"
+                :key="user"
+                style="margin-bottom: 5px"
+              >
+                {{ getName(user) }}<br
+              /></span>
+
+              <MultiSelect
+                :selected="data[index].filling_plan_users"
+                :variants="staffGlobal"
+              ></MultiSelect>
+            </td>
+
             <td class="td-btr">
               <span
                 class=""
@@ -105,7 +123,7 @@
             <td class="td-btr" style="font-weight: normal !important">
               {{ new Date(bdr.updated_at).toLocaleString() }}
             </td>
-            <td class="td-btr">
+            <!-- <td class="td-btr">
               <button
                 class="Accept"
                 style="height: 100%"
@@ -113,11 +131,29 @@
               >
                 Сохранить
               </button>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
     </div>
+
+
+
+    <button
+      class="Accept"
+      style="
+        width: 95%;
+        margin: 2% 0;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0);
+      "
+      @click="saveChange()"
+    >
+      Сохранить отчет
+    </button>
+
+
     <button
       class="Accept"
       @click="saveBDRreport()"
@@ -129,8 +165,9 @@
         transform: translate(-50%, 0);
       "
     >
-      Сохранить отчет
+      Сохранить в файл
     </button>
+
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -185,22 +222,39 @@ export default {
   mounted() {
     this.loader = true;
     api.getBDRreportByID(this.$route.params.id).then((response) => {
-          this.all_table_data = response.data.bdr_report_rows;
-          this.loader = false;
-          this.all_table_data.forEach((el) => {
-            el = switch_deviation(el);
-            this.data = { ...this.data, [el.number]: el };
-          });
-          for (let el in this.data){
-            // console.log(this.data[el].plan_formula);
-            // console.log('AAAAAAAAAA', this.data[2].plan , this.data[3].plan, this.data[4].plan, this.data[5].plan);
-            this.data[el].plan = eval(this.data[el].plan_formula);
-            this.data[el].fact = eval(this.data[el].fact_formula);
-            this.data[el].deviation = this.data[el].fact - this.data[el].plan;
-          }
-        });
+      this.all_table_data = response.data.bdr_report_rows;
+      this.loader = false;
+      this.all_table_data.forEach((el) => {
+        el = switch_deviation(el);
+        this.data = { ...this.data, [el.number]: el };
+      });
+      for (let el in this.data) {
+        // console.log(this.data[el].plan_formula);
+        // console.log('AAAAAAAAAA', this.data[2].plan , this.data[3].plan, this.data[4].plan, this.data[5].plan);
+        this.data[el].plan = eval(this.data[el].plan_formula);
+        this.data[el].fact = eval(this.data[el].fact_formula);
+        this.data[el].deviation = this.data[el].fact - this.data[el].plan;
+      }
+    });
   },
   methods: {
+    saveChange() {
+      this.loader = true
+      let data_to_send = [];
+
+      for (let el in this.data) {
+        data_to_send.push(this.data[el]);
+      }
+
+      api.changeBDRreport(data_to_send).then((response) => {
+        this.notifyHead = "Успешно";
+        this.notifyMessage = "Пользователь изменен";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(this.closeNotification, 1500);
+        this.loader = false
+      });
+    },
     getName(id) {
       const user = getUserById(this.staffGlobal, id);
       // console.log(user);
@@ -213,12 +267,11 @@ export default {
       console.log(dateForSave);
       api.putBDRreportsave(bdr_id, dateForSave).then((response) => {
         this.notifyHead = "Успешно";
-        this.notifyMessage = "Данные сохранены";
+        this.notifyMessage = "Данные обновлены";
         this.notifyClass = "wrapper-success";
         this.showNotify = true;
         setTimeout(this.closeNotification, 1500);
         this.loader = false;
-
       });
     },
     saveBDRreport() {
@@ -282,6 +335,5 @@ export default {
   font-size: 13px !important;
   text-align: center !important;
   background: #ddebf7 !important;
-
 }
 </style>

@@ -71,6 +71,9 @@ const putBDRreportsave = (id, data) => {
 const saveBDRreport = (id, data) => {
     return api.post(`${reports}/bdr/save/` + `${id}`, data)
 }
+const changeBDRreport = (data) => {
+    return api.put(`${reports}/bdr/update-table/`, data)
+}
 // справочник контрагенты
 const createCounterparties = (data) => {
     return api.post(`${resource}/counterparties/create/`, data)
@@ -100,6 +103,7 @@ export default {
     getBDRreportByID,
     putBDRreportsave,
     saveBDRreport,
+    changeBDRreport,
 
     // справовчник
     createCounterparties,
