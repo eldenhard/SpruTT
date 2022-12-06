@@ -3,8 +3,7 @@
     <b-tabs content-class="mt-3" justified>
       <b-tab title="БДР" active><div style="display: block;"><lkBDR></lkBDR></div></b-tab>
       <b-tab title="БРОС вагоны"><p><lkBROC></lkBROC></p></b-tab>
-      <b-tab title="KPI"
-        ><p><lkKPI></lkKPI></p>
+      <b-tab title="KPI"><p><lkKPI></lkKPI></p>
       </b-tab>
     </b-tabs>
   </div>

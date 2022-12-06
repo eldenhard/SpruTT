@@ -196,6 +196,7 @@ export default {
             // console.log('AAAAAAAAAA', this.data[2].plan , this.data[3].plan, this.data[4].plan, this.data[5].plan);
             this.data[el].plan = eval(this.data[el].plan_formula);
             this.data[el].fact = eval(this.data[el].fact_formula);
+            this.data[el].deviation = this.data[el].fact - this.data[el].plan;
           }
         });
   },

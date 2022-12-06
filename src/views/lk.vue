@@ -49,7 +49,7 @@
                     <label
                       for="input-filter-staff1"
                       class="label"
-                      style="margin-left: 17% !important; background: white"
+                      style="margin-left: 4% !important; background: white"
                       >Фамилия</label
                     >
                   </div>
@@ -68,7 +68,7 @@
                     <label
                       for="input-filter-staff1"
                       class="label"
-                      style="margin-left: 17% !important; background: white"
+                      style="margin-left: 4% !important; background: white"
                       >Имя</label
                     >
                   </div>
@@ -87,7 +87,7 @@
                     <label
                       for="input-filter-staff1"
                       class="label"
-                      style="margin-left: 17% !important; background: white"
+                      style="margin-left: 4% !important; background: white"
                       >Отчество</label
                     >
                   </div>
@@ -178,9 +178,9 @@
               </div>
             </b-card-text>
           </b-tab>
-          <b-tab title="Отчеты" active style="height: 70vh !important">
+          <b-tab title="Отчеты" style="height: 70vh !important">
             <LkReport>
-                
+
             </LkReport>
         </b-tab>
         </b-tabs>

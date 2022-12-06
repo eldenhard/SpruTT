@@ -374,7 +374,7 @@ export function switch_deviation(el) {
             
     }
 
-    el.deviation = Number(el.fact) - Number(el.plan);
+    //el.deviation = Number(el.fact) - Number(el.plan);
     return el
 }
 
