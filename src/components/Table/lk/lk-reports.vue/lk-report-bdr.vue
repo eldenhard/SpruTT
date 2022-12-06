@@ -8,12 +8,14 @@
         overflow-y: auto;
         position: relative;
         left: 50%;
+        height: 50vh;
+        max-height: ;
         transform: translate(-50%, 0);
       "
     >
       <table
         class="table table-sm table-bordered table-hover"
-        style="margin: 0; border: 1px solid black"
+        style="margin: 0"
       >
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr>
@@ -87,41 +89,39 @@ export default {
     };
   },
   computed: {
-        ...mapState({
-            user: state => state.auth.user,
-            uid: state => state.auth.uid
-        })
+    ...mapState({
+      user: (state) => state.auth.user,
+      uid: (state) => state.auth.uid,
+    }),
+  },
+  mounted() {
+    this.loader = true;
+    api.getBDRreport().then((response) => {
+      this.BDRreport = response.data.data;
+      this.loader = false;
+      this.notifyHead = "Успешно";
+      this.notifyMessage = "Отчеты загружены";
+      this.notifyClass = "wrapper-success";
+      this.showNotify = true;
+      setTimeout(this.closeNotification, 1500);
+    });
+  },
+  methods: {
+    OpenCreateBDRreport() {
+      this.loader = true;
+      api.getBDRreport().then((response) => {
+        this.BDRreport = response.data.data;
+        this.loader = false;
+        this.notifyHead = "Успешно";
+        this.notifyMessage = "Отчеты загружены";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(this.closeNotification, 1500);
+      });
     },
-    mounted(){
-        this.loader = true
-            api.getBDRreport()
-                .then(response => {
-                    this.BDRreport = response.data.data
-                    this.loader = false
-                    this.notifyHead = 'Успешно'
-                    this.notifyMessage = 'Отчеты загружены'
-                    this.notifyClass = 'wrapper-success'
-                    this.showNotify = true
-                    setTimeout(this.closeNotification, 1500)
-                })
+    closeNotification() {
+      this.showNotify = false;
     },
-    methods: {
-        OpenCreateBDRreport() {
-            this.loader = true
-            api.getBDRreport()
-                .then(response => {
-                    this.BDRreport = response.data.data
-                    this.loader = false
-                    this.notifyHead = 'Успешно'
-                    this.notifyMessage = 'Отчеты загружены'
-                    this.notifyClass = 'wrapper-success'
-                    this.showNotify = true
-                    setTimeout(this.closeNotification, 1500)
-                })
-        },
-        closeNotification() {
-            this.showNotify = false
-        }
-    }
+  },
 };
 </script>

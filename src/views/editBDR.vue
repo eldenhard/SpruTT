@@ -14,9 +14,13 @@
         transform: translate(-50%, 0);
       "
     >
-      <table class="table table-sm table-bordered table-hover" style="margin:0; border: 1px solid black">
+      <table
+        class="table table-sm table-bordered table-hover"
+        style="margin: 0; border: 1px solid black"
+      >
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr>
+            <th>№</th>
             <th>Название</th>
             <th>План</th>
             <th>Ожидаемый факт</th>
@@ -39,12 +43,14 @@
               l1: bdr.level === 1,
               l2: bdr.level === 2,
             }"
-          >
+          > 
+          <td>{{bdr.number}}</td>
             <td clas="lc groups">{{ bdr.name }}</td>
             <td><input class="input-filter" v-model="data[index].plan" /></td>
             <td><input class="input-filter" v-model="data[index].fact" /></td>
             <td>
-              <input class="input-filter" v-model="data[index].deviation" />
+              <!-- <input class="input-filter" v-model="data[index].deviation" /> -->
+              {{ data[index].deviation }}
             </td>
             <td>
               <input class="input-filter" v-model="data[index].comment" />
@@ -58,7 +64,7 @@
               >
                 {{ getName(user) }}<br
               /></span>
-
+              {{ data.responsible_users }}
               <MultiSelect
                 :selected="data[index].responsible_users"
                 :variants="staffGlobal"
@@ -103,7 +109,7 @@
               <button
                 class="Accept"
                 style="height: 100%"
-                @click="saveBDRchange(index)"
+                @click="saveBDRchange(index, bdr.id)"
               >
                 Сохранить
               </button>
@@ -143,9 +149,9 @@ import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from "@/components/loader/loader.vue";
 import MultiSelect from "@/components/ui/MultiSelect.vue";
 import { getUserById } from "@/helpers/getAllUsers";
+import { switch_deviation } from "@/helpers/switchBDR";
 export default {
   template: `{{ $route.params.id }}`,
-
   data() {
     return {
       data: {},
@@ -175,36 +181,43 @@ export default {
       staffGlobal: (state) => state.auth.users,
     }),
   },
+
   mounted() {
     this.loader = true;
     api.getBDRreportByID(this.$route.params.id).then((response) => {
-      this.all_table_data = response.data.bdr_report_rows;
-
-      this.loader = false;
-
-      this.all_table_data.forEach((el) => {
-        this.data = { ...this.data, [el.id]: el };
-      });
-    });
+          this.all_table_data = response.data.bdr_report_rows;
+          this.loader = false;
+          this.all_table_data.forEach((el) => {
+            el = switch_deviation(el);
+            this.data = { ...this.data, [el.number]: el };
+          });
+          for (let el in this.data){
+            // console.log(this.data[el].plan_formula);
+            // console.log('AAAAAAAAAA', this.data[2].plan , this.data[3].plan, this.data[4].plan, this.data[5].plan);
+            this.data[el].plan = eval(this.data[el].plan_formula);
+            this.data[el].fact = eval(this.data[el].fact_formula);
+          }
+        });
   },
   methods: {
     getName(id) {
       const user = getUserById(this.staffGlobal, id);
-      console.log(user);
+      // console.log(user);
       return user[0].first_name + " " + user[0].last_name;
     },
 
-    saveBDRchange(index) {
+    saveBDRchange(index, bdr_id) {
       this.loader = true;
       const dateForSave = this.data[index];
       console.log(dateForSave);
-      api.putBDRreportsave(index, dateForSave).then((response) => {
+      api.putBDRreportsave(bdr_id, dateForSave).then((response) => {
         this.notifyHead = "Успешно";
         this.notifyMessage = "Данные сохранены";
         this.notifyClass = "wrapper-success";
         this.showNotify = true;
         setTimeout(this.closeNotification, 1500);
         this.loader = false;
+
       });
     },
     saveBDRreport() {
@@ -268,5 +281,6 @@ export default {
   font-size: 13px !important;
   text-align: center !important;
   background: #ddebf7 !important;
+
 }
 </style>

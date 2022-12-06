@@ -25,7 +25,7 @@
       <div class="col-md-5">
         <table
           class="table table-sm table-bordered table-hover"
-          style="margin: 0; border: 1px solid black"
+          style="margin: 0;  "
         >
           <thead class="thead-light" style="background: #e9ecef !important">
             <tr>
