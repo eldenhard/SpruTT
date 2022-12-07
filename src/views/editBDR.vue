@@ -41,10 +41,12 @@
             }"
           >
             <td clas="lc groups">{{ bdr.name }}</td>
-            <td><input class="input-filter" v-model="data[index].plan" /></td>
-            <td><input class="input-filter" v-model="data[index].fact" /></td>
+            <td><input class="input-filter"  v-model="data[index].plan" /></td>
+            <td><input class="input-filter"  v-model="data[index].fact" /></td>
             <td>
-              <input class="input-filter" v-model="data[index].deviation" />
+              {{result}}
+              <!--  v-model="data[index].deviation" -->
+              <!-- <input class="input-filter" :value="result" /> -->
             </td>
             <td>
               <input class="input-filter" v-model="data[index].comment" />
@@ -151,8 +153,8 @@ export default {
       data: {},
       all_table_data: [],
       name: "",
-      plan: "",
-      fact: "",
+      plan: 0,
+      fact: 0,
       deviation: "",
       comment: "",
       level: "",
@@ -164,9 +166,13 @@ export default {
       notifyClass: "",
 
       loader: false,
+
+      // вычисляемые переменные
+      result: ''
     };
   },
   components: { Notifications, Loader, MultiSelect },
+
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -174,7 +180,13 @@ export default {
       allGroups: (state) => state.auth.groups,
       staffGlobal: (state) => state.auth.users,
     }),
+    result(){
+      this.result = this.plan + this.fact
+    }
   },
+
+
+
   mounted() {
     this.loader = true;
     api.getBDRreportByID(this.$route.params.id).then((response) => {
