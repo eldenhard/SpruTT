@@ -8,12 +8,14 @@
         overflow-y: auto;
         position: relative;
         left: 50%;
+        height: 50vh;
+        max-height: 50vh;
         transform: translate(-50%, 0);
       "
     >
       <table
         class="table table-sm table-bordered table-hover"
-        style="margin: 0; border: 1px solid black"
+        style="margin: 0;  "
       >
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr>

@@ -4,19 +4,18 @@
 
     <!-- PUT /api/reports/bdr-row/update/365 -->
     <br />
-    <div
-      style="
+    <div style="
         width: 100%;
         overflow-x: auto;
         overflow-y: auto;
         position: relative;
         left: 50%;
         transform: translate(-50%, 0);
-      "
-    >
-      <table class="table table-sm table-bordered table-hover" style="margin:0; border: 1px solid black">
+      ">
+      <table class="table table-sm table-bordered table-hover" style="margin: 0; border: 1px solid black">
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr>
+            <th>№</th>
             <th>Название</th>
             <th>План</th>
             <th>Ожидаемый факт</th>
@@ -24,116 +23,100 @@
             <th>Комментарии по отклонениям</th>
             <th>Ответственный за статью в целом</th>
             <th>Лицо, которому Ответственный делегировал заполнение</th>
+            <th>Заполняет план</th>
             <th>Заполняет ожидаемый факт</th>
             <th>Дата последнего обновления</th>
-            <th>Действие</th>
+            <!-- <th>Действие</th> -->
           </tr>
         </thead>
 
         <tbody>
-          <tr
-            v-for="(bdr, index) in data"
-            :key="bdr.id"
-            :class="{
-              l0: bdr.level === 0,
-              l1: bdr.level === 1,
-              l2: bdr.level === 2,
-            }"
-          >
+          <tr v-for="(bdr, index) in data" :key="bdr.id" :class="{
+            l0: bdr.level === 0,
+            l1: bdr.level === 1,
+            l2: bdr.level === 2,
+          }">
+            <td>{{ bdr.number }}</td>
             <td clas="lc groups">{{ bdr.name }}</td>
-            <td><input class="input-filter"  v-model="data[index].plan" /></td>
-            <td><input class="input-filter"  v-model="data[index].fact" /></td>
-            <td>
-              {{result}}
-              <!--  v-model="data[index].deviation" -->
-              <!-- <input class="input-filter" :value="result" /> -->
+            <td><input class="input-filter" v-model="data[index].plan" /></td>
+            <td><input class="input-filter" v-model="data[index].fact" /></td>
+            <td :class="{ negative: data[index].deviation < 0 }">
+              <!-- <input class="input-filter" v-model="data[index].deviation" /> -->
+              {{ data[index].deviation }}
             </td>
             <td>
               <input class="input-filter" v-model="data[index].comment" />
             </td>
             <td>
-              <span
-                class=""
-                v-for="user in data[index].responsible_users"
-                :key="user"
-                style="margin-bottom: 5px"
-              >
-                {{ getName(user) }}<br
-              /></span>
-
-              <MultiSelect
-                :selected="data[index].responsible_users"
-                :variants="staffGlobal"
-              ></MultiSelect>
+              <span class="" v-for="user in data[index].responsible_users" :key="user" style="margin-bottom: 5px">
+                {{ getName(user) }}<br /></span>
+              {{ data.responsible_users }}
+              <MultiSelect :selected="data[index].responsible_users" :variants="staffGlobal"></MultiSelect>
             </td>
 
             <td class="td-btr" style="position: relative">
-              <span
-                class=""
-                v-for="user in data[index].delegated_users"
-                :key="user"
-                style="margin-bottom: 5px"
-              >
-                {{ getName(user) }}<br
-              /></span>
+              <span class="" v-for="user in data[index].delegated_users" :key="user" style="margin-bottom: 5px">
+                {{ getName(user) }}<br /></span>
 
-              <MultiSelect
-                :selected="data[index].delegated_users"
-                :variants="staffGlobal"
-              ></MultiSelect>
+              <MultiSelect :selected="data[index].delegated_users" :variants="staffGlobal"></MultiSelect>
             </td>
-            <td class="td-btr">
-              <span
-                class=""
-                v-for="user in data[index].filling_users"
-                :key="user"
-                style="margin-bottom: 5px"
-              >
-                {{ getName(user) }}<br
-              /></span>
 
-              <MultiSelect
-                :selected="data[index].filling_users"
-                :variants="staffGlobal"
-              ></MultiSelect>
+            <td class="td-btr">
+              <span class="" v-for="user in data[index].filling_plan_users" :key="user" style="margin-bottom: 5px">
+                {{ getName(user) }}<br /></span>
+
+              <MultiSelect :selected="data[index].filling_plan_users" :variants="staffGlobal"></MultiSelect>
+            </td>
+
+            <td class="td-btr">
+              <span class="" v-for="user in data[index].filling_users" :key="user" style="margin-bottom: 5px">
+                {{ getName(user) }}<br /></span>
+
+              <MultiSelect :selected="data[index].filling_users" :variants="staffGlobal"></MultiSelect>
             </td>
             <!-- <td class="td-btr"><input class="input-filter" v-model="data[index].filling_users"></td> -->
             <td class="td-btr" style="font-weight: normal !important">
               {{ new Date(bdr.updated_at).toLocaleString() }}
             </td>
-            <td class="td-btr">
+            <!-- <td class="td-btr">
               <button
                 class="Accept"
                 style="height: 100%"
-                @click="saveBDRchange(index)"
+                @click="saveBDRchange(index, bdr.id)"
               >
                 Сохранить
               </button>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
     </div>
-    <button
-      class="Accept"
-      @click="saveBDRreport()"
-      style="
+
+
+
+    <button class="Accept" style="
+        width: 95%;
+        margin: 2% 0;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0);
+      " @click="saveChange()">
+      Сохранить отчет
+    </button>
+
+
+    <button class="Accept" @click="saveBDRreport()" style="
         width: 95%;
         margin: 5% 0;
         position: relative;
         left: 50%;
         transform: translate(-50%, 0);
-      "
-    >
-      Сохранить отчет
+      ">
+      Сохранить в файл
     </button>
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-      id="notif"
-    />
+
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+      id="notif" />
     <Loader :loader="loader"></Loader>
   </div>
 </template>
@@ -145,9 +128,9 @@ import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from "@/components/loader/loader.vue";
 import MultiSelect from "@/components/ui/MultiSelect.vue";
 import { getUserById } from "@/helpers/getAllUsers";
+import { switch_deviation } from "@/helpers/switchBDR";
 export default {
   template: `{{ $route.params.id }}`,
-
   data() {
     return {
       data: {},
@@ -168,7 +151,7 @@ export default {
       loader: false,
 
       // вычисляемые переменные
-      result: ''
+      // result: ''
     };
   },
   components: { Notifications, Loader, MultiSelect },
@@ -180,39 +163,60 @@ export default {
       allGroups: (state) => state.auth.groups,
       staffGlobal: (state) => state.auth.users,
     }),
-    result(){
-      this.result = this.plan + this.fact
-    }
+    // result() {
+    //   this.result = this.plan + this.fact
+    // }
   },
-
-
 
   mounted() {
     this.loader = true;
     api.getBDRreportByID(this.$route.params.id).then((response) => {
       this.all_table_data = response.data.bdr_report_rows;
-
       this.loader = false;
-
       this.all_table_data.forEach((el) => {
-        this.data = { ...this.data, [el.id]: el };
+        el = switch_deviation(el);
+        this.data = { ...this.data, [el.number]: el };
       });
+      for (let el in this.data) {
+        // console.log(this.data[el].plan_formula);
+        // console.log('AAAAAAAAAA', this.data[2].plan , this.data[3].plan, this.data[4].plan, this.data[5].plan);
+        this.data[el].plan = eval(this.data[el].plan_formula);
+        this.data[el].fact = eval(this.data[el].fact_formula);
+        this.data[el].deviation = this.data[el].fact - this.data[el].plan;
+      }
     });
   },
   methods: {
+    saveChange() {
+      this.loader = true
+      let data_to_send = [];
+
+      for (let el in this.data) {
+        data_to_send.push(this.data[el]);
+      }
+
+      api.changeBDRreport(data_to_send).then((response) => {
+        this.notifyHead = "Успешно";
+        this.notifyMessage = "Пользователь изменен";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(this.closeNotification, 1500);
+        this.loader = false
+      });
+    },
     getName(id) {
       const user = getUserById(this.staffGlobal, id);
-      console.log(user);
+      // console.log(user);
       return user[0].first_name + " " + user[0].last_name;
     },
 
-    saveBDRchange(index) {
+    saveBDRchange(index, bdr_id) {
       this.loader = true;
       const dateForSave = this.data[index];
       console.log(dateForSave);
-      api.putBDRreportsave(index, dateForSave).then((response) => {
+      api.putBDRreportsave(bdr_id, dateForSave).then((response) => {
         this.notifyHead = "Успешно";
-        this.notifyMessage = "Данные сохранены";
+        this.notifyMessage = "Данные обновлены";
         this.notifyClass = "wrapper-success";
         this.showNotify = true;
         setTimeout(this.closeNotification, 1500);
@@ -250,14 +254,17 @@ export default {
   background: #ebebeb;
   font-size: normal;
 }
+
 .groups {
   text-align: left;
   font-weight: bold;
 }
+
 .groups-amount {
   background: #ddebf7;
   font-size: 14px;
 }
+
 .input-filter {
   width: 100% !important;
   height: 100% !important;
@@ -268,17 +275,29 @@ export default {
   text-align: center;
   font-size: 13px;
 }
+
 .td-btr {
   padding: 0 !important;
   vertical-align: middle !important;
 }
+
 .l0 {
   font-weight: 700;
   font-size: 15px !important;
 }
+
 .l0 input {
-  font-size: 13px !important;
+  /* font-size: 13px !important; */
   text-align: center !important;
   background: #ddebf7 !important;
+
+}
+
+.l2 input {
+  background: #C6E0B4;
+}
+
+.negative {
+  color: red !important;
 }
 </style>

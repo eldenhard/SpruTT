@@ -53,7 +53,7 @@
     >
       <table
         class="table table-sm table-bordered table-hover"
-        style="margin: 0; border: 1px solid black"
+        style="margin: 0;  "
       >
         <thead class="thead-light" style="background: #e9ecef !important"> -->
     <!-- <div
@@ -166,7 +166,7 @@
               transform: translate(-50%, 0);
               height: 80vh;
             ">
-            <table class="table table-sm table-bordered table-hover" style="margin: 0; border: 1px solid black">
+            <table class="table table-sm table-bordered table-hover" style="margin: 0;  ">
               <thead class="thead-light" style="background: #e9ecef !important">
                 <tr>
                   <th>Файл</th>
