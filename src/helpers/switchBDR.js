@@ -45,15 +45,15 @@ export function switch_deviation(el) {
             break
         case 10:
             el.plan_formula = 'Number(this.data[10].plan)';
-            el.fact_formula = 'Number(this.data[9].fact)';
+            el.fact_formula = 'Number(this.data[10].fact)';
             break
         case 11:
             el.plan_formula = 'Number(this.data[11].plan)';
-            el.fact_formula = 'Number(this.data[9].fact)';
+            el.fact_formula = 'Number(this.data[11].fact)';
             break
         case 12:
             el.plan_formula = 'Number(this.data[12].plan)';
-            el.fact_formula = 'Number(this.data[9].fact)';
+            el.fact_formula = 'Number(this.data[12].fact)';
             break
         case 13:
             el.plan_formula = 'Number(this.data[7].plan) - Number(this.data[8].plan)';
@@ -249,10 +249,10 @@ export function switch_deviation(el) {
             el.plan_formula = 'Number(this.data[60].plan)';
             el.fact_formula = 'Number(this.data[60].fact)';
             break
-        // case 61:
-        //     el.plan_formula = 'Number(this.data[42].plan) - Number(this.data[45].plan + Number(this.data[46].plan + Number(this.data[47].plan + Number(this.data[48].plan + Number(this.data[49].plan + Number(this.data[50].plan + Number(this.data[51].plan + Number(this.data[52].plan)';
-        //     el.fact_formula = 'Number(this.data[42].fact) - Number(this.data[45].fact + Number(this.data[46].fact + Number(this.data[47].fact + Number(this.data[48].fact + Number(this.data[49].fact + Number(this.data[50].fact + Number(this.data[51].fact + Number(this.data[52].fact)';
-        //     break
+        case 61:
+            el.plan_formula = 'Number(this.data[42].plan) - Number(this.data[45].plan) + Number(this.data[46].plan) + Number(this.data[47].plan) + Number(this.data[48].plan) + Number(this.data[49].plan) + Number(this.data[50].plan) + Number(this.data[51].plan) + Number(this.data[52].plan)';
+            el.fact_formula = 'Number(this.data[42].fact) - Number(this.data[45].fact) + Number(this.data[46].fact) + Number(this.data[47].fact) + Number(this.data[48].fact) + Number(this.data[49].fact) + Number(this.data[50].fact) + Number(this.data[51].fact) + Number(this.data[52].fact)';
+            break
             // Здесь деление согласно формуле
         case 62:
             el.plan_formula = 'Number(this.data[64].plan) - Number(this.data[67].plan)';

@@ -38,14 +38,14 @@
           }">
             <td>{{ bdr.number }}</td>
             <td clas="lc groups">{{ bdr.name }}</td>
-            <td><input class="input-filter" v-model="data[index].plan" /></td>
-            <td><input class="input-filter" v-model="data[index].fact" /></td>
+            <td><input @input="calc" class="input-filter" v-model="data[index].plan" type="number" :disabled="(bdr.level === 0)" /></td>
+            <td><input @input="calc" class="input-filter" v-model="data[index].fact" type="number" :disabled="(bdr.level === 0)"/></td>
             <td :class="{ negative: data[index].deviation < 0 }">
               <!-- <input class="input-filter" v-model="data[index].deviation" /> -->
               {{ data[index].deviation }}
             </td>
             <td>
-              <input class="input-filter" v-model="data[index].comment" />
+              <input class="input-filter" v-model="data[index].comment" type="number"/>
             </td>
             <td>
               <span class="" v-for="user in data[index].responsible_users" :key="user" style="margin-bottom: 5px">
@@ -175,8 +175,17 @@ export default {
       this.loader = false;
       this.all_table_data.forEach((el) => {
         el = switch_deviation(el);
+      if(el.number === 1){
+        Object.assign(el, {...el, responsible_users : [89, 90]})
+
+      }
         this.data = { ...this.data, [el.number]: el };
       });
+      this.calc()
+    });
+  },
+  methods: {
+    calc(){
       for (let el in this.data) {
         // console.log(this.data[el].plan_formula);
         // console.log('AAAAAAAAAA', this.data[2].plan , this.data[3].plan, this.data[4].plan, this.data[5].plan);
@@ -184,9 +193,7 @@ export default {
         this.data[el].fact = eval(this.data[el].fact_formula);
         this.data[el].deviation = this.data[el].fact - this.data[el].plan;
       }
-    });
-  },
-  methods: {
+    },
     saveChange() {
       this.loader = true
       let data_to_send = [];
