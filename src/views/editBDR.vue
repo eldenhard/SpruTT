@@ -12,6 +12,7 @@
         position: relative;
         left: 50%;
         transform: translate(-50%, 0);
+        height: 80vh;
       "
     >
       <table
@@ -236,6 +237,7 @@ export default {
   },
 
   mounted() {
+    document.title = 'БДР отчет'
     this.loader = true;
     document.addEventListener("keydown", this.listen);
 
@@ -1039,6 +1041,20 @@ export default {
 </script>
 
 <style>
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(143, 143, 143);
+    border-radius: 5px;
+}
 .lc {
   background: #ebebeb;
   font-size: normal;
