@@ -177,13 +177,13 @@ export function switch_deviation(el) {
             break
             // пропустил
         case 43:
-            el.plan_formula = '';
-            el.fact_formula = '';
+            el.plan_formula = 'Number(this.data[6].plan) + Number(this.data[17].plan) + Number(this.data[19].plan) * Number(this.data[89].plan) - Number(this.data[21].plan) - Number(this.data[23].plan) * Number(this.data[89].plan) + Number(this.data[26].plan) + Number(this.data[28].plan) * Number(this.data[89].plan) - Number(this.data[30].plan) - Number(this.data[32].plan) * Number(this.data[89].plan) + Number(this.data[35].plan) + Number(this.data[37].plan) * Number(this.data[89].plan) - Number(this.data[39].plan) - Number(this.data[41].plan) * Number(this.data[89].plan)';
+            el.fact_formula = 'Number(this.data[6].fact) + Number(this.data[17].fact) + Number(this.data[19].fact) * Number(this.data[89].fact) - Number(this.data[21].fact) - Number(this.data[23].fact) * Number(this.data[89].fact) + Number(this.data[26].fact) + Number(this.data[28].fact) * Number(this.data[89].fact) - Number(this.data[30].fact) - Number(this.data[32].fact) * Number(this.data[89].fact) + Number(this.data[35].fact) + Number(this.data[37].fact) * Number(this.data[89].fact) - Number(this.data[39].fact) - Number(this.data[41].fact) * Number(this.data[89].fact)';
             break
             // пропустил
         case 44:
-            el.plan_formula = '';
-            el.fact_formula = '';
+            el.plan_formula = 'Number(this.data[13].plan) + Number(this.data[18].plan) + Number(this.data[19].plan) * Number(this.data[90].plan) - Number(this.data[22].plan) - Number(this.data[23].plan) * Number(this.data[90].plan) + Number(this.data[27].plan) + Number(this.data[28].plan) * Number(this.data[90].plan) - Number(this.data[31].plan) - Number(this.data[32].plan) * Number(this.data[90].plan) + Number(this.data[36].plan) + Number(this.data[37].plan) * Number(this.data[90].plan) - Number(this.data[40].plan) - Number(this.data[41].plan) * Number(this.data[90].plan)';
+            el.fact_formula = 'Number(this.data[13].fact) + Number(this.data[18].fact) + Number(this.data[19].fact) * Number(this.data[90].fact) - Number(this.data[22].fact) - Number(this.data[23].fact) * Number(this.data[90].fact) + Number(this.data[27].fact) + Number(this.data[28].fact) * Number(this.data[90].fact) - Number(this.data[31].fact) - Number(this.data[32].fact) * Number(this.data[90].fact) + Number(this.data[36].fact) + Number(this.data[37].fact) * Number(this.data[90].fact) - Number(this.data[40].fact) - Number(this.data[41].fact) * Number(this.data[90].fact)';
             break
         case 45:
             el.plan_formula = 'Number(this.data[45].plan)';
@@ -359,16 +359,16 @@ export function switch_deviation(el) {
             el.fact_formula = 'Number(this.data[85].fact) + Number(this.data[86].fact)';
             break
         case 88:
-            el.plan_formula = '((Number(this.data[85].plan) / Number(this.data[87].plan)) * 100).toFixed(2)';
-            el.fact_formula = '((Number(this.data[85].fact) / Number(this.data[87].fact)) * 100).toFixed(2)';
+            el.plan_formula = 'Number(this.data[85].plan) / Number(this.data[87].plan) * 100';
+            el.fact_formula = 'Number(this.data[85].fact) / Number(this.data[87].fact) * 100';
             break
         case 89:
-            el.plan_formula = '((Number(this.data[86].plan) / Number(this.data[87].plan)) * 100).toFixed(2)';
-            el.fact_formula = '((Number(this.data[86].fact) / Number(this.data[87].fact)) * 100).toFixed(2)';
+            el.plan_formula = 'Number(this.data[86].plan) / Number(this.data[87].plan) * 100';
+            el.fact_formula = 'Number(this.data[86].fact) / Number(this.data[87].fact) * 100';
             break
         case 90:
-            el.plan_formula = '(Number(this.data[87].plan) / Number(this.data[87].plan)) * 100';
-            el.fact_formula = '(Number(this.data[87].fact) / Number(this.data[87].fact)) * 100';
+            el.plan_formula = 'Number(this.data[87].plan) / Number(this.data[87].plan) * 100';
+            el.fact_formula = 'Number(this.data[87].fact) / Number(this.data[87].fact) * 100';
             break
             
     }
