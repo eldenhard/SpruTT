@@ -63,6 +63,7 @@ export default new Router({
       path: '/key-facts',
       component: keyFact
     },
+
     {
       path: '*',
       component: errorPage

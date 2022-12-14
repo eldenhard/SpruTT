@@ -26,6 +26,9 @@
                             <div v-if="i.name==='Брошенные вагоны'"> 
                                 <AbandonTable/>
                             </div>
+                            <div v-if="i.name==='Телеграммы'">
+                                <WagonTableTelegram/>
+                            </div>
                             <div v-if="i.name==='Полигоны'"> 
                                 <WagonTablePoligon/>
                             </div>
@@ -54,11 +57,12 @@
   import AbandonTable from '../components/Table/AbandonTable.vue'
   import ReportAbandoned from '../components/Table/ReportAbandoned.vue'
   import WagonTablePoligon from '../components/Table/WagonTablePoligon.vue'
+  import WagonTableTelegram from '../components/Table/WagonTableTelegram.vue'
 
     
 export default{
     name: 'WagonPark',
-    components:{WagonTable, FlightTable, WagonNavbar, DislocationTable, AbandonTable, ReportAbandoned, WagonTablePoligon},
+    components:{WagonTable, FlightTable, WagonNavbar, DislocationTable, AbandonTable, ReportAbandoned, WagonTablePoligon, WagonTableTelegram},
     data() {
         return {
             tabs: [],

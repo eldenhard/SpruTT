@@ -58,6 +58,11 @@ const getFilters = () => {
 const getKeyFacts = () => {
     return api.get(`${resource}/key-facts/`)
 }
+
+// Телеграммы
+const postTelegram = (data) => {
+    return api.get(`${resource}/telegram-data/` + data)
+}
 export default {
     getWagons,
     getPassport,
@@ -80,4 +85,11 @@ getFilters,
 
 // ключевы факты
 getKeyFacts,
+
+
+// Телеграммы
+postTelegram,
+
+
+
 }

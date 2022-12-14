@@ -53,7 +53,7 @@
                         <label
                           for="input-filter-staff1"
                           class="label"
-                          style="margin-left: 1% !important; background: white"
+                          style="margin-left: 5% !important; background: white"
                           >Фамилия</label
                         >
                       </div>
@@ -72,7 +72,7 @@
                         <label
                           for="input-filter-staff1"
                           class="label"
-                          style="margin-left: 1% !important; background: white"
+                          style="margin-left: 5% !important; background: white"
                           >Имя</label
                         >
                       </div>
@@ -91,7 +91,7 @@
                         <label
                           for="input-filter-staff1"
                           class="label"
-                          style="margin-left: 1% !important; background: white"
+                          style="margin-left: 5% !important; background: white"
                           >Отчество</label
                         >
                       </div>

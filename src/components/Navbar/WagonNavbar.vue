@@ -31,6 +31,8 @@
                     <b-dropdown  text="Вагоны" style="width: 100%" >
                         <!-- <b-dropdown-item @click="newTab('Брошенные вагоны')">БРОС. вагоны</b-dropdown-item> -->
                         <b-dropdown-item @click="newTab('Полигоны')">По полигонам</b-dropdown-item>
+                        <b-dropdown-item @click="newTab('Телеграммы')">Телеграммы</b-dropdown-item>
+
                     </b-dropdown>
                 </li>
   
