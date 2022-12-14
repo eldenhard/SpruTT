@@ -391,40 +391,29 @@
     <b-modal ref="change-user" hide-footer title="Редактирование сотрудника">
       <div class="row">
         <div class="col-md-3">
+          <button v-if="current_user_staff.photo">Заменить</button>
+          <button v-else>Загрузить</button>
 
-            <button
-              v-if="current_user_staff.photo"
-              style="
-                display: block;
-                position: absolute;
-                top: 0;
-                z-index: 10;
-                left: 50%;
-                transform: translate(-50%, 0);
-              "
-            >
-              Заменить
-            </button>
-            <button v-else>Загрузить</button>
-            <input
-              type="file"
-              @change="onFileSelected"
-              name="photo"
-              ref="photo"
-              style="
-                display: inline-block;
-                position: absolute;
-                top: 0%;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 101;
-                opacity: 0;
-              "
-            />
-          </div>
+          <img :src="current_user_staff.photo" alt="" width="100%" style="" />
+          <input
+            type="img"
+            @change="onFileSelected"
+            name="photo"
+            ref="photo"
+            style="
+              display: inline-block;
+              position: absolute;
+              top: 0%;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              width: 100%;
+              height: 100%;
+              z-index: 101;
+              opacity: 0;
+            "
+          />
+        </div>
         <div class="col-md-9">
           <div class="row">
             <div class="col-md-6">
@@ -631,50 +620,12 @@
     <b-modal ref="add-user" hide-footer title="Добавление сотрудника">
       <div class="row">
         <div class="col-md-3">
-          <div
-            class="uploader"
-            style="
-              display: block;
-              position: relative;
-              left: 50%;
-              transform: translate(-50%, 0);
-              width: 120px;
-              height: 60px;
-            "
-          >
-            <button
-              v-if="current_user_staff.photo"
-              style="
-                display: block;
-                position: absolute;
-                top: 0;
-                z-index: 10;
-                left: 50%;
-                transform: translate(-50%, 0);
-              "
-            >
-              Заменить
-            </button>
-            <button v-else>Загрузить</button>
-            <input
-              type="file"
-              @change="onFileSelected"
-              name="photo"
-              ref="photo"
-              style="
-                display: inline-block;
-                position: absolute;
-                top: 0%;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                width: 100%;
-                height: 100%;
-                z-index: 101;
-                opacity: 0;
-              "
-            />
-          </div>
+          <input
+            type="file"
+            @change="onFileSelected"
+            name="photo"
+            ref="photo"
+          />
         </div>
         <div class="col-md-9">
           <div class="row">
@@ -872,6 +823,7 @@
       <b-button class="mt-3" variant="outline-danger" block @click="hideModal()"
         >Закрыть</b-button
       >
+      <span id="big-photo" @click="close_photo"></span>
     </b-modal>
 
     <Notifications
