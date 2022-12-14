@@ -15,7 +15,7 @@
     >
       <table
         class="table table-sm table-bordered table-hover"
-        style="margin: 0;  "
+        style="margin: 0"
       >
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr>
@@ -26,7 +26,6 @@
             <th style="width: 70px !important">Доплата</th>
             <th style="width: 70px !important">Файл</th>
             <th style="width: 70px !important">Действие</th>
-
           </tr>
         </thead>
         <tbody>
@@ -108,28 +107,23 @@ export default {
     const id = preid.auth.uid;
 
     this.loader = true;
-    api.getReportByIdCreator(id)
-    .then((response) => {
+    api.getReportByIdCreator(id).then((response) => {
       this.reports_creator = response.data.data;
     });
     this.loader = false;
   },
   methods: {
-    OpenChangeReport(id) {
+    DeleteReport(id) {
       this.loader = true;
-      api.getReportById(id).then((response) => {
-        this.showReportModal = true;
-        this.loader = false;
-        this.OnceReport = response.data;
+      api.deleteReport(id)
+      .then((response) => {
       });
-    },
-  },
-  DeleteReport(id) {
-    this.loader = true;
-    api.deleteReport(id).then((response) => {
-      window.location.reload();
+
+      api.getReportByIdCreator(id).then((response) => {
+        this.reports_creator = response.data.data;
+      });
       this.loader = false;
-    });
+    },
   },
 };
 </script>

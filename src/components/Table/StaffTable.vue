@@ -142,169 +142,173 @@
     </div>
 
     <b-modal ref="view-CurrentUser" hide-footer title="Просмотр сотрудника">
-        <div class="row">
-            <div class="col-md-3">
-                <img :src="current_user_staff.photo" width="100%" height="100%" alt="фото не загружено">
+      <div class="row">
+        <div class="col-md-3">
+          <img
+            :src="current_user_staff.photo"
+            width="100%"
+            height="100%"
+            alt="фото не загружено"
+          />
+        </div>
+
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff1"
+                  name="Pwd"
+                  v-model="current_user_staff.last_name"
+                  disabled
+                />
+                <br />
+                <label for="input-filter-staff1" class="label">Фамилия</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff12"
+                  name="Pwd"
+                  v-model="current_user_staff.first_name"
+                  disabled
+                />
+                <br />
+                <label for="input-filter-staff12" class="label">Имя</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff13"
+                  name="Pwd"
+                  v-model="current_user_staff.middle_name"
+                  disabled
+                />
+                <br />
+                <label for="input-filter-staff13" class="label">Отчество</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff14"
+                  name="Pwd"
+                  v-model="current_user_staff.post"
+                  disabled
+                />
+                <br />
+                <label for="input-filter-staff14" class="label"
+                  >Должность</label
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff15"
+                  name="Pwd"
+                  v-model="current_user_staff.email"
+                  disabled
+                />
+                <br />
+                <label for="input-filter-staff15" class="label">Почта</label>
+              </div>
             </div>
 
-            <div class="col-md-9">
-                <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff1"
-              name="Pwd"
-              v-model="current_user_staff.last_name" disabled
-               
-            />
-            <br />
-            <label for="input-filter-staff1" class="label">Фамилия</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff12"
-              name="Pwd"
-              v-model="current_user_staff.first_name" disabled
-              
-            />
-            <br />
-            <label for="input-filter-staff12" class="label">Имя</label>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff13"
-              name="Pwd"
-              v-model="current_user_staff.middle_name"
-              disabled
-            />
-            <br />
-            <label for="input-filter-staff13" class="label">Отчество</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff14"
-              name="Pwd"
-              v-model="current_user_staff.post"
-              disabled
-            />
-            <br />
-            <label for="input-filter-staff14" class="label">Должность</label>
-          </div>
-        </div>
-      </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff16"
+                  name="Pwd"
+                  :value="getGroupName(current_user_staff.groups)"
+                  disabled
+                />
 
-
-
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input class="textarea" id="input-filter-staff15" name="Pwd" v-model="current_user_staff.email" disabled/>
-            <br />
-            <label for="input-filter-staff15" class="label">Почта</label>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff16"
-              name="Pwd"
-              :value= "getGroupName(current_user_staff.groups)"
-              disabled
-            />
-
-            <br />
-            <label for="input-filter-staff16" class="label">Отдел</label>
-          </div>
-        </div>
-      </div>
-
-
-
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff17"
-              name="Pwd"
-              v-model="current_user_staff.phone_corp"
-              disabled
-            />
-            <br />
-            <label for="input-filter-staff17" class="label"
-              >Телефон корп</label
-            >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff18"
-              name="Pwd"
-              v-model="current_user_staff.phone_personal"
-              disabled
-            />
-            <br />
-            <label for="input-filter-staff18" class="label"
-              >Телефон личный</label
-            >
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff19"
-              name="Pwd"
-              v-model="current_user_staff.inner_number"
-              disabled
-            />
-            <br />
-            <label for="input-filter-staff19" class="label"
-              >Внутренний номер</label
-            >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff20"
-              name="Pwd"
-              v-model="current_user_staff.schedule"
-              disabled
-            />
-            <br />
-            <label for="input-filter-staff20" class="label">Время работы</label>
-          </div>
-        </div>
-      </div>
+                <br />
+                <label for="input-filter-staff16" class="label">Отдел</label>
+              </div>
             </div>
-            
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff17"
+                  name="Pwd"
+                  v-model="current_user_staff.phone_corp"
+                  disabled
+                />
+                <br />
+                <label for="input-filter-staff17" class="label"
+                  >Телефон корп</label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff18"
+                  name="Pwd"
+                  v-model="current_user_staff.phone_personal"
+                  disabled
+                />
+                <br />
+                <label for="input-filter-staff18" class="label"
+                  >Телефон личный</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff19"
+                  name="Pwd"
+                  v-model="current_user_staff.inner_number"
+                  disabled
+                />
+                <br />
+                <label for="input-filter-staff19" class="label"
+                  >Внутренний номер</label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff20"
+                  name="Pwd"
+                  v-model="current_user_staff.schedule"
+                  disabled
+                />
+                <br />
+                <label for="input-filter-staff20" class="label"
+                  >Время работы</label
+                >
+              </div>
+            </div>
+          </div>
         </div>
-
-
-
-     
+      </div>
 
       <b-button
         class="mt-3"
@@ -386,180 +390,225 @@
     </b-modal>
     <b-modal ref="change-user" hide-footer title="Редактирование сотрудника">
       <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff1"
-              name="Pwd"
-              v-model="current_user_staff.last_name"
-            />
-            <br />
-            <label for="input-filter-staff1" class="label">Фамилия</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff12"
-              name="Pwd"
-              v-model="current_user_staff.first_name"
-            />
-            <br />
-            <label for="input-filter-staff12" class="label">Имя</label>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff13"
-              name="Pwd"
-              v-model="current_user_staff.middle_name"
-            />
-            <br />
-            <label for="input-filter-staff13" class="label">Отчество</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff14"
-              name="Pwd"
-              v-model="current_user_staff.post"
-            />
-            <br />
-            <label for="input-filter-staff14" class="label">Должность</label>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff15"
-              name="Pwd"
-              v-model="current_user_staff.email"
-              :class="{ error: checkError('email') }"
-              @input="deleteErrorOnline('email')"
-            />
-            <br />
-            <label for="input-filter-staff15" class="label">Почта</label>
-            <p v-if="checkError('email')">{{ formErrorsMess["email"][0] }}</p>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <select
-              v-model="current_user_staff.groups"
-              class="textarea"
-              id="input-filter-staff16"
-              :class="{ error: checkError('groups') }"
-              @change="deleteErrorOnline('groups')"
-            >
-              <option value="">Выберите отдел</option>
-              <option
-                v-for="userGroup in allGroups"
-                :key="userGroup.id"
-                :value="userGroup.id"
-              >
-                {{ userGroup.name }}
-              </option>
-            </select>
+        <div class="col-md-3">
 
-            <br />
-            <label for="input-filter-staff16" class="label">Отдел</label>
-            <p v-if="checkError('groups')">Выберите отдел</p>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
+            <button
+              v-if="current_user_staff.photo"
+              style="
+                display: block;
+                position: absolute;
+                top: 0;
+                z-index: 10;
+                left: 50%;
+                transform: translate(-50%, 0);
+              "
+            >
+              Заменить
+            </button>
+            <button v-else>Загрузить</button>
             <input
-              class="textarea"
-              id="input-filter-staff17"
-              name="Pwd"
-              v-model="current_user_staff.phone_corp"
+              type="file"
+              @change="onFileSelected"
+              name="photo"
+              ref="photo"
+              style="
+                display: inline-block;
+                position: absolute;
+                top: 0%;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 101;
+                opacity: 0;
+              "
             />
-            <br />
-            <label for="input-filter-staff17" class="label"
-              >Телефон корпоративный</label
-            >
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff18"
-              name="Pwd"
-              v-model="current_user_staff.phone_personal"
-            />
-            <br />
-            <label for="input-filter-staff18" class="label"
-              >Телефон личный</label
-            >
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff1"
+                  name="Pwd"
+                  v-model="current_user_staff.last_name"
+                />
+                <br />
+                <label for="input-filter-staff1" class="label">Фамилия</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff12"
+                  name="Pwd"
+                  v-model="current_user_staff.first_name"
+                />
+                <br />
+                <label for="input-filter-staff12" class="label">Имя</label>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff19"
-              name="Pwd"
-              v-model="current_user_staff.inner_number"
-            />
-            <br />
-            <label for="input-filter-staff19" class="label"
-              >Внутренний номер</label
-            >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff13"
+                  name="Pwd"
+                  v-model="current_user_staff.middle_name"
+                />
+                <br />
+                <label for="input-filter-staff13" class="label">Отчество</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff14"
+                  name="Pwd"
+                  v-model="current_user_staff.post"
+                />
+                <br />
+                <label for="input-filter-staff14" class="label"
+                  >Должность</label
+                >
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff20"
-              name="Pwd"
-              v-model="current_user_staff.schedule"
-            />
-            <br />
-            <label for="input-filter-staff20" class="label">Время работы</label>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff15"
+                  name="Pwd"
+                  v-model="current_user_staff.email"
+                  :class="{ error: checkError('email') }"
+                  @input="deleteErrorOnline('email')"
+                />
+                <br />
+                <label for="input-filter-staff15" class="label">Почта</label>
+                <p v-if="checkError('email')">
+                  {{ formErrorsMess["email"][0] }}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <select
+                  v-model="current_user_staff.groups"
+                  class="textarea"
+                  id="input-filter-staff16"
+                  :class="{ error: checkError('groups') }"
+                  @change="deleteErrorOnline('groups')"
+                >
+                  <option value="">Выберите отдел</option>
+                  <option
+                    v-for="userGroup in allGroups"
+                    :key="userGroup.id"
+                    :value="userGroup.id"
+                  >
+                    {{ userGroup.name }}
+                  </option>
+                </select>
+
+                <br />
+                <label for="input-filter-staff16" class="label">Отдел</label>
+                <p v-if="checkError('groups')">Выберите отдел</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="bg">
-            <select
-              v-model="current_user_staff.manager"
-              class="textarea"
-              id="input-filter-staff21"
-              style="width: 80%"
-            >
-              <option
-                v-for="global in staffGlobal"
-                :key="global.id"
-                :value="global.id"
-              >
-                {{ global.first_name }} {{ global.last_name }}
-              </option>
-            </select>
-            <br />
-            <label
-              for="input-filter-staff21"
-              class="label"
-              style="margin-left: 10%"
-              >Начальник</label
-            >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff17"
+                  name="Pwd"
+                  v-model="current_user_staff.phone_corp"
+                />
+                <br />
+                <label for="input-filter-staff17" class="label"
+                  >Телефон корп</label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff18"
+                  name="Pwd"
+                  v-model="current_user_staff.phone_personal"
+                />
+                <br />
+                <label for="input-filter-staff18" class="label"
+                  >Телефон личный</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff19"
+                  name="Pwd"
+                  v-model="current_user_staff.inner_number"
+                />
+                <br />
+                <label for="input-filter-staff19" class="label"
+                  >Внутренний номер</label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff20"
+                  name="Pwd"
+                  v-model="current_user_staff.schedule"
+                />
+                <br />
+                <label for="input-filter-staff20" class="label"
+                  >Время работы</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="bg">
+                <select
+                  v-model="current_user_staff.manager"
+                  class="textarea"
+                  id="input-filter-staff21"
+                  style="width: 80%"
+                >
+                  <option
+                    v-for="global in staffGlobal"
+                    :key="global.id"
+                    :value="global.id"
+                  >
+                    {{ global.first_name }} {{ global.last_name }}
+                  </option>
+                </select>
+                <br />
+                <label
+                  for="input-filter-staff21"
+                  class="label"
+                  style="margin-left: 10%"
+                  >Начальник</label
+                >
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -581,182 +630,238 @@
     </b-modal>
     <b-modal ref="add-user" hide-footer title="Добавление сотрудника">
       <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff1"
-              name="Pwd"
-              v-model="last_name"
-            />
-            <br />
-            <label for="input-filter-staff1" class="label">Фамилия</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff12"
-              name="Pwd"
-              v-model="first_name"
-            />
-            <br />
-            <label for="input-filter-staff12" class="label">Имя</label>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff13"
-              name="Pwd"
-              v-model="middle_name"
-            />
-            <br />
-            <label for="input-filter-staff13" class="label">Отчество</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff14"
-              name="Pwd"
-              v-model="post"
-            />
-            <br />
-            <label for="input-filter-staff14" class="label">Должность</label>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff15"
-              name="Pwd"
-              v-model="email"
-              :class="{ error: checkError('email') }"
-              @input="deleteErrorOnline('email')"
-            />
-            <br />
-            <label for="input-filter-staff15" class="label">Почта</label>
-            <p v-if="checkError('email')">{{ formErrorsMess["email"][0] }}</p>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <select
-              v-model="groups"
-              class="textarea"
-              id="input-filter-staff16"
-              :class="{ error: checkError('groups') }"
-              @change="deleteErrorOnline('groups')"
+        <div class="col-md-3">
+          <div
+            class="uploader"
+            style="
+              display: block;
+              position: relative;
+              left: 50%;
+              transform: translate(-50%, 0);
+              width: 120px;
+              height: 60px;
+            "
+          >
+            <button
+              v-if="current_user_staff.photo"
+              style="
+                display: block;
+                position: absolute;
+                top: 0;
+                z-index: 10;
+                left: 50%;
+                transform: translate(-50%, 0);
+              "
             >
-              <option value="">Выберите отдел</option>
-              <option
-                v-for="userGroup in allGroups"
-                :key="userGroup.id"
-                :value="userGroup.id"
-              >
-                {{ userGroup.name }}
-              </option>
-            </select>
+              Заменить
+            </button>
+            <button v-else>Загрузить</button>
+            <input
+              type="file"
+              @change="onFileSelected"
+              name="photo"
+              ref="photo"
+              style="
+                display: inline-block;
+                position: absolute;
+                top: 0%;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 101;
+                opacity: 0;
+              "
+            />
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff1"
+                  name="Pwd"
+                  v-model="last_name"
+                />
+                <br />
+                <label for="input-filter-staff1" class="label">Фамилия</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff12"
+                  name="Pwd"
+                  v-model="first_name"
+                />
+                <br />
+                <label for="input-filter-staff12" class="label">Имя</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff13"
+                  name="Pwd"
+                  v-model="middle_name"
+                />
+                <br />
+                <label for="input-filter-staff13" class="label">Отчество</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff14"
+                  name="Pwd"
+                  v-model="post"
+                />
+                <br />
+                <label for="input-filter-staff14" class="label"
+                  >Должность</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff15"
+                  name="Pwd"
+                  v-model="email"
+                  :class="{ error: checkError('email') }"
+                  @input="deleteErrorOnline('email')"
+                />
+                <br />
+                <label for="input-filter-staff15" class="label">Почта</label>
+                <p v-if="checkError('email')">
+                  {{ formErrorsMess["email"][0] }}
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <select
+                  v-model="groups"
+                  class="textarea"
+                  id="input-filter-staff16"
+                  :class="{ error: checkError('groups') }"
+                  @change="deleteErrorOnline('groups')"
+                >
+                  <option value="">Выберите отдел</option>
+                  <option
+                    v-for="userGroup in allGroups"
+                    :key="userGroup.id"
+                    :value="userGroup.id"
+                  >
+                    {{ userGroup.name }}
+                  </option>
+                </select>
 
-            <br />
-            <label for="input-filter-staff16" class="label">Отдел</label>
-            <p v-if="checkError('groups')">Выберите отдел</p>
+                <br />
+                <label for="input-filter-staff16" class="label">Отдел</label>
+                <p v-if="checkError('groups')">Выберите отдел</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff17"
-              name="Pwd"
-              v-model="phone_corp"
-            />
-            <br />
-            <label for="input-filter-staff17" class="label"
-              >Телефон корпоративный</label
-            >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff17"
+                  name="Pwd"
+                  v-model="phone_corp"
+                />
+                <br />
+                <label for="input-filter-staff17" class="label"
+                  >Телефон корп</label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff18"
+                  name="Pwd"
+                  v-model="phone_personal"
+                />
+                <br />
+                <label for="input-filter-staff18" class="label"
+                  >Телефон личный</label
+                >
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff18"
-              name="Pwd"
-              v-model="phone_personal"
-            />
-            <br />
-            <label for="input-filter-staff18" class="label"
-              >Телефон личный</label
-            >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff19"
+                  name="Pwd"
+                  v-model="inner_number"
+                />
+                <br />
+                <label for="input-filter-staff19" class="label"
+                  >Внутренний номер</label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="bg">
+                <input
+                  class="textarea"
+                  id="input-filter-staff20"
+                  name="Pwd"
+                  v-model="schedule"
+                />
+                <br />
+                <label for="input-filter-staff20" class="label"
+                  >Время работы</label
+                >
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff19"
-              name="Pwd"
-              v-model="inner_number"
-            />
-            <br />
-            <label for="input-filter-staff19" class="label"
-              >Внутренний номер</label
-            >
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="bg">
-            <input
-              class="textarea"
-              id="input-filter-staff20"
-              name="Pwd"
-              v-model="schedule"
-            />
-            <br />
-            <label for="input-filter-staff20" class="label">Время работы</label>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="bg">
-            <select
-              type="text"
-              v-model="manager"
-              class="textarea"
-              style="width: 80%"
-            >
-              <option value="">Выберите начальника</option>
-              <option
-                v-for="manager in allManagerStaff"
-                :key="manager.id"
-                :value="manager.id"
-              >
-                {{ manager.first_name }} {{ manager.middle_name }}
-                {{ manager.last_name }}
-              </option>
-            </select>
-            <br />
-            <label
-              for="input-filter-staff21"
-              class="label"
-              style="margin-left: 10%"
-              >Начальник</label
-            >
+          <div class="row">
+            <div class="col-md-12">
+              <div class="bg">
+                <select
+                  type="text"
+                  v-model="manager"
+                  class="textarea"
+                  style="width: 80%"
+                >
+                  <option value="">Выберите начальника</option>
+                  <option
+                    v-for="manager in allManagerStaff"
+                    :key="manager.id"
+                    :value="manager.id"
+                  >
+                    {{ manager.first_name }} {{ manager.middle_name }}
+                    {{ manager.last_name }}
+                  </option>
+                </select>
+                <br />
+                <label
+                  for="input-filter-staff21"
+                  class="label"
+                  style="margin-left: 10%"
+                  >Начальник</label
+                >
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -858,7 +963,7 @@ export default {
   },
   methods: {
     openModalView(id) {
-        this.loader = true;
+      this.loader = true;
       this.OpenModalView(id);
       api.currentUser(id).then((response) => {
         this.loader = false;
@@ -1038,7 +1143,13 @@ export default {
 
     onFileSelected(event) {
       this.photo = this.$refs.photo.files[0];
-      console.log(event);
+      this.notifyHead = "Успешно";
+      this.notifyMessage = "Фото добавлено";
+      this.notifyClass = "wrapper-success";
+      this.showNotify = true;
+      setTimeout(this.closeNotification, 1500);
+
+      // console.log(event);
     },
     checkError(key) {
       return this.formErrors.includes(key);

@@ -52,7 +52,7 @@
                   justify-content: center;
                 "
                 class="Accept"
-                @click="openCurrentReport(bdr.id)"
+                @click="OpenCreateBDRreport(bdr.id)"
               >
                 Редактировать
               </button>
@@ -107,17 +107,9 @@ export default {
     });
   },
   methods: {
-    OpenCreateBDRreport() {
-      this.loader = true;
-      api.getBDRreport().then((response) => {
-        this.BDRreport = response.data.data;
-        this.loader = false;
-        this.notifyHead = "Успешно";
-        this.notifyMessage = "Отчеты загружены";
-        this.notifyClass = "wrapper-success";
-        this.showNotify = true;
-        setTimeout(this.closeNotification, 1500);
-      });
+    OpenCreateBDRreport(id) {
+      window.open('/edit-bdr/' + `${id}`, '_blank');
+    
     },
     closeNotification() {
       this.showNotify = false;

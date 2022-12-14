@@ -16,32 +16,17 @@
                 <p class="userField9-description-text">Данные пользователя</p>
               </div>
               <hr style="width: 100% !important; margin: 0; padding: 0" />
-
-              <div class="bg">
-                <input
-                  class="textarea"
-                  id="input-filter-staff1"
-                  name="Pwd"
-                  :value="PersonalData.email"
-                  style="width: 100%; background: white"
-                  readonly
-                />
-                <br />
-                <label
-                  for="input-filter-staff1"
-                  class="label"
-                  style="margin-left: 10% !important; background: white"
-                  >Логин (E-mail)</label
-                >
-              </div>
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
+                  <img :src="current_photo.photo" alt="фотография не загружена" width="100%" height="100%"/>
+                </div>
+                <div class="col-md-9">
                   <div class="bg">
                     <input
                       class="textarea"
                       id="input-filter-staff1"
                       name="Pwd"
-                      :value="PersonalData.last_name"
+                      :value="PersonalData.email"
                       style="width: 100%; background: white"
                       readonly
                     />
@@ -49,88 +34,109 @@
                     <label
                       for="input-filter-staff1"
                       class="label"
-                      style="margin-left:1b % !important; background: white"
-                      >Фамилия</label
+                      style="margin-left: 10% !important; background: white"
+                      >Логин (E-mail)</label
                     >
                   </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="bg">
-                    <input
-                      class="textarea"
-                      id="input-filter-staff1"
-                      name="Pwd"
-                      :value="PersonalData.first_name"
-                      style="width: 100%; background: white"
-                      readonly
-                    />
-                    <br />
-                    <label
-                      for="input-filter-staff1"
-                      class="label"
-                      style="margin-left:1b % !important; background: white"
-                      >Имя</label
-                    >
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="bg">
+                        <input
+                          class="textarea"
+                          id="input-filter-staff1"
+                          name="Pwd"
+                          :value="PersonalData.last_name"
+                          style="width: 100%; background: white"
+                          readonly
+                        />
+                        <br />
+                        <label
+                          for="input-filter-staff1"
+                          class="label"
+                          style="margin-left: 1% !important; background: white"
+                          >Фамилия</label
+                        >
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="bg">
+                        <input
+                          class="textarea"
+                          id="input-filter-staff1"
+                          name="Pwd"
+                          :value="PersonalData.first_name"
+                          style="width: 100%; background: white"
+                          readonly
+                        />
+                        <br />
+                        <label
+                          for="input-filter-staff1"
+                          class="label"
+                          style="margin-left: 1% !important; background: white"
+                          >Имя</label
+                        >
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="bg">
+                        <input
+                          class="textarea"
+                          id="input-filter-staff1"
+                          name="Pwd"
+                          :value="PersonalData.middle_name"
+                          style="width: 100%; background: white"
+                          readonly
+                        />
+                        <br />
+                        <label
+                          for="input-filter-staff1"
+                          class="label"
+                          style="margin-left: 1% !important; background: white"
+                          >Отчество</label
+                        >
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="bg">
-                    <input
-                      class="textarea"
-                      id="input-filter-staff1"
-                      name="Pwd"
-                      :value="PersonalData.middle_name"
-                      style="width: 100%; background: white"
-                      readonly
-                    />
-                    <br />
-                    <label
-                      for="input-filter-staff1"
-                      class="label"
-                      style="margin-left:1b % !important; background: white"
-                      >Отчество</label
+                  <div>
+                    <div
+                      class="bg"
+                      style="background: white !important; float: left"
                     >
+                      <input
+                        class="textarea"
+                        id="input-filter-staff2"
+                        name="Pwd"
+                        :value="getGroupName(personal)"
+                        style="background: white"
+                        readonly
+                        v-for="personal in PersonalData.groups"
+                        :key="personal.id"
+                      />
+                      <br />
+                      <label
+                        for="input-filter-staff2"
+                        class="label"
+                        style="background: white"
+                        >Отдел</label
+                      >
+                      <br /><br />
+                      <input
+                        class="textarea"
+                        id="input-filter-staff3"
+                        name="Pwd"
+                        :value="PersonalData.post"
+                        style="background: white"
+                        readonly
+                      />
+                      <br />
+                      <label
+                        for="input-filter-staff3"
+                        class="label"
+                        style="background: white"
+                        >Должность</label
+                      >
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div>
-                <div
-                  class="bg"
-                  style="background: white !important; float: left"
-                >
-                  <input
-                    class="textarea"
-                    id="input-filter-staff2"
-                    name="Pwd"
-                    :value="getGroupName(personal)"
-                    style="background: white"
-                    readonly
-                    v-for="personal in PersonalData.groups"
-                    :key="personal.id"
-                  />
-                  <br />
-                  <label
-                    for="input-filter-staff2"
-                    class="label"
-                    style="background: white"
-                    >Отдел</label
-                  >
-                  <br /><br />
-                  <input
-                    class="textarea"
-                    id="input-filter-staff3"
-                    name="Pwd"
-                    :value="PersonalData.post"
-                    style="background: white"
-                    readonly
-                  />
-                  <br />
-                  <label
-                    for="input-filter-staff3"
-                    class="label"
-                    style="background: white"
-                    >Должность</label
-                  >
                 </div>
               </div>
             </b-card-text>
@@ -179,10 +185,8 @@
             </b-card-text>
           </b-tab>
           <b-tab title="Отчеты" style="height: 70vh !important">
-            <LkReport>
-
-            </LkReport>
-        </b-tab>
+            <LkReport> </LkReport>
+          </b-tab>
         </b-tabs>
       </b-card>
     </div>
@@ -203,6 +207,7 @@
 <script>
 import { mapState } from "vuex";
 import api from "@/api/report";
+import apiStaff from "@/api/staff"
 import { getGroupName } from "@/helpers/getGroupName";
 import Loader from "@/components/loader/loader.vue";
 import LkReport from "@/components/Table/lk/lk-report.vue";
@@ -222,10 +227,17 @@ export default {
       PersonalData: "",
       emp: "",
       loader: false,
+      current_photo: '',
     };
   },
   mounted() {
+
+    
     this.loader = true;
+
+    apiStaff.currentUser(this.uid).then((response) => {
+        this.current_photo = response.data;
+    });
     api.getUsersLK(this.uid).then((response) => {
       this.PersonalData = response.data;
     });
