@@ -60,8 +60,16 @@ const getKeyFacts = () => {
 }
 
 // Телеграммы
+const getTelegram = (data) => {
+    return api.get(`${resource}/telegrams/` + data)
+}
 const postTelegram = (data) => {
-    return api.get(`${resource}/telegram-data/` + data)
+
+    return api.post(`${resource}/telegram-data/`, data={"wagons": [data]})
+}
+const postTelegram2 = (data) => {
+
+    return api.post(`${resource}/telegram-data/`, data={"wagons": data})
 }
 export default {
     getWagons,
@@ -78,6 +86,7 @@ export default {
 // Дислокация вагонов
 getwagonDislocation,
 
+// 60606670
 
 // полигоны вагонов
 getPolygon,
@@ -88,7 +97,9 @@ getKeyFacts,
 
 
 // Телеграммы
+getTelegram,
 postTelegram,
+postTelegram2,
 
 
 

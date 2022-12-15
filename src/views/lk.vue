@@ -18,7 +18,12 @@
               <hr style="width: 100% !important; margin: 0; padding: 0" />
               <div class="row">
                 <div class="col-md-3">
-                  <img :src="current_photo.photo" alt="фотография не загружена" width="100%" height="100%"/>
+                  <img
+                    :src="current_photo.photo"
+                    alt="фотография не загружена"
+                    width="100%"
+                    height="100%"
+                  />
                 </div>
                 <div class="col-md-9">
                   <div class="bg">
@@ -187,6 +192,9 @@
           <b-tab title="Отчеты" style="height: 70vh !important">
             <LkReport> </LkReport>
           </b-tab>
+          <b-tab title="Телеграммы" style="height: 70vh !important">
+            <lkTelegram> </lkTelegram>
+          </b-tab>
         </b-tabs>
       </b-card>
     </div>
@@ -207,13 +215,14 @@
 <script>
 import { mapState } from "vuex";
 import api from "@/api/report";
-import apiStaff from "@/api/staff"
+import apiStaff from "@/api/staff";
 import { getGroupName } from "@/helpers/getGroupName";
 import Loader from "@/components/loader/loader.vue";
 import LkReport from "@/components/Table/lk/lk-report.vue";
+import lkTelegram from '@/components/Table/lk/lk-telegram.vue';
 export default {
   name: "lk",
-  components: { Loader, LkReport },
+  components: { Loader, LkReport, lkTelegram},
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -223,20 +232,17 @@ export default {
   },
   data() {
     return {
-      // id: [],
       PersonalData: "",
       emp: "",
       loader: false,
-      current_photo: '',
+      current_photo: "",
     };
   },
   mounted() {
-
-    
     this.loader = true;
 
     apiStaff.currentUser(this.uid).then((response) => {
-        this.current_photo = response.data;
+      this.current_photo = response.data;
     });
     api.getUsersLK(this.uid).then((response) => {
       this.PersonalData = response.data;
