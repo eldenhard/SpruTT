@@ -43,16 +43,22 @@
           </div>
         </div>
         <br />
+
+
+
         <div class="row">
           <div class="col-md-6">
-            <input
+            <!-- <input
               class="textarea"
               id="input-filter-staff1"
               name="Pwd"
               v-model="all_information.departure_station"
               style="background: white"
               disabled
-            />
+            /> -->
+            <MultiSelectSearch :placeholder="'Станция'" @change="updateSelectedStations"
+                        :variants="stations" :variant-title="'work_name'">
+            </MultiSelectSearch>
             <br />
             <label
               for="input-filter-staff1"
@@ -79,6 +85,9 @@
             >
           </div>
         </div>
+
+
+
         <br />
         <div class="row">
           <div class="col-md-6">
@@ -162,7 +171,7 @@
               class="textarea"
               id="input-filter-staff1"
               name="Pwd"
-              v-model="all_information.period_begin"
+              v-model="period_begin"
               style="background: white; border: 1px solid grey"
             />
             <br />
@@ -179,7 +188,7 @@
               class="textarea"
               id="input-filter-staff1"
               name="Pwd"
-              v-model="all_information.period_end"
+              v-model="period_end"
               style="background: white; border: 1px solid grey"
             />
             <br />
@@ -310,10 +319,11 @@ import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
 import api from "@/api/wagonPark";
 import Notifications from "@/components/notifications/Notifications.vue";
+import MultiSelectSearch from '../ui/MultiSelectSearch.vue'
 
 export default {
   name: "Telegram",
-  components: { Loader, Notifications },
+  components: { Loader, Notifications, MultiSelectSearch },
   data() {
     return {
       loader: false,
@@ -329,19 +339,22 @@ export default {
       selected_wagon: [],
       errors: {},
       period_begin: '',
-      period_end: '',
+        period_end: '',
       // Уведомления
       showNotify: false,
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+
+      selectedStationsIds: []
     };
   },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
-      allGroups: (state) => state.auth.groups,
+      stations: state => state
+
     }),
   },
   methods: {
@@ -368,6 +381,11 @@ export default {
           setTimeout(this.closeNotification, 1500);
         });
     },
+    
+    updateSelectedStations(selected) {
+            this.selectedStationsIds = selected
+            this.sendEmit()
+        },
     closeNotification() {
       this.showNotify = false;
     },
@@ -386,7 +404,7 @@ export default {
     // Создать телеграмму
     createTelegram() {
       this.loader = true;
-      api.postTelegram2(this.selected_wagon).then((response) => {
+      api.postTelegram2(this.selected_wagon, time).then((response) => {
         this.showNotify = true;
         this.notifyHead = "Успешно";
         this.notifyMessage = "Телеграмма создана";
