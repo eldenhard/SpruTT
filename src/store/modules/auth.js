@@ -6,6 +6,7 @@ const resource = api.resource
 
 const state = {
     user: {},
+    // stations: [],
     uid: null,
     isLoggedIn: false,
     groups: null,
@@ -20,7 +21,8 @@ export const mutationTypes = {
     // у нас форма авторизации показываетс когда isLoggedIn = false. Когда авторизация успешна - там тру. Нам нужен отдельный обработчик чтобы сделать логаут
     logout: `[${resource}] logout`,
     getStaffGroups: `[${resource}] getStaffGroups`,
-    staffGlobal: `[${resource}] staffGlobal`
+    staffGlobal: `[${resource}] staffGlobal`,
+    // getStations: `[${resource}] getStations`,
 
 }
 

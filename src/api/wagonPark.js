@@ -20,9 +20,14 @@ const getBelong = (filter) => {
 const getCurrentWagon = (numberWagon) => {
     return api.get(`${resource}/wagons`+ `?number=${numberWagon}`)
 }
-const getAllStation = () => {
+
+
+const getAllStation = (url) => {
     return api.get(`${url}`)
 }
+
+
+
 // получить вагоны для селекта в фильтре 
 const getWagonType = () => {
     return api.get(`${resource}/wagon-type`)

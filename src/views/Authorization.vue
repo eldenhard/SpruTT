@@ -25,6 +25,7 @@ import axios from "axios";
 import { mapState } from "vuex";
 import { actionTypes } from '@/store/modules/auth'
 import Notifications from "@/components/notifications/Notifications.vue";
+
 export default {
     name: "Authorization",
     data() {
@@ -46,12 +47,14 @@ export default {
                     email: this.email,
                     password: this.password
                 }).then((user) => {
+
                     if (this.$store.state.auth.isLoggedIn) {
                         this.showNotify = true
                         this.notifyHead = 'Здравствуйте'
                         this.notifyMessage = 'Вы успешно авторизированы'
                         this.notifyClass = 'wrapper-success'
                         document.location.href = '/'
+
                     }
                 }).catch((e) => {
                     this.showNotify = true

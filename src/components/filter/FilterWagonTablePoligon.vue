@@ -121,7 +121,7 @@ export default {
                 .then(response => {
                     this.polygonDislocations = response.data.polygons
                     this.loader = false
-                    console.log(this.polygonDislocations)
+                    // console.log(this.polygonDislocations)
                 })
 
     },

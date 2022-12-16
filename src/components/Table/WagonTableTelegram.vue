@@ -56,9 +56,10 @@
               style="background: white"
               disabled
             /> -->
-            <MultiSelectSearch :placeholder="'Станция'" @change="updateSelectedStations"
-                        :variants="stations" :variant-title="'work_name'">
-            </MultiSelectSearch>
+            <!-- <multi-select-search @change="updateSelectedStations" :placeholder="'Станция отправления'"
+                        :variants="stations" :variant-title="'work_name'"
+                        style="width: 170px !important;cursor: pointer;">
+            </multi-select-search> -->
             <br />
             <label
               for="input-filter-staff1"
@@ -275,8 +276,7 @@
 
     <button
       class="Accept"
-      style="
-        margin-top: 2%;
+      style="margin-top: 2%;
         width: 45%;
         position: relative;
         left: 50%;
@@ -353,10 +353,14 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
-      stations: state => state
+      stations: state => state.stations
 
     }),
   },
+// mounted(){
+//   const info = JSON.parse(localStorage.getItem("station"))
+//   console.log(info)
+// },
   methods: {
     // Номер вагона 51037059
     getInfoByWagon() {

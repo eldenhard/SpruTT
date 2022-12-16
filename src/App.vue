@@ -12,8 +12,8 @@ import UpNavbar from './views/UpNavbar.vue'
 import Authorization from './views/Authorization.vue'
 import { actionTypes } from './store/modules/auth';
 import { actionTypes as cpActionTypes } from './store/modules/counterparties';
-import {actionTypes as stationsActionTypes} from './store/modules/stations'
-import Loader from '@/components/loader/loader.vue'
+import { actionTypes as stActionTypes } from './store/modules/stations';
+import Loader from '@/components/loader/loader.vue';
 
 export default {
   name: 'App',
@@ -28,7 +28,7 @@ export default {
     this.$store.dispatch(actionTypes.getStaffGroups)
     this.$store.dispatch(actionTypes.staffGlobal)
     this.$store.dispatch(cpActionTypes.getCounterparties, {url: 'personal/counterparties/?page_size=700', clear: true})
-    this.$store.dispatch(stationsActionTypes.getStations , {url: 'wagon-park/station/?page_size=700', clear: true})
+    this.$store.dispatch(stActionTypes.getStations, {url: 'wagon-park/station?page_size=1000', clear: true})
     this.loader = false
   }
 }
