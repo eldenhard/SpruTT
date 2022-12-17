@@ -1,8 +1,8 @@
 <template>
   <div>
     <Loader :loader="loader"></Loader>
-    <UpNavbar/>
-    <router-view/>
+    <UpNavbar />
+    <router-view />
     <Authorization style="z-index: 999999999999999999999999999999999999999"></Authorization>
   </div>
 </template>
@@ -13,23 +13,35 @@ import Authorization from './views/Authorization.vue'
 import { actionTypes } from './store/modules/auth';
 import { actionTypes as cpActionTypes } from './store/modules/counterparties';
 import { actionTypes as stActionTypes } from './store/modules/stations';
+import { actionTypes as dnActionTypes } from './store/modules/dog_number';
+import { actionTypes as coActionTypes } from './store/modules/cargo_owner';
+import { actionTypes as ccActionTypes } from './store/modules/cargo_code';
+
 import Loader from '@/components/loader/loader.vue';
 
 export default {
   name: 'App',
-  components: {UpNavbar, Authorization, Loader},
-  data(){
-    return{
+  components: { UpNavbar, Authorization, Loader },
+  data() {
+    return {
       loader: false
-    }   
+    }
   },
-  mounted(){
+  async mounted() {
     this.loader = true
-    this.$store.dispatch(actionTypes.getStaffGroups)
-    this.$store.dispatch(actionTypes.staffGlobal)
-    this.$store.dispatch(cpActionTypes.getCounterparties, {url: 'personal/counterparties/?page_size=700', clear: true})
-    this.$store.dispatch(stActionTypes.getStations, {url: 'wagon-park/station?page_size=1000', clear: true})
+    await this.loading()
+
     this.loader = false
+  },
+  methods: {
+    async loading() {
+      await this.$store.dispatch(actionTypes.getStaffGroups)
+      await this.$store.dispatch(actionTypes.staffGlobal)
+      await this.$store.dispatch(cpActionTypes.getCounterparties, { url: 'personal/counterparties/?page_size=700', clear: true })
+      await this.$store.dispatch(stActionTypes.checkLocalStations, { url: 'wagon-park/station?page_size=1000' })
+      await this.$store.dispatch(coActionTypes.getCargoOwner, { url: 'wagon-park/telegrams?page_size=400', clear: true })
+      await this.$store.dispatch(ccActionTypes.getCargoCode, { url: 'wagon-park/cargo?page_size=500', clear: true })
+    }
   }
 }
 </script>

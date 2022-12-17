@@ -20,6 +20,7 @@ export const mutationTypes = {
 export const actionTypes = {
 
     getStations: `${resource} getStations`,
+    checkLocalStations:  `${resource} checkLocalStations`,
 }
 
 const mutations = {
@@ -40,30 +41,41 @@ const mutations = {
       },
       [mutationTypes.clear](state){
         state.stations = []
-        setItem('station', [])
+       
 
   },
 
 }
 
 const actions = {
+    async [actionTypes.checkLocalStations](context, {url,clear}){
+        return new Promise((resolve, reject) => {
+            api.getAllStation('wagon-park/station?page_size=1').then(response => {
+                const localStations = getItem('station')
+                // console.log(response.data.total_objects,localStations, localStations.length)
+                if(response.data.total_objects != getItem('station').length){
+                    context.dispatch(actionTypes.getStations, {url: 'wagon-park/station?page_size=1000', clear: true})
+                }
+                resolve()
+                
+            })
+        })
+    },
     async [actionTypes.getStations](context, {url , clear}){
         return new Promise((resolve,reject) => {
-            if (clear){ context.commit(mutationTypes.clear) }
-            context.commit(mutationTypes.getStationsStart)
+            if (clear){ setItem('station', []) }
+          
             api.getAllStation(url)
             .then(response => {
-
-                context.commit(mutationTypes.getStationsSuccess, response.data.data)
-                if (response.data.links.next != null) {
-                    setItem('station', [...getItem('station'), ...response.data.data])
+                const stations = response.data.data.map(row => {
+                    return {id: row.id, name: row.name}
+                })
+                setItem('station', [...getItem('station'), ...stations])
+                if (response.data.links.next != null) {                    
                     context.dispatch(actionTypes.getStations, { url: response.data.links.next, clear: false })
-                } else {
-                    resolve(setItem('station', [...getItem('station'), ...response.data.data]))
                 }
             }).catch(error => {
-                context.commit(mutationTypes.getStationsFailure, error)
-                setItem('station', 'Ошибка')
+                setItem('station', [])
                 reject(error)
             })
             

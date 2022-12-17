@@ -25,6 +25,9 @@ const getDirectoryProvider = (filter_provider) => {
 const getDirectoryFinance = (filter_finance) => {
     return api.get(`${documents}/contract/?category=Финансовые`,  {params: filter_finance})
 }
+const getNumberDog = (url) => {
+    return api.get(`${url}`)
+}
 
 export default {
     getAllcounterparties,
@@ -34,5 +37,8 @@ export default {
     getDirectoryBuyer,
     getDirectoryProvider,
     getDirectoryFinance,
+
+    // Телеграммы
+    getNumberDog
 }
 

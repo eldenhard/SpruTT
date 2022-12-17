@@ -1,6 +1,5 @@
 import api from '@/api/counterparties'
-
-const resource = api.resource
+import {resource} from '@/api/counterparties'
 
 
 const state = {
