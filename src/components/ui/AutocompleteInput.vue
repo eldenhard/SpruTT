@@ -1,19 +1,43 @@
 <template>
     <div class="autocomplite_component">
         <div class="controller">
-            <label for="">{{ label }}</label>
-            <input type="text" class="textarea" @input="onInput" :value="value">
+
+        <input type="text" class="textarea" @input="onInput" :value="value" :placeholder="placeholder">
         </div>
-        <div class="variants" v-if="filtered && showVariants">
+        <br>
+        <label for="" class="label">{{ label }}</label>
+        <div class="variants" v-if="filtered && showVariants" style="max-height: 300px; overflow: auto">
             <div v-for="v in filtered" :key="v[variantKey]" class="variant" @click="selectVariant(v)">
-                {{ v[variantTitle] }}
+              <span style="cursor: pointer;">{{ v[variantTitle] }}</span>  
             </div>
         </div>
     </div>
 </template>
+<style scoped>
+.label {
+  position: absolute;
+  transform: translate(-9.8rem, -5.8rem);
+  font-size: 1rem;
+  padding: 0 5px;
+  background-color: #ffffff !important;
+  color: #757575;
+}
 
+.textarea {
+  position: relative;
+  border-radius: 0.4rem;
+  background-color: #ffffff;
+  border: #bdc3c7 0.1rem solid !important;
+  width: 20rem;
+  height: 3rem;
+  padding: 0rem 1rem;
+  font-size: 1.4rem;
+  font-size: 15px;
+}
+
+</style>
 <script>
-import {debounce} from '@/helpers/debounce'
+import { debounce } from '@/helpers/debounce'
 
 export default {
     name: 'AutocompleteInput',
@@ -23,7 +47,6 @@ export default {
             required: true,
         },
         value: {
-            type: String,
             default: ''
         },
         label: {
@@ -37,6 +60,14 @@ export default {
         variantTitle: {
             type: String,
             default: 'id'
+        },
+        placeholder: {
+            type: String,
+            default: ''
+        },
+        needFull: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -48,31 +79,50 @@ export default {
         }
     },
     computed: {
-        
+
     },
     methods: {
         onInput(e) {
             this.$emit('input', e.target.value)
             this.searchQuery = e.target.value
             this.filter()
-            if(this.searchQuery.length == 0 ) this.showVariants = false
+            if (this.searchQuery.length == 0) this.showVariants = false
         },
         selectVariant(variant) {
             this.selected = variant
             this.$emit('input', variant[this.variantTitle])
+            //if(this.needFull){sendFullObject()}
             this.showVariants = false
         },
-        filter(){
+        sendFullObject(){
+            
+                this.$emit('selected', this.selected)
+        },
+        filter() {
             console.log('filter runs')
             const filtered = this.variants.filter(row => {
                 return Object.keys(row).some((key) => {
-                    return (String(row[this.variantTitle]).toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1)                    
+                    return (String(row[this.variantTitle]).toLowerCase().indexOf(this.searchQuery.toLowerCase()) > -1)
                 })
             })
             this.filtered = filtered
 
             this.showVariants = true
         },
+    },
+    watch:{
+        value(newValue){
+            if(this.needFull){
+                const variantObject = this.variants.filter(s => s[this.variantTitle] == newValue)
+                if(variantObject){
+                    this.selected = variantObject[0]
+                    this.sendFullObject()
+                    }else{
+                        this.selected = {}
+                    }
+                
+            }
+        }
     }
 }
 </script>

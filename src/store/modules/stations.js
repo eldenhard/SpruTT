@@ -53,7 +53,7 @@ const actions = {
             api.getAllStation('wagon-park/station?page_size=1').then(response => {
                 const localStations = getItem('station')
                 // console.log(response.data.total_objects,localStations, localStations.length)
-                if(response.data.total_objects != getItem('station').length){
+                if(getItem('station') == null || response.data.total_objects != getItem('station').length){
                     context.dispatch(actionTypes.getStations, {url: 'wagon-park/station?page_size=1000', clear: true})
                 }
                 resolve()
@@ -68,7 +68,7 @@ const actions = {
             api.getAllStation(url)
             .then(response => {
                 const stations = response.data.data.map(row => {
-                    return {id: row.id, name: row.name}
+                    return {id: row.id, name: row.name, code: row.code}
                 })
                 setItem('station', [...getItem('station'), ...stations])
                 if (response.data.links.next != null) {                    
