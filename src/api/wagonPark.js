@@ -72,8 +72,12 @@ const getTelegram = (data) => {
 }
 const postTelegram = (data) => {
 
-    return api.post(`${resource}/telegram-data/`, data={"wagons": [data]})
+    return api.post(`${resource}/telegram-data/`, data={"wagons": data})
 }
+const getAllTelegrams = () => {
+    return api.get(`${resource}/telegrams`)
+}
+
 const createTelegram = (data) => {
     return api.post(`${resource}/telegram/create/`, data)
 }
@@ -115,7 +119,7 @@ getKeyFacts,
 getTelegram,
 postTelegram,
 createTelegram,
-
+getAllTelegrams,
 getAllDataTelegram,
 getCargoCode,
 

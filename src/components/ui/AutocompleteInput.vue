@@ -6,11 +6,12 @@
         </div>
         <br>
         <label for="" class="label">{{ label }}</label>
-        <div class="variants" v-if="filtered && showVariants" style="max-height: 300px; overflow: auto">
+        <div class="variants" v-if="filtered && showVariants" style="max-height: 200px; overflow: auto">
             <div v-for="v in filtered" :key="v[variantKey]" class="variant" @click="selectVariant(v)">
               <span style="cursor: pointer;">{{ v[variantTitle] }}</span>  
             </div>
         </div>
+       
     </div>
 </template>
 <style scoped>
@@ -68,7 +69,11 @@ export default {
         needFull: {
             type: Boolean,
             default: false
-        }
+        },
+        // class: {
+        //     type: String,
+        //     default: ''
+        // }
     },
     data() {
         return {

@@ -28,11 +28,10 @@ export default {
     }
   },
   async mounted() {
-
-    this.loader = true
+    // this.loader = true
     await this.loading()
 
-    this.loader = false
+    // this.loader = false
   },
   methods: {
     async loading() {
@@ -40,7 +39,7 @@ export default {
       await this.$store.dispatch(actionTypes.getStaffGroups)
       await this.$store.dispatch(actionTypes.staffGlobal)
       await this.$store.dispatch(cpActionTypes.getCounterparties, { url: 'personal/counterparties/?page_size=700', clear: true })
-      await this.$store.dispatch(stActionTypes.getStations, { url: 'wagon-park/station?page_size=1000' })
+      await this.$store.dispatch(stActionTypes.checkLocalStations, { url: 'wagon-park/station?page_size=1000' })
       await this.$store.dispatch(coActionTypes.getCargoOwner, { url: 'wagon-park/telegrams?page_size=400', clear: true })
       await this.$store.dispatch(ccActionTypes.getCargoCode, { url: 'wagon-park/cargo?page_size=500', clear: true })
 

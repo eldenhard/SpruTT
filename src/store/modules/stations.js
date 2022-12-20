@@ -20,7 +20,7 @@ export const mutationTypes = {
 export const actionTypes = {
 
     getStations: `${resource} getStations`,
-    v:  `${resource} checkLocalStations`,
+    checkLocalStations:  `${resource} checkLocalStations`,
 }
 
 const mutations = {
@@ -48,24 +48,8 @@ const mutations = {
 }
 
 const actions = {
-    async [actionTypes.getStations](context, {url,clear}){
+    async [actionTypes.checkLocalStations](context, {url,clear}){
         return new Promise((resolve, reject) => {
-            console.log(getItem('station'))
-            if(getItem('station') === null){
-                // console.log(getItem('station').length)
-                api.getAllStation(url)
-                .then(response => {
-                    console.log(response)
-                    const stations = response.data.data.map(row => {
-                        return {id: row.id, name: row.name, code: row.code}
-                    })
-
-                  setItem('stations', stations)
-                    if (response.data.links.next != null) {                    
-                        context.dispatch(actionTypes.getStations, { url: response.data.links.next, clear: false })
-                    }
-                })
-            } else {
             api.getAllStation('wagon-park/station?page_size=1').then(response => {
                 const localStations = getItem('station')
                 // console.log(response.data.total_objects,localStations, localStations.length)
@@ -75,7 +59,6 @@ const actions = {
                 resolve()
                 
             })
-            }
         })
     },
     async [actionTypes.getStations](context, {url , clear}){

@@ -16,6 +16,17 @@
               <option :value="true">Груженый</option>
               <option :value="false">Порожний</option>
             </select>
+            <!-- <input
+              class="textarea"
+              id="input-filter-staff1"
+              name="Pwd"
+              :value="
+                all_information.is_loaded == true ? 'Груженый' : 'Порожний'
+              "
+              style="background: white"
+              disabled
+            /> -->
+
             <br />
             <label
               for="input-filter-staff1"
@@ -31,7 +42,6 @@
               name="Pwd"
               v-model="all_information.contract"
               style="background: white"
-              placeholder="введите номер договора"
             />
             <br />
             <label
@@ -46,8 +56,15 @@
 
         <div class="row">
           <div class="col-md-6">
-            <autocomplete-input :variants="stations" :variantKey="'id'" :label="'Станция отправления'"
-              :variantTitle="'name'" v-model="all_information.departure_station_name" :need-full="true" @selected="getFullStationDeparture"></autocomplete-input>
+            <autocomplete-input
+              :variants="stations"
+              :variantKey="'id'"
+              :label="'Станция отправления'"
+              :variantTitle="'name'"
+              v-model="all_information.departure_station_name"
+              :need-full="true"
+              @selected="getFullStationDeparture"
+            ></autocomplete-input>
             <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.departure_station"
               style="background: white" disabled />
              -->
@@ -60,8 +77,15 @@
               отправления</label> -->
           </div>
           <div class="col-md-6">
-            <autocomplete-input :variants="stations" :variantKey="'id'" :label="'Станция назначения'"
-              :variantTitle="'name'" v-model="all_information.destination_station_name" :need-full="true" @selected="getFullStationDestination"></autocomplete-input>
+            <autocomplete-input
+              :variants="stations"
+              :variantKey="'id'"
+              :label="'Станция назначения'"
+              :variantTitle="'name'"
+              v-model="all_information.destination_station_name"
+              :need-full="true"
+              @selected="getFullStationDestination"
+            ></autocomplete-input>
 
             <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.destination_station"
               style="background: white" disabled />
@@ -72,62 +96,63 @@
         </div>
 
         <br />
-
         <div class="row">
           <div class="col-md-6">
-            <!-- <autocomplete-input :variants="counterparties" :variantKey="'id'" :label="'Грузополучатель'"
-              :variantTitle="'work_name'" v-model="all_information.cargo_recipient" :placeholder="'введите значение'"></autocomplete-input> -->
-
-            <input
-              class="textarea"
-              id="input-filter-staff1"
-              name="Pwd"
-              v-model="all_information.cargo_recipient"
-              style="background: white"
-              placeholder="введите значение"
-            />
+            <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_recipient"
+              style="background: white" />
             <br />
-            <label
-              for="input-filter-staff1"
-              class="label"
-              style="margin-left: 5% !important; background: white"
-              >Грузополучатель</label
-            >
+            <label for="input-filter-staff1" class="label"
+              style="margin-left: 5% !important; background: white">Грузополучатель</label>
+            
+            <!-- <p v-if="this.errors.cargo_code" :class="{'has-error': this.errors.cargo_code}" style="margin-top: -5%">Заполните поле код груза*</p> -->
+            <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_code"
+              style="background: white" disabled />
+            <br />
+            <label for="input-filter-staff1" class="label" style="margin-left: 5% !important; background: white">Код
+              груза</label> -->
           </div>
           <div class="col-md-6">
-            <!-- <autocomplete-input :variants="counterparties" :variantKey="'id'" :label="'Грузоотправитель'"
-              :variantTitle="'work_name'" v-model="all_information.cargo_sender" :placeholder="'введите значение'"></autocomplete-input> -->
-
-            <input
-              class="textarea"
-              id="input-filter-staff1"
-              name="Pwd"
+            <!-- <autocomplete-input
+              :variants="counterparties"
+              :variantKey="'id'"
+              :label="'Грузоотправитель'"
+              :variantTitle="'work_name'"
               v-model="all_information.cargo_sender"
-              style="background: white"
-              placeholder="введите значение"
-            />
+            ></autocomplete-input> -->
+
+            <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_sender"
+              style="background: white" />
             <br />
-            <label
-              for="input-filter-staff1"
-              class="label"
-              style="margin-left: 5% !important; background: white"
-              >Грузоотправитель</label
-            >
+            <label for="input-filter-staff1" class="label"
+              style="margin-left: 5% !important; background: white">Грузоотправитель</label>
           </div>
         </div>
         <br />
-
         <div class="row">
           <div class="col-md-6">
+            <!-- <autocomplete-input
+              :variants="counterparties"
+              :variantKey="'id'"
+              :label="'Грузополучатель'"
+              :variantTitle="'work_name'"
+              v-model="all_information.cargo_recipient"
+            ></autocomplete-input> -->
             <autocomplete-input
               :variants="cargo_codes"
               :variantKey="'id'"
               :label="'Код груза'"
-              :variantTitle="'code'"
+              :variantTitle="'code6'"
               v-model="all_information.cargo_code"
-              :placeholder="'введите значение'"
+              
             ></autocomplete-input>
+            <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_recipient"
+              style="background: white" />
+            <br />
+            <label for="input-filter-staff1" class="label"
+              style="margin-left: 5% !important; background: white">Грузополучатель</label> -->
           </div>
+
+
           <div class="col-md-6">
             <select
               id="input-filter-staff1"
@@ -153,8 +178,15 @@
 
         <div class="row">
           <div class="col-md-6">
-            <input type="date" class="textarea" id="input-filter-staff1" name="Pwd" v-model="period_begin"
-              style="background: white; border: 1px solid grey" :class="{'has-error' : this.errors.period_begin }" />
+            <input
+              type="date"
+              class="textarea"
+              id="input-filter-staff1"
+              name="Pwd"
+              v-model="period_begin"
+              style="background: white; border: 1px solid grey"
+              :class="{ 'has-error': this.errors.period_begin }"
+            />
             <br />
             <label
               for="input-filter-staff1"
@@ -170,7 +202,9 @@
               id="input-filter-staff1"
               name="Pwd"
               v-model="period_end"
+              :class="{ 'has-error': this.errors.period_end }"
               style="background: white; border: 1px solid grey"
+              
             />
             <br />
             <label
@@ -192,21 +226,12 @@
               v-model="wagon"
               style="background: white"
               placeholder="номер вагона"
+              :class="{ 'has-error': this.errors.wagon }"
+
             />
 
             <br />
 
-            <button
-              class="textarea Action"
-              style="margin-top: 2%;
-                background: #ff9f55 !important;
-                text-decoration: none !important;
-                outline: none !important;
-              "
-              @click="getInfoByWagon()"
-            >
-              Информация по вагону
-            </button>
             <button
               class="textarea Action"
               style="
@@ -215,10 +240,18 @@
                 text-decoration: none !important;
                 outline: none !important;
               "
-              @click="addCurrentWagon()"
+              @click="getInfoByWagon()"
             >
-              Добавить вагон
+              Информация по вагону
             </button>
+            <!-- <button class="textarea Action" style="
+                margin-top: 2%;
+                background: #ff9f55 !important;
+                text-decoration: none !important;
+                outline: none !important;
+              " @click="addCurrentWagon()">
+              Добавить вагон
+            </button> -->
           </div>
         </div>
       </div>
@@ -238,8 +271,10 @@
       </template>
     </div>
 
-    <button class="Accept" style="
-    margin-top: 2%;
+    <button
+      class="Accept"
+      style="
+        margin-top: 2%;
         width: 45%;
         position: relative;
         left: 50%;
@@ -270,15 +305,15 @@
   transform: translate(-50%, 0);
   /* color: #dddddd; */
 }
-
 .selected-wagons {
   width: 45%;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
 }
-.has-error{
-  background: red;
+.has-error {
+  color: rgb(190, 33, 33) !important;
+  border: 1px solid rgb(190, 33, 33) !important;
 }
 </style>
   
@@ -290,15 +325,15 @@ import Notifications from "@/components/notifications/Notifications.vue";
 import MultiSelectSearch from "../ui/MultiSelectSearch.vue";
 import AutocompleteInput from "../ui/AutocompleteInput.vue";
 import { getItem } from "@/helpers/persistanseStorage";
-import { getAllStationById } from "@/helpers/getAllStation"
 export default {
   name: "Telegram",
   components: { Loader, Notifications, MultiSelectSearch, AutocompleteInput },
+  // props: ['class'],
   data() {
     return {
       loader: false,
-      wagon: '',
-      wagonTypes: '',
+      wagon: [],
+      wagonTypes: "",
       all_information: {
         is_loaded: "",
         contract: "",
@@ -309,19 +344,21 @@ export default {
         cargo_recipient: "",
         wagon_type: [],
         departure_station_object: null,
-        destionation_station_object: null
+        destionation_station_object: null,
       },
       selected_wagon: [],
-      period_begin: '',
-      period_end: '',
+      period_begin: "",
+      period_end: "",
       // Уведомления
       showNotify: false,
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
-
       errors: {
-        period_begin: true
+        period_begin: false,
+        period_end: false,
+        wagon: false,
+
       },
       selectedStationsIds: [],
       stations: [],
@@ -336,10 +373,7 @@ export default {
       cargo_codes: (state) => state.cargo_code.cargo_code,
     }),
   },
-  // mounted(){
-  //   const info = JSON.parse(localStorage.getItem("station"))
-  //   console.log(info)
-  // },
+
   mounted() {
     this.loader = true;
     api.getWagonType().then((response) => {
@@ -350,45 +384,51 @@ export default {
   },
   methods: {
     // Номер вагона 51037059
-    getFullStationDeparture(station){
-      this.all_information.departure_station_object = station
+    getFullStationDeparture(station) {
+      this.all_information.departure_station_object = station;
     },
-    getFullStationDestination(station){
-      this.all_information.destionation_station_object = station
-    }
-,    getInfoByWagon() {
+    getFullStationDestination(station) {
+      this.all_information.destionation_station_object = station;
+    },
+    getInfoByWagon() {
       this.loader = true;
+      if(this.wagon == ''){
+          this.errors.wagon = true;
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = "Введите номер вагона";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 1500);
+          this.loader = false;
+      }
+      else{
+        if(this.wagon != ''){
+          this.errors.wagon = false;
+        }
+      let wagonSplit = this.wagon;
+      let wagonArray = wagonSplit.split(" ");
       api
-        .postTelegram(Number(this.wagon))
+        .postTelegram(wagonArray)
         .then((response) => {
           //this.all_information = response.data;
-          Object.assign(this.all_information, response.data)
-          this.showNotify = true;
+          Object.assign(this.all_information, response.data);
           this.notifyHead = "Успешно";
           this.notifyMessage = "Данные получены";
           this.notifyClass = "wrapper-success";
+          this.showNotify = true;
           this.loader = false;
           setTimeout(this.closeNotification, 1500);
         })
         .catch((error) => {
           this.loader = false;
           this.notifyHead = "Ошибка";
-          this.notifyMessage = "Данные не получены";
+          this.notifyMessage = `${error.response.data}`;
           this.notifyClass = "wrapper-error";
           this.showNotify = true;
           setTimeout(this.closeNotification, 1500);
         });
+      }
     },
-
-
-
-    getAllStationById(name) {
-      const station = getAllStationById(this.stations, name);
-      return station[0]?.name;
-    },
-
-
-
     updateSelectedStations(selected) {
       this.selectedStationsIds = selected;
       this.sendEmit();
@@ -411,39 +451,80 @@ export default {
     // Создать телеграмму
     createTelegram() {
       this.loader = true;
-      const request =
-      {
-        "wagons": this.selected_wagon,
-        "is_loaded": this.all_information.is_loaded,
-        "contract": this.all_information.contract,
-        "period_begin": new Date(this.period_begin),
-        "period_end": new Date(this.period_end),
-        "wagon_type": this.all_information.wagon_type,
-        "departure_station": this.all_information.departure_station_object.code,
-        "destination_station": this.all_information.destionation_station_object.code,
-        "cargo_code": this.all_information.cargo_code,
-        "cargo_sender": this.all_information.cargo_sender,
-        "cargo_recipient": this.all_information.cargo_recipient
+      if (this.period_begin == '') {
+        this.errors.period_begin = true;
+        this.loader = false
       }
-      if(this.period_begin == null ){
-        this.errors.period_begin = true
+      if (this.period_end == '') {
+        this.errors.period_end = true;
+        this.loader = false
       }
+      if (this.wagon == '') {
+        this.errors.wagon = true;
+        this.loader = false
+        this.notifyHead = "Ошибка";
+          this.notifyMessage = "Заполните все поля телеграммы";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 1500);
+      }
+      else{
+        if (this.period_begin != '') {
+        this.errors.period_begin = false;
+        this.loader = false
+      }
+      if (this.period_end != '') {
+        this.errors.period_end = false;
+        this.loader = false
+      }
+      if (this.wagon != '') {
+        this.errors.wagon = false;
+        this.loader = false
+      }
+      this.loader = true;
+      let wagonSplit = this.wagon;
+      let wagonArray = wagonSplit.split(" ");
+      const request = {
+        wagons: wagonArray,
+        is_loaded: this.all_information.is_loaded,
+        contract: this.all_information.contract,
+        period_begin: new Date(this.period_begin),
+        period_end: new Date(this.period_end),
+        wagon_type: this.all_information.wagon_type,
+        departure_station: this.all_information.departure_station_object.code,
+        destination_station: this.all_information.destionation_station_object.code,
+        cargo_code: this.all_information.cargo_code,
+        cargo_sender: this.all_information.cargo_sender,
+        cargo_recipient: this.all_information.cargo_recipient,
+      };
+
+  
       api.createTelegram(request)
-        .then(response => {
-          this.loader = false
+        // Номер вагона 51037059
+        .then((response) => {
+
+          this.loader = false;
           this.notifyHead = "Успешно";
           this.notifyMessage = "Телеграмма создана";
           this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+
           setTimeout(this.closeNotification, 1500);
-          console.log(response)
-        }).catch(error => {
-          this.loader = false
+
+          // document.body.removeChild(link);
+          // URL.revokeObjectURL(href);
+        })
+        .catch((error) => {
+          this.loader = false;
           this.notifyHead = "Ошибка";
           this.notifyMessage = "Телеграмма не создана";
-          this.notifyClass = "wrapper-alert";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+
           setTimeout(this.closeNotification, 1500);
-        })
-    }
+        });
+      }
+    },
   },
 };
 </script>
