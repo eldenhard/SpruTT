@@ -10,7 +10,6 @@ import stations  from "@/store/modules/stations";
 import dog_number from "./modules/dog_number";
 import cargo_owner from "./modules/cargo_owner";
 import cargo_code from "./modules/cargo_code";
-
 Vue.use(Vuex);
 
 const store = new Vuex.Store({

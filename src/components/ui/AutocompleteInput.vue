@@ -1,8 +1,26 @@
 <template>
     <div class="autocomplite_component">
         <div class="controller">
-            <label for="">{{ label }}</label>
-            <input type="text" class="textarea" @input="onInput" :value="value">
+
+            <input type="text" class="textarea" @input="onInput" :value="value" :placeholder="placeholder" style="position: relative;
+  border-radius: 0.4rem;
+  background-color: white !important;
+  border: #C6CBCF 0.1rem solid !important;
+  width: 20rem;
+  height: 3rem;
+  padding: 0rem 1rem;
+  font-size: 1.4rem;
+  font-size: 15px;
+  ">
+  <br>
+  <label for="" class="label" style="
+    position: absolute;
+  transform: translate(-9.8rem, -4rem);
+  font-size: 1rem;
+  padding: 0 5px;
+  background-color: white !important;
+  color: #757575;
+  ">{{ label }}</label>
         </div>
         <div class="variants" v-if="filtered && showVariants">
             <div v-for="v in filtered" :key="v[variantKey]" class="variant" @click="selectVariant(v)">
@@ -37,6 +55,10 @@ export default {
         variantTitle: {
             type: String,
             default: 'id'
+        },
+        placeholder: {
+            type: String,
+            default: ''
         }
     },
     data() {

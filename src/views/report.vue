@@ -541,8 +541,8 @@ export default {
         const token = pretoken.auth.user.token
         const preid = JSON.parse(localStorage.getItem('vuex'))
         const id = preid.auth.uid
-        // fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
-            fetch('/api/reports/kpi?'+ `creator=${id}`, {
+        fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
+            // fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
             headers: {
                 'Authorization': `Basic ${token}`
@@ -559,8 +559,8 @@ export default {
                     console.log('NOT OK')
                 }
             }),
-            // fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
-                fetch('/api/reports/kpi?'+ `employee=${id}`, {
+            fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
+                // fetch('/api/reports/kpi?'+ `employee=${id}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -578,8 +578,8 @@ export default {
                     }
                 }),
             // /api/personal/users?last_kpi_graded__lte=01.11.2022
-            // fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
-                fetch('/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
+            fetch('http://10.1.5.65/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
+                // fetch('/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -661,8 +661,8 @@ export default {
             this.loader = true
             this.allReportHistory = true
             this.downloadReport = 'Загрузить отчеты'
-            // fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
-                fetch('/api/reports/kpi?'+ `creator=${id}`, {
+            fetch('http://10.1.5.65/api/reports/kpi?' + `creator=${id}`, {
+                // fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
                 headers: {
                     'Authorization': `Basic ${token}`
@@ -681,8 +681,8 @@ export default {
 
                     }
                 }),
-                // fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
-                    fetch('/api/reports/kpi?'+ `employee=${id}`, {
+                fetch('http://10.1.5.65/api/reports/kpi?' + `employee=${id}`, {
+                    // fetch('/api/reports/kpi?'+ `employee=${id}`, {
 
                     headers: {
                         'Authorization': `Basic ${token}`
@@ -754,8 +754,8 @@ export default {
 
             if (!Object.keys(this.errors).length) {
                 this.loader = true
-                // fetch('http://10.1.5.65/api/reports/kpi/create/', {
-                    fetch('/api/reports/kpi/create/', {
+                fetch('http://10.1.5.65/api/reports/kpi/create/', {
+                    // fetch('/api/reports/kpi/create/', {
 
                     method: 'POST',
                     headers: {

@@ -75,7 +75,7 @@ const postTelegram = (data) => {
     return api.post(`${resource}/telegram-data/`, data={"wagons": [data]})
 }
 const createTelegram = (data) => {
-    return api.post(`${resource}/telegram/create`, data)
+    return api.post(`${resource}/telegram/create/`, data)
 }
 
 
