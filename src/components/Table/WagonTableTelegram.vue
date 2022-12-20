@@ -46,26 +46,28 @@
 
         <div class="row">
           <div class="col-md-6">
-            <autocomplete-input
-              :variants="stations"
-              :variantKey="'id'"
-              :label="'Станция отп'"
-              :value="all_information.departure_station_name"
-              v-model="all_information.departure_station_name"
-              :variantTitle="'name'"
-              :placeholder="'введите значение'"
-            ></autocomplete-input>
+            <autocomplete-input :variants="stations" :variantKey="'id'" :label="'Станция отправления'"
+              :variantTitle="'name'" v-model="all_information.departure_station_name" :need-full="true" @selected="getFullStationDeparture"></autocomplete-input>
+            <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.departure_station"
+              style="background: white" disabled />
+             -->
+            <!-- <multi-select-search @change="updateSelectedStations" :placeholder="'Станция отправления'"
+                        :variants="stations" :variant-title="'work_name'"
+                        style="width: 170px !important;cursor: pointer;">
+            </multi-select-search> -->
+            <br />
+            <!-- <label for="input-filter-staff1" class="label" style="margin-left: 5% !important; background: white">Станция
+              отправления</label> -->
           </div>
           <div class="col-md-6">
-            <autocomplete-input
-              :variants="stations"
-              :variantKey="'id'"
-              :label="'Станция наз'"
-              :variantTitle="'name'"
-              :value="all_information.destination_station_name"
-              v-model="all_information.destination_station_name"
-              :placeholder="'введите значение'"
-            ></autocomplete-input>
+            <autocomplete-input :variants="stations" :variantKey="'id'" :label="'Станция назначения'"
+              :variantTitle="'name'" v-model="all_information.destination_station_name" :need-full="true" @selected="getFullStationDestination"></autocomplete-input>
+
+            <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.destination_station"
+              style="background: white" disabled />
+            <br />
+            <label for="input-filter-staff1" class="label" style="margin-left: 5% !important; background: white">Станция
+              назначения</label> -->
           </div>
         </div>
 
@@ -151,14 +153,8 @@
 
         <div class="row">
           <div class="col-md-6">
-            <input
-              type="date"
-              class="textarea"
-              id="input-filter-staff1"
-              name="Pwd"
-              v-model="period_begin"
-              style="background: white; border: 1px solid grey"
-            />
+            <input type="date" class="textarea" id="input-filter-staff1" name="Pwd" v-model="period_begin"
+              style="background: white; border: 1px solid grey" :class="{'has-error' : this.errors.period_begin }" />
             <br />
             <label
               for="input-filter-staff1"
@@ -242,10 +238,9 @@
       </template>
     </div>
 
-    <button
-      class="Accept"
-      style="margin-top: 2%;
-       width: 45%;
+    <button class="Accept" style="
+    margin-top: 2%;
+        width: 45%;
         position: relative;
         left: 50%;
         transform: translate(-50%, 0);
@@ -282,6 +277,9 @@
   left: 50%;
   transform: translate(-50%, 0);
 }
+.has-error{
+  background: red;
+}
 </style>
   
 <script>
@@ -299,16 +297,8 @@ export default {
   data() {
     return {
       loader: false,
-      is_loaded: "",
-      contract: "",
-      departure_station: "",
-      destination_station: "",
-      cargo_code: "",
-      cargo_sender: "",
-      cargo_recipient: "",
-      wagon_type: [],
-      wagonTypes: [],
-      wagon: [],
+      wagon: '',
+      wagonTypes: '',
       all_information: {
         is_loaded: "",
         contract: "",
@@ -318,10 +308,11 @@ export default {
         cargo_sender: "",
         cargo_recipient: "",
         wagon_type: [],
+        departure_station_object: null,
+        destionation_station_object: null
       },
       selected_wagon: [],
-      errors: {},
-      period_begin:'',
+      period_begin: '',
       period_end: '',
       // Уведомления
       showNotify: false,
@@ -329,6 +320,9 @@ export default {
       notifyMessage: "",
       notifyClass: "",
 
+      errors: {
+        period_begin: true
+      },
       selectedStationsIds: [],
       stations: [],
     };
@@ -356,12 +350,19 @@ export default {
   },
   methods: {
     // Номер вагона 51037059
-    getInfoByWagon() {
+    getFullStationDeparture(station){
+      this.all_information.departure_station_object = station
+    },
+    getFullStationDestination(station){
+      this.all_information.destionation_station_object = station
+    }
+,    getInfoByWagon() {
       this.loader = true;
       api
         .postTelegram(Number(this.wagon))
         .then((response) => {
-          this.all_information = response.data;
+          //this.all_information = response.data;
+          Object.assign(this.all_information, response.data)
           this.showNotify = true;
           this.notifyHead = "Успешно";
           this.notifyMessage = "Данные получены";
@@ -410,34 +411,39 @@ export default {
     // Создать телеграмму
     createTelegram() {
       this.loader = true;
-      const request = {
-        wagons: this.selected_wagon,
-        is_loaded: this.all_information.is_loaded,
-        contract: this.all_information.contract,
-        period_begin:  new Date(this.period_begin),
-        period_end:  new Date(this.period_end),
-        wagon_type: this.all_information.wagon_type,
-        departure_station_name: this.all_information.departure_station_name,
-        destination_station_name: this.all_information.destination_station_name,
-        cargo_code: this.all_information.cargo_code,
-        cargo_sender: this.all_information.cargo_sender,
-        cargo_recipient: this.all_information.cargo_recipient,
-      };
-      api
-        .createTelegram(request)
-        .then((response) => {
-          this.loader = false;
-          console.log(response);
-        })
-        .catch((error) => {
-          this.loader = false;
+      const request =
+      {
+        "wagons": this.selected_wagon,
+        "is_loaded": this.all_information.is_loaded,
+        "contract": this.all_information.contract,
+        "period_begin": new Date(this.period_begin),
+        "period_end": new Date(this.period_end),
+        "wagon_type": this.all_information.wagon_type,
+        "departure_station": this.all_information.departure_station_object.code,
+        "destination_station": this.all_information.destionation_station_object.code,
+        "cargo_code": this.all_information.cargo_code,
+        "cargo_sender": this.all_information.cargo_sender,
+        "cargo_recipient": this.all_information.cargo_recipient
+      }
+      if(this.period_begin == null ){
+        this.errors.period_begin = true
+      }
+      api.createTelegram(request)
+        .then(response => {
+          this.loader = false
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Телеграмма создана";
+          this.notifyClass = "wrapper-success";
+          setTimeout(this.closeNotification, 1500);
+          console.log(response)
+        }).catch(error => {
+          this.loader = false
           this.notifyHead = "Ошибка";
           this.notifyMessage = "Телеграмма не создана";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
+          this.notifyClass = "wrapper-alert";
           setTimeout(this.closeNotification, 1500);
-        });
-    },
+        })
+    }
   },
 };
 </script>

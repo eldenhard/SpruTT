@@ -67,8 +67,10 @@ const actions = {
                 })
             } else {
             api.getAllStation('wagon-park/station?page_size=1').then(response => {
-                if(response.data.total_objects != getItem('station').length){
-                    context.dispatch(actionTypes.getStations, {url: 'wagon-park/station?page_size=10', clear: true})
+                const localStations = getItem('station')
+                // console.log(response.data.total_objects,localStations, localStations.length)
+                if(getItem('station') == null || response.data.total_objects != getItem('station').length){
+                    context.dispatch(actionTypes.getStations, {url: 'wagon-park/station?page_size=1000', clear: true})
                 }
                 resolve()
                 
@@ -76,26 +78,26 @@ const actions = {
             }
         })
     },
-    // async [actionTypes.getStations](context, {url , clear}){
-    //     return new Promise((resolve,reject) => {
-    //         if (clear){ setItem('station', []) }
+    async [actionTypes.getStations](context, {url , clear}){
+        return new Promise((resolve,reject) => {
+            if (clear){ setItem('station', []) }
           
-    //         api.getAllStation(url)
-    //         .then(response => {
-    //             const stations = response.data.data.map(row => {
-    //                 return {id: row.id, name: row.name, code: row.code}
-    //             })
-    //             setItem('station', [...getItem('station'), ...stations])
-    //             if (response.data.links.next != null) {                    
-    //                 context.dispatch(actionTypes.getStations, { url: response.data.links.next, clear: false })
-    //             }
-    //         }).catch(error => {
-    //             setItem('station', [])
-    //             reject(error)
-    //         })
+            api.getAllStation(url)
+            .then(response => {
+                const stations = response.data.data.map(row => {
+                    return {id: row.id, name: row.name, code: row.code}
+                })
+                setItem('station', [...getItem('station'), ...stations])
+                if (response.data.links.next != null) {                    
+                    context.dispatch(actionTypes.getStations, { url: response.data.links.next, clear: false })
+                }
+            }).catch(error => {
+                setItem('station', [])
+                reject(error)
+            })
             
-    //     })
-    // },
+        })
+    },
 }
 
 export default 
