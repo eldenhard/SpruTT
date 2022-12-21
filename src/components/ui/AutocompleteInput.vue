@@ -5,8 +5,8 @@
         <input type="text" class="textarea" @input="onInput" :value="value" :placeholder="placeholder">
         </div>
         <br>
-        <label for="" class="label">{{ label }}</label>
-        <div class="variants" v-if="filtered && showVariants" style="max-height: 200px; overflow: auto">
+        <label class="label" >{{ label }}</label>
+        <div class="variants" v-if="filtered && showVariants" style="max-height: 50px; overflow: auto;">
             <div v-for="v in filtered" :key="v[variantKey]" class="variant" @click="selectVariant(v)">
               <span style="cursor: pointer;">{{ v[variantTitle] }}</span>  
             </div>
@@ -35,7 +35,9 @@
   font-size: 1.4rem;
   font-size: 15px;
 }
-
+::placeholder{
+    color: red !important;
+}
 
 </style>
 <script>

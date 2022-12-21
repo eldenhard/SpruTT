@@ -31,7 +31,7 @@
             <label
               for="input-filter-staff1"
               class="label"
-              style="margin-left: 5% !important; background: white"
+              style="margin-left: 5% !important; background: white; "
               >Груж/Порожн</label
             >
             <p v-if="this.telegram_error.is_loaded" style="font-weight: bold; color: red">
@@ -44,6 +44,8 @@
               name="Pwd"
               v-model="all_information.contract"
               style="background: white"
+              :placeholder="this.telegram_error.contract"
+
             />
             <br />
             <label
@@ -52,8 +54,7 @@
               style="margin-left: 5% !important; background: white"
               >№ Договора</label
             >
-            <p v-if="this.telegram_error.contract" style="font-weight: bold; color: red">
-                {{ this.telegram_error.contract }}</p>
+    
           </div>
         </div>
         <br />
@@ -68,18 +69,9 @@
               v-model="all_information.departure_station_name"
               :need-full="true"
               @selected="getFullStationDeparture"
+              :placeholder="this.telegram_error.departure_station_name"
             ></autocomplete-input>
-            <p v-if="this.telegram_error.departure_station_name" style="font-weight: bold; color: red">
-                {{ this.telegram_error.departure_station_name }}</p>
-            <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.departure_station"
-              style="background: white" disabled />
-             -->
-            <!-- <multi-select-search @change="updateSelectedStations" :placeholder="'Станция отправления'"
-                        :variants="stations" :variant-title="'work_name'"
-                        style="width: 170px !important;cursor: pointer;">
-            </multi-select-search> -->
-            <!-- <label for="input-filter-staff1" class="label" style="margin-left: 5% !important; background: white">Станция
-              отправления</label> -->
+
           </div>
           <div class="col-md-6">
             <autocomplete-input
@@ -90,14 +82,8 @@
               v-model="all_information.destination_station_name"
               :need-full="true"
               @selected="getFullStationDestination"
+              :placeholder="this.telegram_error.destination_station_name"
             ></autocomplete-input>
-            <p v-if="this.telegram_error.destination_station_name" style="font-weight: bold; color: red">
-                {{ this.telegram_error.destination_station_name }}</p>
-            <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.destination_station"
-              style="background: white" disabled />
-            <br />
-            <label for="input-filter-staff1" class="label" style="margin-left: 5% !important; background: white">Станция
-              назначения</label> -->
           </div>
         </div>
 
@@ -105,18 +91,11 @@
         <div class="row">
           <div class="col-md-6">
             <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_recipient"
-              style="background: white" />
+              style="background: white"  :placeholder="this.telegram_error.cargo_recipient" />
             <br />
             <label for="input-filter-staff1" class="label"
               style="margin-left: 5% !important; background: white">Грузополучатель</label>
-              <p v-if="this.telegram_error.cargo_recipient" style="font-weight: bold; color: red">
-                {{ this.telegram_error.cargo_recipient }}</p>
-            <!-- <p v-if="this.errors.cargo_code" :class="{'has-error': this.errors.cargo_code}" style="margin-top: -5%">Заполните поле код груза*</p> -->
-            <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_code"
-              style="background: white" disabled />
-            <br />
-            <label for="input-filter-staff1" class="label" style="margin-left: 5% !important; background: white">Код
-              груза</label> -->
+            
           </div>
           <div class="col-md-6">
             <!-- <autocomplete-input
@@ -128,12 +107,11 @@
             ></autocomplete-input> -->
 
             <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_sender"
-              style="background: white" />
+              style="background: white"  :placeholder=" this.telegram_error.cargo_sender"/>
             <br />
             <label for="input-filter-staff1" class="label"
               style="margin-left: 5% !important; background: white">Грузоотправитель</label>
-              <p v-if="this.telegram_error.cargo_sender" style="font-weight: bold; color: red">
-                {{ this.telegram_error.cargo_sender }}</p>
+            
           </div>
         </div>
         <br />
@@ -152,10 +130,8 @@
               :label="'Код груза'"
               :variantTitle="'code6'"
               v-model="all_information.cargo_code"
-              
+              :placeholder="this.telegram_error.cargo_code"
             ></autocomplete-input>
-            <p v-if="this.telegram_error.cargo_code" style="font-weight: bold; color: red">
-                {{ this.telegram_error.cargo_code }}</p>
             <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_recipient"
               style="background: white" />
             <br />
@@ -183,8 +159,8 @@
               style="margin-left: 5% !important; background: white"
               >Тип вагона</label
             >
-            <p v-if="this.telegram_error.wagon_type" style="font-weight: bold; color: red">
-                {{ this.telegram_error.wagon_type }}</p>
+            <!-- <p v-if="this.telegram_error.wagon_type" style="font-weight: bold; color: red">
+                {{ this.telegram_error.wagon_type }}</p> -->
           </div>
         </div>
         <br />
@@ -198,6 +174,8 @@
               name="Pwd"
               v-model="period_begin"
               style="background: white; border: 1px solid grey"
+              :placeholder="this.telegram_error.period_begin"
+
             />
             <br />
             <label
@@ -206,8 +184,8 @@
               style="margin-left: 5% !important; background: white"
               >Начало периода</label
             >
-            <p v-if="this.telegram_error.period_begin" style="font-weight: bold; color: red">
-                {{ this.telegram_error.period_begin }}</p>
+            <!-- <p v-if="this.telegram_error.period_begin" style="font-weight: bold; color: red">
+                {{ this.telegram_error.period_begin }}</p> -->
           </div>
           <div class="col-md-6">
             <input
@@ -226,8 +204,8 @@
               style="margin-left: 5% !important; background: white"
               >Конец периода</label
             >
-            <p v-if="this.telegram_error.period_end" style="font-weight: bold; color: red">
-                {{ this.telegram_error.period_end }}</p>
+            <!-- <p v-if="this.telegram_error.period_end" style="font-weight: bold; color: red">
+                {{ this.telegram_error.period_end }}</p> -->
           </div>
         </div>
         <br />
@@ -236,16 +214,21 @@
           <div class="col-md-6">
             <input
               class="textarea"
-              id="input-filter-staff1"
               name="Pwd"
               v-model="wagon"
+              id="123r"
               style="background: white"
-              placeholder="номер вагона"
               :class="{ 'has-error': this.errors.wagon }"
-
+            
             />
 
             <br />
+            <label for="123r" class="label" style="  position: absolute !important;
+  transform: translate(1.0rem, -3.8rem) !important;
+  font-size: 1rem !important;
+  padding: 0 5px !important;
+  background-color: #ffffff !important;
+  color: #757575 !important;">Номер вагона</label>
             <p v-if="this.telegram_error.wagon" style="font-weight: bold; color: red">
                 {{ this.telegram_error.wagon }}</p>
             <button
@@ -327,9 +310,12 @@
   left: 50%;
   transform: translate(-50%, 0);
 }
-.has-error {
+.has-error{
   color: rgb(190, 33, 33) !important;
   border: 1px solid rgb(190, 33, 33) !important;
+}
+::placeholder{
+    color: red !important;
 }
 </style>
   
@@ -464,9 +450,9 @@ export default {
     },
     // Создать телеграмму
     createTelegram() {
-      // if (this.all_information.is_loaded == '' || this.all_information.is_loaded == null) {
-      //       this.errors = { ...this.errors, is_loaded: 'Выберите состояние' }
-      // } 
+      if (this.all_information.is_loaded == '' || this.all_information.is_loaded == null) {
+            this.errors = { ...this.errors, is_loaded: 'Выберите состояние' }
+      } 
       this.telegram_error= {}
       if (this.period_begin == '') {
             this.telegram_error = { ...this.telegram_error, period_begin: 'Выберите дату' }
