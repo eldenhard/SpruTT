@@ -34,6 +34,8 @@
               style="margin-left: 5% !important; background: white"
               >Груж/Порожн</label
             >
+            <p v-if="this.telegram_error.is_loaded" style="font-weight: bold; color: red">
+                {{ this.telegram_error.is_loaded }}</p>
           </div>
           <div class="col-md-6">
             <input
@@ -50,6 +52,8 @@
               style="margin-left: 5% !important; background: white"
               >№ Договора</label
             >
+            <p v-if="this.telegram_error.contract" style="font-weight: bold; color: red">
+                {{ this.telegram_error.contract }}</p>
           </div>
         </div>
         <br />
@@ -65,6 +69,8 @@
               :need-full="true"
               @selected="getFullStationDeparture"
             ></autocomplete-input>
+            <p v-if="this.telegram_error.departure_station_name" style="font-weight: bold; color: red">
+                {{ this.telegram_error.departure_station_name }}</p>
             <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.departure_station"
               style="background: white" disabled />
              -->
@@ -72,7 +78,6 @@
                         :variants="stations" :variant-title="'work_name'"
                         style="width: 170px !important;cursor: pointer;">
             </multi-select-search> -->
-            <br />
             <!-- <label for="input-filter-staff1" class="label" style="margin-left: 5% !important; background: white">Станция
               отправления</label> -->
           </div>
@@ -86,7 +91,8 @@
               :need-full="true"
               @selected="getFullStationDestination"
             ></autocomplete-input>
-
+            <p v-if="this.telegram_error.destination_station_name" style="font-weight: bold; color: red">
+                {{ this.telegram_error.destination_station_name }}</p>
             <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.destination_station"
               style="background: white" disabled />
             <br />
@@ -103,7 +109,8 @@
             <br />
             <label for="input-filter-staff1" class="label"
               style="margin-left: 5% !important; background: white">Грузополучатель</label>
-            
+              <p v-if="this.telegram_error.cargo_recipient" style="font-weight: bold; color: red">
+                {{ this.telegram_error.cargo_recipient }}</p>
             <!-- <p v-if="this.errors.cargo_code" :class="{'has-error': this.errors.cargo_code}" style="margin-top: -5%">Заполните поле код груза*</p> -->
             <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_code"
               style="background: white" disabled />
@@ -125,6 +132,8 @@
             <br />
             <label for="input-filter-staff1" class="label"
               style="margin-left: 5% !important; background: white">Грузоотправитель</label>
+              <p v-if="this.telegram_error.cargo_sender" style="font-weight: bold; color: red">
+                {{ this.telegram_error.cargo_sender }}</p>
           </div>
         </div>
         <br />
@@ -145,6 +154,8 @@
               v-model="all_information.cargo_code"
               
             ></autocomplete-input>
+            <p v-if="this.telegram_error.cargo_code" style="font-weight: bold; color: red">
+                {{ this.telegram_error.cargo_code }}</p>
             <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_recipient"
               style="background: white" />
             <br />
@@ -172,6 +183,8 @@
               style="margin-left: 5% !important; background: white"
               >Тип вагона</label
             >
+            <p v-if="this.telegram_error.wagon_type" style="font-weight: bold; color: red">
+                {{ this.telegram_error.wagon_type }}</p>
           </div>
         </div>
         <br />
@@ -185,7 +198,6 @@
               name="Pwd"
               v-model="period_begin"
               style="background: white; border: 1px solid grey"
-              :class="{ 'has-error': this.errors.period_begin }"
             />
             <br />
             <label
@@ -194,6 +206,8 @@
               style="margin-left: 5% !important; background: white"
               >Начало периода</label
             >
+            <p v-if="this.telegram_error.period_begin" style="font-weight: bold; color: red">
+                {{ this.telegram_error.period_begin }}</p>
           </div>
           <div class="col-md-6">
             <input
@@ -202,7 +216,6 @@
               id="input-filter-staff1"
               name="Pwd"
               v-model="period_end"
-              :class="{ 'has-error': this.errors.period_end }"
               style="background: white; border: 1px solid grey"
               
             />
@@ -213,6 +226,8 @@
               style="margin-left: 5% !important; background: white"
               >Конец периода</label
             >
+            <p v-if="this.telegram_error.period_end" style="font-weight: bold; color: red">
+                {{ this.telegram_error.period_end }}</p>
           </div>
         </div>
         <br />
@@ -231,10 +246,11 @@
             />
 
             <br />
-
+            <p v-if="this.telegram_error.wagon" style="font-weight: bold; color: red">
+                {{ this.telegram_error.wagon }}</p>
             <button
               class="textarea Action"
-              style="
+              style=" 
                 margin-top: 2%;
                 background: #ff9f55 !important;
                 text-decoration: none !important;
@@ -335,7 +351,7 @@ export default {
       wagon: [],
       wagonTypes: "",
       all_information: {
-        is_loaded: "",
+        is_loaded: [],
         contract: "",
         departure_station_name: "",
         destination_station_name: "",
@@ -355,11 +371,9 @@ export default {
       notifyMessage: "",
       notifyClass: "",
       errors: {
-        period_begin: false,
-        period_end: false,
         wagon: false,
-
       },
+      telegram_error : {},
       selectedStationsIds: [],
       stations: [],
     };
@@ -450,37 +464,41 @@ export default {
     },
     // Создать телеграмму
     createTelegram() {
-      this.loader = true;
+      // if (this.all_information.is_loaded == '' || this.all_information.is_loaded == null) {
+      //       this.errors = { ...this.errors, is_loaded: 'Выберите состояние' }
+      // } 
+      this.telegram_error= {}
       if (this.period_begin == '') {
-        this.errors.period_begin = true;
-        this.loader = false
-      }
+            this.telegram_error = { ...this.telegram_error, period_begin: 'Выберите дату' }
+        }
       if (this.period_end == '') {
-        this.errors.period_end = true;
-        this.loader = false
+            this.telegram_error = { ...this.telegram_error, period_end: 'Выберите дату' }
+      } 
+      if (this.all_information.cargo_sender == '') {
+            this.telegram_error = { ...this.telegram_error, cargo_sender: 'Выберите отправителя' }
+      } 
+      if (this.all_information.cargo_recipient == '') {
+            this.telegram_error = { ...this.telegram_error, cargo_recipient: 'Выберите получателя' }
+      }
+      if (this.all_information.contract == '' || this.all_information.contract == null) {
+            this.telegram_error = { ...this.telegram_error, contract: 'Введите № договора' }
+      } 
+      if (this.all_information.wagon_type == '') {
+            this.telegram_error = { ...this.telegram_error, wagon_type: 'Выберите тип вагона' }
+      } 
+      if (this.all_information.cargo_code == '') {
+            this.telegram_error = { ...this.telegram_error, cargo_code: 'Введите код' }
+      } 
+      if (this.all_information.departure_station_name == '') {
+            this.telegram_error = { ...this.telegram_error, departure_station_name: 'Введите станцию' }
+      }
+      if (this.all_information.destination_station_name == '') {
+            this.telegram_error = { ...this.telegram_error, destination_station_name: 'Введите станцию' }
       }
       if (this.wagon == '') {
-        this.errors.wagon = true;
-        this.loader = false
-        this.notifyHead = "Ошибка";
-          this.notifyMessage = "Заполните все поля телеграммы";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 1500);
+            this.telegram_error = { ...this.telegram_error, wagon: 'Введите вагон' }
       }
-      else{
-        if (this.period_begin != '') {
-        this.errors.period_begin = false;
-        this.loader = false
-      }
-      if (this.period_end != '') {
-        this.errors.period_end = false;
-        this.loader = false
-      }
-      if (this.wagon != '') {
-        this.errors.wagon = false;
-        this.loader = false
-      }
+      if (!Object.keys(this.telegram_error).length) {
       this.loader = true;
       let wagonSplit = this.wagon;
       let wagonArray = wagonSplit.split(" ");
@@ -498,21 +516,15 @@ export default {
         cargo_recipient: this.all_information.cargo_recipient,
       };
 
-  
       api.createTelegram(request)
         // Номер вагона 51037059
         .then((response) => {
-
           this.loader = false;
           this.notifyHead = "Успешно";
           this.notifyMessage = "Телеграмма создана";
           this.notifyClass = "wrapper-success";
           this.showNotify = true;
-
           setTimeout(this.closeNotification, 1500);
-
-          // document.body.removeChild(link);
-          // URL.revokeObjectURL(href);
         })
         .catch((error) => {
           this.loader = false;
@@ -520,11 +532,19 @@ export default {
           this.notifyMessage = "Телеграмма не создана";
           this.notifyClass = "wrapper-error";
           this.showNotify = true;
-
           setTimeout(this.closeNotification, 1500);
-        });
+        })
       }
-    },
-  },
-};
+      else {
+                this.loader = false
+                this.notifyHead = 'Ошибка'
+                this.notifyMessage = 'Заполните все поля анкеты и повторите создание телеграммы'
+                this.notifyClass = 'wrapper-error'
+                this.showNotify = true
+                setTimeout(this.closeNotification, 1500)
+                // TODO: Нотификатор
+            }
+    }
+  }
+}
 </script>

@@ -2,7 +2,7 @@ import {api} from '@/helpers/axios'
 
 export const resource = 'personal'
 const staffGlobal = () => {
-    return api.get(`${resource}/users?page_size=1000`)
+    return api.get(`${resource}/users?page_size=300`)
 }
 
 const getAllStaff = (filter_staff) => {

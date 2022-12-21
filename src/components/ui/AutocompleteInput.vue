@@ -36,6 +36,7 @@
   font-size: 15px;
 }
 
+
 </style>
 <script>
 import { debounce } from '@/helpers/debounce'
