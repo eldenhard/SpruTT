@@ -440,7 +440,7 @@ export default {
     createTelegram() {
       this.telegram_error= {}
 
-      if (this.all_information.is_loaded == '') {
+      if (this.all_information.is_loaded == '' || this.all_information.is_loaded == null) {
             this.errors = { ...this.telegram_error, is_loaded: 'Выберите состояние' }
       } 
       if (this.all_information.contract == '' || this.all_information.contract == null) {
