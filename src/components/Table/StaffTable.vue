@@ -90,6 +90,7 @@
               {{ staff.phone_corp }}
             </td>
             <td v-else @click="openModalView(staff.id)">—</td>
+
             <td v-if="staff.manager != null" @click="openModalView(staff.id)">
               {{ staff.phone_personal }}
             </td>
@@ -409,7 +410,6 @@
               right: 0;
               width: 100%;
               height: 100%;
-              z-index: 101;
               opacity: 0;
             "
           />
@@ -425,6 +425,7 @@
                   v-model="current_user_staff.last_name"
                 />
                 <br />
+
                 <label for="input-filter-staff1" class="label">Фамилия</label>
               </div>
             </div>

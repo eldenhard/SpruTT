@@ -221,8 +221,7 @@
                 {{ this.telegram_error.wagon }}</p>
             <button
               class="textarea Action"
-              style=" 
-                margin-top: 2%;
+              style="margin-top: 2%;
                 background: #ff9f55 !important;
                 text-decoration: none !important;
                 outline: none !important;
