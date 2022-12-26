@@ -394,22 +394,21 @@
         <div class="col-md-3">
           <button v-if="current_user_staff.photo">Заменить</button>
           <button v-else>Загрузить</button>
-
           <img :src="current_user_staff.photo" alt="" width="100%" style="" />
           <input
-            type="img"
+            type="file"
             @change="onFileSelected"
             name="photo"
             ref="photo"
             style="
               display: inline-block;
               position: absolute;
-              top: 0%;
+              top: 0;
               bottom: 0;
               left: 0;
               right: 0;
-              width: 100%;
-              height: 100%;
+              width: 80%;
+              height: 80%;
               opacity: 0;
             "
           />
