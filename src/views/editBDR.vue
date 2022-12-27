@@ -941,8 +941,7 @@ export default {
     },
     calc() {
       for (let el in this.data) {
-        // console.log(this.data[el].plan_formula);
-        // console.log('AAAAAAAAAA', this.data[2].plan , this.data[3].plan, this.data[4].plan, this.data[5].plan);
+    
         try {
           let res = Number(eval(this.data[el].plan_formula));
           if (isNaN(res)) {

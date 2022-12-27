@@ -69,7 +69,7 @@
               v-model="all_information.departure_station_name"
               :need-full="true"
               @selected="getFullStationDeparture"
-              :placeholder="this.telegram_error.departure_station_name"
+              :placeholder='this.telegram_error.departure_station_name'
             ></autocomplete-input>
 
           </div>
@@ -233,8 +233,7 @@
                 {{ this.telegram_error.wagon }}</p>
             <button
               class="textarea Action"
-              style=" 
-                margin-top: 2%;
+              style="margin-top: 2%;
                 background: #ff9f55 !important;
                 text-decoration: none !important;
                 outline: none !important;
