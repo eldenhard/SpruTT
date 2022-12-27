@@ -1,8 +1,22 @@
 <template>
     <div>
         <Loader :loader="loader"></Loader>
-        <div class="hello" ref="chartdiv">
+        <div class="hello" ref="chartdiv"></div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <keyFactsMileageTonVue></keyFactsMileageTonVue>
+            </div>
+
+            <div class="col-md-6">
+                <KeyFactsMileageVue></KeyFactsMileageVue>
+            </div>
+
         </div>
+
+        <br><br>
+
+
     </div>
 </template>
   
@@ -10,11 +24,13 @@
 import * as am5 from "@amcharts/amcharts5";
 import * as am5percent from "@amcharts/amcharts5/percent";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import am5geodata_lang_RU from "@amcharts/amcharts5/locales/ru_RU"
 import * as am5xy from "@amcharts/amcharts5/xy";
 import { mapState } from "vuex";
 import api from "@/api/wagonPark"
 import Loader from "@/components/loader/loader.vue"
-
+import KeyFactsMileageVue from "../components/KeyFacts/KeyFactsMileage.vue";
+import keyFactsMileageTonVue from "@/components/KeyFacts/keyFactsMileageTon.vue";
 
 export default {
     name: 'KeyFacts',
@@ -23,7 +39,7 @@ export default {
             loader: false
         }
     },
-    components: { Loader },
+    components: { Loader, KeyFactsMileageVue, keyFactsMileageTonVue },
     computed: {
         ...mapState({
             user: state => state.auth.user,
@@ -31,7 +47,7 @@ export default {
         })
     },
     mounted() {
-        this.loader = true
+        // this.loader = true
         api.getKeyFacts()
             .then(response => {
                 let keyfacts;
@@ -57,19 +73,12 @@ export default {
                 // console.log(keyfacts)
 
 
-
                 let root = am5.Root.new(this.$refs.chartdiv);
 
-
-                // Set themes
-                // https://www.amcharts.com/docs/v5/concepts/themes/
                 root.setThemes([
                     am5themes_Animated.new(root)
                 ]);
 
-
-                // Create chart
-                // https://www.amcharts.com/docs/v5/charts/xy-chart/
                 let chart = root.container.children.push(am5xy.XYChart.new(root, {
                     panX: true,
                     panY: true,
@@ -78,14 +87,10 @@ export default {
                     pinchZoomX: true
                 }));
 
-                // Add cursor
-                // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
                 let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
                 cursor.lineY.set("visible", false);
 
 
-                // Create axes
-                // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
                 let xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
                 xRenderer.labels.template.setAll({
                     rotation: -50,
@@ -107,12 +112,11 @@ export default {
                 }));
 
 
-                // Create series
-                // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
                 let series = chart.series.push(am5xy.ColumnSeries.new(root, {
                     name: "Series 1",
                     xAxis: xAxis,
                     yAxis: yAxis,
+                  
                     valueYField: "amount",
                     sequencedInterpolation: true,
                     categoryXField: "wagon_type",
@@ -120,7 +124,7 @@ export default {
                         labelText: "{valueY}"
                     })
                 }));
-
+ 
                 series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5 });
                 series.columns.template.adapters.add("fill", function (fill, target) {
                     return chart.get("colors").getIndex(series.columns.indexOf(target));
@@ -136,17 +140,27 @@ export default {
                 xAxis.data.setAll(keyfacts);
                 series.data.setAll(keyfacts);
 
-
-                // Make stuff animate on load
-                // https://www.amcharts.com/docs/v5/concepts/animations/
                 series.appear(1000);
                 chart.appear(1000, 100);
             })
-        this.loader = false
+
+
+
+
+
+
+
+
 
     },
-
 }
+
+
+// let value = 1000;
+// let volume = 100000;
+
+
+
 </script>
   
 

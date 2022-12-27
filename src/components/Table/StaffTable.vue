@@ -67,49 +67,74 @@
                                 @click="open_photo(`${staff.photo}`)">
                         </td> -->
 
-            <td @click="openModalView(staff.id)">
+            <td v-if="staff.last_name" @click="openModalView(staff.id)">
               {{ staff.last_name }}
             </td>
-            <td @click="openModalView(staff.id)">
+            <td v-else  @click="openModalView(staff.id)">—</td>
+
+            <td v-if="staff.first_name" @click="openModalView(staff.id)">
               {{ staff.first_name }}
             </td>
-            <td @click="openModalView(staff.id)">
+            <td v-else  @click="openModalView(staff.id)">—</td>
+
+
+            <td v-if="staff.first_name"  @click="openModalView(staff.id)">
               {{ staff.middle_name }}
             </td>
-            <td @click="openModalView(staff.id)">
+            <td v-else  @click="openModalView(staff.id)">—</td>
+
+
+            <td v-if="staff.post" @click="openModalView(staff.id)">
               {{ staff.post }}
             </td>
-            <td @click="openModalView(staff.id)">
+            <td v-else  @click="openModalView(staff.id)">—</td>
+
+
+            <td v-if="staff.email" @click="openModalView(staff.id)">
               {{ staff.email }}
             </td>
-            <td @click="openModalView(staff.id)">
+            <td v-else  @click="openModalView(staff.id)">—</td>
+
+
+            <td v-if="staff.groups" @click="openModalView(staff.id)">
               {{ getGroupName(staff.groups[0]) }}
-              <!-- <span v-if="staff.groups[0] ==  40">Отдел кадров</span> -->
             </td>
-            <td v-if="staff.manager != null" @click="openModalView(staff.id)">
+            <td v-else  @click="openModalView(staff.id)">—</td>
+
+
+            <td v-if="staff.phone_corp != null" @click="openModalView(staff.id)">
               {{ staff.phone_corp }}
             </td>
             <td v-else @click="openModalView(staff.id)">—</td>
-            <td v-if="staff.manager != null" @click="openModalView(staff.id)">
+
+
+            <td v-if="staff.phone_personal" @click="openModalView(staff.id)">
               {{ staff.phone_personal }}
             </td>
-            <td v-else @click="openModalView(staff.id)">—</td>
-            <td v-if="staff.manager != null" @click="openModalView(staff.id)">
+            <td v-else  @click="openModalView(staff.id)">—</td>
+
+
+            <td v-if="staff.inner_number" @click="openModalView(staff.id)">
               {{ staff.inner_number }}
             </td>
             <td v-else @click="openModalView(staff.id)">—</td>
-            <td v-if="staff.manager != null" @click="openModalView(staff.id)">
+
+
+            <td v-if="staff.schedule" @click="openModalView(staff.id)">
               {{ staff.schedule }}
             </td>
             <td v-else @click="openModalView(staff.id)">—</td>
-            <td v-if="staff.manager != null" @click="openModalView(staff.id)">
+
+
+            <td v-if="staff.manager" @click="openModalView(staff.id)">
               {{ getUserById(staff.manager) }}
             </td>
             <td v-else @click="openModalView(staff.id)">—</td>
+
+
             <td>
               <button
-                style="
-                  height: 100%;
+                style="height: 100%;
                   vertical-align: middle;
                   display: flex;
                   align-items: center;
@@ -393,10 +418,9 @@
         <div class="col-md-3">
           <button v-if="current_user_staff.photo">Заменить</button>
           <button v-else>Загрузить</button>
-
           <img :src="current_user_staff.photo" alt="" width="100%" style="" />
           <input
-            type="img"
+            type="file"
             @change="onFileSelected"
             name="photo"
             ref="photo"
@@ -407,9 +431,8 @@
               bottom: 0;
               left: 0;
               right: 0;
-              width: 100%;
-              height: 100%;
-              z-index: 101;
+              width: 80%;
+              height: 80%;
               opacity: 0;
             "
           />
@@ -425,6 +448,7 @@
                   v-model="current_user_staff.last_name"
                 />
                 <br />
+
                 <label for="input-filter-staff1" class="label">Фамилия</label>
               </div>
             </div>

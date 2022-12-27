@@ -5,7 +5,7 @@
         <input type="text" class="textarea" @input="onInput" :value="value" :placeholder="placeholder">
         </div>
         <br>
-        <label class="label" >{{ label }}</label>
+        <label class="label" :class="myClass">{{ label }}</label>
         <div class="variants" v-if="filtered && showVariants" style="max-height: 50px; overflow: auto;">
             <div v-for="v in filtered" :key="v[variantKey]" class="variant" @click="selectVariant(v)">
               <span style="cursor: pointer;">{{ v[variantTitle] }}</span>  
@@ -17,13 +17,12 @@
 <style scoped>
 .label {
   position: absolute;
-  transform: translate(-9.8rem, -5.8rem);
+  transform: translate(-8.8rem, -5.8rem);
   font-size: 1rem;
   padding: 0 5px;
   background-color: #ffffff !important;
   color: #757575;
 }
-
 .textarea {
   position: relative;
   border-radius: 0.4rem;
@@ -38,7 +37,9 @@
 ::placeholder{
     color: red !important;
 }
-
+.error_label {
+    color: red;
+}
 </style>
 <script>
 import { debounce } from '@/helpers/debounce'
@@ -73,10 +74,10 @@ export default {
             type: Boolean,
             default: false
         },
-        // class: {
-        //     type: String,
-        //     default: ''
-        // }
+        myClass: {
+        type: String,
+         default: {},
+       }
     },
     data() {
         return {
