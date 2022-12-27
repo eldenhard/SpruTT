@@ -2,7 +2,6 @@
     <div>
         <Loader :loader="loader"></Loader>
         <div class="hello" ref="chartdiv"></div>
-
         <div class="row">
             <div class="col-md-6">
                 <keyFactsMileageTonVue></keyFactsMileageTonVue>

@@ -1,8 +1,8 @@
 <template>
     <div>
         <h2>Полувагон</h2>
-    <div class="hello1" ref="chartdiv2"></div>
-</div>
+        <div class="hello1" ref="chartdiv2"></div>
+    </div>
 </template>
 <style>
 .hello1 {
@@ -296,104 +296,120 @@ export default {
     //     }
     mounted() {
         api.getKeyFacts()
-        .then(response => {
-            let mileage = response.data.mileage['Полувагон']
-            console.log(mileage)
-      
-        let root = am5.Root.new(this.$refs.chartdiv2);
-        root.locale = am5geodata_lang_RU;
+            .then(response => {
+                let mileage = response.data.mileage['Полувагон']
+                console.log(mileage)
 
-        // Set themes
-        // https://www.amcharts.com/docs/v5/concepts/themes/
-        root.setThemes([
-            am5themes_Animated.new(root)
-        ]);
+                let root = am5.Root.new(this.$refs.chartdiv2);
+                root.locale = am5geodata_lang_RU;
 
-
-        // Create chart
-        // https://www.amcharts.com/docs/v5/charts/xy-chart/
-        let chart = root.container.children.push(am5xy.XYChart.new(root, {
-            panX: true,
-            panY: true,
-            wheelX: "panX",
-            wheelY: "zoomX",
-            pinchZoomX: true
-        }));
+                // Set themes
+                // https://www.amcharts.com/docs/v5/concepts/themes/
+                root.setThemes([
+                    am5themes_Animated.new(root)
+                ]);
 
 
-        // Add cursor
-        // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-        let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
-            behavior: "none"
-        }));
-        cursor.lineY.set("visible", false);
+                // Create chart
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                let chart = root.container.children.push(am5xy.XYChart.new(root, {
+                    panX: true,
+                    panY: true,
+                    wheelX: "panX",
+                    wheelY: "zoomX",
+                    pinchZoomX: true,
+                    layout: root.verticalLayout
+
+                }));
+
+                let legend = chart.children.push(am5.Legend.new(root, {
+                    nameField: "name",
+                    fillField: "color",
+                    strokeField: "color",
+                    centerX: am5.percent(50),
+                    x: am5.percent(50),
+                }));
+
+                legend.data.setAll([{
+                    name: "Интервал",
+                }]);
+
+
+                // Add cursor
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+                let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {
+                    behavior: "none"
+                }));
+                cursor.lineY.set("visible", false);
 
 
 
 
-        let data = []
+                let data = []
 
-        for (let elem of mileage) {
-            data.push(
-                {
-                    'date': new Date(elem.quarter).getTime(),
-                    'value': elem.speed,
-                    'distance' : elem.distance,
-                    'wagons': elem.wagons
+                for (let elem of mileage) {
+                    data.push(
+                        {
+                            'date': new Date(elem.quarter).getTime(),
+                            'value': elem.speed,
+                            'distance': elem.distance,
+                            'wagons': elem.wagons
+                        }
+                    )
                 }
-            )
-        }
 
 
 
-        // Create axes
-        // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-        let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
-            maxDeviation: 0.2,
-            baseInterval: {
-                timeUnit: "day",
-                count: 10
-            },
-            renderer: am5xy.AxisRendererX.new(root, {}),
-            tooltip: am5.Tooltip.new(root, {})
-        }));
+                // Create axes
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+                    maxDeviation: 0.2,
+                    baseInterval: {
+                        timeUnit: "day",
+                        count: 10
+                    },
 
-        let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-            renderer: am5xy.AxisRendererY.new(root, {})
-        }));
+                    renderer: am5xy.AxisRendererX.new(root, {}),
+                    tooltip: am5.Tooltip.new(root, {})
+                }));
+
+                let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                    numberFormat: " #.'км/день'",
+                    renderer: am5xy.AxisRendererY.new(root, {})
+                }));
 
 
-        // Add series
-        // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-        let series = chart.series.push(am5xy.ColumnSeries.new(root, {
-            name: "Series",
-            xAxis: xAxis,
-            yAxis: yAxis,
-            valueYField: "value",
-            valueXField: "date",
-            tooltip: am5.Tooltip.new(root, {
-                labelText: "{distance} \n{wagons} шт."
+                // Add series
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+                let series = chart.series.push(am5xy.ColumnSeries.new(root, {
+                    name: "Series",
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    valueYField: "value",
+                    valueXField: "date",
+                    tooltip: am5.Tooltip.new(root, {
+                        labelText: "{distance} км.\n{wagons} шт."
+                    })
+                }));
+
+
+                // Add scrollbar
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+                chart.set("scrollbarX", am5.Scrollbar.new(root, {
+                    orientation: "horizontal"
+                }));
+
+
+                // Set data
+                series.data.setAll(data)
+
+
+
+                // Make stuff animate on load
+                // https://www.amcharts.com/docs/v5/concepts/animations/
+                series.appear(1000);
+                chart.appear(1000, 100);
             })
-        }));
-
-
-        // Add scrollbar
-        // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
-        chart.set("scrollbarX", am5.Scrollbar.new(root, {
-            orientation: "horizontal"
-        }));
-
-
-        // Set data
-        series.data.setAll(data)
-
-
-
-        // Make stuff animate on load
-        // https://www.amcharts.com/docs/v5/concepts/animations/
-        series.appear(1000);
-        chart.appear(1000, 100);
-    })
     }
 }
 </script>
