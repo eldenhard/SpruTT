@@ -338,7 +338,8 @@ export default {
                 {
                     'date': new Date(elem.quarter).getTime(),
                     'value': elem.speed,
-                    'distance' : elem.distance
+                    'distance' : elem.distance,
+                    'wagons': elem.wagons
                 }
             )
         }
@@ -371,7 +372,7 @@ export default {
             valueYField: "value",
             valueXField: "date",
             tooltip: am5.Tooltip.new(root, {
-                labelText: "{distance}"
+                labelText: "{distance} \n{wagons} шт."
             })
         }));
 
