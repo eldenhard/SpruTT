@@ -5,7 +5,7 @@ import store from './store'
 
 import Vuex from 'vuex'
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
-//import axios from 'axios'
+// import axios from 'axios'
 import "./helpers/axios"
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
