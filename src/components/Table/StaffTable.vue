@@ -29,7 +29,7 @@
       <table class="table table-sm table-bordered table-hover" style="table-layout: fixed">
         <thead class="thead-light" style="background: #e9ecef; z-index: 1">
           <!-- <th>Фото</th> -->
-    
+
           <th style="width: 150px !important">Фамилия</th>
           <th style="width: 150px !important">Имя</th>
           <th style="width: 150px !important">Отчество</th>
@@ -48,7 +48,7 @@
         <tbody style="max-width: 90% !important">
           <tr v-for="staff in all_staff" :key="staff.id">
 
-           
+
             <!-- 
                         <td
                             style="padding: 0 !important; vertical-align: middle; align-items: center; justify-content: center;">
@@ -147,6 +147,7 @@
       </table>
     </div>
 
+    <!-- Модальное окно просмотра сотрдуника -->
     <b-modal ref="view-CurrentUser" hide-footer title="Просмотр сотрудника">
       <div class="row">
         <div class="col-md-3">
@@ -253,6 +254,7 @@
 
       <b-button class="mt-3" variant="outline-danger" block @click="closeModalView()">Закрыть</b-button>
     </b-modal>
+    <!-- Конец модального окна просмотра -->
 
     <b-modal ref="delete-user" hide-footer title="Удаление сотрудника">
       <div class="row">
@@ -292,23 +294,15 @@
       </b-button>
       <b-button class="mt-3" variant="outline-danger" block @click="closeStaffModalDelete()">Закрыть</b-button>
     </b-modal>
+
     <b-modal ref="change-user" hide-footer title="Редактирование сотрудника">
       <div class="row">
         <div class="col-md-3">
           <button v-if="current_user_staff.photo">Заменить</button>
           <button v-else>Загрузить</button>
-          <img :src="current_user_staff.photo" alt="" width="100%" style="" />
-          <input type="file" @change="onFileSelected" name="photo" ref="photo" style="
-              display: inline-block;
-              position: absolute;
-              top: 0%;
-              bottom: 0;
-              left: 0;
-              right: 0;
-              width: 80%;
-              height: 80%;
-              opacity: 0;
-            " />
+          <br>
+          <img :src="current_user_staff.photo" id="result" alt="" width="100%" style="margin-top: 5%; height: 45vh;" v-show="ImageUser" />
+          <input type="file" @change="onFileSelectedSee" name="photo" ref="photo" style="display: inline-block; position: absolute; top: 0%; bottom: 0; left: 0; right: 0; width: 100%; height: 100%; opacity: 0;" />
         </div>
         <div class="col-md-9">
           <div class="row">
@@ -427,10 +421,16 @@
       </b-button>
       <b-button class="mt-3" variant="outline-danger" block @click="hideModalChange()">Закрыть</b-button>
     </b-modal>
+
+
+
+
+
     <b-modal ref="add-user" hide-footer title="Добавление сотрудника">
       <div class="row">
         <div class="col-md-3">
-          <input type="file" @change="onFileSelected" name="photo" ref="photo" />
+          <input type="file" @change="onFileSelectedSee" name="photo" ref="photo" id="uploadImage" />
+          <img width="100%" height="90%" id="result"  v-show="ImageUser">
         </div>
         <div class="col-md-9">
           <div class="row">
@@ -575,6 +575,7 @@ export default {
   },
   data() {
     return {
+      ImageUser: false,
       formErrors: [],
       formErrorsMess: "",
 
@@ -619,7 +620,6 @@ export default {
   },
   mounted() {
     this.loader = true;
-
     api
       .getAllManager()
       .then((response) => {
@@ -631,6 +631,7 @@ export default {
         console.log(err);
       });
   },
+
   methods: {
     openModalView(id) {
       this.loader = true;
@@ -649,7 +650,6 @@ export default {
     closeModalView() {
       this.$refs["view-CurrentUser"].hide();
     },
-
     addStaff() {
       this.$refs["add-user"].show();
     },
@@ -659,7 +659,6 @@ export default {
     toggleModal() {
       this.$refs["add-user"].toggle("#toggle-btn");
     },
-
     hideModalChange() {
       this.$refs["change-user"].hide();
     },
@@ -669,14 +668,12 @@ export default {
     hideModalDelete() {
       this.$refs["delete-user"].hide();
     },
-
     open_photo(photo) {
       document.getElementById("big-photo").innerHTML =
         "<img @click='close_photo()' style='position: fixed; top:8%; z-index:999999999999999999999; left: 50%; transform:translate(-50%,0); cursor: zoom-out' src='" +
         photo +
         "'>";
     },
-
     close_photo() {
       document.getElementById("big-photo").innerHTML = "";
     },
@@ -772,6 +769,7 @@ export default {
       api.currentUser(id).then((response) => {
         this.loader = false;
         this.current_user_staff = response.data;
+
         if (this.current_user_staff.groups.length) {
           this.current_user_staff.groups =
             this.current_user_staff.groups[0] + "";
@@ -795,8 +793,8 @@ export default {
         formData.append("groups", [this.current_user_staff.groups]),
         formData.append("phone_corp", this.current_user_staff.phone_corp),
         formData.append("phone_personal", this.current_user_staff.phone_personal);
-        formData.append("inner_number", this.current_user_staff.inner_number);
-        formData.append("schedule", this.current_user_staff.schedule),
+      formData.append("inner_number", this.current_user_staff.inner_number);
+      formData.append("schedule", this.current_user_staff.schedule),
         formData.append("manager", this.current_user_staff.manager);
       api.changeUserData(id, formData).then((response) => {
         this.notifyHead = "Успешно";
@@ -822,6 +820,21 @@ export default {
       setTimeout(this.closeNotification, 1500);
 
       // console.log(event);
+    },
+    onFileSelectedSee(event) {
+      this.photo = this.$refs.photo.files[0];
+      let target = event.target;
+      let fileReader = new FileReader();
+      fileReader.onload = function() {
+        document.getElementById('result').src = fileReader.result;
+      }
+      fileReader.readAsDataURL(target.files[0]);
+      this.ImageUser = true
+      this.notifyHead = "Успешно";
+      this.notifyMessage = "Фото добавлено";
+      this.notifyClass = "wrapper-success";
+      this.showNotify = true;
+      setTimeout(this.closeNotification, 1500);
     },
     checkError(key) {
       return this.formErrors.includes(key);
