@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div style="margin-top: -400px !important">
         <SelectRange @selectCurrentRange="selectCurrentRange" v-model="selectSearch" />
         <h2>Цистерна</h2>
-        <div class="hello1 d" ref="chartdiv2" v-show="day">
+        <div class="hello1 d" ref="chartdiv2" v-show="day" >
         </div>
-        <div class="hello1 m" ref="chartdiv3" v-show="month">
+        <div class="hello1 m" ref="chartdiv3" v-show="month" >
         </div>
 
     </div>
