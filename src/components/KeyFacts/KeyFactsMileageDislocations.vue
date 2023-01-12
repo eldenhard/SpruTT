@@ -1,7 +1,7 @@
 <template>
     <div>
         <SelectRange @selectCurrentRange="selectCurrentRange" v-model="selectSearch" />
-        <h2>Цистерна</h2>
+        <h2>Полувагон</h2>
         <div class="hello1 d" ref="chartdiv2" v-show="day">
         </div>
         <div class="hello1 m" ref="chartdiv3" v-show="month">
@@ -283,7 +283,7 @@ export default {
     mounted() {
         api.getKeyFacts()
             .then(response => {
-                this.Mileage = response.data.mileage['Цистерна']
+                this.Mileage = response.data.mileage_by_dislocations['Полувагон']
                 console.log(this.Mileage)
                 this.getGraph(this.Mileage)
                 this.allData = this.Mileage.reduce((acc, { day, speed, distance, wagons }) => {

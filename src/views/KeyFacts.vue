@@ -1,7 +1,9 @@
 <template>
     <div>
         <Loader :loader="loader"></Loader>
-        <div class="hello" ref="chartdiv"></div>
+                <div class="hello" ref="chartdiv"></div>
+
+       
         <div class="row">
             <div class="col-md-6">
                 <keyFactsMileageTonVue></keyFactsMileageTonVue>
@@ -13,6 +15,14 @@
 
         </div>
 
+        <div class="row">
+            <div class="col-md-6">
+                <KeyFactsMileageDislocationsTon />
+            </div>
+            <div class="col-md-6">
+                <KeyFactsMileageDislocations />
+            </div>
+        </div>
         <br><br>
 
 
@@ -30,7 +40,8 @@ import api from "@/api/wagonPark"
 import Loader from "@/components/loader/loader.vue"
 import KeyFactsMileageVue from "../components/KeyFacts/KeyFactsMileage.vue";
 import keyFactsMileageTonVue from "@/components/KeyFacts/keyFactsMileageTon.vue";
-
+import KeyFactsMileageDislocations from "@/components/KeyFacts/KeyFactsMileageDislocations.vue";
+import KeyFactsMileageDislocationsTon from "@/components/KeyFacts/KeyFactsMileageDislocationsTon.vue";
 export default {
     name: 'KeyFacts',
     data() {
@@ -38,7 +49,7 @@ export default {
             loader: false
         }
     },
-    components: { Loader, KeyFactsMileageVue, keyFactsMileageTonVue },
+    components: { Loader, KeyFactsMileageVue, keyFactsMileageTonVue, KeyFactsMileageDislocations, KeyFactsMileageDislocationsTon },
     computed: {
         ...mapState({
             user: state => state.auth.user,

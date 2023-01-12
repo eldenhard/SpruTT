@@ -283,7 +283,7 @@ export default {
     mounted() {
         api.getKeyFacts()
             .then(response => {
-                this.Mileage = response.data.mileage['Цистерна']
+                this.Mileage = response.data.mileage_by_dislocations['Цистерна']
                 console.log(this.Mileage)
                 this.getGraph(this.Mileage)
                 this.allData = this.Mileage.reduce((acc, { day, speed, distance, wagons }) => {
