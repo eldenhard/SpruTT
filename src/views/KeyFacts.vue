@@ -7,11 +7,6 @@
 
 
         <div class="row">
-            <div class="col-md-12 signature" >
-                <br>
-                <h3>Средняя скрость вагонов по рейсам</h3>
-                <br>
-            </div>
             <div class="col-md-6">
                 <keyFactsMileageTonVue></keyFactsMileageTonVue>
             </div>
@@ -23,12 +18,7 @@
         </div>
 
         <div class="row">
-            
-            <div class="col-md-12 signature">
-                <br>
-                <h3>Средняя скрость вагонов по дислокациям</h3>
-                <br>
-            </div>
+        
             <div class="col-md-6">
                 <KeyFactsMileageDislocationsTon />
             </div>

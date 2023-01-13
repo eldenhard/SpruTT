@@ -1,12 +1,12 @@
 <template>
     <div style="padding-bottom: -500px">
         <SelectRange @selectCurrentRange="selectCurrentRange" v-model="selectSearch" />
-        <h2>Цистерна</h2>
+        <h3 style="font-family: 'Montserrat', sans-serif;font-size: 18px;color:#242424; padding-top: 30px"> Средняя скорость цистерн по рейсам</h3>
         <div class="hello1 d" ref="chartdiv2" v-show="day">
         </div>
-        <div class="hello1 m" ref="chartdiv3" v-show="month" >
+        <div class="hello1 m" ref="chartdiv3" v-show="month">
         </div>
-        <div class="hello1 k" ref="chartdiv4" v-show="kvartal" >
+        <div class="hello1 k" ref="chartdiv4" v-show="kvartal">
         </div>
 
     </div>
@@ -49,8 +49,8 @@ export default {
             if (this.selectSearch == 1) {
                 this.day = true
                 this.month = false,
-                this.kvartal =  false,
-                console.log('I WORK')
+                    this.kvartal = false,
+                    console.log('I WORK')
                 this.getGraph()
 
             } if (this.selectSearch == 30) {
@@ -232,14 +232,14 @@ export default {
 
             for (let elem in this.allData) {
                 let mainElem = this.allData[elem]
-                    data.push(
-                        {
-                            'date': new Date(mainElem.day).getTime(),
-                            'value': mainElem.speed / 30,
-                            'distance': mainElem.distance / 30,
-                            'wagons': mainElem.wagons
-                        }
-                    )
+                data.push(
+                    {
+                        'date': new Date(mainElem.day).getTime(),
+                        'value': mainElem.speed / 30,
+                        'distance': mainElem.distance / 30,
+                        'wagons': mainElem.wagons
+                    }
+                )
 
 
             }
@@ -346,24 +346,24 @@ export default {
 
 
             for (let elem in this.Kvartal) {
-                let mainElem =this.Kvartal[elem]
+                let mainElem = this.Kvartal[elem]
                 if (mainElem != undefined && mainElem != null) {
-                preData.push(
-                    {   
-                        'hash': mainElem.hash,
-                        'date': new Date(mainElem.day).getTime(),
-                        'value': mainElem.speed / 90,
-                        'distance': mainElem.distance / 90,
-                        'wagons': mainElem.wagons
-                    }
-                )
+                    preData.push(
+                        {
+                            'hash': mainElem.hash,
+                            'date': new Date(mainElem.day).getTime(),
+                            'value': mainElem.speed / 90,
+                            'distance': mainElem.distance / 90,
+                            'wagons': mainElem.wagons
+                        }
+                    )
                 } else {
                     return data
                 }
 
             }
             let data = preData.filter(item => item.hash != undefined);
-           
+
             // Create axes
             // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
             let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {

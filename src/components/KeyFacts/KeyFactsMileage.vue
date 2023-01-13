@@ -1,7 +1,7 @@
 <template>
     <div style="padding-bottom: -500px">
         <SelectRange @selectCurrentRange="selectCurrentRange" v-model="selectSearch" />
-        <h2>Полувагон</h2>
+        <h3 style="font-family: 'Montserrat', sans-serif;font-size: 18px;color:#242424; padding-top: 30px"> Средняя скорость полувагонов по рейсам</h3>
         <div class="hello1 d" ref="chartdiv2" v-show="day">
         </div>
         <div class="hello1 m" ref="chartdiv3" v-show="month" >
