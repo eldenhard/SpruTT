@@ -448,8 +448,8 @@ export default {
                     const kvartal = hash;
                     if (acc[kvartal]) {
                         acc[kvartal].hash = hash
-                        acc[kvartal].speed += speed;
-                        acc[kvartal].distance += distance;
+                        acc[kvartal].speed += speed / 90;
+                        acc[kvartal].distance += distance / 90;
                         acc[kvartal].wagons += wagons;
                     } else {
                         acc[kvartal] = { hash, day, speed, distance, wagons };
