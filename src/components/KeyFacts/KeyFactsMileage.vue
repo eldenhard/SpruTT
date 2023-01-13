@@ -236,8 +236,8 @@ export default {
                     data.push(
                         {
                             'date': new Date(mainElem.day).getTime(),
-                            'value': mainElem.speed,
-                            'distance': mainElem.distance,
+                            'value': mainElem.speed / 30,
+                            'distance': mainElem.distance / 30,
                             'wagons': mainElem.wagons
                         }
                     )
@@ -347,14 +347,15 @@ export default {
 
 
             for (let elem in this.Kvartal) {
-                if (this.Kvartal[elem] != undefined && this.Kvartal[elem] != null) {
+                let mainElem =this.Kvartal[elem]
+                if (mainElem != undefined && mainElem != null) {
                 preData.push(
                     {   
-                        'hash': this.Kvartal[elem].hash,
-                        'date': new Date(this.Kvartal[elem].day).getTime(),
-                        'value': this.Kvartal[elem].speed,
-                        'distance': this.Kvartal[elem].distance,
-                        'wagons': this.Kvartal[elem].wagons
+                        'hash': mainElem.hash,
+                        'date': new Date(mainElem.day).getTime(),
+                        'value': mainElem.speed / 90,
+                        'distance': mainElem.distance / 90,
+                        'wagons': mainElem.wagons
                     }
                 )
                 } else {
@@ -425,8 +426,8 @@ export default {
                     const yearMonth = day.substring(0, 7);
                     if (acc[yearMonth]) {
                         acc[yearMonth].day = day
-                        acc[yearMonth].speed += speed / 30;
-                        acc[yearMonth].distance += distance / 30;
+                        acc[yearMonth].speed += speed;
+                        acc[yearMonth].distance += distance;
                         acc[yearMonth].wagons += wagons;
                     } else {
                         acc[yearMonth] = { day, speed, distance, wagons };
@@ -448,8 +449,8 @@ export default {
                     const kvartal = hash;
                     if (acc[kvartal]) {
                         acc[kvartal].hash = hash
-                        acc[kvartal].speed += speed / 90;
-                        acc[kvartal].distance += distance / 90;
+                        acc[kvartal].speed += speed;
+                        acc[kvartal].distance += distance;
                         acc[kvartal].wagons += wagons;
                     } else {
                         acc[kvartal] = { hash, day, speed, distance, wagons };
@@ -457,8 +458,6 @@ export default {
                     return acc;
                 })
                 // console.log(this.Kvartal, '11')
-
-
             })
 
     }

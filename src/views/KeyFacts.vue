@@ -134,7 +134,6 @@ export default {
                     renderer: am5xy.AxisRendererY.new(root, {})
                 }));
 
-
                 let series = chart.series.push(am5xy.ColumnSeries.new(root, {
                     name: "Series 1",
                     xAxis: xAxis,
@@ -157,23 +156,12 @@ export default {
                     return chart.get("colors").getIndex(series.columns.indexOf(target));
                 });
 
-
-
-
                 xAxis.data.setAll(keyfacts);
                 series.data.setAll(keyfacts);
 
                 series.appear(1000);
                 chart.appear(1000, 100);
             })
-
-
-
-
-
-
-
-
 
     },
 }
