@@ -1,10 +1,17 @@
 <template>
     <div>
         <Loader :loader="loader"></Loader>
-                <div class="hello" ref="chartdiv"></div>
+        <br>
+        <h3 style="text-align: left; padding-left:5%" class="signature">Количесто вагонов</h3>
+        <div class="hello" ref="chartdiv"></div>
 
-       
+
         <div class="row">
+            <div class="col-md-12 signature" >
+                <br>
+                <h3>Средняя скрость вагонов по рейсам</h3>
+                <br>
+            </div>
             <div class="col-md-6">
                 <keyFactsMileageTonVue></keyFactsMileageTonVue>
             </div>
@@ -16,6 +23,12 @@
         </div>
 
         <div class="row">
+            
+            <div class="col-md-12 signature">
+                <br>
+                <h3>Средняя скрость вагонов по дислокациям</h3>
+                <br>
+            </div>
             <div class="col-md-6">
                 <KeyFactsMileageDislocationsTon />
             </div>
@@ -126,7 +139,7 @@ export default {
                     name: "Series 1",
                     xAxis: xAxis,
                     yAxis: yAxis,
-                  
+
                     valueYField: "amount",
                     sequencedInterpolation: true,
                     categoryXField: "wagon_type",
@@ -134,7 +147,7 @@ export default {
                         labelText: "{valueY}"
                     })
                 }));
- 
+
                 series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5 });
                 series.columns.template.adapters.add("fill", function (fill, target) {
                     return chart.get("colors").getIndex(series.columns.indexOf(target));
@@ -179,5 +192,10 @@ export default {
     width: 25%;
     height: 500px;
 
+}
+.signature{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    color:#242424;
 }
 </style>

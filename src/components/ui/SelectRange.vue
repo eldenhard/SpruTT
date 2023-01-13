@@ -3,7 +3,7 @@
         <select name="" class="select-range" v-model="selectSearch" @change="selectCurrentRange">
             <option value="1" selected>день</option>
             <option value="30">месяц</option>
-            <!-- <option value="90">квартал</option> -->
+            <option value="90">квартал</option>
         </select>
 
     </div>
