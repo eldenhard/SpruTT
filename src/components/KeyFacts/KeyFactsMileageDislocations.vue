@@ -1,7 +1,7 @@
 <template>
     <div >
         <SelectRange @selectCurrentRange="selectCurrentRange" v-model="selectSearch" />
-        <h2 style="font-family: 'Montserrat', sans-serif;font-size: 18px;color:#242424;"> Средняя скорость полувагонов по рейсам по дислокациям</h2>
+        <h2 style="font-family: 'Montserrat', sans-serif;font-size: 18px;color:#242424;"> Средняя скорость <strong>полувагонов</strong> по дислокациям</h2>
         <div class="hello1 d" ref="chartdiv2" v-show="day">
         </div>
         <div class="hello1 m" ref="chartdiv3" v-show="month" >
@@ -33,6 +33,7 @@ import SelectRange from "@/components/ui/SelectRange.vue"
 export default {
     data() {
         return {
+            loader: true,
             selectSearch: '',
             Mounth: '',
             Kvartal: '',
@@ -43,7 +44,7 @@ export default {
             kvartal: false,
         }
     },
-    components: { SelectRange },
+    components: { SelectRange, Loader },
 
     watch: {
         selectSearch() {
@@ -462,7 +463,6 @@ export default {
 
 
             })
-
     }
 
 }

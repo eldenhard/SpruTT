@@ -1,7 +1,7 @@
 <template>
     <div >
         <SelectRange @selectCurrentRange="selectCurrentRange" v-model="selectSearch" />
-        <h2 style="font-family: 'Montserrat', sans-serif;font-size: 18px;color:#242424;"> Средняя скорость цистерн по дислокациям</h2>
+        <h2 style="font-family: 'Montserrat', sans-serif;font-size: 18px;color:#242424;"> Средняя скорость <strong>цистерн</strong> по дислокациям</h2>
         <div class="hello1 d" ref="chartdiv2" v-show="day">
         </div>
         <div class="hello1 m" ref="chartdiv3" v-show="month" >
@@ -460,7 +460,6 @@ export default {
 
 
             })
-
     }
 
 }

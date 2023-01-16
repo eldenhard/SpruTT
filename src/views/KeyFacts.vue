@@ -65,7 +65,7 @@ export default {
         })
     },
     mounted() {
-        // this.loader = true
+        this.loader = true
         api.getKeyFacts()
             .then(response => {
                 let keyfacts;
@@ -156,8 +156,9 @@ export default {
 
                 series.appear(1000);
                 chart.appear(1000, 100);
+                this.loader = false
             })
-
+            
     },
 }
 
