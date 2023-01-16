@@ -2,7 +2,7 @@
     <div>
         <Loader :loader="loader"></Loader>
         <br>
-        <h3 style="text-align: left; padding-left:5%" class="signature">Количесто вагонов</h3>
+        <h2 style="text-align: left; padding-left:5%;" class="signature">Количесто вагонов</h2>
         <div class="hello" ref="chartdiv"></div>
 
 
