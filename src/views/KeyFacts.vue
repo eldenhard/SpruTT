@@ -6,26 +6,31 @@
         <div class="hello" ref="chartdiv"></div>
 
 
-        <div class="row">
-            <div class="col-md-6">
+        <div class="row container-fluid">
+            <!-- <div class="col-md-12">
                 <keyFactsMileageTonVue></keyFactsMileageTonVue>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <KeyFactsMileageVue></KeyFactsMileageVue>
-            </div>
-
-        </div>
-
-        <div class="row">
-        
-            <div class="col-md-6">
+            </div> -->
+            <div class="col-md-12">
                 <KeyFactsMileageDislocationsTon />
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <KeyFactsMileageDislocations />
             </div>
         </div>
+
+        <!-- <div class="row container">
+        
+            <div class="col-md-3">
+                <KeyFactsMileageDislocationsTon />
+            </div>
+            <div class="col-md-3">
+                <KeyFactsMileageDislocations />
+            </div>
+        </div> -->
         <br><br>
 
 
@@ -41,8 +46,8 @@ import * as am5xy from "@amcharts/amcharts5/xy";
 import { mapState } from "vuex";
 import api from "@/api/wagonPark"
 import Loader from "@/components/loader/loader.vue"
-import KeyFactsMileageVue from "../components/KeyFacts/KeyFactsMileage.vue";
-import keyFactsMileageTonVue from "@/components/KeyFacts/keyFactsMileageTon.vue";
+// import KeyFactsMileageVue from "../components/KeyFacts/KeyFactsMileage.vue";
+// import keyFactsMileageTonVue from "@/components/KeyFacts/keyFactsMileageTon.vue";
 import KeyFactsMileageDislocations from "@/components/KeyFacts/KeyFactsMileageDislocations.vue";
 import KeyFactsMileageDislocationsTon from "@/components/KeyFacts/KeyFactsMileageDislocationsTon.vue";
 export default {
@@ -52,7 +57,7 @@ export default {
             loader: false
         }
     },
-    components: { Loader, KeyFactsMileageVue, keyFactsMileageTonVue, KeyFactsMileageDislocations, KeyFactsMileageDislocationsTon },
+    components: { Loader, KeyFactsMileageDislocations, KeyFactsMileageDislocationsTon },
     computed: {
         ...mapState({
             user: state => state.auth.user,
@@ -171,9 +176,10 @@ export default {
     height: 500px;
 
 }
-.signature{
+
+.signature {
     font-family: 'Montserrat', sans-serif;
     font-size: 18px;
-    color:#242424;
+    color: #242424;
 }
 </style>

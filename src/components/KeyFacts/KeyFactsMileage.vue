@@ -420,8 +420,10 @@ export default {
         api.getKeyFacts()
             .then(response => {
                 this.Mileage = response.data.mileage['Полувагон']
+                console.log(response.data)
                 let a = this.Mileage
                 this.getGraph(this.Mileage)
+                // Подсчет данных по месяцам
                 this.allData = this.Mileage.reduce((acc, { day, speed, distance, wagons }) => {
                     const yearMonth = day.substring(0, 7);
                     if (acc[yearMonth]) {
@@ -436,7 +438,7 @@ export default {
                 }, {})
 
 
-
+                // Подсчет данных по квартально
                 const AllKvartal = a.map(({ day, ...rest }) => {
                     const quarter = ['I', 'II', 'III', 'IV'][Math.floor((+day.substring(5, 7) - 1) / 3)];
                     const year = day.substring(0, 4);

@@ -140,7 +140,7 @@ export default {
                 data.push(
                     {
                         'date': new Date(elem.day).getTime(),
-                        'value': elem.speed,
+                        'value': Math.round(elem.speed),
                         'distance': elem.distance,
                         'wagons': elem.wagons
                     }
@@ -170,7 +170,7 @@ export default {
                 valueYField: "value",
                 valueXField: "date",
                 tooltip: am5.Tooltip.new(root, {
-                    labelText: "{distance} км.\n{wagons} шт."
+                    labelText: "{value} км/день"
                 })
             }));
 
@@ -236,7 +236,7 @@ export default {
                     data.push(
                         {
                             'date': new Date(mainElem.day).getTime(),
-                            'value': mainElem.speed,
+                            'value': Math.round(mainElem.speed),
                             'distance': mainElem.distance,
                             'wagons': mainElem.wagons
                         }
@@ -251,7 +251,7 @@ export default {
             let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
                 maxDeviation: 0.2,
                 baseInterval: {
-                    timeUnit: "day",
+                    timeUnit: "month",
                     count: 1
                 },
 
@@ -274,7 +274,8 @@ export default {
                 valueYField: "value",
                 valueXField: "date",
                 tooltip: am5.Tooltip.new(root, {
-                    labelText: "{distance} км.\n{wagons} шт."
+                labelText: "{value} км/день"
+                    // labelText: "{distance} км.\n{wagons} шт."
                 })
             }));
 
@@ -352,7 +353,7 @@ export default {
                     {   
                         'hash': this.Kvartal[elem].hash,
                         'date': new Date(this.Kvartal[elem].day).getTime(),
-                        'value': this.Kvartal[elem].speed,
+                        'value':  Math.round(this.Kvartal[elem].speed),
                         'distance': this.Kvartal[elem].distance,
                         'wagons': this.Kvartal[elem].wagons
                     }
@@ -369,7 +370,7 @@ export default {
             let xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
                 maxDeviation: 0.2,
                 baseInterval: {
-                    timeUnit: "day",
+                    timeUnit: "month",
                     count: 1
                 },
 
@@ -392,7 +393,8 @@ export default {
                 valueYField: "value",
                 valueXField: "date",
                 tooltip: am5.Tooltip.new(root, {
-                    labelText: "{hash} кв. \n{distance} км.\n{wagons} шт."
+                labelText: "{hash} кв. \n{value} км/день"
+                    // labelText: "{hash} кв. \n{distance} км.\n{wagons} шт."
                 })
             }));
 
