@@ -75,7 +75,6 @@ export default {
     mounted() {
         api.getKeyFacts()
             .then(response => {
-                this.loader = true
                 let keyfacts;
                 keyfacts = response.data.wagons
 
@@ -164,7 +163,6 @@ export default {
                 series.appear(1000);
                 chart.appear(1000, 100);
             })
-            this.loader = false
         api.getKeyFacts()
             .then(response => {
                 let keyfacts;
@@ -264,7 +262,6 @@ export default {
 
                 series.appear(1000);
                 chart.appear(1000, 100);
-                this.loader = false
             })
           
         },
