@@ -73,6 +73,8 @@ export default {
         })
     },
     mounted() {
+        this.loader = true
+        setTimeout(() => this.loader = false, 4000)
         api.getKeyFacts()
             .then(response => {
                 let keyfacts;
@@ -163,7 +165,9 @@ export default {
                 series.appear(1000);
                 chart.appear(1000, 100);
             })
-        api.getKeyFacts()
+         
+
+            api.getKeyFacts()
             .then(response => {
                 let keyfacts;
                 keyfacts = response.data.mileage_by_dislocations
@@ -263,7 +267,6 @@ export default {
                 series.appear(1000);
                 chart.appear(1000, 100);
             })
-          
         },
 
 
