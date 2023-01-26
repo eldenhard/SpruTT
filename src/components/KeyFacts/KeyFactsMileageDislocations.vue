@@ -25,7 +25,7 @@ import am5geodata_lang_RU from "@amcharts/amcharts5/locales/ru_RU"
 
 import * as am5xy from "@amcharts/amcharts5/xy";
 import { mapState } from "vuex";
-import api from "@/api/wagonPark"
+import api from "@/api/report"
 import Loader from "@/components/loader/loader.vue"
 import SelectRange from "@/components/ui/SelectRange.vue"
 
@@ -419,9 +419,9 @@ export default {
         }
     },
     mounted() {
-        api.getKeyFacts()
+        api.getKeyFactsSpeed()
             .then(response => {
-                this.Mileage = response.data.mileage_by_dislocations['Полувагон']
+                this.Mileage = response.data
                 let a = this.Mileage
                 this.getGraph(this.Mileage)
                 this.allData = this.Mileage.reduce((acc, { day, speed, distance, wagons }) => {

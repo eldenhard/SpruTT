@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Loader :loader="loader"/>
+    <Loader :loader="loader" />
     <div class="container">
       <div role="group">
         <b-form-input
@@ -9,7 +9,6 @@
           :state="nameState"
           aria-describedby="input-live-help input-live-feedback"
           placeholder="Введите номер вагона"
-          max-length="8"
           trim
           style="border: 1px solid grey !important"
         >
@@ -68,7 +67,8 @@
           <p class="about__wagon__text">
             <span class="a">Тип</span> {{ all.wagon_type }}
             <br />
-            <span class="a">Активность</span> {{ all.is_active }}
+            <span class="a">Активность</span>
+            {{ is_loaded }}
             <br />
             <span class="a">Грузоотправитель</span>
             {{ all.flight?.invoice?.cargo_sender_name }}
@@ -219,11 +219,6 @@ import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 
 export default {
-  computed: {
-    nameState() {
-      return this.name.length == 8 ? true : false;
-    },
-  },
   components: { Loader, Notifications },
   data() {
     return {
@@ -235,6 +230,22 @@ export default {
       notifyMessage: "",
       notifyClass: "",
     };
+  },
+  computed: {
+    nameState() {
+      return this.name.length == 8 ? true : false;
+    },
+    is_loaded() {
+      console.log("1");
+      if (this.all.flight?.is_loaded === true) {
+        return "Активен";
+      }
+      if (this.all.flight?.is_loaded === false) {
+        return "Неактивен";
+      } else {
+        return "";
+      }
+    },
   },
   methods: {
     getCurrentWagon() {
@@ -264,7 +275,7 @@ export default {
             this.notifyMessage = error.response.data;
             this.notifyClass = "wrapper-error";
             this.showNotify = true;
-            console.log(error)
+            console.log(error);
             setTimeout(() => (this.showNotify = false), 2000);
           });
       }

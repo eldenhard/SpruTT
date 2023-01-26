@@ -83,6 +83,12 @@ const createCounterparties = (data) => {
 const getKeyFacts = () => {
     return api.get(`${reports}/key-facts/get-wagons-by-types-amount/`)
 }
+const getKeyFactsSpeedTon = () => {
+    return api.get(`${reports}/key-facts/get-speed?wagon_type=Цистерна&data_source=Дислокации`)
+}
+const getKeyFactsSpeed = () => {
+    return api.get(`${reports}/key-facts/get-speed?wagon_type=Полувагон&data_source=Дислокации`)
+}
 export default {
     getUsers,
     getReportById,
@@ -115,4 +121,6 @@ export default {
 
     // Ключевые факты
     getKeyFacts,
+    getKeyFactsSpeedTon,
+    getKeyFactsSpeed,
 }
