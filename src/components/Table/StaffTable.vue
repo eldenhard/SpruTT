@@ -134,8 +134,7 @@
 
             <td>
               <button
-                style="height: 100%;
-                  vertical-align: middle;
+                style="height: 100%; vertical-align: middle;
                   display: flex;
                   align-items: center;
                   justify-content: center;
