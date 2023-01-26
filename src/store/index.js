@@ -3,7 +3,6 @@
 import Vue from "vue";
 import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate";
-import createPersist, { createStorage } from 'vuex-localstorage'
 
 import auth from "@/store/modules/auth"
 import counterparties from '@/store/modules/counterparties'

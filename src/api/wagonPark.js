@@ -89,6 +89,11 @@ const getAllDataTelegram = (url) => {
 const getCargoCode = (url) => {
     return api.get(`${url}`)
 }
+
+// Получить послденю информацию по вагону
+const getCurrentLastInfoWagon = (data) => {
+    return api.get(`${resource}/wagons/${data}/get-latest-info/`)
+}
 export default {
     getWagons,
     getPassport,
@@ -97,7 +102,7 @@ export default {
     getCurrentWagon,
     getWagonType,
     getAllStation,
-    
+    getCurrentLastInfoWagon,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

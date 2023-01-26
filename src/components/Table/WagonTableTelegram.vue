@@ -13,8 +13,8 @@
               class="textarea"
               style="background: white"
             >
-              <option :value="true">Груженый</option>
-              <option :value="false">Порожний</option>
+              <option value="true">Груженый</option>
+              <option value="false">Порожний</option>
             </select>
 
             <br />
@@ -22,7 +22,7 @@
               for="input-filter-staff1"
               class="label"
               style="margin-left: 5% !important; background: white; "
-              :class="{ 'error_label': this.errors.is_loaded }"
+              :class="{ 'error_label': this.telegram_error.is_loaded }"
               >Груж/Порожн</label
             >
           </div>
@@ -259,8 +259,7 @@
 
     <button
       class="Accept"
-      style="
-        margin-top: 2%;
+      style="margin-top: 2%;
         width: 45%;
         position: relative;
         left: 50%;
@@ -441,7 +440,7 @@ export default {
       this.telegram_error= {}
 
       if (this.all_information.is_loaded == '' || this.all_information.is_loaded == null) {
-            this.errors = { ...this.telegram_error, is_loaded: 'Выберите состояние' }
+            this.telegram_error = { ...this.telegram_error, is_loaded: 'Выберите состояние' }
       } 
       if (this.all_information.contract == '' || this.all_information.contract == null) {
             this.telegram_error = { ...this.telegram_error, contract: 'Введите № договора' }

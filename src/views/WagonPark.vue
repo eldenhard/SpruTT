@@ -14,8 +14,7 @@
                         </template>
   
                         <b-card-text>
-                          
-                            {{i.name}}
+   
                             <div v-if="i.name==='Рейсы'"> 
                                 <FlightTable/>
                             </div>

@@ -1,6 +1,6 @@
 import api from "@/api/auth"
 import staff_api from '@/api/staff'
-import {setItem} from "@/helpers/persistanseStorage"
+import { setItem } from "@/helpers/persistanseStorage"
 
 const resource = api.resource
 
@@ -41,66 +41,67 @@ const mutations = {
         state.uid = user.user.id
         state.isLoggedIn = true
         setItem('accessToken', user.token)
-      },
-      [mutationTypes.logout](state){
+    },
+    [mutationTypes.logout](state) {
         state.user = {}
         state.uid = null
         state.isLoggedIn = false
         setItem('accessToken', '')
-      },
-      [mutationTypes.getStaffGroups](state, data){
-            state.groups = data
-      },
-      [mutationTypes.staffGlobal](state, data){
+    },
+    [mutationTypes.getStaffGroups](state, data) {
+        state.groups = data
+    },
+    [mutationTypes.staffGlobal](state, data) {
         state.users = data
-  }
+    }
 }
 
 const actions = {
-    async [actionTypes.login](context, data){
-        return new Promise((resolve,reject) => {
-            api.login(data).then(response => {
-                context.commit(mutationTypes.loginSuccess, response.data)
-                resolve(response.data)
-            }).catch(error => {
-                setItem('accessToken', '')
-                reject(error)
-            })
-            
+    async [actionTypes.login](context, data) {
+        return new Promise((resolve, reject) => {
+            api.login(data)
+                .then(response => {
+                    context.commit(mutationTypes.loginSuccess, response.data)
+                    resolve(response.data)
+                }).catch(error => {
+                    setItem('accessToken', '')
+                    reject(error)
+                })
+
         })
     },
-    async [actionTypes.logout](context){
+    async [actionTypes.logout](context) {
         return new Promise(resolve => {
             context.commit(mutationTypes.logout)
-        }) 
-    },
-    async [actionTypes.getStaffGroups](context){
-        return new Promise((resolve, reject) => {
-            staff_api.getStaffGroup()
-            .then((response) => {
-                context.commit(mutationTypes.getStaffGroups, response.data.data)
-                resolve(response.data.data)
-            }).catch(err => {
-                reject(err)
-            })
         })
     },
-    async [actionTypes.staffGlobal](context){
+    async [actionTypes.getStaffGroups](context) {
+        return new Promise((resolve, reject) => {
+            staff_api.getStaffGroup()
+                .then((response) => {
+                    context.commit(mutationTypes.getStaffGroups, response.data.data)
+                    resolve(response.data.data)
+                }).catch(err => {
+                    reject(new Error('Ошибка получения данных групп'))
+                })
+        })
+    },
+    async [actionTypes.staffGlobal](context) {
         return new Promise((resolve, reject) => {
             staff_api.staffGlobal()
-            .then((response) => {
-                context.commit(mutationTypes.staffGlobal, response.data.data)
-                resolve(response.data.data)
-            }).catch(err => {
-                reject(err)
-            })
+                .then((response) => {
+                    context.commit(mutationTypes.staffGlobal, response.data.data)
+                    resolve(response.data.data)
+                }).catch(err => {
+                    reject(new Error('Ошибка полуения данных о персонале'))
+                })
         })
     }
 }
 
-export default 
-{
-    state,
-    mutations,
-    actions
-}
+export default
+    {
+        state,
+        mutations,
+        actions
+    }

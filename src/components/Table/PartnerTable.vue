@@ -579,7 +579,7 @@ export default {
           this.loader = false;
           this.notifyHead = "Успешно";
           this.notifyMessage = "Данные о контрагенте сохранены";
-          this.notifyClass = "wrapper-success";
+          this.notifyClass = "wrapper-error";
           this.showNotify = true;
           setTimeout(this.closeNotification, 1500);
         })
