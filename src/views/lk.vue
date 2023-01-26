@@ -272,7 +272,7 @@ export default {
 }
 
 .tab-content {
-  background: rgb(255, 255, 255);
+  background: rgb(255, 255, 254);
 }
 
 .card {
