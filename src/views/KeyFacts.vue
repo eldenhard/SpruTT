@@ -50,7 +50,7 @@ import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import am5geodata_lang_RU from "@amcharts/amcharts5/locales/ru_RU"
 import * as am5xy from "@amcharts/amcharts5/xy";
 import { mapState } from "vuex";
-import api from "@/api/wagonPark"
+import api from '@/api/report'
 import Loader from "@/components/loader/loader.vue"
 // import KeyFactsMileageVue from "../components/KeyFacts/KeyFactsMileage.vue";
 // import keyFactsMileageTonVue from "@/components/KeyFacts/keyFactsMileageTon.vue";

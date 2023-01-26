@@ -61,10 +61,7 @@ const getFilters = () => {
     return api.get(`${resource}/dislocations/get-filters/`)
 }
 
-// Для ключевых фактов
-const getKeyFacts = () => {
-    return api.get(`${resource}/key-facts/`)
-}
+
 
 // Телеграммы
 const getTelegram = (data) => {
@@ -116,8 +113,6 @@ getwagonDislocation,
 getPolygon,
 getFilters,
 
-// ключевы факты
-getKeyFacts,
 
 
 // Телеграммы

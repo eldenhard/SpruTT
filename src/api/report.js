@@ -78,6 +78,11 @@ const changeBDRreport = (data) => {
 const createCounterparties = (data) => {
     return api.post(`${resource}/counterparties/create/`, data)
 }
+
+// Для ключевых фактов
+const getKeyFacts = () => {
+    return api.get(`${reports}/key-facts/get-wagons-by-types-amount/`)
+}
 export default {
     getUsers,
     getReportById,
@@ -107,4 +112,7 @@ export default {
 
     // справовчник
     createCounterparties,
+
+    // Ключевые факты
+    getKeyFacts,
 }

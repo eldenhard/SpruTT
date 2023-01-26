@@ -50,11 +50,11 @@ const mutations = {
 const actions = {
     async [actionTypes.checkLocalStations](context, {url,clear}){
         return new Promise((resolve, reject) => {
-            api.getAllStation('wagon-park/station?page_size=1').then(response => {
+            api.getAllStation('wagon-park/stations?page_size=1').then(response => {
                 const localStations = getItem('station')
                 // console.log(response.data.total_objects,localStations, localStations.length)
                 if(getItem('station') == null || response.data.total_objects != getItem('station').length){
-                    context.dispatch(actionTypes.getStations, {url: 'wagon-park/station?page_size=1000', clear: true})
+                    context.dispatch(actionTypes.getStations, {url: 'wagon-park/stations?page_size=1000', clear: true})
                 }
                 resolve()
                 
