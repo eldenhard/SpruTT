@@ -3,18 +3,9 @@
     <Loader :loader="loader"></Loader>
     
     <!-- <FilterWagon @updateFilters="updateFilters"></FilterWagon> -->
-    <div>
-      <b-card no-body>
-        <b-tabs pills card vertical>
-          <b-tab title="Основные" active>
-            <b-card-text>
-              <WPMainData />
-            </b-card-text></b-tab
-          >
 
-        </b-tabs>
-      </b-card>
-    </div>
+              <WPMainData />
+
   </div>
 </template>
 
