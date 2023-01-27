@@ -418,12 +418,12 @@ export default {
               Object.assign(this.all_information, response.data);
               // Object.assign(this.all_information, response.data);
               this.all_information.contract = response.data.flight.agreement_number;
-              this.all_information.departure_station_name = response.data.flight?.departure_station_name
-              this.all_information.destination_station_name = response.data.flight?.destination_station_name
-              this.all_information.cargo_code = response.data.flight?.cargo_code
-              this.all_information.cargo_sender = response.data.flight?.invoice?.cargo_sender_name
-              this.all_information.cargo_recipient = response.data?.flight?.invoice?.cargo_recipient_name
-              this.all_information.is_loaded = response.data.flight?.is_loaded
+              this.all_information.departure_station_name = response.data.flight?.departure_station_name;
+              this.all_information.destination_station_name = response.data.flight?.destination_station_name;
+              this.all_information.cargo_code = response.data.flight?.cargo_code;
+              this.all_information.cargo_sender = response.data.flight?.invoice?.cargo_sender_name;
+              this.all_information.cargo_recipient = response.data?.flight?.invoice?.cargo_recipient_name;
+              this.all_information.is_loaded = response.data.flight?.is_loaded;
               this.notifyHead = "Успешно";
               this.notifyMessage = "Данные получены";
               this.notifyClass = "wrapper-success";
