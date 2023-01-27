@@ -317,12 +317,11 @@ import { getItem } from "@/helpers/persistanseStorage";
 export default {
   name: "Telegram",
   components: { Loader, Notifications, MultiSelectSearch, AutocompleteInput },
-  // props: ['class'],
   data() {
     return {
       loader: false,
       wagon: [],
-      wagonTypes: "",
+      wagonTypes: [],
       all_information: {
         is_loaded: "",
         contract: "",
@@ -363,8 +362,12 @@ export default {
 
   mounted() {
     this.loader = true;
-    api.getWagonType().then((response) => {
-      this.wagonTypes = response.data.wagon_types;
+    api.getWagonType().then(response => {
+      let preData = response.data.data
+      for(let i in preData){
+        this.wagonTypes.push(preData[i].name)
+      }
+      console.log(this.wagonTypes)
       this.loader = false;
     });
     this.stations = getItem("station");
@@ -413,6 +416,7 @@ export default {
           this.notifyClass = "wrapper-error";
           this.showNotify = true;
           setTimeout(this.closeNotification, 1500);
+          console.log(new Error('Ошибка'))
         });
       }
     },

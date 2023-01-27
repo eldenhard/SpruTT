@@ -30,7 +30,7 @@ const getAllStation = (url) => {
 
 // получить вагоны для селекта в фильтре 
 const getWagonType = () => {
-    return api.get(`${resource}/wagon-type`)
+    return api.get(`${resource}/wagon-types`)
 }
 
 // ------------- ЗАПРОСЫ ДЛЯ БРОШЕННЫХ ВАГОНОВ ---------------
@@ -68,8 +68,9 @@ const getTelegram = (data) => {
     return api.get(`${resource}/telegrams/` + data)
 }
 const postTelegram = (data) => {
+    return api.get(`${resource}/wagons/${data}/get-latest-info/`)
 
-    return api.post(`${resource}/telegram-data/`, data={"wagons": data})
+    // return api.post(`${resource}/telegrams/`, data={"wagons": data})
 }
 const getAllTelegrams = (id) => {
     return api.get(`${resource}/telegrams?creator=`+ `103`)
