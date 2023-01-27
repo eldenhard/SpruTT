@@ -6,7 +6,6 @@
       <div class="bg" style="background: white">
         <div class="row">
           <div class="col-md-6">
-
             <select
               id="input-filter-staff1"
               v-model="all_information.is_loaded"
@@ -21,8 +20,8 @@
             <label
               for="input-filter-staff1"
               class="label"
-              style="margin-left: 5% !important; background: white; "
-              :class="{ 'error_label': this.telegram_error.is_loaded }"
+              style="margin-left: 5% !important; background: white"
+              :class="{ error_label: this.telegram_error.is_loaded }"
               >Груж/Порожн</label
             >
           </div>
@@ -33,17 +32,15 @@
               name="Pwd"
               v-model="all_information.contract"
               style="background: white"
-
             />
             <br />
             <label
               for="input-filter-staff1"
               class="label"
               style="margin-left: 5% !important; background: white"
-              :class="{ 'error_label': this.telegram_error.contract }"
+              :class="{ error_label: this.telegram_error.contract }"
               >№ Договора</label
             >
-    
           </div>
         </div>
         <br />
@@ -58,10 +55,10 @@
               v-model="all_information.departure_station_name"
               :need-full="true"
               @selected="getFullStationDeparture"
-              :myClass="{ 'error_label': this.telegram_error.departure_station_name }"
-
+              :myClass="{
+                error_label: this.telegram_error.departure_station_name,
+              }"
             ></autocomplete-input>
-
           </div>
           <div class="col-md-6">
             <autocomplete-input
@@ -72,8 +69,9 @@
               v-model="all_information.destination_station_name"
               :need-full="true"
               @selected="getFullStationDestination"
-              :myClass="{ 'error_label': this.telegram_error.destination_station_name }"
-
+              :myClass="{
+                error_label: this.telegram_error.destination_station_name,
+              }"
             ></autocomplete-input>
           </div>
         </div>
@@ -81,13 +79,21 @@
         <br />
         <div class="row">
           <div class="col-md-6">
-            <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_recipient"
-              style="background: white"  />
+            <input
+              class="textarea"
+              id="input-filter-staff1"
+              name="Pwd"
+              v-model="all_information.cargo_recipient"
+              style="background: white"
+            />
             <br />
-            <label for="input-filter-staff1" class="label"
-              style="margin-left: 5% !important; background: white" :class="{ 'error_label': this.telegram_error.cargo_recipient }"
->Грузополучатель</label>
-            
+            <label
+              for="input-filter-staff1"
+              class="label"
+              style="margin-left: 5% !important; background: white"
+              :class="{ error_label: this.telegram_error.cargo_recipient }"
+              >Грузополучатель</label
+            >
           </div>
           <div class="col-md-6">
             <!-- <autocomplete-input
@@ -98,12 +104,21 @@
               v-model="all_information.cargo_sender"
             ></autocomplete-input> -->
 
-            <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_sender"
-              style="background: white" />
+            <input
+              class="textarea"
+              id="input-filter-staff1"
+              name="Pwd"
+              v-model="all_information.cargo_sender"
+              style="background: white"
+            />
             <br />
-            <label for="input-filter-staff1" class="label"
-              style="margin-left: 5% !important; background: white" :class="{ 'error_label': this.telegram_error.cargo_sender }">Грузоотправитель</label>
-            
+            <label
+              for="input-filter-staff1"
+              class="label"
+              style="margin-left: 5% !important; background: white"
+              :class="{ error_label: this.telegram_error.cargo_sender }"
+              >Грузоотправитель</label
+            >
           </div>
         </div>
         <br />
@@ -122,7 +137,7 @@
               :label="'Код груза'"
               :variantTitle="'code6'"
               v-model="all_information.cargo_code"
-              :myClass="{ 'error_label': this.telegram_error.cargo_code }"
+              :myClass="{ error_label: this.telegram_error.cargo_code }"
             ></autocomplete-input>
             <!-- <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="all_information.cargo_recipient"
               style="background: white" />
@@ -130,7 +145,6 @@
             <label for="input-filter-staff1" class="label"
               style="margin-left: 5% !important; background: white">Грузополучатель</label> -->
           </div>
-
 
           <div class="col-md-6">
             <select
@@ -149,7 +163,7 @@
               for="input-filter-staff1"
               class="label"
               style="margin-left: 5% !important; background: white"
-              :class="{ 'error_label': this.telegram_error.wagon_type }"
+              :class="{ error_label: this.telegram_error.wagon_type }"
               >Тип вагона</label
             >
           </div>
@@ -166,17 +180,15 @@
               v-model="period_begin"
               style="background: white; border: 1px solid grey"
               :placeholder="this.telegram_error.period_begin"
-
             />
             <br />
             <label
               for="input-filter-staff1"
               class="label"
               style="margin-left: 5% !important; background: white"
-              :class="{ 'error_label': this.telegram_error.period_begin }"
+              :class="{ error_label: this.telegram_error.period_begin }"
               >Начало периода</label
             >
-
           </div>
           <div class="col-md-6">
             <input
@@ -186,15 +198,13 @@
               name="Pwd"
               v-model="period_end"
               style="background: white; border: 1px solid grey"
-              
             />
             <br />
             <label
               for="input-filter-staff1"
               class="label"
               style="margin-left: 5% !important; background: white"
-              :class="{ 'error_label': this.telegram_error.period_end }"
-
+              :class="{ error_label: this.telegram_error.period_end }"
               >Конец периода</label
             >
             <!-- <p v-if="this.telegram_error.period_end" style="font-weight: bold; color: red">
@@ -213,15 +223,19 @@
               id="123r"
               style="background: white"
               :class="{ 'has-error': this.errors.wagon }"
-            
             />
 
             <br />
-            <p v-if="this.telegram_error.wagon" style="font-weight: bold; color: red">
-                {{ this.telegram_error.wagon }}</p>
+            <p
+              v-if="this.telegram_error.wagon"
+              style="font-weight: bold; color: red"
+            >
+              {{ this.telegram_error.wagon }}
+            </p>
             <button
               class="textarea Action"
-              style="margin-top: 2%;
+              style="
+                margin-top: 2%;
                 background: #ff9f55 !important;
                 text-decoration: none !important;
                 outline: none !important;
@@ -259,7 +273,8 @@
 
     <button
       class="Accept"
-      style="margin-top: 2%;
+      style="
+        margin-top: 2%;
         width: 45%;
         position: relative;
         left: 50%;
@@ -296,14 +311,13 @@
   left: 50%;
   transform: translate(-50%, 0);
 }
-.has-error{
+.has-error {
   color: rgb(190, 33, 33) !important;
   border: 1px solid rgb(190, 33, 33) !important;
 }
-.error_label{
+.error_label {
   color: red !important;
 }
-
 </style>
   
 <script>
@@ -345,7 +359,7 @@ export default {
       errors: {
         wagon: false,
       },
-      telegram_error : {},
+      telegram_error: {},
       selectedStationsIds: [],
       stations: [],
     };
@@ -362,12 +376,11 @@ export default {
 
   mounted() {
     this.loader = true;
-    api.getWagonType().then(response => {
-      let preData = response.data.data
-      for(let i in preData){
-        this.wagonTypes.push(preData[i].name)
+    api.getWagonType().then((response) => {
+      let preData = response.data.data;
+      for (let i in preData) {
+        this.wagonTypes.push(preData[i].name);
       }
-      console.log(this.wagonTypes)
       this.loader = false;
     });
     this.stations = getItem("station");
@@ -382,42 +395,52 @@ export default {
     },
     getInfoByWagon() {
       this.loader = true;
-      if(this.wagon == ''){
-          this.errors.wagon = true;
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Введите номер вагона";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 1500);
-          this.loader = false;
-      }
-      else{
-        if(this.wagon != ''){
+      console.log("1");
+      if (this.wagon == "") {
+        this.errors.wagon = true;
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Введите номер вагона";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(this.closeNotification, 1500);
+        this.loader = false;
+      } else {
+        if (this.wagon != "") {
           this.errors.wagon = false;
+
+          let wagonSplit = this.wagon;
+          let wagonArray = wagonSplit.split(" ");
+          api
+            .postTelegram(wagonArray)
+            .then((response) => {
+              console.log(response.data)
+              // this.all_information = response.data;
+              Object.assign(this.all_information, response.data);
+              // Object.assign(this.all_information, response.data);
+              this.all_information.contract = response.data.flight.agreement_number;
+              this.all_information.departure_station_name = response.data.flight?.departure_station_name
+              this.all_information.destination_station_name = response.data.flight?.destination_station_name
+              this.all_information.cargo_code = response.data.flight?.cargo_code
+              this.all_information.cargo_sender = response.data.flight?.invoice?.cargo_sender_name
+              this.all_information.cargo_recipient = response.data?.flight?.invoice?.cargo_recipient_name
+              this.all_information.is_loaded = response.data.flight?.is_loaded
+              this.notifyHead = "Успешно";
+              this.notifyMessage = "Данные получены";
+              this.notifyClass = "wrapper-success";
+              this.showNotify = true;
+              this.loader = false;
+              setTimeout(this.closeNotification, 1500);
+            })
+            .catch((error) => {
+              this.loader = false;
+              this.notifyHead = "Ошибка";
+              this.notifyMessage = `${error.response.data}`;
+              this.notifyClass = "wrapper-error";
+              this.showNotify = true;
+              setTimeout(this.closeNotification, 1500);
+              console.log(new Error("Ошибка"));
+            });
         }
-      let wagonSplit = this.wagon;
-      let wagonArray = wagonSplit.split(" ");
-      api
-        .postTelegram(wagonArray)
-        .then((response) => {
-          //this.all_information = response.data;
-          Object.assign(this.all_information, response.data);
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Данные получены";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          this.loader = false;
-          setTimeout(this.closeNotification, 1500);
-        })
-        .catch((error) => {
-          this.loader = false;
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = `${error.response.data}`;
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 1500);
-          console.log(new Error('Ошибка'))
-        });
       }
     },
     updateSelectedStations(selected) {
@@ -441,90 +464,131 @@ export default {
     },
     // Создать телеграмму
     createTelegram() {
-      this.telegram_error= {}
+      this.telegram_error = {};
 
-      if (this.all_information.is_loaded == '' || this.all_information.is_loaded == null) {
-            this.telegram_error = { ...this.telegram_error, is_loaded: 'Выберите состояние' }
-      } 
-      if (this.all_information.contract == '' || this.all_information.contract == null) {
-            this.telegram_error = { ...this.telegram_error, contract: 'Введите № договора' }
-      } 
-      if (this.all_information.departure_station_name == '') {
-            this.telegram_error = { ...this.telegram_error, departure_station_name: 'Введите станцию' }
+      if (
+        this.all_information.is_loaded == "" ||
+        this.all_information.is_loaded == null
+      ) {
+        this.telegram_error = {
+          ...this.telegram_error,
+          is_loaded: "Выберите состояние",
+        };
       }
-      if (this.all_information.destination_station_name == '') {
-            this.telegram_error = { ...this.telegram_error, destination_station_name: 'Введите станцию' }
+      if (
+        this.all_information.contract == "" ||
+        this.all_information.contract == null
+      ) {
+        this.telegram_error = {
+          ...this.telegram_error,
+          contract: "Введите № договора",
+        };
       }
-      if (this.all_information.cargo_recipient == '') {
-            this.telegram_error = { ...this.telegram_error, cargo_recipient: 'Выберите получателя' }
+      if (this.all_information.departure_station_name == "") {
+        this.telegram_error = {
+          ...this.telegram_error,
+          departure_station_name: "Введите станцию",
+        };
       }
-      if (this.all_information.cargo_sender == '') {
-            this.telegram_error = { ...this.telegram_error, cargo_sender: 'Выберите отправителя' }
-      } 
+      if (this.all_information.destination_station_name == "") {
+        this.telegram_error = {
+          ...this.telegram_error,
+          destination_station_name: "Введите станцию",
+        };
+      }
+      if (this.all_information.cargo_recipient == "") {
+        this.telegram_error = {
+          ...this.telegram_error,
+          cargo_recipient: "Выберите получателя",
+        };
+      }
+      if (this.all_information.cargo_sender == "") {
+        this.telegram_error = {
+          ...this.telegram_error,
+          cargo_sender: "Выберите отправителя",
+        };
+      }
 
-      if (this.all_information.wagon_type == '') {
-            this.telegram_error = { ...this.telegram_error, wagon_type: 'Выберите тип вагона' }
-      } 
-      if (this.all_information.cargo_code == '') {
-            this.telegram_error = { ...this.telegram_error, cargo_code: 'Введите код' }
-      } 
+      if (this.all_information.wagon_type == "") {
+        this.telegram_error = {
+          ...this.telegram_error,
+          wagon_type: "Выберите тип вагона",
+        };
+      }
+      if (this.all_information.cargo_code == "") {
+        this.telegram_error = {
+          ...this.telegram_error,
+          cargo_code: "Введите код",
+        };
+      }
 
-      if (this.period_begin == '') {
-            this.telegram_error = { ...this.telegram_error, period_begin: 'Выберите дату' }
-        }
-      if (this.period_end == '') {
-            this.telegram_error = { ...this.telegram_error, period_end: 'Выберите дату' }
-      } 
-      if (this.wagon == '') {
-            this.telegram_error = { ...this.telegram_error, wagon: 'Введите вагон' }
+      if (this.period_begin == "") {
+        this.telegram_error = {
+          ...this.telegram_error,
+          period_begin: "Выберите дату",
+        };
+      }
+      if (this.period_end == "") {
+        this.telegram_error = {
+          ...this.telegram_error,
+          period_end: "Выберите дату",
+        };
+      }
+      if (this.wagon == "") {
+        this.telegram_error = {
+          ...this.telegram_error,
+          wagon: "Введите вагон",
+        };
       }
       if (!Object.keys(this.telegram_error).length) {
-      this.loader = true;
-      let wagonSplit = this.wagon;
-      let wagonArray = wagonSplit.split(" ");
-      const request = {
-        wagons: wagonArray,
-        is_loaded: this.all_information.is_loaded,
-        contract: this.all_information.contract,
-        period_begin: new Date(this.period_begin),
-        period_end: new Date(this.period_end),
-        wagon_type: this.all_information.wagon_type,
-        departure_station: this.all_information.departure_station_object.code,
-        destination_station: this.all_information.destionation_station_object.code,
-        cargo_code: this.all_information.cargo_code,
-        cargo_sender: this.all_information.cargo_sender,
-        cargo_recipient: this.all_information.cargo_recipient,
-      };
+        this.loader = true;
+        let wagonSplit = this.wagon;
+        let wagonArray = wagonSplit.split(" ");
+        const request = {
+          wagons: wagonArray,
+          is_loaded: this.all_information.is_loaded,
+          contract: this.all_information.contract,
+          period_begin: new Date(this.period_begin),
+          period_end: new Date(this.period_end),
+          wagon_type: this.all_information.wagon_type,
+          departure_station: this.all_information.departure_station_object.code,
+          destination_station:
+            this.all_information.destionation_station_object.code,
+          cargo_code: this.all_information.cargo_code,
+          cargo_sender: this.all_information.cargo_sender,
+          cargo_recipient: this.all_information.cargo_recipient,
+        };
 
-      api.createTelegram(request)
-        // Номер вагона 51037059
-        .then((response) => {
-          this.loader = false;
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Телеграмма создана";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 1500);
-        })
-        .catch((error) => {
-          this.loader = false;
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Телеграмма не создана";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 1500);
-        })
+        api
+          .createTelegram(request)
+          // Номер вагона 51037059
+          .then((response) => {
+            this.loader = false;
+            this.notifyHead = "Успешно";
+            this.notifyMessage = "Телеграмма создана";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(this.closeNotification, 1500);
+          })
+          .catch((error) => {
+            this.loader = false;
+            this.notifyHead = "Ошибка";
+            this.notifyMessage = "Телеграмма не создана";
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(this.closeNotification, 1500);
+          });
+      } else {
+        this.loader = false;
+        this.notifyHead = "Ошибка";
+        this.notifyMessage =
+          "Заполните все поля анкеты и повторите создание телеграммы";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(this.closeNotification, 1500);
+        // TODO: Нотификатор
       }
-      else {
-                this.loader = false
-                this.notifyHead = 'Ошибка'
-                this.notifyMessage = 'Заполните все поля анкеты и повторите создание телеграммы'
-                this.notifyClass = 'wrapper-error'
-                this.showNotify = true
-                setTimeout(this.closeNotification, 1500)
-                // TODO: Нотификатор
-            }
-    }
-  }
-}
+    },
+  },
+};
 </script>
