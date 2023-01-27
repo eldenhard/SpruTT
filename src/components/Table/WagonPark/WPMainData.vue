@@ -94,6 +94,8 @@
           </p>
         </div>
       </div>
+
+      
       <Notifications
         :show="showNotify"
         :header="notifyHead"
