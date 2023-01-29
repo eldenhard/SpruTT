@@ -7,5 +7,7 @@
 </style>
 
 <script>
-
+export default{
+    name: 'telegram-table'
+}
 </script>
