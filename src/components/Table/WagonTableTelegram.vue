@@ -5,45 +5,110 @@
     <b-button variant="primary" class="search" @click="getCurrentWagon()"
       >Найти
     </b-button>
-
-    <table class="table table-striped table-sm" style="margin-top: 5%">
-      <thead>
-        <tr>
-          <th scope="col">№</th>
-          <th scope="col">Груж/Порож</th>
-          <th scope="col">№ Договора</th>
-          <th scope="col">Станция отправ.</th>
-          <th scope="col">Станция назнач.</th>
-          <th scope="col">Грузоотправитель</th>
-          <th scope="col">Грузополучатель</th>
-          <th scope="col">Код груза</th>
-          <th scope="col">Тип вагона</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="i in AllInformation" :key="i.id">
-          <td>{{ i.data.number }}</td>
-          <td>{{ i.data?.flight?.is_loaded }}</td>
-          <td>{{ i.data?.flight?.agreement_number }}</td>
-          <td>{{ i.data?.flight?.departure_station_name }}</td>
-          <td>{{ i.data?.flight?.destination_station_name }}</td>
-          <td>{{ i.data?.flight?.invoice?.cargo_sender_name }}</td>
-          <td>{{ i.data?.flight?.invoice?.cargo_recipient_name }}</td>
-          <td>{{ i.data?.flight?.cargo_code }}</td>
-          <td>{{ i.data.wagon_type }}</td>
-        </tr>
-        <!-- <tr>
-          <td>{{ all_information.is_loaded }}</td>
-          <td>{{ all_information.contract }}</td>
-          <td>{{ all_information.departure_station_name }}</td>
-          <td>{{ all_information.destination_station_name }}</td>
-          <td>{{ all_information.cargo_sender }}</td>
-          <td>{{ all_information.cargo_recipient }}</td>
-          <td>{{ all_information.cargo_code }}</td>
-          <td>{{ all_information.wagon_type }}</td>
-        </tr> -->
-      </tbody>
-    </table>
+    <div class="table-responsive text-nowrap" style="margin-top: 5%">
+      <table class="table table-hover table-bordered table-sm table-responsive">
+        <thead>
+          <tr>
+            <th>№</th>
+            <th>Груж/Порож</th>
+            <th>№ Договора</th>
+            <th>Станция отправ.</th>
+            <th>Станция назнач.</th>
+            <th>Грузоотправитель</th>
+            <th>Грузополучатель</th>
+            <th>Код груза</th>
+            <th>Тип вагона</th>
+            <th>Действие</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!--      Номер вагона 51037059 57135303 -->
+          <tr v-for="i in AllInformation" :key="i.id">
+            <td class="data">{{ i.data.number }}</td>
+            <!-- <td class="data" v-if="i.data?.flight?.is_loaded == true">Груженый</td>
+            <td class="data" v-else>Порожний</td> -->
+            <td>
+              <select name="" id=""  v-model="all_information.is_loaded" :value="i.data?.flight?.agreement_number">
+                <option value="true">Груженый</option>
+                <option value="false">Порожний</option>
+              </select>
+            </td>
+            <td class="data">
+              <input
+                class="telegram-input"
+                type="text"
+                :value="i.data?.flight?.agreement_number"
+              />
+            </td>
+            <td class="data">
+              <autocomplete-input
+                  :variants="stations"
+                  :variantKey="'id'"
+                  :variantTitle="'name'"
+                  v-model="all_information.departure_station_name"
+                  :need-full="true"
+                  @selected="getFullStationDeparture"
+                ></autocomplete-input>
+              <!-- <input
+                class="telegram-input"
+                type="text"
+                :value="i.data?.flight?.departure_station_name"
+              /> -->
+            </td>
+            <td class="data">
+              <autocomplete-input
+                  :variants="stations"
+                  :variantKey="'id'"
+                  :label="'Станция назначения'"
+                  :variantTitle="'name'"
+                  v-model="all_information.destination_station_name"
+                  :need-full="true"
+                  @selected="getFullStationDestination"
+                ></autocomplete-input>
+              <!-- <input
+                class="telegram-input"
+                type="text"
+                :value="i.data?.flight?.destination_station_name"
+              /> -->
+            </td>
+            <td class="data">
+              <input
+                class="telegram-input"
+                type="text"
+                :value="i.data?.flight?.invoice?.cargo_sender_name"
+              />
+            </td>
+            <td class="data">
+              <input
+                class="telegram-input"
+                type="text"
+                :value="i.data?.flight?.invoice?.cargo_recipient_name"
+              />
+            </td>
+            <td class="data">
+              <autocomplete-input
+                  :variants="cargo_codes"
+                  :variantKey="'id'"
+                  :label="'Код груза'"
+                  :variantTitle="'code6'"
+                  v-model="all_information.cargo_code"
+                ></autocomplete-input>
+            </td>
+            <td class="data">
+              <select name="" id="">
+                <option v-for="wagType in wagonTypes" :key="wagType">
+                    {{ wagType }}
+                  </option>
+              </select>
+              <!-- {{ i.data.wagon_type }} -->
+              </td>
+            <td>
+              <button style="margin: 0 !important">Удалить</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <!-- <div class="row" style="margin-top: 5%">
       <div class="col-md-6">
@@ -286,26 +351,7 @@
                 </button>
               </div>
             
-        </div>
-
-        <div class="selected-wagons">
-          <template v-if="selected_wagon">
-            <span
-              class="option_select_block_check"
-              v-for="(p, idx) in selected_wagon"
-              :key="idx"
-              @click="removeThisWagon(p)"
-            >
-              <span style="color: black; font-size: 15px"> &#43;</span>
-              {{ p }}
-            </span>
-          </template>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <b-table striped hover :items="items" :fields="fields"></b-table>
-      </div>
-    </div> -->
+        </div> -->
 
     <Notifications
       :show="showNotify"
@@ -318,21 +364,13 @@
 </template>
   
 <style scoped>
-label.label {
-  margin-left: 45% !important;
+.data {
+  padding: 5px !important;
 }
-.selected-wagons {
-  width: 45%;
-  position: relative;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-.has-error {
-  color: rgb(190, 33, 33) !important;
-  border: 1px solid rgb(190, 33, 33) !important;
-}
-.error_label {
-  color: red !important;
+.telegram-input {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 </style>
   
@@ -419,9 +457,7 @@ export default {
     },
     getCurrentWagon() {
       this.loader = true;
-      let wagonSplit = this.WagonNumber;
-      let wagonArray = wagonSplit.split(" ");
-      console.log(wagonArray.length);
+      let wagonArray = this.WagonNumber.split(" ");
       let newWagonArray = wagonArray.map((element) =>
         api.postTelegram(element)
       );
@@ -446,6 +482,10 @@ export default {
 
     // Номер вагона 51037059 57135303
 
+
+
+
+
     getFullStationDeparture(station) {
       this.all_information.departure_station_object = station;
     },
@@ -454,7 +494,6 @@ export default {
     },
     getInfoByWagon() {
       this.loader = true;
-      console.log("1");
       if (this.wagon == "") {
         this.errors.wagon = true;
         this.notifyHead = "Ошибка";

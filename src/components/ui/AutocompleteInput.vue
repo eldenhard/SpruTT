@@ -10,7 +10,7 @@
       />
     </div>
     <br />
-    <label class="label" :class="myClass">{{ label }}</label>
+    <!-- <label class="label" :class="myClass">{{ label }}</label> -->
     <div
       class="variants"
       v-if="filtered && showVariants"
@@ -86,10 +86,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    myClass: {
-      type: Object,
-      default: "",
-    },
+    // myClass: {
+    //   type: Object,
+    //   default: "",
+    // },
   },
   data() {
     return {
