@@ -1,9 +1,14 @@
 <template>
   <div>
     <Loader :loader="loader"></Loader>
-  <WagonTelegramSearch  @update-filter="updateFilter"/>
-  {{ filter }}
-  <WagonTelegramTable />
+  <WagonTelegramSearch  @updateSearchTelegram="updateSearchTelegram"/>
+  <b-button variant="primary" class="search" @click="getCurrentWagon()"
+        >Найти
+  </b-button>
+
+  <div style="margin-top: 5%">
+    <!-- <b-table striped hover :items="items"></b-table> -->
+    </div>
 
 
     <!-- <div class="row" style="margin-top: 5%">
@@ -299,7 +304,6 @@ label.label{
   
 <script>
 import WagonTelegramSearch from "./WagonTelegram/WagonTelegramSearch.vue";
-import WagonTelegramTable from "./WagonTelegram/WagonTelegramTable.vue"
 import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
 import api from "@/api/wagonPark";
@@ -309,7 +313,7 @@ import AutocompleteInput from "../ui/AutocompleteInput.vue";
 import { getItem } from "@/helpers/persistanseStorage";
 export default {
   name: "Telegram",
-  components: { Loader, Notifications, MultiSelectSearch, AutocompleteInput, WagonTelegramSearch, WagonTelegramTable },
+  components: { Loader, Notifications, MultiSelectSearch, AutocompleteInput, WagonTelegramSearch },
   data() {
     return {
       loader: false,
@@ -341,7 +345,10 @@ export default {
       telegram_error: {},
       selectedStationsIds: [],
       stations: [],
-      filter: ''
+
+
+      WagonNumber: '',
+      wagonData: "",
     };
   },
   computed: {
@@ -366,9 +373,23 @@ export default {
     this.stations = getItem("station");
   },
   methods: {
-    updateFilter(filter){
-      this.filter = filter
+    updateSearchTelegram(WagonNumber){
+      this.WagonNumber = WagonNumber
     },
+    getCurrentWagon(){
+      this.loader  = true
+      api.postTelegram(this.WagonNumber)
+        .then(response => {
+            this.wagonData = response.data           
+            this.loader = false
+        }).catch(error => {
+          this.loader = false
+
+        })
+      
+    },
+
+
 
     // Номер вагона 51037059
     getFullStationDeparture(station) {
@@ -397,7 +418,7 @@ export default {
           api
             .postTelegram(wagonArray)
             .then((response) => {
-              -console.log(response.data);
+              console.log(response.data);
               // this.all_information = response.data;
               Object.assign(this.all_information, response.data);
               // Object.assign(this.all_information, response.data);

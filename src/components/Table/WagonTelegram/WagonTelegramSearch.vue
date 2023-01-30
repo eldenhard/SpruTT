@@ -15,16 +15,14 @@
       <b-form-invalid-feedback id="input-live-feedback">
         номер вагона 8 символов
       </b-form-invalid-feedback>
-      <b-button variant="primary" class="search" @click="getCurrentWagon()"
-        >Найти</b-button
-      >
+
     </div>
-    {{ AllDAra }}
+
   </div>
 </template>
 
 
-<style scoped>
+<style>
 #input-live {
   width: 100%;
   position: relative;
@@ -39,7 +37,6 @@
 </style>
 
 <script>
-import api from "@/api/wagonPark";
 import { mapState } from "vuex";
 export default {
   name: "telegram-search",
@@ -55,18 +52,11 @@ export default {
   data() {
     return {
       WagonNumber: "",
-      AllDAra: "",
     };
   },
   methods: {
-    getCurrentWagon() {
-      api.postTelegram(this.WagonNumber).then((response) => {
-        this.AllDAra == response.data;
-        console.log(this.AllDAra);
-      });
-    },
     updateSearchTelegram() {
-      this.$emit("updateSearchTelegram", this.AllDAra);
+      this.$emit("updateSearchTelegram", this.WagonNumber);
     },
   },
 };
