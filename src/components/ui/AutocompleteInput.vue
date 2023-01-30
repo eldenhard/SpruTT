@@ -1,21 +1,18 @@
 <template>
   <div class="autocomplite_component">
-    <div class="controller">
+    <!-- <div class="controller"> -->
       <input
         type="text"
-        class="textarea"
         @input="onInput"
         :value="value"
         :placeholder="placeholder"
       />
-    </div>
+    <!-- </div> -->
     <br />
-    <label class="label" :class="myClass">{{ label }}</label>
+    <!-- <label class="label" :class="myClass">{{ label }}</label> -->
     <div
       class="variants"
-      v-if="filtered && showVariants"
-      style="max-height: 50px; overflow: auto"
-    >
+      v-if="filtered && showVariants">
       <div
         v-for="v in filtered"
         :key="v[variantKey]"
@@ -54,6 +51,12 @@
 .error_label {
   color: red;
 }
+
+.variants{
+position: absolute;
+  height: 200px !important;
+  overflow: auto;
+}
 </style>
 <script>
 export default {
@@ -86,10 +89,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    myClass: {
-      type: Object,
-      default: "",
-    },
+    // myClass: {
+    //   type: Object,
+    //   default: "",
+    // },
   },
   data() {
     return {
