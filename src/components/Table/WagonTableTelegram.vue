@@ -1,15 +1,37 @@
 <template>
   <div>
     <Loader :loader="loader"></Loader>
-  <WagonTelegramSearch  @updateSearchTelegram="updateSearchTelegram"/>
-  <b-button variant="primary" class="search" @click="getCurrentWagon()"
-        >Найти
-  </b-button>
+    <WagonTelegramSearch @updateSearchTelegram="updateSearchTelegram" />
+    <b-button variant="primary" class="search" @click="getCurrentWagon()"
+      >Найти
+    </b-button>
 
-  <div style="margin-top: 5%">
-    <!-- <b-table striped hover :items="items"></b-table> -->
-    </div>
-
+    <table class="table table-striped table-sm" style="margin-top: 5%">
+      <thead>
+        <tr>
+          <th scope="col">Груж/Порож</th>
+          <th scope="col">№ Договора</th>
+          <th scope="col">Станция отправ.</th>
+          <th scope="col">Станция назнач.</th>
+          <th scope="col">Грузоотправитель</th>
+          <th scope="col">Грузополучатель</th>
+          <th scope="col">Код груза</th>
+          <th scope="col">Тип вагона</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ all_information.is_loaded }}</td>
+          <td>{{ all_information.contract }}</td>
+          <td>{{ all_information.departure_station_name }}</td>
+          <td>{{ all_information.destination_station_name }}</td>
+          <td>{{ all_information.cargo_sender }}</td>
+          <td>{{ all_information.cargo_recipient }}</td>
+          <td>{{ all_information.cargo_code }}</td>
+          <td>{{ all_information.wagon_type }}</td>
+        </tr>
+      </tbody>
+    </table>
 
     <!-- <div class="row" style="margin-top: 5%">
       <div class="col-md-6">
@@ -284,7 +306,7 @@
 </template>
   
 <style scoped>
-label.label{
+label.label {
   margin-left: 45% !important;
 }
 .selected-wagons {
@@ -313,7 +335,13 @@ import AutocompleteInput from "../ui/AutocompleteInput.vue";
 import { getItem } from "@/helpers/persistanseStorage";
 export default {
   name: "Telegram",
-  components: { Loader, Notifications, MultiSelectSearch, AutocompleteInput, WagonTelegramSearch },
+  components: {
+    Loader,
+    Notifications,
+    MultiSelectSearch,
+    AutocompleteInput,
+    WagonTelegramSearch,
+  },
   data() {
     return {
       loader: false,
@@ -346,8 +374,8 @@ export default {
       selectedStationsIds: [],
       stations: [],
 
-
-      WagonNumber: '',
+      items: [],
+      WagonNumber: "",
       wagonData: "",
     };
   },
@@ -373,25 +401,52 @@ export default {
     this.stations = getItem("station");
   },
   methods: {
-    updateSearchTelegram(WagonNumber){
-      this.WagonNumber = WagonNumber
+    updateSearchTelegram(WagonNumber) {
+      this.WagonNumber = WagonNumber;
     },
-    getCurrentWagon(){
-      this.loader  = true
-      api.postTelegram(this.WagonNumber)
-        .then(response => {
-            this.wagonData = response.data           
-            this.loader = false
-        }).catch(error => {
-          this.loader = false
-
-        })
-      
+    getCurrentWagon() {
+      this.loader = true;
+      let wagonSplit = this.WagonNumber;
+      let wagonArray = wagonSplit.split(" ");
+      console.log(wagonArray.length);
+      if (wagonArray.length == 1) {
+        api
+          .postTelegram(wagonArray)
+          .then((response) => {
+            this.all_information = response.data;
+            console.log(this.all_information);
+            this.all_information.contract =
+              response.data.flight.agreement_number;
+            this.all_information.departure_station_name =
+              response.data.flight?.departure_station_name;
+            this.all_information.destination_station_name =
+              response.data.flight?.destination_station_name;
+            this.all_information.cargo_code = response.data.flight?.cargo_code;
+            this.all_information.cargo_sender =
+              response.data.flight?.invoice?.cargo_sender_name;
+            this.all_information.cargo_recipient =
+              response.data?.flight?.invoice?.cargo_recipient_name;
+            this.all_information.is_loaded = response.data.flight?.is_loaded;
+            this.loader = false;
+          })
+          .catch((error) => {
+            this.loader = false;
+          });
+      } else {
+        let newWagonArray = wagonArray.map((element) =>
+          api.postTelegram(element)
+        );
+        Promise.all(newWagonArray).then((responses) => {
+          for (let i in responses) {
+            this.all_information = responses[i]
+            console.log(this.all_information)
+          }
+        });
+      }
+      this.loader = false;
     },
 
-
-
-    // Номер вагона 51037059
+    // Номер вагона 51037059 57135303
     getFullStationDeparture(station) {
       this.all_information.departure_station_object = station;
     },
