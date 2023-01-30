@@ -9,6 +9,7 @@
     <table class="table table-striped table-sm" style="margin-top: 5%">
       <thead>
         <tr>
+          <th scope="col">№</th>
           <th scope="col">Груж/Порож</th>
           <th scope="col">№ Договора</th>
           <th scope="col">Станция отправ.</th>
@@ -20,7 +21,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="i in AllInformation" :key="i.id">
+          <td>{{ i.data.number }}</td>
+          <td>{{ i.data?.flight?.is_loaded }}</td>
+          <td>{{ i.data?.flight?.agreement_number }}</td>
+          <td>{{ i.data?.flight?.departure_station_name }}</td>
+          <td>{{ i.data?.flight?.destination_station_name }}</td>
+          <td>{{ i.data?.flight?.invoice?.cargo_sender_name }}</td>
+          <td>{{ i.data?.flight?.invoice?.cargo_recipient_name }}</td>
+          <td>{{ i.data?.flight?.cargo_code }}</td>
+          <td>{{ i.data.wagon_type }}</td>
+        </tr>
+        <!-- <tr>
           <td>{{ all_information.is_loaded }}</td>
           <td>{{ all_information.contract }}</td>
           <td>{{ all_information.departure_station_name }}</td>
@@ -29,7 +41,7 @@
           <td>{{ all_information.cargo_recipient }}</td>
           <td>{{ all_information.cargo_code }}</td>
           <td>{{ all_information.wagon_type }}</td>
-        </tr>
+        </tr> -->
       </tbody>
     </table>
 
@@ -377,6 +389,7 @@ export default {
       items: [],
       WagonNumber: "",
       wagonData: "",
+      AllInformation: [],
     };
   },
   computed: {
@@ -409,44 +422,30 @@ export default {
       let wagonSplit = this.WagonNumber;
       let wagonArray = wagonSplit.split(" ");
       console.log(wagonArray.length);
-      if (wagonArray.length == 1) {
-        api
-          .postTelegram(wagonArray)
-          .then((response) => {
-            this.all_information = response.data;
-            console.log(this.all_information);
-            this.all_information.contract =
-              response.data.flight.agreement_number;
-            this.all_information.departure_station_name =
-              response.data.flight?.departure_station_name;
-            this.all_information.destination_station_name =
-              response.data.flight?.destination_station_name;
-            this.all_information.cargo_code = response.data.flight?.cargo_code;
-            this.all_information.cargo_sender =
-              response.data.flight?.invoice?.cargo_sender_name;
-            this.all_information.cargo_recipient =
-              response.data?.flight?.invoice?.cargo_recipient_name;
-            this.all_information.is_loaded = response.data.flight?.is_loaded;
-            this.loader = false;
-          })
-          .catch((error) => {
-            this.loader = false;
-          });
-      } else {
-        let newWagonArray = wagonArray.map((element) =>
-          api.postTelegram(element)
-        );
-        Promise.all(newWagonArray).then((responses) => {
+      let newWagonArray = wagonArray.map((element) =>
+        api.postTelegram(element)
+      );
+      Promise.all(newWagonArray)
+        .then((responses) => {
           for (let i in responses) {
-            this.all_information = responses[i]
-            console.log(this.all_information)
+            this.AllInformation.push(responses[i]);
           }
+        })
+        .catch((error) => {
+          this.loader = false;
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = `${error.response.data}`;
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 1500);
+          console.log(new Error("Ошибка"));
         });
-      }
+
       this.loader = false;
     },
 
     // Номер вагона 51037059 57135303
+
     getFullStationDeparture(station) {
       this.all_information.departure_station_object = station;
     },
