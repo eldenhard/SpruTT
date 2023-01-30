@@ -35,6 +35,7 @@
   padding: 0 5px;
   background-color: #ffffff !important;
   color: #757575;
+  margin-left: 40%;
 }
 .textarea {
   position: relative;
