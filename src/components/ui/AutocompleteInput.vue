@@ -28,20 +28,18 @@
   </div>
 </template>
 <style scoped>
-/* .autocomplite_component {
-  position: relative
-} */
+
 
 .variants {
-  max-width: 125px;
+  max-width: 161px;
   max-height: 100px;
   overflow-y: auto;
   flex-wrap: wrap;
-  /* position: absolute; */
-  /* bottom: 0; */
+  position: absolute;
+  top: 50;
   z-index: 1;
-  background: grey;
-  color: white
+  background: rgb(235, 235, 235);
+  color: rgb(0, 0, 0)
   
 }
 .autocomplite_component{
