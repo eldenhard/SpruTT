@@ -97,7 +97,6 @@ export default {
 };
 </script>
   
-  
   <style>
 .infoNull {
   text-align: center;

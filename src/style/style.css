@@ -233,13 +233,13 @@ option select {
 
 input[type="text"] {
   border: none !important;
-  border-bottom: 1px solid black !important;
+  /* border-bottom: 1px solid black !important; */
   outline: none !important;
   color: #757575;
 }
 
 input[type="text"]:focus {
-  border-color: rgb(0, 0, 0) !important;
+  /* border-color: rgb(0, 0, 0) !important; */
 }
 
 select {
