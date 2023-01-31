@@ -5,7 +5,9 @@
     <b-button variant="primary" class="search" @click="getCurrentWagon()"
       >Найти
     </b-button>
-    <div class="table-responsive text-nowrap" style="margin-top: 5%">
+
+
+    <div class="table-responsive text-nowrap" style="margin-top: 5%;  width: 100%;">
       <table class="table table-hover table-bordered table-sm table-responsive">
         <thead>
           <tr>
@@ -24,23 +26,24 @@
         <tbody>
           <!--      Номер вагона 51037059 57135303 -->
           <tr v-for="i in AllInformation" :key="i.id">
-            <td class="data">{{ i.data.number }}</td>
-            <!-- <td class="data" v-if="i.data?.flight?.is_loaded == true">Груженый</td>
-            <td class="data" v-else>Порожний</td> -->
+            <td>{{ i.data.number }}</td>
+            <!-- <td v-if="i.data?.flight?.is_loaded == true">Груженый</td>
+            <td v-else>Порожний</td> -->
             <td>
-              <select name="" id=""  v-model="all_information.is_loaded" :value="i.data?.flight?.agreement_number">
+              <select name="" id=""  :value="i.data?.flight?.agreement_number" style="max-width: 125px !important">
                 <option value="true">Груженый</option>
                 <option value="false">Порожний</option>
               </select>
             </td>
-            <td class="data">
+            <td>
               <input
                 class="telegram-input"
                 type="text"
                 :value="i.data?.flight?.agreement_number"
+                style="margin: 0 !important;"
               />
             </td>
-            <td class="data">
+            <td>
               <autocomplete-input
                   :variants="stations"
                   :variantKey="'id'"
@@ -48,14 +51,11 @@
                   v-model="all_information.departure_station_name"
                   :need-full="true"
                   @selected="getFullStationDeparture"
+                  style="width: 100%; height: 100%"
                 ></autocomplete-input>
-              <!-- <input
-                class="telegram-input"
-                type="text"
-                :value="i.data?.flight?.departure_station_name"
-              /> -->
+
             </td>
-            <td class="data">
+            <td>
               <autocomplete-input
                   :variants="stations"
                   :variantKey="'id'"
@@ -64,38 +64,45 @@
                   v-model="all_information.destination_station_name"
                   :need-full="true"
                   @selected="getFullStationDestination"
+                  style="width: 100%; height: 100%"
                 ></autocomplete-input>
+              </td>
               <!-- <input
                 class="telegram-input"
                 type="text"
                 :value="i.data?.flight?.destination_station_name"
               /> -->
-            </td>
-            <td class="data">
+           
+            <td>
               <input
                 class="telegram-input"
                 type="text"
                 :value="i.data?.flight?.invoice?.cargo_sender_name"
+                style="margin: 0 !important;"
+
               />
             </td>
-            <td class="data">
+            <td>
               <input
                 class="telegram-input"
                 type="text"
                 :value="i.data?.flight?.invoice?.cargo_recipient_name"
+                style="margin: 0 !important;"
+
               />
             </td>
-            <td class="data">
+            <td>
               <autocomplete-input
                   :variants="cargo_codes"
                   :variantKey="'id'"
                   :label="'Код груза'"
                   :variantTitle="'code6'"
+                  style="width: 100%; height: 100%"
                   v-model="all_information.cargo_code"
                 ></autocomplete-input>
             </td>
-            <td class="data">
-              <select name="" id="">
+            <td>
+              <select name="" id="" style="max-width: 125px !important">
                 <option v-for="wagType in wagonTypes" :key="wagType">
                     {{ wagType }}
                   </option>
@@ -364,14 +371,46 @@
 </template>
   
 <style scoped>
-.data {
-  padding: 5px !important;
+input, select{
+  width: 100%;
+  height: 100%
 }
-.telegram-input {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+.search{
+  margin-top: .5%;
 }
+    table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+		vertical-align: middle;
+    }
+	table.table tr th:first-child {
+		width: 60px;
+	}
+	table.table tr th:last-child {
+		width: 100px;
+	}
+
+    table.table th i {
+        font-size: 13px;
+        cursor: pointer;
+    }	
+    table.table td:last-child i {
+		opacity: 0.9;
+		font-size: 22px;
+    }
+	table.table td a {
+		font-weight: bold;
+		color: #566787;
+		display: inline-block;
+		text-decoration: none;
+		outline: none !important;
+	}
+
+    table.table td i {
+        font-size: 19px;
+    }
+
+
+
 </style>
   
 <script>

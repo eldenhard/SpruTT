@@ -1,20 +1,20 @@
 <template>
   <div class="autocomplite_component">
-    <div class="controller">
+    <!-- <div class="controller"> -->
       <input
         type="text"
-        class="textarea"
         @input="onInput"
         :value="value"
         :placeholder="placeholder"
+      style="  width: 100%;
+  height: 100%"
       />
-    </div>
+    <!-- </div> -->
     <br />
     <!-- <label class="label" :class="myClass">{{ label }}</label> -->
     <div
       class="variants"
       v-if="filtered && showVariants"
-      style="max-height: 50px; overflow: auto"
     >
       <div
         v-for="v in filtered"
@@ -28,6 +28,25 @@
   </div>
 </template>
 <style scoped>
+/* .autocomplite_component {
+  position: relative
+} */
+
+.variants {
+  max-width: 125px;
+  max-height: 100px;
+  overflow-y: auto;
+  flex-wrap: wrap;
+  /* position: absolute; */
+  /* bottom: 0; */
+  z-index: 1;
+  background: grey;
+  color: white
+  
+}
+.autocomplite_component{
+  margin: 0 !important;
+}
 .label {
   position: absolute;
   transform: translate(-8.8rem, -5.8rem);
@@ -86,10 +105,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    // myClass: {
-    //   type: Object,
-    //   default: "",
-    // },
+    MyClass: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
