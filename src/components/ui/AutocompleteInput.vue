@@ -1,37 +1,22 @@
 <template>
   <div class="autocomplite_component">
     <!-- <div class="controller"> -->
-      <input
-        type="text"
-        @input="onInput"
-        :value="value"
-        :placeholder="placeholder"
-      style="  width: 100%;
-  height: 100%"
-      />
+    <input type="text" @input="onInput" :value="value" :placeholder="placeholder" style="  width: 100%;
+  height: 100%" />
     <!-- </div> -->
     <br />
     <!-- <label class="label" :class="myClass">{{ label }}</label> -->
-    <div
-      class="variants"
-      v-if="filtered && showVariants"
-    >
-      <div
-        v-for="v in filtered"
-        :key="v[variantKey]"
-        class="variant"
-        @click="selectVariant(v)"
-      >
+    <div class="variants" v-if="filtered && showVariants">
+      <div v-for="v in filtered" :key="v[variantKey]" class="variant" @click="selectVariant(v)">
         <span style="cursor: pointer">{{ v[variantTitle] }}</span>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
-
-
 .variants {
   max-width: 161px;
+  min-width: 161px;
   max-height: 100px;
   overflow-y: auto;
   flex-wrap: wrap;
@@ -40,11 +25,12 @@
   z-index: 1;
   background: rgb(235, 235, 235);
   color: rgb(0, 0, 0)
-  
 }
-.autocomplite_component{
+
+.autocomplite_component {
   margin: 0 !important;
 }
+
 .label {
   position: absolute;
   transform: translate(-8.8rem, -5.8rem);
@@ -54,6 +40,7 @@
   color: #757575;
   margin-left: 40%;
 }
+
 .textarea {
   position: relative;
   border-radius: 0.4rem;
@@ -65,9 +52,11 @@
   font-size: 1.4rem;
   font-size: 15px;
 }
+
 ::placeholder {
   color: red !important;
 }
+
 .error_label {
   color: red;
 }

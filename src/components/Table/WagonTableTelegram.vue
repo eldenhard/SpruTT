@@ -2,9 +2,12 @@
   <div>
     <Loader :loader="loader"></Loader>
     <WagonTelegramSearch @updateSearchTelegram="updateSearchTelegram" />
-    <b-button variant="primary" class="search" @click="getCurrentWagon()">Найти
-    </b-button>
-
+      <div style="display: flex;  justify-content: space-between;">
+        <b-button variant="success" class="search">Создать телеграмму</b-button>
+        <b-button variant="primary" class="search" @click="getCurrentWagon()">Найти
+      </b-button>
+    </div>
+  
 
     <div class="table-responsive text-nowrap" style="margin-top: 5%;  width: 100%;">
       <table class="table table-hover table-bordered table-sm table-responsive">
@@ -19,15 +22,18 @@
             <th>Грузополучатель</th>
             <th>Код груза</th>
             <th>Тип вагона</th>
+            <th>Начало периода</th>
+            <th>Конец периода</th>
             <th>Действие</th>
           </tr>
         </thead>
         <tbody>
           <!--      Номер вагона 51037059 57135303 -->
+          <!-- v-if="all_information.number" -->
           <tr v-for="i in AllInformation" :key="i.id" :id="i.data.number">
-            <td>{{ i.data.number }}</td>
+            <td><input type="text" readonly ></td>
             <td>
-              <select name="" id="" :value="i.data?.flight?.agreement_number" style="max-width: 125px !important">
+              <select :value="i.data?.flight?.is_loaded" style="max-width: 125px !important">
                 <option value="true">Груженый</option>
                 <option value="false">Порожний</option>
               </select>
@@ -37,22 +43,29 @@
                 style="margin: 0 !important;" />
             </td>
             <td>
-              <autocomplete-input :variants="stations" :variantKey="'id'" :variantTitle="'name'"
-                v-model="all_information.departure_station_name" :need-full="true" @selected="getFullStationDeparture"
-                style="width: 100%; height: 100%"></autocomplete-input>
-
+              <autocomplete-input
+                  :variants="stations"
+                  :variantKey="'id'"
+                  :label="'Станция отправления'"
+                  :variantTitle="'name'"
+                  :value="i.data?.flight?.departure_station_name"
+                  :need-full="true"
+                  @selected="getFullStationDeparture"
+                  style="width: 100%; height: 100%"
+                ></autocomplete-input>
             </td>
-            <td>
-              <autocomplete-input :variants="stations" :variantKey="'id'" :label="'Станция назначения'"
-                :variantTitle="'name'" v-model="all_information.destination_station_name" :need-full="true"
-                @selected="getFullStationDestination" style="width: 100%; height: 100%"></autocomplete-input>
+            <td> 
+              <autocomplete-input
+                  :variants="stations"
+                  :variantKey="'id'"
+                  :label="'Станция назначения'"
+                  :variantTitle="'name'"
+                  :value="i.data?.flight?.destination_station_name"
+                  :need-full="true"
+                  @selected="getFullStationDestination"
+                  style="width: 100%; height: 100%"
+                ></autocomplete-input>
             </td>
-            <!-- <input
-                class="telegram-input"
-                type="text"
-                :value="i.data?.flight?.destination_station_name"
-              /> -->
-
             <td>
               <input class="telegram-input" type="text" :value="i.data?.flight?.invoice?.cargo_sender_name"
                 style="margin: 0 !important;" />
@@ -62,22 +75,35 @@
                 style="margin: 0 !important;" />
             </td>
             <td>
-              <autocomplete-input :variants="cargo_codes" :variantKey="'id'" :label="'Код груза'"
-                :variantTitle="'code6'" style="width: 100%; height: 100%"
-                v-model="all_information.cargo_code"></autocomplete-input>
+              <autocomplete-input
+                  :variants="cargo_codes"
+                  :variantKey="'id'"
+                  :label="'Код груза'"
+                  :variantTitle="'code6'"
+                  :value="i.data?.flight?.cargo_code"
+                  style="width: 100%; height: 100%"
+                ></autocomplete-input>
             </td>
             <td>
-              <select name="" id="" style="max-width: 125px !important">
+              <select name="" id="" style="max-width: 125px !important" :value="i.data?.wagon_type">
                 <option v-for="wagType in wagonTypes" :key="wagType">
                   {{ wagType }}
                 </option>
               </select>
-              <!-- {{ i.data.wagon_type }} -->
             </td>
+            <td>
+              <input
+                  type="date">
+              </td>
+              <td>
+              <input
+                  type="date">
+              </td>
             <td>
               <button class="Delete" style="margin: 0 !important" @click="deleteCurrentRow(i.data.number)">Удалить</button>
             </td>
           </tr>
+        
         </tbody>
       </table>
     </div>
@@ -338,6 +364,7 @@ select {
 }
 .search {
   margin-top: .5%;
+  width: 15%;
 }
 
 table.table tr th,
@@ -375,6 +402,11 @@ table.table td a {
 table.table td i {
   font-size: 19px;
 }
+.create-tele {
+  width: 12%;
+  margin-top: 15%;
+  float: right;
+}
 </style>
   
 <script>
@@ -401,6 +433,7 @@ export default {
       wagon: [],
       wagonTypes: [],
       all_information: {
+        number: "",
         is_loaded: "",
         contract: "",
         departure_station_name: "",
@@ -462,6 +495,7 @@ export default {
     // Получить данные о вагоне
     getCurrentWagon() {
       this.loader = true;
+      let preAllInform = []
       let wagonArray = this.WagonNumber.split(" ");
       let newWagonArray = wagonArray.map((element) =>
         api.postTelegram(element)
@@ -486,7 +520,9 @@ export default {
     },
 // Удалить текущую строку отчета по телеграммам
 deleteCurrentRow(wagon){
+  // console.log(wagon)
   document.getElementById(wagon).remove()
+  console.log(i.data.number)
 },
 
 
@@ -576,83 +612,6 @@ deleteCurrentRow(wagon){
     },
     // Создать телеграмму
     createTelegram() {
-      this.telegram_error = {};
-
-      if (
-        this.all_information.is_loaded == "" ||
-        this.all_information.is_loaded == null
-      ) {
-        this.telegram_error = {
-          ...this.telegram_error,
-          is_loaded: "Выберите состояние",
-        };
-      }
-      if (
-        this.all_information.contract == "" ||
-        this.all_information.contract == null
-      ) {
-        this.telegram_error = {
-          ...this.telegram_error,
-          contract: "Введите № договора",
-        };
-      }
-      if (this.all_information.departure_station_name == "") {
-        this.telegram_error = {
-          ...this.telegram_error,
-          departure_station_name: "Введите станцию",
-        };
-      }
-      if (this.all_information.destination_station_name == "") {
-        this.telegram_error = {
-          ...this.telegram_error,
-          destination_station_name: "Введите станцию",
-        };
-      }
-      if (this.all_information.cargo_recipient == "") {
-        this.telegram_error = {
-          ...this.telegram_error,
-          cargo_recipient: "Выберите получателя",
-        };
-      }
-      if (this.all_information.cargo_sender == "") {
-        this.telegram_error = {
-          ...this.telegram_error,
-          cargo_sender: "Выберите отправителя",
-        };
-      }
-
-      if (this.all_information.wagon_type == "") {
-        this.telegram_error = {
-          ...this.telegram_error,
-          wagon_type: "Выберите тип вагона",
-        };
-      }
-      if (this.all_information.cargo_code == "") {
-        this.telegram_error = {
-          ...this.telegram_error,
-          cargo_code: "Введите код",
-        };
-      }
-
-      if (this.period_begin == "") {
-        this.telegram_error = {
-          ...this.telegram_error,
-          period_begin: "Выберите дату",
-        };
-      }
-      if (this.period_end == "") {
-        this.telegram_error = {
-          ...this.telegram_error,
-          period_end: "Выберите дату",
-        };
-      }
-      if (this.wagon == "") {
-        this.telegram_error = {
-          ...this.telegram_error,
-          wagon: "Введите вагон",
-        };
-      }
-      if (!Object.keys(this.telegram_error).length) {
         this.loader = true;
         let wagonSplit = this.wagon;
         let wagonArray = wagonSplit.split(" ");
@@ -670,7 +629,6 @@ deleteCurrentRow(wagon){
           cargo_sender: this.all_information.cargo_sender,
           cargo_recipient: this.all_information.cargo_recipient,
         };
-
         api
           .createTelegram(request)
           // Номер вагона 51037059
@@ -690,16 +648,7 @@ deleteCurrentRow(wagon){
             this.showNotify = true;
             setTimeout(this.closeNotification, 1500);
           });
-      } else {
-        this.loader = false;
-        this.notifyHead = "Ошибка";
-        this.notifyMessage =
-          "Заполните все поля анкеты и повторите создание телеграммы";
-        this.notifyClass = "wrapper-error";
-        this.showNotify = true;
-        setTimeout(this.closeNotification, 1500);
-        // TODO: Нотификатор
-      }
+
     },
   },
 };
