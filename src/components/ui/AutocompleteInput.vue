@@ -15,8 +15,7 @@
 </template>
 <style scoped>
 .variants {
-  max-width: 161px;
-  min-width: 161px;
+  width: 10%;
   max-height: 100px;
   overflow-y: auto;
   flex-wrap: wrap;
@@ -29,6 +28,7 @@
 
 .autocomplite_component {
   margin: 0 !important;
+
 }
 
 .label {

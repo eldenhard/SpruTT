@@ -3,7 +3,7 @@
     <Loader :loader="loader"></Loader>
     <WagonTelegramSearch @updateSearchTelegram="updateSearchTelegram" />
       <div style="display: flex;  justify-content: space-between;">
-        <b-button variant="success" class="search">Создать телеграмму</b-button>
+        <b-button variant="success" class="search" @click="createTelegram()">Создать телеграмму</b-button>
         <b-button variant="primary" class="search" @click="getCurrentWagon()">Найти
       </b-button>
     </div>
@@ -372,31 +372,25 @@ select {
   margin-top: .5%;
   width: 15%;
 }
-
 table.table tr th,
 table.table tr td {
   border-color: #e9e9e9;
   vertical-align: middle;
 }
-
 table.table tr th:first-child {
   width: 60px;
 }
-
 table.table tr th:last-child {
   width: 100px;
 }
-
 table.table th i {
   font-size: 13px;
   cursor: pointer;
 }
-
 table.table td:last-child i {
   opacity: 0.9;
   font-size: 22px;
 }
-
 table.table td a {
   font-weight: bold;
   color: #566787;
@@ -404,14 +398,8 @@ table.table td a {
   text-decoration: none;
   outline: none !important;
 }
-
 table.table td i {
   font-size: 19px;
-}
-.create-tele {
-  width: 12%;
-  margin-top: 15%;
-  float: right;
 }
 </style>
   
@@ -484,7 +472,7 @@ export default {
 
   mounted() {
     this.loader = true;
-    api.getWagonType().then((response) => {
+    api.getWagonType().then(response => {
       let preData = response.data.data;
       for (let i in preData) {
         this.wagonTypes.push(preData[i].name);
@@ -501,7 +489,6 @@ export default {
     // Получить данные о вагоне
     getCurrentWagon() {
       this.loader = true;
-      let preAllInform = []
       let wagonArray = this.WagonNumber.split(" ");
       let newWagonArray = wagonArray.map((element) =>
         api.postTelegram(element)
@@ -526,11 +513,28 @@ export default {
     },
 // Удалить текущую строку отчета по телеграммам
 deleteCurrentRow(wagon){
-  // console.log(wagon)
   document.getElementById(wagon).remove()
-  console.log(i.data.number)
 },
+createTelegram(){
+  let telegram = []
+  for(let i of this.AllInformation){
+    telegram.push({
+        'wagon_number': i.data.number ?? '',
+        'wagon_type': i.data.wagon_type ?? '',
+        'departure_station_name': i.data.flight.departure_station_name ?? '',
+        'destination_station_name': i.data.flight.destination_station_name ?? '',
+        'contract_number': i.data.flight.agreement_number ?? '',
+        'period_begin': '',
+        'period_end': '',
+        'is_loaded': i.data.flight.is_loaded ?? '',
+        'cargo_code': i.data.flight.cargo_code ?? '',
+        'cargo_sender': i.data.flight.invoice.cargo_sender_name ?? '',
+        'cargo_recipient': i.data.flight.invoice.cargo_recipient ?? '',
+    })
+  }
+  console.log(telegram)
 
+},
 
 
 
@@ -617,45 +621,44 @@ deleteCurrentRow(wagon){
       // this.sendEmit()
     },
     // Создать телеграмму
-    createTelegram() {
-        this.loader = true;
-        let wagonSplit = this.wagon;
-        let wagonArray = wagonSplit.split(" ");
-        const request = {
-          wagons: wagonArray,
-          is_loaded: this.all_information.is_loaded,
-          contract: this.all_information.contract,
-          period_begin: new Date(this.period_begin),
-          period_end: new Date(this.period_end),
-          wagon_type: this.all_information.wagon_type,
-          departure_station: this.all_information.departure_station_object.code,
-          destination_station:
-            this.all_information.destionation_station_object.code,
-          cargo_code: this.all_information.cargo_code,
-          cargo_sender: this.all_information.cargo_sender,
-          cargo_recipient: this.all_information.cargo_recipient,
-        };
-        api
-          .createTelegram(request)
-          // Номер вагона 51037059
-          .then((response) => {
-            this.loader = false;
-            this.notifyHead = "Успешно";
-            this.notifyMessage = "Телеграмма создана";
-            this.notifyClass = "wrapper-success";
-            this.showNotify = true;
-            setTimeout(this.closeNotification, 1500);
-          })
-          .catch((error) => {
-            this.loader = false;
-            this.notifyHead = "Ошибка";
-            this.notifyMessage = "Телеграмма не создана";
-            this.notifyClass = "wrapper-error";
-            this.showNotify = true;
-            setTimeout(this.closeNotification, 1500);
-          });
+    // createTelegram() {
+    //     this.loader = true;
+    //     let wagonSplit = this.wagon;
+    //     let wagonArray = wagonSplit.split(" ");
+    //     const request = {
+    //       wagons: wagonArray,
+    //       is_loaded: this.all_information.is_loaded,
+    //       contract: this.all_information.contract,
+    //       period_begin: new Date(this.period_begin),
+    //       period_end: new Date(this.period_end),
+    //       wagon_type: this.all_information.wagon_type,
+    //       departure_station: this.all_information.departure_station_object.code,
+    //       destination_station:
+    //         this.all_information.destionation_station_object.code,
+    //       cargo_code: this.all_information.cargo_code,
+    //       cargo_sender: this.all_information.cargo_sender,
+    //       cargo_recipient: this.all_information.cargo_recipient,
+    //     };
+    //     api
+    //       .createTelegram(request)
+    //       .then((response) => {
+    //         this.loader = false;
+    //         this.notifyHead = "Успешно";
+    //         this.notifyMessage = "Телеграмма создана";
+    //         this.notifyClass = "wrapper-success";
+    //         this.showNotify = true;
+    //         setTimeout(this.closeNotification, 1500);
+    //       })
+    //       .catch((error) => {
+    //         this.loader = false;
+    //         this.notifyHead = "Ошибка";
+    //         this.notifyMessage = "Телеграмма не создана";
+    //         this.notifyClass = "wrapper-error";
+    //         this.showNotify = true;
+    //         setTimeout(this.closeNotification, 1500);
+    //       });
 
-    },
+    // },
   },
 };
 </script>

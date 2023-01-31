@@ -238,9 +238,9 @@ input[type="text"] {
   color: #757575;
 }
 
-input[type="text"]:focus {
-  /* border-color: rgb(0, 0, 0) !important; */
-}
+/* input[type="text"]:focus {
+  border-color: rgb(0, 0, 0) !important;
+} */
 
 select {
   -webkit-appearance: none;
