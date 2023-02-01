@@ -239,15 +239,17 @@ export default {
     };
   },
   mounted() {
+    console.log(this.uid)
     this.loader = true;
-
     apiStaff.currentUser(this.uid).then((response) => {
       this.current_photo = response.data;
     });
     api.getUsersLK(this.uid).then((response) => {
       this.PersonalData = response.data;
     });
-    api.getManagerLK(this.uid).then((response) => {
+
+    api.getManagerLK(this.uid)
+    .then((response) => {
       this.emp = response.data.data;
       this.loader = false;
     });

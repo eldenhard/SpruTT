@@ -269,6 +269,7 @@
 
                                     <br>
                                     <button
+                                        class="Accept button"
                                         style="position: relative; left: 50%; width: 90%; transform: translate(-50%,0);  margin-bottom: 2%;margin-top: 3%;height: 80px;font-size: 22px;"
                                         type="submit" @click="Send()">Отправить
                                     </button>

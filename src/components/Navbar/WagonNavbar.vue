@@ -15,7 +15,7 @@
       >
         <b-container class="bv-example-row">
           <b-tab title="Вагоны" active @click="newTab('Вагоны')"> </b-tab>
-          <b-tab title="Полигоны" @click="newTab('Полигоны')"> </b-tab>
+          <!-- <b-tab title="Полигоны" @click="newTab('Полигоны')"> </b-tab> -->
           <b-tab title="Телеграммы" @click="newTab('Телеграммы')"> </b-tab>
         </b-container>
       </b-tabs>
