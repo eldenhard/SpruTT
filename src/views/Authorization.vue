@@ -5,10 +5,10 @@
                 <div class="container">
                     <label for="uname"><b>Email</b></label>
                     <input type="text" placeholder="i.ivanov@tehtrans.com" v-model="email"
-                        v-on:keyup="handleInputOnKeyup">
+                        v-on:keyup="handleInputOnKeyup" style="border-bottom: 1px solid grey !important">
 
                     <label for="psw"><b>Пароль</b></label>
-                    <input type="text" placeholder="Введите пароль" v-model.trim="password">
+                    <input type="text" placeholder="Введите пароль" v-model.trim="password" style="border-bottom: 1px solid grey !important">
 
                     <button @click="submitEntry()">Войти</button>
                 </div>
@@ -153,6 +153,7 @@ input[type=password] {
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
+    border-bottom: 1px solid #000;
 }
 
 button {
