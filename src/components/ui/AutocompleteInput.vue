@@ -1,30 +1,33 @@
 <template>
   <div class="autocomplite_component">
     <!-- <div class="controller"> -->
-      <input
-        type="text"
-        @input="onInput"
-        :value="value"
-        :placeholder="placeholder"
-      />
+    <input type="text" @input="onInput" :value="value" :placeholder="placeholder" style="  width: 100%;
+  height: 100%" />
     <!-- </div> -->
     <br />
     <!-- <label class="label" :class="myClass">{{ label }}</label> -->
-    <div
-      class="variants"
-      v-if="filtered && showVariants">
-      <div
-        v-for="v in filtered"
-        :key="v[variantKey]"
-        class="variant"
-        @click="selectVariant(v)"
-      >
+    <div class="variants" v-if="filtered && showVariants">
+      <div v-for="v in filtered" :key="v[variantKey]" class="variant" @click="selectVariant(v)">
         <span style="cursor: pointer">{{ v[variantTitle] }}</span>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
+.variants {
+  width: 10%;
+  max-height: 100px;
+  overflow-y: auto;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 50;
+  z-index: 1;
+  background: rgb(235, 235, 235);
+  color: rgb(0, 0, 0)
+}
+.autocomplite_component {
+  margin: 0 !important;
+}
 .label {
   position: absolute;
   transform: translate(-8.8rem, -5.8rem);
@@ -50,12 +53,6 @@
 }
 .error_label {
   color: red;
-}
-
-.variants{
-position: absolute;
-  height: 200px !important;
-  overflow: auto;
 }
 </style>
 <script>
@@ -89,10 +86,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    // myClass: {
-    //   type: Object,
-    //   default: "",
-    // },
+    MyClass: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -131,7 +128,6 @@ export default {
         });
       });
       this.filtered = filtered;
-
       this.showVariants = true;
     },
   },

@@ -77,7 +77,7 @@ const getAllTelegrams = (id) => {
 }
 
 const createTelegram = (data) => {
-    return api.post(`${resource}/telegram/create/`, data)
+    return api.post(`${resource}/telegrams/`, data)
 }
 
 

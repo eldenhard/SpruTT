@@ -13,7 +13,18 @@
   justify-content: center;
   vertical-align: middle;
 }
+button {
+  color: white;
+  padding: 14px 20px;
+  /* margin: 8px 0; */
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
 
+button:hover {
+  opacity: 0.8;
+}
 .Delete {
   background: rgb(231, 76, 60, 0.7);
 }
@@ -222,14 +233,14 @@ option select {
 
 input[type="text"] {
   border: none !important;
-  border-bottom: 1px solid black !important;
+  /* border-bottom: 1px solid black !important; */
   outline: none !important;
   color: #757575;
 }
 
-input[type="text"]:focus {
+/* input[type="text"]:focus {
   border-color: rgb(0, 0, 0) !important;
-}
+} */
 
 select {
   -webkit-appearance: none;

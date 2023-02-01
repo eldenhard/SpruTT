@@ -144,7 +144,7 @@ export default {
 
 
 
-<style>
+<style scoped>
 input[type=text],
 input[type=password] {
     width: 100%;
