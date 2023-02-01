@@ -135,7 +135,7 @@
         <hr> 
 </div>
         <div class="btn_group_report">
-            <div class="row container" style="width: 100%; margin-left: 15%;">
+            <div class="row container" style="width: 100%; margin-left: 15%; margin-bottom: 2%;">
                 <div class="col-md-6"><button class="button Cancel close_report" style="width: 350px; height: 50px; font-size: 20px;" @click="closeChangeReport()">Закрыть без изменений</button></div>
                 <div class="col-md-6"><button class="button Accept apply_report" style="width: 350px; height: 50px; font-size: 20px;" @click="changeReport()" :disabled="errors">Применить изменения</button></div>
 
@@ -209,7 +209,7 @@
 }
 .modal_window_report {
     position: fixed;
-    width: 90%;
+    width: 70% !important;
     left: 50%;
     top: 5%;
     bottom: 5%;
@@ -223,7 +223,14 @@
     font-size: 15px;
     margin-left: 5%;
     text-align: justify;
+
 }
+.change_report p{
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
 @media screen and (max-width: 550px) {
     .btn_group_report {
         position: relative !important;

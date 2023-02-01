@@ -19,10 +19,10 @@ const saveReport = (id, data) => {
     return api.put(`${reports}/kpi/update/` + `${id}`, data)
 }
 const getLastDataReports = (id) => {
-    return api.get(`${reports}/kpi/last/` + `${id}`)
+    return api.get(`${reports}/kpi/${id}/get-last-on-employee/`)
 }
 const deleteReport = (id) => {
-    return api.delete(`${reports}/kpi/delete/` + `${id}`)
+    return api.delete(`${reports}/kpi/` + `${id}`)
 }
 const deleteReportAbandon = (id) => {
     return api.delete(`${reports}/drop/delete/` + `${id}`)
