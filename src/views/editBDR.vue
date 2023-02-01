@@ -150,33 +150,22 @@
       </table>
     </div>
 
-    <button
-      class="Accept"
-      style="
-        width: 95%;
-        margin: 2% 0;
-        position: relative;
-        left: 50%;
-        transform: translate(-50%, 0);
-      "
-      @click="saveChange()"
-    >
-      Сохранить отчет
-    </button>
-
-    <button
-      class="Accept"
-      @click="saveBDRreport()"
-      style="
-        width: 95%;
-        margin: 5% 0;
-        position: relative;
-        left: 50%;
-        transform: translate(-50%, 0);
-      "
-    >
-      Сохранить в файл
-    </button>
+    <div style="display: flex; justify-content: space-around; margin: 3% 0">
+      <button
+        class="button Accept"
+        @click="saveChange()"
+        style="width: 20%; height: 45px"
+      >
+        Сохранить отчет
+      </button>
+      <button
+        class="button Accept"
+        @click="saveBDRreport()"
+        style="width: 20%; height: 45px"
+      >
+        Сохранить в файл
+      </button>
+    </div>
 
     <Notifications
       :show="showNotify"
@@ -237,7 +226,7 @@ export default {
   },
 
   mounted() {
-    document.title = 'БДР отчет'
+    document.title = "БДР отчет";
     this.loader = true;
     document.addEventListener("keydown", this.listen);
 
@@ -941,7 +930,6 @@ export default {
     },
     calc() {
       for (let el in this.data) {
-    
         try {
           let res = Number(eval(this.data[el].plan_formula));
           if (isNaN(res)) {
@@ -980,19 +968,40 @@ export default {
     saveChange() {
       this.loader = true;
       let data_to_send = [];
-
       for (let el in this.data) {
-        data_to_send.push(this.data[el]);
+        data_to_send.push({
+            'id': this.data[el].id,
+            'comment': this.data[el].comment,
+            'plan': this.data[el].plan,
+            'fact': this.data[el].fact,
+            'deviation': this.data[el].deviation,
+            'responsible_users_ids': this.data[el].responsible_users,
+            'delegated_users_ids': this.data[el].delegated_users,
+            'filling_users_ids': this.data[el].filling_users,
+            'filling_plan_users_ids': this.data[el].filling_plan_users
+          
+        });
       }
+      console.log(data_to_send)
 
-      api.changeBDRreport(data_to_send).then((response) => {
-        this.notifyHead = "Успешно";
-        this.notifyMessage = "Отчет сохранен";
-        this.notifyClass = "wrapper-success";
-        this.showNotify = true;
-        setTimeout(this.closeNotification, 1500);
-        this.loader = false;
-      });
+      api
+        .changeBDRreport(data_to_send)
+        .then((response) => {
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Отчет сохранен";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 1500);
+          this.loader = false;
+        })
+        .catch((error) => {
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = "Отчет не создан";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 1500);
+          this.loader = false;
+        });
     },
     getName(id) {
       const user = getUserById(this.staffGlobal, id);
@@ -1004,14 +1013,24 @@ export default {
       this.loader = true;
       const dateForSave = this.data[index];
       console.log(dateForSave);
-      api.putBDRreportsave(bdr_id, dateForSave).then((response) => {
-        this.notifyHead = "Успешно";
-        this.notifyMessage = "Данные обновлены";
-        this.notifyClass = "wrapper-success";
-        this.showNotify = true;
-        setTimeout(this.closeNotification, 1500);
-        this.loader = false;
-      });
+      api
+        .putBDRreportsave(bdr_id, dateForSave)
+        .then((response) => {
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Данные обновлены";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 1500);
+          this.loader = false;
+        })
+        .catch((error) => {
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = "Данные не обновлены";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 1500);
+          this.loader = false;
+        });
     },
     saveBDRreport() {
       this.loader = true;
@@ -1025,8 +1044,16 @@ export default {
         .saveBDRreport(this.$route.params.id, dataForAllSave)
         .then((response) => {
           this.notifyHead = "Успешно";
-          this.notifyMessage = "Данные Преобразованы в отчет";
+          this.notifyMessage = "Данные преобразованы в отчет";
           this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 1500);
+          this.loader = false;
+        })
+        .catch((error) => {
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = "Данные не преобразованы в отчет";
+          this.notifyClass = "wrapper-error";
           this.showNotify = true;
           setTimeout(this.closeNotification, 1500);
           this.loader = false;
@@ -1041,18 +1068,18 @@ export default {
 
 <style>
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey;
-    border-radius: 10px;
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgb(143, 143, 143);
-    border-radius: 5px;
+  background: rgb(143, 143, 143);
+  border-radius: 5px;
 }
 .lc {
   background: #ebebeb;

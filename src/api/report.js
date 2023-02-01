@@ -16,7 +16,7 @@ const getReportByIdCreator = (id) => {
     return api.get(`${reports}/kpi?` + `creator=${id}`)
 }
 const saveReport = (id, data) => {
-    return api.put(`${reports}/kpi/update/` + `${id}`, data)
+    return api.put(`${reports}/kpi/${id}/update-report-file/`, data)
 }
 const getLastDataReports = (id) => {
     return api.get(`${reports}/kpi/${id}/get-last-on-employee/`)
@@ -57,7 +57,7 @@ const getAllKPI = () => {
 }
 // БДР отчеты
 const createBDRreport = () => {
-    return api.post(`${reports}/bdr/create/`)
+    return api.post(`${reports}/bdr/`)
 }
 const getBDRreport = () => {
     return api.get(`${reports}/bdr`)
@@ -69,10 +69,10 @@ const putBDRreportsave = (id, data) => {
     return api.put(`${reports}/bdr-row/update/` + `${id}`, data)
 }
 const saveBDRreport = (id, data) => {
-    return api.post(`${reports}/bdr/save/` + `${id}`, data)
+    return api.get(`${reports}/bdr/${id}/save-file/`, data)
 }
 const changeBDRreport = (data) => {
-    return api.put(`${reports}/bdr/update-table/`, data)
+    return api.post(`${reports}/bdr-row/update-table/`, {'data' : data})
 }
 // справочник контрагенты
 const createCounterparties = (data) => {

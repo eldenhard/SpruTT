@@ -25,7 +25,8 @@
                     <button
                       class="button Action"
                       @click="OpenKPI()"
-                      style="width: 100%;
+                      style="
+                        width: 100%;
                         position: relative;
                         left: 50%;
                         transform: translate(-50%, 0);
@@ -549,7 +550,24 @@
                   </b-col>
 
                   <b-col>
-                    <a
+                    <button
+                      style="
+                        width: 100%;
+                        position: relative;
+                        left: 50%;
+                        transform: translate(-50%, 0);
+                        font-size: 17px;
+                        margin-top: 2%;
+                        text-decoration: none;
+                        color: white;
+                        outline: none;
+                      "
+                      class="button Action"
+                      @click="showModal()"
+                    >
+                      Все оценки
+                    </button>
+                    <!-- <a
                       href="http://10.1.5.20/api/reports/kpi/get-all-last/"
                       class="button Action"
                       style="
@@ -562,9 +580,10 @@
                         text-decoration: none;
                         color: white;
                         outline: none;
+                        @
                       "
                       >Все оценки</a
-                    >
+                    > -->
                     <br />
                   </b-col>
                 </b-row>
@@ -683,10 +702,10 @@
                     <tbody>
                       <tr v-for="reporte in reports_employee" :key="reporte.id">
                         <td>
-                          {{ getUserById( reporte.creator) }}
+                          {{ getUserById(reporte.creator) }}
                         </td>
                         <td>
-                          {{getUserById(reporte.employee) }}
+                          {{ getUserById(reporte.employee) }}
                           <br />
                         </td>
                         <td style="font-size: 14px; text-align: center">
@@ -731,6 +750,47 @@
         </b-container>
       </b-tabs>
     </b-card>
+
+    <!-- Модальное окно для дат -->
+    <b-modal ref="my-modal" hide-footer title="Выберите диапозон дат">
+      <div class="d-block text-center">
+        <label for="a1">Начало периода</label>
+        <input
+          type="date"
+          class="textarea"
+          id="a1"
+          v-model="period_begin"
+          style="width: 90%"
+        />
+
+        <label for="a2" style="margin-top: 5%">Конец периода</label>
+        <input
+          type="date"
+          class="textarea"
+          id="a2"
+          v-model="period_end"
+          style="width: 90%"
+        />
+      </div>
+      <br />
+      <!-- http://10.1.5.20/api/reports/kpi/get-all-last?date_begin=${this.period_begin}&date_end=${this.period_end} -->
+
+      <b-button
+        class="button"
+        variant="success"
+        style="height: 50px"
+        @click="getMark()"
+        >Создать</b-button
+      >
+
+      <b-button
+        class="button"
+        variant="danger"
+        style="height: 50px; margin-top: 5%"
+        @click="hideModal"
+        >Закрыть</b-button
+      >
+    </b-modal>
 
     <Notifications
       :show="showNotify"
@@ -814,6 +874,8 @@ export default {
 
       aboutThisReport: false,
       currentUserReport: "",
+      period_begin: "",
+      period_end: "",
     };
   },
   watch: {
@@ -922,6 +984,29 @@ export default {
     document.title = "Отчеты";
   },
   methods: {
+    getMark() {
+      window.location.href = `http://10.1.5.20/api/reports/kpi/get-all-last?date_begin=${this.period_begin}&date_end=${this.period_end}`;
+      this.hideModal()
+    },
+    showModal() {
+      const preid = JSON.parse(localStorage.getItem("vuex"));
+      const id = preid.auth.uid;
+      if (id == 104 || id == 102 || id == 1) {
+        this.$refs["my-modal"].show();
+      } else {
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "У вас нет прав доступа";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(this.closeNotification, 1500);
+      }
+    },
+    hideModal() {
+      this.$refs["my-modal"].hide();
+    },
+    toggleModal() {
+      this.$refs["my-modal"].toggle("#toggle-btn");
+    },
     getUserById(id) {
       const user = getUserById(this.staffGlobal, id);
       if (user[0]) {

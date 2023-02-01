@@ -125,6 +125,13 @@ export default {
                             setTimeout(this.closeNotification, 1500)
 
                         })
+                }).catch(error => {
+                    this.loader = false
+                    this.notifyHead = 'Ошибка'
+                    this.notifyMessage = 'Шаблон не создан'
+                    this.notifyClass = 'wrapper-error'
+                    this.showNotify = true
+                    setTimeout(this.closeNotification, 2000)
                 })
         },
         OpenCreateBDRreport() {
