@@ -19,7 +19,7 @@
               :key="wagonDisl.id"
               :value="wagonDisl"
             >
-              {{ wagonDisl.name }}
+              {{ wagonDisl }}
             </option>
           </select>
           <br />
@@ -245,8 +245,14 @@ export default {
         },
         getWagonType() {
             api.getWagonType().then(response => {
-                this.wagonsType = response.data.data
+              let wagon = response.data.data
+              let myArray = []
+              for(let i in wagon){
+               myArray.push(wagon[i].name)
+              }
+              this.wagonsType =  myArray.sort()
             })
+           
         },
         updateSelectedWagonType(selected) {
             this.selectedWagonTypeIds = selected
@@ -271,7 +277,7 @@ export default {
             api.getFilters()
             .then(response => {
                 this.poligons = response.data
-                console.log(this.poligons)
+                // console.log(this.poligons)
             })
         },
         updateSelectedPoligons(selected) {
