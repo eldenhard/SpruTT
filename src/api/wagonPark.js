@@ -30,7 +30,7 @@ const getAllStation = (url) => {
 
 // получить вагоны для селекта в фильтре 
 const getWagonType = () => {
-    return api.get(`${resource}/wagon-types`)
+    return api.get(`${resource}/wagon-types/`)
 }
 
 // ------------- ЗАПРОСЫ ДЛЯ БРОШЕННЫХ ВАГОНОВ ---------------
@@ -58,7 +58,7 @@ const getPolygon = (filter_wagonpolygon) => {
 
 ///api/wagon-park/dislocations/get-filters/
 const getFilters = () => {
-    return api.get(`${resource}/dislocations/get-filters/`)
+    return api.get(`${resource}/dislocations/polygons/`)
 }
 
 

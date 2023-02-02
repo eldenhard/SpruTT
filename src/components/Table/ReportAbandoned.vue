@@ -164,7 +164,7 @@
               position: relative;
               left: 50%;
               transform: translate(-50%, 0);
-              height: 80vh;
+              height: 60vh;
             ">
             <table class="table table-sm table-bordered table-hover" style="margin: 0;  ">
               <thead class="thead-light" style="background: #e9ecef !important">
@@ -255,8 +255,8 @@ export default {
       throwWagons: [],
       // filter_FilterReportAbandon: {},
       filter: {
-        current_station_arrival_begin: '',
-        current_station_arrival_end: '',
+        // current_station_arrival_begin: '',
+        // current_station_arrival_end: '',
       },
       format: "",
     };
@@ -280,9 +280,10 @@ export default {
     CreateReportAbandones() {
       this.loader = true;
       api
-        .getFilterWafonAbadone(this.format, this.filter)
+        .getFilterWafonAbadone(this.format, this.filter = {
+        ...this.filter, wagon_type: this.filter.wagon_type.name
+      })
         .then((response) => {
-          // this.report_abandoned = response.data.data
           this.notifyHead = "Успешно";
           this.notifyMessage = "Отчет направлен Вам на почту";
           this.notifyClass = "wrapper-success";
