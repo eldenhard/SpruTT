@@ -154,6 +154,7 @@
     </b-container>
     <br /><br />
     <p class="amount">всего отчетов: {{ total_objects_report }}</p>
+    <br>
     <b-container class="bv-example-row">
       <b-row>
         <b-col>
@@ -164,7 +165,7 @@
               position: relative;
               left: 50%;
               transform: translate(-50%, 0);
-              height: 60vh;
+              height: 40vh;
             ">
             <table class="table table-sm table-bordered table-hover" style="margin: 0;  ">
               <thead class="thead-light" style="background: #e9ecef !important">
@@ -221,6 +222,7 @@
 </template>
 
 <style>
+
 .close {
   display: none !important;
 }
@@ -285,13 +287,13 @@ export default {
       })
         .then((response) => {
           this.notifyHead = "Успешно";
-          this.notifyMessage = "Отчет направлен Вам на почту";
+          this.notifyMessage = "Задача передана в обработку";
           this.notifyClass = "wrapper-success";
           this.showNotify = true;
-          setTimeout(this.closeNotification, 1500);
+          setTimeout(this.closeNotification, 2000);
           this.hideModal();
           this.loader = false;
-          this.DownloadReportAbandones();
+          setTimeout(() => this.DownloadReportAbandones(), 2500)
         })
         .catch((error) => {
           this.loader = false;
