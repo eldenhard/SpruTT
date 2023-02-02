@@ -39,7 +39,7 @@
             </td>
             <td>
               <a target="_blank" :href="bdr.file" v-if="bdr.file"
-                ><img src="@/assets/excel.png" alt="" width="20px !important"
+                ><img src="@/assets/excel.png" alt="" width="50px !important"
               /></a>
             </td>
             <td>

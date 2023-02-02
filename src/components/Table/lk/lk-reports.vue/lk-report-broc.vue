@@ -35,7 +35,7 @@
                 target="_blank"
                 :href="reports.file"
                 v-if="reports.file"
-                ><img src="@/assets/excel.png" alt="" width="20px !important"
+                ><img src="@/assets/excel.png" alt="" width="50px !important"
               /></a>
             </td>
             <td style="font-size: 15px; text-align: center">

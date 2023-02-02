@@ -455,6 +455,7 @@
                   align-items: center;
                   justify-content: center;
                 "
+                class="Accept"
               >
                 Сохранить
               </button>

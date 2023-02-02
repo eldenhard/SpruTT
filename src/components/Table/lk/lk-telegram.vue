@@ -22,10 +22,10 @@
       >
         <thead class="thead-light">
           <tr>
-            <th style="width: 100px !important">№ договора</th>
-            <th style="width: 100px !important">Код груза</th>
+            <th style="width: 100px !important">№ телеграммы</th>
+            <!-- <th style="width: 100px !important">Код груза</th>
             <th style="width: 100px !important">Тип вагона</th>
-            <th style="width: 100px !important">Номер вагона</th>
+            <th style="width: 100px !important">Номер вагона</th> -->
             <th style="width: 100px !important">Дата создания</th>
             <th style="width: 100px !important">Файл</th>
           </tr>
@@ -33,13 +33,13 @@
 
         <tbody>
           <tr v-for="telegram in telegrams" :key="telegram.id">
-            <td>{{ telegram.contract }} </td>
-            <td>{{ telegram.cargo_code }}</td>
+            <td>{{ telegram.numbers }} </td>
+            <!-- <td>{{ telegram.cargo_code }}</td>
             <td>{{ telegram.wagon_type }}</td>
-            <td>{{ (telegram.wagons).join(' ') }}</td>
+            <td>{{ telegram.wagons }}</td> -->
             <td>{{new Date(telegram.created_at).toLocaleString()}}</td>
             <td><a download target="_blank" :href="telegram.document" v-if="telegram.document"><img src="@/assets/word.png"
-                        alt="" width="20px !important" /></a>
+                        alt="" width="30px !important" /></a>
              </td>
 
           </tr>

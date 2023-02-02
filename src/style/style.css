@@ -348,3 +348,9 @@ td {
   background: #2c3e50 !important;
   color: white;
 }
+
+
+.amount{
+  color:#909092;
+  line-height: 10px;
+}
