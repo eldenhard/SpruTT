@@ -19,7 +19,7 @@
               :key="wagonDisl.id"
               :value="wagonDisl"
             >
-              {{ wagonDisl }}
+              {{ wagonDisl.name }}
             </option>
           </select>
           <br />
@@ -206,6 +206,7 @@ export default {
             groupsFilterStaff: state => state.auth.groups,
             counterparties: state => state.counterparties.counterparties
         }),
+        // Выбрать конкретного конратгента
         selectedParties() {
             return this.counterparties.filter(el => this.selectedPartyIds.includes(el.id))
         },
@@ -245,14 +246,8 @@ export default {
         },
         getWagonType() {
             api.getWagonType().then(response => {
-              let wagon = response.data.data
-              let myArray = []
-              for(let i in wagon){
-               myArray.push(wagon[i].name)
-              }
-              this.wagonsType =  myArray.sort()
+                this.wagonsType = response.data.data
             })
-           
         },
         updateSelectedWagonType(selected) {
             this.selectedWagonTypeIds = selected
@@ -277,7 +272,7 @@ export default {
             api.getFilters()
             .then(response => {
                 this.poligons = response.data
-                // console.log(this.poligons)
+                console.log(this.poligons)
             })
         },
         updateSelectedPoligons(selected) {

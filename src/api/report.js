@@ -25,7 +25,7 @@ const deleteReport = (id) => {
     return api.delete(`${reports}/kpi/` + `${id}`)
 }
 const deleteReportAbandon = (id) => {
-    return api.delete(`${reports}/drop/delete/` + `${id}`)
+    return api.delete(`${reports}/drop/` + `${id}`)
 }
 // const CreateReportAbandone = () => {
 //     return api.post(`${reports}/drop/cs/create/`)

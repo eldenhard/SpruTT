@@ -12,7 +12,7 @@
           <option disabled>Выберите тип создаваемого отчета</option>
           <option value="classic">Стандартный</option>
           <option value="disp">Диспетчерский</option>
-          <option value="legal">Юридический</option>
+          <!-- <option value="legal">Юридический</option> -->
         </select>
         <br />
         <label for="input-filter-staff1" class="label" style="margin-left: 10%">Тип отчета</label>
@@ -170,17 +170,17 @@
             <table class="table table-sm table-bordered table-hover" style="margin: 0;  ">
               <thead class="thead-light" style="background: #e9ecef !important">
                 <tr>
-                  <th>Файл</th>
+                  <th style="width: 50px !important">Файл</th>
                   <th>Дата создания</th>
                   <th>Создатель</th>
-                  <th>Тип вагона</th>
+                  <th style="width: 95px !important">Тип вагона</th>
                   <th>Формат</th>
                   <th>Действие</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="reports in report_abandoned" :key="reports.id">
-                  <td>
+                  <td style="width: 50px !important">
                     <a download target="_blank" :href="reports.file" v-if="reports.file"><img src="@/assets/excel.png"
                         alt="" width="20px !important" /></a>
                   </td>
@@ -381,7 +381,7 @@ export default {
           this.loader = false;
           this.notifyHead = "Ошибка";
           this.notifyMessage = "Отчет не удален";
-          this.notifyClass = "wrapper-alert";
+          this.notifyClass = "wrapper-error";
           this.showNotify = true;
           setTimeout(this.closeNotification, 1500);
         });
