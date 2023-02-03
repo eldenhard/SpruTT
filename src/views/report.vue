@@ -110,7 +110,8 @@
                   /> -->
               </div>
               <!-- :class="{error: this.errors.answer1}" -->
-
+              <!-- Обернуто в форму чтобы после отправки запроса форма очищалась -->
+        <form  id="Anketa">
               <div id="block-answer" style="width: 120% !important">
                 <h2>Анкета сотрудника</h2>
                 <p class="answer" name="a1">
@@ -504,6 +505,7 @@
                   Отправить
                 </button>
               </div>
+            </form>
               <br /><br /><br />
 
               <br /><br />
