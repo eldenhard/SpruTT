@@ -19,7 +19,6 @@ const saveReport = (id, data) => {
     return api.put(`${reports}/kpi/${id}/update-report-file/`, data)
 }
 const getLastDataReports = (id) => {
-    console.log(id, 'qweqwreqwr')
     return api.get(`${reports}/kpi/${id}/get-last-on-employee/`)
 }
 

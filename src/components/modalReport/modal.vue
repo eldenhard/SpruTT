@@ -461,11 +461,14 @@
 .modal_layer_report {
   background: rgb(128, 128, 128, 0.8);
   position: fixed;
-  top: 0;
-  height: 100vh;
-  width: 100% !important;
-  z-index: 5;
-  display: block;
+  width: 70% !important;
+  left: 50%;
+  top: 5%;
+  bottom: 5%;
+  transform: translate(-50%, 0);
+  background: white;
+  height: 90vh;
+  overflow-y: auto;
 }
 .modal_window_report {
   position: fixed;

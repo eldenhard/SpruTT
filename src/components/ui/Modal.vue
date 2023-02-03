@@ -248,7 +248,7 @@ export default {
             answer4: null,
             answer5: null,
             answer6: null,
-
+            emplyee: '',
             loader: false,
             answer: ''
         }
@@ -264,9 +264,9 @@ export default {
 
     mounted() {
 
-        this.loader = true
-        api.getLastDataReports('192',{
-        }).then(response => {
+        // this.loader = true
+
+        api.getLastDataReports(this.emplyee).then(response => {
             this.answer1 = response.data.attrib1
             this.answer2 = response.data.attrib2
             this.answer3 = response.data.attrib3

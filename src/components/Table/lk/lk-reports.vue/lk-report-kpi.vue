@@ -1,6 +1,11 @@
 <template>
   <div>
     <Loader :loader="loader"></Loader>
+    <wagonModal
+      v-if="showReportModal"
+      :OnceReport="OnceReport"
+      @close="closeChangeReport"
+    ></wagonModal>
     <div
       style="width: 100%;
         overflow-x: auto;
@@ -24,7 +29,8 @@
             <th style="width: 70px !important">Дата изменения</th>
             <th style="width: 70px !important">Доплата</th>
             <th style="width: 70px !important">Файл</th>
-            <th style="width: 70px !important">Действие</th>
+            <th style="width: 70px !important">Изменить</th>
+            <th style="width: 70px !important">Удалить</th>
           </tr>
         </thead>
         <tbody>
@@ -48,6 +54,19 @@
                 v-if="reports.file"
                 ><img src="@/assets/excel.png" alt="" width="50px !important"
               /></a>
+            </td>
+            <td>
+              <button
+                class="Accept"
+                style="height: 100%; vertical-align: middle;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                "
+                @click="OpenChangeReport(reports.id)"
+              >
+                Изменить
+              </button>
             </td>
             <td>
               <button
@@ -82,6 +101,7 @@ import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import { mapState } from "vuex";
 import { getUserById } from "@/helpers/getAllUsers";
+import wagonModal from "@/components/modalReport/modal.vue";
 
 import api from "@/api/report";
 
@@ -94,9 +114,12 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+      OnceReport: null,
+      showReportModal: false,
+
     };
   },
-  components: { Loader, Notifications },
+  components: { Loader, Notifications, wagonModal },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -116,6 +139,20 @@ export default {
     this.loader = false;
   },
   methods: {
+    OpenChangeReport(id) {
+      this.loader = true;
+      api.getReportById(id).then((response) => {
+        this.showReportModal = true;
+        this.loader = false;
+        this.OnceReport = response.data;
+      });
+    },
+    closeChangeReport() {
+      this.showReportModal = false;
+    },
+    closeCreatedReport() {
+      this.ShowCreatedReport = false;
+    },
     getUserById(id) {
         const user = getUserById(this.staffGlobal, id);
         if (user[0]) {

@@ -750,6 +750,7 @@ export default {
       staffGlobal: (state) => state.auth.users,
     }),
   },
+  props: ['emplyee'],
   data() {
     return {
       emplyee: "",
@@ -798,11 +799,7 @@ export default {
   },
   watch: {
     emplyee() {
-      // this.aboutThisReport = true
-      console.log("метод watch");
       this.loader = true;
-      // let id = this.emplyee;
-      console.log(this.emplyee, "IDDD");
       api
         .getLastDataReports(this.emplyee)
         .then((response) => {
@@ -942,77 +939,9 @@ export default {
       return "";
     },
     MoreCurrentReport() {
-      const pretoken = JSON.parse(localStorage.getItem("vuex"));
-      const token = pretoken.auth.user.token;
-      const id = this.emplyee;
       this.ShowCreatedReport = true;
-      this.loader = true
-      fetch(`http://10.1.5.20/api/reports/kpi/${id}/get-last-on-employee/`, {
-        headers: {
-          Authorization: `Basic ${token}`,
-        },
-        method: "GET",
-      })
-      .then(response => {
-        if (response.ok) {
-          return response.json()
-      .then((responses) => {
-        this.loader = false
-        console.log(responses.attrib1)
-      this.answer11 = this.responses.attrib1
-      this.answer22 = this.responses.attrib2;
-      this.answer33 = this.responses.attrib3;
-      this.answer44 = this.responses.attrib4;
-      this.answer55 = this.responses.attrib5;
-      this.answer66 = this.responses.attrib6;
-          
-          });
-        }
-        // this.answer11 = response.data.attrib1;
-        //   this.answer22 = response.data.attrib2;
-        //   this.answer33 = response.data.attrib3;
-        //   this.answer44 = response.data.attrib4;
-        //   this.answer55 = response.data.attrib5;
-        //   this.answer66 = response.data.attrib6;
-      
-    })
   },
-    //   // console.log('я работаю')
-    //   this.ShowCreatedReport = true;
-    //   this.answer11 = this.currentUserReport.attrib1
-    //   this.answer22 = this.currentUserReport.attrib2;
-    //   this.answer33 = this.currentUserReport.attrib3;
-    //   this.answer44 = this.currentUserReport.attrib4;
-    //   this.answer55 = this.currentUserReport.attrib5;
-    //   this.answer66 = this.currentUserReport.attrib6;
-    //   console.log(this.emplyee, 'ПЕРЕД ЗАПРОСОМ')
-    //   api.getLastDataReports(this.emplyee,'%%%%%%%%%%%%')
 
-    //     .then((response) => {
-
-    //       this.answer11 = currentUserReport.data.attrib11;
-    //       this.answer22 = response.data.attrib22;
-    //       this.answer33 = response.data.attrib33;
-    //       this.answer44 = response.data.attrib44;
-    //       this.answer55 = response.data.attrib55;
-    //       this.answer66 = response.data.attrib66;
-
-    //       this.loader = false;
-    //     })
-    //     .catch((error) => {
-    //       this.loader = false;
-    //     });
-    // },
-
-    // OpenKPI() {
-    //   if (document.getElementById("Anketa").style.display == "block") {
-    //     document.getElementById("Anketa").style.display = "none";
-    //     this.btnName = "Создать отчет по KPI сотрудника";
-    //   } else {
-    //     document.getElementById("Anketa").style.display = "block";
-    //     this.btnName = "Скрыть отчет по KPI сотрудника";
-    //   }
-    // },
     allGrades() {
       this.loader = true;
       api.getAllgrades().then((response) => {
