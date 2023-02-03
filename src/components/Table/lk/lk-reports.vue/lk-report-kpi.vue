@@ -2,8 +2,7 @@
   <div>
     <Loader :loader="loader"></Loader>
     <div
-      style="
-        width: 100%;
+      style="width: 100%;
         overflow-x: auto;
         overflow-y: auto;
         position: relative;
@@ -31,11 +30,11 @@
         <tbody>
           <tr v-for="reports in reports_creator" :key="reports.id">
             <td>
-              {{ reports.creator.first_name }} {{ reports.creator.last_name }}
+              {{ getUserById(reports.creator) }}
               <br />
             </td>
             <td>
-              {{ reports.employee.first_name }} {{ reports.employee.last_name }}
+              {{ getUserById(reports.employee) }}
               <br />
             </td>
             <td>{{ new Date(reports.created_at).toLocaleString() }}<br /></td>
@@ -82,6 +81,8 @@
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import { mapState } from "vuex";
+import { getUserById } from "@/helpers/getAllUsers";
+
 import api from "@/api/report";
 
 export default {
@@ -100,6 +101,8 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
+      staffGlobal: (state) => state.auth.users,
+
     }),
   },
   mounted() {
@@ -113,6 +116,13 @@ export default {
     this.loader = false;
   },
   methods: {
+    getUserById(id) {
+        const user = getUserById(this.staffGlobal, id);
+        if (user[0]) {
+          return user[0]?.last_name + " " + user[0]?.first_name;
+        }
+        return "";
+      },
     DeleteReport(id) {
       this.loader = true;
       api.deleteReport(id)

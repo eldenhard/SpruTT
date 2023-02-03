@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <!-- <div>
         <div id="navbarMain">
             <ul class="navbarul">
                 <li class="navbarList">
@@ -11,9 +11,32 @@
 
             </ul>
         </div>
+  </div> -->
+  
+  <div id="navbarMain">
+    <b-card no-body>
+      <b-tabs
+        pills
+        card
+        vertical
+        nav-wrapper-class="w-100"
+        style="
+          background: white;
+          height: 100vh !important;
+          text-align: center !important;
+          justify-content: center !important;
+        "
+      >
+        <b-container class="bv-example-row">
+          <b-tab title="Сотрудники" active @click="newTab('Сотрудники')"> </b-tab>
+
+        </b-container>
+      </b-tabs>
+    </b-card>
+    <!-- <button class="nav-button"  @click="newTab('Вагоны')">Вагоны</button>
+                    <button class="nav-button" @click="newTab('Полигоны')">Полигоны</button>
+                    <button class="nav-button" @click="newTab('Телеграммы')">Телеграммы</button> -->
   </div>
-  
-  
   
   </template>
   

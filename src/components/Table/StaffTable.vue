@@ -29,7 +29,8 @@
       <table class="table table-sm table-bordered table-hover" style="table-layout: fixed">
         <thead class="thead-light" style="background: #e9ecef; z-index: 1">
           <!-- <th>Фото</th> -->
-
+          <th style="width: 100px !important">Изменить</th>
+          <th style="width: 100px !important">Удалить</th>
           <th style="width: 150px !important">Фамилия</th>
           <th style="width: 150px !important">Имя</th>
           <th style="width: 150px !important">Отчество</th>
@@ -41,13 +42,35 @@
           <th style="width: 150px !important">Внутренний номер</th>
           <th style="width: 150px !important">Время работы</th>
           <th style="width: 150px !important">Начальник</th>
-          <th style="width: 150px !important">Редактировать</th>
-          <th style="width: 150px !important">Удалить</th>
+        
         </thead>
 
         <tbody style="max-width: 90% !important">
           <tr v-for="staff in all_staff" :key="staff.id">
+            <td>
+              <button style="height: 100%; vertical-align: middle;
+              font-size: 13px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  width: 100px !important
+                " class="Request" @click="openChangePage(staff.id)">
+                Редактировать
+              </button>
+            </td>
+            <td>
+              <button style="
+                  height: 100%;
+                  font-size: 13px;
 
+                  vertical-align: middle;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                " class="Delete" @click="getCurrentUser(staff.id)">
+                Удалить
+              </button>
+            </td>
 
             <!-- 
                         <td
@@ -119,27 +142,7 @@
               {{ getUserById(staff.manager) }}
             </td>
             <td v-else @click="openModalView(staff.id)">—</td>
-            <td>
-              <button style="height: 100%; vertical-align: middle;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  width: 150px !important
-                " class="Request" @click="openChangePage(staff.id)">
-                Редактировать
-              </button>
-            </td>
-            <td>
-              <button style="
-                  height: 100%;
-                  vertical-align: middle;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                " class="Delete" @click="getCurrentUser(staff.id)">
-                Удалить
-              </button>
-            </td>
+    
 
           </tr>
         </tbody>
@@ -259,14 +262,14 @@
       <div class="row">
         <div class="col-md-6">
           <div class="bg">
-            <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="current_user_staff.last_name" />
+            <input class="textarea" id="input-filter-staff1" name="Pwd" v-model="current_user_staff.last_name" readonly />
             <br />
             <label for="input-filter-staff1" class="label">Фамилия</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="bg">
-            <input class="textarea" id="input-filter-staff12" name="Pwd" v-model="current_user_staff.first_name" />
+            <input class="textarea" id="input-filter-staff12" name="Pwd" v-model="current_user_staff.first_name" readonly />
             <br />
             <label for="input-filter-staff12" class="label">Имя</label>
           </div>
@@ -275,14 +278,14 @@
       <div class="row">
         <div class="col-md-6">
           <div class="bg">
-            <input class="textarea" id="input-filter-staff13" name="Pwd" v-model="current_user_staff.middle_name" />
+            <input class="textarea" id="input-filter-staff13" name="Pwd" v-model="current_user_staff.middle_name"  readonly/>
             <br />
             <label for="input-filter-staff13" class="label">Отчество</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="bg">
-            <input class="textarea" id="input-filter-staff14" name="Pwd" v-model="current_user_staff.post" />
+            <input class="textarea" id="input-filter-staff14" name="Pwd" v-model="current_user_staff.post"  readonly/>
             <br />
             <label for="input-filter-staff14" class="label">Должность</label>
           </div>
@@ -297,8 +300,8 @@
     <b-modal ref="change-user" hide-footer title="Редактирование сотрудника">
       <div class="row">
         <div class="col-md-3">
-          <button v-if="current_user_staff.photo">Заменить</button>
-          <button v-else>Загрузить</button>
+          <button class="Accept" v-if="current_user_staff.photo">Заменить</button>
+          <button class="Accept" v-else>Загрузить</button>
           <br>
           <img :src="current_user_staff.photo" id="result" alt="" width="100%" style="margin-top: 5%; height: 45vh;" v-show="ImageUser" />
           <input type="file" @change="onFileSelectedSee" name="photo" ref="photo" style="display: inline-block; position: absolute; top: 0%; bottom: 0; left: 0; right: 0; width: 100%; height: 100%; opacity: 0;" />
@@ -804,7 +807,15 @@ export default {
         this.allStaff();
         this.loader = false;
         this.hideModalChange();
-      });
+      }).catch(error => {
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Пользователь не изменен";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(this.closeNotification, 1500);
+        this.loader = false;
+
+      })
     },
     closeNotification() {
       this.showNotify = false;

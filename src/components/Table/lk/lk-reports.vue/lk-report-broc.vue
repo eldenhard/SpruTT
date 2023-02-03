@@ -42,8 +42,8 @@
               {{ new Date(reports.created_at).toLocaleString() }}
             </td>
             <td style="width: 70px !important">
-              {{ reports.creator.last_name }}
-              {{ reports.creator.first_name }}
+              {{ getUserById(reports.creator) }}
+              
             </td>
             <td style="width: 70px !important">{{ reports.wagon_type }}</td>
             <td
@@ -65,9 +65,7 @@
             <td style="width: 70px !important">
               <button
                 class="Delete"
-                style="
-                  height: 70px;
-                  height: 100%;
+                style=" height: 70px;height: 100%;
                   vertical-align: middle;
                   display: flex;
                   align-items: center;
@@ -96,6 +94,7 @@
 import Loader from "@/components/loader/loader.vue";
 import api from "@/api/report";
 import { mapState } from "vuex";
+import { getUserById } from "@/helpers/getAllUsers";
 import Notifications from "@/components/notifications/Notifications.vue";
 export default {
   data() {
@@ -109,7 +108,21 @@ export default {
     };
   },
   components: { Loader, Notifications },
+  computed: {
+    ...mapState({
+      user: (state) => state.auth.user,
+      uid: (state) => state.auth.uid,
+      staffGlobal: (state) => state.auth.users,
+    }),
+  },
   methods: {
+      getUserById(id) {
+        const user = getUserById(this.staffGlobal, id);
+        if (user[0]) {
+          return user[0]?.last_name + " " + user[0]?.first_name;
+        }
+        return "";
+      },
     DownloadReportAbandones() {
       this.loader = true;
       api
@@ -173,11 +186,5 @@ export default {
       });
   },
 
-  computed: {
-    ...mapState({
-      user: (state) => state.auth.user,
-      uid: (state) => state.auth.uid,
-    }),
-  },
 };
 </script>

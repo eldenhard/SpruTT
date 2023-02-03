@@ -12,13 +12,13 @@ const getAllManager = () => {
     return api.get(`${resource}/users?is_chief=true `)
 }
 const deleteUser = (id) => {
-    return api.delete(`${resource}/users/delete/` + `${id}`)
+    return api.delete(`${resource}/users/` + `${id}/`)
 }
 const currentUser = (id) => {
     return api.get(`${resource}/users/` + `${id}`)
 }
 const changeUserData = (id, data) => {
-    return api.put(`${resource}/users/update/` + `${id}`, data)
+    return api.put(`${resource}/users/` + `${id}/`, data)
 }
 const getStaffGroup = () => {
     return api.get(`${resource}/groups`)

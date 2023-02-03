@@ -255,6 +255,8 @@ export default {
       //stations: state => state.stations
       counterparties: (state) => state.counterparties.counterparties,
       cargo_codes: (state) => state.cargo_code.cargo_code,
+      staffGlobal: (state) => state.auth.users,
+
     }),
   },
 
@@ -274,6 +276,8 @@ export default {
     updateSearchTelegram(WagonNumber) {
       this.WagonNumber = WagonNumber;
     },
+
+    
     // Получить данные о вагоне
     getCurrentWagon() {
       this.loader = true;
