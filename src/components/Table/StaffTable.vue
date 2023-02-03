@@ -721,14 +721,22 @@ export default {
               element.photo = element.photo.replace("10.1.5.65", "10.1.5.76");
             }
           });
-
+        this.notifyHead = "Успешно";
+        this.notifyMessage = "Пользователь найден";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => this.showNotify = false, 1500)
+        this.loader = false;
           // this.all_staff = response.data.data
-          this.loader = false;
-          this.filter_staff.groups = [];
-          this.filter_staff.search = "";
+          // this.filter_staff.groups = [];
+          // this.filter_staff.search = "";
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(error => {
+          this.notifyHead = "Ошибка";
+        this.notifyMessage = "Пользователь не найден";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => this.showNotify = false, 1500)
           this.loader = false;
         });
     },
