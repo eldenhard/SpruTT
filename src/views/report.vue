@@ -67,8 +67,7 @@
               <br />
               <div
                 v-if="aboutThisReport"
-                style="
-                  display: flex;
+                style="display: flex;
                   justify-content: space-between;
                   margin: 0 0 -2%;
                 "
@@ -752,9 +751,9 @@ export default {
       uid: (state) => state.auth.uid,
       staffGlobal: (state) => state.auth.users,
     }),
-    normalizedEmplyee: function () {
-    return this.emplyee
-  }
+  //   normalizedEmplyee: function () {
+  //   return this.emplyee
+  // }
   },
   data() {
     return {

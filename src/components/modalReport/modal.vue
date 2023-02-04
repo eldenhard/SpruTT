@@ -12,64 +12,26 @@
             порученные руководителем.
           </p>
 
-          <input
-            type="radio"
-            name="first-question"
-            id="first-question-1"
-            value="c1"
-            v-model="answer1"
-          />
-          <label for="first-question-1"
-            >&nbsp;Неисполнителен, склонен под любыми предлогами избегать
+          <input type="radio" name="first-question" id="first-question-1" value="c1" v-model="answer1" />
+          <label for="first-question-1">&nbsp;Неисполнителен, склонен под любыми предлогами избегать
             получения новых заданий. Были случаи прямого отказа от выполнения
-            заданий.</label
-          ><br />
+            заданий.</label><br />
 
-          <input
-            type="radio"
-            name="first-question"
-            id="first-question-2"
-            value="c2"
-            v-model="answer1"
-          />
-          <label for="first-question-2"
-            >&nbsp;Низкий уровень исполнительности. Иногда пытается избежать
-            получения новых заданий, умело находя предлоги</label
-          ><br />
+          <input type="radio" name="first-question" id="first-question-2" value="c2" v-model="answer1" />
+          <label for="first-question-2">&nbsp;Низкий уровень исполнительности. Иногда пытается избежать
+            получения новых заданий, умело находя предлоги</label><br />
 
-          <input
-            type="radio"
-            name="first-question"
-            id="first-question-3"
-            value="c3"
-            v-model="answer1"
-          />
-          <label for="first-question-3"
-            >&nbsp;Хороший уровень исполнительности, но нельзя сказать, что
+          <input type="radio" name="first-question" id="first-question-3" value="c3" v-model="answer1" />
+          <label for="first-question-3">&nbsp;Хороший уровень исполнительности, но нельзя сказать, что
             каждый день без исключений. Берется за выполнение любых
-            производственных заданий, но не всегда охотно.</label
-          ><br />
+            производственных заданий, но не всегда охотно.</label><br />
 
-          <input
-            type="radio"
-            name="first-question"
-            id="first-question-4"
-            value="c4"
-            v-model="answer1"
-          />
-          <label for="first-question-4"
-            >&nbsp;Безукоризненный уровень исполнительности. Всегда охотно
+          <input type="radio" name="first-question" id="first-question-4" value="c4" v-model="answer1" />
+          <label for="first-question-4">&nbsp;Безукоризненный уровень исполнительности. Всегда охотно
             берется за выполнение всех производственных заданий, порученных
-            руководителем.</label
-          ><br />
-          <textarea
-            name=""
-            id=""
-            rows="1"
-            style="resize: none; width: 50%"
-            placeholder="Причина изменения"
-            v-model="reason1"
-          ></textarea>
+            руководителем.</label><br />
+          <textarea name="" id="" rows="1" style="resize: none; width: 50%" placeholder="Причина изменения"
+            v-model="reason1"></textarea>
           <p style="color: red; font-weight: bold" v-if="r1">
             Заполните причину
           </p>
@@ -80,66 +42,30 @@
             Умение выявлять и решать возникающие в работе проблемы
           </p>
 
-          <input
-            type="radio"
-            name="second-question"
-            id="second-question-1"
-            value="c1"
-            v-model="answer2"
-          />
-          <label for="second-question-1"
-            >&nbsp;Часто не справляется со своими обязанностями и поручениями
+          <input type="radio" name="second-question" id="second-question-1" value="c1" v-model="answer2" />
+          <label for="second-question-1">&nbsp;Часто не справляется со своими обязанностями и поручениями
             или заданиями. Не умеет выявлять проблемы и с трудом решает
-            их</label
-          ><br />
+            их</label><br />
 
-          <input
-            type="radio"
-            name="second-question"
-            id="second-question-2"
-            value="c2"
-            v-model="answer2"
-          />
-          <label for="second-question-2"
-            >&nbsp;Как правило справляется со своими обязанностями, но порой не
+          <input type="radio" name="second-question" id="second-question-2" value="c2" v-model="answer2" />
+          <label for="second-question-2">&nbsp;Как правило справляется со своими обязанностями, но порой не
             выполняет их так как надо или с трудом решает возникающие
-            проблемы</label
-          ><br />
+            проблемы</label><br />
 
-          <input
-            type="radio"
-            name="second-question"
-            id="second-question-3"
-            value="c3"
-            v-model="answer2"
-          />
+          <input type="radio" name="second-question" id="second-question-3" value="c3" v-model="answer2" />
           <label for="second-question-3">
             &nbsp;Практически всегда хорошо справляется со всеми обязанностями,
             умело решает проблемы, но нельзя сказать, что каждый день без
-            исключений</label
-          ><br />
+            исключений</label><br />
 
-          <input
-            type="radio"
-            name="second-question"
-            id="second-question-4"
-            value="c4"
-            v-model="answer2"
-          />
+          <input type="radio" name="second-question" id="second-question-4" value="c4" v-model="answer2" />
           <label for="second-question-4">
             &nbsp;Проявляет отличную способность справляться со всеми
             обязанностями и производственными заданиями. Всегда умело выявляет и
-            быстро решает возникающие проблемы</label
-          ><br />
+            быстро решает возникающие проблемы</label><br />
 
-          <textarea
-            name=""
-            id=""
-            rows="1"
-            style="resize: none; width: 50%"
-            placeholder="Причина изменения"
-            v-model="reason2"
-          ></textarea>
+          <textarea name="" id="" rows="1" style="resize: none; width: 50%" placeholder="Причина изменения"
+            v-model="reason2"></textarea>
           <p style="color: red; font-weight: bold" v-if="r2">
             Заполните причину
           </p>
@@ -150,62 +76,24 @@
             умение в точности им следовать, наличие необходимых навыков
           </p>
 
-          <input
-            type="radio"
-            name="third-question"
-            id="third-question-1"
-            value="c1"
-            v-model="answer3"
-          />
-          <label for="third-question-1"
-            >&nbsp;Некомпетентен. Не знает используемые приемы и методы работы и
-            не стремится быстро освоить их</label
-          ><br />
+          <input type="radio" name="third-question" id="third-question-1" value="c1" v-model="answer3" />
+          <label for="third-question-1">&nbsp;Некомпетентен. Не знает используемые приемы и методы работы и
+            не стремится быстро освоить их</label><br />
 
-          <input
-            type="radio"
-            name="third-question"
-            id="third-question-2"
-            value="c2"
-            v-model="answer3"
-          />
-          <label for="third-question-2"
-            >&nbsp;Недостаточно хорошо знает нужные приемы работы, пока имеет
-            слабые навыки и медленно их развивает</label
-          ><br />
+          <input type="radio" name="third-question" id="third-question-2" value="c2" v-model="answer3" />
+          <label for="third-question-2">&nbsp;Недостаточно хорошо знает нужные приемы работы, пока имеет
+            слабые навыки и медленно их развивает</label><br />
 
-          <input
-            type="radio"
-            name="third-question"
-            id="third-question-3"
-            value="c3"
-            v-model="answer3"
-          />
-          <label for="third-question-3"
-            >&nbsp;Хорошо знает используемые методы работы, но нельзя сказать,
-            что всегда в точности следует им</label
-          ><br />
+          <input type="radio" name="third-question" id="third-question-3" value="c3" v-model="answer3" />
+          <label for="third-question-3">&nbsp;Хорошо знает используемые методы работы, но нельзя сказать,
+            что всегда в точности следует им</label><br />
 
-          <input
-            type="radio"
-            name="third-question"
-            id="third-question-4"
-            value="c4"
-            v-model="answer3"
-          />
-          <label for="third-question-4"
-            >&nbsp;Компетентен. Отлично знает все методы работы и неукоснительно
-            следует им каждый рабочий день</label
-          ><br />
+          <input type="radio" name="third-question" id="third-question-4" value="c4" v-model="answer3" />
+          <label for="third-question-4">&nbsp;Компетентен. Отлично знает все методы работы и неукоснительно
+            следует им каждый рабочий день</label><br />
 
-          <textarea
-            name=""
-            id=""
-            rows="1"
-            style="resize: none; width: 50%"
-            placeholder="Причина изменения"
-            v-model="reason3"
-          ></textarea>
+          <textarea name="" id="" rows="1" style="resize: none; width: 50%" placeholder="Причина изменения"
+            v-model="reason3"></textarea>
           <p style="color: red; font-weight: bold" v-if="r3">
             Заполните причину
           </p>
@@ -216,63 +104,26 @@
             производительности труда и освоения эффективных методов работы
           </p>
 
-          <input
-            type="radio"
-            name="fourth-question"
-            id="fourth-question-1"
-            value="c1"
-            v-model="answer4"
-          />
-          <label for="fourth-question-1"
-            >&nbsp;Часто сопротивляется внедрению новых технологий, методов
+          <input type="radio" name="fourth-question" id="fourth-question-1" value="c1" v-model="answer4" />
+          <label for="fourth-question-1">&nbsp;Часто сопротивляется внедрению новых технологий, методов
             работы, направленных на повышение качества и производительности
-            труда</label
-          ><br />
+            труда</label><br />
 
-          <input
-            type="radio"
-            name="fourth-question"
-            id="fourth-question-2"
-            value="c2"
-            v-model="answer4"
-          />
-          <label for="fourth-question-2"
-            >&nbsp;Не сопротивляется, но и не проявляет интереса к вопросам
-            повышения качества и производительности труда</label
-          ><br />
+          <input type="radio" name="fourth-question" id="fourth-question-2" value="c2" v-model="answer4" />
+          <label for="fourth-question-2">&nbsp;Не сопротивляется, но и не проявляет интереса к вопросам
+            повышения качества и производительности труда</label><br />
 
-          <input
-            type="radio"
-            name="fourth-question"
-            id="fourth-question-3"
-            value="c3"
-            v-model="answer4"
-          />
-          <label for="fourth-question-3"
-            >&nbsp;Всегда поддерживает все нововведения, помогает осваивать
-            новые методы работы, но не в достаточной степени активно</label
-          ><br />
+          <input type="radio" name="fourth-question" id="fourth-question-3" value="c3" v-model="answer4" />
+          <label for="fourth-question-3">&nbsp;Всегда поддерживает все нововведения, помогает осваивать
+            новые методы работы, но не в достаточной степени активно</label><br />
 
-          <input
-            type="radio"
-            name="fourth-question"
-            id="fourth-question-4"
-            value="c4"
-            v-model="answer4"
-          />
+          <input type="radio" name="fourth-question" id="fourth-question-4" value="c4" v-model="answer4" />
           <label for="fourth-question-4">
             &nbsp;Не только активно помогает осваивать новые методы работы, но и
-            сам часто выдвигает различные рационализаторские предложения</label
-          ><br />
+            сам часто выдвигает различные рационализаторские предложения</label><br />
 
-          <textarea
-            name=""
-            id=""
-            rows="1"
-            style="resize: none; width: 50%"
-            placeholder="Причина изменения"
-            v-model="reason4"
-          ></textarea>
+          <textarea name="" id="" rows="1" style="resize: none; width: 50%" placeholder="Причина изменения"
+            v-model="reason4"></textarea>
           <p style="color: red; font-weight: bold" v-if="r4">
             Заполните причину
           </p>
@@ -283,62 +134,24 @@
             заданиям.
           </p>
 
-          <input
-            type="radio"
-            name="fifth-question"
-            id="fifth-question-1"
-            value="c1"
-            v-model="answer5"
-          />
-          <label for="fifth-question-1"
-            >&nbsp;Не выполнялись запланированные работы по заданиям в
-            срок</label
-          ><br />
+          <input type="radio" name="fifth-question" id="fifth-question-1" value="c1" v-model="answer5" />
+          <label for="fifth-question-1">&nbsp;Не выполнялись запланированные работы по заданиям в
+            срок</label><br />
 
-          <input
-            type="radio"
-            name="fifth-question"
-            id="fifth-question-2"
-            value="c2"
-            v-model="answer5"
-          />
-          <label for="fifth-question-2"
-            >&nbsp;Имели место случаи недовы-полнения в полном объеме
-            запланированных работ по заданиям</label
-          ><br />
+          <input type="radio" name="fifth-question" id="fifth-question-2" value="c2" v-model="answer5" />
+          <label for="fifth-question-2">&nbsp;Имели место случаи недовы-полнения в полном объеме
+            запланированных работ по заданиям</label><br />
 
-          <input
-            type="radio"
-            name="fifth-question"
-            id="fifth-question-3"
-            value="c3"
-            v-model="answer5"
-          />
-          <label for="fifth-question-3"
-            >&nbsp;Выполнялся весь объем запланированных работ, но были случаи
-            нарушения сроков</label
-          ><br />
+          <input type="radio" name="fifth-question" id="fifth-question-3" value="c3" v-model="answer5" />
+          <label for="fifth-question-3">&nbsp;Выполнялся весь объем запланированных работ, но были случаи
+            нарушения сроков</label><br />
 
-          <input
-            type="radio"
-            name="fifth-question"
-            id="fifth-question-4"
-            value="c4"
-            v-model="answer5"
-          />
-          <label for="fifth-question-4"
-            >&nbsp;Все запланированные работы по заданиям выполнялись в полном
-            объеме и в установленные сроки </label
-          ><br />
+          <input type="radio" name="fifth-question" id="fifth-question-4" value="c4" v-model="answer5" />
+          <label for="fifth-question-4">&nbsp;Все запланированные работы по заданиям выполнялись в полном
+            объеме и в установленные сроки </label><br />
 
-          <textarea
-            name=""
-            id=""
-            rows="1"
-            style="resize: none; width: 50%"
-            placeholder="Причина изменения"
-            v-model="reason5"
-          ></textarea>
+          <textarea name="" id="" rows="1" style="resize: none; width: 50%" placeholder="Причина изменения"
+            v-model="reason5"></textarea>
           <p style="color: red; font-weight: bold" v-if="r5">
             Заполните причину
           </p>
@@ -348,88 +161,40 @@
             6. Качество выполненных работ, поручений.
           </p>
 
-          <input
-            type="radio"
-            name="sixth-question"
-            id="sixth-question-1"
-            value="c1"
-            v-model="answer6"
-          />
-          <label for="sixth-question-1"
-            >&nbsp;Работы выполнялись некачественно. Имелись случаи брака и
-            возврата заданий на доработку</label
-          ><br />
+          <input type="radio" name="sixth-question" id="sixth-question-1" value="c1" v-model="answer6" />
+          <label for="sixth-question-1">&nbsp;Работы выполнялись некачественно. Имелись случаи брака и
+            возврата заданий на доработку</label><br />
 
-          <input
-            type="radio"
-            name="sixth-question"
-            id="sixth-question-2"
-            value="c2"
-            v-model="answer6"
-          />
-          <label for="sixth-question-2"
-            >&nbsp;Хотя и очень редки случаи брака в работе, но были погрешности
-            и недоработки</label
-          ><br />
+          <input type="radio" name="sixth-question" id="sixth-question-2" value="c2" v-model="answer6" />
+          <label for="sixth-question-2">&nbsp;Хотя и очень редки случаи брака в работе, но были погрешности
+            и недоработки</label><br />
 
-          <input
-            type="radio"
-            name="sixth-question"
-            id="sixth-question-3"
-            value="c3"
-            v-model="answer6"
-          />
-          <label for="sixth-question-3"
-            >&nbsp;Работы выполнялись достаточно качественно, но имели место
-            небольшие погрешности.</label
-          ><br />
+          <input type="radio" name="sixth-question" id="sixth-question-3" value="c3" v-model="answer6" />
+          <label for="sixth-question-3">&nbsp;Работы выполнялись достаточно качественно, но имели место
+            небольшие погрешности.</label><br />
 
-          <input
-            type="radio"
-            name="sixth-question"
-            id="sixth-question-4"
-            value="c4"
-            v-model="answer6"
-          />
-          <label for="sixth-question-4"
-            >&nbsp;Работы выполнялись безукоризненно, аккуратно, четко, без
-            брака, всегда в строгом соответствии со стандартами</label
-          ><br />
+          <input type="radio" name="sixth-question" id="sixth-question-4" value="c4" v-model="answer6" />
+          <label for="sixth-question-4">&nbsp;Работы выполнялись безукоризненно, аккуратно, четко, без
+            брака, всегда в строгом соответствии со стандартами</label><br />
 
-          <textarea
-            name=""
-            id=""
-            rows="1"
-            style="resize: none; width: 50%"
-            placeholder="Причина изменения"
-            v-model="reason6"
-          ></textarea>
+          <textarea name="" id="" rows="1" style="resize: none; width: 50%" placeholder="Причина изменения"
+            v-model="reason6"></textarea>
           <p style="color: red; font-weight: bold" v-if="r6">
             Заполните причину
           </p>
           <hr />
         </div>
         <div class="btn_group_report">
-          <div
-            class="row container"
-            style="width: 100%; margin-left: 15%; margin-bottom: 2%"
-          >
+          <div class="row container" style="width: 100%; margin-left: 15%; margin-bottom: 2%">
             <div class="col-md-6">
-              <button
-                class="button Cancel close_report"
-                style="width: 350px; height: 50px; font-size: 20px"
-                @click="closeChangeReport()"
-              >
+              <button class="button Cancel close_report" style="width: 350px; height: 50px; font-size: 20px"
+                @click="closeChangeReport()">
                 Закрыть без изменений
               </button>
             </div>
             <div class="col-md-6">
-              <button
-                class="button Accept apply_report"
-                style="width: 350px; height: 50px; font-size: 20px"
-                @click="changeReport()"
-                :disabled="errors"
-              >
+              <button class="button Accept apply_report" style="width: 350px; height: 50px; font-size: 20px"
+                @click="changeReport()" :disabled="errors">
                 Применить изменения
               </button>
             </div>
@@ -439,13 +204,8 @@
     </div>
     <!-- Конец модального окна -->
 
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-      id="notif"
-    />
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+      id="notif" />
   </div>
 </template>
 
@@ -455,9 +215,11 @@
 .errors {
   background: grey;
 }
+
 .error {
   color: red;
 }
+
 .modal_layer_report {
   background: rgb(128, 128, 128, 0.8);
   position: fixed;
@@ -470,6 +232,7 @@
   height: 90vh;
   overflow-y: auto;
 }
+
 .modal_window_report {
   position: fixed;
   width: 70% !important;
@@ -481,12 +244,14 @@
   height: 90vh;
   overflow-y: auto;
 }
+
 .change_report {
   width: 95%;
   font-size: 15px;
   margin-left: 5%;
   text-align: justify;
 }
+
 .change_report p {
   position: relative;
   left: 50%;
@@ -501,15 +266,18 @@
     margin-left: -25%;
     width: 60% !important;
   }
+
   .apply_report {
     margin-top: 2%;
     width: 300px !important;
   }
+
   .change_report input[type="radio"] {
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
   }
+
   .close_report {
     margin-top: 2%;
     width: 300px !important;
@@ -625,13 +393,6 @@ export default {
     closeChangeReport() {
       this.$emit("close");
     },
-    closeNotif() {
-      document.getElementById("notifications").style.display = "none";
-    },
-    closeNotif2() {
-      document.getElementById("notifications2").style.display = "none";
-    },
-
     changeReport() {
       this.loader = true;
       if (!this.errors) {
@@ -650,7 +411,7 @@ export default {
             attrib5_change_reason: this.reason5,
             attrib6_change_reason: this.reason6,
           })
-          .then((response) => {
+          .then(response => {
             this.loader = false;
             this.notifyHead = "Успешно";
             this.notifyMessage = "Анкета изменена";
@@ -661,11 +422,11 @@ export default {
           });
       } else {
         this.loader = false;
-            this.notifyHead = "Ошибка";
-            this.notifyMessage = "Анкета не изменена";
-            this.notifyClass = "wrapper-error";
-            this.showNotify = true;
-            setTimeout(() => this.showNotify = false, 1500);
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Анкета не изменена";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => this.showNotify = false, 1500);
       }
     },
   },

@@ -27,6 +27,7 @@ button {
 
 button:hover {
   opacity: 0.8;
+  background: rgb(196, 196, 196);
 }
 .Delete {
   background: rgb(231, 76, 60, 0.7);
@@ -74,7 +75,9 @@ button:hover {
   background: #22303d;
   cursor: pointer;
 }
-
+.icon-active:hover {
+  height: 110% !important;
+}
 /* #tableMain,
 #tableDislocation {
   background: rgb(236, 236, 236);

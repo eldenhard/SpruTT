@@ -45,16 +45,16 @@
             <td>
               <button
                 style="
-                  height: 100%;
+                height: 100%
                   vertical-align: middle;
                   display: flex;
                   align-items: center;
                   justify-content: center;
+                  background: none;
                 "
-                class="Accept"
                 @click="OpenCreateBDRreport(bdr.id)"
               >
-                Редактировать
+                <img src="@/assets/edit.png"  class="icon-active" alt="">
               </button>
             </td>
           </tr>
