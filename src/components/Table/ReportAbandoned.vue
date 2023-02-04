@@ -125,7 +125,6 @@
       <b-row>
         <b-col>
           <b-button class="button Action" @click="showModal()" style="
-              background: #ff9f55;
               border: none;
               font-weight: 500;
               width: 100%;
@@ -134,6 +133,7 @@
               transform: translate(-50%, 0);
               font-size: 17px;
               margin-top: 3%;
+              background: rgb(73, 73, 73)
             ">
             Создать отчет</b-button>
         </b-col>

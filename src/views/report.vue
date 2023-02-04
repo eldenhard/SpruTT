@@ -9,6 +9,7 @@
     <Modal
       v-if="ShowCreatedReport"
       :CreatedReport="CreatedReport"
+      :emplyee = 'emplyee'
       @close="closeCreatedReport"
     ></Modal>
 
@@ -705,7 +706,7 @@
       <b-button
         class="button"
         variant="danger"
-        style="height: 50px; margin-top: 5%"
+        style="height: 50px; margin: 5% 0"
         @click="hideModal"
         >Закрыть</b-button
       >
@@ -943,7 +944,9 @@ export default {
     MoreCurrentReport() {
       this.ShowCreatedReport = true;
   },
-
+  update(emplyee) {
+      this.emplyee = emplyee;
+    },
     allGrades() {
       this.loader = true;
       api.getAllgrades().then((response) => {

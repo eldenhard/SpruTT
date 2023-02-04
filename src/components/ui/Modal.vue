@@ -143,8 +143,10 @@
                     <hr>
                 </div>
                 <div class="container" style="width: 100%;">
-                    <div class="col-md-12"><button class="Cancel" style="width: 100%; height: 50px; font-size: 20px;"
-                            @click="closeCurrentReport()">Закрыть</button></div>
+                    <div class="col-md-12" style=" display: flex;justify-content: center;">
+                        <button class="Cancel" style="width: 100%; height: 50px; font-size: 20px; margin-bottom: 3%"
+                            @click="closeCurrentReport()">Закрыть</button>
+                    </div>
 
                 </div>
 
@@ -239,6 +241,7 @@ export default {
             user: state => state.auth.user,
             uid: state => state.auth.uid
         }),
+
     },
     data() {
         return {
@@ -248,18 +251,16 @@ export default {
             answer4: null,
             answer5: null,
             answer6: null,
-            emplyee: '',
             loader: false,
             answer: ''
         }
     },
 
-    props: ['CreatedReport'],
+    props: ['CreatedReport', 'emplyee'],
     methods: {
         closeCurrentReport() {
             this.$emit('close')
         },
-
     },
 
     mounted() {
@@ -273,13 +274,14 @@ export default {
             this.answer4 = response.data.attrib4
             this.answer5 = response.data.attrib5
             this.answer6 = response.data.attrib6
-          
+
             this.loader = false
 
         }).catch(error => {
             this.loader = false
         })
-    }
+    },
+
 }
 
 </script>
