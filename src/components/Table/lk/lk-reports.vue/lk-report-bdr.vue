@@ -20,10 +20,10 @@
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr>
             <th style="width: 70px !important">Название</th>
-            <th style="width: 70px !important">Дата создания</th>
-            <th style="width: 70px !important">Дата изменения</th>
-            <th style="width: 70px !important">Файл</th>
-            <th style="width: 70px !important">Действие</th>
+            <th style="width: 30px !important">Дата создания</th>
+            <th style="width: 30px !important">Дата изменения</th>
+            <th style="width: 15px !important">Файл</th>
+            <th style="width: 20px !important">Действие</th>
           </tr>
         </thead>
         <tbody>
@@ -54,7 +54,7 @@
                 "
                 @click="OpenCreateBDRreport(bdr.id)"
               >
-                <img src="@/assets/edit.png"  class="icon-active" alt="">
+                <img src="@/assets/edit5.png"  class="icon-active" alt="">
               </button>
             </td>
           </tr>

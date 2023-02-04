@@ -64,16 +64,17 @@
             <td v-if="reports.format === null">—</td>
             <td style="width: 70px !important">
               <button
-                class="Delete"
                 style=" height: 70px;height: 100%;
                   vertical-align: middle;
                   display: flex;
                   align-items: center;
                   justify-content: center;
+                  background: none;
                 "
                 @click="DeleteReportAbandoned(reports.id)"
               >
-                Удалить
+              <img src="@/assets/delete.png" class="icon-active" alt="">
+
               </button>
             </td>
           </tr>

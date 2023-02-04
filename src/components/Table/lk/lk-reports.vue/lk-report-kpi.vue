@@ -48,7 +48,7 @@
                   justify-content: center;
                   background: none;
                 " @click="OpenChangeReport(reports.id)">
-                <img src="@/assets/edit.png" class="icon-active" alt="">
+                <img src="@/assets/edit5.png" class="icon-active" alt="">
               </button>
             </td>
             <td>
