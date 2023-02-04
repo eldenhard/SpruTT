@@ -76,7 +76,10 @@ button:hover {
   cursor: pointer;
 }
 .icon-active:hover {
-  height: 110% !important;
+  height: 105% !important;
+  max-height: 35px !important;
+  /* width: 35px !important; */
+
 }
 /* #tableMain,
 #tableDislocation {
