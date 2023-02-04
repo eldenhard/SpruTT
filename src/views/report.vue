@@ -9,7 +9,7 @@
     <Modal
       v-if="ShowCreatedReport"
       :CreatedReport="CreatedReport"
-      :emplyee = 'emplyee'
+      :emplyee ='emplyee'
       @close="closeCreatedReport"
     ></Modal>
 
@@ -752,8 +752,10 @@ export default {
       uid: (state) => state.auth.uid,
       staffGlobal: (state) => state.auth.users,
     }),
+    normalizedEmplyee: function () {
+    return this.emplyee
+  }
   },
-  props: ['emplyee'],
   data() {
     return {
       emplyee: "",
@@ -944,9 +946,7 @@ export default {
     MoreCurrentReport() {
       this.ShowCreatedReport = true;
   },
-  update(emplyee) {
-      this.emplyee = emplyee;
-    },
+
     allGrades() {
       this.loader = true;
       api.getAllgrades().then((response) => {
