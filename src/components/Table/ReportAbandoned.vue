@@ -20,7 +20,7 @@
 
       <!-- <input type="date" v-model="filter.current_station_arrival_end" style="width: 40%"> -->
 
-      <b-button class="mt-2" variant="success" block @click="CreateReportAbandones">Создать отчет
+      <b-button class="mt-2" variant="success" block @click="CreateReportAbandones()">Создать отчет
       </b-button>
       <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button>
     </b-modal>
@@ -267,10 +267,7 @@ export default {
 
       throwWagons: [],
       // filter_FilterReportAbandon: {},
-      filter: {
-        // current_station_arrival_begin: '',
-        // current_station_arrival_end: '',
-      },
+      filter: {},
       format: "",
     };
   },
@@ -307,12 +304,14 @@ export default {
           this.hideModal();
           this.loader = false;
           setTimeout(() => this.DownloadReportAbandones(), 2500)
+          document.getElementById('input_filter_wagon_dislocation').value = ''
         })
         .catch((error) => {
+          this.hideModal();
           this.loader = false;
           this.notifyHead = "Ошибка";
           this.notifyMessage = "Нет данных для отчета";
-          this.notifyClass = "wrapper-alert";
+          this.notifyClass = "wrapper-error";
           this.showNotify = true;
           setTimeout(this.closeNotification, 1500);
         });
@@ -389,6 +388,7 @@ export default {
           this.showNotify = true;
           setTimeout(this.closeNotification, 1500);
           this.DownloadReportAbandones();
+          this.updateFilter(filter)
         })
         .catch((error) => {
           this.loader = false;

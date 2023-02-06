@@ -12,7 +12,7 @@
             v-model="filter.wagon_type"
             @change="updateSelectedWagonType"
             style="cursor: pointer; background-color: white;">
-            <option value="">Все вагоны</option>
+            <!-- <option value="">Все вагоны</option> -->
             <option
               v-for="wagonDisl in wagonsType"
               :key="wagonDisl.id"
@@ -183,9 +183,6 @@ export default {
                 wagon_type: '',
                 last_operation_datetime_begin: '',
                 last_operation_datetime_end: '',
-
-                
-
             },
             poligons: [],
             wagonsType: [],
@@ -225,7 +222,6 @@ export default {
 
 
 
-
         // wagontypeObj() {
         //     const result = []
         //     this.wagonsType.forEach((el, idx) => {
@@ -240,12 +236,16 @@ export default {
 
     },
     methods: {
-        updateFilterDataReportAbandon() {
-
+        getPoligons() {
+            api.getFilters()
+            .then(response => {
+                this.poligons = response.data
+            })
         },
         getWagonType() {
             api.getWagonType().then(response => {
                 this.wagonsType = response.data.data
+                this.sendEmit()
             })
         },
         updateSelectedWagonType(selected) {
@@ -261,19 +261,11 @@ export default {
             this.selectedEnd= selected
             this.sendEmit()
         },
-        removeSelectedWagonType(id) {
-            this.selectedWagonTypeIds.splice(this.selectedWagonTypeIds.indexOf(id), 1)
-            this.sendEmit()
-        },
+        // removeSelectedWagonType(id) {
+        //     this.selectedWagonTypeIds.splice(this.selectedWagonTypeIds.indexOf(id), 1)
+        //     this.sendEmit()
+        // },
 
-
-        getPoligons() {
-            api.getFilters()
-            .then(response => {
-                this.poligons = response.data
-                console.log(this.poligons)
-            })
-        },
         updateSelectedPoligons(selected) {
             this.selectedPolingonIds = selected
             this.sendEmit()
@@ -283,10 +275,6 @@ export default {
             this.selectedPolingonIds.splice(this.selectedPolingonIds.indexOf(id), 1)
             this.sendEmit()
         },
-
-
-
-
         updateSelectedCounterparties(selected) {
             this.selectedPartyIds = selected
             this.sendEmit()
@@ -312,12 +300,11 @@ export default {
             })
 
             this.filter.wagon_belong_manager__in = arr2.join(';')
-            // const arr3 = []
+            const arr3 = []
             // this.selectedWagonType.forEach(el => {
             //     arr3.push(el.value)
             // })
-
-            // this.filter.wagon__wagon_type = arr3.join('')
+            // this.filter.wagon_type = arr3.join('')
 
             this.$emit('update-filter', this.filter)
         },
