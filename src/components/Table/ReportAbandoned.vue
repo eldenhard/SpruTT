@@ -124,8 +124,7 @@
     <b-container class="bv-example-row">
       <b-row>
         <b-col>
-          <button class="button Request" @click="showModal()" style="
-              font-weight: 500;
+          <button class="button Request" @click="showModal()" style="font-weight: 500;
               width: 100%;
               position: relative;
               left: 50%;
@@ -188,8 +187,8 @@
                     {{ new Date(reports.created_at).toLocaleString() }}
                   </td>
                   <td>
-                    {{ reports.creator.last_name }}
-                    {{ reports.creator.first_name }}
+                    {{ getUserById(reports.creator) }}
+                   
                   </td>
                   <td>{{ reports.wagon_type }}</td>
                   <td v-if="reports.format === 'classic'">Стандартный</td>
@@ -197,7 +196,17 @@
                   <td v-if="reports.format === 'legal'">Юридический</td>
                   <td v-if="reports.format === null">—</td>
                   <td>
-                    <button class="Delete" style="
+                    <button style=" height: 100%;
+                  vertical-align: middle;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  background: none;
+                " @click="DeleteReportAbandoned(reports.id)">
+                <img src="@/assets/delete.png" class="icon-active" alt="">
+              </button>
+
+                    <!-- <button class="Delete" style="
                         height: 100%;
                         height: 20px;
                         vertical-align: middle;
@@ -206,7 +215,7 @@
                         justify-content: center;
                       " @click="DeleteReportAbandoned(reports.id)">
                       Удалить
-                    </button>
+                    </button> -->
                   </td>
                 </tr>
               </tbody>
@@ -239,6 +248,8 @@ import { mapState } from "vuex";
 import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from "@/components/loader/loader.vue";
 import FilterReportAbandon from "@/components/filter/FilterReportAbandon.vue";
+import { getUserById } from "@/helpers/getAllUsers";
+
 export default {
   name: "ReportAbandoned",
   components: { Notifications, Loader, FilterReportAbandon },
@@ -264,18 +275,20 @@ export default {
     };
   },
   methods: {
+    getUserById(id) {
+      const user = getUserById(this.staffGlobal, id);
+      if (user[0]) {
+        return user[0]?.last_name + " " + user[0]?.first_name;
+      }
+      return "";
+    },
     showModal() {
       this.$refs["ModalTypeReport"].show();
-      // this.ModalTypeReport = true
     },
     hideModal() {
-      // this.ModalTypeReport = false
-
       this.$refs["ModalTypeReport"].hide();
     },
     toggleModal() {
-      // We pass the ID of the button that we want to return focus to
-      // when the modal has hidden
       this.$refs["ModalTypeReport"].toggle("#toggle-btn");
     },
 
@@ -397,6 +410,8 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
+      staffGlobal: (state) => state.auth.users,
+
     }),
   },
 };
