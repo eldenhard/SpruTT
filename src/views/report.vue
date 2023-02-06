@@ -19,10 +19,17 @@
           <b-tab title="Отчеты KPI" active>
             <b-card-text style="min-height: 100vh !important">
               <h2>Отчеты KPI</h2>
-              <button class="button Action" style="width: 25%; height: 25px; position: relative; left: 50%; transform: translate(-50%,0)" @click="showModal()" v-if="this.WatchMark">Все оценки</button>
               <br /><br />
 
               <br />
+                <button style="width: 100%;
+                 background: none;
+                  color: blue;
+                   font-size: 18px;
+                    height: 25px;
+                     position: relative;
+                      left: 50%;
+                       transform: translate(-50%,0)" @click="showModal()" v-if="this.WatchMark">Для загрузки всех оценок нажмите сюда</button>
               <div class="filterStaff" id="block-answer" style="width: 120% !important; background-color: white !important;">
                 <div class="bg">
                   <select
@@ -96,13 +103,13 @@
                   Дата:
                   {{ new Date(currentUserReport.created_at).toLocaleString() }}
                 </p>
-                <button
+                <a
                   class="button Action"
-                  style="width: 20%; height: 20px"
+                  style="width: 20%; height: 20px; font-size: 15px; color: blue; background: none"
                   @click="MoreCurrentReport()"
                 >
                   Подробнее
-                </button>
+              </a>
                 <!-- <input
                     type="button"
                     class="button Cancel"
