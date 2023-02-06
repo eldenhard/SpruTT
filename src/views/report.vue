@@ -19,25 +19,25 @@
           <b-tab title="Отчеты KPI" active>
             <b-card-text style="min-height: 100vh !important">
               <h2>Отчеты KPI</h2>
+              <button class="button Action" style="width: 25%; height: 25px; position: relative; left: 50%; transform: translate(-50%,0)" @click="showModal()" v-if="this.WatchMark">Все оценки</button>
               <br /><br />
 
               <br />
-              <div class="filterStaff" style="width: 120% !important">
+              <div class="filterStaff" id="block-answer" style="width: 120% !important; background-color: white !important;">
                 <div class="bg">
                   <select
                     class="textarea"
                     id="admin"
                     name="Pwd"
                     v-model="selectedAdminId"
+                    style="background: white !important"
                   >
                     <option v-bind:value="admin.id">
                       {{ admin.first_name }} {{ admin.last_name }}
                     </option>
                   </select>
                   <br />
-                  <label for="admin" class="label"
-                    >Копия письма: кадровая служба</label
-                  >
+                  <label for="admin" class="label" style="background: white !important">Копия письма: кадровая служба</label>
                 </div>
 
                 <div class="bg">
@@ -47,6 +47,8 @@
                     name="Pwd"
                     v-model="emplyee"
                     :class="{ error: this.errors.staff }"
+                    style="background: white !important"
+
                   >
                     <option value="" disabled="disabled" selected="selected">
                       Сотрудник
@@ -61,7 +63,7 @@
                     </option>
                   </select>
                   <br />
-                  <label for="staff" class="label">Выберите сотрудника</label>
+                  <label for="staff" class="label" style="background: white !important" >Выберите сотрудника</label>
                 </div>
               </div>
               <br />
@@ -759,6 +761,7 @@ export default {
     return {
       emplyee: "",
       selectedAdminId: "104",
+      WatchMark: false,
       staff: [],
       answer1: "",
       answer2: "",
@@ -836,6 +839,12 @@ export default {
     const token = pretoken.auth.user.token;
     const preid = JSON.parse(localStorage.getItem("vuex"));
     const id = preid.auth.uid;
+    if(id == 104 || id == 102 || id == 1){
+      this.WatchMark = true
+    } else {
+      this.WatchMark = false
+
+    }
     // Получить все отчеты созданные сотрудником
     fetch("http://10.1.5.20/api/reports/kpi?" + `creator=${id}`, {
       // fetch('/api/reports/kpi?'+ `creator=${id}`, {
