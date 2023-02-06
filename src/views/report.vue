@@ -24,12 +24,12 @@
               <br />
                 <button style="width: 100%;
                  background: none;
-                  color: blue;
+                  color: black !important;
                    font-size: 18px;
                     height: 25px;
                      position: relative;
                       left: 50%;
-                       transform: translate(-50%,0)" @click="showModal()" v-if="this.WatchMark">Для загрузки всех оценок нажмите сюда</button>
+                       transform: translate(-50%,0)" @click="showModal()" v-if="this.WatchMark">Для загрузки всех оценок <span style="color: blue;">нажмите сюда</span></button>
               <div class="filterStaff" id="block-answer" style="width: 120% !important; background-color: white !important;">
                 <div class="bg">
                   <select
