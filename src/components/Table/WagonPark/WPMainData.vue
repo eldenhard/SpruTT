@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!--  57135303-->
     <Loader :loader="loader" />
     <div class="container">
       <div role="group">
@@ -16,7 +17,11 @@
         <b-form-invalid-feedback id="input-live-feedback">
           номер вагона 8 символов
         </b-form-invalid-feedback>
-        <b-button variant="primary" class="search" @click="getCurrentWagon()"
+        <b-button
+          variant="primary"
+          style="margin-top: 1%"
+          class="search"
+          @click="getCurrentWagon()"
           >Найти</b-button
         >
       </div>
@@ -28,20 +33,46 @@
               <span class="a">№</span> {{ all.number }}
             </p>
           </div>
+
+          <!-- Текущее положение вагона на схеме -->
           <div class="about__wagon__first__path">
-            <div style="display: flex; justify-content: space-around">
+            <div style="display: flex; justify-content: space-around; margin-right: 5%;">
               <p class="about__wagon__text">
                 {{ all.flight?.departure_station_name }}
               </p>
-              <br />
+              <p class="about__wagon__text">
+                {{ compareStation(this.dislocationRoute) }}
+              </p>
               <p class="about__wagon__text">
                 {{ all.flight?.destination_station_name }}
               </p>
             </div>
             <div class="steps-container">
               <div class="step-item"></div>
+              <div class="step-item"></div>
+              <div class="step-item"></div>
             </div>
             <br />
+            <!-- Путь вагона -->
+            <b-dropdown
+              id="dropdown-dropright"
+              dropright
+              text="Весь маршрут"
+              variant="primary"
+              class="m-2"
+              v-if="allRoad"
+            >
+            <b-dropdown-item  v-for="i of this.lengthRoute" :key="i.id" style="overflow: auto;">
+              <ol>
+                <li  :class="{active: isActive}">
+                   {{currentStation(i.station_name)}} 
+                </li>
+              </ol>
+            </b-dropdown-item>
+            
+            </b-dropdown>
+            <br />
+
             <p class="about__wagon__text">
               <span class="a">Код груза</span> {{ all.flight?.cargo_code }}
               <br />
@@ -95,7 +126,6 @@
         </div>
       </div>
 
-      
       <Notifications
         :show="showNotify"
         :header="notifyHead"
@@ -114,9 +144,13 @@
   --grey: rgb(41, 41, 41);
   --lightgrey: rgb(207, 207, 207);
 }
-
+.active {
+  color: black !important;
+  font-weight: bold;
+}
 .steps-container {
   display: flex;
+  /* flex-direction: column; */
   height: 5px;
   width: 80%;
   gap: 14px;
@@ -186,7 +220,7 @@
 .about__wagon__first__path {
   border: 0.1px solid #dfdfdf !important;
   width: 100%;
-  height: 28vh;
+  height: 30vh;
 }
 .about__wagon__text {
   padding-top: 2%;
@@ -231,6 +265,10 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+      lengthRoute: "",
+      dislocationRoute: "",
+      allRoad: false,
+      isActive: false
     };
   },
   computed: {
@@ -238,7 +276,6 @@ export default {
       return this.name.length == 8 ? true : false;
     },
     is_loaded() {
-      console.log("1");
       if (this.all.flight?.is_loaded === true) {
         return "Активен";
       }
@@ -250,6 +287,20 @@ export default {
     },
   },
   methods: {
+    compareStation(a) {
+      if (a == this.all.flight?.destination_station_name) {
+        a.hidden;
+      } else {
+        return a;
+      }
+    },
+    currentStation(a) {
+      if (this.dislocationRoute == a) {
+        return isActive = true;
+      } else {
+        return a;
+      }
+    },
     getCurrentWagon() {
       this.loader = true;
       if (this.name.length != 8) {
@@ -265,6 +316,9 @@ export default {
           .then((response) => {
             this.loader = false;
             this.all = response.data;
+            this.dislocationRoute = response.data.dislocation.current_station_name;
+            this.lengthRoute = response.data.route;
+            this.allRoad = false;
             this.notifyHead = "Успешно";
             this.notifyMessage = "Данные о вагоне загружены";
             this.notifyClass = "wrapper-success";
