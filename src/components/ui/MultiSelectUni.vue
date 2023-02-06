@@ -4,7 +4,7 @@
         <div class="selectBox" 
             @click="show=!show">
             <div class='bg'>
-                <select style="font-weight: 400 !important; text-align: center; width: 170px; color: grey;" class="textarea" id="multi"> 
+                <select style="font-weight: 400 !important; background-color: white; text-align: center; width: 170px; color: grey;" class="textarea" id="multi"> 
                 <option>{{placeholder}}</option>
             </select>
             <br>
@@ -29,7 +29,7 @@
         left: 50%;
         transform: translate(-50%,0);
         z-index: 0 !important;
-        background: #EFEFEF;
+        background: #ffffff;
 
     }
 

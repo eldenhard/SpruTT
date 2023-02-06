@@ -6,14 +6,14 @@
         <b-container class="bv-example-row">
             <b-row>
                 <b-col>
-                    <button class="button Action" @click="createBDRreport()"
-                        style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">Создать
+                    <button class="button Request" @click="createBDRreport()"
+                        style="width: 100%; position: relative; left: 50%; height: 35px; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">Создать
                         шаблон БДР отчета</button>
                 </b-col>
 
                 <b-col>
-                    <button class="button Action" @click="OpenCreateBDRreport()"
-                        style="width: 100%; position: relative; left: 50%; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">Загрузить
+                    <button class="button Accept" @click="OpenCreateBDRreport()"
+                        style="width: 100%; position: relative; left: 50%; height: 35px; transform: translate(-50%,0); font-size: 17px; margin-top: 3%">Загрузить
                         БДР отчет</button>
                 </b-col>
             </b-row>
@@ -51,7 +51,7 @@
                                         {{ new Date(bdr.updated_at).toLocaleString() }}</td>
                                     <td>
                                         <a target="_blank" :href="bdr.file" v-if="bdr.file"><img
-                                                src="@/assets/excel.png" alt="" width="20px !important"></a>
+                                                src="@/assets/excel.png" alt="" width="50px !important"></a>
                                     </td>
                                     <td>
                                         <button

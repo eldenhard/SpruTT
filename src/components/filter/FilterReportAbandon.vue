@@ -11,8 +11,7 @@
             name="Pwd"
             v-model="filter.wagon_type"
             @change="updateSelectedWagonType"
-            style="cursor: pointer"
-          >
+            style="cursor: pointer; background-color: white;">
             <option value="">Все вагоны</option>
             <option
               v-for="wagonDisl in wagonsType"
@@ -24,7 +23,7 @@
           </select>
           <br />
           <label for="input_filter_wagon_dislocation" class="label"
-            >Тип вагона</label
+          style="cursor: pointer; background-color: white;">Тип вагона</label
           >
         </div>
         <!-- <label for="input_FilterReportAbandon" style="cursor: pointer">Вагон</label>
@@ -33,52 +32,52 @@
                 </multi-select-uni> -->
       </div>
       <div style="display: flex; flex-direction: column">
-        <div class="bg">
+        <div class="bg" style="background-color: white;">
           <!-- <label for="input_FilterReportAbandon" style="cursor: pointer">Полигон</label> -->
           <multi-select-uni
             @change="updateSelectedPoligons"
             :placeholder="'Полигон'"
             :variants="poligonsObj"
             :variant-title="'value'"
-            style="width: 170px !important; cursor: pointer"
+            style="width: 170px !important; cursor: pointer; background-color: white;"
           >
           </multi-select-uni>
         </div>
       </div>
       <div style="display: flex; flex-direction: column">
-        <div class="bg">
+        <div class="bg" style="background-color: white;">
           <!-- <label for="input_FilterReportAbandon" style="cursor: pointer">Контрагент</label> -->
           <multi-select-search
             @change="updateSelectedCounterparties"
             :placeholder="'Контрагент'"
             :variants="counterparties"
             :variant-title="'work_name'"
-            style="width: 170px !important; cursor: pointer"
+            style="width: 170px !important; cursor: pointer; background-color: white;"
           >
           </multi-select-search>
         </div>
       </div>
 
       <div style="display: flex; flex-direction: column">
-        <div class="bg">
+        <div class="bg" style="background-color: white;">
           <input
             class="textarea"
             type="date"
             v-model="filter.last_operation_datetime_begin"
             @change="updateSelected_arrival_begin"
-            style="width: 125px; cursor: pointer; margin-top: 9%"
+            style="width: 125px; cursor: pointer; margin-top: 9%; background-color: white;"
           />
         </div>
       </div>
 
       <div style="display: flex; flex-direction: column">
-        <div class="bg">
+        <div class="bg" style="background-color: white;">
           <input
             class="textarea"
             type="date"
             v-model="filter.last_operation_datetime_end"
             @change="updateSelectedWagonType_arrival_end"
-            style="width: 125px; cursor: pointer; margin-top: 9%"
+            style="width: 125px; cursor: pointer; margin-top: 9%; background-color: white;"
           />
         </div>
       </div>
@@ -134,9 +133,9 @@
   display: flex;
   justify-content: space-around;
   /* border-radius: 50px; */
-  background: #efefef;
-  box-shadow: 20px 20px 30px #cecece, -20px -20px 30px #f2f2f2;
-  position: relative;
+  background: #ffffff;
+  box-shadow: 10px 10px 30px #d0d0d0, -10px -10px 30px #ffffff; 
+   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
   margin: 1% 0;

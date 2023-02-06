@@ -124,8 +124,7 @@
     <b-container class="bv-example-row">
       <b-row>
         <b-col>
-          <b-button class="button Action" @click="showModal()" style="
-              border: none;
+          <button class="button Request" @click="showModal()" style="
               font-weight: 500;
               width: 100%;
               position: relative;
@@ -133,19 +132,20 @@
               transform: translate(-50%, 0);
               font-size: 17px;
               margin-top: 3%;
-              background: rgb(73, 73, 73)
-            ">
-            Создать отчет</b-button>
+              height: 35px;            ">
+            Создать отчет
+          </button>
         </b-col>
 
         <b-col>
-          <button class="button Action" @click="DownloadReportAbandones()" style="
+          <button class="button Accept" @click="DownloadReportAbandones()" style="
               width: 100%;
               position: relative;
               left: 50%;
               transform: translate(-50%, 0);
               font-size: 17px;
               margin-top: 3%;
+              height: 35px;
             ">
             Загрузить отчеты
           </button>

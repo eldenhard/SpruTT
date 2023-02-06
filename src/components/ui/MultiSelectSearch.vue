@@ -4,7 +4,7 @@
         <div class="selectBox" 
             >
             <div class='bg'>
-                <input class="textarea" style="width: 100%" v-model="searchQuery" @click.stop :placeholder="placeholder">
+                <input class="textarea" style="width: 100%; background-color: white;" v-model="searchQuery" @click.stop :placeholder="placeholder">
 
                
             <br>
