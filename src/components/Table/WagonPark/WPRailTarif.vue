@@ -78,7 +78,10 @@
         </div>
       </div>
       <div v-show="first" class="slider">
-        <input class="textarea" placeholder="Тип отправки" type="text" v-model="category" /> <br />
+        <select class="textarea" placeholder="Тип отправки" type="text" v-model="category">
+            <option :value="category.id" v-for="category in categoryArray" :key="category.id">{{ category.name }}</option>
+        </select>    
+            <br />
         <input
           class="textarea"
           placeholder="Скорость"
@@ -228,7 +231,8 @@ export default {
       destination_station_name: "",
       destination_station_name_obj: "",
       stations: [],
-      category: "",
+      category: '',
+      categoryArray: [],
       speed: "",
       code_estng: "",
       weight: "",
@@ -243,14 +247,29 @@ export default {
     };
   },
   mounted() {
- 
-    api.getWagonType().then((response) => {
+    api.getWagonType().then(response => {
       let preData = response.data.data;
       for (let i in preData) {
         this.wagonType.push(preData[i].name);
       }
       this.loader = false;
     });
+
+      api.getDataShipment().then((response) => {
+        let data = response.data.data;
+        let array = [];
+        for (let i in data) {
+          array.push({
+            'id': data[i].id,
+            'name': data[i].category + ', ' + data[i].kind
+        });
+        }
+        this.categoryArray = array
+        console.log(this.categoryArray, 'catig')
+      });
+    
+
+
     this.stations = getItem("station");
   },
   computed: {
@@ -278,24 +297,6 @@ export default {
     },
     getTariff() {
       console.log("запрос тарифа");
-    },
-    test() {
-      api.getDataShipment().then((response) => {
-        let data = response.data.data;
-        console.log(data);
-        let array = [];
-        for (let i in data) {
-          array.push(data[i].category);
-        }
-        let result = array.reduce((acc, item) => {
-          if (acc.includes(item)) {
-            return acc;
-          }
-          return [...acc, item];
-        }, []);
-        this.category = result;
-        console.log(this.category);
-      });
     },
     getFullStationDeparture(station) {
       this.departure_station_name_obj = station;
