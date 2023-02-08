@@ -3,8 +3,8 @@ import axios from "axios";
 import {getItem, setItem} from "@/helpers/persistanseStorage";
 
 let config = {
-    // baseURL: 'http://10.1.5.20/api/'
-    baseURL: '/api/'
+    baseURL: 'http://10.1.5.20/api/'
+    // baseURL: '/api/'
 
 }
 

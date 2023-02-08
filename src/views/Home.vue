@@ -2,7 +2,6 @@
 
 
   <b-card no-body style="margin-top: 1%">
-
     <b-tabs pills card vertical style="background: white">
       <b-container class="bv-example-row">
             <b-tab title="Справочник контрагенты" active>
@@ -28,7 +27,7 @@ import partnerTable from '@/components/Table/PartnerTable.vue'
 import contractTable from '@/components/Table/ContractTable.vue'
 export default{
     name: 'Home',
-    components: {partnerTable, contractTable},
+    components: {partnerTable, contractTable },
     mounted(){
       document.title = 'Справочники'
 
