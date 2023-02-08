@@ -89,6 +89,8 @@
           <button class="button Action" @click="secondSlide()">Далее</button>
         </div>
       </div>
+
+
       <div v-show="second" class="slider">
         <input class="textarea"  v-model="code_estng" placeholder="Код ЕСТНГ" type="text" /><br />
         <input class="textarea" v-model="weight" placeholder="Вес" type="text" /><br />
@@ -101,8 +103,13 @@
           <button class="button Action" @click="ThirdSlide()">Далее</button>
         </div>
       </div>
+
+
       <div v-show="third" class="slider">
-        <input class="textarea" placeholder="Тип вагона" type="text" v-model="wagon_type" /> <br />
+        <select class="textarea" placeholder="Тип вагона" type="text" v-model="wagon_type" >
+            <option v-for="typeWagon in wagonType" :key="typeWagon.id">{{ typeWagon }}</option>
+        </select>
+         <br />
         <input class="textarea" placeholder="Принадлежность" type="text" v-model="belong_in" />
         <br />
         <input class="textarea" placeholder="Количество" type="text" v-model="amount" />
@@ -226,7 +233,8 @@ export default {
       code_estng: "",
       weight: "",
       code_gng: "",
-      wagon_type: "",
+      wagon_type: '',
+      wagonType: [],
       belong_in: "",
       amount: "",
       first: true,
@@ -235,6 +243,14 @@ export default {
     };
   },
   mounted() {
+ 
+    api.getWagonType().then((response) => {
+      let preData = response.data.data;
+      for (let i in preData) {
+        this.wagonType.push(preData[i].name);
+      }
+      this.loader = false;
+    });
     this.stations = getItem("station");
   },
   computed: {
