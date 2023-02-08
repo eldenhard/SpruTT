@@ -1,7 +1,7 @@
 <template>
   <div class="railtarif" style="display: flex">
     <div class="railtarif__route">
-      <input type="date" class="textarea railtarif__route__date" />
+      <input type="date" class="textarea railtarif__route__date" v-model="on_date" />
       <br />
       <div class="railtarif__routeCheck">
         <div>
@@ -51,16 +51,70 @@
         v-model="returnRoute"
       />
       <label for="returnRoute">&nbsp;Обратный маршрут</label>
-
       <button class="Request" @click="test()">Маршрут</button>
     </div>
-    <div class="railtarif__price">2</div>
+
+    <div class="railtarif__price">
+        <div class="railtarif__predata">
+        <p>Тип отправки: </p>
+        <p>Скорость: {{ speed }}</p>
+        <p>Код ЕСТНГ</p>
+        <p>Вес</p>
+        <p>Код ГНГ</p>
+        <p>Тип вагона</p>
+        <p>Принадлежность</p>
+        <p>Количество</p>
+    </div>
+        <div v-show="first" class="slider">
+            <input class="textarea" placeholder="Тип отправки" type="text"> <br>
+            <input class="textarea" placeholder="Скорость" type="text" v-model="speed"><br>
+            <div class="btn-group">
+                <button class="button Action" @click="secondSlide()">Далее</button>
+            </div>
+        </div>
+        <div v-show="second"  class="slider">
+            <input class="textarea"  placeholder="Код ЕСТНГ" type="text"><br>
+            <input class="textarea"  placeholder="Вес" type="text"><br>
+            <input class="textarea"  placeholder="Код ГНГ" type="text"><br>
+            <div class="btn-group" style="justify-content: space-between !important;">
+                <button class="button Action" @click="backSFirst()">Назад</button>
+                <button class="button Action"  @click="ThirdSlide()">Далее</button>
+            </div>
+        </div>
+        <div v-show="third"  class="slider">
+            <input class="textarea"  placeholder="Тип вагона" type="text"> <br>
+            <input class="textarea"  placeholder="Принадлежность" type="text"> <br>
+            <input class="textarea"  placeholder="Количество" type="text">
+            <div class="btn-group" style="justify-content: space-between !important;">
+                <button class="button Action" @click="backSecond()">Назад</button>
+                <button class="button Accept" @click="getTariff()">Получить тариф</button>
+            </div>
+           
+
+        </div>
+    </div>
   </div>
 </template>
 
 
 
 <style scoped>
+.slider{
+    margin-top: -5%;
+}
+.btn-group{
+    display: flex !important;
+    position: absolute;
+    left:50%;
+    transform: translate(-50%,0);
+    bottom: 0;
+    margin-bottom: 3%;
+}
+.Action, .Accept{
+    height: 20px;
+    margin-left: 5%;
+    width: 250px;
+}
 .railtarif {
   display: flex;
   height: 60vh;
@@ -71,6 +125,29 @@
   border-right: 1px solid v-bind(borderColor);
   display: block;
   position: relative;
+}
+.railtarif__predata{
+    width: 25%;
+  display: block;
+  padding: 10px;
+  font-family: 'Montserrat',sans-serif;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  /* padding-top: 2%; */
+  padding-left: 2%;
+  color: grey;
+  font-weight: 700;
+  font-size: 15px;
+}
+.railtarif__price {
+  width:70%;
+  display: block;
+  display: flex;
+ flex-direction: column !important;
+ justify-content: center;
+ align-items: center;
+ position: relative;
 }
 .railtarif__routeCheck {
   display: flex;
@@ -85,17 +162,18 @@
   transform: translate(-50%, 0);
   margin-top: 2%;
 }
-.railtarif__price {
-  width: 70%;
-  display: block;
-}
+
 .Request {
   position: absolute;
   bottom: 0;
   left: 0;
 }
+.textarea {
+    background: #fff;
+    border: 1px solid v-bind(borderColor) !important;
+    margin-top: 5%;
+}
 </style>
-
 <script>
 import AutocompleteInput from "@/components/ui/AutocompleteInput.vue";
 import { getItem } from "@/helpers/persistanseStorage";
@@ -107,6 +185,7 @@ export default {
   data() {
     return {
       borderColor: "#DFDFDF",
+      on_date: '',
       checkedCargo: "",
       checkedInternational: "",
       returnRoute: "",
@@ -116,6 +195,10 @@ export default {
       destination_station_name_obj: "",
       stations: [],
       category: "",
+      speed: "",
+      first: true,
+      second: false,
+      third: false,
     };
   },
   mounted() {
@@ -128,6 +211,25 @@ export default {
     }),
   },
   methods: {
+    secondSlide(){
+        this.first = false
+        this.second = true
+    },
+    backSFirst(){
+        this.first = true
+        this.second = false
+    },
+    ThirdSlide(){
+        this.second = false
+        this.third = true
+    },
+    backSecond(){
+        this.second = true
+        this.third = false
+    },
+    getTariff(){
+        console.log('запрос тарифа')
+    },
     test() {
       api.getDataShipment().then((response) => {
         let data = response.data.data;
