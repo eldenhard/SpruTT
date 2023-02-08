@@ -92,6 +92,11 @@ const getCargoCode = (url) => {
 const getCurrentLastInfoWagon = (data) => {
     return api.get(`${resource}/wagons/${data}/get-latest-info/`)
 }
+
+// Получить данные по отправке
+const getDataShipment = (data) => {
+    return api.get(`${resource}/shipment`)
+}
 export default {
     getWagons,
     getPassport,
@@ -101,6 +106,7 @@ export default {
     getWagonType,
     getAllStation,
     getCurrentLastInfoWagon,
+    getDataShipment,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

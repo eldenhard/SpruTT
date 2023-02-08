@@ -117,7 +117,7 @@ export default {
       this.$emit("selected", this.selected);
     },
     filter() {
-      console.log("filter runs");
+      // console.log("filter runs");
       const filtered = this.variants.filter((row) => {
         return Object.keys(row).some((key) => {
           return (
