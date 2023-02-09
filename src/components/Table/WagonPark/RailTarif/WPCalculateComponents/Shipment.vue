@@ -6,9 +6,19 @@
     </div>
     <div class="shipment-kind__content">
       <div class="shipment-kind__content__leftBlock">
-        <button class="btn_left" style="background: #F5F6F6; color: black; border: 1px solid #DADDDF;"  v-for="i in category" :key="i.id">{{ i }}</button>
+        <button
+          class="btn_left"
+          style="background: #f5f6f6; color: black; border: 1px solid #dadddf"
+          v-for="i in category"
+          :key="i.id"
+          @click="test(i)"
+        >
+          {{ i }}
+        </button>
       </div>
-      <div class="shipment-kind__content__rightBlock"></div>
+      <div class="shipment-kind__content__rightBlock">
+        {{ kind_shipment }}
+      </div>
     </div>
   </div>
 </template>
@@ -20,14 +30,15 @@ import api from "@/api/wagonPark";
 export default {
   data() {
     return {
-        category: "",
-        isActive: false,
-        result: '',
-        result2: '',
-        result3: '',
-        result4: '',
-        result5: '',
-        result6: '',
+      category: "",
+      isActive: false,
+      result: "",
+      result2: "",
+      result3: "",
+      result4: "",
+      result5: "",
+      result6: "",
+      kind_shipment: "",
     };
   },
   computed: {
@@ -36,32 +47,51 @@ export default {
       uid: (state) => state.auth.uid,
     }),
   },
-  mounted(){
-    api.getDataShipment().then(response => {
-      let data = response.data.data
-      console.log(data)
-       let array = []
-       for(let i in data){
-        array.push((data[i].category).split(' ')[0])
-       }
-       this.category = array.reduce((acc, item) => {
-        if(acc.includes(item)){
-            return acc
+  mounted() {
+    api.getDataShipment().then((response) => {
+      let data = response.data.data;
+      console.log(data);
+      let array = [];
+      for (let i in data) {
+        array.push(data[i].category.split(" ")[0]);
+      }
+      this.category = array.reduce((acc, item) => {
+        if (acc.includes(item)) {
+          return acc;
         }
-        return [...acc, item]
-       }, [])
-       this.result = data.filter(item => item.category == 'Повагонная');
-       this.result2 = data.filter(item => item.category == 'Мелкая и малотоннажна');
-       this.result3 = data.filter(item => item.category == 'Контейнерная');
-       this.result4 = data.filter(item => item.category == 'Собственные поездные формирования');
-       this.result5 = data.filter(item => item.category == 'Контрейлерная перевозка');
-       this.result6 = data.filter(item => item.category == 'Другие виды');
-
-
-    })
-    
-   
-  }
+        return [...acc, item];
+      }, []);
+      this.result = data.filter((item) => item.category == "Повагонная");
+      this.result2 = data.filter(
+        (item) => item.category == "Мелкая и малотоннажна"
+      );
+      this.result3 = data.filter((item) => item.category == "Контейнерная");
+      this.result4 = data.filter(
+        (item) => item.category == "Собственные поездные формирования"
+      );
+      this.result5 = data.filter(
+        (item) => item.category == "Контрейлерная перевозка"
+      );
+      this.result6 = data.filter((item) => item.category == "Другие виды");
+    });
+  },
+  methods: {
+    test(i) {
+      if (i == "Повагонная") {
+        this.kind_shipment = this.result;
+      } else if (i == "Мелкая") {
+        this.kind_shipment = this.result2;
+      } else if (i == "Контейнерная") {
+        this.kind_shipment = this.result3;
+      } else if (i == "Собственные") {
+        this.kind_shipment = this.result4;
+      } else if (i == "Контрейлерная") {
+        this.kind_shipment = this.result5;
+      } else if (i == "Другие") {
+        this.kind_shipment = this.result6;
+      }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -88,9 +118,8 @@ export default {
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
-  border: 1px solid #E3E5E7;
+  border: 1px solid #e3e5e7;
   border-radius: 5px;
-
 }
 .shipment-kind__content__leftBlock {
   width: 30%;
@@ -99,11 +128,11 @@ export default {
   width: 70%;
 }
 .btn_left {
-    padding: 10px;
+  padding: 10px;
 }
 
-button:focus{
-    background: white !important;
-    border-right: 2px solid #1e86f5 !important;
+button:focus {
+  background: white !important;
+  border-right: 2px solid #1e86f5 !important;
 }
 </style>
