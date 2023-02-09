@@ -22,6 +22,12 @@ export default {
     return {
         category: "",
         isActive: false,
+        result: '',
+        result2: '',
+        result3: '',
+        result4: '',
+        result5: '',
+        result6: '',
     };
   },
   computed: {
@@ -44,9 +50,17 @@ export default {
         }
         return [...acc, item]
        }, [])
+       this.result = data.filter(item => item.category == 'Повагонная');
+       this.result2 = data.filter(item => item.category == 'Мелкая и малотоннажна');
+       this.result3 = data.filter(item => item.category == 'Контейнерная');
+       this.result4 = data.filter(item => item.category == 'Собственные поездные формирования');
+       this.result5 = data.filter(item => item.category == 'Контрейлерная перевозка');
+       this.result6 = data.filter(item => item.category == 'Другие виды');
+
+
     })
     
-
+   
   }
 };
 </script>
@@ -56,7 +70,7 @@ export default {
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
-  height: 60vh;
+  height: 55vh;
   width: 90%;
   border: 2px solid #1e86f5;
   border-radius: 10px;
