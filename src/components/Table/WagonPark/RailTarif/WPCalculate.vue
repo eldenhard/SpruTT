@@ -5,7 +5,9 @@
         <b-tabs pills card vertical style="height: 90vh !important">
           <b-tab title="Станции отправления/назначения" active>
             <b-card-text>
-              <Stations />
+              <Stations 
+              @station="getStation"
+              />
             </b-card-text>
           </b-tab>
           <b-tab title="Отправка">
@@ -27,7 +29,8 @@
       </b-card>
     </div>
     <div class="result">
-        <p @select="getFullStationDestination">{{ select }}</p>
+      <p>Ст. отправ: <span>{{ select.departure }}</span></p>
+      <p>Ст. назнач: <span>{{ select.destination }}</span></p>
     </div>
 </div>
 </template>
@@ -42,6 +45,16 @@
     height: 90vh;
     width: 20%;
     text-align: center;
+}
+.result p{
+  color: #DFDFDF;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 2% !important;
+}
+.result span{
+  color: #949494;
+
 }
 </style>
 <script>
@@ -58,9 +71,9 @@ export default {
     }
   },
   methods: {
-    getFullStationDestination(station) {
-      this.select = station;
-    },
+    getStation(data){
+      this.select = data
+    }
   }
 };
 </script>
