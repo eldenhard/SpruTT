@@ -298,6 +298,7 @@ export default {
             for (let i in responses) {
               this.AllInformation.push(responses[i]);
             }
+            this.loader = false;
           })
           .catch((error) => {
             this.loader = false;
@@ -309,7 +310,7 @@ export default {
             console.log(new Error("Ошибка"));
           });
         // document.getElementById('input-live').value = ''
-        this.loader = false;
+       
       }
     },
     // Удалить текущую строку отчета по телеграммам
