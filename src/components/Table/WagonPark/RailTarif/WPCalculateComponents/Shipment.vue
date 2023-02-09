@@ -17,7 +17,10 @@
         </button>
       </div>
       <div class="shipment-kind__content__rightBlock">
-        {{ kind_shipment }}
+        <div class="option" v-for="kind in kind_shipment" :key="kind.id">
+          <input type="radio" :id="kind.id" :value="kind.id" v-model="kinds" />
+          <label class="radio-right" :for="kind.id">&nbsp;{{ kind.kind }}</label>
+        </div>
       </div>
     </div>
   </div>
@@ -38,6 +41,7 @@ export default {
       result4: "",
       result5: "",
       result6: "",
+      kinds: "",
       kind_shipment: "",
     };
   },
@@ -95,12 +99,20 @@ export default {
 };
 </script>
 <style scoped>
+.option {
+    margin-left: 1%;
+}
+.radio-right {
+    font-size: 12px;
+    font-weight: 400;
+    font-family: 'Montserrat',sans-serif;
+}
 .shipment-kind {
   margin-top: 8% !important;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
-  height: 55vh;
+  min-height: 55vh;
   width: 90%;
   border: 2px solid #1e86f5;
   border-radius: 10px;
@@ -120,12 +132,13 @@ export default {
   transform: translate(-50%, 0);
   border: 1px solid #e3e5e7;
   border-radius: 5px;
+  margin-bottom: 5%;
 }
 .shipment-kind__content__leftBlock {
-  width: 30%;
+  width: 20%;
 }
 .shipment-kind__content__rightBlock {
-  width: 70%;
+  width: 80%;
 }
 .btn_left {
   padding: 10px;
