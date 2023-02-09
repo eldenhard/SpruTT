@@ -24,8 +24,11 @@
                 <!-- <WagonTable/> -->
                 <component :is="wt"></component>
               </div>
-              <div v-if="i.name === 'Rail-Tarif'">
-                <WPRailTarif />
+              <div v-if="i.name === 'Маршруты'">
+                <WPRoute />
+              </div>
+              <div v-if="i.name === 'Расчет'">
+                <WPCalculate />
               </div>
               <div v-if="i.name === 'Брошенные вагоны'">
                 <AbandonTable />
@@ -58,8 +61,9 @@ import DislocationTable from "../components/Table/DislocationTable.vue";
 import AbandonTable from "../components/Table/AbandonTable.vue";
 import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
 import WagonTablePoligon from "../components/Table/WagonTablePoligon.vue";
-import WagonTableTelegram from "../components/Table/WagonTableTelegram.vue";
-import WPRailTarif from "@/components/Table/WagonPark/WPRailTarif.vue";
+import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
+import WPRoute from "@/components/Table/WagonPark/RailTarif/WPRoute.vue";
+import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
 export default {
   name: "WagonPark",
   components: {
@@ -71,7 +75,8 @@ export default {
     ReportAbandoned,
     WagonTablePoligon,
     WagonTableTelegram,
-    WPRailTarif,
+    WPRoute,
+    WPCalculate,
   },
   data() {
     return {

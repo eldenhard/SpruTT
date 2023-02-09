@@ -6,8 +6,7 @@
         card
         vertical
         nav-wrapper-class="w-100"
-        style="background: white;
-          height: 100vh !important;
+        style="background: white;height: 100vh !important;
           text-align: center !important;
           justify-content: center !important;
         "
@@ -15,7 +14,9 @@
         <b-container class="bv-example-row">
           <b-tab title="Вагоны" active @click="newTab('Вагоны')"> </b-tab>
           <b-tab title="Телеграммы" @click="newTab('Телеграммы')"> </b-tab>
-           <b-tab title="Rail-Tarif" @click="newTab('Rail-Tarif')"> </b-tab>
+           <b-tab title="Маршрут" @click="newTab('Маршрут')"> </b-tab>
+           <b-tab title="Расчет" @click="newTab('Расчет')"> </b-tab>
+
         </b-container>
       </b-tabs>
     </b-card>

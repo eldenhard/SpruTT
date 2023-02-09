@@ -15,7 +15,7 @@
 </template>
 <style scoped>
 .variants {
-  width: 10%;
+  width: 90%;
   max-height: 100px;
   overflow-y: auto;
   flex-wrap: wrap;

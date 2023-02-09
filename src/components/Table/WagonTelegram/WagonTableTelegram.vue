@@ -204,13 +204,13 @@ table.table td i {
 </style>
   
 <script>
-import WagonTelegramSearch from "./WagonTelegram/WagonTelegramSearch.vue";
+import WagonTelegramSearch from "./WagonTelegramSearch.vue";
 import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
 import api from "@/api/wagonPark";
 import Notifications from "@/components/notifications/Notifications.vue";
-import MultiSelectSearch from "../ui/MultiSelectSearch.vue";
-import AutocompleteInput from "../ui/AutocompleteInput.vue";
+import MultiSelectSearch from "@/components/ui/MultiSelectSearch.vue";
+import AutocompleteInput from "@/components/ui/AutocompleteInput.vue";
 import { getItem } from "@/helpers/persistanseStorage";
 export default {
   name: "Telegram",
