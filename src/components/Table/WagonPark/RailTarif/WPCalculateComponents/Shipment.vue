@@ -33,6 +33,7 @@ export default {
   mounted(){
     api.getDataShipment().then(response => {
       let data = response.data.data
+      console.log(data)
        let array = []
        for(let i in data){
         array.push((data[i].category).split(' ')[0])
@@ -44,6 +45,8 @@ export default {
         return [...acc, item]
        }, [])
     })
+    
+
   }
 };
 </script>
