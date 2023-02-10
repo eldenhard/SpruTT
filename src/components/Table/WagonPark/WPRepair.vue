@@ -46,26 +46,26 @@
         </tr>
       </thead>
       <tbody>
-        <tr :class="{redColor: rep.isRed}" v-for="rep in repair_data" :key="rep.id" @click="openInform(rep.wagon)">
-                <td :class="{redColor: rep.isRed}">{{ rep.wagon }}</td>
+        <tr  v-for="rep in repair_data" :key="rep.id" @click="openInform(rep.wagon)">
+                <td >{{ rep.wagon }}</td>
                 <td :class="{redColor: rep.isRed}">{{ rep.axis1_left }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis1_right }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis2_left }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis2_right }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis3_left }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis3_right }}</td>
-                 <td :class="{redColor: rep.isRed}">{{ rep.axis4_left }}</td>
-                 <td :class="{redColor: rep.isRed}">{{ rep.axis4_right }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis5_left }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis5_right }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis6_left }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis6_right }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis7_left }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis7_right }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis8_left }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis8_right }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.sector }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.created_at.slice(0,10) }}</td>
+                <td :class="{redColor: rep.isRed1}">{{ rep.axis1_right }}</td>
+                <td :class="{redColor: rep.isRed2}">{{ rep.axis2_left }}</td>
+                <td :class="{redColor: rep.isRed3}">{{ rep.axis2_right }}</td>
+                <td :class="{redColor: rep.isRed4}">{{ rep.axis3_left }}</td>
+                <td :class="{redColor: rep.isRed5}">{{ rep.axis3_right }}</td>
+                <td :class="{redColor: rep.isRed6}">{{ rep.axis4_left }}</td>
+                <td :class="{redColor: rep.isRed7}">{{ rep.axis4_right }}</td>
+                <td :class="{redColor: rep.isRed8}">{{ rep.axis5_left }}</td>
+                <td :class="{redColor: rep.isRed9}">{{ rep.axis5_right }}</td>
+                <td :class="{redColor: rep.isRed10}">{{ rep.axis6_left }}</td>
+                <td :class="{redColor: rep.isRed11}">{{ rep.axis6_right }}</td>
+                <td :class="{redColor: rep.isRed12}">{{ rep.axis7_left }}</td>
+                <td :class="{redColor: rep.isRed13}">{{ rep.axis7_right }}</td>
+                <td :class="{redColor: rep.isRed14}">{{ rep.axis8_left }}</td>
+                <td :class="{redColor: rep.isRed15}">{{ rep.axis8_right }}</td>
+                <td >{{ rep.sector }}</td>
+                <td >{{ rep.created_at.slice(0,10) }}</td>
         </tr>
       </tbody>
     </table>
@@ -157,6 +157,21 @@ export default {
       history_data: [],
       loader: false,
       isRed: false,
+      isRed1: false,
+      isRed2: false,
+      isRed3: false,
+      isRed4: false,
+      isRed5: false,
+      isRed6: false,
+      isRed7: false,
+      isRed8: false,
+      isRed9: false,
+      isRed10: false,
+      isRed11: false,
+      isRed12: false,
+      isRed13: false,
+      isRed14: false,
+      isRed15: false,
     };
   },
   components: { Loader },
@@ -174,59 +189,56 @@ export default {
         this.repair_data = response.data.data;
         this.loader = false;
         let a = this.repair_data.map(element =>{
-            if(Math.trunc(element.axis1_left) === 25){
+            if(element.axis1_left <= 25 && element.axis1_left > 0){
                 element.isRed= true
             }
-            else if(Math.trunc(element.axis1_left) === 25){
-                element.isRed= true
+            if(element.axis1_right <= 25 && element.axis1_right > 0){
+                element.isRed1= true
             }
-            else if(Math.trunc(element.axis1_right) === 25){
-                element.isRed= false
+            if(element.axis2_left <= 25 && element.axis2_left > 0){
+                element.isRed2= true
             }
-            else if(Math.trunc(element.axis2_left) === 25){
-                element.isRed= false
+            if(element.axis2_right <= 25 && element.axis2_right > 0){
+                element.isRed3= true
             }
-            else if(Math.trunc(element.axis2_right) === 25){
-                element.isRed= false
+            if(element.axis3_left <= 25 && element.axis3_left > 0){
+                element.isRed4= true
             }
-            else if(Math.trunc(element.axis3_left) === 25){
-                element.isRed= false
+            if(element.axis3_right <= 25 && element.axis3_right > 0){
+                element.isRed5= true
             }
-            else if(Math.trunc(element.axis3_right) === 25){
-                element.isRed= false
+             if(element.axis4_left <= 25 && element.axis4_left > 0){
+                element.isRed6= true
             }
-            else  if(Math.trunc(element.axis4_left) === 25){
-                element.isRed= false
+            if(element.axis4_right <= 25 && element.axis4_right > 0){
+                element.isRed7= true
             }
-            else if(Math.trunc(element.axis4_right) === 25){
-                element.isRed= false
+             if(element.axis5_left <= 25 && element.axis5_left > 0){
+                element.isRed8= true
             }
-            else  if(Math.trunc(element.axis5_left) === 25){
-                element.isRed= false
+             if(element.axis5_right <= 25 && element.axis5_right > 0){
+                element.isRed9= true
             }
-            else  if(Math.trunc(element.axis5_right) === 25){
-                element.isRed= false
+             if(element.axis6_left <= 25 && element.axis6_left > 0){
+                element.isRed10= true
             }
-            else  if(Math.trunc(element.axis6_left) === 25){
-                element.isRed= false
+             if(element.axis6_right <= 25 && element.axis6_right > 0){
+                element.isRed11= true
             }
-            else  if(Math.trunc(element.axis6_right) === 25){
-                element.isRed= false
+            if(element.axis7_left <= 25 && element.axis7_left > 0){
+                element.isRed12= true
             }
-            else if(Math.trunc(element.axis7_left) === 25){
-                element.isRed= false
+             if(element.axis7_right <= 25 && element.axis7_right > 0){
+                element.isRed13= true
             }
-            else  if(Math.trunc(element.axis7_right) === 25){
-                element.isRed= false
+            if(element.axis8_left <= 25 && element.axis8_left > 0){
+                element.isRed14= true
             }
-            else if(Math.trunc(element.axis8_left) === 25){
-                element.isRed= false
-            }
-            else if(Math.trunc(element.axis8_right) === 25){
-                element.isRed= false
+            if(element.axis8_right <= 25 && element.axis8_right > 0){
+                element.isRed15= true
             }
             else {
-                this.isRed = false
+              console.log('ОШИЮКА')
             }
         })
       })
@@ -282,9 +294,9 @@ td {
 .border-none {
   border: none !important;
 }
-/* tr:hover {
+tr:hover {
   background: lightgray;
-} */
+}
 .content-history {
   display: flex;
 }
