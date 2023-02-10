@@ -22,7 +22,7 @@
           <label :for="wag_type.id">&nbsp;{{ wag_type.name }}</label>
         </button>
           <hr />
-          <div class="expand-info" v-show="dop_info">
+          <div class="expand-info" v-show="dop_info" :id="wag_type.id">
             <input type="number" placeholder="Количество" class="textareaS" />
             <select name="" id="" class="textareaS">
               <option value="1">Инвентарный парк</option>
@@ -54,16 +54,6 @@ export default {
       uid: (state) => state.auth.uid,
     }),
   },
-  watch: {
-    wagon() {
-      document.addEventListener("click", function (e) {
-        this.dop_info = true
-        console.log(this.dop_info, 'AAA')
-      })
-    }
-  },
-
-
   mounted() {
     api.getWagonType().then((response) => {
       this.wagon_type = response.data.data;
@@ -76,14 +66,21 @@ export default {
         })
     },
     OpenDop(id){
-        this.dop_info = true
+        let a = document.getElementById(id)
+        if(a){
+            this.dop_info = true
+        } else {
+            this.dop_info = false
+        }
+        console.log(a)
     }
   }
 };
 </script>
 <style scoped>
 button{
-    color: white;
+    background: white;
+    color: black;
   border: none;
   outline: none;
   letter-spacing: 1px;
@@ -91,6 +88,11 @@ button{
   font-weight: 500;
   font-size: 13px;
   font-family: 'Montserrat', sans-serif;
+  text-align: left;
+  height: 25px;
+}
+button:hover{
+    background: white;
 }
 .expand-info {
   display: flex;
