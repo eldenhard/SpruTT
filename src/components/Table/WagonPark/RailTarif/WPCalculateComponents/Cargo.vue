@@ -23,19 +23,66 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr></tr>
+                  <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
                 </tbody>
               </table>
+              <div class="shipment-kind__content__weight">
+                <p class="description" style="margin-top: 10px;">Масса груза, т</p>
+                <input type="text" class="textareaTon" style="width: 15%; margin-left: 3%;">
+                </div>
             </div>
           </div>
         </b-tab>
-        <b-tab title="ГНГ"><p>ГНГ</p></b-tab>
+        <b-tab title="ГНГ">
+            <div class="content">
+            <p class="description">
+              Гармонизированная номенклатура грузов (ГНГ)
+            </p>
+            <input type="text" class="textarea" placeholder="введите наименование груза"/>
+            <div class="shipment-kind__content__table">
+              <table class="table-sm table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Код ГНГ</th>
+                    <th scope="col">Наименование</th>
+                    <th scope="col">Класс ЕТТ</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="shipment-kind__content__weight">
+                <p class="description" style="margin-top: 10px;">Масса груза, т</p>
+                <input type="text" class="textareaTon" style="width: 15%; margin-left: 3%;">
+                </div>
+            </div>
+          </div>
+        </b-tab>
       </b-tabs>
     </div>
   </div>
 </template>
 
   <style scoped>
+ .shipment-kind__content__weight {
+    width: 100%;
+    border: 1px solid #e3e5e7;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+ } 
   .shipment-kind__content__table{
     margin-top: 2%;
     max-width: 95% !important;
@@ -45,6 +92,11 @@
     border-radius: 10px;
     transform: translate(-50%,0);
   }
+.textareaTon{
+    background: white;
+  border: 1px solid grey !important;
+  border-radius: 5px;
+}
 .textarea {
   background: white;
   border: 1px solid grey !important;
