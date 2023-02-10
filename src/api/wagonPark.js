@@ -101,7 +101,7 @@ const getDataShipment = (data) => {
     return api.get(`${resource}/shipment`)
 }
 const getWagonRepair = () => {
-    return api.get(`${resource}/repair-axis-wheels/`)
+    return api.get(`${resource}/repair-axis-wheels?page_size=500`)
 }
 // получение последней истории изменений
 const getWagonRepairHistory = (id) => {

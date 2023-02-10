@@ -5,7 +5,6 @@ import {getItem, setItem} from "@/helpers/persistanseStorage";
 let config = {
     // baseURL: 'http://10.1.5.20/api/'
     baseURL: '/api/'
-
 }
 
 const _axios = axios.create(config)

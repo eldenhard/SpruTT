@@ -39,6 +39,7 @@
             <td class="border-none">Л</td>
             <td class="border-none">П</td>
           </th>
+          <th colspan="1">Сектор</th>
           <th colspan="1">Дата</th>
         </tr>
       </thead>
@@ -62,7 +63,7 @@
                 <td>{{ rep.axis7_right }}</td>
                 <td>{{ rep.axis8_left }}</td>
                 <td>{{ rep.axis8_right }}</td>
-           
+           <td>{{ rep.sector }}</td>
           <td>{{ rep.created_at.slice(0,10) }}</td>
         </tr>
       </tbody>
@@ -105,11 +106,13 @@
             <td class="border-none">Л</td>
             <td class="border-none">П</td>
           </th>
+          <th colspan="1">Сектор</th>
+
           <th colspan="1">Дата</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="data in history_data" :key="data.id" @click="openInform(data.wagon)">
+        <tr v-for="data in history_data" :key="data.id" :class="{red : isRed}">
             <td>{{ data.wagon }}</td>
 
                 <td>{{ data.axis1_left }}</td>
@@ -128,7 +131,7 @@
                 <td>{{ data.axis7_right }}</td>
                 <td>{{ data.axis8_left }}</td>
                 <td>{{ data.axis8_right }}</td>
-           
+                <td>{{ data.sector }}</td>
           <td >{{ (data.created_at).slice(0,10) }}</td>
         </tr>
       </tbody>
@@ -153,6 +156,7 @@ export default {
       repair_data: [],
       history_data: [],
       loader: false,
+      isRed: false,
     };
   },
   components: { Loader },
@@ -169,6 +173,10 @@ export default {
       .then((response) => {
         this.repair_data = response.data.data;
         this.loader = false;
+        console.log(this.repair_data)
+            // for(let i in this.repair_data){
+            //     console.log(this.repair_data[i])
+            // }
       })
       .catch((error) => {
         this.loader = false;
@@ -203,6 +211,10 @@ export default {
 </script>
 
 <style scoped>
+.red{
+    background: red;
+    color: white;
+}
 .explanation {
   font-size: 13px;
   color: grey;
