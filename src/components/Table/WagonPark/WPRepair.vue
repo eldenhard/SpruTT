@@ -1,8 +1,10 @@
 <template>
   <div>
     <Loader :loader="loader" />
+    <div style="display: flex; justify-content: space-around;" @click="downloadReport()">
     <p class="explanation"> * Для просмотра изменений по вагону кликните на строку с этим вагоном</p>
-       
+      <button class="Accept">Скачать</button> 
+    </div>
     <table class="table-bordered table-sm">
       <thead>
         <tr>
@@ -44,27 +46,26 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="rep in repair_data" :key="rep.id" @click="openInform(rep.wagon)">
-            <td>{{ rep.wagon }}</td>
-
-                <td>{{ rep.axis1_left }}</td>
-                <td>{{ rep.axis1_right }}</td>
-                <td>{{ rep.axis2_left }}</td>
-                <td>{{ rep.axis2_right }}</td>
-                <td>{{ rep.axis3_left }}</td>
-                <td>{{ rep.axis3_right }}</td>
-                 <td>{{ rep.axis4_left }}</td>
-                 <td>{{ rep.axis4_right }}</td>
-                <td>{{ rep.axis5_left }}</td>
-                <td>{{ rep.axis5_right }}</td>
-                <td>{{ rep.axis6_left }}</td>
-                <td>{{ rep.axis6_right }}</td>
-                <td>{{ rep.axis7_left }}</td>
-                <td>{{ rep.axis7_right }}</td>
-                <td>{{ rep.axis8_left }}</td>
-                <td>{{ rep.axis8_right }}</td>
-           <td>{{ rep.sector }}</td>
-          <td>{{ rep.created_at.slice(0,10) }}</td>
+        <tr :class="{redColor: rep.isRed}" v-for="rep in repair_data" :key="rep.id" @click="openInform(rep.wagon)">
+                <td :class="{redColor: rep.isRed}">{{ rep.wagon }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis1_left }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis1_right }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis2_left }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis2_right }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis3_left }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis3_right }}</td>
+                 <td :class="{redColor: rep.isRed}">{{ rep.axis4_left }}</td>
+                 <td :class="{redColor: rep.isRed}">{{ rep.axis4_right }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis5_left }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis5_right }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis6_left }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis6_right }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis7_left }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis7_right }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis8_left }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis8_right }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.sector }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.created_at.slice(0,10) }}</td>
         </tr>
       </tbody>
     </table>
@@ -112,17 +113,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="data in history_data" :key="data.id" :class="{red : isRed}">
-            <td>{{ data.wagon }}</td>
-
+        <tr v-for="data in history_data" :key="data.id">
+                <td>{{ data.wagon }}</td>
                 <td>{{ data.axis1_left }}</td>
                 <td>{{ data.axis1_right }}</td>
                 <td>{{ data.axis2_left }}</td>
                 <td>{{ data.axis2_right }}</td>
                 <td>{{ data.axis3_left }}</td>
                 <td>{{ data.axis3_right }}</td>
-                 <td>{{ data.axis4_left }}</td>
-                 <td>{{ data.axis4_right }}</td>
+                <td>{{ data.axis4_left }}</td>
+                <td>{{ data.axis4_right }}</td>
                 <td>{{ data.axis5_left }}</td>
                 <td>{{ data.axis5_right }}</td>
                 <td>{{ data.axis6_left }}</td>
@@ -173,10 +173,72 @@ export default {
       .then((response) => {
         this.repair_data = response.data.data;
         this.loader = false;
-        console.log(this.repair_data)
-            // for(let i in this.repair_data){
-            //     console.log(this.repair_data[i])
-            // }
+        let a = this.repair_data.map(element =>{
+            if(Math.trunc(element.axis1_left) === 25){
+                element.isRed= true
+            }
+            else if(Math.trunc(element.axis1_left) === 25){
+                element.isRed= true
+            }
+            else if(Math.trunc(element.axis1_right) === 25){
+                element.isRed= false
+            }
+            else if(Math.trunc(element.axis2_left) === 25){
+                element.isRed= false
+            }
+            else if(Math.trunc(element.axis2_right) === 25){
+                element.isRed= false
+            }
+            else if(Math.trunc(element.axis3_left) === 25){
+                element.isRed= false
+            }
+            else if(Math.trunc(element.axis3_right) === 25){
+                element.isRed= false
+            }
+            else  if(Math.trunc(element.axis4_left) === 25){
+                element.isRed= false
+            }
+            else if(Math.trunc(element.axis4_right) === 25){
+                element.isRed= false
+            }
+            else  if(Math.trunc(element.axis5_left) === 25){
+                element.isRed= false
+            }
+            else  if(Math.trunc(element.axis5_right) === 25){
+                element.isRed= false
+            }
+            else  if(Math.trunc(element.axis6_left) === 25){
+                element.isRed= false
+            }
+            else  if(Math.trunc(element.axis6_right) === 25){
+                element.isRed= false
+            }
+            else if(Math.trunc(element.axis7_left) === 25){
+                element.isRed= false
+            }
+            else  if(Math.trunc(element.axis7_right) === 25){
+                element.isRed= false
+            }
+            else if(Math.trunc(element.axis8_left) === 25){
+                element.isRed= false
+            }
+            else if(Math.trunc(element.axis8_right) === 25){
+                element.isRed= false
+            }
+            else {
+                this.isRed = false
+            }
+        })
+        // console.log(this.repair_data);
+        // for (let i in this.repair_data) {
+        //     if(Math.trunc(element.axis1_left) === 25){
+        //         this.isRed= true
+        //     } else {
+        //         this.isRed = false
+        //     }
+
+
+        // }
       })
       .catch((error) => {
         this.loader = false;
@@ -189,7 +251,6 @@ export default {
         .getWagonRepairHistory(wagon)
         .then((response) => {
           this.history_data = response.data;
-          console.log(this.history_data);
           this.showModal();
           this.loader = false;
         })
@@ -206,14 +267,23 @@ export default {
     toggleModal() {
       this.$refs["ModalHistoryWagon"].toggle("#toggle-btn");
     },
+    downloadReport(){
+        this.loader = true
+        window.location.href = 'api/repair-axis-wheels/export/'
+        this.loader = false
+
+    }
   },
 };
 </script>
 
 <style scoped>
-.red{
-    background: red;
-    color: white;
+td {
+    height: 45px !important;
+}
+.redColor {
+  background: rgb(194, 66, 66) !important;
+  color: white !important;
 }
 .explanation {
   font-size: 13px;
@@ -222,9 +292,9 @@ export default {
 .border-none {
   border: none !important;
 }
-tr:hover {
+/* tr:hover {
   background: lightgray;
-}
+} */
 .content-history {
   display: flex;
 }

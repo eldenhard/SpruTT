@@ -107,6 +107,9 @@ const getWagonRepair = () => {
 const getWagonRepairHistory = (id) => {
     return api.get(`${resource}/repair-axis-wheels/${id}/history`)
 }
+const getReportRepair = () => {
+    return api.get(`${resource}/repair-axis-wheels/export/`)
+}
 export default {
     getWagons,
     getPassport,
@@ -120,6 +123,7 @@ export default {
     getCargoCode1,
     getWagonRepair,
     getWagonRepairHistory,
+    getReportRepair,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,
