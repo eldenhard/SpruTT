@@ -279,15 +279,7 @@ export default {
       }
       return "";
     },
-    showModal() {
-      this.$refs["ModalTypeReport"].show();
-    },
-    hideModal() {
-      this.$refs["ModalTypeReport"].hide();
-    },
-    toggleModal() {
-      this.$refs["ModalTypeReport"].toggle("#toggle-btn");
-    },
+
 
     CreateReportAbandones() {
       this.loader = true;

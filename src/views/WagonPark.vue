@@ -36,6 +36,9 @@
               <div v-if="i.name === 'Телеграммы'">
                 <WagonTableTelegram />
               </div>
+              <div v-if="i.name === 'Ремонты'">
+                <WagonRepair />
+              </div>
               <div v-if="i.name === 'Полигоны'">
                 <WagonTablePoligon />
               </div>
@@ -64,6 +67,7 @@ import WagonTablePoligon from "../components/Table/WagonTablePoligon.vue";
 import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
 import WPRoute from "@/components/Table/WagonPark/RailTarif/WPRoute.vue";
 import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
+import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
 export default {
   name: "WagonPark",
   components: {
@@ -77,6 +81,7 @@ export default {
     WagonTableTelegram,
     WPRoute,
     WPCalculate,
+    WagonRepair,
   },
   data() {
     return {

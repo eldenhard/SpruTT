@@ -9,18 +9,22 @@
       <br />
     </div>
     <div class="content">
-      <div v-for="wag_type in wagon_type" :key="wag_type.id">
+      <div
+        v-for="wag_type in wagon_type"
+        :key="wag_type.id"
+        style="display: block"
+        @click="openInfo(wag_type.id)"
+      >
         <div class="all-visible">
-            <button @click="OpenDop(wag_type.id)">
           <input
             type="radio"
             :id="wag_type.id"
             :value="wag_type.id"
             v-model="wagon"
-            style="margin: 10px 0 0 15px !important"
+            style="margin: 0 0 0 15px !important"
           />
           <label :for="wag_type.id">&nbsp;{{ wag_type.name }}</label>
-        </button>
+
           <hr />
           <div class="expand-info" v-show="dop_info" :id="wag_type.id">
             <input type="number" placeholder="Количество" class="textareaS" />
@@ -34,6 +38,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -54,45 +59,55 @@ export default {
       uid: (state) => state.auth.uid,
     }),
   },
+  watch: {
+    // wagon(){
+    //     if(this.wagon == id){
+    //         this.dop_info = true
+    //     }
+    // }
+  },
   mounted() {
     api.getWagonType().then((response) => {
       this.wagon_type = response.data.data;
     });
   },
   methods: {
-    sort_info(a){
-        return a.sort(function(a,b) {
-            return a- b
-        })
+    sort_info(a) {
+      return a.sort(function (a, b) {
+        return a - b;
+      });
     },
-    OpenDop(id){
-        let a = document.getElementById(id)
-        if(a){
+    openInfo(id) {
+      console.log(id, 'искомое');
+      let elements = document.getElementsByClassName("expand-info");
+      for (var i = 0; i < elements.length; i++) {
+        if(id == elements[i].id){
+            console.log(elements[i].id, 'Я то значение')
             this.dop_info = true
         } else {
-            this.dop_info = false
+            continue
         }
-        console.log(a)
-    }
+      }
+    },
   }
 };
 </script>
 <style scoped>
-button{
-    background: white;
-    color: black;
+button {
+  background: white;
+  color: black;
   border: none;
   outline: none;
   letter-spacing: 1px;
   border-radius: 7px;
   font-weight: 500;
   font-size: 13px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   text-align: left;
   height: 25px;
 }
-button:hover{
-    background: white;
+button:hover {
+  background: white;
 }
 .expand-info {
   display: flex;
@@ -103,8 +118,8 @@ button:hover{
 
 .content {
   border: 1px solid grey !important;
-  min-height: 55vh;
-  max-height: 55vh;
+  min-height: 38vh;
+  max-height: 38vh;
   overflow: auto;
 }
 .textarea {

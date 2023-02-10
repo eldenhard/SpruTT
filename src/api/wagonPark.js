@@ -100,6 +100,13 @@ const getCurrentLastInfoWagon = (data) => {
 const getDataShipment = (data) => {
     return api.get(`${resource}/shipment`)
 }
+const getWagonRepair = () => {
+    return api.get(`${resource}/repair-axis-wheels/`)
+}
+// получение последней истории изменений
+const getWagonRepairHistory = (id) => {
+    return api.get(`${resource}/repair-axis-wheels/${id}/history`)
+}
 export default {
     getWagons,
     getPassport,
@@ -111,6 +118,8 @@ export default {
     getCurrentLastInfoWagon,
     getDataShipment,
     getCargoCode1,
+    getWagonRepair,
+    getWagonRepairHistory,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,
