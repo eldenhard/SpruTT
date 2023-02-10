@@ -229,16 +229,6 @@ export default {
                 this.isRed = false
             }
         })
-        // console.log(this.repair_data);
-        // for (let i in this.repair_data) {
-        //     if(Math.trunc(element.axis1_left) === 25){
-        //         this.isRed= true
-        //     } else {
-        //         this.isRed = false
-        //     }
-
-
-        // }
       })
       .catch((error) => {
         this.loader = false;
@@ -269,7 +259,7 @@ export default {
     },
     downloadReport(){
         this.loader = true
-        window.location.href = 'api/repair-axis-wheels/export/'
+        window.location.href = 'api/wagon-park/repair-axis-wheels/export/'
         this.loader = false
 
     }
