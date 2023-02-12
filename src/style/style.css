@@ -82,67 +82,6 @@ button:hover {
   /* width: 35px !important; */
 
 }
-/* #tableMain,
-#tableDislocation {
-  background: rgb(236, 236, 236);
-  width: 100% !important;
-
-} */
-
-/* tr,
-td,
-th {
-  font-size: 12px;
-  border: 1px solid rgb(184, 184, 184);
-  background: white;
-  text-align: center;
-} */
-
-/* .info-table {
-  margin-top: 66px;
-  width: 50vw;
-} */
-
-/* .table1 table {
-  border-spacing: 0 !important;
-  margin-top: 3%;
-} */
-
-/* .table1 table thead tr th {
-  text-align: left !important;
-  border-bottom: solid 3px #c04945 !important;
-  padding: 8px !important;
-  font-size: small;
-  background-color: #eee !important;
-  color: #000000 !important;
-} */
-
-/* .table1 table tbody tr td {
-  transition: all 0.15s ease !important;
-  padding: 8px !important;
-} */
-
-/* .table1 table tbody td span {
-  font-size: x-small;
-  display: block;
-} */
-
-/* .table1 table tbody td span:first-child {
-  font-size: small;
-  line-height: 1.5em;
-  display: block;
-} */
-
-/* .table1 table tbody tr:hover {
-  background-color: #eee !important;
-  outline: solid 1px #c04945 !important;
-} */
-
-/* .table1 table th,
-.table1 table td:not(.wrap) {
-  white-space: nowrap !important;
-} */
-
 h2 {
   text-align: center;
   padding-top: 2%;
