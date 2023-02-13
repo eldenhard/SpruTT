@@ -9,12 +9,7 @@
       <br />
     </div>
     <div class="content">
-      <div
-        v-for="wag_type in wagon_type"
-        :key="wag_type.id"
-        style="display: block"
-        @click="openInfo(wag_type.id)"
-      >
+      <div v-for="wag_type in wagon_type" :key="wag_type.id">
         <div class="all-visible">
           <input
             type="radio"
@@ -24,21 +19,21 @@
             style="margin: 0 0 0 15px !important"
           />
           <label :for="wag_type.id">&nbsp;{{ wag_type.name }}</label>
-
           <hr />
-          <div class="expand-info" v-show="dop_info" :id="wag_type.id">
-            <input type="number" placeholder="Количество" class="textareaS" />
-            <select name="" id="" class="textareaS">
-              <option value="1">Инвентарный парк</option>
-              <option value="2">Собственный</option>
-              <option value="3">Арендованный</option>
-              <option value="7">Привлеченный ОАО "РЖД"</option>
-            </select>
-          </div>
         </div>
       </div>
     </div>
 
+    <div class="expand-info">
+      <input type="number" placeholder="Количество" class="textareaS" />
+      <select name="" id="" class="textareaS">
+        <option value="" disabled selected>Принадлежность</option>
+        <option value="1">Инвентарный парк</option>
+        <option value="2">Собственный</option>
+        <option value="3">Арендованный</option>
+        <option value="7">Привлеченный ОАО "РЖД"</option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -51,6 +46,8 @@ export default {
       dop_info: false,
       wagon: "",
       wagon_type: [],
+      search: '',
+
     };
   },
   computed: {
@@ -58,37 +55,21 @@ export default {
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
     }),
-  },
-  watch: {
-    // wagon(){
-    //     if(this.wagon == id){
-    //         this.dop_info = true
-    //     }
-    // }
+
+
   },
   mounted() {
     api.getWagonType().then((response) => {
       this.wagon_type = response.data.data;
+      console.log(typeof this.wagon_type)
     });
   },
   methods: {
-    sort_info(a) {
+    sort_info() {
       return a.sort(function (a, b) {
         return a - b;
       });
-    },
-    openInfo(id) {
-      console.log(id, 'искомое');
-      let elements = document.getElementsByClassName("expand-info");
-      for (var i = 0; i < elements.length; i++) {
-        if(id == elements[i].id){
-            console.log(elements[i].id, 'Я то значение')
-            this.dop_info = true
-        } else {
-            continue
-        }
-      }
-    },
+    }
   }
 };
 </script>
@@ -112,14 +93,13 @@ button:hover {
 .expand-info {
   display: flex;
   justify-content: space-around;
-  border-bottom: 1px solid black;
-  padding-bottom: 5% !important;
+  padding: 5% 0 0 5% !important;
 }
 
 .content {
   border: 1px solid grey !important;
-  min-height: 38vh;
-  max-height: 38vh;
+  min-height: 25vh;
+  max-height: 25vh;
   overflow: auto;
 }
 .textarea {
