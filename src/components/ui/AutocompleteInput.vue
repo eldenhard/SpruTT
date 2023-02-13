@@ -15,13 +15,13 @@
 </template>
 <style scoped>
 .variants {
-  width: 90%;
+  width: 100%;
   max-height: 100px;
   overflow-y: auto;
   flex-wrap: wrap;
   position: absolute;
   top: 50;
-  z-index: 1;
+  z-index:25 !important;
   background: rgb(235, 235, 235);
   color: rgb(0, 0, 0)
 }

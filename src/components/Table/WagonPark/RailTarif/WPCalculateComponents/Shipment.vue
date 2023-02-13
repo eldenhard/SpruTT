@@ -19,7 +19,9 @@
       <div class="shipment-kind__content__rightBlock">
         <div class="option" v-for="kind in kind_shipment" :key="kind.id">
           <input type="radio" :id="kind.id" :value="kind.id" v-model="kinds" />
-          <label class="radio-right" :for="kind.id">&nbsp;{{ kind.kind }}</label>
+          <label class="radio-right" :for="kind.id"
+            >&nbsp;{{ kind.kind }}</label
+          >
         </div>
       </div>
     </div>
@@ -44,6 +46,14 @@ export default {
       kinds: "",
       kind_shipment: "",
     };
+  },
+  watch: {
+    kinds() {
+      console.log(this.kinds);
+      this.$emit("shipment", {
+        shipment: this.kinds,
+      });
+    },
   },
   computed: {
     ...mapState({
@@ -99,12 +109,12 @@ export default {
 </script>
 <style scoped>
 .option {
-    margin-left: 1%;
+  margin-left: 1%;
 }
 .radio-right {
-    font-size: 12px;
-    font-weight: 400;
-    font-family: 'Montserrat',sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: "Montserrat", sans-serif;
 }
 .shipment-kind {
   margin-top: 8% !important;

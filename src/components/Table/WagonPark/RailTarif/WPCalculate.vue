@@ -12,7 +12,7 @@
           </b-tab>
           <b-tab title="Отправка">
             <b-card-text>
-              <Shipment />
+              <Shipment @shipment="getShipment"/>
             </b-card-text>
           </b-tab>
           <b-tab title="Груз">
@@ -31,6 +31,8 @@
     <div class="result">
       <p>Ст. отправ: <span>{{ select.departure }}</span></p>
       <p>Ст. назнач: <span>{{ select.destination }}</span></p>
+      <p>Отправка: <span>{{ shipment.shipment }}</span></p>
+
     </div>
 </div>
 </template>
@@ -67,12 +69,16 @@ export default {
   components: { Stations, Shipment, Wagon, Cargo },
   data(){
     return {
-        select: ""
+        select: "",
+        shipment: "",
     }
   },
   methods: {
     getStation(data){
       this.select = data
+    },
+    getShipment(data){
+      this.shipment = data
     }
   }
 };

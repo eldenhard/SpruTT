@@ -30,7 +30,7 @@
         <label for="3">&nbsp;По коду</label>
       </div>
       <div>
-        <input type="radio" id="4" value="станция" v-model="picked2" />
+        <input type="radio" id="4" value="станция" v-model="picked2" checked/>
         <label for="4">&nbsp;По станции</label>
       </div>
     </div>
@@ -38,8 +38,6 @@
       :variantTitle="type_station_destination" v-model="destination_station_name" :need-full="true"
       @selected="getFullStationDestination" class="textarea"></autocomplete-input>
 
-
-      <button class="Request" @click="station()">Применить</button>
   </div>
 </template>
 
@@ -108,8 +106,8 @@ export default {
   name: "stations-railtarif",
   data() {
     return {
-      picked: "",
-      picked2: "",
+      picked: "станция",
+      picked2: "станция",
       stations: [],
       departure_station_name: "",
       destination_station_name: "",
@@ -118,7 +116,20 @@ export default {
     };
   },
   components: { AutocompleteInput },
-
+  watch: {
+    destination_station_name(){
+      this.$emit('station', {
+        departure: this.departure_station_name,
+        destination: this.destination_station_name
+      })
+    },
+      departure_station_name(){
+        this.$emit('station', {
+        departure: this.departure_station_name,
+        destination: this.destination_station_name
+      })
+    }
+  },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -154,12 +165,7 @@ export default {
     getFullStationDestination(station) {
       this.destionation_station_object = station;
     },
-    station(){
-      this.$emit('station', {
-        departure: this.departure_station_name,
-        destination: this.destination_station_name
-      })
-    }
+
 
   },
 };
