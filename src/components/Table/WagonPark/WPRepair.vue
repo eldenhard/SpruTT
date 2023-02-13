@@ -48,22 +48,22 @@
       <tbody>
         <tr  v-for="rep in repair_data" :key="rep.id" @click="openInform(rep.wagon)">
                 <td >{{ rep.wagon }}</td>
-                <td :class="{redColor: rep.isRed}">{{ rep.axis1_left }}</td>
-                <td :class="{redColor: rep.isRed1}">{{ rep.axis1_right }}</td>
-                <td :class="{redColor: rep.isRed2}">{{ rep.axis2_left }}</td>
-                <td :class="{redColor: rep.isRed3}">{{ rep.axis2_right }}</td>
-                <td :class="{redColor: rep.isRed4}">{{ rep.axis3_left }}</td>
-                <td :class="{redColor: rep.isRed5}">{{ rep.axis3_right }}</td>
-                <td :class="{redColor: rep.isRed6}">{{ rep.axis4_left }}</td>
-                <td :class="{redColor: rep.isRed7}">{{ rep.axis4_right }}</td>
-                <td :class="{redColor: rep.isRed8}">{{ rep.axis5_left }}</td>
-                <td :class="{redColor: rep.isRed9}">{{ rep.axis5_right }}</td>
-                <td :class="{redColor: rep.isRed10}">{{ rep.axis6_left }}</td>
-                <td :class="{redColor: rep.isRed11}">{{ rep.axis6_right }}</td>
-                <td :class="{redColor: rep.isRed12}">{{ rep.axis7_left }}</td>
-                <td :class="{redColor: rep.isRed13}">{{ rep.axis7_right }}</td>
-                <td :class="{redColor: rep.isRed14}">{{ rep.axis8_left }}</td>
-                <td :class="{redColor: rep.isRed15}">{{ rep.axis8_right }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis1_left_flange }}</td>
+                <td :class="{redColor: rep.isRed1}">{{ rep.axis1_right_flange }}</td>
+                <td :class="{redColor: rep.isRed2}">{{ rep.axis2_left_flange }}</td>
+                <td :class="{redColor: rep.isRed3}">{{ rep.axis2_right_flange }}</td>
+                <td :class="{redColor: rep.isRed4}">{{ rep.axis3_left_flange }}</td>
+                <td :class="{redColor: rep.isRed5}">{{ rep.axis3_right_flange }}</td>
+                <td :class="{redColor: rep.isRed6}">{{ rep.axis4_left_flange }}</td>
+                <td :class="{redColor: rep.isRed7}">{{ rep.axis4_right_flange }}</td>
+                <td :class="{redColor: rep.isRed8}">{{ rep.axis5_left_flange }}</td>
+                <td :class="{redColor: rep.isRed9}">{{ rep.axis5_right_flange }}</td>
+                <td :class="{redColor: rep.isRed10}">{{ rep.axis6_left_flange }}</td>
+                <td :class="{redColor: rep.isRed11}">{{ rep.axis6_right_flange }}</td>
+                <td :class="{redColor: rep.isRed12}">{{ rep.axis7_left_flange }}</td>
+                <td :class="{redColor: rep.isRed13}">{{ rep.axis7_right_flange }}</td>
+                <td :class="{redColor: rep.isRed14}">{{ rep.axis8_left_flange }}</td>
+                <td :class="{redColor: rep.isRed15}">{{ rep.axis8_right_flange }}</td>
                 <td >{{ rep.sector }}</td>
                 <td >{{ rep.created_at.slice(0,10) }}</td>
         </tr>
@@ -115,22 +115,22 @@
       <tbody>
         <tr v-for="data in history_data" :key="data.id">
                 <td>{{ data.wagon }}</td>
-                <td>{{ data.axis1_left }}</td>
-                <td>{{ data.axis1_right }}</td>
-                <td>{{ data.axis2_left }}</td>
-                <td>{{ data.axis2_right }}</td>
-                <td>{{ data.axis3_left }}</td>
-                <td>{{ data.axis3_right }}</td>
-                <td>{{ data.axis4_left }}</td>
-                <td>{{ data.axis4_right }}</td>
-                <td>{{ data.axis5_left }}</td>
-                <td>{{ data.axis5_right }}</td>
-                <td>{{ data.axis6_left }}</td>
-                <td>{{ data.axis6_right }}</td>
-                <td>{{ data.axis7_left }}</td>
-                <td>{{ data.axis7_right }}</td>
-                <td>{{ data.axis8_left }}</td>
-                <td>{{ data.axis8_right }}</td>
+                <td>{{ data.axis1_left_flange }}</td>
+                <td>{{ data.axis1_right_flange }}</td>
+                <td>{{ data.axis2_left_flange }}</td>
+                <td>{{ data.axis2_right_flange }}</td>
+                <td>{{ data.axis3_left_flange }}</td>
+                <td>{{ data.axis3_right_flange }}</td>
+                <td>{{ data.axis4_left_flange }}</td>
+                <td>{{ data.axis4_right_flange }}</td>
+                <td>{{ data.axis5_left_flange }}</td>
+                <td>{{ data.axis5_right_flange }}</td>
+                <td>{{ data.axis6_left_flange }}</td>
+                <td>{{ data.axis6_right_flange }}</td>
+                <td>{{ data.axis7_left_flange }}</td>
+                <td>{{ data.axis7_right_flange }}</td>
+                <td>{{ data.axis8_left_flange }}</td>
+                <td>{{ data.axis8_right_flange }}</td>
                 <td>{{ data.sector }}</td>
           <td >{{ (data.created_at).slice(0,10) }}</td>
         </tr>
@@ -187,54 +187,55 @@ export default {
       .getWagonRepair()
       .then((response) => {
         this.repair_data = response.data.data;
+        console.log(this.repair_data)
         this.loader = false;
         let a = this.repair_data.map(element =>{
-            if(element.axis1_left <= 25 && element.axis1_left > 0){
+            if(element.axis1_left_flange <= 25 && element.axis1_left_flange > 0){
                 element.isRed= true
             }
-            if(element.axis1_right <= 25 && element.axis1_right > 0){
+            if(element.axis1_right_flange <= 25 && element.axis1_right_flange > 0){
                 element.isRed1= true
             }
-            if(element.axis2_left <= 25 && element.axis2_left > 0){
+            if(element.axis2_left_flange <= 25 && element.axis2_left_flange > 0){
                 element.isRed2= true
             }
-            if(element.axis2_right <= 25 && element.axis2_right > 0){
+            if(element.axis2_right_flange <= 25 && element.axis2_right_flange > 0){
                 element.isRed3= true
             }
-            if(element.axis3_left <= 25 && element.axis3_left > 0){
+            if(element.axis3_left_flange <= 25 && element.axis3_left_flange > 0){
                 element.isRed4= true
             }
-            if(element.axis3_right <= 25 && element.axis3_right > 0){
+            if(element.axis3_right_flange <= 25 && element.axis3_right_flange > 0){
                 element.isRed5= true
             }
-             if(element.axis4_left <= 25 && element.axis4_left > 0){
+             if(element.axis4_left_flange <= 25 && element.axis4_left_flange > 0){
                 element.isRed6= true
             }
-            if(element.axis4_right <= 25 && element.axis4_right > 0){
+            if(element.axis4_right_flange <= 25 && element.axis4_right_flange > 0){
                 element.isRed7= true
             }
-             if(element.axis5_left <= 25 && element.axis5_left > 0){
+             if(element.axis5_left_flange <= 25 && element.axis5_left_flange > 0){
                 element.isRed8= true
             }
-             if(element.axis5_right <= 25 && element.axis5_right > 0){
+             if(element.axis5_right_flange <= 25 && element.axis5_right_flange > 0){
                 element.isRed9= true
             }
-             if(element.axis6_left <= 25 && element.axis6_left > 0){
+             if(element.axis6_left_flange <= 25 && element.axis6_left_flange > 0){
                 element.isRed10= true
             }
-             if(element.axis6_right <= 25 && element.axis6_right > 0){
+             if(element.axis6_right_flange <= 25 && element.axis6_right_flange > 0){
                 element.isRed11= true
             }
-            if(element.axis7_left <= 25 && element.axis7_left > 0){
+            if(element.axis7_left_flange <= 25 && element.axis7_left_flange > 0){
                 element.isRed12= true
             }
-             if(element.axis7_right <= 25 && element.axis7_right > 0){
+             if(element.axis7_right_flange <= 25 && element.axis7_right_flange > 0){
                 element.isRed13= true
             }
-            if(element.axis8_left <= 25 && element.axis8_left > 0){
+            if(element.axis8_left_flange <= 25 && element.axis8_left_flange > 0){
                 element.isRed14= true
             }
-            if(element.axis8_right <= 25 && element.axis8_right > 0){
+            if(element.axis8_right_flange <= 25 && element.axis8_right_flange > 0){
                 element.isRed15= true
             }
             else {
