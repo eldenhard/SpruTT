@@ -43,15 +43,17 @@ export default {
       result4: "",
       result5: "",
       result6: "",
-      kinds: "",
+      kinds: [],
       kind_shipment: "",
+      data: [],
     };
   },
   watch: {
     kinds() {
-      console.log(this.kinds);
+
       this.$emit("shipment", {
-        shipment: this.kinds,
+        id: this.kinds,
+        shipment: this.getShipmentById(this.kinds),
       });
     },
   },
@@ -64,6 +66,7 @@ export default {
   mounted() {
     api.getDataShipment().then((response) => {
       let data = response.data.data;
+      this.data = response.data.data;
       let array = [];
       for (let i in data) {
         array.push(data[i].category.split(" ")[0]);
@@ -89,6 +92,11 @@ export default {
     });
   },
   methods: {
+    getShipmentById(data) {
+      let searchShipment = data;
+      let shipment = this.data.find((item) => item.id === searchShipment).kind;
+      return shipment
+    },
     test(i) {
       if (i == "Повагонная") {
         this.kind_shipment = this.result;

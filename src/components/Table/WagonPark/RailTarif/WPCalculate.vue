@@ -79,7 +79,7 @@ export default {
     },
     getShipment(data){
       this.shipment = data
-    }
+    },
   }
 };
 </script>
