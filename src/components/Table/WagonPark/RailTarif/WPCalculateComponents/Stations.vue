@@ -1,5 +1,4 @@
 <template>
-
   <div class="shipment-kind">
     <div class="shipment-kind__header">
       <h4 class="header-text">Начальная и конечная станция</h4>
@@ -19,9 +18,16 @@
         <label for="two">&nbsp;По станции</label>
       </div>
     </div>
-    <autocomplete-input :variants="stations" :variantKey="'id'" :label="'Станция отправления'"
-      :variantTitle="type_station_departure" v-model="departure_station_name" :need-full="true"
-      @selected="getFullStationDeparture" class="textarea"></autocomplete-input>
+    <autocomplete-input
+      :variants="stations"
+      :variantKey="'id'"
+      :label="'Станция отправления'"
+      :variantTitle="type_station_departure"
+      v-model="departure_station_name"
+      :need-full="true"
+      @selected="getFullStationDeparture"
+      class="textarea"
+    ></autocomplete-input>
     <br />
     <br />
     <div class="station-destination">
@@ -30,18 +36,40 @@
         <label for="3">&nbsp;По коду</label>
       </div>
       <div>
-        <input type="radio" id="4" value="станция" v-model="picked2" checked/>
+        <input type="radio" id="4" value="станция" v-model="picked2" checked />
         <label for="4">&nbsp;По станции</label>
       </div>
     </div>
-    <autocomplete-input :variants="stations" :variantKey="'id'" :label="'Станция назначения'"
-      :variantTitle="type_station_destination" v-model="destination_station_name" :need-full="true"
-      @selected="getFullStationDestination" class="textarea"></autocomplete-input>
+    <autocomplete-input
+      :variants="stations"
+      :variantKey="'id'"
+      :label="'Станция назначения'"
+      :variantTitle="type_station_destination"
+      v-model="destination_station_name"
+      :need-full="true"
+      @selected="getFullStationDestination"
+      class="textarea"
+    ></autocomplete-input>
 
+    <br />
+    <div class="check-block">
+      <div>
+        <input type="checkbox" id="checkboxEmpty" v-model="is_loaded" />
+        <label for="checkboxEmpty">&nbsp;{{ Translate }}</label>
+      </div>
+      <div>
+        <input type="checkbox" id="checkboxInternat" v-model="international" />
+        <label for="checkboxInternat">&nbsp;{{ International }}</label>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.check-block {
+  display: flex;
+  justify-content: space-around;
+}
 .Request {
   position: absolute;
   bottom: 0;
@@ -108,6 +136,8 @@ export default {
     return {
       picked: "станция",
       picked2: "станция",
+      is_loaded: "",
+      international: "",
       stations: [],
       departure_station_name: "",
       destination_station_name: "",
@@ -117,24 +147,54 @@ export default {
   },
   components: { AutocompleteInput },
   watch: {
-    destination_station_name(){
-      this.$emit('station', {
+    destination_station_name() {
+      this.$emit("station", {
+        destination: this.destination_station_name,
         departure: this.departure_station_name,
-        destination: this.destination_station_name
-      })
+        is_loaded: this.is_loaded,
+        international: this.international
+      });
     },
-      departure_station_name(){
-        this.$emit('station', {
+    departure_station_name() {
+      this.$emit("station", {
+        destination: this.destination_station_name,
         departure: this.departure_station_name,
-        destination: this.destination_station_name
-      })
+        is_loaded: this.is_loaded,
+        international: this.international      });
+    },
+    is_loaded(){
+      this.$emit("station", {
+        destination: this.destination_station_name,
+        departure: this.departure_station_name,
+        is_loaded: this.is_loaded,
+        international: this.international      })
+    },
+    international(){
+      this.$emit("station", {
+        destination: this.destination_station_name,
+        departure: this.departure_station_name,
+        is_loaded: this.is_loaded,
+        international: this.international      })
     }
+
   },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
     }),
+    Translate() {
+      if (this.is_loaded == false) {
+        return "Порожний";
+      }
+      return "Груженый";
+    },
+    International(){
+      if (this.international == false) {
+        return "Не международный";
+      }
+      return "Международный";
+    },
     type_station_departure() {
       if (this.picked === "код") {
         return "code";
@@ -165,8 +225,6 @@ export default {
     getFullStationDestination(station) {
       this.destionation_station_object = station;
     },
-
-
   },
 };
 </script>

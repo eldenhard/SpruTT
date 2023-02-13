@@ -29,6 +29,8 @@
       </b-card>
     </div>
     <div class="result">
+      <p>Груж/Порожний: <span>{{ translateBoolIsLoaded(select.is_loaded) }}</span></p>
+      <p>Международный <span>{{ translateInternational(select.international) }}</span></p>
       <p>Ст. отправ: <span>{{ select.departure }}</span></p>
       <p>Ст. назнач: <span>{{ select.destination }}</span></p>
       <p>Отправка: <span>{{ shipment.shipment }}</span></p>
@@ -80,6 +82,12 @@ export default {
     getShipment(data){
       this.shipment = data
     },
+    translateBoolIsLoaded(data){
+      return data == true ? 'Груженый' : 'Порожний'
+    },
+    translateInternational(data){
+      return data == true ? 'Международный' : 'Внутренний'
+    }
   }
 };
 </script>
