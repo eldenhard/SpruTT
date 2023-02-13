@@ -46,8 +46,8 @@ export default {
       dop_info: false,
       wagon: "",
       wagon_type: [],
-      search: '',
-
+      belong: "",
+      search: "",
     };
   },
   computed: {
@@ -55,13 +55,18 @@ export default {
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
     }),
-
-
+  },
+  watch: {
+    wagon(){
+      this.$emit('wagon', {
+        wagon_id: this.wagon,
+        wagon_type: this.getWagonById(this.wagon)
+      })
+    }
   },
   mounted() {
     api.getWagonType().then((response) => {
       this.wagon_type = response.data.data;
-      console.log(typeof this.wagon_type)
     });
   },
   methods: {
@@ -69,8 +74,13 @@ export default {
       return a.sort(function (a, b) {
         return a - b;
       });
+    },
+    getWagonById(data){
+      let searchWagon = data
+      let wagon = this.wagon_type.find(item => item.id === searchWagon).name
+      return wagon
     }
-  }
+  },
 };
 </script>
 <style scoped>

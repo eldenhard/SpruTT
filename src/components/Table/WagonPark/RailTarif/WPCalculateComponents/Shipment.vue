@@ -97,6 +97,7 @@ export default {
       let shipment = this.data.find((item) => item.id === searchShipment).kind;
       return shipment
     },
+
     test(i) {
       if (i == "Повагонная") {
         this.kind_shipment = this.result;

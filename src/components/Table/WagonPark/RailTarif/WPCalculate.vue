@@ -22,7 +22,7 @@
           </b-tab>
           <b-tab title="Вагон">
             <b-card-text>
-              <Wagon />
+              <Wagon @wagon="wagonType"/>
             </b-card-text>
           </b-tab>
         </b-tabs>
@@ -34,7 +34,9 @@
       <p>Ст. отправ: <span>{{ select.departure }}</span></p>
       <p>Ст. назнач: <span>{{ select.destination }}</span></p>
       <p>Отправка: <span>{{ shipment.shipment }}</span></p>
-
+      <p>Тип вагона: <span>{{ wagon.wagon_type }}</span></p>
+      <p>Количество: <span></span></p>
+      <p>Принадлежность: <span></span></p>
     </div>
 </div>
 </template>
@@ -73,6 +75,7 @@ export default {
     return {
         select: "",
         shipment: "",
+        wagon: "",
     }
   },
   methods: {
@@ -81,6 +84,9 @@ export default {
     },
     getShipment(data){
       this.shipment = data
+    },
+    wagonType(data){
+      this.wagon = data
     },
     translateBoolIsLoaded(data){
       return data == true ? 'Груженый' : 'Порожний'
