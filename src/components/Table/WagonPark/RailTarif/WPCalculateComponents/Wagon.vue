@@ -5,28 +5,17 @@
       <hr />
     </div>
     <div class="shipment-kind__content">
-      <input type="text" class="textarea" style="width: 100% !important" />
+      <input type="text" id="search" class="textarea" style="width: 100% !important" v-model="search" />
       <br />
     </div>
-    <div class="content">
-      <div v-for="wag_type in wagon_type" :key="wag_type.id">
-        <div class="all-visible">
-          <input
-            type="radio"
-            :id="wag_type.id"
-            :value="wag_type.id"
-            v-model="wagon"
-            style="margin: 0 0 0 15px !important"
-          />
-          <label :for="wag_type.id">&nbsp;{{ wag_type.name }}</label>
-          <hr />
-        </div>
-      </div>
-    </div>
+
+    <ul id="results" style="cursor: pointer !important">
+    </ul>
+
 
     <div class="expand-info">
       <input type="number" placeholder="Количество" class="textareaS" />
-      <select name="" id="" class="textareaS">
+      <select name="" id="" class="textareaS" v-model="belong">
         <option value="" disabled selected>Принадлежность</option>
         <option value="1">Инвентарный парк</option>
         <option value="2">Собственный</option>
@@ -48,6 +37,8 @@ export default {
       wagon_type: [],
       belong: "",
       search: "",
+      search_value: "",
+      flame: "",
     };
   },
   computed: {
@@ -57,10 +48,41 @@ export default {
     }),
   },
   watch: {
-    wagon(){
+    search() {
+      let data = []
+      for (let i in this.wagon_type) {
+        data.push((this.wagon_type[i].name).trim())
+      }
+      const result = document.getElementById('results')
+      renderList(data, result)
+      function filter(val, data) {
+        return data.filter(i => i.includes(val))
+      };
+      function renderList(_data = [], el = this.search) {
+        el.innerHTML = '';
+        _data.forEach(i => {
+          let new_el = document.createElement('li')
+          new_el.setAttribute('id', `${i.slice(0, 1) + ((Math.random() * 100).toString()).slice(0, 8)}`)
+          new_el.innerHTML = i
+          el.appendChild(new_el)
+          new_el.addEventListener('click', function() {
+            let a = new_el.textContent
+            this.search = new_el.textContent;
+            this.search_value = a
+          })
+        })
+      }
+      renderList(filter(this.search, data), result)
+    },
+    wagon() {
       this.$emit('wagon', {
         wagon_id: this.wagon,
         wagon_type: this.getWagonById(this.wagon)
+      })
+    },
+    belong(){
+      this.$emit('belong', {
+        belong : this.belong
       })
     }
   },
@@ -75,7 +97,7 @@ export default {
         return a - b;
       });
     },
-    getWagonById(data){
+    getWagonById(data) {
       let searchWagon = data
       let wagon = this.wagon_type.find(item => item.id === searchWagon).name
       return wagon
@@ -84,6 +106,12 @@ export default {
 };
 </script>
 <style scoped>
+#results{
+  cursor: pointer !important;
+}
+#results>li:hover{
+  color: blue;
+}
 button {
   background: white;
   color: black;
@@ -97,9 +125,11 @@ button {
   text-align: left;
   height: 25px;
 }
+
 button:hover {
   background: white;
 }
+
 .expand-info {
   display: flex;
   justify-content: space-around;
@@ -112,16 +142,19 @@ button:hover {
   max-height: 25vh;
   overflow: auto;
 }
+
 .textarea {
   background: white;
   border: 1px solid grey !important;
   width: 30%;
 }
+
 .textareaS {
   border: 1px solid grey;
   width: 30%;
   border-radius: 5px;
 }
+
 .shipment-kind {
   margin-top: 8% !important;
   position: relative;
@@ -132,6 +165,7 @@ button:hover {
   border: 2px solid #1e86f5;
   border-radius: 10px;
 }
+
 .header-text {
   color: #444b54;
   padding-top: 2%;
@@ -139,6 +173,7 @@ button:hover {
   font-family: "Montserrat", sans-serif;
   font-weight: normal;
 }
+
 .shipment-kind__content {
   width: 95%;
   position: relative;

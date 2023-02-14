@@ -22,7 +22,8 @@
           </b-tab>
           <b-tab title="Вагон">
             <b-card-text>
-              <Wagon @wagon="wagonType"/>
+              <Wagon @wagon="wagonType" 
+              @belong="wagonBelong"/>
             </b-card-text>
           </b-tab>
         </b-tabs>
@@ -36,7 +37,7 @@
       <p>Отправка: <span>{{ shipment.shipment }}</span></p>
       <p>Тип вагона: <span>{{ wagon.wagon_type }}</span></p>
       <p>Количество: <span></span></p>
-      <p>Принадлежность: <span></span></p>
+      <p>Принадлежность: <span>{{ (belong.belong) }}</span></p>
     </div>
 </div>
 </template>
@@ -76,6 +77,7 @@ export default {
         select: "",
         shipment: "",
         wagon: "",
+        belong: ""
     }
   },
   methods: {
@@ -93,6 +95,9 @@ export default {
     },
     translateInternational(data){
       return data == true ? 'Международный' : 'Внутренний'
+    },
+    wagonBelong(data){
+      this.belong = data
     }
   }
 };

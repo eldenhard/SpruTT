@@ -1,9 +1,9 @@
 <template>
   <div>
     <Loader :loader="loader" />
-    <div style="display: flex; justify-content: space-around;" @click="downloadReport()">
+    <div style="display: flex; justify-content: space-between;" @click="downloadReport()">
     <p class="explanation"> * Для просмотра изменений по вагону кликните на строку с этим вагоном</p>
-      <button class="Accept">Скачать</button> 
+      <button class="Accept" style="width:25%">Скачать</button> 
     </div>
     <table class="table-bordered table-sm">
       <thead>
