@@ -19,15 +19,13 @@
                     <th scope="col">Код ЕСТНГ</th>
                     <th scope="col">Наименование</th>
                     <th scope="col">Тарифный класс</th>
-                    <th scope="col">МВН РЖД</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
+                  <tr v-for="information in informations" :key="information.id">
+                    <td>{{ information.code6 }}</td>
+                    <td>{{ information.name }}</td>
+                    <td>{{ information.cargo_class }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -50,14 +48,12 @@
                   <tr>
                     <th scope="col">Код ГНГ</th>
                     <th scope="col">Наименование</th>
-                    <th scope="col">Класс ЕТТ</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
+                  <tr v-for="information in informations" :key="information.id">
+                    <td>{{ information.code }}</td>
+                    <td>{{ information.name }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -72,8 +68,39 @@
     </div>
   </div>
 </template>
-
+<script>
+import { mapState } from "vuex";
+import api from '@/api/wagonPark'
+export default{
+  
+  name: 'cargo',
+  data(){
+    return{
+      informations: '',
+    }
+  },
+  computed: {
+    ...mapState({
+      user: (state) => state.auth.user,
+      uid: (state) => state.auth.uid,
+    }),
+  },
+  mounted(){
+    api.getCargoCode1()
+    .then(response => {
+     this.informations = response.data.data
+    })
+  }
+}
+</script>
   <style scoped>
+  thead th{
+    position: -webkit-sticky;
+  position: sticky;
+  top: -3px; 
+  z-index: 2;
+  background: white;
+  }
  .shipment-kind__content__weight {
     width: 100%;
     border: 1px solid #e3e5e7;
@@ -91,6 +118,8 @@
     left: 50%;
     border-radius: 10px;
     transform: translate(-50%,0);
+    max-height: 35vh;
+    overflow: auto;
   }
 .textareaTon{
     background: white;

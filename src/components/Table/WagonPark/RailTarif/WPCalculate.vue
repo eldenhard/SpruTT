@@ -23,7 +23,8 @@
           <b-tab title="Вагон">
             <b-card-text>
               <Wagon @wagon="wagonType" 
-              @belong="wagonBelong"/>
+              @belong="wagonBelong"
+              @amount="wagonAmount"/>
             </b-card-text>
           </b-tab>
         </b-tabs>
@@ -36,8 +37,8 @@
       <p>Ст. назнач: <span>{{ select.destination }}</span></p>
       <p>Отправка: <span>{{ shipment.shipment }}</span></p>
       <p>Тип вагона: <span>{{ wagon.wagon_type }}</span></p>
-      <p>Количество: <span></span></p>
-      <p>Принадлежность: <span>{{ (belong.belong) }}</span></p>
+      <p>Количество: <span>{{ amount }}</span></p>
+      <p>Принадлежность: <span>{{ getBelongById(belong.belong) }}</span></p>
     </div>
 </div>
 </template>
@@ -77,7 +78,8 @@ export default {
         select: "",
         shipment: "",
         wagon: "",
-        belong: ""
+        belong: "",
+        amount: "",
     }
   },
   methods: {
@@ -98,7 +100,24 @@ export default {
     },
     wagonBelong(data){
       this.belong = data
-    }
-  }
+    },
+    wagonAmount(data){
+      this.amount = data
+    },
+    getBelongById(id){
+      if(id == 1){
+        return 'Инвентарный парк'
+      }
+      if(id == 2){
+        return 'Собственный'
+      }
+      if(id == 3){
+        return 'Арендованный'
+      }
+      else {
+        return "Привлеченный ОАО 'РЖД'"
+      }
+    },
+}
 };
 </script>

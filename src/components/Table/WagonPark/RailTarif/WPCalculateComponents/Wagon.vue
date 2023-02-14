@@ -14,7 +14,7 @@
 
 
     <div class="expand-info">
-      <input type="number" placeholder="Количество" class="textareaS" />
+      <input type="number" placeholder="Количество" class="textareaS" v-model="amount"/>
       <select name="" id="" class="textareaS" v-model="belong">
         <option value="" disabled selected>Принадлежность</option>
         <option value="1">Инвентарный парк</option>
@@ -39,6 +39,7 @@ export default {
       search: "",
       search_value: "",
       flame: "",
+      amount: ""
     };
   },
   computed: {
@@ -84,6 +85,9 @@ export default {
       this.$emit('belong', {
         belong : this.belong
       })
+    },
+    amount(){
+      this.$emit('amount', this.amount)
     }
   },
   mounted() {
