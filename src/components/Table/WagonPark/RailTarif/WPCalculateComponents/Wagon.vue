@@ -9,12 +9,33 @@
       <br />
     </div>
 
-    <ul id="results" style="cursor: pointer !important">
-    </ul>
+<!-- <table>
+  <thead>
+    <tr>1</tr>
+  </thead>
+  <tbody>
+    <tr v-for="information in getCurrentWagonType" :key="information.id">
+      <td>{{ information.name }}</td>
+    </tr>
+  </tbody>
+</table>
+  -->
+  <div class="option" v-for="kind in getCurrentWagonType" :key="kind.id">
+          <input type="radio" :id="kind.id" :value="kind.id" v-model="wagonType" />
+          <label class="radio-right" :for="kind.id"
+            >&nbsp;{{ kind.name }}</label
+          >
+        </div>
+    <!-- <input type="radio" :id="typwagon" :value="typwagon" v-model="wagonType" />
+          <label :for="typwagon"
+            >&nbsp;{{ typwagon.name }}</label
+          > -->
+
+
 
 
     <div class="expand-info">
-      <input type="number" placeholder="Количество" class="textareaS" v-model="amount"/>
+      <input type="number" placeholder="Количество" class="textareaS" v-model="amount" />
       <select name="" id="" class="textareaS" v-model="belong">
         <option value="" disabled selected>Принадлежность</option>
         <option value="1">Инвентарный парк</option>
@@ -32,12 +53,11 @@ import api from "@/api/wagonPark";
 export default {
   data() {
     return {
-      dop_info: false,
       wagon: "",
       wagon_type: [],
+      wagonType: "",
       belong: "",
       search: "",
-      search_value: "",
       flame: "",
       amount: ""
     };
@@ -47,52 +67,30 @@ export default {
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
     }),
+    getCurrentWagonType() {
+      return this.wagon_type.filter(item => item.name.indexOf(this.search) !== -1)
+    },
   },
   watch: {
-    search() {
-      let data = []
-      for (let i in this.wagon_type) {
-        data.push((this.wagon_type[i].name).trim())
-      }
-      const result = document.getElementById('results')
-      renderList(data, result)
-      function filter(val, data) {
-        return data.filter(i => i.includes(val))
-      };
-      function renderList(_data = [], el = this.search) {
-        el.innerHTML = '';
-        _data.forEach(i => {
-          let new_el = document.createElement('li')
-          new_el.setAttribute('id', `${i.slice(0, 1) + ((Math.random() * 100).toString()).slice(0, 8)}`)
-          new_el.innerHTML = i
-          el.appendChild(new_el)
-          new_el.addEventListener('click', function() {
-            let a = new_el.textContent
-            this.search = new_el.textContent;
-            this.search_value = a
-          })
-        })
-      }
-      renderList(filter(this.search, data), result)
-    },
     wagon() {
       this.$emit('wagon', {
         wagon_id: this.wagon,
         wagon_type: this.getWagonById(this.wagon)
       })
     },
-    belong(){
+    belong() {
       this.$emit('belong', {
-        belong : this.belong
+        belong: this.belong
       })
     },
-    amount(){
+    amount() {
       this.$emit('amount', this.amount)
     }
   },
   mounted() {
     api.getWagonType().then((response) => {
       this.wagon_type = response.data.data;
+      console.log(this.wagon_type)
     });
   },
   methods: {
@@ -110,12 +108,14 @@ export default {
 };
 </script>
 <style scoped>
-#results{
+#results {
   cursor: pointer !important;
 }
-#results>li:hover{
+
+#results>li:hover {
   color: blue;
 }
+
 button {
   background: white;
   color: black;

@@ -95,12 +95,7 @@ export default {
     }
 
   },
-  methods: {
-    sortBy(sortKey) {
-      this.reverse = (this.sortKey == sortKey) ? !this.reverse : false;
-      this.sortKey = sortKey;
-    }
-  },
+
   mounted() {
     api.getCargoCode1()
       .then(response => {
