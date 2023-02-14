@@ -8,32 +8,13 @@
       <input type="text" id="search" class="textarea" style="width: 100% !important" v-model="search" />
       <br />
     </div>
-
-<!-- <table>
-  <thead>
-    <tr>1</tr>
-  </thead>
-  <tbody>
-    <tr v-for="information in getCurrentWagonType" :key="information.id">
-      <td>{{ information.name }}</td>
-    </tr>
-  </tbody>
-</table>
-  -->
-  <div class="option" v-for="kind in getCurrentWagonType" :key="kind.id">
-          <input type="radio" :id="kind.id" :value="kind.id" v-model="wagonType" />
-          <label class="radio-right" :for="kind.id"
-            >&nbsp;{{ kind.name }}</label
-          >
-        </div>
-    <!-- <input type="radio" :id="typwagon" :value="typwagon" v-model="wagonType" />
-          <label :for="typwagon"
-            >&nbsp;{{ typwagon.name }}</label
-          > -->
-
-
-
-
+    <div class="shipment-kind__content__input">
+      <div class="option" v-for="wagon in getCurrentWagonType" :key="wagon.id">
+        <input type="radio" :id="wagon.id" :value="wagon.id" v-model="wagonType" />
+        <label  :for="wagon.id">&nbsp;{{ wagon.name }}</label>
+        <hr>
+      </div>
+    </div>
     <div class="expand-info">
       <input type="number" placeholder="Количество" class="textareaS" v-model="amount" />
       <select name="" id="" class="textareaS" v-model="belong">
@@ -108,14 +89,20 @@ export default {
 };
 </script>
 <style scoped>
-#results {
-  cursor: pointer !important;
+.option {
+  height: 50px;
+  font-size: 19px;
 }
-
-#results>li:hover {
-  color: blue;
+.shipment-kind__content__input{
+  min-height: 35vh;
+  max-height: 35vh;
+  overflow: auto;
+  border: 1px solid #EFF0F2 !important;
+  width: 95%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
-
 button {
   background: white;
   color: black;
@@ -137,15 +124,17 @@ button:hover {
 .expand-info {
   display: flex;
   justify-content: space-around;
-  padding: 5% 0 0 5% !important;
+  padding: 5% 0 5% 5% !important;
+  margin-bottom: 3%;
+  width: 95%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,0);
+  border: 1px solid #EFF0F2 ;
+  border-top: none;
 }
 
-.content {
-  border: 1px solid grey !important;
-  min-height: 25vh;
-  max-height: 25vh;
-  overflow: auto;
-}
+
 
 .textarea {
   background: white;
@@ -183,8 +172,7 @@ button:hover {
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
-  border: 1px solid #e3e5e7;
   border-radius: 5px;
-  margin-bottom: 5%;
+  margin-bottom: 3%;
 }
 </style>
