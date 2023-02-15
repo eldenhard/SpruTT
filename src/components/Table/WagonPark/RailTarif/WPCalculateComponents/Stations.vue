@@ -155,33 +155,19 @@ export default {
   components: { AutocompleteInput },
   watch: {
     destination_station_name() {
-      this.$emit("station", {
-        destination: this.destination_station_name,
-        departure: this.departure_station_name,
-        is_loaded: this.is_loaded,
-        international: this.international
-      });
+      this.$emit("destination", {
+        destination: this.destination_station_name,});
     },
     departure_station_name() {
-      this.$emit("station", {
-        destination: this.destination_station_name,
-        departure: this.departure_station_name,
-        is_loaded: this.is_loaded,
-        international: this.international      });
+      this.$emit("departure", {
+        departure: this.departure_station_name
+      });
     },
     is_loaded(){
-      this.$emit("station", {
-        destination: this.destination_station_name,
-        departure: this.departure_station_name,
-        is_loaded: this.is_loaded,
-        international: this.international      })
+      this.$emit("is_loaded",  this.is_loaded,)
     },
     international(){
-      this.$emit("station", {
-        destination: this.destination_station_name,
-        departure: this.departure_station_name,
-        is_loaded: this.is_loaded,
-        international: this.international      })
+      this.$emit("international", this.international)
     },
     on_date(){
       this.$emit('on_date', this.on_date)
@@ -207,7 +193,7 @@ export default {
     },
     type_station_departure() {
       if (this.picked === "код") {
-        return "code";
+        return "code6";
       } else if (this.picked === "станция") {
         return "name";
       } else {
@@ -216,7 +202,7 @@ export default {
     },
     type_station_destination() {
       if (this.picked2 === "код") {
-        return "code";
+        return "code6";
       } else if (this.picked2 === "станция") {
         return "name";
       } else {
@@ -229,6 +215,7 @@ export default {
   },
 
   methods: {
+
     getFullStationDeparture(station) {
       this.departure_station_object = station;
     },

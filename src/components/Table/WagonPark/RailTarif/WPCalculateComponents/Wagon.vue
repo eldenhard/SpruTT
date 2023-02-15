@@ -55,7 +55,7 @@ export default {
   watch: {
     wagonType() {
       this.$emit('wagon', {
-        wagon_id: this.wagon,
+        wagon_id: this.wagonType,
         wagon_type: this.getWagonById(this.wagonType)
       })
     },

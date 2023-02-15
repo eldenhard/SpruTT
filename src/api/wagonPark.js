@@ -112,7 +112,7 @@ const getReportRepair = () => {
 }
 // Запрос на рэйлтариф
 const postRailTarif = (data) => {
-    return api.post(`${resource}/rt/${data}/`)
+    return api.post(`${resource}/rt/tariff/`, data)
 }
 export default {
     getWagons,
