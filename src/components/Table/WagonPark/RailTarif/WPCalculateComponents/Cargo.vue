@@ -1,5 +1,7 @@
 <template>
-  <div class="shipment-kind">
+  <div>
+    <Loader :loader="loader" />
+    <div class="shipment-kind">
     <div class="shipment-kind__header">
       <h4 class="header-text">Груз</h4>
       <hr />
@@ -84,10 +86,14 @@
       />
     </div>
   </div>
+  </div>
+
 </template>
 <script>
 import { mapState } from "vuex";
 import api from "@/api/wagonPark";
+import Loader from "@/components/loader/loader.vue";
+
 export default {
   name: "cargo",
   data() {
@@ -98,8 +104,11 @@ export default {
       weight: "",
       estng: "",
       gng: "",
+      loader: false,
+
     };
   },
+  components: { Loader },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -125,7 +134,9 @@ export default {
   mounted() {
     api.getCargoCode1().then((response) => {
       this.informations = response.data.data;
-    });
+    }).catch(error => {
+      console.log(error)
+    })
   },
 
   methods: {

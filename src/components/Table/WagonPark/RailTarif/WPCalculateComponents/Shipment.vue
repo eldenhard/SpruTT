@@ -1,5 +1,9 @@
 <template>
-  <div class="shipment-kind">
+  <div>
+    <Loader :loader="loader" />
+
+    <div class="shipment-kind">
+
     <div class="shipment-kind__header">
       <h4 class="header-text">Вид отправки</h4>
       <hr />
@@ -44,12 +48,16 @@
      </div>
     </div>
   </div>
+  </div>
+
 </template>
 
 
 <script>
 import { mapState } from "vuex";
 import api from "@/api/wagonPark";
+import Loader from "@/components/loader/loader.vue";
+
 export default {
   data() {
     return {
@@ -65,9 +73,12 @@ export default {
       kind_shipment: "",
       data: [],
       is_exit_route: '',
-      speed: ''
+      speed: '',
+      loader: false,
     };
   },
+  components: { Loader },
+
   watch: {
     speed(){
       this.$emit('speed', this.speed)
@@ -114,7 +125,10 @@ export default {
         (item) => item.category == "Контрейлерная перевозка"
       );
       this.result6 = data.filter((item) => item.category == "Другие виды");
-    });
+    }).catch(error => {
+
+      console.log(error)
+    })
   },
   methods: {
     getShipmentById(data) {

@@ -1,70 +1,75 @@
 <template>
-  <div style="display: flex">
-    <div style="width: 80%">
-      <b-card
-        no-body
-        style="margin-left: -5% !important; height: 90vh !important"
-      >
-        <b-tabs pills card vertical style="height: 90vh !important">
-          <b-tab title="Станции отправления/назначения" active>
-            <b-card-text>
-              <Stations
-                @destination="getDestinationStation"
-                @departure="getDepartureStation"
-                @is_loaded="getIsLoaded"
-                @international="getInternational"
-                @on_date="getDate"
-              />
-            </b-card-text>
-          </b-tab>
-          <b-tab title="Отправка">
-            <b-card-text>
-              <Shipment
-                @shipment="getShipment"
-                @is_exit_route="getIsExitRoute"
-                @speed="getSpeed"
-              />
-            </b-card-text>
-          </b-tab>
-          <b-tab title="Груз">
-            <b-card-text>
-              <Cargo @weight="getWeight" @estng="getESTNG" @gng="getGNG" />
-            </b-card-text>
-          </b-tab>
-          <b-tab title="Вагон">
-            <b-card-text>
-              <Wagon
-                @wagon="wagonType"
-                @belong="wagonBelong"
-                @amount="wagonAmount"
-              />
-            </b-card-text>
-          </b-tab>
-        </b-tabs>
-      </b-card>
-    </div>
-    <div class="result">
-      <p>Дата: <span>{{ date }}</span></p>
-      <p>Груж/Порожний:<span>{{ translateBoolIsLoaded(is_loaded) }}</span></p>
-      <p>Международный<span>{{ translateInternational(international) }}</span></p>
-      <p>Ст. отправ: <span>{{ departure.departure}}</span></p>
-      <p> Ст. назнач: <span>{{ destination.destination }}</span></p>
-      <!-- Отправка -->
-      <p>Отправка: <span>{{ shipment.shipment }}</span></p>
-      <p>Вид маршрута: <span>{{ getIsExitRouteById(is_exit_route) }}</span></p>
-      <p>Скорость: <span>{{ speed }}</span></p>
-      <!-- Груз -->
-      <p> ЕСТНГ: <span>{{ estng }}</span></p>
-      <p>Вес: <span>{{ weight }}</span></p>
-      <p>ГНГ: <span>{{ gng }}</span></p>
-      <!-- Вагон -->
-      <p> Тип вагона: <span>{{ wagon.wagon_id }}</span></p>
-      <p>Количество: <span>{{ amount }}</span></p>
-      <p>Принадлежность: <span>{{ getBelongById(belong.belong) }}</span></p>
+  <div>
+    <Loader :loader="loader" />
+    <div style="display: flex">
 
-      <button class="Accept" @click="Calculation()">Рассчитать тариф</button>
-    </div>
+<div style="width: 80%">
+  <b-card
+    no-body
+    style="margin-left: -5% !important; height: 90vh !important"
+  >
+    <b-tabs pills card vertical style="height: 90vh !important">
+      <b-tab title="Станции отправления/назначения" active>
+        <b-card-text>
+          <Stations
+            @destination="getDestinationStation"
+            @departure="getDepartureStation"
+            @is_loaded="getIsLoaded"
+            @international="getInternational"
+            @on_date="getDate"
+          />
+        </b-card-text>
+      </b-tab>
+      <b-tab title="Отправка">
+        <b-card-text>
+          <Shipment
+            @shipment="getShipment"
+            @is_exit_route="getIsExitRoute"
+            @speed="getSpeed"
+          />
+        </b-card-text>
+      </b-tab>
+      <b-tab title="Груз">
+        <b-card-text>
+          <Cargo @weight="getWeight" @estng="getESTNG" @gng="getGNG" />
+        </b-card-text>
+      </b-tab>
+      <b-tab title="Вагон">
+        <b-card-text>
+          <Wagon
+            @wagon="wagonType"
+            @belong="wagonBelong"
+            @amount="wagonAmount"
+          />
+        </b-card-text>
+      </b-tab>
+    </b-tabs>
+  </b-card>
+</div>
+<div class="result">
+  <p>Дата: <span>{{ date }}</span></p>
+  <p>Груж/Порожний:<span>{{ translateBoolIsLoaded(is_loaded) }}</span></p>
+  <p>Международный<span>{{ translateInternational(international) }}</span></p>
+  <p>Ст. отправ: <span>{{ departure.departure}}</span></p>
+  <p> Ст. назнач: <span>{{ destination.destination }}</span></p>
+  <!-- Отправка -->
+  <p>Отправка: <span>{{ shipment.shipment }}</span></p>
+  <p>Вид маршрута: <span>{{ getIsExitRouteById(is_exit_route) }}</span></p>
+  <p>Скорость: <span>{{ speed }}</span></p>
+  <!-- Груз -->
+  <p> ЕСТНГ: <span>{{ estng }}</span></p>
+  <p>Вес: <span>{{ weight }}</span></p>
+  <p>ГНГ: <span>{{ gng }}</span></p>
+  <!-- Вагон -->
+  <p> Тип вагона: <span>{{ wagon.wagon_type }}</span></p>
+  <p>Количество: <span>{{ amount }}</span></p>
+  <p>Принадлежность: <span>{{ getBelongById(belong.belong) }}</span></p>
+
+  <button class="button Accept" @click="Calculation()">Рассчитать тариф</button>
+</div>
+</div>
   </div>
+
 </template>
 
 <style scoped>
@@ -87,6 +92,7 @@
 .result span {
   color: #949494;
 }
+
 </style>
 <script>
 import Stations from "./WPCalculateComponents/Stations.vue";
@@ -95,10 +101,10 @@ import Wagon from "./WPCalculateComponents/Wagon.vue";
 import Cargo from "./WPCalculateComponents/Cargo.vue";
 import api from "@/api/wagonPark";
 import { getItem } from "@/helpers/persistanseStorage";
-
+import Loader from '@/components/loader/loader.vue'
 export default {
   name: "WPCalculate",
-  components: { Stations, Shipment, Wagon, Cargo },
+  components: { Stations, Shipment, Wagon, Cargo, Loader },
   data() {
     return {
       destination: "",
@@ -115,11 +121,14 @@ export default {
       weight: "",
       estng: "",
       gng: "",
+      loader: false,
 
       stations: [],
     };
   },
   mounted(){
+    this.loader = true
+    setTimeout(() => this.loader = false, 1800)
     this.stations = getItem('station')
   },
   methods: {

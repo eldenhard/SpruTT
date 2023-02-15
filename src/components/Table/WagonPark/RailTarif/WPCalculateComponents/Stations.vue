@@ -1,5 +1,8 @@
 <template>
-  <div class="shipment-kind">
+  <div>
+    <Loader :loader="loader" />
+
+    <div class="shipment-kind">
     <div class="shipment-kind__header">
       <h4 class="header-text">Начальная и конечная станция</h4>
       <hr />
@@ -69,6 +72,8 @@
       </div>
     </div>
   </div>
+  </div>
+
 </template>
 
 <style scoped>
@@ -135,6 +140,7 @@
 import { getItem } from "@/helpers/persistanseStorage";
 import { mapState } from "vuex";
 import AutocompleteInput from "@/components/ui/AutocompleteInput.vue";
+import Loader from "@/components/loader/loader.vue";
 
 export default {
   name: "stations-railtarif",
@@ -150,9 +156,10 @@ export default {
       departure_station_object: "",
       destionation_station_object: "",
       on_date: "",
+      loader: "",
     };
   },
-  components: { AutocompleteInput },
+  components: { AutocompleteInput, Loader },
   watch: {
     destination_station_name() {
       this.$emit("destination", {

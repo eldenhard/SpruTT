@@ -1,5 +1,8 @@
 <template>
-  <div class="shipment-kind">
+  <div>
+    <Loader :loader="loader" />
+
+    <div class="shipment-kind">
     <div class="shipment-kind__header">
       <h4 class="header-text">Род подвижного состава</h4>
       <hr />
@@ -26,11 +29,15 @@
       </select>
     </div>
   </div>
+  </div>
+
 </template>
 
 <script>
 import { mapState } from "vuex";
 import api from "@/api/wagonPark";
+import Loader from "@/components/loader/loader.vue";
+
 export default {
   data() {
     return {
@@ -40,9 +47,11 @@ export default {
       belong: "",
       search: "",
       flame: "",
-      amount: ""
+      amount: "",
+      loader: false,
     };
   },
+  components: { Loader },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -55,7 +64,7 @@ export default {
   watch: {
     wagonType() {
       this.$emit('wagon', {
-        wagon_id: this.wagonType,
+        wagon_id: this.getWagonTypeId(this.wagonType),
         wagon_type: this.getWagonById(this.wagonType)
       })
     },
@@ -69,9 +78,12 @@ export default {
     }
   },
   mounted() {
-    api.getWagonType().then((response) => {
+    api.getWagonType()
+    .then((response) => {
       this.wagon_type = response.data.data;
-    });
+    }).catch(error => {
+      console.log(error)
+    })
   },
   methods: {
     sort_info() {
@@ -83,6 +95,9 @@ export default {
       let searchWagon = data
       let wagon = this.wagon_type.find(item => item.id === searchWagon).name
       return wagon
+    },
+    getWagonTypeId(wagon){
+      return this.wagon_type.find(item => item.id === wagon).type_id
     }
   },
 };
