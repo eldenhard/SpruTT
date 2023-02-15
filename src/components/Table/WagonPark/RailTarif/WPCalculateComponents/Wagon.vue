@@ -53,10 +53,10 @@ export default {
     },
   },
   watch: {
-    wagon() {
+    wagonType() {
       this.$emit('wagon', {
         wagon_id: this.wagon,
-        wagon_type: this.getWagonById(this.wagon)
+        wagon_type: this.getWagonById(this.wagonType)
       })
     },
     belong() {

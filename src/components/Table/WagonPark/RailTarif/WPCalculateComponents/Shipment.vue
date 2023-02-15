@@ -25,6 +25,24 @@
         </div>
       </div>
     </div>
+
+    <div class="speed">
+        <input type="number" class="textarea" style="width: 50%;" placeholder="Скорость"/>
+
+        <select class="textarea" v-model="is_exit_route">
+          <option value="" disabled selected>Вид маршрута</option>
+          <option value="0">Немаршрутная</option>
+          <option value="1">Прямой отправительский маршрут</option>
+          <option value="2">Замкнутый кольцевой маршрут</option>
+          <option value="3">ЗКМ ПОМ</option>
+          <option value="4">Отправительский маршрут с распыл.</option>
+          <option value="5">Кольцевая маршрутная</option>
+          <option value="6">Отдельным поездом по спец. разработ. расписанию</option>
+        </select>
+     <div>
+
+     </div>
+    </div>
   </div>
 </template>
 
@@ -46,11 +64,11 @@ export default {
       kinds: [],
       kind_shipment: "",
       data: [],
+      is_exit_route: ''
     };
   },
   watch: {
     kinds() {
-
       this.$emit("shipment", {
         id: this.kinds,
         shipment: this.getShipmentById(this.kinds),
@@ -95,7 +113,7 @@ export default {
     getShipmentById(data) {
       let searchShipment = data;
       let shipment = this.data.find((item) => item.id === searchShipment).kind;
-      return shipment
+      return shipment;
     },
 
     test(i) {
@@ -117,6 +135,17 @@ export default {
 };
 </script>
 <style scoped>
+.textarea {
+  background: white;
+  border: 1px solid grey !important;
+  border-radius: 5px;
+}
+.description {
+  /* padding: 3% 0 2% 2%; */
+  font-weight: 700;
+  font-size: 12px;
+  font-family: "Montserrat", sans-serif;
+}
 .option {
   margin-left: 1%;
 }
@@ -152,11 +181,29 @@ export default {
   border-radius: 5px;
   margin-bottom: 5%;
 }
+.speed {
+  display: flex;
+  justify-content: space-around;
+  padding: 5% 0 5% 5% !important;
+  margin-bottom: 3%;
+  width: 95%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,0);
+  border: 1px solid #EFF0F2 ;
+}
+.speed-inp {
+  background: white;
+  margin: 5% 1%;
+  width: 18%;
+}
 .shipment-kind__content__leftBlock {
   width: 20%;
 }
 .shipment-kind__content__rightBlock {
   width: 80%;
+  max-height: 35vh;
+  overflow: auto;
 }
 .btn_left {
   padding: 10px;

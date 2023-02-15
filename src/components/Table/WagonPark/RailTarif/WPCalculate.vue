@@ -7,6 +7,7 @@
             <b-card-text>
               <Stations 
               @station="getStation"
+              @on_date="getDate"
               />
             </b-card-text>
           </b-tab>
@@ -31,6 +32,7 @@
       </b-card>
     </div>
     <div class="result">
+      <p>Дата: <span>{{ date }}</span></p>
       <p>Груж/Порожний: <span>{{ translateBoolIsLoaded(select.is_loaded) }}</span></p>
       <p>Международный <span>{{ translateInternational(select.international) }}</span></p>
       <p>Ст. отправ: <span>{{ select.departure }}</span></p>
@@ -80,6 +82,7 @@ export default {
         wagon: "",
         belong: "",
         amount: "",
+        date: "",
     }
   },
   methods: {
@@ -103,6 +106,9 @@ export default {
     },
     wagonAmount(data){
       this.amount = data
+    },
+    getDate(data){
+      this.date = data
     },
     getBelongById(id){
       if(id == 1){

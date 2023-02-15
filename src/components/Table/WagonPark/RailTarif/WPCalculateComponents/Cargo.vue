@@ -58,11 +58,11 @@
                   </tr>
                 </tbody>
               </table>
-              <div class="shipment-kind__content__weight">
+            </div>
+             <div class="shipment-kind__content__weight">
                 <p class="description" style="margin-top: 10px;">Масса груза, т</p>
                 <input type="text" class="textareaTon" style="width: 15%; margin-left: 3%;">
               </div>
-            </div>
           </div>
         </b-tab>
       </b-tabs>
@@ -172,6 +172,7 @@ thead th {
   width: 90%;
   border: 2px solid #1e86f5;
   border-radius: 10px;
+
 }
 
 .header-text {

@@ -48,9 +48,9 @@
   font-size: 1.4rem;
   font-size: 15px;
 }
-::placeholder {
+/* ::placeholder {
   color: red !important;
-}
+} */
 .error_label {
   color: red;
 }

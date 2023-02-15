@@ -8,6 +8,9 @@
         вас станцию
       </p>
     </div>
+    <div >
+      <input type="date" class="textarea" v-model="on_date">
+    </div>
     <div class="station-departure">
       <div>
         <input type="radio" id="one" value="код" v-model="picked" />
@@ -26,6 +29,7 @@
       v-model="departure_station_name"
       :need-full="true"
       @selected="getFullStationDeparture"
+      :placeholder="'Станция отправления'"
       class="textarea"
     ></autocomplete-input>
     <br />
@@ -47,6 +51,8 @@
       :variantTitle="type_station_destination"
       v-model="destination_station_name"
       :need-full="true"
+      :placeholder="'Станция назначения'"
+
       @selected="getFullStationDestination"
       class="textarea"
     ></autocomplete-input>
@@ -106,7 +112,7 @@
 }
 
 .station-departure {
-  margin-top: 15%;
+  margin-top: 5%;
 }
 
 .station-departure,
@@ -143,6 +149,7 @@ export default {
       destination_station_name: "",
       departure_station_object: "",
       destionation_station_object: "",
+      on_date: "",
     };
   },
   components: { AutocompleteInput },
@@ -175,6 +182,9 @@ export default {
         departure: this.departure_station_name,
         is_loaded: this.is_loaded,
         international: this.international      })
+    },
+    on_date(){
+      this.$emit('on_date', this.on_date)
     }
 
   },
