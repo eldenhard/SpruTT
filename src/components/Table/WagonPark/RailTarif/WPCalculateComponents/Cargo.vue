@@ -11,9 +11,17 @@
             <p class="description">
               Единая тарифно-статистическая номенклатура грузов (ЕСТНГ)
             </p>
-            <input type="text" class="textarea" placeholder="введите наименование груза" v-model="search" />
+            <input
+              type="text"
+              class="textarea"
+              placeholder="введите наименование груза"
+              v-model="search"
+            />
             <div class="shipment-kind__content__table">
-              <table class="table-sm table-bordered"  style="width: 100% !important">
+              <table
+                class="table-sm table-bordered"
+                style="width: 100% !important"
+              >
                 <thead>
                   <tr>
                     <th scope="col">Код ЕСТНГ</th>
@@ -22,8 +30,7 @@
                   </tr>
                 </thead>
                 <tbody>
-             
-                  <tr v-for="information in SearchData" :key="information.id" >
+                  <tr v-for="information in SearchData" :key="information.id" @click="ESTNG(information.code6)">
                     <td>{{ information.code6 }}</td>
                     <td>{{ information.name }}</td>
                     <td>{{ information.cargo_class }}</td>
@@ -31,10 +38,6 @@
                 </tbody>
               </table>
             </div>
-            <div class="shipment-kind__content__weight">
-                <p class="description" style="margin-top: 10px;">Масса груза, т</p>
-                <input type="text" class="textareaTon" style="width: 15%; margin-left: 3%;">
-              </div>
           </div>
         </b-tab>
         <b-tab title="ГНГ">
@@ -42,9 +45,17 @@
             <p class="description">
               Гармонизированная номенклатура грузов (ГНГ)
             </p>
-            <input type="text" class="textarea" placeholder="введите наименование груза" v-model="searchGNG"/>
+            <input
+              type="text"
+              class="textarea"
+              placeholder="введите наименование груза"
+              v-model="searchGNG"
+            />
             <div class="shipment-kind__content__table">
-              <table class="table-sm table-bordered" style="width: 100% !important">
+              <table
+                class="table-sm table-bordered"
+                style="width: 100% !important"
+              >
                 <thead>
                   <tr>
                     <th scope="col">Код ГНГ</th>
@@ -52,35 +63,42 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="information in SearchGNG" :key="information.id">
+                  <tr v-for="information in SearchGNG" :key="information.id" @click="GNG(information.code)">
                     <td>{{ information.code }}</td>
                     <td>{{ information.name }}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-             <div class="shipment-kind__content__weight">
-                <p class="description" style="margin-top: 10px;">Масса груза, т</p>
-                <input type="text" class="textareaTon" style="width: 15%; margin-left: 3%;">
-              </div>
           </div>
         </b-tab>
       </b-tabs>
+    </div>
+    <div class="shipment-kind__content__weight">
+      <p class="description" style="margin-top: 10px">Масса груза, т</p>
+      <input
+        type="text"
+        class="textareaTon"
+        style="width: 15%; margin-left: 3%"
+        v-model="weight"
+      />
     </div>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
-import api from '@/api/wagonPark'
+import api from "@/api/wagonPark";
 export default {
-
-  name: 'cargo',
+  name: "cargo",
   data() {
     return {
       informations: [],
-      search: '',
-      searchGNG: '',
-    }
+      search: "",
+      searchGNG: "",
+      weight: "",
+      estng: "",
+      gng: "",
+    };
   },
   computed: {
     ...mapState({
@@ -88,21 +106,39 @@ export default {
       uid: (state) => state.auth.uid,
     }),
     SearchData() {
-      return this.informations.filter(item => item.name.indexOf(this.search) !== -1)
+      return this.informations.filter(
+        (item) => item.name.indexOf(this.search) !== -1
+      );
     },
-    SearchGNG(){
-      return this.informations.filter(item => item.name.indexOf(this.searchGNG) !== -1)
-    }
+    SearchGNG() {
+      return this.informations.filter(
+        (item) => item.name.indexOf(this.searchGNG) !== -1
+      );
+    },
+  },
+  watch: {
+    weight() {
+      this.$emit("weight", this.weight);
+    },
 
   },
-
   mounted() {
-    api.getCargoCode1()
-      .then(response => {
-        this.informations = response.data.data
-      })
+    api.getCargoCode1().then((response) => {
+      this.informations = response.data.data;
+    });
+  },
+
+  methods: {
+    ESTNG(code){
+      this.estng = code
+      this.$emit('estng', this.estng)
+    },
+    GNG(code){
+      this.gng = code
+      this.$emit('gng', this.gng)
+    }
   }
-}
+};
 </script>
 <style scoped>
 thead th {
@@ -112,7 +148,9 @@ thead th {
   z-index: 2;
   background: white;
 }
-
+tr:hover{
+  background: #cccccc;
+}
 .shipment-kind__content__weight {
   width: 100%;
   border: 1px solid #e3e5e7;
@@ -172,7 +210,6 @@ thead th {
   width: 90%;
   border: 2px solid #1e86f5;
   border-radius: 10px;
-
 }
 
 .header-text {

@@ -13,12 +13,19 @@
           </b-tab>
           <b-tab title="Отправка">
             <b-card-text>
-              <Shipment @shipment="getShipment"/>
+              <Shipment
+               @shipment="getShipment"
+               @is_exit_route="getIsExitRoute"
+               @speed = "getSpeed"/>
             </b-card-text>
           </b-tab>
           <b-tab title="Груз">
             <b-card-text>
-              <Cargo />
+              <Cargo 
+              @weight="getWeight"
+              @estng="getESTNG"
+              @gng="getGNG"
+              />
             </b-card-text>
           </b-tab>
           <b-tab title="Вагон">
@@ -30,6 +37,7 @@
           </b-tab>
         </b-tabs>
       </b-card>
+
     </div>
     <div class="result">
       <p>Дата: <span>{{ date }}</span></p>
@@ -37,10 +45,20 @@
       <p>Международный <span>{{ translateInternational(select.international) }}</span></p>
       <p>Ст. отправ: <span>{{ select.departure }}</span></p>
       <p>Ст. назнач: <span>{{ select.destination }}</span></p>
+      <!-- Отправка -->
       <p>Отправка: <span>{{ shipment.shipment }}</span></p>
+      <p>Вид маршрута: <span>{{ getIsExitRouteById(is_exit_route) }}</span></p>
+      <p>Скорость: <span>{{speed }}</span></p>
+      <!-- Груз -->
+      <p>ЕСТНГ: <span>{{ estng }}</span></p>
+      <p>Вес: <span>{{ weight }}</span></p>
+      <p>ГНГ: <span>{{ gng }}</span></p>
+      <!-- Вагон -->
       <p>Тип вагона: <span>{{ wagon.wagon_type }}</span></p>
       <p>Количество: <span>{{ amount }}</span></p>
       <p>Принадлежность: <span>{{ getBelongById(belong.belong) }}</span></p>
+
+      <button class="Accept" @click="Calculation()">Рассчитать тариф</button>
     </div>
 </div>
 </template>
@@ -72,6 +90,7 @@ import Stations from "./WPCalculateComponents/Stations.vue";
 import Shipment from "./WPCalculateComponents/Shipment.vue";
 import Wagon from "./WPCalculateComponents/Wagon.vue";
 import Cargo from "./WPCalculateComponents/Cargo.vue";
+import api from "@/api/wagonPark"
 export default {
   name: "WPCalculate",
   components: { Stations, Shipment, Wagon, Cargo },
@@ -83,9 +102,47 @@ export default {
         belong: "",
         amount: "",
         date: "",
+        is_exit_route: "",
+        speed: "",
+        weight: "",
+        estng: "",
+        gng: "",
     }
   },
   methods: {
+    Calculation(){
+      let data = {
+        'on_data': this.date,
+        'is_empty': this.select.is_loaded,
+        'is_international': this.select.international,
+        'departure': {
+            'station_code': this.select.departure
+        },
+        'destination': {
+            'station_code': this.select.destination
+        },
+        'shipment': {
+            'shipment_id': this.shipment.shipment,
+            'is_exit_route': this.is_exit_route,
+            'speed': this.speed
+        },
+        'cargo': {
+            'code_etsng': this.estng,
+            'weight':this.weight,
+            'code_gng': this.gng
+        },
+        'wagon': {
+            'type_id': this.wagon.id,
+            'belong_id': this.belong.belong,
+            'amount': this.speed,
+        
+      }
+      }
+      api.postRailTarif(data)
+      .then(response => {
+        console.log(response)
+      })
+    },
     getStation(data){
       this.select = data
     },
@@ -109,6 +166,43 @@ export default {
     },
     getDate(data){
       this.date = data
+    },
+    getIsExitRoute(data){
+      this.is_exit_route = data
+    },
+    getSpeed(data){
+      this.speed = data
+    },
+    getWeight(data){
+      this.weight = data
+    },
+    getESTNG(data){
+      this.estng = data
+    },
+    getGNG(data){
+      this.gng = data
+    },
+    getIsExitRouteById(id){
+      if(id == 0){
+        return 'Немаршрутная'
+      }
+      if(id == 1){
+        return 'Прямой отправительский маршрут'
+      }
+      if(id == 2){
+        return 'Замкнутый кольцевой маршрут'
+      }
+      if(id == 3){
+        return 'ЗКМ ПОМ'
+      }
+      if(id == 4){
+        return 'Отправительский маршрут с распыл.'
+      }
+      if(id == 5){
+        return 'Кольцевая маршрутная'
+      } else {
+        return 'Отдельным поездом по спец. разработ. расписанию'
+      }
     },
     getBelongById(id){
       if(id == 1){

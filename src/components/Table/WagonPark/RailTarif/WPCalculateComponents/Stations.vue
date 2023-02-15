@@ -9,7 +9,7 @@
       </p>
     </div>
     <div >
-      <input type="date" class="textarea" v-model="on_date">
+      <input type="date" class="textarea"  v-model="on_date">
     </div>
     <div class="station-departure">
       <div>

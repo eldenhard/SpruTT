@@ -71,7 +71,6 @@ export default {
   mounted() {
     api.getWagonType().then((response) => {
       this.wagon_type = response.data.data;
-      console.log(this.wagon_type)
     });
   },
   methods: {

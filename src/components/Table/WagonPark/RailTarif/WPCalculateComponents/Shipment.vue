@@ -27,7 +27,7 @@
     </div>
 
     <div class="speed">
-        <input type="number" class="textarea" style="width: 50%;" placeholder="Скорость"/>
+        <input type="number" class="textarea" style="width: 50%;" placeholder="Скорость" v-model="speed"/>
 
         <select class="textarea" v-model="is_exit_route">
           <option value="" disabled selected>Вид маршрута</option>
@@ -64,10 +64,17 @@ export default {
       kinds: [],
       kind_shipment: "",
       data: [],
-      is_exit_route: ''
+      is_exit_route: '',
+      speed: ''
     };
   },
   watch: {
+    speed(){
+      this.$emit('speed', this.speed)
+    },
+    is_exit_route(){
+      this.$emit('is_exit_route', this.is_exit_route)
+    },
     kinds() {
       this.$emit("shipment", {
         id: this.kinds,
@@ -203,6 +210,7 @@ export default {
 .shipment-kind__content__rightBlock {
   width: 80%;
   max-height: 35vh;
+  min-height: 35vh;
   overflow: auto;
 }
 .btn_left {
