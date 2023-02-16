@@ -68,9 +68,9 @@
 
   <button class="button Accept" @click="Calculation()">Рассчитать тариф</button>
 <br>
-  <button v-if="modalData" @click="$bvModal.show('bv-modal-example')" class="button Request">Show Modal</button>
-  <Modal />
-
+  <button @click="$bvModal.show('bv-modal-example')" class="button Request">Show Modal</button>
+  <Modal :tariff="this.result"/>
+<!--  v-if="modalData" -->
 </div>
 </div>
   </div>
