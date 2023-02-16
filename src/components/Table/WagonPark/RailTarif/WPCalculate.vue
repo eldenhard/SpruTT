@@ -67,8 +67,8 @@
   <p>Принадлежность: <span>{{ getBelongById(belong.belong) }}</span></p>
 
   <button class="button Accept" @click="Calculation()">Рассчитать тариф</button>
-
-  <button @click="$bvModal.show('bv-modal-example')" class="button Accept">Show Modal</button>
+<br>
+  <button v-if="modalData" @click="$bvModal.show('bv-modal-example')" class="button Request">Show Modal</button>
   <Modal />
 
 </div>
@@ -132,6 +132,7 @@ export default {
       stations: [],
       result: '',
       route: '',
+      modalData: false,
     };
   },
   mounted(){
@@ -174,6 +175,7 @@ export default {
       .then(response => {
         this.result = response.data.result
         this.loader = false
+        this.modalData = true
         console.log(this.result)
       }).catch(error => {
         console.log(error)
