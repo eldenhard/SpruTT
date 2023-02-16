@@ -280,7 +280,12 @@ export default {
       return "";
     },
 
-
+    showModal() {
+      this.$refs["ModalTypeReport"].show();
+    },
+    hideModal() {
+      this.$refs["ModalTypeReport"].hide();
+    },
     CreateReportAbandones() {
       this.loader = true;
       api

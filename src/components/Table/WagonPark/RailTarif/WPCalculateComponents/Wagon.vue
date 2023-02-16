@@ -12,7 +12,7 @@
       <br />
     </div>
     <div class="shipment-kind__content__input">
-      <div class="option" v-for="wagon in getCurrentWagonType" :key="wagon.id">
+      <div class="option" v-for="wagon in getCurrentWagonType" :key="wagon.id" style="display:block">
         <input type="radio" :id="wagon.id" :value="wagon.id" v-model="wagonType" />
         <label  :for="wagon.id">&nbsp;{{ wagon.name }}</label>
         <hr>
@@ -105,11 +105,12 @@ export default {
 <style scoped>
 .option {
   height: 50px;
-  font-size: 19px;
+  font-size: 17px;
+  display: block;
 }
 .shipment-kind__content__input{
-  min-height: 35vh;
-  max-height: 35vh;
+  min-height: 25vh;
+  max-height: 25vh;
   overflow: auto;
   border: 1px solid #EFF0F2 !important;
   width: 95%;
@@ -168,6 +169,7 @@ button:hover {
   left: 50%;
   transform: translate(-50%, 0);
   min-height: 55vh;
+  max-height: 55vh;
   width: 90%;
   border: 2px solid #1e86f5;
   border-radius: 10px;

@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <Loader :loader="loader" />
     <div style="display: flex">
 
@@ -66,6 +67,10 @@
   <p>Принадлежность: <span>{{ getBelongById(belong.belong) }}</span></p>
 
   <button class="button Accept" @click="Calculation()">Рассчитать тариф</button>
+
+  <button @click="$bvModal.show('bv-modal-example')" class="button Accept">Show Modal</button>
+  <Modal />
+
 </div>
 </div>
   </div>
@@ -102,9 +107,10 @@ import Cargo from "./WPCalculateComponents/Cargo.vue";
 import api from "@/api/wagonPark";
 import { getItem } from "@/helpers/persistanseStorage";
 import Loader from '@/components/loader/loader.vue'
+import Modal from "./WPCalculateComponents/Modal.vue";
 export default {
   name: "WPCalculate",
-  components: { Stations, Shipment, Wagon, Cargo, Loader },
+  components: { Stations, Shipment, Wagon, Cargo, Loader,Modal },
   data() {
     return {
       destination: "",
@@ -124,6 +130,8 @@ export default {
       loader: false,
 
       stations: [],
+      result: '',
+      route: '',
     };
   },
   mounted(){
@@ -132,7 +140,9 @@ export default {
     this.stations = getItem('station')
   },
   methods: {
+
     Calculation() {
+      this.loader = true
       let data = {
         on_date: this.date,
         is_empty: this.is_loaded,
@@ -156,16 +166,24 @@ export default {
         wagon: {
           type_id: this.wagon.wagon_id,
           belong_id: this.belong.belong,
-          amount: this.speed,
+          amount: this.amount,
         },
       };
       // console.log(data)
       api.postRailTarif(data)
       .then(response => {
-        console.log(response)
+        this.result = response.data.result
+        this.loader = false
+        console.log(this.result)
+      }).catch(error => {
+        console.log(error)
+        this.loader = false
       })
     },
     getCodeStation(station){
+      if(station == null || station == undefined){
+        return ""
+      }
       if(typeof station === 'number'){
           return station
       } else {

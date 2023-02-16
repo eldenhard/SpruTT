@@ -94,6 +94,7 @@
   left: 50%;
   transform: translate(-50%, 0);
   min-height: 55vh;
+  max-height: 55vh;
   width: 90%;
   border: 2px solid #1e86f5;
   border-radius: 10px;

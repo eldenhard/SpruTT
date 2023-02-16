@@ -181,7 +181,8 @@ export default {
   left: 50%;
   transform: translate(-50%, 0);
   min-height: 55vh;
-  width: 90%;
+  max-height: 55vh;
+    width: 90%;
   border: 2px solid #1e86f5;
   border-radius: 10px;
 }
@@ -223,8 +224,8 @@ export default {
 }
 .shipment-kind__content__rightBlock {
   width: 80%;
-  max-height: 35vh;
-  min-height: 35vh;
+  max-height: 25vh;
+  min-height: 25vh;
   overflow: auto;
 }
 .btn_left {
