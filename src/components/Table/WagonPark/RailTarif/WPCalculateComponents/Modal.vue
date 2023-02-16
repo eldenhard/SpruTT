@@ -2,19 +2,19 @@
   <div>
     <!--  -->
     <b-modal
-      id="bv-modal-example"
+      id="railModal"
       size="xl"
       hide-footer
       style="width: 100% !important"
     >
       <div
-        style="
-          max-width: 50% !important;
+        style=" max-width: 50% !important;
           overflow: auto;
           position: relative;
           left: 50%;
           transform: translate(-50%, 0);
         "
+         
       >
         <table class="table-sm table-bordered">
           <thead>
@@ -85,7 +85,7 @@
         class="mt-3"
         variant="outline-danger"
         block
-        @click="$bvModal.hide('bv-modal-example')"
+        @click="$bvModal.hide('railModal')"
         >Close Me</b-button
       >
     </b-modal>
@@ -100,12 +100,3 @@ export default {
 </script>
 
 
-<style scoped>
-#bv-modal-example___BV_modal_content_,
-#bv-modal-example {
-  width: 100% !important;
-  height: 50vh !important;
-  margin: 0;
-  padding: 0;
-}
-</style>
