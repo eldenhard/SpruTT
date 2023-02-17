@@ -1,14 +1,13 @@
 <template>
   <div>
-    <!--  -->
     <b-modal
-      id="railModal"
+      id='railModal'
       size="xl"
       hide-footer
-      style="width: 100% !important"
+      title="Расчет тарифа"
     >
       <div
-        style=" max-width: 50% !important;
+        style="max-width: 80% !important;
           overflow: auto;
           position: relative;
           left: 50%;
@@ -49,46 +48,73 @@
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+              <td>123</td>
+
+
+            </tr>
             <tr v-for="tarif in tariff" :key="tarif.id">
-              <td>{{ tarif.country_name }}</td>
-              <td>{{ tarif.calc_type }}</td>
-              <td>{{ tarif.distance }}</td>
-              <td>{{ tarif.distance_transit }}</td>
-              <td>{{ tarif.distance_real }}</td>
-              <td>{{ tarif.base_price }}</td>
-              <td>{{ tarif.base_price_nds }}</td>
-              <td>{{ tarif.base_pert }}</td>
-              <td>{{ tarif.base_pert_nds }}</td>
-              <td>{{ tarif.buffer_car_price }}</td>
-              <td>{{ tarif.buffer_car_price_nds }}</td>
-              <td>{{ tarif.locomotive_price }}</td>
-              <td>{{ tarif.locomotive_price_nds }}</td>
-              <td>{{ tarif.wagon_diesel_el_price }}</td>
-              <td>{{ tarif.guard_price }}</td>
-              <td>{{ tarif.guard_price_nds }}</td>
-              <td>{{ tarif.add_dues }}</td>
-              <td>{{ tarif.add_dues_nds }}</td>
-              <td>{{ tarif.sopr_price }}</td>
-              <td>{{ tarif.sopr_cost_nds }}</td>
-              <td>{{ tarif.total_cost_wo_nds }}</td>
-              <td>{{ tarif.total_price }}</td>
-              <td>{{ tarif.nds }}</td>
-              <td>{{ tarif.pert }}</td>
-              <td>{{ tarif.pert_wo_nds }}</td>
-              <td>{{ tarif.abbr }}</td>
-              <td>{{ tarif.currency_id }}</td>
+              <td>1{{ tarif.country_name }}</td>
+              <td>1{{ tarif.calc_type }}</td>
+              <td>1{{ tarif.distance }}</td>
+              <td>1{{ tarif.distance_transit }}</td>
+              <td>11{{ tarif.distance_real }}</td>
+              <td>11{{ tarif.base_price }}</td>
+              <td>11{{ tarif.base_price_nds }}</td>
+              <td>11{{ tarif.base_pert }}</td>
+              <td>11{{ tarif.base_pert_nds }}</td>
+              <td>11{{ tarif.buffer_car_price }}</td>
+              <td>11{{ tarif.buffer_car_price_nds }}</td>
+              <td>11{{ tarif.locomotive_price }}</td>
+              <td>11{{ tarif.locomotive_price_nds }}</td>
+              <td>11{{ tarif.wagon_diesel_el_price }}</td>
+              <td>11{{ tarif.guard_price }}</td>
+              <td>11{{ tarif.guard_price_nds }}</td>
+              <td>11{{ tarif.add_dues }}</td>
+              <td>11{{ tarif.add_dues_nds }}</td>
+              <td>11{{ tarif.sopr_price }}</td>
+              <td>11{{ tarif.sopr_cost_nds }}</td>
+              <td>11{{ tarif.total_cost_wo_nds }}</td>
+              <td>11{{ tarif.total_price }}</td>
+              <td>11{{ tarif.nds }}</td>
+              <td>11{{ tarif.pert }}</td>
+              <td>11{{ tarif.pert_wo_nds }}</td>
+              <td>11{{ tarif.abbr }}</td>
+              <td>11{{ tarif.currency_id }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <b-button
-        class="mt-3"
-        variant="outline-danger"
-        block
-        @click="$bvModal.hide('railModal')"
-        >Close Me</b-button
-      >
+      <button class="button Delete" style="width: 10%; float: right; margin-top: 3%; margin-right: 10%;" variant="outline-danger"  block @click="$bvModal.hide('railModal')">Закрыть</button>
+
     </b-modal>
+
   </div>
 </template>
  <script>
@@ -98,5 +124,18 @@ export default {
 
 };
 </script>
+
+<style>
+table{
+  background: white;
+}
+th{
+  /* min-width: 150px !important;
+  max-width: 150px; */
+  max-height: 85px;
+  font-size: 12px;
+  font-family: 'Montserrat', sans-serif;
+}
+</style>
 
 

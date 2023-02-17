@@ -15,7 +15,6 @@
           <b-tab title="Вагоны" active @click="newTab('Вагоны')"> </b-tab>
           <b-tab title="Телеграммы" @click="newTab('Телеграммы')"> </b-tab>
           <b-tab title="Ремонты" @click="newTab('Ремонты')"> </b-tab>
-           <b-tab title="Маршрут" @click="newTab('Маршрут')"> </b-tab>
            <b-tab title="Расчет" @click="newTab('Расчет')"> </b-tab>
 
         </b-container>

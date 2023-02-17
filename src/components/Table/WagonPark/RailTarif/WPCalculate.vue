@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <Loader :loader="loader" />
     <div style="display: flex">
 
@@ -68,10 +67,11 @@
 
   <button class="button Accept" @click="Calculation()">Рассчитать тариф</button>
 <br>
-  <button   @click="$bvModal.show('railModal')" class="button Request">Show Modal</button>
-  <Modal  :tariff="this.result"/>
+  <button  @click="$bvModal.show('railModal')" class="button Request">Show Modal</button>
 </div>
 </div>
+<Modal id='railModal' :tariff="this.result"/>
+
   </div>
 <!-- v-if="modalData -->
 </template>
@@ -129,7 +129,7 @@ export default {
       loader: false,
 
       stations: [],
-      result: '',
+      result: [],
       route: '',
       modalData: false,
     };
