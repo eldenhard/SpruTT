@@ -9,6 +9,7 @@
 <script>
 import api from "@/api/wagonPark";
 import { saveAs } from 'file-saver';
+import { Buffer } from 'buffer';
 export default {
   data() {
     return {
@@ -22,13 +23,29 @@ export default {
       formData.append("file", this.file);
       api
         .postShipmentList(formData)
-       .then(response => {
-        let data = window.atob(response.data);
-        console.log(data)
+       .then(data => {
+        // console.log( Buffer.from([response.data]).toString())
+        // let data = window.atob(response.data);
+        // console.log(data)
+
         // var FileSaver = require('file-saver');
 
         // var file = new File([data], 'filename.pdf', {type: "text/plain;charset=utf-8"});
         // FileSaver.saveAs(file);
+
+
+
+
+        let json = JSON.stringify(data)
+        console.log(json)
+        let buffer = Buffer.from(JSON.parse(json).data)
+        console.log(buffer)
+
+        let blob = new File([buffer], 'filename.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+        var FileSaver = require('file-saver');
+
+        FileSaver.saveAs(blob)
+
        })
     },
   },
