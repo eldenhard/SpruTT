@@ -332,7 +332,9 @@ import Notifications from '@/components/notifications/Notifications.vue'
             this.loaderDislocation = false
             this.notifyHead = 'Ошибка'
             this.notifyMessage = 'Попробуйте позднее'
-            this.notifyClass = 'wrapper-success'
+            this.notifyClass = 'wrapper-error'
+            this.showNotify = true
+            setTimeout(() => this.showNotify = false, 2500)
 
         })
       },

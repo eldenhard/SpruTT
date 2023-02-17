@@ -5,8 +5,7 @@
         pills
         card
         vertical
-        nav-wrapper-class="w-100"
-        style="background: white;height: 100vh !important;
+        nav-wrapper-class="w-100" style="background: white;height: 100vh !important;
           text-align: center !important;
           justify-content: center !important;
         "
@@ -16,6 +15,7 @@
           <b-tab title="Телеграммы" @click="newTab('Телеграммы')"> </b-tab>
           <b-tab title="Ремонты" @click="newTab('Ремонты')"> </b-tab>
            <b-tab title="Расчет" @click="newTab('Расчет')"> </b-tab>
+           <b-tab title="Отправки БЧ" @click="newTab('Отправки БЧ')"> </b-tab>
 
         </b-container>
       </b-tabs>

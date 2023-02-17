@@ -1,7 +1,5 @@
 <template>
   <div>
-    <Loader :loader="loader" />
-
     <div class="shipment-kind">
     <div class="shipment-kind__header">
       <h4 class="header-text">Начальная и конечная станция</h4>
@@ -81,13 +79,7 @@
   display: flex;
   justify-content: space-around;
 }
-.Request {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
+
 .shipment-kind {
   margin-top: 8% !important;
   position: relative;
@@ -141,14 +133,13 @@
 import { getItem } from "@/helpers/persistanseStorage";
 import { mapState } from "vuex";
 import AutocompleteInput from "@/components/ui/AutocompleteInput.vue";
-import Loader from "@/components/loader/loader.vue";
 
 export default {
   name: "stations-railtarif",
   data() {
     return {
-      picked: "станция",
-      picked2: "станция",
+      picked: "код",
+      picked2: "код",
       is_loaded: "",
       international: "",
       stations: [],
@@ -157,10 +148,9 @@ export default {
       departure_station_object: "",
       destionation_station_object: "",
       on_date: "",
-      loader: "",
     };
   },
-  components: { AutocompleteInput, Loader },
+  components: { AutocompleteInput },
   watch: {
     destination_station_name() {
       this.$emit("destination", {

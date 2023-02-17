@@ -28,6 +28,9 @@
               <div v-if="i.name === 'Расчет'">
                 <WPCalculate />
               </div>
+              <div v-if="i.name === 'Отправки БЧ'">
+                <BCH />
+              </div>
               <div v-if="i.name === 'Брошенные вагоны'">
                 <AbandonTable />
               </div>
@@ -65,6 +68,7 @@ import WagonTablePoligon from "../components/Table/WagonTablePoligon.vue";
 import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
 import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
 import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
+import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue"
 export default {
   name: "WagonPark",
   components: {
@@ -78,6 +82,7 @@ export default {
     WagonTableTelegram,
     WPCalculate,
     WagonRepair,
+    BCH,
   },
   data() {
     return {

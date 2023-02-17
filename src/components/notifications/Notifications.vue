@@ -45,9 +45,9 @@ export default{
 <style>
 
 .wrapper-success {
-    margin: 50px;
     position: fixed;
-    top: 0;
+    top: 1%;
+    left: 3%;
     z-index: 1060;
   }
   .wrapper-success .notifications-main {
@@ -73,9 +73,9 @@ export default{
   }  
 
   .wrapper-error {
-    margin: 50px;
     position: fixed;
-    top: 0;
+    top: 1%;
+    left: 3%;
     z-index: 9999999999999 !important;
   }
   .wrapper-error .notifications-main {

@@ -114,6 +114,10 @@ const getReportRepair = () => {
 const postRailTarif = (data) => {
     return api.post(`${resource}/rt/tariff/`, data)
 }
+// Преобразование файла БЧ
+const postShipmentList = (data) =>{
+    return api.post(`${resource}/shipment-list/make-file/`, data)
+}
 export default {
     getWagons,
     getPassport,
@@ -129,6 +133,7 @@ export default {
     getWagonRepairHistory,
     getReportRepair,
     postRailTarif,
+    postShipmentList,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

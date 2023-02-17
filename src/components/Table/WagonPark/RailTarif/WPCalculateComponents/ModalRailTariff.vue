@@ -1,20 +1,23 @@
 <template>
   <div>
+
+
     <b-modal
-      id='railModal'
-      size="xl"
-      hide-footer
-      title="Расчет тарифа"
-    >
+    id="modalRailTariff"
+          size="xl"
+      hide-footer >
+      <h2>Расчет тарифа</h2>
+      <br>
       <div
-        style="max-width: 80% !important;
-          overflow: auto;
-          position: relative;
+        style="
+        max-width: 80% !important;overflow: auto;
+        position: relative;
           left: 50%;
           transform: translate(-50%, 0);
         "
          
       >
+
         <table class="table-sm table-bordered">
           <thead>
             <tr>
@@ -48,37 +51,6 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-              <td>123</td>
-
-
-            </tr>
             <tr v-for="tarif in tariff" :key="tarif.id">
               <td>1{{ tarif.country_name }}</td>
               <td>1{{ tarif.calc_type }}</td>
@@ -111,7 +83,7 @@
           </tbody>
         </table>
       </div>
-      <button class="button Delete" style="width: 10%; float: right; margin-top: 3%; margin-right: 10%;" variant="outline-danger"  block @click="$bvModal.hide('railModal')">Закрыть</button>
+      <button class="button Delete" style="width: 10%; float: right; margin-top: 3%; margin-right: 10%;" block @click="hideModal">Закрыть</button>
 
     </b-modal>
 
@@ -121,7 +93,17 @@
 export default {
   name: "ModalRalTariff",
   props: ["tariff"],
-
+  methods: {
+    showModal() {
+      this.$root.$emit('bv::show::modal', 'modalRailTariff', '#btnShow')
+    },
+    hideModal() {
+      this.$root.$emit('bv::hide::modal', 'modalRailTariff', '#btnShow')
+    },
+    toggleModal() {
+      this.$root.$emit('bv::toggle::modal', 'modalRailTariff', '#btnToggle')
+    }
+  }
 };
 </script>
 
