@@ -18,6 +18,7 @@ export default {
   },
   methods: {
     SendFile() {
+      // отпавить файл и получить в формате xlsx
       console.log(this.file);
       let formData = new FormData();
       formData.append("file", this.file);
@@ -40,11 +41,17 @@ export default {
         console.log(json)
         let buffer = Buffer.from(JSON.parse(json).data)
         console.log(buffer)
-
-        let blob = new File([buffer], 'filename.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-        var FileSaver = require('file-saver');
-
+        let uint8Array = new Uint8Array([buffer]);
+        let info =  new TextDecoder().decode(uint8Array);
+ 
+        let blob = new File(info, 'filename.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+        let FileSaver = require('file-saver');
         FileSaver.saveAs(blob)
+
+        // let blob = new File([c], 'filename.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+        // var FileSaver = require('file-saver');
+
+        // FileSaver.saveAs(blob)
 
        })
     },
