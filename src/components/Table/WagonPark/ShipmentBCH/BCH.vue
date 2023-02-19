@@ -1,18 +1,20 @@
 <template>
-      <div class="form-group" style="width: 40vw !important">
+  <div>
+      <div class="form-group" style="width: 40vw !important; position: relative; left: 50%; transform: translate(-50%, 0);">
         <label for="fileField" class="attachment">
             <div class="btn-file__actions">
               <div class="btn-file__actions__item text-center">
                 <div class="btn-file__actions__item--shadow">
-                  <b-icon-cloud-plus />
-                  <div class="visible-xs-block"></div>
-                  Select file
+                  <b-icon-cloud-plus /><div class="visible-xs-block"></div>
+                  {{ changeText }}
                 </div>
               </div>
             </div>
           <b-form-file v-model="file" type="file" id="fileField" class="mt-3" plain></b-form-file>
         </label>
       </div>
+      <button id="btnfile" class='button' style="height: 40px; width: 40vw !important; position: relative; left: 50%; transform: translate(-50%, 0);">Преобразовать файл</button>
+    </div>
   <!-- <div style="display: flex; justify-content: space-between">
     <b-form-file v-model="file" name="123" class="mt-3" plain></b-form-file>
     <button @click="SendFile()" class="button Accept">ОТПРАВИТЬ</button>
@@ -91,6 +93,29 @@ export default {
       file: null,
     };
   },
+  computed:{
+    changeText(){
+      if(this.file == null){
+        return 'Выберите файл'
+      } else {
+        let styleList = document.querySelector('.btn-file__actions__item')
+        styleList.style.borderColor = 'black'
+        styleList.style.color = 'darkgrey'
+        return 'Выбранный файл' + ' ' +  this.file.name
+      }
+    }
+  },
+  watch: {
+    file(){
+      if(this.file == null){
+        document.getElementById('btnfile').className = 'inActive'
+      } else {
+        document.getElementById('btnfile').className = 'Accept'
+
+      }
+    }
+  },
+
   methods: {
     SendFile() {
       const pretoken = JSON.parse(localStorage.getItem("vuex"));

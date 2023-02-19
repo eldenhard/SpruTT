@@ -20,16 +20,22 @@ button {
   color: white;
   padding: 14px 20px;
   /* margin: 8px 0; */
+  border-radius: 7px;
   border: none;
   cursor: pointer;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+
   font-family: 'Montserrat', sans-serif;
 }
 
-button:hover {
+/* button:hover {
   opacity: 0.8;
   background: rgb(196, 196, 196);
-}
+} */
 .Delete {
   background: rgb(231, 76, 60, 0.7);
 }
@@ -38,7 +44,14 @@ button:hover {
   background: rgb(181, 50, 36, 0.7);
   cursor: pointer;
 }
-
+.inActive {
+  background: #E5E5E5;
+  cursor: pointer;
+  color: #A8A8A8;
+}
+.inActive:hover{
+   background: #E5E5E5 !important;
+}
 .Request {
   background: #007BFF;
 }
