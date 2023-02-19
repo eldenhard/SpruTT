@@ -47,10 +47,12 @@ button {
 .inActive {
   background: #E5E5E5;
   cursor: pointer;
-  color: #A8A8A8;
+  color: #888888;
 }
 .inActive:hover{
    background: #E5E5E5 !important;
+   border-radius: 7px;
+
 }
 .Request {
   background: #007BFF;
@@ -63,11 +65,15 @@ button {
 
 .Accept {
   background: #158127;
+  border-radius: 7px;
+
 }
 
 .Accept:hover {
   background: #10691f;
   cursor: pointer;
+  border-radius: 7px;
+
 }
 
 .Action {
