@@ -1,11 +1,86 @@
 <template>
-  <div style="display: flex; justify-content: space-between">
+      <div class="form-group" style="width: 40vw !important">
+        <label for="fileField" class="attachment">
+            <div class="btn-file__actions">
+              <div class="btn-file__actions__item text-center">
+                <div class="btn-file__actions__item--shadow">
+                  <b-icon-cloud-plus />
+                  <div class="visible-xs-block"></div>
+                  Select file
+                </div>
+              </div>
+            </div>
+          <b-form-file v-model="file" type="file" id="fileField" class="mt-3" plain></b-form-file>
+        </label>
+      </div>
+  <!-- <div style="display: flex; justify-content: space-between">
     <b-form-file v-model="file" name="123" class="mt-3" plain></b-form-file>
     <button @click="SendFile()" class="button Accept">ОТПРАВИТЬ</button>
-  </div>
+  </div> -->
 </template>
 
+<style scoped>
 
+
+.btn-file__actions {
+  margin: 0;
+  padding: 0;
+}
+.btn-file__actions__item {
+  padding: 35px;
+  font-size: 1.5em;
+  color: #d3e0e9;
+  cursor: pointer;
+  text-decoration: none;
+  border-top: 3px dashed #d3e0e9;
+  border-left: 3px dashed #d3e0e9;
+  border-bottom: 3px dashed #d3e0e9;
+}
+.btn-file__actions__item:first-child {
+  border-top-left-radius: 35px;
+  border-bottom-left-radius: 35px;
+}
+.btn-file__actions__item:last-child {
+  border-top-right-radius: 35px;
+  border-bottom-right-radius: 35px;
+  border-right: 3px dashed #d3e0e9;
+}
+.btn-file__actions__item:hover,
+.btn-file__actions__item:focus {
+  color: #636b6f;
+  background-color: rgba(211, 224, 233, 0.1);
+}
+.btn-file__actions__item:hover--shadow,
+.btn-file__actions__item:focus--shadow {
+  box-shadow: #d3e0e9 0 0 60px 15px;
+}
+.btn-file__actions__item--shadow {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+}
+.btn-file__actions__item--shadow::before {
+  content: " ";
+  box-shadow: #fff 0 0 60px 40px;
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100vw;
+  z-index: -1;
+}
+.form-group label.attachment {
+  width: 100%;
+}
+.form-group label.attachment .btn-create > a,
+.form-group label.attachment .btn-create > div {
+  margin-top: 5px;
+}
+.form-group label.attachment input[type='file'] {
+  display: none;
+}
+
+</style>
 <script>
 import api from "@/api/wagonPark";
 import { saveAs } from 'file-saver';
@@ -18,43 +93,76 @@ export default {
   },
   methods: {
     SendFile() {
+      const pretoken = JSON.parse(localStorage.getItem("vuex"));
+      const token = pretoken.auth.user.token;
+
       // отпавить файл и получить в формате xlsx
       console.log(this.file);
       let formData = new FormData();
       formData.append("file", this.file);
+      // fetch('http://10.1.5.20/api/wagon-park/shipment-list/make-file/', {
+
+      //   headers: {
+      //     Authorization: `Basic ${token}`,
+      //   },
+      //   body: formData,
+      //   method: "POST",
+      // })
+      //   .then(resp => resp.blob())
+      //   .then(blob => {
+      //     let URL = window.URL || window.webkitURL,
+      //       downloadUrl = URL.createObjectURL(blob),
+      //       a = document.createElement('a');
+      //     a.href = downloadUrl;
+      //     a.target = '_blank';
+      //     a.download = token
+      //     document.body.appendChild(a);
+      //     a.click();
+      //     a.parentNode.removeChild(a);
+      //     setTimeout(() => { URL.revokeObjectURL(downloadUrl) }, 100);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
       api
         .postShipmentList(formData)
-       .then(data => {
-        // console.log( Buffer.from([response.data]).toString())
-        // let data = window.atob(response.data);
-        // console.log(data)
+        .then(res => {
 
-        // var FileSaver = require('file-saver');
+          let json = JSON.stringify(res)
+          let buffer = Buffer.from(JSON.parse(json).data)
+          console.log(buffer)
+          let uint8Array = new Uint8Array([buffer])
+          let link = document.createElement('a');
+          link.download = 'hell1o.xlsx';
 
-        // var file = new File([data], 'filename.pdf', {type: "text/plain;charset=utf-8"});
-        // FileSaver.saveAs(file);
+          let blob = new Blob([uint8Array], { type: 'text/application' });
+
+          link.href = URL.createObjectURL(blob);
+
+          link.click();
+
+          URL.revokeObjectURL(link.href);
+
+          // console.log(data)
+          // let json = JSON.stringify(data)
+          // let buffer = Buffer.from(JSON.parse(json).data)
+          // console.log(buffer)
+          // let link = document.createElement('a');
+          // link.download = 'hello.xlsx';
+
+          // let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;' });
+
+          // link.href = URL.createObjectURL(blob);
+
+          // link.click();
+
+          // URL.revokeObjectURL(link.href);
 
 
-
-
-        let json = JSON.stringify(data)
-        console.log(json)
-        let buffer = Buffer.from(JSON.parse(json).data)
-        console.log(buffer)
-        let uint8Array = new Uint8Array([buffer]);
-        let info =  new TextDecoder().decode(uint8Array);
- 
-        let blob = new File(info, 'filename.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-        let FileSaver = require('file-saver');
-        FileSaver.saveAs(blob)
-
-        // let blob = new File([c], 'filename.xlsx', { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-        // var FileSaver = require('file-saver');
-
-        // FileSaver.saveAs(blob)
-
-       })
+        })
     },
+
   },
+
 };
 </script>
