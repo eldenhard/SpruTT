@@ -22,8 +22,6 @@
 </template>
 
 <style scoped>
-
-
 .btn-file__actions {
   margin: 0;
   padding: 0;
@@ -31,7 +29,7 @@
 .btn-file__actions__item {
   padding: 35px;
   font-size: 1.5em;
-  color: #d3e0e9;
+  color: #abb1b6;
   cursor: pointer;
   text-decoration: none;
   border-top: 3px dashed #d3e0e9;
@@ -100,8 +98,8 @@ export default {
       } else {
         let styleList = document.querySelector('.btn-file__actions__item')
         styleList.style.borderColor = 'black'
-        styleList.style.color = 'darkgrey'
-        return 'Выбранный файл' + ' ' +  this.file.name
+        styleList.style.color = 'black'
+        return 'Выбранный файл:' + ' ' +  this.file.name
       }
     }
   },
