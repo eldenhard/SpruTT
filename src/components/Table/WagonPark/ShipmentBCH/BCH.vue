@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loader :loader="loader" />
     <div class="form-group" style="width: 40vw !important; position: relative; left: 50%; transform: translate(-50%, 0);">
       <label for="fileField" class="attachment">
         <div class="btn-file__actions">
@@ -15,13 +16,13 @@
       </label>
     </div>
     <button id="btnfile" class='button'
-      style="height: 40px; width: 40vw !important; position: relative; left: 50%; transform: translate(-50%, 0);" @click="SendFile()">Преобразовать
+      style="height: 40px; width: 40vw !important; position: relative; left: 50%; transform: translate(-50%, 0);"
+      @click="SendFile()">Преобразовать
       файл</button>
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
+
   </div>
-<!-- <div style="display: flex; justify-content: space-between">
-    <b-form-file v-model="file" name="123" class="mt-3" plain></b-form-file>
-    <button @click="SendFile()" class="button Accept">ОТПРАВИТЬ</button>
-  </div> --></template>
+</template>
 
 <style scoped>
 .btn-file__actions {
@@ -95,13 +96,21 @@
 <script>
 import api from "@/api/wagonPark";
 import { mapState } from "vuex";
+import Loader from '@/components/loader/loader.vue'
+import Notifications from "@/components/notifications/Notifications.vue";
 
 export default {
   data() {
     return {
       file: null,
+      loader: false,
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
     };
   },
+  components: { Loader, Notifications },
   computed: {
     changeText() {
       if (this.file == null) {
@@ -132,88 +141,30 @@ export default {
 
   methods: {
     SendFile() {
-      const pretoken = JSON.parse(localStorage.getItem("vuex"));
-      const token = pretoken.auth.user.token;
+      this.loader = true
       let formData = new FormData();
       formData.append("file", this.file);
-      // отпавить файл и получить в формате xlsx
-      console.log(this.file);
-      api.postShipmentList(formData)
-        .then(blob => {
-          console.log(blob)
-          let link = document.createElement('a');
-          link.download = 'hello.xlsx';
 
-          link.href = URL.createObjectURL(blob.data);
-
-          link.click();
-
-          URL.revokeObjectURL(link.href);
+      api
+        .postShipmentList(formData)
+        .then(response => {
+          this.loader = false
+          window.location.href = response.data
+        }).catch(error => {
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = "Ошибка, файл не создан, выберите корректный тип файла";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(() => this.showNotify = false, 1500)
+          this.file = null
+          this.loader = false
 
         })
-      // fetch('http://10.1.5.20/api/wagon-park/shipment-list/make-file/', {
-
-      //   headers: {
-      //     Authorization: `Basic ${token}`,
-      //   },
-      //   body: formData,
-      //   method: "POST",
-      // })
-      //   .then(resp => resp.blob())
-      //   .then(blob => {
-      //     let URL = window.URL || window.webkitURL,
-      //       downloadUrl = URL.createObjectURL(blob),
-      //       a = document.createElement('a');
-      //     a.href = downloadUrl;
-      //     a.target = '_blank';
-      //     a.download = token
-      //     document.body.appendChild(a);
-      //     a.click();
-      //     a.parentNode.removeChild(a);
-      //     setTimeout(() => { URL.revokeObjectURL(downloadUrl) }, 100);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-      // api
-      //   .postShipmentList(formData)
-      //   .then(res => {
-
-      //     let json = JSON.stringify(res)
-      //     let buffer = Buffer.from(JSON.parse(json).data)
-      //     console.log(buffer)
-      //     let uint8Array = new Uint8Array([buffer])
-      //     let link = document.createElement('a');
-      //     link.download = 'hell1o.xlsx';
-
-      //     let blob = new Blob([uint8Array], { type: 'text/application' });
-
-      //     link.href = URL.createObjectURL(blob);
-
-      //     link.click();
-
-      //     URL.revokeObjectURL(link.href);
-
-      // console.log(data)
-      // let json = JSON.stringify(data)
-      // let buffer = Buffer.from(JSON.parse(json).data)
-      // console.log(buffer)
-      // let link = document.createElement('a');
-      // link.download = 'hello.xlsx';
-
-      // let blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;' });
-
-      // link.href = URL.createObjectURL(blob);
-
-      // link.click();
-
-      // URL.revokeObjectURL(link.href);
 
 
+    },
 
   },
-
-},
 
 };
 </script>
