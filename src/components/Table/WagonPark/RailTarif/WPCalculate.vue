@@ -1,13 +1,15 @@
 <template>
   <div>
     <Loader :loader="loader" />
-    <b-modal ref="modalRailTariff" size="xl" hide-footer>
-      <h2>Расчет тарифа</h2>
+    <b-modal ref="modalRailTariff" size="lg" hide-footer>
+      <template #modal-title>
+        Расчет тарифа
+      </template>
       <br />
-      <div class="pretable">
-        <table class="table table-sm table-bordered">
+      <div class="pretable ">
+        <table class="table table-bordered">
           <thead>
-            <tr>
+            <tr class="table-secondary">
               <th>название страны</th>
               <th>тип тарифа</th>
               <th>расстояние, которое пойдет в расчет</th>
@@ -39,38 +41,38 @@
           </thead>
           <tbody>
             <tr v-for="tarif in result" :key="tarif.id">
-              <td>1{{ tarif.country_name }}</td>
-              <td>1{{ tarif.calc_type }}</td>
-              <td>1{{ tarif.distance }}</td>
-              <td>1{{ tarif.distance_transit }}</td>
-              <td>11{{ tarif.distance_real }}</td>
-              <td>11{{ tarif.base_price }}</td>
-              <td>11{{ tarif.base_price_nds }}</td>
-              <td>11{{ tarif.base_pert }}</td>
-              <td>11{{ tarif.base_pert_nds }}</td>
-              <td>11{{ tarif.buffer_car_price }}</td>
-              <td>11{{ tarif.buffer_car_price_nds }}</td>
-              <td>11{{ tarif.locomotive_price }}</td>
-              <td>11{{ tarif.locomotive_price_nds }}</td>
-              <td>11{{ tarif.wagon_diesel_el_price }}</td>
-              <td>11{{ tarif.guard_price }}</td>
-              <td>11{{ tarif.guard_price_nds }}</td>
-              <td>11{{ tarif.add_dues }}</td>
-              <td>11{{ tarif.add_dues_nds }}</td>
-              <td>11{{ tarif.sopr_price }}</td>
-              <td>11{{ tarif.sopr_cost_nds }}</td>
-              <td>11{{ tarif.total_cost_wo_nds }}</td>
-              <td>11{{ tarif.total_price }}</td>
-              <td>11{{ tarif.nds }}</td>
-              <td>11{{ tarif.pert }}</td>
-              <td>11{{ tarif.pert_wo_nds }}</td>
-              <td>11{{ tarif.abbr }}</td>
-              <td>11{{ tarif.currency_id }}</td>
+              <td>{{ tarif.country_name }}</td>
+              <td>{{ tarif.calc_type }}</td>
+              <td>{{ tarif.distance }}</td>
+              <td>{{ tarif.distance_transit }}</td>
+              <td>{{ tarif.distance_real }}</td>
+              <td>{{ tarif.base_price }}</td>
+              <td>{{ tarif.base_price_nds }}</td>
+              <td>{{ tarif.base_pert }}</td>
+              <td>{{ tarif.base_pert_nds }}</td>
+              <td>{{ tarif.buffer_car_price }}</td>
+              <td>{{ tarif.buffer_car_price_nds }}</td>
+              <td>{{ tarif.locomotive_price }}</td>
+              <td>{{ tarif.locomotive_price_nds }}</td>
+              <td>{{ tarif.wagon_diesel_el_price }}</td>
+              <td>{{ tarif.guard_price }}</td>
+              <td>{{ tarif.guard_price_nds }}</td>
+              <td>{{ tarif.add_dues }}</td>
+              <td>{{ tarif.add_dues_nds }}</td>
+              <td>{{ tarif.sopr_price }}</td>
+              <td>{{ tarif.sopr_cost_nds }}</td>
+              <td>{{ tarif.total_cost_wo_nds }}</td>
+              <td>{{ tarif.total_price }}</td>
+              <td>{{ tarif.nds }}</td>
+              <td>{{ tarif.pert }}</td>
+              <td>{{ tarif.pert_wo_nds }}</td>
+              <td>{{ tarif.abbr }}</td>
+              <td>{{ tarif.currency_id }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <button class="button Delete" style="width: 10%; float: right; margin-top: 3%  !important; margin-right: 10% !important;" block @click="hideModal">Закрыть</button>
+      <button class="button Delete railbtn" style="width: 10%; float: right; margin-top: 3%  !important; margin-right:1% !important;" block @click="hideModal">Закрыть</button>
 
     </b-modal>
     <div style="display: flex">
@@ -170,14 +172,10 @@ table{
   background: white;
 }
 th{
-  padding: 5px !important;
-  max-height: 85px;
-  font-size: 12px;
-  min-width: 100px;
   font-family: 'Montserrat', sans-serif;
 }
 .pretable {
-  max-width: 90% !important;
+  max-width: 100% !important;
   overflow: auto;
   position: relative;
   left: 50%;
