@@ -113,6 +113,7 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
+      cargo_code: (state) => state.cargo_code
     }),
     SearchData() {
       return this.informations.filter(
@@ -132,11 +133,7 @@ export default {
 
   },
   mounted() {
-    api.getCargoCode1().then((response) => {
-      this.informations = response.data.data;
-    }).catch(error => {
-      console.log(error)
-    })
+    this.informations =this.cargo_code.cargo_code
   },
 
   methods: {
