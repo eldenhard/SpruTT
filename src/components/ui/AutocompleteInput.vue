@@ -99,8 +99,17 @@ export default {
       filtered: [],
     };
   },
+  mounted() {
+    document.body.addEventListener('click', this.onClick);
+  },
+  beforeDestroy() {
+    document.body.removeEventListener('click', this.onClick);
+  },
   computed: {},
   methods: {
+    onClick(ev) {
+      this.showVariants = false
+    },
     onInput(e) {
       this.$emit("input", e.target.value);
       this.searchQuery = e.target.value;
