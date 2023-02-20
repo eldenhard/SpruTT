@@ -5,7 +5,7 @@
       <h2>Расчет тарифа</h2>
       <br />
       <div class="pretable">
-        <table class="table-sm table-bordered">
+        <table class="table table-sm table-bordered">
           <thead>
             <tr>
               <th>название страны</th>
@@ -74,7 +74,7 @@
 
     </b-modal>
     <div style="display: flex">
-      <div style="width: 80%">
+      <div style="width: 80% !important">
         <b-card
           no-body
           style="margin-left: -5% !important; height: 90vh !important"
@@ -118,62 +118,32 @@
         </b-card>
       </div>
       <div class="result">
-        <p>
-          Дата: <span>{{ date }}</span>
-        </p>
-        <p>
-          Ст. отправ: <span>{{ departure.departure }}</span>
-        </p>
-        <p>
-          Ст. назнач: <span>{{ destination.destination }}</span>
-        </p>
-        <p>
-          Груж/Порожний:<span>{{ translateBoolIsLoaded(is_loaded) }}</span>
-        </p>
-        <p>
-          Международный<span>{{ translateInternational(international) }}</span>
-        </p>
-
+        <p> Дата: <span>{{ date }}</span></p>
+        <p> Ст. отправ: <span>{{ departure.departure }}</span></p>
+        <p> Ст. назнач: <span>{{ destination.destination }}</span></p>
+        <p> Груж/Порожний:<span>{{ translateBoolIsLoaded(is_loaded) }}</span></p>
+        <p>Международный<span>{{ translateInternational(international) }}</span></p>
         <!-- Отправка -->
-        <p>
-          Отправка: <span>{{ shipment.shipment }}</span>
-        </p>
-        <p>
-          Скорость: <span>{{ speed }}</span>
-        </p>
-        <p>
-          Вид маршрута: <span>{{ getIsExitRouteById(is_exit_route) }}</span>
-        </p>
-
+        <p> Отправка: <span>{{ shipment.shipment }}</span></p>
+        <p> Скорость: <span>{{ speed }}</span></p>
+        <p> Вид маршрута: <span>{{ getIsExitRouteById(is_exit_route) }}</span></p>
         <!-- Груз -->
-        <p>
-          ЕСТНГ: <span>{{ estng }}</span>
-        </p>
-        <p>
-          Вес: <span>{{ weight }}</span>
-        </p>
-        <p>
-          ГНГ: <span>{{ gng }}</span>
-        </p>
+        <p> ЕСТНГ: <span>{{ estng }}</span></p>
+        <p>Вес: <span>{{ weight }}</span></p>
+        <p>ГНГ: <span>{{ gng }}</span></p>
         <!-- Вагон -->
-        <p>
-          Тип вагона: <span>{{ wagon.wagon_type }}</span>
-        </p>
-        <p>
-          Количество: <span>{{ amount }}</span>
-        </p>
-        <p>
-          Принадлежность: <span>{{ getBelongById(belong.belong) }}</span>
-        </p>
-
-        <button class="button Accept" @click="Calculation()">
+        <p>Тип вагона: <span>{{ wagon.wagon_type }}</span></p>
+        <p>Количество: <span>{{ amount }}</span></p>
+        <p>Принадлежность: <span>{{ getBelongById(belong.belong) }}</span></p>
+        <br>
+        <button class="button Accept railbtn" @click="Calculation()">
           Рассчитать тариф
         </button>
         <br />
-        <!-- v-if="modalData" -->
-        <button @click="showModal()" class="button Request">
+        <button @click="showModal()"    class="button Request railbtn">
           Открыть расчет
         </button>
+        <!-- v-if="modalData" -->
       </div>
     </div>
     <Notifications
@@ -191,6 +161,11 @@
   padding: 0 !important;
   margin: 0 !important;
 }
+.railbtn {
+  height: 40px;
+  margin-top: 5% !important;
+  margin-left: 10px !important;
+}
 table{
   background: white;
 }
@@ -198,11 +173,11 @@ th{
   padding: 5px !important;
   max-height: 85px;
   font-size: 12px;
-  min-width: 70px;
+  min-width: 100px;
   font-family: 'Montserrat', sans-serif;
 }
 .pretable {
-  max-width: 80% !important;
+  max-width: 90% !important;
   overflow: auto;
   position: relative;
   left: 50%;
@@ -321,11 +296,8 @@ export default {
           this.notifyClass = "wrapper-success";
           this.showNotify = true;
           setTimeout(() => (this.showNotify = false), 1500);
-        })
-        .then((response) => {
           this.modalData = true;
-        })
-        .catch((error) => {
+        }).catch((error) => {
           console.log(error);
           this.loader = false;
           this.notifyHead = "Ошибка";
@@ -342,7 +314,7 @@ export default {
       if (typeof station === "number") {
         return station;
       } else {
-        return this.stations.find((item) => item.name === station).code6;
+        return this.stations.find(item => item.name === station)?.code6;
       }
     },
     getDestinationStation(data) {
