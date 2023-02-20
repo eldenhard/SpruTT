@@ -53,7 +53,7 @@ export default {
                         this.notifyHead = 'Здравствуйте'
                         this.notifyMessage = 'Вы успешно авторизированы'
                         this.notifyClass = 'wrapper-success'
-                        document.location.href = '/'
+                        // document.location.href = '/'
 
                     }
                 }).catch((e) => {

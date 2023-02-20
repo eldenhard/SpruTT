@@ -140,7 +140,9 @@ export default {
   },
 
   methods: {
-    SendFile() {
+    SendFile() {    
+      const pretoken = JSON.parse(localStorage.getItem("vuex"));
+      const token = pretoken.auth.user.token;
       this.loader = true
       let formData = new FormData();
       formData.append("file", this.file);
@@ -149,7 +151,9 @@ export default {
         .postShipmentList(formData)
         .then(response => {
           this.loader = false
-          window.location.href = response.data
+          console.log(response)
+          let a = response.data
+          window.location.href = a + `?=${token}`
         }).catch(error => {
           this.notifyHead = "Ошибка";
           this.notifyMessage = "Ошибка, файл не создан, выберите корректный тип файла";

@@ -142,9 +142,12 @@
           Рассчитать тариф
         </button>
         <br />
-        <button @click="showModal()"    class="button Request railbtn">
+        <button @click="showModal()" class="button Request railbtn"  v-if="modalData">
           Открыть расчет
         </button>
+        <div class="resultCost" v-show="WatchCost">
+          Итоговая стоимость: {{ cost }}
+        </div>
         <!-- v-if="modalData" -->
       </div>
     </div>
@@ -162,6 +165,14 @@
 * {
   padding: 0 !important;
   margin: 0 !important;
+}
+.resultCost{
+  position: absolute;
+  bottom: 25%;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+  margin-left: 10px !important;
+
 }
 .railbtn {
   height: 40px;
@@ -233,6 +244,8 @@ export default {
       result: [],
       route: "",
       modalData: false,
+      WatchCost: false,
+      cost: '',
 
       showNotify: false,
       notifyHead: "",
@@ -295,6 +308,11 @@ export default {
           this.showNotify = true;
           setTimeout(() => (this.showNotify = false), 1500);
           this.modalData = true;
+          this.WatchCost = true;
+          for(let i in this.result){
+            console.log(this.result[i])
+            this.cost = this.result[i].total_price + 'руб'
+          }
         }).catch((error) => {
           console.log(error);
           this.loader = false;
