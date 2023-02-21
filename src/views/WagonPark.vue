@@ -26,16 +26,16 @@
               </div>
     
               <div v-if="i.name === 'Расчет'">
-                <WPCalculate/>
+                <WPCalculate />
               </div>
               <div v-if="i.name === 'Отправки БЧ'">
-                <BCH/>
+                <BCH />
               </div>
               <div v-if="i.name === 'Брошенные вагоны'">
                 <AbandonTable />
               </div>
               <div v-if="i.name === 'Телеграммы'">
-                <WagonTableTelegram/>
+                <WagonTableTelegram />
               </div>
               <div v-if="i.name === 'Ремонты'">
                 <WagonRepair />
@@ -101,6 +101,9 @@ export default {
       }
       localStorage.setItem("tabs", JSON.stringify([...this.tabs]));
     },
+    OPenThis(z){
+      z.style.display = 'block'
+    }
   },
   mounted() {
     const tabs = localStorage.getItem("tabs");
