@@ -145,7 +145,7 @@ export default {
           this.loader = false
           console.log(response)
           let a = response.data
-          window.location.href = a + `?=${token}`
+          window.location.href = a 
         }).catch(error => {
           this.notifyHead = "Ошибка";
           this.notifyMessage = "Ошибка, файл не создан, выберите корректный тип файла";
