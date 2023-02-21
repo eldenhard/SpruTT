@@ -24,14 +24,12 @@ export default {
   props: ["tabs", "counter"],
   data: function () {
     return {
-      isActive: false,
       inner_counter: this.counter,
     };
   },
   methods: {
     newTab(tabname) {
       this.tabs.push({ name: tabname, id: Date.now() });
-      tabname.classList('active')
       localStorage.setItem("tabs", JSON.stringify([...this.tabs]));
 
     },
