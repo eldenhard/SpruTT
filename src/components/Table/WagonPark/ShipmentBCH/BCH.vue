@@ -1,8 +1,9 @@
 <template>
   <div>
     <Loader :loader="loader" />
+
     <div class="form-group" style="width: 40vw !important; position: relative; left: 50%; transform: translate(-50%, 0);">
-      <label for="fileField" class="attachment">
+      <label :for="fileField" class="attachment">
         <div class="btn-file__actions">
           <div class="btn-file__actions__item text-center">
             <div class="btn-file__actions__item--shadow">
@@ -12,10 +13,12 @@
             </div>
           </div>
         </div>
-        <b-form-file v-model="file" type="file" id="fileField" class="mt-3" plain></b-form-file>
+        <input type="file" ref="file" @change="readFile()" :id="fileField"/>
+
+        <!-- <b-form-file v-model="file" type="file" id="fileField" class="mt-3" plain></b-form-file> -->
       </label>
     </div>
-    <button id="btnfile" class='button'
+    <button id="btnfile" class='button Accept'
       style="height: 40px; width: 40vw !important; position: relative; left: 50%; transform: translate(-50%, 0);"
       @click="SendFile()">Преобразовать
       файл</button>
@@ -107,13 +110,14 @@ export default {
   },
   components: { Loader, Notifications },
   computed: {
+    fileField(){
+      return 'fileField' + new Date() + new Date().getMilliseconds() 
+    },
+
     changeText() {
       if (this.file == null) {
         return 'Выберите файл'
       } else {
-        let styleList = document.querySelector('.btn-file__actions__item')
-        styleList.style.borderColor = 'black'
-        styleList.style.color = 'black'
         return 'Выбранный файл:' + ' ' + this.file.name
       }
     },
@@ -123,25 +127,18 @@ export default {
       cargo_code: (state) => state.auth.cargo_code,
     }),
   },
-  watch: {
-    file() {
-      if (this.file == null) {
-        document.getElementById('btnfile').className = 'inActive'
-      } else {
-        document.getElementById('btnfile').className = 'Accept'
-
-      }
-    }
-  },
-
+ 
   methods: {
+    readFile() {
+      console.log('1')
+      this.file = this.$refs.file.files[0];
+    },
     SendFile() {    
       const pretoken = JSON.parse(localStorage.getItem("vuex"));
       const token = pretoken.auth.user.token;
       this.loader = true
       let formData = new FormData();
       formData.append("file", this.file);
-
       api
         .postShipmentList(formData)
         .then(response => {

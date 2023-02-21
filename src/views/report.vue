@@ -853,8 +853,8 @@ export default {
 
     }
     // Получить все отчеты созданные сотрудником
-    // fetch("http://10.1.5.20/api/reports/kpi?" + `creator=${id}`, {
-      fetch('/api/reports/kpi?'+ `creator=${id}`, {
+    fetch("http://10.1.5.20/api/reports/kpi?" + `creator=${id}`, {
+      // fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
       headers: {
         Authorization: `Basic ${token}`,
@@ -870,8 +870,8 @@ export default {
       }
     }),
       // Получить все отчеты созданные на сотрудника
-      // fetch("http://10.1.5.20/api/reports/kpi?" + `employee=${id}`, {
-        fetch('/api/reports/kpi?'+ `employee=${id}`, {
+      fetch("http://10.1.5.20/api/reports/kpi?" + `employee=${id}`, {
+        // fetch('/api/reports/kpi?'+ `employee=${id}`, {
 
         headers: {
           Authorization: `Basic ${token}`,
@@ -887,15 +887,15 @@ export default {
         }
       }),
       // получить данные по сотруднику за полсдение 2 месяца
-      // fetch(
-      //   "http://10.1.5.20/api/personal/users/?page_size=200&manager=" +
-      //     `${id}` +
-      //     "&last_kpi_graded__lte=" +
-      //     `${new Date(new Date().setDate(new Date().getDate() - 60))
-      //       .toISOString()
-      //       .substring(0, 10)}`,
-      //   {
-          fetch('/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
+      fetch(
+        "http://10.1.5.20/api/personal/users/?page_size=200&manager=" +
+          `${id}` +
+          "&last_kpi_graded__lte=" +
+          `${new Date(new Date().setDate(new Date().getDate() - 60))
+            .toISOString()
+            .substring(0, 10)}`,
+        {
+          // fetch('/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
 
           headers: {
             Authorization: `Basic ${token}`,
@@ -929,7 +929,16 @@ export default {
   },
   methods: {
     getMark() {
-      window.location.href = `http://10.1.5.20/api/reports/kpi/get-all-last?date_begin=${this.period_begin}&date_end=${this.period_end}`;
+      let data = [this.period_begin, this.period_end]
+      console.log(data)
+      this.loader = true
+      api.getAllDataLastReportAdmin(data)
+      .then(response=> {
+        window.location.href = response.data
+        this.loader = false
+
+      })
+      // window.location.href = `http://10.1.5.20/api/reports/kpi/get-all-last?date_begin=${this.period_begin}&date_end=${this.period_end}`;
       this.hideModal();
     },
     showModal() {
@@ -979,8 +988,8 @@ export default {
       this.loader = true;
       this.allReportHistory = true;
       this.downloadReport = "Загрузить отчеты";
-      // fetch("http://10.1.5.20/api/reports/kpi?" + `creator=${id}`, {
-        fetch('/api/reports/kpi?'+ `creator=${id}`, {
+      fetch("http://10.1.5.20/api/reports/kpi?" + `creator=${id}`, {
+        // fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
         headers: {
           Authorization: `Basic ${token}`,
@@ -995,8 +1004,8 @@ export default {
           console.log("NOT OK");
         }
       }),
-        // fetch("http://10.1.5.20/api/reports/kpi?" + `employee=${id}`, {
-          fetch('/api/reports/kpi?'+ `employee=${id}`, {
+        fetch("http://10.1.5.20/api/reports/kpi?" + `employee=${id}`, {
+          // fetch('/api/reports/kpi?'+ `employee=${id}`, {
 
           headers: {
             Authorization: `Basic ${token}`,
@@ -1065,8 +1074,8 @@ export default {
 
       if (!Object.keys(this.errors).length) {
         this.loader = true;
-        // fetch("http://10.1.5.20/api/reports/kpi/", {
-          fetch('/api/reports/kpi/', {
+        fetch("http://10.1.5.20/api/reports/kpi/", {
+          // fetch('/api/reports/kpi/', {
 
           method: "POST",
           headers: {

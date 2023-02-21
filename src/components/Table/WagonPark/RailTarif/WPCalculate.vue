@@ -72,34 +72,24 @@
           </tbody>
         </table>
       </div>
-      <button class="button Delete railbtn" style="width: 10%; float: right; margin-top: 3%  !important; margin-right:1% !important;" block @click="hideModal">Закрыть</button>
+      <button class="button Delete railbtn"
+        style="width: 10%; float: right; margin-top: 3%  !important; margin-right:1% !important;" block
+        @click="hideModal">Закрыть</button>
 
     </b-modal>
     <div style="display: flex">
       <div style="width: 80% !important">
-        <b-card
-          no-body
-          style="margin-left: -5% !important; height: 90vh !important"
-        >
+        <b-card no-body style="margin-left: -5% !important; height: 90vh !important">
           <b-tabs pills card vertical style="height: 90vh !important">
             <b-tab title="Станции отправления/назначения" active>
               <b-card-text>
-                <Stations
-                  @destination="getDestinationStation"
-                  @departure="getDepartureStation"
-                  @is_loaded="getIsLoaded"
-                  @international="getInternational"
-                  @on_date="getDate"
-                />
+                <Stations @destination="getDestinationStation" @departure="getDepartureStation" @is_loaded="getIsLoaded"
+                  @international="getInternational" @on_date="getDate" />
               </b-card-text>
             </b-tab>
             <b-tab title="Отправка">
               <b-card-text>
-                <Shipment
-                  @shipment="getShipment"
-                  @is_exit_route="getIsExitRoute"
-                  @speed="getSpeed"
-                />
+                <Shipment @shipment="getShipment" @is_exit_route="getIsExitRoute" @speed="getSpeed" />
               </b-card-text>
             </b-tab>
             <b-tab title="Груз">
@@ -109,11 +99,7 @@
             </b-tab>
             <b-tab title="Вагон">
               <b-card-text>
-                <Wagon
-                  @wagon="wagonType"
-                  @belong="wagonBelong"
-                  @amount="wagonAmount"
-                />
+                <Wagon @wagon="wagonType" @belong="wagonBelong" @amount="wagonAmount" />
               </b-card-text>
             </b-tab>
           </b-tabs>
@@ -142,22 +128,17 @@
           Рассчитать тариф
         </button>
         <br />
-        <button @click="showModal()" class="button Request railbtn"  v-if="modalData">
+        <button @click="showModal()" class="button Request railbtn" v-if="modalData">
           Открыть расчет
         </button>
         <div class="resultCost" v-show="WatchCost">
-          Итоговая стоимость: {{ cost }}
+          Итоговая стоимость: {{  split_number(cost) }}
         </div>
         <!-- v-if="modalData" -->
       </div>
     </div>
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-      id="notif"
-    />
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+      id="notif" />
   </div>
 </template>
 
@@ -166,7 +147,8 @@
   padding: 0 !important;
   margin: 0 !important;
 }
-.resultCost{
+
+.resultCost {
   position: absolute;
   bottom: 25%;
   font-weight: 600;
@@ -174,17 +156,21 @@
   margin-left: 10px !important;
 
 }
+
 .railbtn {
   height: 40px;
   margin-top: 5% !important;
   margin-left: 10px !important;
 }
-table{
+
+table {
   background: white;
 }
-th{
+
+th {
   font-family: 'Montserrat', sans-serif;
 }
+
 .pretable {
   max-width: 100% !important;
   overflow: auto;
@@ -192,18 +178,21 @@ th{
   left: 50%;
   transform: translate(-50%, 0);
 }
+
 .result {
   border-left: 1px solid #c2c2c2;
   height: 90vh;
   width: 20%;
   text-align: center;
 }
+
 .result p {
   color: #dfdfdf;
   font-weight: 600;
   text-align: left;
   padding-left: 2% !important;
 }
+
 .result span {
   color: #949494;
 }
@@ -268,6 +257,9 @@ export default {
     toggleModal() {
       this.$refs["modalRailTariff"].toggle("#toggle-btn");
     },
+    split_number(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    },
     Calculation() {
       this.loader = true;
       let data = {
@@ -309,7 +301,7 @@ export default {
           setTimeout(() => (this.showNotify = false), 1500);
           this.modalData = true;
           this.WatchCost = true;
-          for(let i in this.result){
+          for (let i in this.result) {
             console.log(this.result[i])
             this.cost = this.result[i].total_price + 'руб'
           }

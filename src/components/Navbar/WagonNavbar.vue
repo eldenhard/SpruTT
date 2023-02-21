@@ -11,11 +11,11 @@
         "
       >
         <b-container class="bv-example-row">
-          <b-tab title="Вагоны" active @click="newTab('Вагоны')"> </b-tab>
+          <b-tab title="Вагоны" @click="newTab('Вагоны')"> </b-tab>
           <b-tab title="Телеграммы" @click="newTab('Телеграммы')"> </b-tab>
           <b-tab title="Ремонты" @click="newTab('Ремонты')"> </b-tab>
-           <b-tab title="Расчет" @click="newTab('Расчет')"> </b-tab>
-           <b-tab title="Отправки БЧ" @click="newTab('Отправки БЧ')"> </b-tab>
+          <b-tab title="Расчет" @click="newTab('Расчет')"> </b-tab>
+          <b-tab title="Отправки БЧ" @click="newTab('Отправки БЧ')"> </b-tab>
 
         </b-container>
       </b-tabs>
@@ -37,6 +37,7 @@ export default {
     newTab(tabname) {
       this.tabs.push({ name: tabname, id: Date.now() });
       localStorage.setItem("tabs", JSON.stringify([...this.tabs]));
+      
     },
   },
 };

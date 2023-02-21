@@ -187,7 +187,6 @@ export default {
       .getWagonRepair()
       .then((response) => {
         this.repair_data = response.data.data;
-        console.log(this.repair_data)
         this.loader = false;
         let a = this.repair_data.map(element =>{
             if(element.axis1_left_flange <= 25 && element.axis1_left_flange > 0){
@@ -238,9 +237,9 @@ export default {
             if(element.axis8_right_flange <= 25 && element.axis8_right_flange > 0){
                 element.isRed15= true
             }
-            else {
-              console.log('ОШИЮКА')
-            }
+            // else {
+            //   console.log('ОШИЮКА')
+            // }
         })
       })
       .catch((error) => {

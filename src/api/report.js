@@ -90,6 +90,9 @@ const getKeyFactsSpeedTon = () => {
 const getKeyFactsSpeed = () => {
     return api.get(`${reports}/key-facts/get-speed?wagon_type=Полувагон&data_source=Дислокации`)
 }
+const getAllDataLastReportAdmin = (data) => {
+    return api.get(`${reports}/kpi/get-all-last?date_begin=${data[0]}&date_end=${data[1]}`)
+}
 export default {
     getUsers,
     getReportById,
@@ -104,6 +107,7 @@ export default {
     deleteReportAbandon,
     getLastDataReports,
     getReportByIdCreator,
+    getAllDataLastReportAdmin,
     // Личный кабинет 
     getUsersLK,
     getManagerLK,

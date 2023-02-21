@@ -64,7 +64,7 @@
       </div>
       <div class="shipment-kind__content__weight">
         <p class="description" style="margin-top: 10px">Масса груза, т</p>
-        <input type="text" class="textareaTon" style="width: 15%; margin-left: 3%" v-model="weight" />
+        <input type="number" class="textareaTon" style="width: 15%; margin-left: 3%" v-model="weight" />
       </div>
     </div>
   </div>
@@ -97,7 +97,6 @@ export default {
     SearchData() {
       return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.search) !== -1)
     },
-
     SearchGNG() {
       return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.searchGNG) !== -1)
     },
@@ -109,7 +108,7 @@ export default {
 
   },
   mounted() {
-    console.log(this.$store.state.cargo_code.cargo_code)
+    window.performance.timing
     this.informations = this.cargo_code.cargo_code
   },
 

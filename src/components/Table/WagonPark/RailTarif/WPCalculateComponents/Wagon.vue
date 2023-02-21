@@ -58,7 +58,7 @@ export default {
       uid: (state) => state.auth.uid,
     }),
     getCurrentWagonType() {
-      return this.wagon_type.filter(item => item.name.indexOf(this.search) !== -1)
+      return (this.wagon_type.filter(item => item.name.indexOf(this.search) !== -1))
     },
   },
   watch: {
@@ -98,7 +98,8 @@ export default {
     },
     getWagonTypeId(wagon){
       return this.wagon_type.find(item => item.id === wagon).type_id
-    }
+    },
+   
   },
 };
 </script>
