@@ -25,8 +25,8 @@
                   </thead>
                   <tbody>
                     <div class="lds-dual-ring" v-if="loaderTable"></div>
-     
-                    <tr v-for="information in SearchData" :key="information.id" @click="ESTNG(information.code6)">
+
+                    <tr v-for="information in this.SearchData" :key="information.id" @click="ESTNG(information.code6)">
                       <td>{{ information.code6 }}</td>
                       <td>{{ information.name }}</td>
                       <td>{{ information.cargo_class }}</td>
@@ -51,7 +51,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="information in SearchGNG" :key="information.id" @click="GNG(information.code)">
+                    <tr v-for="information in this.SearchGNG" :key="information.id" @click="GNG(information.code)">
                       <td>{{ information.code }}</td>
                       <td>{{ information.name }}</td>
                     </tr>
@@ -95,12 +95,11 @@ export default {
       cargo_code: (state) => state.cargo_code
     }),
     SearchData() {
-      return this.informations.filter((item) => item.name.indexOf(this.search) !== -1);
+      return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.search) !== -1)
     },
+
     SearchGNG() {
-      return this.informations.filter(
-        (item) => item.name.indexOf(this.searchGNG) !== -1
-      );
+      return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.searchGNG) !== -1)
     },
   },
   watch: {
@@ -110,9 +109,8 @@ export default {
 
   },
   mounted() {
-    this.loaderTable = true
+    console.log(this.$store.state.cargo_code.cargo_code)
     this.informations = this.cargo_code.cargo_code
-    this.loaderTable = false
   },
 
   methods: {
@@ -135,9 +133,10 @@ export default {
   z-index: 15 !important;
   position: fixed;
   left: 50%;
-  transform: translate(-50%,0);
+  transform: translate(-50%, 0);
   margin-top: 10%;
 }
+
 .lds-dual-ring:after {
   content: " ";
   display: block;
@@ -149,10 +148,12 @@ export default {
   border-color: #000000 transparent #000000 transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
+
 @keyframes lds-dual-ring {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
