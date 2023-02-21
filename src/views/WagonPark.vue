@@ -17,18 +17,18 @@
             </template>
 
             <b-card-text>
-              <div v-if="i.name === 'Рейсы'">
+              <div  v-if="i.name === 'Рейсы'">
                 <FlightTable />
               </div>
-              <div v-if="i.name === 'Вагоны'">
+              <div  v-if="i.name === 'Вагоны'">
                 <!-- <WagonTable/> -->
                 <component :is="wt"></component>
               </div>
     
-              <div v-if="i.name === 'Расчет'">
+              <div  v-if="i.name === 'Расчет'">
                 <WPCalculate />
               </div>
-              <div v-if="i.name === 'Отправки БЧ'">
+              <div  v-if="i.name === 'Отправки БЧ'">
                 <BCH />
               </div>
               <div v-if="i.name === 'Брошенные вагоны'">
@@ -37,13 +37,13 @@
               <div v-if="i.name === 'Телеграммы'">
                 <WagonTableTelegram />
               </div>
-              <div v-if="i.name === 'Ремонты'">
+              <div rectory-navbar v-if="i.name === 'Ремонты'">
                 <WagonRepair />
               </div>
               <div v-if="i.name === 'Полигоны'">
                 <WagonTablePoligon />
               </div>
-              <div v-if="i.name === 'Дислокация'">
+              <div  v-if="i.name === 'Дислокация'">
                 <DislocationTable />
               </div>
               <div v-if="i.name === 'Отчет брошенные вагоны'">
@@ -101,9 +101,7 @@ export default {
       }
       localStorage.setItem("tabs", JSON.stringify([...this.tabs]));
     },
-    OPenThis(z){
-      z.style.display = 'block'
-    }
+
   },
   mounted() {
     const tabs = localStorage.getItem("tabs");
