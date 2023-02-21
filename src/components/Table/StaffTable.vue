@@ -299,7 +299,7 @@
 
     <b-modal ref="change-user" hide-footer title="Редактирование сотрудника">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3" style="position: relative;">
           <button class="Accept" v-if="current_user_staff.photo">Заменить</button>
           <button class="Accept" v-else>Загрузить</button>
           <br>

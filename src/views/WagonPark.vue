@@ -5,50 +5,48 @@
       <WagonNavbar :tabs="tabs" :counter="counter"></WagonNavbar>
     </div>
     <div class="col-md-10">
-        <p class="infoNull" v-if="tabs.length === 0">
+      <p class="infoNull" v-if="tabs.length === 0">
         Вы не выбрали ещё ни одной таблицы
       </p>
       <b-card no-body class="leftTable">
-        <b-tabs card>
+        <b-tabs card v-model="tabActive" @changed="onTabChanged">
           <b-tab v-for="i in tabs" :key="i.id">
             <template #title>
               <span>Таблица {{ i.name }}</span>
               <span @click="closeTab(i.id)">&nbsp;&nbsp;❌</span>
             </template>
 
-            <b-card-text>
-              <div  v-if="i.name === 'Рейсы'">
+          <!-- <b-card-text v-if="i.name === 'Рейсы'">
                 <FlightTable />
-              </div>
-              <div  v-if="i.name === 'Вагоны'">
-                <!-- <WagonTable/> -->
-                <component :is="wt"></component>
-              </div>
-    
-              <div  v-if="i.name === 'Расчет'">
-                <WPCalculate />
-              </div>
-              <div  v-if="i.name === 'Отправки БЧ'">
-                <BCH />
-              </div>
-              <div v-if="i.name === 'Брошенные вагоны'">
-                <AbandonTable />
-              </div>
-              <div v-if="i.name === 'Телеграммы'">
-                <WagonTableTelegram />
-              </div>
-              <div rectory-navbar v-if="i.name === 'Ремонты'">
-                <WagonRepair />
-              </div>
-              <div v-if="i.name === 'Полигоны'">
-                <WagonTablePoligon />
-              </div>
-              <div  v-if="i.name === 'Дислокация'">
-                <DislocationTable />
-              </div>
-              <div v-if="i.name === 'Отчет брошенные вагоны'">
-                <ReportAbandoned />
-              </div>
+                <b-card-text /> -->
+            <b-card-text v-if="i.name === 'Вагоны'">
+              <!-- <WagonTable/> -->
+              <component :is="wt"></component>
+            </b-card-text>
+
+            <b-card-text v-if="i.name === 'Расчет'">
+              <WPCalculate />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Отправки БЧ'">
+              <BCH />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Брошенные вагоны'">
+              <AbandonTable />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Телеграммы'">
+              <WagonTableTelegram />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Ремонты'">
+              <WagonRepair />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Полигоны'">
+              <WagonTablePoligon />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Дислокация'">
+              <DislocationTable />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
+              <ReportAbandoned />
             </b-card-text>
           </b-tab>
         </b-tabs>
@@ -57,7 +55,7 @@
   </div>
 </template>
   
-  <script>
+<script>
 import WagonNavbar from "../components/Navbar/WagonNavbar.vue";
 import WagonTable from "../components/Table/WagonTable.vue";
 import FlightTable from "../components/Table/FlightTable.vue";
@@ -89,10 +87,15 @@ export default {
       tabs: [],
       counter: 1,
       wt: "WagonTable",
+      tabActive: 0,
+
     };
   },
 
   methods: {
+    onTabChanged() {
+      this.tabActive = this.tabs.length - 1;
+    },
     closeTab(x) {
       for (let i = 0; i < this.tabs.length; i++) {
         if (this.tabs[i].id === x) {
@@ -103,45 +106,56 @@ export default {
     },
 
   },
+  watch: {
+    tabs() {
+      console.log(this.tabs[this.tabs.length - 1].name)
+    }
+  },
   mounted() {
+    // console.log(document.querySelector('.tabs'))
     const tabs = localStorage.getItem("tabs");
     if (tabs) {
       this.tabs = JSON.parse(tabs);
     }
+
+
     document.title = "Вагонный парк";
   },
 };
 </script>
   
-  <style>
-  .active{
-    display: block;
-  }
+<style>
 .infoNull {
   text-align: center;
   padding-top: 1%;
   font-weight: bold;
 }
+
 select {
   width: 100%;
   box-sizing: border-box;
 }
+
 #navbarMain {
   background: #cecece;
   display: block;
   height: 120px;
 }
-.navbarList li > a {
+
+.navbarList li>a {
   display: block;
   text-decoration: none;
 }
+
 .navbarul {
   padding-top: 8px;
   margin-left: 0.5%;
 }
+
 ul.navbarul li {
   display: inline-block;
 }
+
 .navbarList {
   display: block;
   margin-left: 2px;
@@ -153,13 +167,16 @@ ul.navbarul li {
   cursor: pointer;
   height: 100px;
 }
+
 .navbarList:hover {
   border: 1px solid #9d9d9d;
 }
+
 .image {
   width: 40px;
   margin-top: 5px;
 }
+
 .navbarDescription {
   color: #000000;
   font-size: 400;

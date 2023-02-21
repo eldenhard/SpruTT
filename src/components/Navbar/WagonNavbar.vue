@@ -1,16 +1,15 @@
 <template>
   <div id="navbarMain">
     <b-card no-body>
-      <b-tabs pills card vertical nav-wrapper-class="w-100" style="background: white;height: 100vh !important;text-align:center !important;
-          justify-content: center !important;
-          ">
+      <b-tabs pills card vertical nav-wrapper-class="w-100" class="test" style="background: white;height: 100vh !important;text-align:center !important;
+            justify-content: center !important;
+            ">
         <b-container class="bv-example-row">
-          <b-tab  title="Вагоны" @click="newTab('Вагоны')"> </b-tab>
-          <b-tab  title="Телеграммы" @click="newTab('Телеграммы')"> </b-tab>
-          <b-tab  title="Ремонты" @click="newTab('Ремонты')"> </b-tab>
-          <b-tab  title="Расчет" @click="newTab('Расчет')"> </b-tab>
-          <b-tab  title="Отправки БЧ" @click="newTab('Отправки БЧ')">
-          </b-tab>
+          <b-tab title="Вагоны" @click="newTab('Вагоны')" style="display: none !important"> </b-tab>
+          <b-tab title="Телеграммы" @click="newTab('Телеграммы')" style="display: none !important"> </b-tab>
+          <b-tab title="Ремонты" @click="newTab('Ремонты')" style="display: none !important"> </b-tab>
+          <b-tab title="Расчет" @click="newTab('Расчет')" style="display: none !important"> </b-tab>
+          <b-tab  title="Отправки БЧ" @click="newTab('Отправки БЧ')" style="display: none !important"> </b-tab>
 
         </b-container>
       </b-tabs>
@@ -25,11 +24,14 @@ export default {
   data: function () {
     return {
       inner_counter: this.counter,
+
     };
   },
+
   methods: {
     newTab(tabname) {
       this.tabs.push({ name: tabname, id: Date.now() });
+     
       localStorage.setItem("tabs", JSON.stringify([...this.tabs]));
 
     },
