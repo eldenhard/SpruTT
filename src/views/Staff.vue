@@ -1,9 +1,9 @@
 <template>
-  <div class="row">
-    <div class="col-md-2">
+  <div style="display: flex;">
+    <div style="width: 15%;">
         <StaffNavbar :tabs="tabs" :counter="counter"></StaffNavbar>
     </div>
-    <div class="col-md-10">
+    <div style="width: 80%; ">
       <p class="infoNull" v-if="tabs.length === 0">
         Вы не выбрали ещё ни одной таблицы
       </p>
