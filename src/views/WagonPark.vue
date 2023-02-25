@@ -25,16 +25,13 @@
             <b-card-text v-if="i.name === 'Отправки БЧ'">
               <BCH />
             </b-card-text>
- 
             <b-card-text v-if="i.name === 'Телеграммы'">
               <WagonTableTelegram />
             </b-card-text>
             <b-card-text v-if="i.name === 'Ремонты'">
               <WagonRepair />
             </b-card-text>
-            <b-card-text v-if="i.name === 'Полигоны'">
-              <WagonTablePoligon />
-            </b-card-text>
+
             <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
               <ReportAbandoned />
             </b-card-text>
@@ -47,9 +44,8 @@
   
 <script>
 import WagonNavbar from "../components/Navbar/WagonNavbar.vue";
-import WagonTable from "../components/Table/WagonTable.vue";
+import WPMainData from "../components/Table/WagonPark/WPMainData.vue";
 import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
-import WagonTablePoligon from "../components/Table/WagonTablePoligon.vue";
 import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
 import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
 import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
@@ -57,10 +53,9 @@ import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue"
 export default {
   name: "WagonPark",
   components: {
-    WagonTable,
+    WPMainData,
     WagonNavbar,
     ReportAbandoned,
-    WagonTablePoligon,
     WagonTableTelegram,
     WPCalculate,
     WagonRepair,
@@ -70,7 +65,7 @@ export default {
     return {
       tabs: [],
       counter: 1,
-      wt: "WagonTable",
+      wt: "WPMainData",
       tabActive: 0,
 
     };
