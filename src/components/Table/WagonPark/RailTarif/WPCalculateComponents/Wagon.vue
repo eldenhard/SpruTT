@@ -86,11 +86,7 @@ export default {
     })
   },
   methods: {
-    sort_info() {
-      return a.sort(function (a, b) {
-        return a - b;
-      });
-    },
+
     getWagonById(data) {
       let searchWagon = data
       let wagon = this.wagon_type.find(item => item.id === searchWagon).name
