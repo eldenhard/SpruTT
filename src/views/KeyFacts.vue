@@ -3,15 +3,16 @@
         <Loader :loader="loader"></Loader>
         <br>
        
-        <div class="row">
-            <div class="col-md-6">
-                <h2 style="text-align: left; padding-left:5%;" class="signature">Количесто вагонов</h2>
-                <div class="hello" ref="chartdiv"></div></div>
+        <h2 style="text-align: left; padding-left:5%;" class="signature">Количесто вагонов</h2>
+            <div style="display: flex; justify-content: flex-start;">
+              
+                <div class="hello" ref="chartdiv"></div>
+            </div>
             <!-- <div class="col-md-6">
                 <h2 style="text-align: left; padding-left:5%;" class="signature">Скорость вагонов на текущий день</h2>
                 <div class="hello" ref="chartdiv2"></div>
             </div> -->
-        </div>
+
 
         <div class="row container-fluid">
             <!-- <div class="col-md-12">
@@ -285,7 +286,7 @@ export default {
 
 <style scoped>
 .hello {
-    width: 100%;
+    width: 50%;
     height: 600px;
 
 }
