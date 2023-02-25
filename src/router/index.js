@@ -3,10 +3,7 @@ import Router from 'vue-router';
 import home from '../views/Home'
 import wagonpark from '../views/WagonPark'
 import errorPage from '@/404folder/errorPage';
-import presentation from '../views/Presentation';
-import rates from '../views/Rates';
 import authorization from '../views/Authorization';
-import Bookkeeping from '../views/Bookkeeping';
 import lk from '../views/lk';
 import report from '../views/report';
 import Staff from '../views/Staff';
@@ -28,21 +25,10 @@ export default new Router({
     },
 
     {
-      path: '/home',
+      path: '/directory',
       component: home
     },
-    {
-      path: '/presentation',
-      component: presentation
-    },
-    {
-      path: '/rates',
-      component: rates
-    },
-    {
-      path: '/bookkeeping',
-      component: Bookkeeping
-    },
+
     {
       path: '/lk',
       component: lk

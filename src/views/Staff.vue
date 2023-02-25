@@ -25,32 +25,7 @@
       </b-card>
     </div>
   </div>
-  <!-- <div>
-        <StaffNavbar :tabs="tabs" :counter="counter"></StaffNavbar>
-        <p class="infoNull" v-if="tabs.length === 0">Вы не выбрали ещё ни одной таблицы</p>
-        <div>
-            <b-card no-body class="leftTable">
-                <b-tabs card>
-                    <b-tab v-for="i in tabs" :key="i.id" >
-  
-                        <template #title>
-                            <span>Таблица {{i.name}}</span>
-                            <span @click="closeTab(i.id)">&nbsp;&nbsp;❌</span>
-                        </template>
-  
-                        <b-card-text>
-                            {{i.name}}
-                            <div v-if="i.name==='Сотрудники'"> 
-                                <StaffTable/>
-                            </div>
-                            
-                        
-                        </b-card-text>
-                    </b-tab>
-                </b-tabs>
-            </b-card>
-        </div>
-        </div> -->
+
 </template>
 
 <script>

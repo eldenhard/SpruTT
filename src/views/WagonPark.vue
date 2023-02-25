@@ -16,23 +16,16 @@
               <span @click="closeTab(i.id)">&nbsp;&nbsp;❌</span>
             </template>
 
-          <!-- <b-card-text v-if="i.name === 'Рейсы'">
-                <FlightTable />
-                <b-card-text /> -->
             <b-card-text v-if="i.name === 'Вагоны'">
-              <!-- <WagonTable/> -->
               <component :is="wt"></component>
             </b-card-text>
-
             <b-card-text v-if="i.name === 'Расчет'">
               <WPCalculate />
             </b-card-text>
             <b-card-text v-if="i.name === 'Отправки БЧ'">
               <BCH />
             </b-card-text>
-            <b-card-text v-if="i.name === 'Брошенные вагоны'">
-              <AbandonTable />
-            </b-card-text>
+ 
             <b-card-text v-if="i.name === 'Телеграммы'">
               <WagonTableTelegram />
             </b-card-text>
@@ -41,9 +34,6 @@
             </b-card-text>
             <b-card-text v-if="i.name === 'Полигоны'">
               <WagonTablePoligon />
-            </b-card-text>
-            <b-card-text v-if="i.name === 'Дислокация'">
-              <DislocationTable />
             </b-card-text>
             <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
               <ReportAbandoned />
@@ -58,9 +48,6 @@
 <script>
 import WagonNavbar from "../components/Navbar/WagonNavbar.vue";
 import WagonTable from "../components/Table/WagonTable.vue";
-import FlightTable from "../components/Table/FlightTable.vue";
-import DislocationTable from "../components/Table/DislocationTable.vue";
-import AbandonTable from "../components/Table/AbandonTable.vue";
 import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
 import WagonTablePoligon from "../components/Table/WagonTablePoligon.vue";
 import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
@@ -71,10 +58,7 @@ export default {
   name: "WagonPark",
   components: {
     WagonTable,
-    FlightTable,
     WagonNavbar,
-    DislocationTable,
-    AbandonTable,
     ReportAbandoned,
     WagonTablePoligon,
     WagonTableTelegram,

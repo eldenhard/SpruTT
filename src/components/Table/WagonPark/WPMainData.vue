@@ -236,13 +236,7 @@
   left: 50%;
   transform: translate(-50%, 0);
 }
-/* #input-live-feedback,
-#input-live-help {
-  width: 50%;
-  position: relative;
-  left: 50%;
-  transform: translate(-50%, 0);
-} */
+
 .search {
   width: 10%;
   float: right;

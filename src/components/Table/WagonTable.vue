@@ -30,11 +30,7 @@ export default {
       loader: false,
     };
   },
-  methods: {
-    updateFilters(filters) {
-      this.filters = filters;
-    },
-  },
+ 
 };
 </script>
     

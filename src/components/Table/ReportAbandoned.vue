@@ -25,102 +25,6 @@
       <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button>
     </b-modal>
 
-    <!-- <button
-      class="button Action"
-      style="
-        width: 100%;
-        position: relative;
-        left: 50%;
-        transform: translate(-50%, 0);
-        font-size: 17px;
-        margin: 2% 0 1%;
-      "
-      @click="ThrowWagons()"
-    >
-      Предварительный запрос вагонов
-    </button> -->
-    <!-- <p class="amount">всего записей: {{ total_objects }}</p> -->
-    <!-- <div
-      style="
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: auto;
-        position: relative;
-        left: 50%;
-        transform: translate(-50%, 0);
-        height: 80vh;
-      "
-    >
-      <table
-        class="table table-sm table-bordered table-hover"
-        style="margin: 0;  "
-      >
-        <thead class="thead-light" style="background: #e9ecef !important"> -->
-    <!-- <div
-      style="
-        width: 100%;
-        overflow-x: auto;
-        height: 80vh;
-        overflow-y: auto;
-        position: relative;
-        left: 50%;
-        transform: translate(-50%, 0);
-        margin-bottom: 3%;
-      "
-    >
-      <table
-        class="table table-sm table-bordered table-hover"
-        style="table-layout: fixed"
-      >
-        <thead class="thead-light" style="background: #e9ecef"> -->
-    <!-- <tr>
-            <th>Тип вагона</th>
-            <th>Номер вагона</th>
-            <th>Полигон</th>
-            <th>Государство</th>
-            <th>Код бросания</th>
-            <th>Причина бросания</th>
-            <th>Собственник</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="broc in throwWagons" :key="broc.id">
-            <td v-if="broc != null">
-              {{ broc.wagon_type }}
-            </td>
-            <td v-if="broc != null">
-              {{ broc.wagon }}
-            </td>
-            <td>
-              {{ broc.polygon }}
-            </td>
-            <td>
-              {{ broc.current_country }}
-            </td>
-            <td v-if="broc.drop != null">
-              {{ broc.drop }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="broc.drop != null">
-              <textarea
-                name=""
-                id=""
-                cols="20"
-                rows="1"
-                :value="broc.drop_reason"
-              ></textarea>
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="broc != null">
-              {{ broc.wagon_owner }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div> -->
-
     <b-container class="bv-example-row">
       <b-row>
         <b-col>
@@ -206,16 +110,6 @@
                 <img src="@/assets/delete.png" class="icon-active" alt="">
               </button>
 
-                    <!-- <button class="Delete" style="
-                        height: 100%;
-                        height: 20px;
-                        vertical-align: middle;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      " @click="DeleteReportAbandoned(reports.id)">
-                      Удалить
-                    </button> -->
                   </td>
                 </tr>
               </tbody>
@@ -337,42 +231,6 @@ export default {
         });
     },
 
-    // ThrowWagons(url = null, clear = true) {
-    //   if (url == null) url = "wagon-park/dislocations?operation=БРОС";
-    //   if (clear) this.throwWagons = [];
-
-    //   this.loader = true;
-
-    //   apiWagon
-    //     .getWagonsThrow(url, this.filter) //this.filter_abadon)
-    //     .then((response) => {
-    //       this.throwWagons = [...this.throwWagons, ...response.data.data];
-    //       if (response.data.links.next != null) {
-    //         this.ThrowWagons(response.data.links.next, false);
-    //         this.loader = false;
-    //         this.total_objects = response.data.total_objects;
-    //       } else {
-    //         this.loader = false;
-    //         this.total_objects = response.data.total_objects;
-
-    //         // this.throwWagons = response.data.data
-    //         // this.notifyHead = 'Успешно'
-    //         // this.notifyMessage = 'Данные отфильтрованы'
-    //         // this.notifyClass = 'wrapper-success'
-    //         // this.showNotify = true
-    //         // setTimeout(this.closeNotification, 1500)
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       this.loader = false;
-    //       this.notifyHead = "Ошибка";
-    //       this.notifyMessage = "Данные не получены";
-    //       this.notifyClass = "wrapper-alert";
-    //       this.showNotify = true;
-    //       setTimeout(this.closeNotification, 1500);
-    //       // console.log(error.response); вывод ошибок получаемых от сервера
-    //     });
-    // },
     DeleteReportAbandoned(id) {
       this.loader = true;
       api
