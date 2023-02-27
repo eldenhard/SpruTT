@@ -56,10 +56,10 @@ export default {
                         // document.location.href = '/'
 
                     }
-                }).catch((e) => {
+                }).catch((error) => {
                     this.showNotify = true
                     this.notifyHead = 'Ошибка авторизации'
-                    this.notifyMessage = 'Пожалуйста, проверьте ваши введенные данные'
+                    this.notifyMessage = error.response.data
                     this.notifyClass = 'wrapper-error'
                 })
             } else {
@@ -120,7 +120,7 @@ export default {
             if (v) {
                 setTimeout(() => {
                     this.showNotify = false
-                }, 2100)
+                }, 3000)
             }
         },
         authStatus: function (newVal, oldVal) {
