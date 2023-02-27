@@ -137,6 +137,8 @@
           Итоговая стоимость: {{  split_number(cost) }}
           <br>
           Кол-во дней: {{ days }} 
+          <br>
+          Расстояние: {{  distance  }}
         </div>
         <!-- v-if="modalData" -->
       </div>
@@ -155,7 +157,7 @@
 .resultCost {
   position: absolute;
   bottom: 25%;
-  font-weight: 600;
+  font-weight: 500;
   font-family: 'Montserrat', sans-serif;
   margin-left: 10px !important;
 
@@ -240,6 +242,7 @@ export default {
       WatchCost: false,
       cost: '',
       days: '',
+      distance: '',
 
       showNotify: false,
       notifyHead: "",
@@ -307,8 +310,9 @@ export default {
           this.modalData = true;
           this.WatchCost = true;
           for (let i in this.result) {
-            this.cost = this.result[i].total_price + 'руб'
-            this.days =  this.result[i].delivery_days + 'дней'
+            this.cost = this.result[i].total_price + ' руб'
+            this.days =  this.result[i].delivery_days + ' дней'
+            this.distance = this.result[i].distance + ' км'
           }
         }).catch((error) => {
           console.log(error);
