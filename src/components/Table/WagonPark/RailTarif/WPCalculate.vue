@@ -1,43 +1,44 @@
 <template>
   <div>
     <Loader :loader="loader" />
-    <b-modal ref="modalRailTariff" size="lg" hide-footer>
+    <b-modal ref="modalRailTariff" size="lg" hide-footer style="width: 95% !important">
       <template #modal-title>
         Расчет тарифа
       </template>
       <br />
-      <div class="pretable ">
-        <table class="table table-bordered">
+    
+      <div class="pretable table-responsive">
+        <table class="table-sm table-bordered">
           <thead>
-            <tr class="table-secondary">
-              <th>название страны</th>
-              <th>тип тарифа</th>
-              <th>расстояние, которое пойдет в расчет</th>
-              <th>транзитное расстояние, если есть</th>
-              <th>расстояние по ТРН№4</th>
-              <th>стоимость перевозки за все транспортные средства</th>
+            <tr>
+              <th style="padding: 0 !important;">Страна</th>
+              <th>Тип тарифа</th>
+              <th>Расстояние</th>
+              <th>Транзитное расстояние</th>
+              <th>Расстояние по ТРН№4</th>
+              <th>Стоимость перевозки за все т/с</th>
               <th>НДС на стоимость перевозки</th>
-              <th>стоимость перевозки за 1т</th>
+              <th>Стоимость перевозки за 1т</th>
               <th>НДС на стоимость перевозки за 1т</th>
-              <th>вагон прикрытия</th>
+              <th>Вагон прикрытия</th>
               <th>НДС на вагон прикрытия</th>
-              <th>локомотив</th>
+              <th>Локомотив</th>
               <th>НДС на локомотив</th>
               <th>Вагон-дизель-электростанция</th>
-              <th>охрана и договорная охрана</th>
+              <th>Охрана и дог. охрана</th>
               <th>НДС на охрану</th>
-              <th>доп. сборы</th>
+              <th>Доп. сборы</th>
               <th>НДС на доп. сборы</th>
-              <th>сопровождение</th>
+              <th>Сопровождение</th>
               <th>НДС на сопровождение</th>
-              <th>итого без НДС</th>
-              <th>итоговая стоимость</th>
+              <th>Итого без НДС</th>
+              <th>Итоговая стоимость</th>
               <th>суммарный НДС</th>
-              <th>стоимость за 1т</th>
-              <th>стоимость за 1т без НДС</th>
-              <th>аббревиатура валюты</th>
-              <th>код валюты</th>
-              <th>дней на доставку</th>
+              <th>Стоимость за 1т</th>
+              <th>Стоимость за 1т без НДС</th>
+              <th>Аббревиатура валюты</th>
+              <th>Код валюты</th>
+              <th>Срок</th>
             </tr>
           </thead>
           <tbody>
@@ -130,7 +131,7 @@
           Рассчитать тариф
         </button>
         <br />
-        <button @click="showModal()" class="button Request railbtn" v-if="modalData">
+        <button @click="showModal()" class="button Request railbtn" >
           Открыть расчет
         </button>
         <div class="resultCost" v-show="WatchCost">
@@ -175,6 +176,9 @@ table {
 
 th {
   font-family: 'Montserrat', sans-serif;
+  font-size: 13px !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .pretable {
@@ -202,6 +206,7 @@ th {
 .result span {
   color: #949494;
 }
+
 </style>
 <script>
 import Stations from "./WPCalculateComponents/Stations.vue";

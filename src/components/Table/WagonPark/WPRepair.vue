@@ -74,6 +74,7 @@
         <table class="table-bordered table-sm">
       <thead>
         <tr>
+          <th colspan="1">№</th>
           <th colspan="1">Номер вагона</th>
           <th colspan="2">Ось 1
             <td class="border-none">Л</td>
@@ -113,7 +114,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="data in history_data" :key="data.id">
+        <tr v-for="data, index in history_data" :key="data.id">
+                <td>{{ index+1 }}</td>
                 <td>{{ data.wagon }}</td>
                 <td>{{ data.axis1_left_flange }}</td>
                 <td>{{ data.axis1_right_flange }}</td>
@@ -187,6 +189,7 @@ export default {
       .getWagonRepair()
       .then((response) => {
         this.repair_data = response.data.data;
+
         this.loader = false;
         let a = this.repair_data.map(element =>{
             if(element.axis1_left_flange <= 25 && element.axis1_left_flange > 0){
@@ -252,7 +255,8 @@ export default {
       api
         .getWagonRepairHistory(wagon)
         .then((response) => {
-          this.history_data = response.data;
+          this.history_data = response.data.slice(-3);
+          console.log(this.history_data)
           this.showModal();
           this.loader = false;
         })
@@ -271,8 +275,13 @@ export default {
     },
     downloadReport(){
         this.loader = true
-        window.location.href = 'api/wagon-park/repair-axis-wheels/export/'
-        this.loader = false
+        api.getReportRepair()
+        .then(response => {
+            window.location.href = response.data
+            this.loader = false
+        }).catch(error => {
+          this.loader = false
+        })
 
     }
   },
