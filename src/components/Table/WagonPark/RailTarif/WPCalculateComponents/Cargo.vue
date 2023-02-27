@@ -13,9 +13,23 @@
               <p class="description">
                 Единая тарифно-статистическая номенклатура грузов (ЕСТНГ)
               </p>
-              <input type="text" class="textarea" placeholder="введите наименование груза" v-model="search" />
+
+              <div style="text-align: right; margin-right: 3%;">
+                <input type="checkbox" id="dangerous" v-model="dangerousCargo"/>
+                <label for="dangerous">&nbsp;{{ Translate(dangerousCargo) }}</label>
+              </div>
+
+              <input
+                type="text"
+                class="textarea"
+                placeholder="введите наименование груза"
+                v-model="search"
+              />
               <div class="shipment-kind__content__table">
-                <table class="table-sm table-bordered" style="width: 100% !important">
+                <table
+                  class="table-sm table-bordered"
+                  style="width: 100% !important"
+                >
                   <thead>
                     <tr>
                       <th scope="col">Код ЕСТНГ</th>
@@ -25,8 +39,11 @@
                   </thead>
                   <tbody>
                     <div class="lds-dual-ring" v-if="loaderTable"></div>
-
-                    <tr v-for="information in this.SearchData" :key="information.id" @click="ESTNG(information.code6)">
+                    <tr
+                      v-for="information in this.SearchData"
+                      :key="information.id"
+                      @click="ESTNG(information.code6)"
+                    >
                       <td>{{ information.code6 }}</td>
                       <td>{{ information.name }}</td>
                       <td>{{ information.cargo_class }}</td>
@@ -41,9 +58,21 @@
               <p class="description">
                 Гармонизированная номенклатура грузов (ГНГ)
               </p>
-              <input type="text" class="textarea" placeholder="введите наименование груза" v-model="searchGNG" />
+              <div style="text-align: right; margin-right: 3%;">
+                <input type="checkbox" id="dangerousGNG" v-model="dangerousCargoGNG"/>
+                <label for="dangerousGNG">&nbsp;{{ Translate(dangerousCargoGNG) }}</label>
+              </div>
+              <input
+                type="text"
+                class="textarea"
+                placeholder="введите наименование груза"
+                v-model="searchGNG"
+              />
               <div class="shipment-kind__content__table">
-                <table class="table-sm table-bordered" style="width: 100% !important">
+                <table
+                  class="table-sm table-bordered"
+                  style="width: 100% !important"
+                >
                   <thead>
                     <tr>
                       <th scope="col">Код ГНГ</th>
@@ -51,7 +80,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="information in this.SearchGNG" :key="information.id" @click="GNG(information.code)">
+                    <tr
+                      v-for="information in this.SearchGNG"
+                      :key="information.id"
+                      @click="GNG(information.code)"
+                    >
                       <td>{{ information.code }}</td>
                       <td>{{ information.name }}</td>
                     </tr>
@@ -64,7 +97,12 @@
       </div>
       <div class="shipment-kind__content__weight">
         <p class="description" style="margin-top: 10px">Масса груза, т</p>
-        <input type="number" class="textareaTon" style="width: 15%; margin-left: 3%" v-model="weight" />
+        <input
+          type="number"
+          class="textareaTon"
+          style="width: 15%; margin-left: 3%"
+          v-model="weight"
+        />
       </div>
     </div>
   </div>
@@ -76,7 +114,6 @@ export default {
   name: "cargo",
   data() {
     return {
-      informations: [],
       search: "",
       searchGNG: "",
       weight: "",
@@ -84,7 +121,8 @@ export default {
       gng: "",
       loader: false,
       loaderTable: false,
-
+      dangerousCargo: false,
+      dangerousCargoGNG: false,
     };
   },
   components: { Loader },
@@ -92,73 +130,50 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
-      cargo_code: (state) => state.cargo_code
+      cargo_code: (state) => state.cargo_code,
     }),
+
     SearchData() {
-      return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.search) !== -1)
+      if (this.dangerousCargo == false) {
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.search) !== -1);
+      } else {
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.indexOf(this.search) !== -1);
+      }
     },
     SearchGNG() {
-      return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.searchGNG) !== -1)
+      if (this.dangerousCargoGNG == false) {
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.searchGNG) !== -1);
+      } else {
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.indexOf(this.searchGNG) !== -1);
+      }
     },
   },
   watch: {
     weight() {
       this.$emit("weight", this.weight);
     },
-
-  },
-  mounted() {
-    window.performance.timing
-    this.informations = this.cargo_code.cargo_code
   },
 
   methods: {
     ESTNG(code) {
-      this.estng = code
-      this.$emit('estng', this.estng)
+      this.estng = code;
+      this.$emit("estng", this.estng);
     },
     GNG(code) {
-      this.gng = code
-      this.$emit('gng', this.gng)
-    }
-  }
+      this.gng = code;
+      this.$emit("gng", this.gng);
+    },
+    Translate(dangerous) {
+      if (dangerous == true) {
+        return "Опасный груз";
+      } else {
+        return "Все грузы";
+      }
+    },
+  },
 };
 </script>
 <style scoped>
-.lds-dual-ring {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
-  z-index: 15 !important;
-  position: fixed;
-  left: 50%;
-  transform: translate(-50%, 0);
-  margin-top: 10%;
-}
-
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border-radius: 50%;
-  border: 6px solid #020202;
-  border-color: #000000 transparent #000000 transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
-}
-
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-
 thead th {
   position: -webkit-sticky;
   position: sticky;

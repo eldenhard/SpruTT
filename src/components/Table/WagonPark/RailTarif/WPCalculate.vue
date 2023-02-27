@@ -37,6 +37,7 @@
               <th>стоимость за 1т без НДС</th>
               <th>аббревиатура валюты</th>
               <th>код валюты</th>
+              <th>дней на доставку</th>
             </tr>
           </thead>
           <tbody>
@@ -68,6 +69,7 @@
               <td>{{ tarif.pert_wo_nds }}</td>
               <td>{{ tarif.abbr }}</td>
               <td>{{ tarif.currency_id }}</td>
+              <td>{{ tarif.delivery_days }}</td>
             </tr>
           </tbody>
         </table>
@@ -133,6 +135,8 @@
         </button>
         <div class="resultCost" v-show="WatchCost">
           Итоговая стоимость: {{  split_number(cost) }}
+          <br>
+          Кол-во дней: {{ days }} 
         </div>
         <!-- v-if="modalData" -->
       </div>
@@ -235,6 +239,7 @@ export default {
       modalData: false,
       WatchCost: false,
       cost: '',
+      days: '',
 
       showNotify: false,
       notifyHead: "",
@@ -302,8 +307,8 @@ export default {
           this.modalData = true;
           this.WatchCost = true;
           for (let i in this.result) {
-            console.log(this.result[i])
             this.cost = this.result[i].total_price + 'руб'
+            this.days =  this.result[i].delivery_days + 'дней'
           }
         }).catch((error) => {
           console.log(error);
