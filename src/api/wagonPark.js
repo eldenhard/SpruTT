@@ -107,6 +107,9 @@ const getWagonRepair = () => {
 const getWagonRepairHistory = (id) => {
     return api.get(`${resource}/repair-axis-wheels/${id}/history`)
 }
+const getReportRepairData = () => {
+    return api.get(`${resource}/repair-axis-wheels/export/`)
+}
 const getReportRepair = (data) => {
     return api.get(`${resource}/repair-axis-wheels/export/?wagon__in=` + data)
 }
@@ -139,6 +142,7 @@ export default {
     postRailTarif,
     postShipmentList,
     getRepairWagon,
+    getReportRepairData,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

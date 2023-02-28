@@ -243,145 +243,242 @@ export default {
     }),
   },
   mounted() {
-   this.getAllWagon()
+    this.getAllWagon();
   },
   methods: {
-    getAllWagon(){
+    getAllWagon() {
       this.loader = true;
-    api
-      .getWagonRepair()
-      .then((response) => {
-        this.repair_data = response.data.data;
+      api
+        .getWagonRepair()
+        .then((response) => {
+          this.repair_data = response.data.data;
 
-        this.loader = false;
-        let a = this.repair_data.map(element =>{
-            if(element.axis1_left_flange <= 25 && element.axis1_left_flange > 0){
-                element.isRed= true
+          this.loader = false;
+          let a = this.repair_data.map((element) => {
+            if (
+              element.axis1_left_flange <= 25 &&
+              element.axis1_left_flange > 0
+            ) {
+              element.isRed = true;
             }
-            if(element.axis1_right_flange <= 25 && element.axis1_right_flange > 0){
-                element.isRed1= true
+            if (
+              element.axis1_right_flange <= 25 &&
+              element.axis1_right_flange > 0
+            ) {
+              element.isRed1 = true;
             }
-            if(element.axis2_left_flange <= 25 && element.axis2_left_flange > 0){
-                element.isRed2= true
+            if (
+              element.axis2_left_flange <= 25 &&
+              element.axis2_left_flange > 0
+            ) {
+              element.isRed2 = true;
             }
-            if(element.axis2_right_flange <= 25 && element.axis2_right_flange > 0){
-                element.isRed3= true
+            if (
+              element.axis2_right_flange <= 25 &&
+              element.axis2_right_flange > 0
+            ) {
+              element.isRed3 = true;
             }
-            if(element.axis3_left_flange <= 25 && element.axis3_left_flange > 0){
-                element.isRed4= true
+            if (
+              element.axis3_left_flange <= 25 &&
+              element.axis3_left_flange > 0
+            ) {
+              element.isRed4 = true;
             }
-            if(element.axis3_right_flange <= 25 && element.axis3_right_flange > 0){
-                element.isRed5= true
+            if (
+              element.axis3_right_flange <= 25 &&
+              element.axis3_right_flange > 0
+            ) {
+              element.isRed5 = true;
             }
-             if(element.axis4_left_flange <= 25 && element.axis4_left_flange > 0){
-                element.isRed6= true
+            if (
+              element.axis4_left_flange <= 25 &&
+              element.axis4_left_flange > 0
+            ) {
+              element.isRed6 = true;
             }
-            if(element.axis4_right_flange <= 25 && element.axis4_right_flange > 0){
-                element.isRed7= true
+            if (
+              element.axis4_right_flange <= 25 &&
+              element.axis4_right_flange > 0
+            ) {
+              element.isRed7 = true;
             }
-             if(element.axis5_left_flange <= 25 && element.axis5_left_flange > 0){
-                element.isRed8= true
+            if (
+              element.axis5_left_flange <= 25 &&
+              element.axis5_left_flange > 0
+            ) {
+              element.isRed8 = true;
             }
-             if(element.axis5_right_flange <= 25 && element.axis5_right_flange > 0){
-                element.isRed9= true
+            if (
+              element.axis5_right_flange <= 25 &&
+              element.axis5_right_flange > 0
+            ) {
+              element.isRed9 = true;
             }
-             if(element.axis6_left_flange <= 25 && element.axis6_left_flange > 0){
-                element.isRed10= true
+            if (
+              element.axis6_left_flange <= 25 &&
+              element.axis6_left_flange > 0
+            ) {
+              element.isRed10 = true;
             }
-             if(element.axis6_right_flange <= 25 && element.axis6_right_flange > 0){
-                element.isRed11= true
+            if (
+              element.axis6_right_flange <= 25 &&
+              element.axis6_right_flange > 0
+            ) {
+              element.isRed11 = true;
             }
-            if(element.axis7_left_flange <= 25 && element.axis7_left_flange > 0){
-                element.isRed12= true
+            if (
+              element.axis7_left_flange <= 25 &&
+              element.axis7_left_flange > 0
+            ) {
+              element.isRed12 = true;
             }
-             if(element.axis7_right_flange <= 25 && element.axis7_right_flange > 0){
-                element.isRed13= true
+            if (
+              element.axis7_right_flange <= 25 &&
+              element.axis7_right_flange > 0
+            ) {
+              element.isRed13 = true;
             }
-            if(element.axis8_left_flange <= 25 && element.axis8_left_flange > 0){
-                element.isRed14= true
+            if (
+              element.axis8_left_flange <= 25 &&
+              element.axis8_left_flange > 0
+            ) {
+              element.isRed14 = true;
             }
-            if(element.axis8_right_flange <= 25 && element.axis8_right_flange > 0){
-                element.isRed15= true
+            if (
+              element.axis8_right_flange <= 25 &&
+              element.axis8_right_flange > 0
+            ) {
+              element.isRed15 = true;
             }
             // else {
             //   console.log('ОШИЮКА')
             // }
+          });
         })
-      })
-      .catch((error) => {
-        this.loader = false;
-      });
+        .catch((error) => {
+          this.loader = false;
+        });
     },
-    getCurrentWagon(){
-      this.loader = true
-      if(this.SearchRepairWagon.length == 0){
-        this.allData = true
-        this.searchData = false
-        this.getAllWagon()
+    getCurrentWagon() {
+      this.loader = true;
+      if (this.SearchRepairWagon.length == 0) {
+        this.allData = true;
+        this.searchData = false;
+        this.getAllWagon();
       } else {
-        console.log(this.SearchRepairWagon.length)
-        this.allData = false
-        this.searchData = true
-        let data = this.SearchRepairWagon.replace(/ /g, ',')
-        api.getRepairWagon(data)
-        .then(response => {
-          this.responseWagon = response.data.data
-          let a = this.responseWagon.map(element =>{
-            if(element.axis1_left_flange <= 25 && element.axis1_left_flange > 0){
-                element.isRed= true
-            }
-            if(element.axis1_right_flange <= 25 && element.axis1_right_flange > 0){
-                element.isRed1= true
-            }
-            if(element.axis2_left_flange <= 25 && element.axis2_left_flange > 0){
-                element.isRed2= true
-            }
-            if(element.axis2_right_flange <= 25 && element.axis2_right_flange > 0){
-                element.isRed3= true
-            }
-            if(element.axis3_left_flange <= 25 && element.axis3_left_flange > 0){
-                element.isRed4= true
-            }
-            if(element.axis3_right_flange <= 25 && element.axis3_right_flange > 0){
-                element.isRed5= true
-            }
-             if(element.axis4_left_flange <= 25 && element.axis4_left_flange > 0){
-                element.isRed6= true
-            }
-            if(element.axis4_right_flange <= 25 && element.axis4_right_flange > 0){
-                element.isRed7= true
-            }
-             if(element.axis5_left_flange <= 25 && element.axis5_left_flange > 0){
-                element.isRed8= true
-            }
-             if(element.axis5_right_flange <= 25 && element.axis5_right_flange > 0){
-                element.isRed9= true
-            }
-             if(element.axis6_left_flange <= 25 && element.axis6_left_flange > 0){
-                element.isRed10= true
-            }
-             if(element.axis6_right_flange <= 25 && element.axis6_right_flange > 0){
-                element.isRed11= true
-            }
-            if(element.axis7_left_flange <= 25 && element.axis7_left_flange > 0){
-                element.isRed12= true
-            }
-             if(element.axis7_right_flange <= 25 && element.axis7_right_flange > 0){
-                element.isRed13= true
-            }
-            if(element.axis8_left_flange <= 25 && element.axis8_left_flange > 0){
-                element.isRed14= true
-            }
-            if(element.axis8_right_flange <= 25 && element.axis8_right_flange > 0){
-                element.isRed15= true
-            }
-        })
-        this.loader = false
-      }).catch(error => {
-          this.loader = false
-      })
+        console.log(this.SearchRepairWagon.length);
+        this.allData = false;
+        this.searchData = true;
+        let data = this.SearchRepairWagon.replace(/ /g, ",");
+        api
+          .getRepairWagon(data)
+          .then((response) => {
+            this.responseWagon = response.data.data;
+            let a = this.responseWagon.map((element) => {
+              if (
+                element.axis1_left_flange <= 25 &&
+                element.axis1_left_flange > 0
+              ) {
+                element.isRed = true;
+              }
+              if (
+                element.axis1_right_flange <= 25 &&
+                element.axis1_right_flange > 0
+              ) {
+                element.isRed1 = true;
+              }
+              if (
+                element.axis2_left_flange <= 25 &&
+                element.axis2_left_flange > 0
+              ) {
+                element.isRed2 = true;
+              }
+              if (
+                element.axis2_right_flange <= 25 &&
+                element.axis2_right_flange > 0
+              ) {
+                element.isRed3 = true;
+              }
+              if (
+                element.axis3_left_flange <= 25 &&
+                element.axis3_left_flange > 0
+              ) {
+                element.isRed4 = true;
+              }
+              if (
+                element.axis3_right_flange <= 25 &&
+                element.axis3_right_flange > 0
+              ) {
+                element.isRed5 = true;
+              }
+              if (
+                element.axis4_left_flange <= 25 &&
+                element.axis4_left_flange > 0
+              ) {
+                element.isRed6 = true;
+              }
+              if (
+                element.axis4_right_flange <= 25 &&
+                element.axis4_right_flange > 0
+              ) {
+                element.isRed7 = true;
+              }
+              if (
+                element.axis5_left_flange <= 25 &&
+                element.axis5_left_flange > 0
+              ) {
+                element.isRed8 = true;
+              }
+              if (
+                element.axis5_right_flange <= 25 &&
+                element.axis5_right_flange > 0
+              ) {
+                element.isRed9 = true;
+              }
+              if (
+                element.axis6_left_flange <= 25 &&
+                element.axis6_left_flange > 0
+              ) {
+                element.isRed10 = true;
+              }
+              if (
+                element.axis6_right_flange <= 25 &&
+                element.axis6_right_flange > 0
+              ) {
+                element.isRed11 = true;
+              }
+              if (
+                element.axis7_left_flange <= 25 &&
+                element.axis7_left_flange > 0
+              ) {
+                element.isRed12 = true;
+              }
+              if (
+                element.axis7_right_flange <= 25 &&
+                element.axis7_right_flange > 0
+              ) {
+                element.isRed13 = true;
+              }
+              if (
+                element.axis8_left_flange <= 25 &&
+                element.axis8_left_flange > 0
+              ) {
+                element.isRed14 = true;
+              }
+              if (
+                element.axis8_right_flange <= 25 &&
+                element.axis8_right_flange > 0
+              ) {
+                element.isRed15 = true;
+              }
+            });
+            this.loader = false;
+          })
+          .catch((error) => {
+            this.loader = false;
+          });
       }
-     
     },
     openInform(wagon) {
       this.loader = true;
@@ -389,7 +486,7 @@ export default {
         .getWagonRepairHistory(wagon)
         .then((response) => {
           this.history_data = response.data.slice(-3);
-          console.log(this.history_data)
+          console.log(this.history_data);
           this.showModal();
           this.loader = false;
         })
@@ -406,24 +503,37 @@ export default {
     toggleModal() {
       this.$refs["ModalHistoryWagon"].toggle("#toggle-btn");
     },
-    downloadReport(){
-        this.loader = true
-        api.getReportRepair(this.SearchRepairWagon.replace(/ /g, ','))
-        .then(response => {
-            window.location.href = response.data
-            this.loader = false
-        }).catch(error => {
-          this.loader = false
-        })
-
-    }
+    downloadReport() {
+      this.loader = true;
+      if (this.SearchRepairWagon == "") {
+        api
+          .getReportRepairData()
+          .then((response) => {
+            window.location.href = response.data;
+            this.loader = false;
+          })
+          .catch((error) => {
+            this.loader = false;
+          });
+      } else {
+        api
+          .getReportRepair(this.SearchRepairWagon.replace(/ /g, ","))
+          .then((response) => {
+            window.location.href = response.data;
+            this.loader = false;
+          })
+          .catch((error) => {
+            this.loader = false;
+          });
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
 td {
-    height: 45px !important;
+  height: 45px !important;
 }
 .redColor {
   background: rgb(194, 66, 66) !important;
