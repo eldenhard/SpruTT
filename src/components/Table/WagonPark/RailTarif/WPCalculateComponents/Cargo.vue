@@ -11,7 +11,7 @@
           <b-tab title="ЕСТНГ" active>
             <div class="content">
               <p class="description">
-                Единая тарифно-статистическая номенклатура грузов (ЕСТНГ)
+                Единая тарифно-статистическая номенклатура грузов (ЕТСНГ)
               </p>
 
               <div style="text-align: right; margin-right: 3%;">
@@ -32,7 +32,7 @@
                 >
                   <thead>
                     <tr>
-                      <th scope="col">Код ЕСТНГ</th>
+                      <th scope="col">Код ЕТСНГ</th>
                       <th scope="col">Наименование</th>
                       <th scope="col">Тарифный класс</th>
                     </tr>
@@ -42,8 +42,9 @@
                     <tr
                       v-for="information in this.SearchData"
                       :key="information.id"
-                      @click="ESTNG(information.code6)"
+                      @click="ESTNG(information.code6, information.code)"
                     >
+                      <td v-show="code">{{ information.code }}</td>
                       <td>{{ information.code6 }}</td>
                       <td>{{ information.name }}</td>
                       <td>{{ information.cargo_class }}</td>
@@ -83,8 +84,9 @@
                     <tr
                       v-for="information in this.SearchGNG"
                       :key="information.id"
-                      @click="GNG(information.code)"
+                      @click="GNG(information.code, information.code6)"
                     >
+                    <td v-show="code6">{{ information.code6 }}</td>
                       <td>{{ information.code }}</td>
                       <td>{{ information.name }}</td>
                     </tr>
@@ -123,6 +125,8 @@ export default {
       loaderTable: false,
       dangerousCargo: false,
       dangerousCargoGNG: false,
+      code: false,
+      code6: false
     };
   },
   components: { Loader },
@@ -155,13 +159,21 @@ export default {
   },
 
   methods: {
-    ESTNG(code) {
-      this.estng = code;
-      this.$emit("estng", this.estng);
+    ESTNG(code6, code) {
+      this.estng = code6;
+      this.gng = code
+      this.$emit("estng", {
+        estng: this.estng,
+        gng: this.gng,
+      });
     },
-    GNG(code) {
+    GNG(code, code6) {
       this.gng = code;
-      this.$emit("gng", this.gng);
+      this.estng = code6;
+      this.$emit("gng", {
+        estng: this.estng,
+        gng: this.gng,
+      });
     },
     Translate(dangerous) {
       if (dangerous == true) {

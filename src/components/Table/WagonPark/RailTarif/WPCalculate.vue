@@ -255,9 +255,9 @@
         <p> Скорость: <span>{{ speed }}</span></p>
         <p>Вид маршрута: <span>{{ getIsExitRouteById(is_exit_route) }}</span></p>
         <!-- Груз -->
-        <p>ЕСТНГ: <span>{{ estng }}</span></p>
+        <p>ЕСТНГ: <span>{{ estng.estng }}</span></p>
         <p>Вес: <span>{{ weight }}</span></p>
-        <p>ГНГ: <span>{{ gng }}</span></p>
+        <p>ГНГ: <span>{{ gng.gng }}</span></p>
         <!-- Вагон -->
         <p>Тип вагона: <span>{{ wagon.wagon_type }}</span></p>
         <p>Количество: <span>{{ amount }}</span></p>
@@ -537,8 +537,10 @@ export default {
     },
     getESTNG(data) {
       this.estng = data;
+      this.gng = data
     },
     getGNG(data) {
+      this.estng = data;
       this.gng = data;
     },
     getIsExitRouteById(id) {
