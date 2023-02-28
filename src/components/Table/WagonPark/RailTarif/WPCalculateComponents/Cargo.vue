@@ -2,7 +2,7 @@
   <div>
     <Loader :loader="loader" />
     <div class="shipment-kind">
-      <div class="shipment-kind__header">
+      <div>
         <h4 class="header-text">Груз</h4>
         <hr />
       </div>
@@ -13,7 +13,9 @@
               <p class="description">
                 Единая тарифно-статистическая номенклатура грузов (ЕТСНГ)
               </p>
-
+              <p class="explanation"> * Для поиска груза введите наименование груза
+          <br>                  * Для выбора типа груза кликните по строке
+          <br>                  * При выборе кода ЕСТНГ код ГНГ выберется автоматически(и наоборот) <br></p>
               <div style="text-align: right; margin-right: 3%;">
                 <input type="checkbox" id="dangerous" v-model="dangerousCargo"/>
                 <label for="dangerous">&nbsp;{{ Translate(dangerousCargo) }}</label>
@@ -186,6 +188,13 @@ export default {
 };
 </script>
 <style scoped>
+.explanation {
+  font-size: 13px;
+  color: grey;
+  text-align: left;
+  padding: 0 0 2% 4%;
+}
+
 thead th {
   position: -webkit-sticky;
   position: sticky;
@@ -213,11 +222,11 @@ tr:hover {
   max-width: 95% !important;
   display: block;
   position: relative;
-  min-height: 35vh;
+  min-height: 20vh;
   left: 50%;
   border-radius: 10px;
   transform: translate(-50%, 0);
-  max-height: 35vh;
+  max-height: 25vh;
   overflow: auto;
 }
 
@@ -242,7 +251,7 @@ tr:hover {
 }
 
 .description {
-  padding: 3% 0 2% 4%;
+  padding: 3% 0 0 4%;
   font-weight: 700;
   font-size: 12px;
   font-family: "Montserrat", sans-serif;

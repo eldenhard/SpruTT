@@ -7,6 +7,7 @@
         <h4 class="header-text">Вид отправки</h4>
         <hr />
       </div>
+      <p class="explanation"> * Для выбора вида отправки кликните на подходящую группу, после чего выберите необходимую отправку</p>
       <div class="shipment-kind__content">
         <div class="shipment-kind__content__leftBlock">
           <button
@@ -43,7 +44,7 @@
           v-model="speed"
         />
 
-        <select class="textarea" v-model="is_exit_route">
+        <select v-model="is_exit_route">
           <option value="" disabled selected>Вид маршрута</option>
           <option value="0">Немаршрутная</option>
           <option value="1">Прямой отправительский маршрут</option>
@@ -165,6 +166,12 @@ export default {
   background: white;
   border: 1px solid grey !important;
   border-radius: 5px;
+}
+.explanation {
+  font-size: 13px;
+  color: grey;
+  text-align: left;
+  padding: 0 0 2% 4%;
 }
 .description {
   /* padding: 3% 0 2% 2%; */

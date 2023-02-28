@@ -37,12 +37,12 @@
     <br />
     <div class="station-destination">
       <div>
-        <input type="radio" id="3" value="код" v-model="picked2" />
-        <label for="3">&nbsp;По коду</label>
+        <input type="radio" id="three" value="код" v-model="picked2" />
+        <label for="three">&nbsp;По коду</label>
       </div>
       <div>
-        <input type="radio" id="4" value="станция" v-model="picked2" checked />
-        <label for="4">&nbsp;По станции</label>
+        <input type="radio" id="four" value="станция" v-model="picked2" checked />
+        <label for="four">&nbsp;По станции</label>
       </div>
     </div>
     <autocomplete-input

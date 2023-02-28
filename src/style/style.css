@@ -217,7 +217,6 @@ select {
   border: 0;
   outline: 0;
   font: inherit;
-
   width: 20em;
   height: 3em;
   padding: 0 4em 0 1em;
@@ -227,6 +226,7 @@ select {
   /* background: #E6E6E6; */
   color: #000000;
   border-radius: 0.25em;
+  border: #8a8a8a 0.1rem solid;
   /* box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2); */
   cursor: pointer;
 }

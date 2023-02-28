@@ -48,8 +48,7 @@
         <div>
           <h4 style="text-align: left; margin-bottom: 2%">НДС</h4>
           <div
-            style="
-              display: flex;
+            style="display: flex;
               align-items: flex-start;
               justify-content: start;
             "
@@ -267,10 +266,10 @@
           Рассчитать тариф
         </button>
         <br />
-        <button @click="showModal()" class="button Request railbtn">
+        <button @click="showModal()" class="button Request railbtn" v-show="WatchCost">
           Открыть расчет
         </button>
-        <div class="resultCost" >
+        <div class="resultCost" v-show="WatchCost">
          <h4 class="totalAll">Итоговая стоимость: {{ split_number(cost) }}</h4>  
             <br />
           <h4  class="totalAll">Кол-во дней: {{ days }}</h4> 
@@ -444,9 +443,9 @@ export default {
           speed: this.speed,
         },
         cargo: {
-          code_etsng: this.estng,
+          code_etsng: this.estng.estng,
           weight: this.weight,
-          code_gng: this.gng,
+          code_gng: this.estng.gng,
         },
         wagon: {
           type_id: this.wagon.wagon_id,
@@ -454,7 +453,7 @@ export default {
           amount: this.amount,
         },
       };
-      // console.log(data)
+
       api
         .postRailTarif(data)
         .then((response) => {
@@ -484,10 +483,12 @@ export default {
         });
     },
     getCodeStation(station) {
+      console.log(isFinite(station))
+      console.log('1')
       if (station == null || station == undefined) {
         return "";
       }
-      if (typeof station === "number") {
+      if (/[0-9]/.test(station)) {
         return station;
       } else {
         return this.stations.find((item) => item.name === station)?.code6;
