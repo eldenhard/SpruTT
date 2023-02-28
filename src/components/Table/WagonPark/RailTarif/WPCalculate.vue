@@ -234,15 +234,15 @@
         <p> Международный<span>{{ translateInternational(international) }}</span></p>
         <!-- Отправка -->
         <p>Отправка: <span>{{ shipment.shipment }}</span></p>
-        <p> Скорость: <span>{{ speed }}</span></p>
+        <p> Скорость: <span>{{ speed }} км/ч</span></p>
         <p>Вид маршрута: <span>{{ getIsExitRouteById(is_exit_route) }}</span></p>
         <!-- Груз -->
         <p>ЕСТНГ: <span>{{ estng.estng }}</span></p>
-        <p>Вес: <span>{{ weight }}</span></p>
+        <p>Вес: <span >{{ weight }} т</span></p>
         <p>ГНГ: <span>{{ gng.gng }}</span></p>
         <!-- Вагон -->
         <p>Тип вагона: <span>{{ wagon.wagon_type }}</span></p>
-        <p>Количество: <span>{{ amount }}</span></p>
+        <p>Количество: <span>{{ amount }} шт</span></p>
         <p>Принадлежность: <span>{{ getBelongById(belong.belong) }}</span> </p>
         <br />
         <button class="button Accept railbtn" @click="Calculation()">

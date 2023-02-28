@@ -8,7 +8,7 @@
       </div>
       <div class="shipment-kind__content">
         <b-tabs content-class="mt-3" fill style="width: 100% !important">
-          <b-tab title="ЕСТНГ" active>
+          <b-tab title="ЕТСНГ" active>
             <div class="content">
               <p class="description">
                 Единая тарифно-статистическая номенклатура грузов (ЕТСНГ)
@@ -18,7 +18,7 @@
           <br>                  * При выборе кода ЕСТНГ код ГНГ выберется автоматически(и наоборот) <br></p>
               <div style="text-align: right; margin-right: 3%;">
                 <input type="checkbox" id="dangerous" v-model="dangerousCargo"/>
-                <label for="dangerous">&nbsp;{{ Translate(dangerousCargo) }}</label>
+                <label for="dangerous">&nbsp;Опасный груз</label>
               </div>
 
               <input
@@ -63,7 +63,7 @@
               </p>
               <div style="text-align: right; margin-right: 3%;">
                 <input type="checkbox" id="dangerousGNG" v-model="dangerousCargoGNG"/>
-                <label for="dangerousGNG">&nbsp;{{ Translate(dangerousCargoGNG) }}</label>
+                <label for="dangerousGNG">&nbsp;Опасный груз</label>
               </div>
               <input
                 type="text"
@@ -104,7 +104,7 @@
         <input
           type="number"
           class="textareaTon"
-          style="width: 15%; margin-left: 3%"
+          style="width: 15%; margin-left: 3%; margin-top: 2% !important;"
           v-model="weight"
         />
       </div>
@@ -177,13 +177,7 @@ export default {
         gng: this.gng,
       });
     },
-    Translate(dangerous) {
-      if (dangerous == true) {
-        return "Опасный груз";
-      } else {
-        return "Все грузы";
-      }
-    },
+   
   },
 };
 </script>

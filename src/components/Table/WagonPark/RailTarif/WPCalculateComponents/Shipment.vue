@@ -40,7 +40,7 @@
           type="number"
           class="textarea"
           style="width: 50%"
-          placeholder="Скорость"
+          placeholder="Скорость км/ч"
           v-model="speed"
         />
 
