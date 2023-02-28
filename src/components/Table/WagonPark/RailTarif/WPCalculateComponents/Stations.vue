@@ -154,11 +154,11 @@ export default {
   watch: {
     destination_station_name() {
       this.$emit("destination", {
-        destination: this.destination_station_name,});
+        destination: String(this.destination_station_name),});
     },
     departure_station_name() {
       this.$emit("departure", {
-        departure: this.departure_station_name
+        departure: String(this.departure_station_name)
       });
     },
     is_loaded(){
@@ -215,10 +215,10 @@ export default {
   methods: {
 
     getFullStationDeparture(station) {
-      this.departure_station_object = station;
+      this.departure_station_object = String(station);
     },
     getFullStationDestination(station) {
-      this.destionation_station_object = station;
+      this.destionation_station_object = String(station);
     },
   },
 };

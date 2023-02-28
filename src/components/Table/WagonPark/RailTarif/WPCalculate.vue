@@ -309,7 +309,7 @@ label {
 }
 .resultCost h4{
   text-align: left;
-  font-size: 1rem;
+  font-size: 0.8rem;
   margin-left: 10px !important;
 }
 .textarea {
