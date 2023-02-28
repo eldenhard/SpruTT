@@ -179,13 +179,13 @@ export default {
     }),
     Translate() {
       if (this.is_loaded == false) {
-        return "Порожний";
+        return "Груженый";
       }
       return "Груженый";
     },
     International(){
-      if (this.international == false) {
-        return "Не международный";
+      if (this.international == true) {
+        return "Международный";
       }
       return "Международный";
     },

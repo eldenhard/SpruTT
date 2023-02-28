@@ -2,6 +2,41 @@
   <div>
     <Loader :loader="loader" />
     <b-modal
+      ref="modalRoute"
+      size="lg"
+      hide-footer
+      style="width: 95% !important"
+    >
+      <template #modal-title> Маршрут </template>
+      <br />
+      <div class="pretable">
+        <table class="table table-sm table-bordered">
+          <thead>
+            <th>код станции</th>
+            <th>название станции </th>
+            <th>расстояние</th>
+            <th>код страны</th>
+            <th>код дороги</th>
+            <th>признак того, что станция является экспортной</th>
+          </thead>
+          <tbody>
+            <tr v-for="rt in route" :key="rt.id">
+              <td>{{ rt.station_code }}</td>
+              <td>{{ rt.station_name }}</td>
+              <td>{{ rt.distance }}</td>
+              <td>{{ rt.country_code }}</td>
+              <td>{{ rt.road_code }}</td>
+              <td>{{ rt.is_exp }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <button
+        class="button Delete railbtn" style="width: 10%; float: right;margin-top: 1% !important;
+          margin-right: 1% !important; " block @click="hideModalRoute()">Закрыть
+      </button>
+      </div>
+      </b-modal>
+    <b-modal
       ref="modalRailTariff"
       size="md"
       hide-footer
@@ -144,7 +179,7 @@
      
       <button
         class="button Delete railbtn" style="width: 10%; float: right; margin-top: 1% !important;
-          margin-right: 1% !important;" block @click="hideModal">Закрыть
+          margin-right: 1% !important; " block @click="hideModal">Закрыть
       </button>
     </b-modal>
     <div style="display: flex">
@@ -213,10 +248,13 @@
         <button class="button Accept railbtn" @click="Calculation()">
           Рассчитать тариф
         </button>
-        <br />
         <button @click="showModal()" class="button Request railbtn" v-show="WatchCost">
           Открыть расчет
         </button>
+        <button @click="showModalRoute()" class="button Request railbtn" v-show="WatchCost">
+          Открыть маршрут
+        </button>
+        <br>
         <div class="resultCost" v-show="WatchCost">
          <h4 class="totalAll">Итоговая стоимость: {{ split_number(cost) }}</h4>  
             <br />
@@ -248,15 +286,17 @@ label {
   font-size: 1rem;
 }
 .resultCost {
+  margin-top: 10%;
   position: absolute;
-  bottom: 25%;
-  font-weight: 500;
+  /* bottom: 5%; */
   font-family: "Montserrat", sans-serif;
   color: grey;
+  line-height: 10px;
 }
 .resultCost h4{
   text-align: left;
-  font-size: 0.8rem;
+  font-size: 1rem;
+  font-weight: 700;
   margin-left: 10px !important;
 }
 .textarea {
@@ -352,7 +392,7 @@ export default {
       cost: "",
       days: "",
       distance: "",
-    
+      route: "",
 
       showNotify: false,
       notifyHead: "",
@@ -360,15 +400,7 @@ export default {
       notifyClass: "",
     };
   },
-  // computed: {
-  //   ResultModalPage(){
-  //     if(this.result.length <= 1){
-  //       return this.result
-  //     } else {
-  //       this.result.map(item =>)
-  //     }
-  //   }
-  // },
+ 
   mounted() {
     this.loader = true;
     setTimeout(() => (this.loader = false), 1800);
@@ -387,60 +419,67 @@ export default {
     split_number(number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     },
+    showModalRoute(){
+      this.$refs["modalRoute"].show();
+    },
+    hideModalRoute(){
+      this.$refs["modalRoute"].hide();
+
+    },
     Calculation() {
       this.loader = true;
-      // let data = {
-      //   on_date: this.date,
-      //   is_empty: this.is_loaded,
-      //   is_international: this.international,
-      //   departure: {
-      //     station_code: this.getCodeStation(this.departure.departure),
-      //   },
-      //   destination: {
-      //     station_code: this.getCodeStation(this.destination.destination),
-      //   },
-      //   shipment: {
-      //     shipment_id: this.shipment.id,
-      //     is_exit_route: this.is_exit_route,
-      //     speed: this.speed,
-      //   },
-      //   cargo: {
-      //     code_etsng: this.estng.estng,
-      //     weight: this.weight,
-      //     code_gng: this.estng.gng,
-      //   },
-      //   wagon: {
-      //     type_id: this.wagon.wagon_id,
-      //     belong_id: this.belong.belong,
-      //     amount: this.amount,
-      //   },
-      // };
       let data = {
-        on_date: "",
-        is_empty: false,
-        is_international: "",
+        on_date: this.date,
+        is_empty: this.is_loaded,
+        is_international: this.international,
         departure: {
-          station_code: "648202",
+          station_code: this.getCodeStation(this.departure.departure),
         },
         destination: {
-          station_code: "000010",
+          station_code: this.getCodeStation(this.destination.destination),
         },
         shipment: {
-          shipment_id: 1,
-          is_exit_route: "1",
-          speed: "4",
+          shipment_id: this.shipment.id,
+          is_exit_route: this.is_exit_route,
+          speed: this.speed,
         },
         cargo: {
-          code_etsng: "017035",
-          weight: "3",
-          code_gng: "10063000",
+          code_etsng: this.estng.estng,
+          weight: this.weight,
+          code_gng: this.estng.gng,
         },
         wagon: {
-          type_id: 3,
-          belong_id: "2",
-          amount: "2",
+          type_id: this.wagon.wagon_id,
+          belong_id: this.belong.belong,
+          amount: this.amount,
         },
       };
+      // let data = {
+      //   on_date: "",
+      //   is_empty: false,
+      //   is_international: "",
+      //   departure: {
+      //     station_code: "648202",
+      //   },
+      //   destination: {
+      //     station_code: "000010",
+      //   },
+      //   shipment: {
+      //     shipment_id: 1,
+      //     is_exit_route: "1",
+      //     speed: "4",
+      //   },
+      //   cargo: {
+      //     code_etsng: "017035",
+      //     weight: "3",
+      //     code_gng: "10063000",
+      //   },
+      //   wagon: {
+      //     type_id: 3,
+      //     belong_id: "2",
+      //     amount: "2",
+      //   },
+      // };
 //       this.result = [
 //     {
 //         "abbr": "RUB",
@@ -508,6 +547,8 @@ export default {
         .postRailTarif(data)
         .then((response) => {
           this.result = response.data.result;
+          this.route = response.data.route.forward.short
+          console.log(this.route)
           console.log(this.result.length)
           this.loader = false;
           this.notifyHead = "Успешно";
@@ -522,7 +563,7 @@ export default {
           }
   
           this.cost = response.data.total_cost + " руб";
-          this.distance = response.data.total_distance
+          this.distance = response.data.total_distance + " км"
         })
         .catch((error) => {
           console.log(error);
