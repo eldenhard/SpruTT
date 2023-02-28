@@ -107,9 +107,16 @@ const getWagonRepair = () => {
 const getWagonRepairHistory = (id) => {
     return api.get(`${resource}/repair-axis-wheels/${id}/history`)
 }
-const getReportRepair = () => {
+const getReportRepairData = () => {
     return api.get(`${resource}/repair-axis-wheels/export/`)
 }
+const getReportRepair = (data) => {
+    return api.get(`${resource}/repair-axis-wheels/export/?wagon__in=` + data)
+}
+const getRepairWagon = (data) => {
+    return api.get(`${resource}/repair-axis-wheels/?wagon__in=` + data)
+}
+
 // Запрос на рэйлтариф
 const postRailTarif = (data) => {
     return api.post(`${resource}/rt/tariff/`, data)
@@ -134,6 +141,8 @@ export default {
     getReportRepair,
     postRailTarif,
     postShipmentList,
+    getRepairWagon,
+    getReportRepairData,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

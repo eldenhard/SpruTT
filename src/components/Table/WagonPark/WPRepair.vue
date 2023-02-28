@@ -1,10 +1,18 @@
 <template>
   <div>
     <Loader :loader="loader" />
-    <div style="display: flex; justify-content: space-between;" @click="downloadReport()">
-    <p class="explanation"> * Для просмотра изменений по вагону кликните на строку с этим вагоном</p>
-      <button class="Accept" style="width:25%">Скачать</button> 
+    <div style="display: flex; justify-content: space-between;" >
+    <p class="explanation"> * Для просмотра изменений по вагону кликните на строку с этим вагоном <br>
+                            *  Для просмотра всех вагонов, очистите строку поиска и нажмите найти <br>
+                            *  Для поиска определенныхх вагонов укажите вагоны через 1 пробел (12345678 12345678...)  </p>
+      <button class="Accept" style="width:25%; height: 50px" @click="downloadReport()">Скачать</button> 
     </div>
+    <br>
+    <div style="display:flex; justify-content: end; height:50px;" >
+      <input type="text" class="textarea" v-model="SearchRepairWagon"  placeholder="Номера вагонов через 1 пробел" style="width:16%">
+      <b-button variant="primary" style="width: 8%; height: 100%; margin-top: 14px; margin-left: 1%; " class="search" @click="getCurrentWagon()">Найти</b-button>
+    </div>
+    <br>
     <table class="table-bordered table-sm">
       <thead>
         <tr>
@@ -45,9 +53,32 @@
           <th colspan="1">Дата</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="allData">
         <tr  v-for="rep in repair_data" :key="rep.id" @click="openInform(rep.wagon)">
                 <td >{{ rep.wagon }}</td>
+                <td :class="{redColor: rep.isRed}">{{ rep.axis1_left_flange }}</td>
+                <td :class="{redColor: rep.isRed1}">{{ rep.axis1_right_flange }}</td>
+                <td :class="{redColor: rep.isRed2}">{{ rep.axis2_left_flange }}</td>
+                <td :class="{redColor: rep.isRed3}">{{ rep.axis2_right_flange }}</td>
+                <td :class="{redColor: rep.isRed4}">{{ rep.axis3_left_flange }}</td>
+                <td :class="{redColor: rep.isRed5}">{{ rep.axis3_right_flange }}</td>
+                <td :class="{redColor: rep.isRed6}">{{ rep.axis4_left_flange }}</td>
+                <td :class="{redColor: rep.isRed7}">{{ rep.axis4_right_flange }}</td>
+                <td :class="{redColor: rep.isRed8}">{{ rep.axis5_left_flange }}</td>
+                <td :class="{redColor: rep.isRed9}">{{ rep.axis5_right_flange }}</td>
+                <td :class="{redColor: rep.isRed10}">{{ rep.axis6_left_flange }}</td>
+                <td :class="{redColor: rep.isRed11}">{{ rep.axis6_right_flange }}</td>
+                <td :class="{redColor: rep.isRed12}">{{ rep.axis7_left_flange }}</td>
+                <td :class="{redColor: rep.isRed13}">{{ rep.axis7_right_flange }}</td>
+                <td :class="{redColor: rep.isRed14}">{{ rep.axis8_left_flange }}</td>
+                <td :class="{redColor: rep.isRed15}">{{ rep.axis8_right_flange }}</td>
+                <td >{{ rep.sector }}</td>
+                <td >{{ rep.created_at.slice(0,10) }}</td>
+        </tr>
+      </tbody>
+      <tbody v-if="searchData">
+        <tr v-for="rep in responseWagon" :key="rep.id" @click="openInform(rep.wagon)">
+          <td >{{ rep.wagon }}</td>
                 <td :class="{redColor: rep.isRed}">{{ rep.axis1_left_flange }}</td>
                 <td :class="{redColor: rep.isRed1}">{{ rep.axis1_right_flange }}</td>
                 <td :class="{redColor: rep.isRed2}">{{ rep.axis2_left_flange }}</td>
@@ -74,6 +105,7 @@
         <table class="table-bordered table-sm">
       <thead>
         <tr>
+          <th colspan="1">№</th>
           <th colspan="1">Номер вагона</th>
           <th colspan="2">Ось 1
             <td class="border-none">Л</td>
@@ -112,8 +144,33 @@
           <th colspan="1">Дата</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="data in history_data" :key="data.id">
+      <tbody v-if="allData">
+        <tr v-for="data, index in history_data" :key="data.id" >
+                <td>{{ index+1 }}</td>
+                <td>{{ data.wagon }}</td>
+                <td>{{ data.axis1_left_flange }}</td>
+                <td>{{ data.axis1_right_flange }}</td>
+                <td>{{ data.axis2_left_flange }}</td>
+                <td>{{ data.axis2_right_flange }}</td>
+                <td>{{ data.axis3_left_flange }}</td>
+                <td>{{ data.axis3_right_flange }}</td>
+                <td>{{ data.axis4_left_flange }}</td>
+                <td>{{ data.axis4_right_flange }}</td>
+                <td>{{ data.axis5_left_flange }}</td>
+                <td>{{ data.axis5_right_flange }}</td>
+                <td>{{ data.axis6_left_flange }}</td>
+                <td>{{ data.axis6_right_flange }}</td>
+                <td>{{ data.axis7_left_flange }}</td>
+                <td>{{ data.axis7_right_flange }}</td>
+                <td>{{ data.axis8_left_flange }}</td>
+                <td>{{ data.axis8_right_flange }}</td>
+                <td>{{ data.sector }}</td>
+          <td >{{ (data.created_at).slice(0,10) }}</td>
+        </tr>
+      </tbody>
+      <tbody v-if="searchData">
+        <tr v-for="data, index in history_data" :key="data.id" >
+                <td>{{ index+1 }}</td>
                 <td>{{ data.wagon }}</td>
                 <td>{{ data.axis1_left_flange }}</td>
                 <td>{{ data.axis1_right_flange }}</td>
@@ -153,6 +210,8 @@ export default {
   name: "WPRepair",
   data() {
     return {
+      SearchRepairWagon: [],
+      responseWagon: [],
       repair_data: [],
       history_data: [],
       loader: false,
@@ -172,6 +231,8 @@ export default {
       isRed13: false,
       isRed14: false,
       isRed15: false,
+      allData: true,
+      searchData: false,
     };
   },
   components: { Loader },
@@ -182,77 +243,250 @@ export default {
     }),
   },
   mounted() {
-    this.loader = true;
-    api
-      .getWagonRepair()
-      .then((response) => {
-        this.repair_data = response.data.data;
-        this.loader = false;
-        let a = this.repair_data.map(element =>{
-            if(element.axis1_left_flange <= 25 && element.axis1_left_flange > 0){
-                element.isRed= true
+    this.getAllWagon();
+  },
+  methods: {
+    getAllWagon() {
+      this.loader = true;
+      api
+        .getWagonRepair()
+        .then((response) => {
+          this.repair_data = response.data.data;
+
+          this.loader = false;
+          let a = this.repair_data.map((element) => {
+            if (
+              element.axis1_left_flange <= 25 &&
+              element.axis1_left_flange > 0
+            ) {
+              element.isRed = true;
             }
-            if(element.axis1_right_flange <= 25 && element.axis1_right_flange > 0){
-                element.isRed1= true
+            if (
+              element.axis1_right_flange <= 25 &&
+              element.axis1_right_flange > 0
+            ) {
+              element.isRed1 = true;
             }
-            if(element.axis2_left_flange <= 25 && element.axis2_left_flange > 0){
-                element.isRed2= true
+            if (
+              element.axis2_left_flange <= 25 &&
+              element.axis2_left_flange > 0
+            ) {
+              element.isRed2 = true;
             }
-            if(element.axis2_right_flange <= 25 && element.axis2_right_flange > 0){
-                element.isRed3= true
+            if (
+              element.axis2_right_flange <= 25 &&
+              element.axis2_right_flange > 0
+            ) {
+              element.isRed3 = true;
             }
-            if(element.axis3_left_flange <= 25 && element.axis3_left_flange > 0){
-                element.isRed4= true
+            if (
+              element.axis3_left_flange <= 25 &&
+              element.axis3_left_flange > 0
+            ) {
+              element.isRed4 = true;
             }
-            if(element.axis3_right_flange <= 25 && element.axis3_right_flange > 0){
-                element.isRed5= true
+            if (
+              element.axis3_right_flange <= 25 &&
+              element.axis3_right_flange > 0
+            ) {
+              element.isRed5 = true;
             }
-             if(element.axis4_left_flange <= 25 && element.axis4_left_flange > 0){
-                element.isRed6= true
+            if (
+              element.axis4_left_flange <= 25 &&
+              element.axis4_left_flange > 0
+            ) {
+              element.isRed6 = true;
             }
-            if(element.axis4_right_flange <= 25 && element.axis4_right_flange > 0){
-                element.isRed7= true
+            if (
+              element.axis4_right_flange <= 25 &&
+              element.axis4_right_flange > 0
+            ) {
+              element.isRed7 = true;
             }
-             if(element.axis5_left_flange <= 25 && element.axis5_left_flange > 0){
-                element.isRed8= true
+            if (
+              element.axis5_left_flange <= 25 &&
+              element.axis5_left_flange > 0
+            ) {
+              element.isRed8 = true;
             }
-             if(element.axis5_right_flange <= 25 && element.axis5_right_flange > 0){
-                element.isRed9= true
+            if (
+              element.axis5_right_flange <= 25 &&
+              element.axis5_right_flange > 0
+            ) {
+              element.isRed9 = true;
             }
-             if(element.axis6_left_flange <= 25 && element.axis6_left_flange > 0){
-                element.isRed10= true
+            if (
+              element.axis6_left_flange <= 25 &&
+              element.axis6_left_flange > 0
+            ) {
+              element.isRed10 = true;
             }
-             if(element.axis6_right_flange <= 25 && element.axis6_right_flange > 0){
-                element.isRed11= true
+            if (
+              element.axis6_right_flange <= 25 &&
+              element.axis6_right_flange > 0
+            ) {
+              element.isRed11 = true;
             }
-            if(element.axis7_left_flange <= 25 && element.axis7_left_flange > 0){
-                element.isRed12= true
+            if (
+              element.axis7_left_flange <= 25 &&
+              element.axis7_left_flange > 0
+            ) {
+              element.isRed12 = true;
             }
-             if(element.axis7_right_flange <= 25 && element.axis7_right_flange > 0){
-                element.isRed13= true
+            if (
+              element.axis7_right_flange <= 25 &&
+              element.axis7_right_flange > 0
+            ) {
+              element.isRed13 = true;
             }
-            if(element.axis8_left_flange <= 25 && element.axis8_left_flange > 0){
-                element.isRed14= true
+            if (
+              element.axis8_left_flange <= 25 &&
+              element.axis8_left_flange > 0
+            ) {
+              element.isRed14 = true;
             }
-            if(element.axis8_right_flange <= 25 && element.axis8_right_flange > 0){
-                element.isRed15= true
+            if (
+              element.axis8_right_flange <= 25 &&
+              element.axis8_right_flange > 0
+            ) {
+              element.isRed15 = true;
             }
             // else {
             //   console.log('ОШИЮКА')
             // }
+          });
         })
-      })
-      .catch((error) => {
-        this.loader = false;
-      });
-  },
-  methods: {
+        .catch((error) => {
+          this.loader = false;
+        });
+    },
+    getCurrentWagon() {
+      this.loader = true;
+      if (this.SearchRepairWagon.length == 0) {
+        this.allData = true;
+        this.searchData = false;
+        this.getAllWagon();
+      } else {
+        console.log(this.SearchRepairWagon.length);
+        this.allData = false;
+        this.searchData = true;
+        let data = this.SearchRepairWagon.replace(/ /g, ",");
+        api
+          .getRepairWagon(data)
+          .then((response) => {
+            this.responseWagon = response.data.data;
+            let a = this.responseWagon.map((element) => {
+              if (
+                element.axis1_left_flange <= 25 &&
+                element.axis1_left_flange > 0
+              ) {
+                element.isRed = true;
+              }
+              if (
+                element.axis1_right_flange <= 25 &&
+                element.axis1_right_flange > 0
+              ) {
+                element.isRed1 = true;
+              }
+              if (
+                element.axis2_left_flange <= 25 &&
+                element.axis2_left_flange > 0
+              ) {
+                element.isRed2 = true;
+              }
+              if (
+                element.axis2_right_flange <= 25 &&
+                element.axis2_right_flange > 0
+              ) {
+                element.isRed3 = true;
+              }
+              if (
+                element.axis3_left_flange <= 25 &&
+                element.axis3_left_flange > 0
+              ) {
+                element.isRed4 = true;
+              }
+              if (
+                element.axis3_right_flange <= 25 &&
+                element.axis3_right_flange > 0
+              ) {
+                element.isRed5 = true;
+              }
+              if (
+                element.axis4_left_flange <= 25 &&
+                element.axis4_left_flange > 0
+              ) {
+                element.isRed6 = true;
+              }
+              if (
+                element.axis4_right_flange <= 25 &&
+                element.axis4_right_flange > 0
+              ) {
+                element.isRed7 = true;
+              }
+              if (
+                element.axis5_left_flange <= 25 &&
+                element.axis5_left_flange > 0
+              ) {
+                element.isRed8 = true;
+              }
+              if (
+                element.axis5_right_flange <= 25 &&
+                element.axis5_right_flange > 0
+              ) {
+                element.isRed9 = true;
+              }
+              if (
+                element.axis6_left_flange <= 25 &&
+                element.axis6_left_flange > 0
+              ) {
+                element.isRed10 = true;
+              }
+              if (
+                element.axis6_right_flange <= 25 &&
+                element.axis6_right_flange > 0
+              ) {
+                element.isRed11 = true;
+              }
+              if (
+                element.axis7_left_flange <= 25 &&
+                element.axis7_left_flange > 0
+              ) {
+                element.isRed12 = true;
+              }
+              if (
+                element.axis7_right_flange <= 25 &&
+                element.axis7_right_flange > 0
+              ) {
+                element.isRed13 = true;
+              }
+              if (
+                element.axis8_left_flange <= 25 &&
+                element.axis8_left_flange > 0
+              ) {
+                element.isRed14 = true;
+              }
+              if (
+                element.axis8_right_flange <= 25 &&
+                element.axis8_right_flange > 0
+              ) {
+                element.isRed15 = true;
+              }
+            });
+            this.loader = false;
+          })
+          .catch((error) => {
+            this.loader = false;
+          });
+      }
+    },
     openInform(wagon) {
       this.loader = true;
       api
         .getWagonRepairHistory(wagon)
         .then((response) => {
-          this.history_data = response.data;
+          this.history_data = response.data.slice(-3);
+          console.log(this.history_data);
           this.showModal();
           this.loader = false;
         })
@@ -269,19 +503,37 @@ export default {
     toggleModal() {
       this.$refs["ModalHistoryWagon"].toggle("#toggle-btn");
     },
-    downloadReport(){
-        this.loader = true
-        window.location.href = 'api/wagon-park/repair-axis-wheels/export/'
-        this.loader = false
-
-    }
+    downloadReport() {
+      this.loader = true;
+      if (this.SearchRepairWagon == "") {
+        api
+          .getReportRepairData()
+          .then((response) => {
+            window.location.href = response.data;
+            this.loader = false;
+          })
+          .catch((error) => {
+            this.loader = false;
+          });
+      } else {
+        api
+          .getReportRepair(this.SearchRepairWagon.replace(/ /g, ","))
+          .then((response) => {
+            window.location.href = response.data;
+            this.loader = false;
+          })
+          .catch((error) => {
+            this.loader = false;
+          });
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
 td {
-    height: 45px !important;
+  height: 45px !important;
 }
 .redColor {
   background: rgb(194, 66, 66) !important;

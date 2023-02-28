@@ -37,12 +37,12 @@
     <br />
     <div class="station-destination">
       <div>
-        <input type="radio" id="3" value="код" v-model="picked2" />
-        <label for="3">&nbsp;По коду</label>
+        <input type="radio" id="three" value="код" v-model="picked2" />
+        <label for="three">&nbsp;По коду</label>
       </div>
       <div>
-        <input type="radio" id="4" value="станция" v-model="picked2" checked />
-        <label for="4">&nbsp;По станции</label>
+        <input type="radio" id="four" value="станция" v-model="picked2" checked />
+        <label for="four">&nbsp;По станции</label>
       </div>
     </div>
     <autocomplete-input
@@ -154,11 +154,11 @@ export default {
   watch: {
     destination_station_name() {
       this.$emit("destination", {
-        destination: this.destination_station_name,});
+        destination: String(this.destination_station_name),});
     },
     departure_station_name() {
       this.$emit("departure", {
-        departure: this.departure_station_name
+        departure: String(this.departure_station_name)
       });
     },
     is_loaded(){
@@ -179,13 +179,13 @@ export default {
     }),
     Translate() {
       if (this.is_loaded == false) {
-        return "Порожний";
+        return "Груженый";
       }
       return "Груженый";
     },
     International(){
-      if (this.international == false) {
-        return "Не международный";
+      if (this.international == true) {
+        return "Международный";
       }
       return "Международный";
     },
@@ -215,10 +215,10 @@ export default {
   methods: {
 
     getFullStationDeparture(station) {
-      this.departure_station_object = station;
+      this.departure_station_object = String(station);
     },
     getFullStationDestination(station) {
-      this.destionation_station_object = station;
+      this.destionation_station_object = String(station);
     },
   },
 };

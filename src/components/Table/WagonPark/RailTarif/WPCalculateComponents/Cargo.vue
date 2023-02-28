@@ -2,31 +2,51 @@
   <div>
     <Loader :loader="loader" />
     <div class="shipment-kind">
-      <div class="shipment-kind__header">
+      <div>
         <h4 class="header-text">Груз</h4>
         <hr />
       </div>
       <div class="shipment-kind__content">
         <b-tabs content-class="mt-3" fill style="width: 100% !important">
-          <b-tab title="ЕСТНГ" active>
+          <b-tab title="ЕТСНГ" active>
             <div class="content">
               <p class="description">
-                Единая тарифно-статистическая номенклатура грузов (ЕСТНГ)
+                Единая тарифно-статистическая номенклатура грузов (ЕТСНГ)
               </p>
-              <input type="text" class="textarea" placeholder="введите наименование груза" v-model="search" />
+              <p class="explanation"> * Для поиска груза введите наименование груза
+          <br>                  * Для выбора типа груза кликните по строке
+          <br>                  * При выборе кода ЕСТНГ код ГНГ выберется автоматически(и наоборот) <br></p>
+              <div style="text-align: right; margin-right: 3%;">
+                <input type="checkbox" id="dangerous" v-model="dangerousCargo"/>
+                <label for="dangerous">&nbsp;Опасный груз</label>
+              </div>
+
+              <input
+                type="text"
+                class="textarea"
+                placeholder="введите наименование груза"
+                v-model="search"
+              />
               <div class="shipment-kind__content__table">
-                <table class="table-sm table-bordered" style="width: 100% !important">
+                <table
+                  class="table-sm table-bordered"
+                  style="width: 100% !important"
+                >
                   <thead>
                     <tr>
-                      <th scope="col">Код ЕСТНГ</th>
+                      <th scope="col">Код ЕТСНГ</th>
                       <th scope="col">Наименование</th>
                       <th scope="col">Тарифный класс</th>
                     </tr>
                   </thead>
                   <tbody>
                     <div class="lds-dual-ring" v-if="loaderTable"></div>
-
-                    <tr v-for="information in this.SearchData" :key="information.id" @click="ESTNG(information.code6)">
+                    <tr
+                      v-for="information in this.SearchData"
+                      :key="information.id"
+                      @click="ESTNG(information.code6, information.code)"
+                    >
+                      <td v-show="code">{{ information.code }}</td>
                       <td>{{ information.code6 }}</td>
                       <td>{{ information.name }}</td>
                       <td>{{ information.cargo_class }}</td>
@@ -41,9 +61,21 @@
               <p class="description">
                 Гармонизированная номенклатура грузов (ГНГ)
               </p>
-              <input type="text" class="textarea" placeholder="введите наименование груза" v-model="searchGNG" />
+              <div style="text-align: right; margin-right: 3%;">
+                <input type="checkbox" id="dangerousGNG" v-model="dangerousCargoGNG"/>
+                <label for="dangerousGNG">&nbsp;Опасный груз</label>
+              </div>
+              <input
+                type="text"
+                class="textarea"
+                placeholder="введите наименование груза"
+                v-model="searchGNG"
+              />
               <div class="shipment-kind__content__table">
-                <table class="table-sm table-bordered" style="width: 100% !important">
+                <table
+                  class="table-sm table-bordered"
+                  style="width: 100% !important"
+                >
                   <thead>
                     <tr>
                       <th scope="col">Код ГНГ</th>
@@ -51,7 +83,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="information in this.SearchGNG" :key="information.id" @click="GNG(information.code)">
+                    <tr
+                      v-for="information in this.SearchGNG"
+                      :key="information.id"
+                      @click="GNG(information.code, information.code6)"
+                    >
+                    <td v-show="code6">{{ information.code6 }}</td>
                       <td>{{ information.code }}</td>
                       <td>{{ information.name }}</td>
                     </tr>
@@ -64,7 +101,12 @@
       </div>
       <div class="shipment-kind__content__weight">
         <p class="description" style="margin-top: 10px">Масса груза, т</p>
-        <input type="number" class="textareaTon" style="width: 15%; margin-left: 3%" v-model="weight" />
+        <input
+          type="number"
+          class="textareaTon"
+          style="width: 15%; margin-left: 3%; margin-top: 2% !important;"
+          v-model="weight"
+        />
       </div>
     </div>
   </div>
@@ -76,7 +118,6 @@ export default {
   name: "cargo",
   data() {
     return {
-      informations: [],
       search: "",
       searchGNG: "",
       weight: "",
@@ -84,7 +125,10 @@ export default {
       gng: "",
       loader: false,
       loaderTable: false,
-
+      dangerousCargo: false,
+      dangerousCargoGNG: false,
+      code: false,
+      code6: false
     };
   },
   components: { Loader },
@@ -92,72 +136,58 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
-      cargo_code: (state) => state.cargo_code
+      cargo_code: (state) => state.cargo_code,
     }),
+
     SearchData() {
-      return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.search) !== -1)
+      if (this.dangerousCargo == false) {
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.search) !== -1);
+      } else {
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.indexOf(this.search) !== -1);
+      }
     },
     SearchGNG() {
-      return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.searchGNG) !== -1)
+      if (this.dangerousCargoGNG == false) {
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.searchGNG) !== -1);
+      } else {
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.indexOf(this.searchGNG) !== -1);
+      }
     },
   },
   watch: {
     weight() {
       this.$emit("weight", this.weight);
     },
-
-  },
-  mounted() {
-    window.performance.timing
-    this.informations = this.cargo_code.cargo_code
   },
 
   methods: {
-    ESTNG(code) {
-      this.estng = code
-      this.$emit('estng', this.estng)
-    },
-    GNG(code) {
+    ESTNG(code6, code) {
+      this.estng = code6;
       this.gng = code
-      this.$emit('gng', this.gng)
-    }
-  }
+      this.$emit("estng", {
+        estng: this.estng,
+        gng: this.gng,
+      });
+    },
+    GNG(code, code6) {
+      this.gng = code;
+      this.estng = code6;
+      this.$emit("gng", {
+        estng: this.estng,
+        gng: this.gng,
+      });
+    },
+   
+  },
 };
 </script>
 <style scoped>
-.lds-dual-ring {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
-  z-index: 15 !important;
-  position: fixed;
-  left: 50%;
-  transform: translate(-50%, 0);
-  margin-top: 10%;
+.explanation {
+  font-size: 13px;
+  color: grey;
+  text-align: left;
+  padding: 0 0 2% 4%;
 }
-
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border-radius: 50%;
-  border: 6px solid #020202;
-  border-color: #000000 transparent #000000 transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
-}
-
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 
 thead th {
   position: -webkit-sticky;
@@ -186,11 +216,11 @@ tr:hover {
   max-width: 95% !important;
   display: block;
   position: relative;
-  min-height: 35vh;
+  min-height: 20vh;
   left: 50%;
   border-radius: 10px;
   transform: translate(-50%, 0);
-  max-height: 35vh;
+  max-height: 25vh;
   overflow: auto;
 }
 
@@ -215,7 +245,7 @@ tr:hover {
 }
 
 .description {
-  padding: 3% 0 2% 4%;
+  padding: 3% 0 0 4%;
   font-weight: 700;
   font-size: 12px;
   font-family: "Montserrat", sans-serif;

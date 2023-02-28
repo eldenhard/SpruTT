@@ -8,7 +8,7 @@
       <hr />
     </div>
     <div class="shipment-kind__content">
-      <input type="text" id="search" class="textarea" style="width: 100% !important" v-model="search" />
+      <input type="text" id="search" class="textarea" style="width: 100% !important" v-model="search" placeholder="Введите тип вагона (полувагон)" />
       <br />
     </div>
     <div class="shipment-kind__content__input">

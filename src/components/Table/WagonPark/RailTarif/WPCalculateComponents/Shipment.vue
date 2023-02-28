@@ -3,37 +3,48 @@
     <Loader :loader="loader" />
 
     <div class="shipment-kind">
-
-    <div class="shipment-kind__header">
-      <h4 class="header-text">Вид отправки</h4>
-      <hr />
-    </div>
-    <div class="shipment-kind__content">
-      <div class="shipment-kind__content__leftBlock">
-        <button
-          class="btn_left"
-          style="background: #f5f6f6; color: black; border: 1px solid #dadddf"
-          v-for="i in category"
-          :key="i.id"
-          @click="test(i)"
-        >
-          {{ i }}
-        </button>
+      <div class="shipment-kind__header">
+        <h4 class="header-text">Вид отправки</h4>
+        <hr />
       </div>
-      <div class="shipment-kind__content__rightBlock">
-        <div class="option" v-for="kind in kind_shipment" :key="kind.id">
-          <input type="radio" :id="kind.id" :value="kind.id" v-model="kinds" />
-          <label class="radio-right" :for="kind.id"
-            >&nbsp;{{ kind.kind }}</label
+      <p class="explanation"> * Для выбора вида отправки кликните на подходящую группу, после чего выберите необходимую отправку</p>
+      <div class="shipment-kind__content">
+        <div class="shipment-kind__content__leftBlock">
+          <button
+            class="btn_left"
+            style="background: #f5f6f6; color: black; border: 1px solid #dadddf"
+            v-for="i in category"
+            :key="i.id"
+            @click="test(i)"
           >
+            {{ i }}
+          </button>
+        </div>
+        <div class="shipment-kind__content__rightBlock">
+          <div class="option" v-for="kind in kind_shipment" :key="kind.id">
+            <input
+              type="radio"
+              :id="kind.id"
+              :value="kind.id"
+              v-model="kinds"
+            />
+            <label class="radio-right" :for="kind.id"
+              >&nbsp;{{ kind.kind }}</label
+            >
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="speed">
-        <input type="number" class="textarea" style="width: 50%;" placeholder="Скорость" v-model="speed"/>
+      <div class="speed">
+        <input
+          type="number"
+          class="textarea"
+          style="width: 50%"
+          placeholder="Скорость км/ч"
+          v-model="speed"
+        />
 
-        <select class="textarea" v-model="is_exit_route">
+        <select v-model="is_exit_route">
           <option value="" disabled selected>Вид маршрута</option>
           <option value="0">Немаршрутная</option>
           <option value="1">Прямой отправительский маршрут</option>
@@ -41,15 +52,14 @@
           <option value="3">ЗКМ ПОМ</option>
           <option value="4">Отправительский маршрут с распыл.</option>
           <option value="5">Кольцевая маршрутная</option>
-          <option value="6">Отдельным поездом по спец. разработ. расписанию</option>
+          <option value="6">
+            Отдельным поездом по спец. разработ. расписанию
+          </option>
         </select>
-     <div>
-
-     </div>
+        <div></div>
+      </div>
     </div>
   </div>
-  </div>
-
 </template>
 
 
@@ -72,19 +82,19 @@ export default {
       kinds: [],
       kind_shipment: "",
       data: [],
-      is_exit_route: '',
-      speed: '',
+      is_exit_route: "",
+      speed: "",
       loader: false,
     };
   },
   components: { Loader },
 
   watch: {
-    speed(){
-      this.$emit('speed', this.speed)
+    speed() {
+      this.$emit("speed", this.speed);
     },
-    is_exit_route(){
-      this.$emit('is_exit_route', this.is_exit_route)
+    is_exit_route() {
+      this.$emit("is_exit_route", this.is_exit_route);
     },
     kinds() {
       this.$emit("shipment", {
@@ -100,35 +110,32 @@ export default {
     }),
   },
   mounted() {
-    api.getDataShipment().then((response) => {
-      let data = response.data.data;
-      this.data = response.data.data;
-      let array = [];
-      for (let i in data) {
-        array.push(data[i].category.split(" ")[0]);
-      }
-      this.category = array.reduce((acc, item) => {
-        if (acc.includes(item)) {
-          return acc;
+    api
+      .getDataShipment()
+      .then((response) => {
+        let data = response.data.data;
+        this.data = response.data.data;
+        let array = [];
+        for (let i in data) {
+          array.push(data[i].category.split(" ")[0]);
         }
-        return [...acc, item];
-      }, []);
-      this.result = data.filter((item) => item.category == "Повагонная");
-      this.result2 = data.filter(
-        (item) => item.category == "Мелкая и малотоннажна"
-      );
-      this.result3 = data.filter((item) => item.category == "Контейнерная");
-      this.result4 = data.filter(
-        (item) => item.category == "Собственные поездные формирования"
-      );
-      this.result5 = data.filter(
-        (item) => item.category == "Контрейлерная перевозка"
-      );
-      this.result6 = data.filter((item) => item.category == "Другие виды");
-    }).catch(error => {
-
-      console.log(error)
-    })
+        this.category = array.reduce((acc, item) => {
+          if (acc.includes(item)) {
+            return acc;
+          }
+          return [...acc, item];
+        }, []);
+        this.result  = data.filter((item) => item.category == "Повагонная");
+        this.result2 = data.filter((item) => item.category == "Мелкая и малотоннажна");
+        this.result3 = data.filter((item) => item.category == "Контейнерная");
+        this.result4 = data.filter((item) => item.category == "Собственные поездные формирования");
+        this.result5 = data.filter((item) => item.category == "Контрейлерная перевозка");
+        this.result6 = data.filter((item) => item.category == "Другие виды");
+       
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
   methods: {
     getShipmentById(data) {
@@ -136,19 +143,18 @@ export default {
       let shipment = this.data.find((item) => item.id === searchShipment).kind;
       return shipment;
     },
-
     test(i) {
       if (i == "Повагонная") {
         this.kind_shipment = this.result;
-      } else if (i == "Мелкая") {
+      } if (i == "Мелкая") {
         this.kind_shipment = this.result2;
-      } else if (i == "Контейнерная") {
+      } if (i == "Контейнерная") {
         this.kind_shipment = this.result3;
-      } else if (i == "Собственные") {
+      } if (i == "Собственные") {
         this.kind_shipment = this.result4;
-      } else if (i == "Контрейлерная") {
+      } if (i == "Контрейлерная") {
         this.kind_shipment = this.result5;
-      } else if (i == "Другие") {
+      } if (i == "Другие") {
         this.kind_shipment = this.result6;
       }
     },
@@ -160,6 +166,12 @@ export default {
   background: white;
   border: 1px solid grey !important;
   border-radius: 5px;
+}
+.explanation {
+  font-size: 13px;
+  color: grey;
+  text-align: left;
+  padding: 0 0 2% 4%;
 }
 .description {
   /* padding: 3% 0 2% 2%; */
@@ -182,7 +194,7 @@ export default {
   transform: translate(-50%, 0);
   min-height: 55vh;
   max-height: 55vh;
-    width: 90%;
+  width: 90%;
   border: 2px solid #1e86f5;
   border-radius: 10px;
 }
@@ -206,18 +218,12 @@ export default {
 .speed {
   display: flex;
   justify-content: space-around;
-  padding: 5% 0 5% 5% !important;
-  margin-bottom: 3%;
+  padding: 2% 0 2% 2% !important;
   width: 95%;
   position: relative;
   left: 50%;
-  transform: translate(-50%,0);
-  border: 1px solid #EFF0F2 ;
-}
-.speed-inp {
-  background: white;
-  margin: 5% 1%;
-  width: 18%;
+  transform: translate(-50%, 0);
+  border: 1px solid #eff0f2;
 }
 .shipment-kind__content__leftBlock {
   width: 20%;
@@ -236,4 +242,5 @@ button:focus {
   background: white !important;
   border-right: 2px solid #1e86f5 !important;
 }
+
 </style>
