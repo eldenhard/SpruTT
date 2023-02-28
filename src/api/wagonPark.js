@@ -107,8 +107,8 @@ const getWagonRepair = () => {
 const getWagonRepairHistory = (id) => {
     return api.get(`${resource}/repair-axis-wheels/${id}/history`)
 }
-const getReportRepair = () => {
-    return api.get(`${resource}/repair-axis-wheels/export/`)
+const getReportRepair = (data) => {
+    return api.get(`${resource}/repair-axis-wheels/export/?wagon__in=` + data)
 }
 const getRepairWagon = (data) => {
     return api.get(`${resource}/repair-axis-wheels/?wagon__in=` + data)

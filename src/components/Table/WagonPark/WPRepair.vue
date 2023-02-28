@@ -1,11 +1,11 @@
 <template>
   <div>
     <Loader :loader="loader" />
-    <div style="display: flex; justify-content: space-between;" @click="downloadReport()">
+    <div style="display: flex; justify-content: space-between;" >
     <p class="explanation"> * Для просмотра изменений по вагону кликните на строку с этим вагоном <br>
                             *  Для просмотра всех вагонов, очистите строку поиска и нажмите найти <br>
-                            *  Для поиска определенныхх вагонов укажите вагоны через 1 пробел (1234 5678 8765)  </p>
-      <button class="Accept" style="width:25%; height: 50px">Скачать</button> 
+                            *  Для поиска определенныхх вагонов укажите вагоны через 1 пробел (12345678 12345678...)  </p>
+      <button class="Accept" style="width:25%; height: 50px" @click="downloadReport()">Скачать</button> 
     </div>
     <br>
     <div style="display:flex; justify-content: end; height:50px;" >
@@ -408,7 +408,7 @@ export default {
     },
     downloadReport(){
         this.loader = true
-        api.getReportRepair()
+        api.getReportRepair(this.SearchRepairWagon.replace(/ /g, ','))
         .then(response => {
             window.location.href = response.data
             this.loader = false
