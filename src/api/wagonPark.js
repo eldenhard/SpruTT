@@ -26,7 +26,9 @@ const getAllStation = (url) => {
     return api.get(`${url}`)
 }
 
-
+const getCurrentStation = (data) => {
+    return api.get(`${resource}/stations/?search=`+ data)
+}
 
 // получить вагоны для селекта в фильтре 
 const getWagonType = () => {
@@ -143,6 +145,7 @@ export default {
     postShipmentList,
     getRepairWagon,
     getReportRepairData,
+    getCurrentStation,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

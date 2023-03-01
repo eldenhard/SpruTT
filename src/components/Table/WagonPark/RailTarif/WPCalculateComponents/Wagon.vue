@@ -8,7 +8,7 @@
       <hr />
     </div>
     <div class="shipment-kind__content">
-      <input type="text" id="search" class="textarea" style="width: 100% !important" v-model="search" placeholder="Введите тип вагона (полувагон)" />
+      <input type="text" id="search" class="textarea" style="width: 100% !important" v-on:keyup="handleInputOnKeyup" v-model="search" placeholder="Введите тип вагона (полувагон)" />
       <br />
     </div>
     <div class="shipment-kind__content__input">
@@ -58,7 +58,7 @@ export default {
       uid: (state) => state.auth.uid,
     }),
     getCurrentWagonType() {
-      return (this.wagon_type.filter(item => item.name.indexOf(this.search) !== -1))
+      return (this.wagon_type.filter(item => item.name.toLowerCase().indexOf(this.search) !== -1))
     },
   },
   watch: {
@@ -86,7 +86,9 @@ export default {
     })
   },
   methods: {
-
+    handleInputOnKeyup() {
+      this.search = this.search.toLowerCase();
+    },
     getWagonById(data) {
       let searchWagon = data
       let wagon = this.wagon_type.find(item => item.id === searchWagon).name

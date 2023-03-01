@@ -403,7 +403,7 @@ export default {
  
   mounted() {
     this.loader = true;
-    setTimeout(() => (this.loader = false), 1800);
+    setTimeout(() => (this.loader = false), 4000);
     this.stations = getItem("station");
   },
   methods: {

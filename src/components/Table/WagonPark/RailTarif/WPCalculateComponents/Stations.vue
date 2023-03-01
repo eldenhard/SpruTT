@@ -22,7 +22,14 @@
         <label for="two">&nbsp;По станции</label>
       </div>
     </div>
-    <autocomplete-input
+    <input class="textarea"  v-model="departure_station_name" :type="typeDep" >
+    <div class="dataDeparture"  v-if="warning">
+        <ul>
+          <li v-for="departure in station_departure_search" :key="departure.id" @click="checkThisDeparture(departure.name)">{{ departure.name }}</li>
+        </ul>
+    </div>
+    <!-- <autocomplete-input
+      :type="typeDep"
       :variants="stations"
       :variantKey="'id'"
       :label="'Станция отправления'"
@@ -30,9 +37,9 @@
       v-model="departure_station_name"
       :need-full="true"
       @selected="getFullStationDeparture"
-      :placeholder="'Станция отправления'"
+      :placeholder="placeholderDep"
       class="textarea"
-    ></autocomplete-input>
+    ></autocomplete-input> -->
     <br />
     <br />
     <div class="station-destination">
@@ -45,18 +52,19 @@
         <label for="four">&nbsp;По станции</label>
       </div>
     </div>
-    <autocomplete-input
+    <!-- <autocomplete-input
+      :type="typeDest"
       :variants="stations"
       :variantKey="'id'"
       :label="'Станция назначения'"
       :variantTitle="type_station_destination"
       v-model="destination_station_name"
       :need-full="true"
-      :placeholder="'Станция назначения'"
+      :placeholder="placeholderDest"
 
       @selected="getFullStationDestination"
       class="textarea"
-    ></autocomplete-input>
+    ></autocomplete-input> -->
 
     <br />
     <div class="check-block">
@@ -75,6 +83,32 @@
 </template>
 
 <style scoped>
+ul{
+  width: 100%;
+  padding: 0 !important;
+}
+li{
+  border: 1px solid lightgrey;
+  list-style-type: none;
+  cursor: pointer;
+  width: 100%
+}
+li:hover{
+  background: white;
+  color: black;
+  border: 1px solid rgb(143, 143, 143)
+}
+.dataDeparture {
+  width: 80%;
+  height: 90px;
+  overflow: auto;
+  border: 1px solid grey;
+  position: relative;
+  left: 50%;
+  border-top: none;
+  background: rgb(245, 245, 245);
+  transform: translate(-50%, 0);
+}
 .check-block {
   display: flex;
   justify-content: space-around;
@@ -133,7 +167,8 @@
 import { getItem } from "@/helpers/persistanseStorage";
 import { mapState } from "vuex";
 import AutocompleteInput from "@/components/ui/AutocompleteInput.vue";
-
+import api from "@/api/wagonPark";
+import debounce from "lodash.debounce";
 export default {
   name: "stations-railtarif",
   data() {
@@ -148,6 +183,9 @@ export default {
       departure_station_object: "",
       destionation_station_object: "",
       on_date: "",
+      pretext: '',
+      warning: false,
+      station_departure_search: [],
     };
   },
   components: { AutocompleteInput },
@@ -156,11 +194,19 @@ export default {
       this.$emit("destination", {
         destination: String(this.destination_station_name),});
     },
-    departure_station_name() {
-      this.$emit("departure", {
-        departure: String(this.departure_station_name)
-      });
+    departure_station_name(...args) {
+      this.debouncedWatch(...args);
     },
+  
+    // departure_station_name() {
+    //   // api.getCurrentStation(this.departure_station_name)
+    //   // .then(response => {
+    //   //   console.log(response.data)
+    //   // })
+    //   // this.$emit("departure", {
+    //   //   departure: String(this.departure_station_name)
+    //   // });
+    // },
     is_loaded(){
       this.$emit("is_loaded",  this.is_loaded,)
     },
@@ -171,6 +217,25 @@ export default {
       this.$emit('on_date', this.on_date)
     }
 
+  },
+  created() {
+    this.debouncedWatch = debounce((newValue, oldValue) => {
+      if(this.departure_station_name.length > 3){
+        api.getCurrentStation(this.departure_station_name)
+      .then(response => {
+        if(response.data.data == null){
+          this.warning = false
+        } else {
+          this.warning = true
+          this.station_departure_search = response.data.data
+
+        }
+      })
+      } 
+    }, 300);
+  },
+  beforeUnmount() {
+    this.debouncedWatch.cancel();
   },
   computed: {
     ...mapState({
@@ -189,6 +254,42 @@ export default {
       }
       return "Международный";
     },
+    typeDep(){
+      if (this.picked === "код") {
+        return "number";
+      } else if (this.picked === "станция") {
+        return "string";
+      } else {
+        return "";
+      }
+    },
+    typeDest(){
+      if (this.picked2 === "код") {
+        return "number";
+      } else if (this.picked2 === "станция") {
+        return "string";
+      } else {
+        return "";
+      }
+    },
+    placeholderDest() {
+      if (this.picked2 === "код") {
+        return "введите станцию назначения в формате кода (648202)";
+      } else if (this.picked2 === "станция") {
+        return "введите наименование станции назначения (Биклянь)";
+      } else {
+        return "";
+      }
+   },
+   placeholderDep() {
+      if (this.picked === "код") {
+        return "введите станцию  отправления в формате кода (010407)";
+      } else if (this.picked === "станция") {
+        return "введите наименование станции отправления (Шуйская)";
+      } else {
+        return "";
+      }
+   },
     type_station_departure() {
       if (this.picked === "код") {
         return "code6";
@@ -213,7 +314,13 @@ export default {
   },
 
   methods: {
-
+    checkThisDeparture(data){
+      this.departure_station_name = data
+      this.warning = false
+      this.$emit("departure", {
+       departure: String(this.departure_station_name)
+      });
+    },
     getFullStationDeparture(station) {
       this.departure_station_object = String(station);
     },

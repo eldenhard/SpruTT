@@ -1,8 +1,8 @@
 <template>
   <div class="autocomplite_component">
     <!-- <div class="controller"> -->
-    <input type="text" @input="onInput" :value="value" :placeholder="placeholder" style="  width: 100%;
-  height: 100%" />
+    <input  @input="onInput" :value="value" :placeholder="placeholder" :type="type" style="  width: 100%;
+  height: 100%"/>
     <!-- </div> -->
     <br />
     <!-- <label class="label" :class="myClass">{{ label }}</label> -->
@@ -14,6 +14,13 @@
   </div>
 </template>
 <style scoped>
+input{
+  border: none !important;
+  /* border-bottom: 1px solid black !important; */
+  outline: none !important;
+  color: #757575;
+}
+
 .variants {
   width: 100%;
   max-height: 100px;
@@ -79,6 +86,10 @@ export default {
       default: "id",
     },
     placeholder: {
+      type: String,
+      default: "",
+    },
+    type: {
       type: String,
       default: "",
     },

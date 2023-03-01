@@ -15,7 +15,7 @@
               </p>
               <p class="explanation"> * Для поиска груза введите наименование груза
           <br>                  * Для выбора типа груза кликните по строке
-          <br>                  * При выборе кода ЕСТНГ код ГНГ выберется автоматически(и наоборот) <br></p>
+          <br>                  * При выборе кода ЕСТНГ код ГНГ выберется автоматически(и наоборот) </p>
               <div style="text-align: right; margin-right: 3%;">
                 <input type="checkbox" id="dangerous" v-model="dangerousCargo"/>
                 <label for="dangerous">&nbsp;Опасный груз</label>
@@ -26,6 +26,7 @@
                 class="textarea"
                 placeholder="введите наименование груза"
                 v-model="search"
+                v-on:keyup="handleInputOnKeyup"
               />
               <div class="shipment-kind__content__table">
                 <table
@@ -88,7 +89,7 @@
                       :key="information.id"
                       @click="GNG(information.code, information.code6)"
                     >
-                    <td v-show="code6">{{ information.code6 }}</td>
+                      <td v-show="code6">{{ information.code6 }}</td>
                       <td>{{ information.code }}</td>
                       <td>{{ information.name }}</td>
                     </tr>
@@ -141,16 +142,16 @@ export default {
 
     SearchData() {
       if (this.dangerousCargo == false) {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.search) !== -1);
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.toLowerCase().indexOf(this.search) !== -1);
       } else {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.indexOf(this.search) !== -1);
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.toLowerCase().indexOf(this.search) !== -1);
       }
     },
     SearchGNG() {
       if (this.dangerousCargoGNG == false) {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.searchGNG) !== -1);
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.toLowerCase().indexOf(this.searchGNG) !== -1);
       } else {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.indexOf(this.searchGNG) !== -1);
+        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.toLowerCase().indexOf(this.searchGNG) !== -1);
       }
     },
   },
@@ -161,6 +162,9 @@ export default {
   },
 
   methods: {
+    handleInputOnKeyup() {
+      this.search = this.search.toLowerCase();
+    },
     ESTNG(code6, code) {
       this.estng = code6;
       this.gng = code

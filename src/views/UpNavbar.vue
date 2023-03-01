@@ -49,7 +49,10 @@ export default {
   methods: {
     logout() {
       //this.$store.commit('setUser', {})
+      // storage.clear();
+      localStorage.clear();
       this.$store.dispatch(actionTypes.logout)
+      
     }
   }
 }
