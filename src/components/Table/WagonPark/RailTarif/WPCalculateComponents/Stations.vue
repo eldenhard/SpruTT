@@ -28,7 +28,7 @@
       <div class="dataDeparture" v-if="warning">
         <ul>
           <li v-for="departure in station_departure_search" :key="departure.id"
-            @click="checkThisDeparture(departure.name)">
+            @click="checkThisDeparture(departure.name, departure.code6)">
             {{ departure.name }}
           </li>
         </ul>
@@ -59,7 +59,7 @@
       <input class="textarea" v-model="destination_station_name" :type="typeDest" :placeholder="placeholderDest"/>
       <div class="dataDeparture" v-if="warningDest">
         <ul>
-          <li  v-for="destination in station_destination_search" :key="destination.id" @click="checkThisDestination(destination.name)">
+          <li  v-for="destination in station_destination_search" :key="destination.id" @click="checkThisDestination(destination.name, destination.code6)">
             {{ destination.name }}
           </li>
         </ul>
@@ -198,7 +198,7 @@ export default {
       warningDest: false,
       station_departure_search: [],
       station_destination_search: [],
-      elementZ: ''
+      elementZ: '',
     };
   },
   components: { AutocompleteInput },
@@ -228,6 +228,7 @@ export default {
           api.getCurrentStation(this.departure_station_name)
         .then((response) => {
             this.station_departure_search = response.data.data;
+            console.log(response.data.data)
             this.warning = true;
             this.warningDest = false;
         })
@@ -235,7 +236,7 @@ export default {
     }, 300),
 
       this.elementZ = debounce((newValue, oldValue) => {
-        if(this.destination_station_name > 1){
+        if(this.destination_station_name.length > 1){
           api.getCurrentStation(this.destination_station_name)
         .then((response) => {
             this.station_destination_search = response.data.data;
@@ -336,12 +337,13 @@ export default {
       this.warning = false;
       this.warningDest = false;    
     },
-    checkThisDeparture(data) {
-      this.departure_station_name = data;
+    checkThisDeparture(data_name, data_code6) {
+
       this.warning = false;
       this.warningDest = false;
       this.$emit("departure", {
-        departure: String(this.departure_station_name),
+        code6: data_code6,
+        departure: data_name,
       });
     },
     checkThisDestination(data) {

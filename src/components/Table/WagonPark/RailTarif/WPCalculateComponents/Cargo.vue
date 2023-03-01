@@ -16,17 +16,13 @@
               <p class="explanation"> * Для поиска груза введите наименование груза
           <br>                  * Для выбора типа груза кликните по строке
           <br>                  * При выборе кода ЕСТНГ код ГНГ выберется автоматически(и наоборот) </p>
-              <div style="text-align: right; margin-right: 3%;">
-                <input type="checkbox" id="dangerous" v-model="dangerousCargo"/>
-                <label for="dangerous">&nbsp;Опасный груз</label>
-              </div>
+
 
               <input
                 type="text"
                 class="textarea"
                 placeholder="введите наименование груза"
                 v-model="search"
-                v-on:keyup="handleInputOnKeyup"
               />
               <div class="shipment-kind__content__table">
                 <table
@@ -40,12 +36,11 @@
                       <th scope="col">Тарифный класс</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <div class="lds-dual-ring" v-if="loaderTable"></div>
+                  <tbody v-if="warning">
                     <tr
                       v-for="information in this.SearchData"
                       :key="information.id"
-                      @click="ESTNG(information.code6, information.code)"
+                      @click="ESTNG(information.code6, information.code)" 
                     >
                       <td v-show="code">{{ information.code }}</td>
                       <td>{{ information.code6 }}</td>
@@ -62,16 +57,8 @@
               <p class="description">
                 Гармонизированная номенклатура грузов (ГНГ)
               </p>
-              <div style="text-align: right; margin-right: 3%;">
-                <input type="checkbox" id="dangerousGNG" v-model="dangerousCargoGNG"/>
-                <label for="dangerousGNG">&nbsp;Опасный груз</label>
-              </div>
-              <input
-                type="text"
-                class="textarea"
-                placeholder="введите наименование груза"
-                v-model="searchGNG"
-              />
+
+              <input type="text"  class="textarea"  placeholder="введите наименование груза" v-model="searchGNG"/>
               <div class="shipment-kind__content__table">
                 <table
                   class="table-sm table-bordered"
@@ -83,7 +70,7 @@
                       <th scope="col">Наименование</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="warningDest">
                     <tr
                       v-for="information in this.SearchGNG"
                       :key="information.id"
@@ -115,6 +102,9 @@
 <script>
 import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
+import debounce from "lodash.debounce";
+import api from "@/api/wagonPark";
+
 export default {
   name: "cargo",
   data() {
@@ -126,10 +116,14 @@ export default {
       gng: "",
       loader: false,
       loaderTable: false,
-      dangerousCargo: false,
-      dangerousCargoGNG: false,
       code: false,
-      code6: false
+      code6: false,
+      elementZ: '',
+      SearchData: [],
+      SearchGNG: [],
+      warning: false,
+      warningDest: false,
+
     };
   },
   components: { Loader },
@@ -140,31 +134,46 @@ export default {
       cargo_code: (state) => state.cargo_code,
     }),
 
-    SearchData() {
-      if (this.dangerousCargo == false) {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.toLowerCase().indexOf(this.search) !== -1);
-      } else {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.toLowerCase().indexOf(this.search) !== -1);
-      }
-    },
-    SearchGNG() {
-      if (this.dangerousCargoGNG == false) {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.toLowerCase().indexOf(this.searchGNG) !== -1);
-      } else {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.toLowerCase().indexOf(this.searchGNG) !== -1);
-      }
-    },
+  
   },
   watch: {
     weight() {
       this.$emit("weight", this.weight);
     },
-  },
-
-  methods: {
-    handleInputOnKeyup() {
-      this.search = this.search.toLowerCase();
+    search(...args) {
+      this.debouncedWatch(...args);
     },
+    searchGNG(...args) {
+      this.elementZ(...args);
+    },
+  },
+  created() {
+
+this.debouncedWatch = debounce((newValue, oldValue) => {
+  if(this.search.length > 1){
+    api.getCargoCodeSearch(this.search)
+  .then((response) => {
+      this.SearchData = response.data.data;
+      this.warning = true;
+      this.warningDest = false;
+  })
+} 
+}, 300),
+
+this.elementZ = debounce((newValue, oldValue) => {
+  if(this.searchGNG.length > 1){
+    api.getCargoCodeSearch(this.searchGNG)
+  .then((response) => {
+      this.SearchGNG = response.data.data;
+      this.warningDest = true;
+      this.warning = false;
+  })
+}
+}, 300)
+
+},
+  methods: {
+
     ESTNG(code6, code) {
       this.estng = code6;
       this.gng = code

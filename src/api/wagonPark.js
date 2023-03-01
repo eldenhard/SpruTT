@@ -92,7 +92,9 @@ const getCargoCode = (url) => {
 const getCargoCode1 = () => {
     return api.get(`${resource}/cargo`)
 }
-
+const getCargoCodeSearch = (data) => {
+    return api.get(`${resource}/cargo/?search=` + data)
+}
 // Получить послденю информацию по вагону
 const getCurrentLastInfoWagon = (data) => {
     return api.get(`${resource}/wagons/${data}/get-latest-info/`)
@@ -146,6 +148,7 @@ export default {
     getRepairWagon,
     getReportRepairData,
     getCurrentStation,
+    getCargoCodeSearch,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

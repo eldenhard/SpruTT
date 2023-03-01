@@ -433,7 +433,7 @@ export default {
         is_empty: this.is_loaded,
         is_international: this.international,
         departure: {
-          station_code: this.getCodeStation(this.departure.departure),
+          station_code: this.departure.code6,
         },
         destination: {
           station_code: this.getCodeStation(this.destination.destination),
