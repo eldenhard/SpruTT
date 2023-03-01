@@ -1,113 +1,123 @@
 <template>
   <div>
     <div class="shipment-kind">
-    <div class="shipment-kind__header">
-      <h4 class="header-text">Начальная и конечная станция</h4>
-      <hr />
-      <p class="explanation">
-        * Выберите тип необходимого вам поиска, и начнитие вводить интересующую
-        вас станцию
-      </p>
-    </div>
-    <div >
-      <input type="date" class="textarea"  v-model="on_date">
-    </div>
-    <div class="station-departure">
-      <div>
-        <input type="radio" id="one" value="код" v-model="picked" />
-        <label for="one">&nbsp;По коду</label>
+      <div class="shipment-kind__header">
+        <h4 class="header-text">Начальная и конечная станция</h4>
+        <hr />
+        <p class="explanation">
+          * Выберите тип необходимого вам поиска, и начнитие вводить
+          интересующую вас станцию
+        </p>
       </div>
       <div>
-        <input type="radio" id="two" value="станция" v-model="picked" />
-        <label for="two">&nbsp;По станции</label>
+        <input type="date" class="textarea" v-model="on_date" />
       </div>
-    </div>
-    <input class="textarea"  v-model="departure_station_name" :type="typeDep" >
-    <div class="dataDeparture"  v-if="warning">
+      <div class="station-departure">
+        <div>
+          <input type="radio" id="one" value="код" v-model="picked" />
+          <label for="one">&nbsp;По коду</label>
+        </div>
+        <div>
+          <input type="radio" id="two" value="станция" v-model="picked" />
+          <label for="two">&nbsp;По станции</label>
+        </div>
+      </div>
+
+<!-- отправка -->
+      <input class="textarea" v-model="departure_station_name" :type="typeDep"  :placeholder="placeholderDep"/>
+      <div class="dataDeparture" v-if="warning">
         <ul>
-          <li v-for="departure in station_departure_search" :key="departure.id" @click="checkThisDeparture(departure.name)">{{ departure.name }}</li>
+          <li v-for="departure in station_departure_search" :key="departure.id"
+            @click="checkThisDeparture(departure.name)">
+            {{ departure.name }}
+          </li>
         </ul>
-    </div>
-    <!-- <autocomplete-input
-      :type="typeDep"
-      :variants="stations"
-      :variantKey="'id'"
-      :label="'Станция отправления'"
-      :variantTitle="type_station_departure"
-      v-model="departure_station_name"
-      :need-full="true"
-      @selected="getFullStationDeparture"
-      :placeholder="placeholderDep"
-      class="textarea"
-    ></autocomplete-input> -->
-    <br />
-    <br />
-    <div class="station-destination">
-      <div>
-        <input type="radio" id="three" value="код" v-model="picked2" />
-        <label for="three">&nbsp;По коду</label>
       </div>
-      <div>
-        <input type="radio" id="four" value="станция" v-model="picked2" checked />
-        <label for="four">&nbsp;По станции</label>
-      </div>
-    </div>
-    <!-- <autocomplete-input
-      :type="typeDest"
-      :variants="stations"
-      :variantKey="'id'"
-      :label="'Станция назначения'"
-      :variantTitle="type_station_destination"
-      v-model="destination_station_name"
-      :need-full="true"
-      :placeholder="placeholderDest"
 
-      @selected="getFullStationDestination"
-      class="textarea"
-    ></autocomplete-input> -->
+      <br />
+      <br />
 
-    <br />
-    <div class="check-block">
-      <div>
-        <input type="checkbox" id="checkboxEmpty" v-model="is_loaded" />
-        <label for="checkboxEmpty">&nbsp;{{ Translate }}</label>
+
+      <div class="station-destination">
+        <div>
+          <input type="radio" id="three" value="код" v-model="picked2" />
+          <label for="three">&nbsp;По коду</label>
+        </div>
+        <div>
+          <input type="radio"
+            id="four"
+            value="станция"
+            v-model="picked2"
+            checked
+          />
+          <label for="four">&nbsp;По станции</label>
+        </div>
       </div>
-      <div>
-        <input type="checkbox" id="checkboxInternat" v-model="international" />
-        <label for="checkboxInternat">&nbsp;{{ International }}</label>
+
+
+      <!-- назначение -->
+      <input class="textarea" v-model="destination_station_name" :type="typeDest" :placeholder="placeholderDest"/>
+      <div class="dataDeparture" v-if="warningDest">
+        <ul>
+          <li  v-for="destination in station_destination_search" :key="destination.id" @click="checkThisDestination(destination.name)">
+            {{ destination.name }}
+          </li>
+        </ul>
+      </div>
+    
+
+      <br />
+      <br />
+
+      <br />
+
+ 
+
+      <div class="check-block">
+        <div>
+          <input type="checkbox" id="checkboxEmpty" v-model="is_loaded" />
+          <label for="checkboxEmpty">&nbsp;{{ Translate }}</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="checkboxInternat"
+            v-model="international"
+          />
+          <label for="checkboxInternat">&nbsp;{{ International }}</label>
+        </div>
       </div>
     </div>
   </div>
-  </div>
-
 </template>
 
 <style scoped>
-ul{
+ul {
   width: 100%;
   padding: 0 !important;
 }
-li{
+li {
   border: 1px solid lightgrey;
   list-style-type: none;
   cursor: pointer;
-  width: 100%
+  width: 100%;
 }
-li:hover{
+li:hover {
   background: white;
   color: black;
-  border: 1px solid rgb(143, 143, 143)
+  border: 1px solid rgb(143, 143, 143);
 }
 .dataDeparture {
   width: 80%;
   height: 90px;
   overflow: auto;
   border: 1px solid grey;
-  position: relative;
+  position: absolute;
   left: 50%;
   border-top: none;
   background: rgb(245, 245, 245);
   transform: translate(-50%, 0);
+  z-index: 10;
 }
 .check-block {
   display: flex;
@@ -183,59 +193,62 @@ export default {
       departure_station_object: "",
       destionation_station_object: "",
       on_date: "",
-      pretext: '',
+      pretext: "",
       warning: false,
+      warningDest: false,
       station_departure_search: [],
+      station_destination_search: [],
+      elementZ: ''
     };
   },
   components: { AutocompleteInput },
   watch: {
-    destination_station_name() {
-      this.$emit("destination", {
-        destination: String(this.destination_station_name),});
-    },
+
     departure_station_name(...args) {
       this.debouncedWatch(...args);
     },
-  
-    // departure_station_name() {
-    //   // api.getCurrentStation(this.departure_station_name)
-    //   // .then(response => {
-    //   //   console.log(response.data)
-    //   // })
-    //   // this.$emit("departure", {
-    //   //   departure: String(this.departure_station_name)
-    //   // });
-    // },
-    is_loaded(){
-      this.$emit("is_loaded",  this.is_loaded,)
+    destination_station_name(...args) {
+      this.elementZ(...args);
     },
-    international(){
-      this.$emit("international", this.international)
-    },
-    on_date(){
-      this.$emit('on_date', this.on_date)
-    }
 
+    is_loaded() {
+      this.$emit("is_loaded", this.is_loaded);
+    },
+    international() {
+      this.$emit("international", this.international);
+    },
+    on_date() {
+      this.$emit("on_date", this.on_date);
+    },
   },
   created() {
-    this.debouncedWatch = debounce((newValue, oldValue) => {
-      if(this.departure_station_name.length > 3){
-        api.getCurrentStation(this.departure_station_name)
-      .then(response => {
-        if(response.data.data == null){
-          this.warning = false
-        } else {
-          this.warning = true
-          this.station_departure_search = response.data.data
 
-        }
-      })
+      this.debouncedWatch = debounce((newValue, oldValue) => {
+        if(this.departure_station_name.length > 1){
+          api.getCurrentStation(this.departure_station_name)
+        .then((response) => {
+            this.station_departure_search = response.data.data;
+            this.warning = true;
+            this.warningDest = false;
+        })
       } 
-    }, 300);
+    }, 300),
+
+      this.elementZ = debounce((newValue, oldValue) => {
+        if(this.destination_station_name > 1){
+          api.getCurrentStation(this.destination_station_name)
+        .then((response) => {
+            this.station_destination_search = response.data.data;
+            this.warningDest = true;
+            this.warning = false;
+        })
+      }
+    }, 300)
+  
   },
   beforeUnmount() {
     this.debouncedWatch.cancel();
+    this.elementZ.cancel();
   },
   computed: {
     ...mapState({
@@ -248,13 +261,13 @@ export default {
       }
       return "Груженый";
     },
-    International(){
+    International() {
       if (this.international == true) {
         return "Международный";
       }
       return "Международный";
     },
-    typeDep(){
+    typeDep() {
       if (this.picked === "код") {
         return "number";
       } else if (this.picked === "станция") {
@@ -263,7 +276,7 @@ export default {
         return "";
       }
     },
-    typeDest(){
+    typeDest() {
       if (this.picked2 === "код") {
         return "number";
       } else if (this.picked2 === "станция") {
@@ -280,8 +293,8 @@ export default {
       } else {
         return "";
       }
-   },
-   placeholderDep() {
+    },
+    placeholderDep() {
       if (this.picked === "код") {
         return "введите станцию  отправления в формате кода (010407)";
       } else if (this.picked === "станция") {
@@ -289,7 +302,7 @@ export default {
       } else {
         return "";
       }
-   },
+    },
     type_station_departure() {
       if (this.picked === "код") {
         return "code6";
@@ -310,15 +323,33 @@ export default {
     },
   },
   mounted() {
-    this.stations = getItem("station");
+    // this.stations = getItem("station");
+    document.body.addEventListener('click', this.onClick);
   },
+  beforeDestroy() {
+    document.body.removeEventListener('click', this.onClick);
+  },
+  
 
   methods: {
-    checkThisDeparture(data){
-      this.departure_station_name = data
-      this.warning = false
+    onClick(ev) {
+      this.warning = false;
+      this.warningDest = false;    
+    },
+    checkThisDeparture(data) {
+      this.departure_station_name = data;
+      this.warning = false;
+      this.warningDest = false;
       this.$emit("departure", {
-       departure: String(this.departure_station_name)
+        departure: String(this.departure_station_name),
+      });
+    },
+    checkThisDestination(data) {
+      this.destination_station_name = data;
+      this.warning = false;
+      this.warningDest = false;
+      this.$emit("destination", {
+        destination: String(this.destination_station_name),
       });
     },
     getFullStationDeparture(station) {
