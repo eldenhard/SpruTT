@@ -823,11 +823,11 @@
         <button class="button Accept railbtn" @click="Calculation()">
           Рассчитать тариф
         </button>
-        <button @click="showModal()" class="button Request railbtn" >
+        <button @click="showModal()" class="button Request railbtn"  v-show="WatchCost">
           Открыть расчет
         </button>
         <!-- v-show="WatchCost" -->
-        <button @click="showModalRoute()" class="button Request railbtn">
+        <button @click="showModalRoute()" class="button Request railbtn"  v-show="WatchCost">
           Открыть маршрут
         </button>
         <br>

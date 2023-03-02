@@ -36,15 +36,21 @@
       </div>
 
       <div class="speed">
-        <input
+        <label for="speed">Скорость км/ч
+          <br>
+          <input
+          id="speed"
           type="number"
           class="textarea"
-          style="width: 50%"
+          style="width: 100%"
           placeholder="Скорость км/ч"
           v-model="speed"
+          min="0"
         />
-
-        <select v-model="is_exit_route">
+        </label>
+       
+<label for="seleft">Вид маршрута <br />
+  <select v-model="is_exit_route" id="seleft">
           <option value="" disabled selected>Вид маршрута</option>
           <option value="0">Немаршрутная</option>
           <option value="1">Прямой отправительский маршрут</option>
@@ -56,6 +62,8 @@
             Отдельным поездом по спец. разработ. расписанию
           </option>
         </select>
+</label>
+       
         <div></div>
       </div>
     </div>
@@ -177,6 +185,10 @@ export default {
 };
 </script>
 <style scoped>
+label {
+  color: grey;
+  font-size: 1rem;
+}
 .textarea {
   background: white;
   border: 1px solid grey !important;
@@ -229,12 +241,12 @@ export default {
   transform: translate(-50%, 0);
   border: 1px solid #e3e5e7;
   border-radius: 5px;
-  margin-bottom: 5%;
+  margin-bottom: 2%;
 }
 .speed {
   display: flex;
   justify-content: space-around;
-  padding: 2% 0 2% 2% !important;
+  padding: 1% 0 1% 8% !important;
   width: 95%;
   position: relative;
   left: 50%;

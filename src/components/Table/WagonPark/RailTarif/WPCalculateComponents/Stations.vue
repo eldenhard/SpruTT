@@ -6,7 +6,8 @@
         <hr />
         <p class="explanation">
           * Выберите тип необходимого вам поиска, и начнитие вводить
-          интересующую вас станцию
+          интересующую вас станцию <br>
+          * Для очистки выбранной станции удалите введеную станцию из поля ввода
         </p>
       </div>
       <div>
@@ -341,13 +342,35 @@ export default {
   components: { AutocompleteInput, Notifications },
   watch: {
     departure_station_name(...args) {
-      this.debouncedWatch(...args);
+      if(this.departure_station_name == ''){
+        this.$emit("departure", {
+        code6: "",
+        departure: "",
+      });
+      } else {
+        this.debouncedWatch(...args);
+      }
     },
     destination_station_name(...args) {
-      this.elementZ(...args);
+      if(this.destination_station_name == ""){
+        this.$emit("destination", {
+        code6: "",
+        destination: "",
+      })
+      } else {
+        this.elementZ(...args);
+      }
+      
     },
     reverse_station_name(...args) {
+      if(this.reverse_station_name == ""){
+        this.$emit("reverse", {
+        code6: "",
+        reverse: "",
+      }) 
+    } else {
       this.elementV(...args);
+    }
     },
 
     is_loaded() {

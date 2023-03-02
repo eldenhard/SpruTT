@@ -19,14 +19,20 @@
       </div>
     </div>
     <div class="expand-info">
-      <input type="number" placeholder="Количество" class="textareaS" v-model="amount" />
-      <select name="" id="" class="textareaS" v-model="belong">
+      <label for="amountWagon">Количество <br />
+        <input id="amountWagon" type="number" placeholder="Количество" class="textarea" v-model="amount" min="0" style="width: 100%"/>
+      </label>
+
+<label for="belong">Принадлежность <br />
+  <select name="" id="belong" class="textarea" v-model="belong" style="width: 100%">
         <option value="" disabled selected>Принадлежность</option>
         <option value="1">Инвентарный парк</option>
         <option value="2">Собственный</option>
         <option value="3">Арендованный</option>
         <option value="7">Привлеченный ОАО "РЖД"</option>
       </select>
+</label>
+   
     </div>
   </div>
   <Notifications
@@ -124,6 +130,10 @@ export default {
   height: 50px;
   font-size: 17px;
   display: block;
+}
+label {
+  color: grey;
+  font-size: 1rem;
 }
 .shipment-kind__content__input{
   min-height: 25vh;

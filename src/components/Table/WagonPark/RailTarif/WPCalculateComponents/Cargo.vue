@@ -100,6 +100,8 @@
           class="textareaTon"
           style="width: 15%; margin-left: 3%; margin-top: 2% !important;"
           v-model="weight"
+          min="0"
+
         />
       </div>
     </div>
