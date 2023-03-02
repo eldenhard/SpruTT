@@ -29,6 +29,13 @@
       </select>
     </div>
   </div>
+  <Notifications
+        :show="showNotify"
+        :header="notifyHead"
+        :message="notifyMessage"
+        :block-class="notifyClass"
+        id="notif"
+      />
   </div>
 
 </template>
@@ -37,6 +44,7 @@
 import { mapState } from "vuex";
 import api from "@/api/wagonPark";
 import Loader from "@/components/loader/loader.vue";
+import Notifications from "@/components/notifications/Notifications.vue";
 
 export default {
   data() {
@@ -49,9 +57,14 @@ export default {
       flame: "",
       amount: "",
       loader: false,
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
+      lengthRoute: "",
     };
   },
-  components: { Loader },
+  components: { Loader, Notifications },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -63,6 +76,11 @@ export default {
   },
   watch: {
     wagonType() {
+      this.notifyHead = "Успешно";
+        this.notifyMessage = "Вагон выбран и добавлен";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
       this.$emit('wagon', {
         wagon_id: this.getWagonTypeId(this.wagonType),
         wagon_type: this.getWagonById(this.wagonType)

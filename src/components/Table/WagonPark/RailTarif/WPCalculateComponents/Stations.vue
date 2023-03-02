@@ -136,6 +136,13 @@
         </div>
       </div>
     </div>
+    <Notifications
+        :show="showNotify"
+        :header="notifyHead"
+        :message="notifyMessage"
+        :block-class="notifyClass"
+        id="notif"
+      />
   </div>
 </template>
 
@@ -283,13 +290,14 @@ li:hover {
 
 </style>
 <script >
-import { getItem } from "@/helpers/persistanseStorage";
+import Notifications from "@/components/notifications/Notifications.vue";
 import { mapState } from "vuex";
 import AutocompleteInput from "@/components/ui/AutocompleteInput.vue";
 import api from "@/api/wagonPark";
 import debounce from "lodash.debounce";
 export default {
   name: "stations-railtarif",
+
   data() {
     return {
       picked: "код",
@@ -322,9 +330,15 @@ export default {
       loaderInputDep: false,
       loaderInputDest: false,
       loaderInputRev: false,
+
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
+      lengthRoute: "",
     };
   },
-  components: { AutocompleteInput },
+  components: { AutocompleteInput, Notifications },
   watch: {
     departure_station_name(...args) {
       this.debouncedWatch(...args);
@@ -499,6 +513,11 @@ export default {
       this.warningDest = false;    
     },
     checkThisDeparture(data_name, data_code6) {
+      this.notifyHead = "Успешно";
+        this.notifyMessage = "Станция выбрана и добавлена";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
       this.warningReverse= false;
       this.warning = false;
       this.warningDest = false;
@@ -508,6 +527,11 @@ export default {
       });
     },
     checkThisDestination(data_name, data_code6) {
+      this.notifyHead = "Успешно";
+        this.notifyMessage = "Станция выбрана и добавлена";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
       this.warningReverse= false;
       this.warning = false;
       this.warningDest = false;
@@ -517,6 +541,11 @@ export default {
       });
     },
     checkThisReverse(data_name, data_code6) {
+      this.notifyHead = "Успешно";
+        this.notifyMessage = "Станция выбрана и добавлена";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
       this.warningReverse= false;
       this.warning = false;
       this.warningDest = false;

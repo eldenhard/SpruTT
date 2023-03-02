@@ -21,7 +21,7 @@
           </button>
         </div>
         <div class="shipment-kind__content__rightBlock">
-          <div class="option" v-for="kind in kind_shipment" :key="kind.id">
+          <div class="option" v-for="kind in kind_shipment" :key="kind.id" style="display: flex; align-items: baseline;">
             <input
               type="radio"
               :id="kind.id"
@@ -59,6 +59,13 @@
         <div></div>
       </div>
     </div>
+    <Notifications
+        :show="showNotify"
+        :header="notifyHead"
+        :message="notifyMessage"
+        :block-class="notifyClass"
+        id="notif"
+      />
   </div>
 </template>
 
@@ -67,6 +74,7 @@
 import { mapState } from "vuex";
 import api from "@/api/wagonPark";
 import Loader from "@/components/loader/loader.vue";
+import Notifications from "@/components/notifications/Notifications.vue";
 
 export default {
   data() {
@@ -85,9 +93,14 @@ export default {
       is_exit_route: "",
       speed: "",
       loader: false,
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
+      lengthRoute: "",
     };
   },
-  components: { Loader },
+  components: { Loader, Notifications },
 
   watch: {
     speed() {
@@ -110,9 +123,11 @@ export default {
     }),
   },
   mounted() {
+    this.loader = true
     api
       .getDataShipment()
       .then((response) => {
+        this.loader = false
         let data = response.data.data;
         this.data = response.data.data;
         let array = [];
@@ -131,7 +146,7 @@ export default {
         this.result4 = data.filter((item) => item.category == "Собственные поездные формирования");
         this.result5 = data.filter((item) => item.category == "Контрейлерная перевозка");
         this.result6 = data.filter((item) => item.category == "Другие виды");
-       
+
       })
       .catch((error) => {
         console.log(error);
@@ -183,7 +198,8 @@ export default {
   margin-left: 1%;
 }
 .radio-right {
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 22px;
   font-weight: 400;
   font-family: "Montserrat", sans-serif;
 }
@@ -226,10 +242,10 @@ export default {
   border: 1px solid #eff0f2;
 }
 .shipment-kind__content__leftBlock {
-  width: 20%;
+  width: 17%;
 }
 .shipment-kind__content__rightBlock {
-  width: 80%;
+  width: 83%;
   max-height: 25vh;
   min-height: 25vh;
   overflow: auto;

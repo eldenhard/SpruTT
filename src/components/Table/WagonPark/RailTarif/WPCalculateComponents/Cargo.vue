@@ -103,6 +103,13 @@
         />
       </div>
     </div>
+    <Notifications
+        :show="showNotify"
+        :header="notifyHead"
+        :message="notifyMessage"
+        :block-class="notifyClass"
+        id="notif"
+      />
   </div>
 </template>
 <script>
@@ -110,6 +117,7 @@ import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
 import debounce from "lodash.debounce";
 import api from "@/api/wagonPark";
+import Notifications from "@/components/notifications/Notifications.vue";
 
 export default {
   name: "cargo",
@@ -131,10 +139,15 @@ export default {
       warningDest: false,
       loaderInput: false,
       loaderInputGNG: false,
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
+      lengthRoute: "",
 
     };
   },
-  components: { Loader },
+  components: { Loader, Notifications },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -187,6 +200,11 @@ this.elementZ = debounce((newValue, oldValue) => {
   methods: {
 
     ESTNG(code6, code) {
+      this.notifyHead = "Успешно";
+        this.notifyMessage = "Груз выбран и добавлен";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
       this.estng = code6;
       this.gng = code
       this.$emit("estng", {
@@ -195,6 +213,11 @@ this.elementZ = debounce((newValue, oldValue) => {
       });
     },
     GNG(code, code6) {
+      this.notifyHead = "Успешно";
+        this.notifyMessage = "Груз выбран и добавлен";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
       this.gng = code;
       this.estng = code6;
       this.$emit("gng", {
@@ -214,7 +237,6 @@ this.elementZ = debounce((newValue, oldValue) => {
 
 input {
   width: 100%;
-  font-size: 20px;
   box-sizing: border-box;
 }
 

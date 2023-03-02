@@ -9,6 +9,8 @@
     >
       <template #modal-title> Маршрут </template>
       <br />
+      <b-tabs content-class="mt-3">
+    <b-tab title="Прямой" active>
       <div class="pretable">
         <table class="table table-sm table-bordered">
           <thead>
@@ -31,21 +33,591 @@
           </tbody>
         </table>
         <button
-        class="button Delete railbtn" style="width: 10%; float: right;margin-top: 1% !important;
+        class="button Delete railbtn" style="width: 10%; float: right;margin-top: 2% !important; margin-bottom: 1% !important;
           margin-right: 1% !important; " block @click="hideModalRoute()">Закрыть
       </button>
       </div>
+    </b-tab>
+    <b-tab title="Обратный">
+      <div class="pretable">
+        <table class="table table-sm table-bordered">
+          <thead>
+            <th>код станции</th>
+            <th>название станции </th>
+            <th>расстояние</th>
+            <th>код страны</th>
+            <th>код дороги</th>
+            <th>признак того, что станция является экспортной</th>
+          </thead>
+          <tbody>
+            <tr v-for="bwr in backward_route" :key="bwr.id">
+              <td>{{ bwr.station_code }}</td>
+              <td>{{ bwr.station_name }}</td>
+              <td>{{ bwr.distance }}</td>
+              <td>{{ bwr.country_code }}</td>
+              <td>{{ bwr.road_code }}</td>
+              <td>{{ bwr.is_exp }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <button
+        class="button Delete railbtn" style="width: 10%; float: right;margin-top: 2% !important; margin-bottom: 1% !important;
+          margin-right: 1% !important; " block @click="hideModalRoute()">Закрыть
+      </button>
+      </div>
+    </b-tab>
+  </b-tabs>
+
       </b-modal>
     <b-modal
       ref="modalRailTariff"
-      size="md"
+      size="lg"
       hide-footer
-      style="width: 95% !important"
+      style="width: 95% !important; background: #FFFFFF !important;"
     >
       <template #modal-title> Расчет тарифа </template>
       <br />
-      <div>
-  <b-tabs content-class="mt-3">
+      <div style="background: #FFFFFF !important;">
+    <b-card no-body style="background: #FFFFFF !important;">
+    <b-tabs pills card vertical style="background: #FFFFFF !important;">
+      <b-tab title="Прямой" active style="background: #FFFFFF !important;">
+        <b-card-text style="background: #FFFFFF !important;">
+          <b-tabs content-class="mt-3">
+              <b-tab :title="tarif.country_name"  v-for="tarif in result" :key="tarif.id">
+      <div class="pretable">
+        <h4 style="text-align: left; margin-bottom: 2%">Расстоянние и срок</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Страна <br />
+            <input type="text" readonly class="textarea" :value="tarif.country_name">
+          </label>
+          <label for="f1">Тип тарифа <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.calc_type" />
+          </label>
+          <label for="f1">Расстояние <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.distance"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Транзитное расстояние <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.distance_transit"/>
+          </label>
+          <label for="f1">Расстояние по ТРН№4 <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.distance_real"/>
+          </label>
+          <label for="f1">Срок <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.delivery_days"/>
+          </label>
+        </div>
+        <div>
+          <h4 style="text-align: left; margin-bottom: 2%">НДС</h4>
+          <div style="display: flex; align-items: flex-start; justify-content: start;">
+            <label for="f1">НДС на стоимость перевозки <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.base_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на стоимость перевозки за 1т <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.base_pert_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на вагон прикрытия <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.buffer_car_price_nds?.toFixed(2)"/>
+            </label>
+          </div>
+          <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
+            <label for="f1">НДС на локомотив <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.locomotive_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на охрану <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.guard_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на доп. сборы <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.add_dues_nds?.toFixed(2)"/>
+            </label>
+          </div>
+          <div
+            style="display: flex;align-items: flex-start;justify-content: flex-start;">
+            <label for="f1">НДС на сопровождение <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.sopr_cost_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">суммарный НДС <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.nds?.toFixed(2)"/>
+            </label>
+          </div>
+        </div>
+
+        <h4 style="text-align: left; margin-bottom: 2%">Доп траты</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1">Вагон прикрытия <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.buffer_car_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Локомотив <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.locomotive_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Вагон-дизель-электростанция <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.wagon_diesel_el_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1"
+            >Охрана и дог. охрана <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.guard_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Доп. сборы <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.add_dues?.toFixed(2)"/>
+          </label>
+          <label for="f1">Сопровождение <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.sopr_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1">Итого без НДС <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.total_cost_wo_nds?.toFixed(2)"/>
+          </label>
+        </div>
+        <h4 style="text-align: left; margin-bottom: 2%">Стоимости</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Стоимость перевозки за все т/с <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.base_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Стоимость перевозки за 1т <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.base_pert?.toFixed(2)"/>
+          </label>
+          <label for="f1">Итоговая стоимость <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.total_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1"
+            >Стоимость за 1т <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.pert?.toFixed(2)"/>
+          </label>
+          <label for="f1"
+            >Стоимость за 1т без НДС <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.pert_wo_nds?.toFixed(2)"/>
+          </label>
+          <label for="f1"
+            >Аббревиатура валюты <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.abbr"/>
+          </label>
+        </div>
+        <div
+          style="display: flex; align-items: flex-start; justify-content: start"
+        >
+          <label for="f1"
+            >Код валюты <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.currency_id"/>
+          </label>
+        </div>
+        <div style="display: flex; justify-content: space-around; margin-top: 2%">
+    </div>
+      </div>
+              </b-tab>
+      </b-tabs>
+        </b-card-text>
+      </b-tab>
+      <b-tab title="Обратный" style="background: #FFFFFF !important;">
+        <b-card-text style="background: #FFFFFF !important;">
+      <b-tabs content-class="mt-3" style="background: #FFFFFF !important;">
+    <b-tab :title="tarif.country_name"  v-for="tarif in backward_result" :key="tarif.id" style="background: #FFFFFF !important;">
+      <div class="pretable">
+        <h4 style="text-align: left; margin-bottom: 2%">Расстоянние и срок</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Страна <br />
+            <input type="text" readonly class="textarea" :value="tarif.country_name">
+          </label>
+          <label for="f1">Тип тарифа <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.calc_type" />
+          </label>
+          <label for="f1">Расстояние <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.distance"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Транзитное расстояние <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.distance_transit"/>
+          </label>
+          <label for="f1">Расстояние по ТРН№4 <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.distance_real"/>
+          </label>
+          <label for="f1">Срок <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.delivery_days"/>
+          </label>
+        </div>
+        <div>
+          <h4 style="text-align: left; margin-bottom: 2%">НДС</h4>
+          <div style="display: flex; align-items: flex-start; justify-content: start;">
+            <label for="f1">НДС на стоимость перевозки <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.base_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на стоимость перевозки за 1т <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.base_pert_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на вагон прикрытия <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.buffer_car_price_nds?.toFixed(2)"/>
+            </label>
+          </div>
+          <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
+            <label for="f1">НДС на локомотив <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.locomotive_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на охрану <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.guard_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на доп. сборы <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.add_dues_nds?.toFixed(2)"/>
+            </label>
+          </div>
+          <div
+            style="display: flex;align-items: flex-start;justify-content: flex-start;">
+            <label for="f1">НДС на сопровождение <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.sopr_cost_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">суммарный НДС <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.nds?.toFixed(2)"/>
+            </label>
+          </div>
+        </div>
+
+        <h4 style="text-align: left; margin-bottom: 2%">Доп траты</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1">Вагон прикрытия <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.buffer_car_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Локомотив <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.locomotive_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Вагон-дизель-электростанция <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.wagon_diesel_el_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1"
+            >Охрана и дог. охрана <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.guard_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Доп. сборы <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.add_dues?.toFixed(2)"/>
+          </label>
+          <label for="f1">Сопровождение <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.sopr_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1">Итого без НДС <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.total_cost_wo_nds?.toFixed(2)"/>
+          </label>
+        </div>
+        <h4 style="text-align: left; margin-bottom: 2%">Стоимости</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Стоимость перевозки за все т/с <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.base_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Стоимость перевозки за 1т <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.base_pert?.toFixed(2)"/>
+          </label>
+          <label for="f1">Итоговая стоимость <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.total_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1"
+            >Стоимость за 1т <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.pert?.toFixed(2)"/>
+          </label>
+          <label for="f1"
+            >Стоимость за 1т без НДС <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.pert_wo_nds?.toFixed(2)"/>
+          </label>
+          <label for="f1"
+            >Аббревиатура валюты <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.abbr"/>
+          </label>
+        </div>
+        <div
+          style="display: flex; align-items: flex-start; justify-content: start"
+        >
+          <label for="f1"
+            >Код валюты <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.currency_id"/>
+          </label>
+        </div>
+        <div style="display: flex; justify-content: space-around; margin-top: 2%">
+    </div>
+      </div>
+        </b-tab>
+  
+      </b-tabs>
+
+        </b-card-text>
+      </b-tab>
+    </b-tabs>
+  </b-card>
+
+      <!-- <b-tabs content-class="mt-3">
+              <b-tab :title="tarif.country_name"  v-for="tarif in result" :key="tarif.id">
+      <div class="pretable">
+        <h4 style="text-align: left; margin-bottom: 2%">Расстоянние и срок</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Страна <br />
+            <input type="text" readonly class="textarea" :value="tarif.country_name">
+          </label>
+          <label for="f1">Тип тарифа <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.calc_type" />
+          </label>
+          <label for="f1">Расстояние <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.distance"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Транзитное расстояние <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.distance_transit"/>
+          </label>
+          <label for="f1">Расстояние по ТРН№4 <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.distance_real"/>
+          </label>
+          <label for="f1">Срок <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.delivery_days"/>
+          </label>
+        </div>
+        <div>
+          <h4 style="text-align: left; margin-bottom: 2%">НДС</h4>
+          <div style="display: flex; align-items: flex-start; justify-content: start;">
+            <label for="f1">НДС на стоимость перевозки <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.base_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на стоимость перевозки за 1т <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.base_pert_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на вагон прикрытия <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.buffer_car_price_nds?.toFixed(2)"/>
+            </label>
+          </div>
+          <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
+            <label for="f1">НДС на локомотив <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.locomotive_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на охрану <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.guard_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на доп. сборы <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.add_dues_nds?.toFixed(2)"/>
+            </label>
+          </div>
+          <div
+            style="display: flex;align-items: flex-start;justify-content: flex-start;">
+            <label for="f1">НДС на сопровождение <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.sopr_cost_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">суммарный НДС <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.nds?.toFixed(2)"/>
+            </label>
+          </div>
+        </div>
+
+        <h4 style="text-align: left; margin-bottom: 2%">Доп траты</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1">Вагон прикрытия <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.buffer_car_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Локомотив <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.locomotive_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Вагон-дизель-электростанция <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.wagon_diesel_el_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1"
+            >Охрана и дог. охрана <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.guard_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Доп. сборы <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.add_dues?.toFixed(2)"/>
+          </label>
+          <label for="f1">Сопровождение <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.sopr_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1">Итого без НДС <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.total_cost_wo_nds?.toFixed(2)"/>
+          </label>
+        </div>
+        <h4 style="text-align: left; margin-bottom: 2%">Стоимости</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Стоимость перевозки за все т/с <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.base_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Стоимость перевозки за 1т <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.base_pert?.toFixed(2)"/>
+          </label>
+          <label for="f1">Итоговая стоимость <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.total_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1"
+            >Стоимость за 1т <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.pert?.toFixed(2)"/>
+          </label>
+          <label for="f1"
+            >Стоимость за 1т без НДС <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.pert_wo_nds?.toFixed(2)"/>
+          </label>
+          <label for="f1"
+            >Аббревиатура валюты <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.abbr"/>
+          </label>
+        </div>
+        <div
+          style="display: flex; align-items: flex-start; justify-content: start"
+        >
+          <label for="f1"
+            >Код валюты <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.currency_id"/>
+          </label>
+        </div>
+        <div style="display: flex; justify-content: space-around; margin-top: 2%">
+    </div>
+      </div>
+              </b-tab>
+      </b-tabs> -->
+ 
+
+
+    <!-- <b-tab title="Обратный">
+      <b-tabs content-class="mt-3">
+    <b-tab :title="tarif.country_name"  v-for="tarif in backward_result" :key="tarif.id">
+      <div class="pretable">
+        <h4 style="text-align: left; margin-bottom: 2%">Расстоянние и срок</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Страна <br />
+            <input type="text" readonly class="textarea" :value="tarif.country_name">
+          </label>
+          <label for="f1">Тип тарифа <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.calc_type" />
+          </label>
+          <label for="f1">Расстояние <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.distance"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Транзитное расстояние <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.distance_transit"/>
+          </label>
+          <label for="f1">Расстояние по ТРН№4 <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.distance_real"/>
+          </label>
+          <label for="f1">Срок <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.delivery_days"/>
+          </label>
+        </div>
+        <div>
+          <h4 style="text-align: left; margin-bottom: 2%">НДС</h4>
+          <div style="display: flex; align-items: flex-start; justify-content: start;">
+            <label for="f1">НДС на стоимость перевозки <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.base_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на стоимость перевозки за 1т <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.base_pert_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на вагон прикрытия <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.buffer_car_price_nds?.toFixed(2)"/>
+            </label>
+          </div>
+          <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
+            <label for="f1">НДС на локомотив <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.locomotive_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на охрану <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.guard_price_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">НДС на доп. сборы <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.add_dues_nds?.toFixed(2)"/>
+            </label>
+          </div>
+          <div
+            style="display: flex;align-items: flex-start;justify-content: flex-start;">
+            <label for="f1">НДС на сопровождение <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.sopr_cost_nds?.toFixed(2)"/>
+            </label>
+            <label for="f1">суммарный НДС <br />
+              <input type="text" id="f1" class="textarea" readonly :value="tarif.nds?.toFixed(2)"/>
+            </label>
+          </div>
+        </div>
+
+        <h4 style="text-align: left; margin-bottom: 2%">Доп траты</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1">Вагон прикрытия <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.buffer_car_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Локомотив <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.locomotive_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Вагон-дизель-электростанция <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.wagon_diesel_el_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1"
+            >Охрана и дог. охрана <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.guard_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Доп. сборы <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.add_dues?.toFixed(2)"/>
+          </label>
+          <label for="f1">Сопровождение <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.sopr_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1">Итого без НДС <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.total_cost_wo_nds?.toFixed(2)"/>
+          </label>
+        </div>
+        <h4 style="text-align: left; margin-bottom: 2%">Стоимости</h4>
+        <div style="display: flex; align-items: flex-start; justify-content: flex-start">
+          <label for="f1">Стоимость перевозки за все т/с <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.base_price?.toFixed(2)"/>
+          </label>
+          <label for="f1">Стоимость перевозки за 1т <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.base_pert?.toFixed(2)"/>
+          </label>
+          <label for="f1">Итоговая стоимость <br />
+            <input type="text" id="f1" class="textarea" readonly :value="tarif.total_price?.toFixed(2)"/>
+          </label>
+        </div>
+        <div style="display: flex; align-items: flex-start; justify-content: start">
+          <label for="f1"
+            >Стоимость за 1т <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.pert?.toFixed(2)"/>
+          </label>
+          <label for="f1"
+            >Стоимость за 1т без НДС <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.pert_wo_nds?.toFixed(2)"/>
+          </label>
+          <label for="f1"
+            >Аббревиатура валюты <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.abbr"/>
+          </label>
+        </div>
+        <div
+          style="display: flex; align-items: flex-start; justify-content: start"
+        >
+          <label for="f1"
+            >Код валюты <br />
+            <input type="text" id="f1" class="textarea" readonly  :value="tarif.currency_id"/>
+          </label>
+        </div>
+        <div style="display: flex; justify-content: space-around; margin-top: 2%">
+    </div>
+      </div>
+        </b-tab>
+  
+      </b-tabs>
+    </b-tab> -->
+
+
+  <!-- <b-tabs content-class="mt-3">
     <b-tab :title="tarif.country_name"  v-for="tarif in result" :key="tarif.id">
       <div class="pretable">
         <h4 style="text-align: left; margin-bottom: 2%">Расстоянние и срок</h4>
@@ -174,12 +746,12 @@
       </div>
         </b-tab>
   
-  </b-tabs>
-</div>
+  </b-tabs> -->
+      </div>
      
       <button
         class="button Delete railbtn" style="width: 10%; float: right; margin-top: 1% !important;
-          margin-right: 1% !important; " block @click="hideModal">Закрыть
+        margin-right: 1% !important; " block @click="hideModal">Закрыть
       </button>
     </b-modal>
     <div style="display: flex">
@@ -251,10 +823,11 @@
         <button class="button Accept railbtn" @click="Calculation()">
           Рассчитать тариф
         </button>
-        <button @click="showModal()" class="button Request railbtn" v-show="WatchCost">
+        <button @click="showModal()" class="button Request railbtn" >
           Открыть расчет
         </button>
-        <button @click="showModalRoute()" class="button Request railbtn" v-show="WatchCost">
+        <!-- v-show="WatchCost" -->
+        <button @click="showModalRoute()" class="button Request railbtn">
           Открыть маршрут
         </button>
         <br>
@@ -333,7 +906,8 @@ th {
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
-  background: #EFEFEF !important;
+  background: #FFFFFF !important;
+  margin-bottom: 1% !important;
 }
 
 .result {
@@ -362,9 +936,7 @@ import Shipment from "./WPCalculateComponents/Shipment.vue";
 import Wagon from "./WPCalculateComponents/Wagon.vue";
 import Cargo from "./WPCalculateComponents/Cargo.vue";
 import api from "@/api/wagonPark";
-import { getItem } from "@/helpers/persistanseStorage";
 import Loader from "@/components/loader/loader.vue";
-// import ModalRailTariff from "./WPCalculateComponents/ModalRailTariff.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 
 export default {
@@ -391,6 +963,8 @@ export default {
 
       stations: [],
       result: [],
+      backward_result: [],
+      backward_route: [],
       route: "",
       modalData: false,
       WatchCost: false,
@@ -434,13 +1008,13 @@ export default {
         is_empty: this.is_loaded,
         is_international: this.international,
         departure: {
-          station_code: this.departure.code6,
+          station_code: this.departure.code6 ?? null,
         },
         destination: {
-          station_code: this.destination.code6,
+          station_code: this.destination.code6 ?? null,
         },
         reverse: {
-            station_code: this.reverse.code6 ?? ""
+            station_code: this.reverse.code6 ?? null
         },
         shipment: {
           shipment_id: this.shipment.id,
@@ -472,6 +1046,9 @@ export default {
       //     shipment_id: 1,
       //     is_exit_route: "1",
       //     speed: "4",
+      //   },
+      //   reverse: {
+      //       station_code:  '254905'
       //   },
       //   cargo: {
       //     code_etsng: "017035",
@@ -550,10 +1127,14 @@ export default {
       api
         .postRailTarif(data)
         .then((response) => {
-          this.result = response.data.result;
+          // обратный
+          this.backward_result = response.data.result.backward
+          this.backward_route = response.data.route.backward.short
+          console.log(this.backward_route)
+          // прямой
+          this.result = response.data.result.forward;
           this.route = response.data.route.forward.short
-          console.log(this.route)
-          console.log(this.result.length)
+          console.log(response.data)
           this.loader = false;
           this.notifyHead = "Успешно";
           this.notifyMessage = 'Нажмите кнопку "открыть расчет" для просмотра';
