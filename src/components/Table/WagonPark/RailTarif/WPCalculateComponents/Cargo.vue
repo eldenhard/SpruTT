@@ -17,13 +17,12 @@
           <br>                  * Для выбора типа груза кликните по строке
           <br>                  * При выборе кода ЕСТНГ код ГНГ выберется автоматически(и наоборот) </p>
 
-
-              <input
-                type="text"
-                class="textarea"
-                placeholder="введите наименование груза"
-                v-model="search"
-              />
+<div class="inputcontainer">
+  <input type="text" class="textarea" placeholder="введите наименование груза" v-model="search"/>
+    <div class="icon-container" v-if="loaderInput">
+      <i class="loader"></i>
+    </div>
+  </div>
               <div class="shipment-kind__content__table">
                 <table
                   class="table-sm table-bordered"
@@ -57,8 +56,15 @@
               <p class="description">
                 Гармонизированная номенклатура грузов (ГНГ)
               </p>
-
-              <input type="text"  class="textarea"  placeholder="введите наименование груза" v-model="searchGNG"/>
+              <p class="explanation"> * Для поиска груза введите наименование груза
+          <br>                  * Для выбора типа груза кликните по строке
+          <br>                  * При выборе кода ЕСТНГ код ГНГ выберется автоматически(и наоборот) </p>
+              <div class="inputcontainer">
+                <input type="text"  class="textarea"  placeholder="введите наименование груза" v-model="searchGNG"/>
+                <div class="icon-container" v-if="loaderInputGNG">
+                  <i class="loader"></i>
+                </div>
+              </div>
               <div class="shipment-kind__content__table">
                 <table
                   class="table-sm table-bordered"
@@ -123,6 +129,8 @@ export default {
       SearchGNG: [],
       warning: false,
       warningDest: false,
+      loaderInput: false,
+      loaderInputGNG: false,
 
     };
   },
@@ -151,9 +159,11 @@ export default {
 
 this.debouncedWatch = debounce((newValue, oldValue) => {
   if(this.search.length > 1){
+    this.loaderInput = true
     api.getCargoCodeSearch(this.search)
   .then((response) => {
       this.SearchData = response.data.data;
+      this.loaderInput = false
       this.warning = true;
       this.warningDest = false;
   })
@@ -162,9 +172,11 @@ this.debouncedWatch = debounce((newValue, oldValue) => {
 
 this.elementZ = debounce((newValue, oldValue) => {
   if(this.searchGNG.length > 1){
+    this.loaderInputGNG = true
     api.getCargoCodeSearch(this.searchGNG)
   .then((response) => {
       this.SearchGNG = response.data.data;
+      this.loaderInputGNG = false
       this.warningDest = true;
       this.warning = false;
   })
@@ -195,6 +207,60 @@ this.elementZ = debounce((newValue, oldValue) => {
 };
 </script>
 <style scoped>
+
+.inputcontainer {
+  position: relative;
+}
+
+input {
+  width: 100%;
+  font-size: 20px;
+  box-sizing: border-box;
+}
+
+.icon-container {
+  position: absolute;
+  right: 45px;
+  top: calc(50% - 10px);
+}
+.loader {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  animation: around 5.4s infinite;
+}
+
+@keyframes around {
+  0% {
+    transform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(360deg)
+  }
+}
+
+.loader::after, .loader::before {
+  content: "";
+  background: white;
+  position: absolute;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  border-width: 2px;
+  border-color: #646464 #646464 transparent transparent;
+  border-style: solid;
+  border-radius: 20px;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  animation: around 0.7s ease-in-out infinite;
+}
+
+.loader::after {
+  animation: around 0.7s ease-in-out 0.1s infinite;
+  background: transparent;
+}
 .explanation {
   font-size: 13px;
   color: grey;

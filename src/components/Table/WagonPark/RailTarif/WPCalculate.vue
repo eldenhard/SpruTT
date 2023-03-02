@@ -194,6 +194,7 @@
                 <Stations
                   @destination="getDestinationStation"
                   @departure="getDepartureStation"
+                  @reverse="getReverseStation"
                   @is_loaded="getIsLoaded"
                   @international="getInternational"
                   @on_date="getDate"
@@ -230,6 +231,8 @@
         <p>Дата: <span>{{ date }}</span></p>
         <p>Ст. отправ: <span>{{ departure.departure }}</span></p>
         <p>Ст. назнач: <span>{{ destination.destination }}</span></p>
+        <p>Ст. возврата: <span>{{ reverse.reverse }}</span></p>
+
         <p>Груж/Порожний:<span>{{ translateBoolIsLoaded(is_loaded) }}</span></p>
         <p> Международный<span>{{ translateInternational(international) }}</span></p>
         <!-- Отправка -->
@@ -338,6 +341,7 @@ th {
   height: 90vh;
   width: 20%;
   text-align: center;
+  padding-top: 5% !important;
 }
 
 .result p {
@@ -370,6 +374,7 @@ export default {
     return {
       destination: "",
       departure: "",
+      reverse: "",
       is_loaded: "",
       international: "",
       shipment: "",
@@ -401,11 +406,7 @@ export default {
     };
   },
  
-  mounted() {
-    this.loader = true;
-    setTimeout(() => (this.loader = false), 4000);
-    this.stations = getItem("station");
-  },
+
   methods: {
     showModal() {
       this.$refs["modalRailTariff"].show();
@@ -436,7 +437,10 @@ export default {
           station_code: this.departure.code6,
         },
         destination: {
-          station_code: this.getCodeStation(this.destination.destination),
+          station_code: this.destination.code6,
+        },
+        reverse: {
+            station_code: this.reverse.code6 ?? ""
         },
         shipment: {
           shipment_id: this.shipment.id,
@@ -592,6 +596,9 @@ export default {
     },
     getDepartureStation(data) {
       this.departure = data;
+    },
+    getReverseStation(data){
+      this.reverse = data
     },
     getIsLoaded(data) {
       this.is_loaded = data;
