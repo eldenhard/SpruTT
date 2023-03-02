@@ -752,7 +752,7 @@
      
       <button
         class="button Delete railbtn" style="width: 10%; float: right; margin-top: 1% !important;
-        margin-right: 1% !important; " block @click="hideModal">Закрыть
+      margin-right: 1% !important; " block @click="hideModal">Закрыть
       </button>
     </b-modal>
     <div style="display: flex">
@@ -810,7 +810,7 @@
         <p> Международный<span>{{ translateInternational(international) }}</span></p>
         <!-- Отправка -->
         <p>Отправка: <span>{{ shipment.shipment }}</span></p>
-        <p> Скорость: <span>{{ speed }} км/ч</span></p>
+        <p> Скорость: <span>{{ TranslateSpeed(speed) }}</span></p>
         <p>Вид маршрута: <span>{{ getIsExitRouteById(is_exit_route) }}</span></p>
         <!-- Груз -->
         <p>ЕСТНГ: <span>{{ estng.estng }}</span></p>
@@ -1002,6 +1002,9 @@ export default {
     hideModalRoute(){
       this.$refs["modalRoute"].hide();
 
+    },
+    TranslateSpeed(a){
+      return a==1 ? 'Большая': 'Грузовая'
     },
     Calculation() {
       this.loader = true;

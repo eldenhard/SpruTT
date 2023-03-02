@@ -36,7 +36,15 @@
       </div>
 
       <div class="speed">
-        <label for="speed">Скорость км/ч
+        <div>
+          <label for="">Скорость</label> <br>
+          <input type="radio" id="load" value="2"  v-model="speed"><label for="load">&nbsp;Грузовая</label>
+        <br>
+        <input type="radio" id="big" value="1" v-model="speed"><label for="big">&nbsp;Большая</label>
+        </div>
+       
+
+        <!-- <label for="speed">Скорость км/ч
           <br>
           <input
           id="speed"
@@ -47,9 +55,9 @@
           v-model="speed"
           min="0"
         />
-        </label>
-       
-<label for="seleft">Вид маршрута <br />
+        </label> -->
+       <div>
+        <label for="seleft">Вид маршрута <br />
   <select v-model="is_exit_route" id="seleft">
           <option value="" disabled selected>Вид маршрута</option>
           <option value="0">Немаршрутная</option>
@@ -63,6 +71,8 @@
           </option>
         </select>
 </label>
+       </div>
+
        
         <div></div>
       </div>
@@ -246,7 +256,7 @@ label {
 .speed {
   display: flex;
   justify-content: space-around;
-  padding: 1% 0 1% 8% !important;
+  padding: 1% 0 1% 15% !important;
   width: 95%;
   position: relative;
   left: 50%;
