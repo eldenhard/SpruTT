@@ -1159,9 +1159,9 @@ export default {
           this.notifyMessage = "По данным невозможно расчитать тариф";
           this.notifyClass = "wrapper-error";
           this.showNotify = true;
-          setTimeout(() => (this.showNotify = false), 1500);
+          setTimeout(() => (this.showNotify = false), 1000);
           // alert(error.response.data)
-          setTimeout(() => alert(error.response.data), 1500);  
+          setTimeout(() => alert(error.response.data), 1100);  
         });
     },
     getCodeStation(station) {
