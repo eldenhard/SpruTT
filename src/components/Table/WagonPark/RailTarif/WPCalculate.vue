@@ -1,6 +1,7 @@
 <template>
   <div>
     <Loader :loader="loader" />
+
     <b-modal
       ref="modalRoute"
       size="lg"
@@ -938,7 +939,6 @@ import Cargo from "./WPCalculateComponents/Cargo.vue";
 import api from "@/api/wagonPark";
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
-
 export default {
   name: "WPCalculate",
   components: { Stations, Shipment, Wagon, Cargo, Loader, Notifications },
@@ -977,6 +977,8 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+
+      alert: false,
     };
   },
  
@@ -1158,6 +1160,8 @@ export default {
           this.notifyClass = "wrapper-error";
           this.showNotify = true;
           setTimeout(() => (this.showNotify = false), 1500);
+          // alert(error.response.data)
+          setTimeout(() => alert(error.response.data), 1500);  
         });
     },
     getCodeStation(station) {

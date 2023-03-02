@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="mainModalProgressBar" v-if="progressBar">
+    <!-- <div class="mainModalProgressBar" v-if="progressBar">
       <div
         style="
           width: 50%;
@@ -47,7 +47,7 @@
           :label="`${((value / max) * 100).toFixed(2)}%`"
         ></b-progress>
       </div>
-    </div>
+    </div> -->
 
     <Notifications
       :show="showNotify"
@@ -96,20 +96,6 @@ export default {
               this.notifyClass = "wrapper-success";
               // location.reload();
               document.location.href = '/'
-             
-                this.progressBar = true;
-                let interval = setInterval(() => {
-                  if (this.value <= this.max) {
-                    this.value += 0.26;
-                  } else {
-                    clearInterval(interval);
-                    this.progressBar = false;
-                    this.showNotify = true;
-                    this.notifyHead = "Успешно";
-                    this.notifyMessage = "Все данные загружены";
-                    this.notifyClass = "wrapper-success";
-                  }
-                }, 100);
 
 
               // document.location.href = '/'
