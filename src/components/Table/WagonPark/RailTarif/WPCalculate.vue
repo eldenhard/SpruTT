@@ -437,7 +437,7 @@
         </button>
         <br>
         <div class="resultCost" v-show="WatchCost">
-         <h4 class="totalAll">Итоговая стоимость: {{ split_number(cost) }} руб</h4>  
+         <h4 class="totalAll">Итоговая стоимость: {{ split_number(cost) }}</h4>  
             <br />
           <h4  class="totalAll">Кол-во дней: {{ days }}</h4> 
             <br />
