@@ -15,18 +15,14 @@
               </p>
               <p class="explanation"> * Для поиска груза введите наименование груза
           <br>                  * Для выбора типа груза кликните по строке
-          <br>                  * При выборе кода ЕСТНГ код ГНГ выберется автоматически(и наоборот) <br></p>
-              <div style="text-align: right; margin-right: 3%;">
-                <input type="checkbox" id="dangerous" v-model="dangerousCargo"/>
-                <label for="dangerous">&nbsp;Опасный груз</label>
-              </div>
+          <br>                  * При выборе кода ЕСТНГ код ГНГ выберется автоматически(и наоборот) </p>
 
-              <input
-                type="text"
-                class="textarea"
-                placeholder="введите наименование груза"
-                v-model="search"
-              />
+<div class="inputcontainer">
+  <input type="text" class="textarea" placeholder="введите наименование груза" v-model="search"/>
+    <div class="icon-container" v-if="loaderInput">
+      <i class="loader"></i>
+    </div>
+  </div>
               <div class="shipment-kind__content__table">
                 <table
                   class="table-sm table-bordered"
@@ -39,12 +35,11 @@
                       <th scope="col">Тарифный класс</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <div class="lds-dual-ring" v-if="loaderTable"></div>
+                  <tbody v-if="warning">
                     <tr
                       v-for="information in this.SearchData"
                       :key="information.id"
-                      @click="ESTNG(information.code6, information.code)"
+                      @click="ESTNG(information.code6, information.code)" 
                     >
                       <td v-show="code">{{ information.code }}</td>
                       <td>{{ information.code6 }}</td>
@@ -61,16 +56,15 @@
               <p class="description">
                 Гармонизированная номенклатура грузов (ГНГ)
               </p>
-              <div style="text-align: right; margin-right: 3%;">
-                <input type="checkbox" id="dangerousGNG" v-model="dangerousCargoGNG"/>
-                <label for="dangerousGNG">&nbsp;Опасный груз</label>
+              <p class="explanation"> * Для поиска груза введите наименование груза
+          <br>                  * Для выбора типа груза кликните по строке
+          <br>                  * При выборе кода ЕСТНГ код ГНГ выберется автоматически(и наоборот) </p>
+              <div class="inputcontainer">
+                <input type="text"  class="textarea"  placeholder="введите наименование груза" v-model="searchGNG"/>
+                <div class="icon-container" v-if="loaderInputGNG">
+                  <i class="loader"></i>
+                </div>
               </div>
-              <input
-                type="text"
-                class="textarea"
-                placeholder="введите наименование груза"
-                v-model="searchGNG"
-              />
               <div class="shipment-kind__content__table">
                 <table
                   class="table-sm table-bordered"
@@ -82,13 +76,13 @@
                       <th scope="col">Наименование</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="warningDest">
                     <tr
                       v-for="information in this.SearchGNG"
                       :key="information.id"
                       @click="GNG(information.code, information.code6)"
                     >
-                    <td v-show="code6">{{ information.code6 }}</td>
+                      <td v-show="code6">{{ information.code6 }}</td>
                       <td>{{ information.code }}</td>
                       <td>{{ information.name }}</td>
                     </tr>
@@ -106,14 +100,27 @@
           class="textareaTon"
           style="width: 15%; margin-left: 3%; margin-top: 2% !important;"
           v-model="weight"
+          min="0"
+
         />
       </div>
     </div>
+    <Notifications
+        :show="showNotify"
+        :header="notifyHead"
+        :message="notifyMessage"
+        :block-class="notifyClass"
+        id="notif"
+      />
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
+import debounce from "lodash.debounce";
+import api from "@/api/wagonPark";
+import Notifications from "@/components/notifications/Notifications.vue";
+
 export default {
   name: "cargo",
   data() {
@@ -125,13 +132,24 @@ export default {
       gng: "",
       loader: false,
       loaderTable: false,
-      dangerousCargo: false,
-      dangerousCargoGNG: false,
       code: false,
-      code6: false
+      code6: false,
+      elementZ: '',
+      SearchData: [],
+      SearchGNG: [],
+      warning: false,
+      warningDest: false,
+      loaderInput: false,
+      loaderInputGNG: false,
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
+      lengthRoute: "",
+
     };
   },
-  components: { Loader },
+  components: { Loader, Notifications },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -139,29 +157,56 @@ export default {
       cargo_code: (state) => state.cargo_code,
     }),
 
-    SearchData() {
-      if (this.dangerousCargo == false) {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.search) !== -1);
-      } else {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.indexOf(this.search) !== -1);
-      }
-    },
-    SearchGNG() {
-      if (this.dangerousCargoGNG == false) {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.name.indexOf(this.searchGNG) !== -1);
-      } else {
-        return this.$store.state.cargo_code.cargo_code.filter((item) => item.is_dangerous && item.name.indexOf(this.searchGNG) !== -1);
-      }
-    },
+  
   },
   watch: {
     weight() {
       this.$emit("weight", this.weight);
     },
+    search(...args) {
+      this.debouncedWatch(...args);
+    },
+    searchGNG(...args) {
+      this.elementZ(...args);
+    },
   },
+  created() {
 
+this.debouncedWatch = debounce((newValue, oldValue) => {
+  if(this.search.length > 1){
+    this.loaderInput = true
+    api.getCargoCodeSearch(this.search)
+  .then((response) => {
+      this.SearchData = response.data.data;
+      this.loaderInput = false
+      this.warning = true;
+      this.warningDest = false;
+  })
+} 
+}, 300),
+
+this.elementZ = debounce((newValue, oldValue) => {
+  if(this.searchGNG.length > 1){
+    this.loaderInputGNG = true
+    api.getCargoCodeSearch(this.searchGNG)
+  .then((response) => {
+      this.SearchGNG = response.data.data;
+      this.loaderInputGNG = false
+      this.warningDest = true;
+      this.warning = false;
+  })
+}
+}, 300)
+
+},
   methods: {
+
     ESTNG(code6, code) {
+      this.notifyHead = "Успешно";
+        this.notifyMessage = "Груз выбран и добавлен";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
       this.estng = code6;
       this.gng = code
       this.$emit("estng", {
@@ -170,6 +215,11 @@ export default {
       });
     },
     GNG(code, code6) {
+      this.notifyHead = "Успешно";
+        this.notifyMessage = "Груз выбран и добавлен";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
       this.gng = code;
       this.estng = code6;
       this.$emit("gng", {
@@ -182,6 +232,59 @@ export default {
 };
 </script>
 <style scoped>
+
+.inputcontainer {
+  position: relative;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.icon-container {
+  position: absolute;
+  right: 45px;
+  top: calc(50% - 10px);
+}
+.loader {
+  position: relative;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  animation: around 5.4s infinite;
+}
+
+@keyframes around {
+  0% {
+    transform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(360deg)
+  }
+}
+
+.loader::after, .loader::before {
+  content: "";
+  background: white;
+  position: absolute;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  border-width: 2px;
+  border-color: #646464 #646464 transparent transparent;
+  border-style: solid;
+  border-radius: 20px;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  animation: around 0.7s ease-in-out infinite;
+}
+
+.loader::after {
+  animation: around 0.7s ease-in-out 0.1s infinite;
+  background: transparent;
+}
 .explanation {
   font-size: 13px;
   color: grey;

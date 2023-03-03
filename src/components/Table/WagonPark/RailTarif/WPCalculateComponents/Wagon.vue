@@ -8,7 +8,7 @@
       <hr />
     </div>
     <div class="shipment-kind__content">
-      <input type="text" id="search" class="textarea" style="width: 100% !important" v-model="search" placeholder="Введите тип вагона (полувагон)" />
+      <input type="text" id="search" class="textarea" style="width: 100% !important" v-on:keyup="handleInputOnKeyup" v-model="search" placeholder="Введите тип вагона (полувагон)" />
       <br />
     </div>
     <div class="shipment-kind__content__input">
@@ -19,16 +19,29 @@
       </div>
     </div>
     <div class="expand-info">
-      <input type="number" placeholder="Количество" class="textareaS" v-model="amount" />
-      <select name="" id="" class="textareaS" v-model="belong">
+      <label for="amountWagon">Количество <br />
+        <input id="amountWagon" type="number" placeholder="Количество" class="textarea" v-model="amount" min="0" style="width: 100%"/>
+      </label>
+
+<label for="belong">Принадлежность <br />
+  <select name="" id="belong" class="textarea" v-model="belong" style="width: 100%">
         <option value="" disabled selected>Принадлежность</option>
         <option value="1">Инвентарный парк</option>
         <option value="2">Собственный</option>
         <option value="3">Арендованный</option>
         <option value="7">Привлеченный ОАО "РЖД"</option>
       </select>
+</label>
+   
     </div>
   </div>
+  <Notifications
+        :show="showNotify"
+        :header="notifyHead"
+        :message="notifyMessage"
+        :block-class="notifyClass"
+        id="notif"
+      />
   </div>
 
 </template>
@@ -37,6 +50,7 @@
 import { mapState } from "vuex";
 import api from "@/api/wagonPark";
 import Loader from "@/components/loader/loader.vue";
+import Notifications from "@/components/notifications/Notifications.vue";
 
 export default {
   data() {
@@ -49,20 +63,30 @@ export default {
       flame: "",
       amount: "",
       loader: false,
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
+      lengthRoute: "",
     };
   },
-  components: { Loader },
+  components: { Loader, Notifications },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
     }),
     getCurrentWagonType() {
-      return (this.wagon_type.filter(item => item.name.indexOf(this.search) !== -1))
+      return (this.wagon_type.filter(item => item.name.toLowerCase().indexOf(this.search) !== -1))
     },
   },
   watch: {
     wagonType() {
+      this.notifyHead = "Успешно";
+        this.notifyMessage = "Вагон выбран и добавлен";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
       this.$emit('wagon', {
         wagon_id: this.getWagonTypeId(this.wagonType),
         wagon_type: this.getWagonById(this.wagonType)
@@ -86,7 +110,9 @@ export default {
     })
   },
   methods: {
-
+    handleInputOnKeyup() {
+      this.search = this.search.toLowerCase();
+    },
     getWagonById(data) {
       let searchWagon = data
       let wagon = this.wagon_type.find(item => item.id === searchWagon).name
@@ -104,6 +130,10 @@ export default {
   height: 50px;
   font-size: 17px;
   display: block;
+}
+label {
+  color: grey;
+  font-size: 1rem;
 }
 .shipment-kind__content__input{
   min-height: 25vh;

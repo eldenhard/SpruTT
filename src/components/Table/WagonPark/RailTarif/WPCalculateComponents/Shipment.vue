@@ -21,7 +21,7 @@
           </button>
         </div>
         <div class="shipment-kind__content__rightBlock">
-          <div class="option" v-for="kind in kind_shipment" :key="kind.id">
+          <div class="option" v-for="kind in kind_shipment" :key="kind.id" style="display: flex; align-items: baseline;">
             <input
               type="radio"
               :id="kind.id"
@@ -36,15 +36,29 @@
       </div>
 
       <div class="speed">
-        <input
+        <div>
+          <label for="">Скорость</label> <br>
+          <input type="radio" id="load" value="2"  v-model="speed"><label for="load">&nbsp;Грузовая</label>
+        <br>
+        <input type="radio" id="big" value="1" v-model="speed"><label for="big">&nbsp;Большая</label>
+        </div>
+       
+
+        <!-- <label for="speed">Скорость км/ч
+          <br>
+          <input
+          id="speed"
           type="number"
           class="textarea"
-          style="width: 50%"
+          style="width: 100%"
           placeholder="Скорость км/ч"
           v-model="speed"
+          min="0"
         />
-
-        <select v-model="is_exit_route">
+        </label> -->
+       <div>
+        <label for="seleft">Вид маршрута <br />
+  <select v-model="is_exit_route" id="seleft">
           <option value="" disabled selected>Вид маршрута</option>
           <option value="0">Немаршрутная</option>
           <option value="1">Прямой отправительский маршрут</option>
@@ -56,9 +70,20 @@
             Отдельным поездом по спец. разработ. расписанию
           </option>
         </select>
+</label>
+       </div>
+
+       
         <div></div>
       </div>
     </div>
+    <Notifications
+        :show="showNotify"
+        :header="notifyHead"
+        :message="notifyMessage"
+        :block-class="notifyClass"
+        id="notif"
+      />
   </div>
 </template>
 
@@ -67,6 +92,7 @@
 import { mapState } from "vuex";
 import api from "@/api/wagonPark";
 import Loader from "@/components/loader/loader.vue";
+import Notifications from "@/components/notifications/Notifications.vue";
 
 export default {
   data() {
@@ -85,9 +111,14 @@ export default {
       is_exit_route: "",
       speed: "",
       loader: false,
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
+      lengthRoute: "",
     };
   },
-  components: { Loader },
+  components: { Loader, Notifications },
 
   watch: {
     speed() {
@@ -110,9 +141,11 @@ export default {
     }),
   },
   mounted() {
+    this.loader = true
     api
       .getDataShipment()
       .then((response) => {
+        this.loader = false
         let data = response.data.data;
         this.data = response.data.data;
         let array = [];
@@ -131,7 +164,7 @@ export default {
         this.result4 = data.filter((item) => item.category == "Собственные поездные формирования");
         this.result5 = data.filter((item) => item.category == "Контрейлерная перевозка");
         this.result6 = data.filter((item) => item.category == "Другие виды");
-       
+
       })
       .catch((error) => {
         console.log(error);
@@ -162,6 +195,10 @@ export default {
 };
 </script>
 <style scoped>
+label {
+  color: grey;
+  font-size: 1rem;
+}
 .textarea {
   background: white;
   border: 1px solid grey !important;
@@ -183,7 +220,8 @@ export default {
   margin-left: 1%;
 }
 .radio-right {
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 22px;
   font-weight: 400;
   font-family: "Montserrat", sans-serif;
 }
@@ -213,12 +251,12 @@ export default {
   transform: translate(-50%, 0);
   border: 1px solid #e3e5e7;
   border-radius: 5px;
-  margin-bottom: 5%;
+  margin-bottom: 2%;
 }
 .speed {
   display: flex;
   justify-content: space-around;
-  padding: 2% 0 2% 2% !important;
+  padding: 1% 0 1% 15% !important;
   width: 95%;
   position: relative;
   left: 50%;
@@ -226,10 +264,10 @@ export default {
   border: 1px solid #eff0f2;
 }
 .shipment-kind__content__leftBlock {
-  width: 20%;
+  width: 17%;
 }
 .shipment-kind__content__rightBlock {
-  width: 80%;
+  width: 83%;
   max-height: 25vh;
   min-height: 25vh;
   overflow: auto;

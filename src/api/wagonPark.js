@@ -26,7 +26,9 @@ const getAllStation = (url) => {
     return api.get(`${url}`)
 }
 
-
+const getCurrentStation = (data) => {
+    return api.get(`${resource}/stations/?search=`+ data)
+}
 
 // получить вагоны для селекта в фильтре 
 const getWagonType = () => {
@@ -90,7 +92,9 @@ const getCargoCode = (url) => {
 const getCargoCode1 = () => {
     return api.get(`${resource}/cargo`)
 }
-
+const getCargoCodeSearch = (data) => {
+    return api.get(`${resource}/cargo/?search=` + data)
+}
 // Получить послденю информацию по вагону
 const getCurrentLastInfoWagon = (data) => {
     return api.get(`${resource}/wagons/${data}/get-latest-info/`)
@@ -143,6 +147,8 @@ export default {
     postShipmentList,
     getRepairWagon,
     getReportRepairData,
+    getCurrentStation,
+    getCargoCodeSearch,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

@@ -198,8 +198,7 @@
     <button
       class="Accept"
       @click="getCounterparties()"
-      style="
-        width: 100%;
+      style="width: 100%;
         position: relative;
         left: 50%;
         transform: translate(-50%, 0);
@@ -220,11 +219,7 @@
     >
       Добавить контрагента
     </button>
-
-    <div
-      style="
-        width: 100%;
-        overflow-x: auto;
+    <div style="width: 100%; overflow-x: auto;
         overflow-y: auto;
         position: relative;
         left: 50%;
@@ -559,6 +554,7 @@ export default {
         });
     },
   },
+
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
