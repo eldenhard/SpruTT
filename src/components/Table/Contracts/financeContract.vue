@@ -15,8 +15,7 @@
     <button
       class="Accept"
       @click="getFinanceContract()"
-      style="
-        width: 100%;
+      style="width: 100%;
         position: relative;
         left: 50%;
         transform: translate(-50%, 0);
@@ -27,6 +26,13 @@
     <br /><br />
     <p class="amount">всего записей: {{ total_objects }}</p>
     <p class="amount">всего на странице: {{ amount }}</p>
+    <button
+      class="Cancel"
+      style="border-top-left-radius: 10px; border-top-right-radius: 10px"
+      @click="showModal()"
+    >
+      Добавить контрагента
+    </button>
     <div
       style="
         width: 100%;
@@ -79,7 +85,7 @@
 
             <!-- <template v-if="countAnnexes"> -->
 
-            <template v-for="(el, idx) in countAnnexes">
+            <div v-for="(el, idx) in countAnnexes" :key="el">
               <th :key="idx" style="background: wheat !important">
                 Тип приложения
               </th>
@@ -88,7 +94,7 @@
               <th style="background: wheat !important">Примечание</th>
               <th style="background: wheat !important">Скан-копия</th>
               <th style="background: wheat !important">Номер договора</th>
-            </template>
+            </div>
             <!-- </template> -->
           </tr>
         </thead>
@@ -180,7 +186,7 @@
             </td>
             <td v-else>—</td>
 
-            <template v-for="f in finance.annexes">
+            <div v-for="f in finance.annexes" :key="f">
               <td>{{ f.doc_type }}</td>
               <td>{{ f.number }}</td>
               <td style="font-size: 15px; text-align: center">
@@ -193,7 +199,7 @@
                 /></a>
               </td>
               <td>{{ f.contract }}</td>
-            </template>
+            </div>
           </tr>
         </tbody>
       </table>

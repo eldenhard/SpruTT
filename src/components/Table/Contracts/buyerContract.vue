@@ -24,7 +24,13 @@
     <br /><br />
     <p class="amount">всего записей: {{ total_objects }}</p>
     <p class="amount">всего на странице: {{ amount }}</p>
-
+    <button
+      class="Cancel"
+      style="border-top-left-radius: 10px; border-top-right-radius: 10px"
+      @click="showModal()"
+    >
+      Добавить контрагента
+    </button>
     <div
       style="
         width: 100%;
@@ -68,14 +74,14 @@
             <th>Руководитель</th>
             <th>Телефон</th>
             <th>Группа</th>
-            <template v-for="(el, idx) in countAnnexes">
+            <div v-for="(el, idx) in countAnnexes" :key="el">
               <th :key="idx">Тип приложения</th>
               <th>Номер приложения</th>
               <th>Дата</th>
               <th>Примечание</th>
               <th>Скан-копия</th>
               <th>Номер договора</th>
-            </template>
+            </div>
           </tr>
         </thead>
         <tbody>
@@ -166,7 +172,7 @@
             </td>
             <td v-else>—</td>
 
-            <template v-for="f in buyer.annexes">
+            <div v-for="f in buyer.annexes" :key="f">
               <td>{{ f.doc_type }}</td>
               <td>{{ f.number }}</td>
               <td style="font-size: 15px; text-align: center">
@@ -179,7 +185,7 @@
                 /></a>
               </td>
               <td>{{ f.contract }}</td>
-            </template>
+            </div>
           </tr>
         </tbody>
       </table>

@@ -8,7 +8,7 @@
         Вы не выбрали ещё ни одной таблицы
       </p>
       <b-card no-body class="leftTable">
-        <b-tabs card>
+        <b-tabs card v-model="tabActive" @changed="onTabChanged">
           <b-tab v-for="i in tabs" :key="i.id">
             <template #title>
               <span>Таблица {{ i.name }}</span>
@@ -73,6 +73,7 @@ export default {
     return {
       tabs: [],
       counter: 1,
+      tabActive: 0,
     };
   },
   methods: {
@@ -83,6 +84,9 @@ export default {
         }
       }
       localStorage.setItem("tabs", JSON.stringify([...this.tabs]));
+    },
+    onTabChanged() {
+      this.tabActive = this.tabs.length - 1;
     },
   },
   mounted() {
