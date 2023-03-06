@@ -7,6 +7,15 @@
       <h4 class="header-text">Род подвижного состава</h4>
       <hr />
     </div>
+    <p class="explanation">
+      * Устанавливаемый в расчет вагон должен соответствовать заданному ранее виду отправки. <br>
+      * Принадлежность влияет на стоимость перевозки. Она подразделяется на: <br>
+      &nbsp; &nbsp;- <span style="font-weight: 500;">инвентарный парк </span> - вагоны, принадлежащие железной дороге;<br>
+      &nbsp; &nbsp;- <span style="font-weight: 500;">собственный</span> - вагоны, принадлежащие собственникам;<br>
+      &nbsp; &nbsp;- <span style="font-weight: 500;">привлеченный ОАО "РЖД"</span> - вагоны, привлеченные ОАО "РЖД" у других собственников (параметр становится доступным только при экспортно-импортной и внутренней перевозке по территории России грузов или контейнеров в полувагонах, привлеченных у ОАО "ФГК");<br>
+      &nbsp; &nbsp;- <span style="font-weight: 500;">арендованный у перевозчика</span> - вагоны, арендованные у железной дороги (правила расчета аналогичны собственным вагонам)
+
+    </p>
     <div class="shipment-kind__content">
       <input type="text" id="search" class="textarea" style="width: 100% !important" v-on:keyup="handleInputOnKeyup" v-model="search" placeholder="Введите тип вагона (полувагон)" />
       <br />
@@ -126,6 +135,12 @@ export default {
 };
 </script>
 <style scoped>
+.explanation {
+  font-size: 13px;
+  color: grey;
+  text-align: left;
+  padding: 0 0 2% 4%;
+}
 .option {
   height: 50px;
   font-size: 17px;
@@ -191,12 +206,11 @@ button:hover {
 }
 
 .shipment-kind {
-  margin-top: 8% !important;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
   min-height: 55vh;
-  max-height: 55vh;
+  max-height: 85vh;
   width: 90%;
   border: 2px solid #1e86f5;
   border-radius: 10px;

@@ -31,6 +31,9 @@
             <b-card-text v-if="i.name === 'Ремонты'">
               <WagonRepair />
             </b-card-text>
+            <div v-if="i.name === 'Сотрудники'">
+                <StaffTable />
+              </div>
 
             <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
               <ReportAbandoned />
@@ -49,7 +52,9 @@ import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
 import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
 import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
 import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
-import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue"
+import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
+import StaffTable from "@/components/Table/StaffTable.vue";
+
 export default {
   name: "WagonPark",
   components: {
@@ -60,6 +65,7 @@ export default {
     WPCalculate,
     WagonRepair,
     BCH,
+    StaffTable,
   },
   data() {
     return {

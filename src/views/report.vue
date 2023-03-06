@@ -68,6 +68,7 @@
                       {{ staf.first_name }}
                       {{ staf.last_name }}
                     </option>
+
                   </select>
                   <br />
                   <label for="staff" class="label" style="background: white !important" >Выберите сотрудника</label>

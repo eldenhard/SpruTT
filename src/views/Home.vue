@@ -4,12 +4,12 @@
   <b-card no-body style="margin-top: 1%">
     <b-tabs pills card vertical style="background: white">
       <b-container class="bv-example-row">
-            <b-tab title="Справочник контрагенты" active>
+            <b-tab title="Справочник контрагенты">
                 <b-card-text>
                     <partnerTable/>
               </b-card-text>
               </b-tab>
-            <b-tab title="Справочник договора">
+            <b-tab title="Справочник договора" active>
               <b-card-text>
                 <contractTable/>
               </b-card-text>
