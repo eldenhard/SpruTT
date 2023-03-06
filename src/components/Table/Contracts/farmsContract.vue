@@ -18,6 +18,7 @@
         transform: translate(-50%, 0);
       "
     >
+   
       Запросить общехозяйственные договора
     </button>
     <br /><br />
@@ -82,9 +83,7 @@
             <th style="background: burlywood !important">Телефон</th>
             <th style="background: burlywood !important">Группа</th>
             <template v-for="(el, idx) in countAnnexes">
-              <th :key="idx" style="background: wheat !important">
-                Тип приложения
-              </th>
+              <th  :key="idx" style="background: wheat !important">Тип приложения</th>
               <th style="background: wheat !important">Номер приложения</th>
               <th style="background: wheat !important">Дата</th>
               <th style="background: wheat !important">Примечание</th>
@@ -94,6 +93,7 @@
           </tr>
         </thead>
         <tbody>
+   
           <tr v-for="farm in farmDirecory" :key="farm.id">
             <td>{{ farm.number }}</td>
             <td>{{ farm.company_status }}</td>
@@ -114,66 +114,18 @@
             </td>
             <td>{{ farm.category }}</td>
             <td>{{ farm.comment }}</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ farm.counterparty.work_name }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ farm.counterparty.short_name }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ farm.counterparty.full_name }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ farm.counterparty.els }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ farm.counterparty.ogrn }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ farm.counterparty.inn }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ farm.counterparty.kpp }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ farm.counterparty.legal_address }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ new Date(farm.counterparty.created_at).toLocaleString() }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ farm.counterparty.manager }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ farm.counterparty.phone }}
-            </td>
-            <td v-else>—</td>
-
-            <td v-if="farm.counterparty != null">
-              {{ getGroupName(farm.counterparty.group) }}
-            </td>
-            <td v-else>—</td>
+            <td>{{ farm.counterparty.work_name }}</td>
+            <td>{{ farm.counterparty.short_name }}</td>
+            <td>{{ farm.counterparty.full_name }}</td>
+            <td>{{ farm.counterparty.els }}</td>
+            <td>{{ farm.counterparty.ogrn }}</td>
+            <td>{{ farm.counterparty.inn }}</td>
+            <td>{{ farm.counterparty.kpp }}</td>
+            <td>{{ farm.counterparty.legal_address }}</td>
+            <td>{{ new Date(farm.counterparty.created_at).toLocaleString() }}</td>
+            <td>{{ farm.counterparty.manager }}</td>
+            <td>{{ farm.counterparty.phone }}</td>
+            <td>{{ getGroupName(farm.counterparty.group) }}</td>
 
             <template v-for="f in farm.annexes">
               <td>{{ f.doc_type }}</td>
@@ -191,7 +143,7 @@
         </tbody>
       </table>
     </div>
-
+<!--  -->
     <!-- <div
       style="width: 100%;
         overflow-x: auto;
