@@ -226,7 +226,6 @@ label {
   font-family: "Montserrat", sans-serif;
 }
 .shipment-kind {
-  margin-top: 8% !important;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);

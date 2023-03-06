@@ -520,7 +520,6 @@ th {
   height: 90vh;
   width: 20%;
   text-align: center;
-  padding-top: 5% !important;
 }
 
 .result p {

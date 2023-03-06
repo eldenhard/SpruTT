@@ -181,10 +181,11 @@ li:hover {
 .check-block {
   display: flex;
   justify-content: space-around;
+  padding-bottom: 2%;
 }
 
 .shipment-kind {
-  margin-top: 8% !important;
+
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
