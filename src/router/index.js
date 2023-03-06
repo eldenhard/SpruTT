@@ -23,7 +23,6 @@ export default new Router({
       path: '/wagonpark',
       component: wagonpark,
     },
-
     {
       path: '/directory',
       component: home
