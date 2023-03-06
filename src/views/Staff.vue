@@ -20,6 +20,25 @@
                 <StaffTable />
               </div>
             </b-card-text>
+            <b-card-text v-if="i.name === 'Вагоны'">
+              <component :is="wt"></component>
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Расчет'">
+              <WPCalculate />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Отправки БЧ'">
+              <BCH />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Телеграммы'">
+              <WagonTableTelegram />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Ремонты'">
+              <WagonRepair />
+            </b-card-text>
+
+            <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
+              <ReportAbandoned />
+            </b-card-text>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -30,10 +49,26 @@
 
 <script>
 import StaffNavbar from "@/components/Navbar/StaffNavbar.vue";
+import WagonNavbar from "../components/Navbar/WagonNavbar.vue";
+import WPMainData from "../components/Table/WagonPark/WPMainData.vue";
+import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
+import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
+import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
+import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
+import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
 import StaffTable from "@/components/Table/StaffTable.vue";
 export default {
   name: "Staff",
-  components: { StaffNavbar, StaffTable },
+  components: { 
+    StaffNavbar,
+    StaffTable,
+    WPMainData,
+    ReportAbandoned,
+    WagonTableTelegram,
+    WPCalculate,
+    WagonRepair,
+    BCH, 
+  },
   data() {
     return {
       tabs: [],
