@@ -26,9 +26,7 @@
     <p class="amount">всего на странице: {{ amount }}</p>
     <button
       class="Cancel"
-      style="border-top-left-radius: 10px; border-top-right-radius: 10px"
-    
-    >
+      style="border-top-left-radius: 10px; border-top-right-radius: 10px">
       Добавить договор
     </button>
 
@@ -44,57 +42,36 @@
         max-height: 60vh;
       "
     >
-      <table
-        class="table table-sm table-bordered table-hover"
-        style="margin: 0; border: 1px solid black"
-      >
-        <thead class="thead-light" style="background: #e9ecef !important">
-          <tr>
-            <th>Номер договора</th>
-            <th>Статус ТТ по договору</th>
-            <th>Дата заключения</th>
-            <th>Отдел инициатора</th>
-            <th>Вид договора</th>
-            <th>Предмет договора</th>
-            <th>Сумма договора</th>
-            <th>Срок действия договора</th>
-            <th>Пролонгация</th>
-            <th>Статус</th>
-            <th>Скан-копия</th>
-            <th>Категория</th>
-            <th>Примечание</th>
-
-            <th style="background: burlywood !important">
-              Рабочее наименование
-            </th>
-            <th style="background: burlywood !important">
-              Краткое наименование
-            </th>
-            <th style="background: burlywood !important">
-              Полное наименование
-            </th>
-            <th style="background: burlywood !important">ЕЛС</th>
-            <th style="background: burlywood !important">ОГРН/ЕГРПОУ/БИН</th>
-            <th style="background: burlywood !important">ИНН/РНН</th>
-            <th style="background: burlywood !important">КПП/№ Св-ва НДС</th>
-            <th style="background: burlywood !important">Юридический адрес</th>
-            <th style="background: burlywood !important">Дата создания</th>
-            <th style="background: burlywood !important">Руководитель</th>
-            <th style="background: burlywood !important">Телефон</th>
-            <th style="background: burlywood !important">Группа</th>
-            <template v-for="(el, idx) in countAnnexes">
-              <th  :key="idx" style="background: wheat !important">Тип приложения</th>
-              <th style="background: wheat !important">Номер приложения</th>
-              <th style="background: wheat !important">Дата</th>
-              <th style="background: wheat !important">Примечание</th>
-              <th style="background: wheat !important">Скан-копия</th>
-              <th style="background: wheat !important">Номер договора</th>
-            </template>
-          </tr>
-        </thead>
-        <tbody>
-   
-          <tr v-for="farm in farmDirecory" :key="farm.id">
+    <table  class="table table-sm table-bordered table-hover"
+        style="margin: 0; border: 1px solid black">
+    <tr>
+        <td>Номер договора</td>
+        <td>Статус ТТ по договору</td>
+        <td>Дата заключения</td>
+        <td>Отдел инициатора</td>
+        <td>Вид договора</td>
+        <td>Предмет договора</td>
+        <td>Сумма договора</td>
+        <td>Срок действия договора</td>
+        <td>Пролонгация</td>
+        <td>Статус</td>
+        <td>Скан-копия</td>
+        <td>Категория</td>
+        <td>Примечание</td>
+        <td style="background: burlywood !important">Рабочее наименование</td>
+        <td style="background: burlywood !important">Краткое наименование</td>
+        <td style="background: burlywood !important"> Полное наименование</td>
+        <td style="background: burlywood !important">ЕЛС</td>
+        <td style="background: burlywood !important">ОГРН/ЕГРПОУ/БИН</td>
+        <td style="background: burlywood !important">ИНН/РНН</td>
+        <td style="background: burlywood !important">КПП/№ Св-ва НДС</td>
+        <td style="background: burlywood !important">Юридический адрес</td>
+        <td style="background: burlywood !important">Дата создания</td>
+        <td style="background: burlywood !important">Руководитель</td>
+        <td style="background: burlywood !important">Телефон</td>
+        <td style="background: burlywood !important">Группа</td>
+    </tr>
+    <tr v-for="farm in farmDirecory" :key="farm.id">
             <td>{{ farm.number }}</td>
             <td>{{ farm.company_status }}</td>
             <td>{{ farm.created_at }}</td>
@@ -108,9 +85,9 @@
             <td v-if="farm.is_active == true">Да</td>
             <td v-else>Нет</td>
             <td>
-              <a :href="farm.scan" target="_blank"
-                ><img style="height: 20px" src="@/assets/pdf.png" alt="скан"
-              /></a>
+              <a :href="farm.scan" target="_blank">
+                <img style="height: 20px" src="@/assets/pdf.png" alt="скан"/>
+              </a>
             </td>
             <td>{{ farm.category }}</td>
             <td>{{ farm.comment }}</td>
@@ -126,23 +103,164 @@
             <td>{{ farm.counterparty.manager }}</td>
             <td>{{ farm.counterparty.phone }}</td>
             <td>{{ getGroupName(farm.counterparty.group) }}</td>
-
-            <template v-for="f in farm.annexes">
+          
+          </tr>
+    <tr>
+            <td style="background: wheat !important">Тип приложения</td>
+            <td style="background: wheat !important">Номер приложения</td>
+            <td style="background: wheat !important">Дата</td>
+            <td style="background: wheat !important">Примечание</td>
+            <td style="background: wheat !important">Скан-копия</td>
+            <td style="background: wheat !important">Номер договора</td>
+    </tr>
+    <tr v-for="f in farmDirecory" :key="f">
               <td>{{ f.doc_type }}</td>
               <td>{{ f.number }}</td>
               <td>{{ new Date(f.created_at).toLocaleString() }}</td>
               <td>{{ f.comment }}</td>
               <td>
-                <a :href="f.scan" target="_blank"
-                  ><img src="@/assets/excel.png"
-                /></a>
+                <a :href="f.scan" target="_blank">
+                  <img src="@/assets/excel.png" />
+                </a>
               </td>
               <td>{{ f.contract }}</td>
-            </template>
+    </tr>
+  
+</table>
+   
+      <!-- <table  class="table table-sm table-bordered table-hover"
+        style="margin: 0; border: 1px solid black">
+        <thead class="thead-light" style="background: #e9ecef !important">
+          <tr>
+            <th>Номер договора</th>
+            <th>Статус ТТ по договору</th>
+            <th>Дата заключения</th>
+            <th>Отдел инициатора</th>
+            <th>Вид договора</th>
+            <th>Предмет договора</th>
+            <th>Сумма договора</th>
+            <th>Срок действия договора</th>
+            <th>Пролонгация</th>
+            <th>Статус</th>
+            <th>Скан-копия</th>
+            <th>Категория</th>
+            <th>Примечание</th>
+            <th style="background: burlywood !important">Рабочее наименование</th>
+            <th style="background: burlywood !important">Краткое наименование</th>
+            <th style="background: burlywood !important"> Полное наименование</th>
+            <th style="background: burlywood !important">ЕЛС</th>
+            <th style="background: burlywood !important">ОГРН/ЕГРПОУ/БИН</th>
+            <th style="background: burlywood !important">ИНН/РНН</th>
+            <th style="background: burlywood !important">КПП/№ Св-ва НДС</th>
+            <th style="background: burlywood !important">Юридический адрес</th>
+            <th style="background: burlywood !important">Дата создания</th>
+            <th style="background: burlywood !important">Руководитель</th>
+            <th style="background: burlywood !important">Телефон</th>
+            <th style="background: burlywood !important">Группа</th>
+           
+          
+         
+            </tr>
+        </thead>
+        <thead>
+          <template v-for="(el, idx) in countAnnexes">
+                <th  :key="idx" style="background: wheat !important">Тип приложения</th>
+                <th style="background: wheat !important">Номер приложения</th>
+                <th style="background: wheat !important">Дата</th>
+                <th style="background: wheat !important">Примечание</th>
+                <th style="background: wheat !important">Скан-копия</th>
+                <th style="background: wheat !important">Номер договора</th>
+              </template>
+        </thead>
+        <tbody>
+          <tr v-for="farm in farmDirecory" :key="farm.id">
+            <td>{{ farm.number }}</td>
+            <td>{{ farm.company_status }}</td>
+            <td>{{ farm.created_at }}</td>
+            <td>{{ farm.department }}</td>
+            <td>{{ farm.contract_type }}</td>
+            <td>{{ farm.contract_object }}</td>
+            <td>{{ farm.fiat_amount }}</td>
+            <td>{{ farm.expiration_date }}</td>
+            <td v-if="farm.prolongation == true">Да</td>
+            <td v-else>Нет</td>
+            <td v-if="farm.is_active == true">Да</td>
+            <td v-else>Нет</td>
+            <td>
+              <a :href="farm.scan" target="_blank">
+                <img style="height: 20px" src="@/assets/pdf.png" alt="скан"/>
+              </a>
+            </td>
+            <td>{{ farm.category }}</td>
+            <td>{{ farm.comment }}</td>
+            <td>{{ farm.counterparty.work_name }}</td>
+            <td>{{ farm.counterparty.short_name }}</td>
+            <td>{{ farm.counterparty.full_name }}</td>
+            <td>{{ farm.counterparty.els }}</td>
+            <td>{{ farm.counterparty.ogrn }}</td>
+            <td>{{ farm.counterparty.inn }}</td>
+            <td>{{ farm.counterparty.kpp }}</td>
+            <td>{{ farm.counterparty.legal_address }}</td>
+            <td>{{ new Date(farm.counterparty.created_at).toLocaleString() }}</td>
+            <td>{{ farm.counterparty.manager }}</td>
+            <td>{{ farm.counterparty.phone }}</td>
+            <td>{{ getGroupName(farm.counterparty.group) }}</td>
+          
           </tr>
         </tbody>
-      </table>
+        <tbody>
+          <template v-for="f in farmDirecory">
+              <td>{{ f.doc_type }}</td>
+              <td>{{ f.number }}</td>
+              <td>{{ new Date(f.created_at).toLocaleString() }}</td>
+              <td>{{ f.comment }}</td>
+              <td>
+                <a :href="f.scan" target="_blank">
+                  <img src="@/assets/excel.png" />
+                </a>
+              </td>
+              <td>{{ f.contract }}</td>
+            </template> 
+         
+        </tbody>
+        
+      </table> -->
     </div>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- <template v-for="f in farm.annexes">
+              <td>{{ f.doc_type }}</td>
+              <td>{{ f.number }}</td>
+              <td>{{ new Date(f.created_at).toLocaleString() }}</td>
+              <td>{{ f.comment }}</td>
+              <td>
+                <a :href="f.scan" target="_blank">
+                  <img src="@/assets/excel.png" />
+                </a>
+              </td>
+              <td>{{ f.contract }}</td>
+            </template> -->
+   
+    <!-- <template v-for="(el, idx) in countAnnexes">
+              <th  :key="idx" style="background: wheat !important">Тип приложения</th>
+              <th style="background: wheat !important">Номер приложения</th>
+              <th style="background: wheat !important">Дата</th>
+              <th style="background: wheat !important">Примечание</th>
+              <th style="background: wheat !important">Скан-копия</th>
+              <th style="background: wheat !important">Номер договора</th>
+            </template> -->
+
+
+
 <!--  -->
     <!-- <div
       style="width: 100%;

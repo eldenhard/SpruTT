@@ -1,6 +1,6 @@
 <template>
 
-  <div style="width: 80vw; margin-left: -30% !important;">
+  <div>
       <b-tabs content-class="mt-100" align="center">
         <b-tab title="Общехозяйственные" active style="color: black !important" >
           <b-card-text>
