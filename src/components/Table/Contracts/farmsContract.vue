@@ -30,7 +30,169 @@
     >
       Добавить договор
     </button>
+
+
     <div
+      style="
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: auto;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0);
+        max-height: 60vh;
+      "
+    >
+      <table
+        class="table table-sm table-bordered table-hover"
+        style="margin: 0; border: 1px solid black"
+      >
+        <thead class="thead-light" style="background: #e9ecef !important">
+          <tr>
+            <th>Номер договора</th>
+            <th>Статус ТТ по договору</th>
+            <th>Дата заключения</th>
+            <th>Отдел инициатора</th>
+            <th>Вид договора</th>
+            <th>Предмет договора</th>
+            <th>Сумма договора</th>
+            <th>Срок действия договора</th>
+            <th>Пролонгация</th>
+            <th>Статус</th>
+            <th>Скан-копия</th>
+            <th>Категория</th>
+            <th>Примечание</th>
+
+            <th style="background: burlywood !important">
+              Рабочее наименование
+            </th>
+            <th style="background: burlywood !important">
+              Краткое наименование
+            </th>
+            <th style="background: burlywood !important">
+              Полное наименование
+            </th>
+            <th style="background: burlywood !important">ЕЛС</th>
+            <th style="background: burlywood !important">ОГРН/ЕГРПОУ/БИН</th>
+            <th style="background: burlywood !important">ИНН/РНН</th>
+            <th style="background: burlywood !important">КПП/№ Св-ва НДС</th>
+            <th style="background: burlywood !important">Юридический адрес</th>
+            <th style="background: burlywood !important">Дата создания</th>
+            <th style="background: burlywood !important">Руководитель</th>
+            <th style="background: burlywood !important">Телефон</th>
+            <th style="background: burlywood !important">Группа</th>
+            <template v-for="(el, idx) in countAnnexes">
+              <th :key="idx" style="background: wheat !important">
+                Тип приложения
+              </th>
+              <th style="background: wheat !important">Номер приложения</th>
+              <th style="background: wheat !important">Дата</th>
+              <th style="background: wheat !important">Примечание</th>
+              <th style="background: wheat !important">Скан-копия</th>
+              <th style="background: wheat !important">Номер договора</th>
+            </template>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="farm in farmDirecory" :key="farm.id">
+            <td>{{ farm.number }}</td>
+            <td>{{ farm.company_status }}</td>
+            <td>{{ farm.created_at }}</td>
+            <td>{{ farm.department }}</td>
+            <td>{{ farm.contract_type }}</td>
+            <td>{{ farm.contract_object }}</td>
+            <td>{{ farm.fiat_amount }}</td>
+            <td>{{ farm.expiration_date }}</td>
+            <td v-if="farm.prolongation == true">Да</td>
+            <td v-else>Нет</td>
+            <td v-if="farm.is_active == true">Да</td>
+            <td v-else>Нет</td>
+            <td>
+              <a :href="farm.scan" target="_blank"
+                ><img style="height: 20px" src="@/assets/pdf.png" alt="скан"
+              /></a>
+            </td>
+            <td>{{ farm.category }}</td>
+            <td>{{ farm.comment }}</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ farm.counterparty.work_name }}
+            </td>
+            <td v-else>—</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ farm.counterparty.short_name }}
+            </td>
+            <td v-else>—</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ farm.counterparty.full_name }}
+            </td>
+            <td v-else>—</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ farm.counterparty.els }}
+            </td>
+            <td v-else>—</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ farm.counterparty.ogrn }}
+            </td>
+            <td v-else>—</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ farm.counterparty.inn }}
+            </td>
+            <td v-else>—</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ farm.counterparty.kpp }}
+            </td>
+            <td v-else>—</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ farm.counterparty.legal_address }}
+            </td>
+            <td v-else>—</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ new Date(farm.counterparty.created_at).toLocaleString() }}
+            </td>
+            <td v-else>—</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ farm.counterparty.manager }}
+            </td>
+            <td v-else>—</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ farm.counterparty.phone }}
+            </td>
+            <td v-else>—</td>
+
+            <td v-if="farm.counterparty != null">
+              {{ getGroupName(farm.counterparty.group) }}
+            </td>
+            <td v-else>—</td>
+
+            <template v-for="f in farm.annexes">
+              <td>{{ f.doc_type }}</td>
+              <td>{{ f.number }}</td>
+              <td>{{ new Date(f.created_at).toLocaleString() }}</td>
+              <td>{{ f.comment }}</td>
+              <td>
+                <a :href="f.scan" target="_blank"
+                  ><img src="@/assets/excel.png"
+                /></a>
+              </td>
+              <td>{{ f.contract }}</td>
+            </template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- <div
       style="width: 100%;
         overflow-x: auto;
         overflow-y: auto;
@@ -77,7 +239,7 @@
       <th style="background: burlywood !important">Группа</th>
     </tr>
   </thead>
-  <tbody id="body-table">
+  <tbody id="body-table"> -->
     <!-- <tr v-for="farm in farmDirecory" :key="farm.id">
             <td>{{ farm.number }}</td>
             <td>{{ farm.company_status }}</td>
@@ -111,10 +273,10 @@
             <td>{{ farm.counterparty.phone }}</td>
             <td>{{ getGroupName(farm.counterparty.group) }}</td> 
     </tr> -->
-  </tbody>
+  <!-- </tbody>
        
 </table>
-    </div>
+    </div> -->
 
 
     <div style="display: flex; justify-content: space-around; margin-top: 2%">
@@ -219,26 +381,26 @@ export default {
           this.nextLink = response.data.links.next;
           this.prevLink = response.data.links.previous;
           this.farmDirecory = response.data.data;
-          console.log(this.farmDirecory)
-          let aaaa = ''
-          for(let i in this.farmDirecory){
-            aaaa= this.farmDirecory[i]
-          } 
+          // console.log(this.farmDirecory)
+          // let aaaa = ''
+          // for(let i in this.farmDirecory){
+          //   aaaa= this.farmDirecory[i]
+          // } 
           // let tablesApplication = document.getElementById('body-table')
           // tablesApplication.appendChild('tr')
-          let table = document.querySelector('#body-table');
+          // let table = document.querySelector('#body-table');
 
-            for (let i = 0; i < this.farmDirecory.length; i++) {
-              let tr = document.createElement('tr');
+          //   for (let i = 0; i < this.farmDirecory.length; i++) {
+          //     let tr = document.createElement('tr');
               
-              for (let i = 0; i < 25; i++) {
-                let td = document.createElement('td');
-                td.innerHTML = this.farmDirecory
-                tr.appendChild(td);
-              }
+          //     for (let i = 0; i < 25; i++) {
+          //       let td = document.createElement('td');
+          //       td.innerHTML = this.farmDirecory
+          //       tr.appendChild(td);
+          //     }
               
-              table.appendChild(tr);
-            }
+          //     table.appendChild(tr);
+          //   }
         
           this.total_objects = response.data.total_objects;
           this.amount = response.data.amount;
