@@ -1,5 +1,5 @@
 <template>
-  <div style=" width: 100% !important">
+  <div>
     <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
     <Notifications
       :show="showNotify"
@@ -64,171 +64,33 @@
             <th>Категория</th>
             <th>Примечание</th>
 
-            <th style="background: burlywood !important">
+            <th>
               Рабочее наименование
             </th>
-            <th style="background: burlywood !important">
+            <th>
               Краткое наименование
             </th>
-            <th style="background: burlywood !important">
+            <th>
               Полное наименование
             </th>
-            <th style="background: burlywood !important">ЕЛС</th>
-            <th style="background: burlywood !important">ОГРН/ЕГРПОУ/БИН</th>
-            <th style="background: burlywood !important">ИНН/РНН</th>
-            <th style="background: burlywood !important">КПП/№ Св-ва НДС</th>
-            <th style="background: burlywood !important">Юридический адрес</th>
-            <th style="background: burlywood !important">Дата создания</th>
-            <th style="background: burlywood !important">Руководитель</th>
-            <th style="background: burlywood !important">Телефон</th>
-            <th style="background: burlywood !important">Группа</th>
-            <template v-for="(el, idx) in countAnnexes">
-              <th  :key="idx" style="background: wheat !important">Тип приложения</th>
-              <th style="background: wheat !important">Номер приложения</th>
-              <th style="background: wheat !important">Дата</th>
-              <th style="background: wheat !important">Примечание</th>
-              <th style="background: wheat !important">Скан-копия</th>
-              <th style="background: wheat !important">Номер договора</th>
-            </template>
+            <th>ЕЛС</th>
+            <th>ОГРН/ЕГРПОУ/БИН</th>
+            <th>ИНН/РНН</th>
+            <th>КПП/№ Св-ва НДС</th>
+            <th>Юридический адрес</th>
+            <th>Дата создания</th>
+            <th>Руководитель</th>
+            <th>Телефон</th>
+            <th>Группа</th>
+
           </tr>
         </thead>
-        <tbody>
-   
-          <tr v-for="farm in farmDirecory" :key="farm.id">
-            <td>{{ farm.number }}</td>
-            <td>{{ farm.company_status }}</td>
-            <td>{{ farm.created_at }}</td>
-            <td>{{ farm.department }}</td>
-            <td>{{ farm.contract_type }}</td>
-            <td>{{ farm.contract_object }}</td>
-            <td>{{ farm.fiat_amount }}</td>
-            <td>{{ farm.expiration_date }}</td>
-            <td v-if="farm.prolongation == true">Да</td>
-            <td v-else>Нет</td>
-            <td v-if="farm.is_active == true">Да</td>
-            <td v-else>Нет</td>
-            <td>
-              <a :href="farm.scan" target="_blank"
-                ><img style="height: 20px" src="@/assets/pdf.png" alt="скан"
-              /></a>
-            </td>
-            <td>{{ farm.category }}</td>
-            <td>{{ farm.comment }}</td>
-            <td>{{ farm.counterparty.work_name }}</td>
-            <td>{{ farm.counterparty.short_name }}</td>
-            <td>{{ farm.counterparty.full_name }}</td>
-            <td>{{ farm.counterparty.els }}</td>
-            <td>{{ farm.counterparty.ogrn }}</td>
-            <td>{{ farm.counterparty.inn }}</td>
-            <td>{{ farm.counterparty.kpp }}</td>
-            <td>{{ farm.counterparty.legal_address }}</td>
-            <td>{{ new Date(farm.counterparty.created_at).toLocaleString() }}</td>
-            <td>{{ farm.counterparty.manager }}</td>
-            <td>{{ farm.counterparty.phone }}</td>
-            <td>{{ getGroupName(farm.counterparty.group) }}</td>
+        <tbody id="tableMain">
 
-            <template v-for="f in farm.annexes">
-              <td>{{ f.doc_type }}</td>
-              <td>{{ f.number }}</td>
-              <td>{{ new Date(f.created_at).toLocaleString() }}</td>
-              <td>{{ f.comment }}</td>
-              <td>
-                <a :href="f.scan" target="_blank"
-                  ><img src="@/assets/excel.png"
-                /></a>
-              </td>
-              <td>{{ f.contract }}</td>
-            </template>
-          </tr>
+
         </tbody>
       </table>
     </div>
-<!--  -->
-    <!-- <div
-      style="width: 100%;
-        overflow-x: auto;
-        overflow-y: auto;
-        position: relative;
-        left: 50%;
-        transform: translate(-50%, 0);
-        max-height: 60vh;
-      "
-    >
-    <table   class="table table-sm table-bordered">
-  <thead>
-    <tr>
-      <th>Номер договора</th>
-      <th>Статус ТТ по договору</th>
-      <th>Дата заключения</th>
-      <th>Отдел инициатора</th>
-      <th>Вид договора</th>
-      <th>Предмет договора</th>
-      <th>Сумма договора</th>
-      <th>Срок действия договора</th>
-      <th>Пролонгация</th>
-      <th>Статус</th>
-      <th>Скан-копия</th>
-      <th>Категория</th>
-      <th>Примечание</th>
-
-      <th style="background: burlywood !important">
-        Рабочее наименование
-      </th>
-      <th style="background: burlywood !important">
-        Краткое наименование
-      </th>
-      <th style="background: burlywood !important">
-        Полное наименование
-      </th>
-      <th style="background: burlywood !important">ЕЛС</th>
-      <th style="background: burlywood !important">ОГРН/ЕГРПОУ/БИН</th>
-      <th style="background: burlywood !important">ИНН/РНН</th>
-      <th style="background: burlywood !important">КПП/№ Св-ва НДС</th>
-      <th style="background: burlywood !important">Юридический адрес</th>
-      <th style="background: burlywood !important">Дата создания</th>
-      <th style="background: burlywood !important">Руководитель</th>
-      <th style="background: burlywood !important">Телефон</th>
-      <th style="background: burlywood !important">Группа</th>
-    </tr>
-  </thead>
-  <tbody id="body-table"> -->
-    <!-- <tr v-for="farm in farmDirecory" :key="farm.id">
-            <td>{{ farm.number }}</td>
-            <td>{{ farm.company_status }}</td>
-            <td>{{ farm.created_at }}</td>
-            <td>{{ farm.department }}</td>
-            <td>{{ farm.contract_type }}</td>
-            <td>{{ farm.contract_object }}</td>
-            <td>{{ farm.fiat_amount }}</td>
-            <td>{{ farm.expiration_date }}</td>
-            <td v-if="farm.prolongation == true">Да</td>
-            <td v-else>Нет</td>
-            <td v-if="farm.is_active == true">Да</td>
-            <td v-else>Нет</td>
-            <td>
-              <a :href="farm.scan" target="_blank"
-                ><img style="height: 20px" src="@/assets/pdf.png" alt="скан"
-              /></a>
-            </td>
-            <td>{{ farm.category }}</td>
-            <td>{{ farm.comment }}</td>
-            <td>{{ farm.counterparty?.work_name }} </td>
-            <td>{{ farm.counterparty.short_name }}</td>
-            <td>{{ farm.counterparty.full_name }}</td>
-            <td >{{ farm.counterparty.els }}</td>
-            <td >{{ farm.counterparty.ogrn }}</td>
-            <td>{{ farm.counterparty.inn }}</td>
-            <td>{{ farm.counterparty.kpp }}</td>
-            <td>{{ farm.counterparty.legal_address }}</td>
-            <td>{{ new Date(farm.counterparty.created_at).toLocaleString() }}</td>
-            <td> {{ farm.counterparty.manager }}</td>
-            <td>{{ farm.counterparty.phone }}</td>
-            <td>{{ getGroupName(farm.counterparty.group) }}</td> 
-    </tr> -->
-  <!-- </tbody>
-       
-</table>
-    </div> -->
 
 
     <div style="display: flex; justify-content: space-around; margin-top: 2%">
@@ -278,32 +140,6 @@ export default {
       notifyMessage: "",
       notifyClass: "",
 
-      // name: '',
-      // number: '',
-      // company_status: '',
-      // created_at: '',
-      // department: '',
-      // contract_type: '',
-      // contract_object: '',
-      // fiat_amount: '',
-      // expiration_date: '',
-      // prolongation: '',
-      // is_active: '',
-      // category: '',
-      // comment: '',
-
-      // work_name: '',
-      // short_name: '',
-      // full_name: '',
-      // els: '',
-      // ogrn: '',
-      // inn: '',
-      // kpp: '',
-      // legal_address: '',
-      // manager: '',
-      // phone: '',
-      // group: '',
-
       filter_farms: {
         number: "",
         counterparty__full_name: "",
@@ -313,7 +149,9 @@ export default {
   methods: {
     getGroupName(group) {
       // console.log(groups)
-      return groups.groups[group];
+      
+      console.log(1);
+      return groups.groups[group] ;
     },
     goToPage(link) {
       let url = new URL(link);
@@ -333,27 +171,73 @@ export default {
           this.nextLink = response.data.links.next;
           this.prevLink = response.data.links.previous;
           this.farmDirecory = response.data.data;
-          // console.log(this.farmDirecory)
-          // let aaaa = ''
-          // for(let i in this.farmDirecory){
-          //   aaaa= this.farmDirecory[i]
-          // } 
-          // let tablesApplication = document.getElementById('body-table')
-          // tablesApplication.appendChild('tr')
-          // let table = document.querySelector('#body-table');
+          let lengthFarm = this.farmDirecory.length;
+          let table = document.querySelector('#tableMain')
+          this.farmDirecory.forEach((el => {
+            let doc = `
+            <tr id="doc_${el.id}">
+            <td>${ el.number }</td>
+            <td>${ el.company_status }</td>
+            <td>${ el.created_at }</td>
+            <td>${ el.department }</td>
+            <td>${ el.contract_type }</td>
+            <td>${ el.contract_object }</td>
+            <td>${ el.fiat_amount }</td>
+            <td>${ el.expiration_date }}</td>
+            <td >${el.prolongation}</td>
+            <td>${el.is_active}</td>
+            <td>
+             <a href="${el.scan}" target="_blank"
+                ><img style="height: 20px" src="@/assets/pdf.png" alt="скан"
+              /></a>
+            </td>
+            <td>${ el.category }</td>
+            <td>${ el.comment }</td>
+            <td>${ el.counterparty?.work_name } </td>
+            <td>${ el.counterparty.short_name }</td>
+            <td>${ el.counterparty.full_name }</td>
+            <td >${ el.counterparty.els }</td>
+            <td >${ el.counterparty.ogrn }</td>
+            <td>${ el.counterparty.inn }</td>
+            <td>${ el.counterparty.kpp }</td>
+            <td>${ el.counterparty.legal_address }</td>
+            <td>${ new Date(el.counterparty.created_at).toLocaleString() }</td>
+            <td>${ el.counterparty.manager }</td>
+            <td>${ el.counterparty.phone }</td>
+            <td>${ this.getGroupName(el.counterparty.group) }</td> 
+              </tr>`;
+            table.insertAdjacentHTML('beforeend', doc)
+    
+            let annex_head = `<tr>
+                  <th>>></th>
+                  <th style="background: burlywood !important">Номер приложения</th>
+                  <th  style="background: burlywood !important">Тип приложения</th>
+                  <th style="background: burlywood !important">Дата</th>
+                  <th style="background: burlywood !important">Примечание</th>
+                  <th style="background: burlywood !important">Скан-копия</th>
+                  <th style="background: burlywood !important">Номер договора</th>
+              </tr>`
 
-          //   for (let i = 0; i < this.farmDirecory.length; i++) {
-          //     let tr = document.createElement('tr');
-              
-          //     for (let i = 0; i < 25; i++) {
-          //       let td = document.createElement('td');
-          //       td.innerHTML = this.farmDirecory
-          //       tr.appendChild(td);
-          //     }
-              
-          //     table.appendChild(tr);
-          //   }
-        
+            table.insertAdjacentHTML('beforeend', annex_head)
+
+            el.annexes.forEach((a_el) => {
+              let annex = `<tr id="annex_${a_el.id}">
+                  <td style="border: none !important">---</td>
+                  <td>${ a_el.doc_type }</td>
+                  <td>${ a_el.number }</td>
+                  <td>${ new Date(a_el.created_at).toLocaleString() }</td>
+                  <td>${ a_el.comment }</td>
+                  <td>
+                    <a href="${a_el.scan}" target="_blank"
+                      ><img src="@/assets/excel.png"
+                    /></a>
+                  </td>
+                  <td>${ a_el.contract }</td>
+               </tr>`;
+               table.insertAdjacentHTML('beforeend', annex);
+            })
+          }))
+
           this.total_objects = response.data.total_objects;
           this.amount = response.data.amount;
 
