@@ -8,7 +8,7 @@
       :block-class="notifyClass"
       id="notif"
     />
-    <Loader :loader="loader"></Loader>
+    <!-- <Loader :loader="loader"></Loader> -->
     <button
       class="Accept"
       @click="getFarmContract()"
@@ -164,7 +164,7 @@ export default {
       this.getFarmContract();
     },
     getFarmContract() {
-      this.loader = true;
+      // this.loader = true;
       api
         .getDirectoryFarm(this.filter_farms)
         .then((response) => {
@@ -246,10 +246,10 @@ export default {
           this.notifyClass = "wrapper-success";
           this.showNotify = true;
           setTimeout(this.closeNotification, 1500);
-          this.loader = false;
+          // this.loader = false;
         })
         .catch((err) => {
-          this.loader = false;
+          // this.loader = false;
           this.notifyHead = "Ошибка";
           this.notifyMessage = "Данные не отфильтрованы, попробуйте еще раз";
           this.notifyClass = "wrapper-error";
@@ -288,7 +288,9 @@ export default {
     
     
 <style>
-
+.amount {
+  text-align: left;
+}
 .td-btr {
   padding: 0 !important;
   vertical-align: middle !important;

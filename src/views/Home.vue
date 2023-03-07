@@ -3,9 +3,9 @@
 
   <b-card no-body style="margin-top: 1%">
     <b-tabs pills card vertical style="background: white">
-      <b-container class="bv-example-row">
-            <b-tab title="Справочник контрагенты">
-                <b-card-text>
+      <div class="container-fluid" style="margin-left: 10%; background: red;">
+        <b-tab title="Справочник контрагенты" style="background: green;">
+                <b-card-text style="width: 50%">
                     <partnerTable/>
               </b-card-text>
               </b-tab>
@@ -14,13 +14,17 @@
                 <contractTable/>
               </b-card-text>
             </b-tab>
-      </b-container>
+                  </div>
+            
+
     </b-tabs>
   </b-card>
 
 </template>
 
+<style scoped>
 
+</style>
 
 <script>
 import partnerTable from '@/components/Table/PartnerTable.vue'
