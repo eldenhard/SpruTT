@@ -403,7 +403,7 @@ let regExps = /\s/g
       api
         .getWagonRepairHistory(wagon)
         .then((response) => {
-          this.history_data = response.data.slice(0, 4);
+          this.history_data = response.data.slice(0, 3);
           console.log(this.history_data);
           this.showModal();
           this.loader = false;
