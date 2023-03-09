@@ -3,9 +3,9 @@
 
   <b-card no-body style="margin-top: 1%">
     <b-tabs pills card vertical style="background: white">
-      <div class="container-fluid" style="margin-left: 10%; background: red;">
+      <b-container >
         <b-tab title="Справочник контрагенты" style="background: green;">
-                <b-card-text style="width: 50%">
+                <b-card-text>
                     <partnerTable/>
               </b-card-text>
               </b-tab>
@@ -14,8 +14,8 @@
                 <contractTable/>
               </b-card-text>
             </b-tab>
-                  </div>
-            
+                
+          </b-container>
 
     </b-tabs>
   </b-card>
