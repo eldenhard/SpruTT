@@ -1,6 +1,7 @@
 <template>
   <div>
     <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
+    <ModalContractCreate />
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -12,8 +13,7 @@
     <button
       class="Accept"
       @click="getFarmContract()"
-      style="width: 100%;
-        position: relative;
+      style="width: 100%;position: relative;
         left: 50%;
         transform: translate(-50%, 0);
       "
@@ -26,9 +26,7 @@
     <p class="amount">всего на странице: {{ amount }}</p>
     <button
       class="Cancel"
-      style="border-top-left-radius: 10px; border-top-right-radius: 10px"
-    
-    >
+      style="border-top-left-radius: 10px; border-top-right-radius: 10px" @click="CreateContract()">
       Добавить договор
     </button>
 
@@ -48,6 +46,8 @@
         class="table table-sm table-bordered table-hover"
         style="margin: 0; border: 1px solid black"
       >
+
+      
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr>
             <th>Номер договора</th>
@@ -121,10 +121,10 @@ import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import groups from "@/helpers/groups";
 import FilterFarms from "@/components/filter/contractFilter/filter_farms.vue";
-
+import ModalContractCreate from '@/components/Table/Contracts/CreateContract/ModalWindow.vue'
 export default {
   name: "PartnerTable",
-  components: { Loader, Notifications, FilterFarms },
+  components: { Loader, Notifications, FilterFarms,ModalContractCreate },
   data() {
     return {
       nextLink: null,
@@ -139,6 +139,8 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+      // modal: false,
+
       filter_farms: {
         number: "",
         counterparty__full_name: "",
@@ -146,6 +148,10 @@ export default {
     };
   },
   methods: {
+    CreateContract(){
+      console.log('1')
+      this.$bvModal.show('bv-modal-example')
+    },
     getGroupName(group) {
       // console.log(groups)
       return groups.groups[group] ;
@@ -170,6 +176,7 @@ export default {
           this.farmDirecory = response.data.data;
           let lengthFarm = this.farmDirecory.length;
           let table = document.querySelector('#tableMain')
+          table.innerHTML = ""
           this.farmDirecory.forEach((el => {
             let doc = `
             <tr id="doc_${el.id}">
@@ -235,6 +242,7 @@ export default {
             })
           }))
 
+          console.log(table)
           this.total_objects = response.data.total_objects;
           this.amount = response.data.amount;
 

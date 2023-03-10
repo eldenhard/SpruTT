@@ -102,7 +102,7 @@ const getCurrentLastInfoWagon = (data) => {
 
 // Получить данные по отправке
 const getDataShipment = (data) => {
-    return api.get(`${resource}/shipment`)
+    return api.get(`${resource}/shipment-types`)
 }
 const getWagonRepair = () => {
     return api.get(`${resource}/repair-axis-wheels?page_size=500`)
