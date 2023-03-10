@@ -130,33 +130,40 @@
                 <input type="text" v-model="ContractAnnexes[index]">
             </label> -->
 
-<div class="d-block text-center"  v-for="(guest, index) in ContractAnnexes" :key="guest.id">
+<div class="d-block text-center"  v-for="(guest, index) in ContractAnnexes" :key="guest.id" style="margin-top: 3%;">
   <h4>Приложение {{ index+1 }}</h4>
       <div  style="display: flex; justify-content: space-around;">
         <label for="">Тип приложения <br>
-          <input type="text" class="textarea" v-model="Documents.number">
+          <input type="text" class="textarea" v-model="Documents.annexes.ContractAnnexes.doc_type">
         </label>
         <label for="">Номер приложения <br>
-          <input type="text" class="textarea" v-model="Documents.company_status">
+          <input type="text" class="textarea" v-model="Documents.annexes.ContractAnnexes.number">
         </label>
         <label for="">Дата <br>
-          <input type="date" class="textarea" v-model="Documents.created_at">
+          <input type="date" class="textarea" v-model="Documents.annexes.ContractAnnexes.created_at">
         </label>
       </div>
 
       <div  style="display: flex; justify-content: space-around;">
         <label for="">Примечание<br>
-          <input type="text" class="textarea" v-model="Documents.department">
+          <input type="text" class="textarea" v-model="Documents.annexes.ContractAnnexes.comment">
         </label>
         <label for="">Скан-копия  <br>
-          <input type="text" class="textarea" v-model="Documents.contract_type">
+          <input type="text" class="textarea" v-model="Documents.annexes.ContractAnnexes.scan">
         </label>
         <label for="">Номер договора <br>
-          <input type="text" class="textarea" v-model="Documents.contract_object">
+          <input type="text" class="textarea" v-model="Documents.annexes.ContractAnnexes.contract">
         </label>
       </div>
-  </div>           
-<b-button  @click="AddContractAnnexes()">Добавить приложение к договору</b-button><br>
+     <div style="display: flex; justify-content: space-between; margin-top: 2%;">
+      <button style="width: 15%" class="button Delete" @click="DeleteContractAnnexes(index)">Удалить приложение</button>
+      <button style="width: 15%" class="button Cancel" @click="AddContractAnnexes()">Добавить приложение</button>
+
+     </div>
+     <hr>
+  </div>  
+  <b-button  @click="AddContractAnnexes()" v-if="ContractAnnexes.length == 0">Добавить приложение к договору</b-button><br>
+         
 <b-button class="mt-3" @click="createReport()">Создать</b-button><br>
 <b-button class="mt-3" block variant="danger" @click="$bvModal.hide('bv-modal-example')">Закрыть</b-button>
   </b-modal>
@@ -189,6 +196,15 @@ export default{
       groups: groups.groups,
       ContractAnnexes: [],
       Documents: {
+        annexes: {
+          ContractAnnexes: {
+            doc_type: '',
+            number: '',
+            comment: '',
+            scan: '',
+            contract: ''
+          }
+        },
         number:'',
         company_status: '',
         created_at: '',
@@ -242,6 +258,10 @@ export default{
     },
     AddContractAnnexes(){
       this.ContractAnnexes.push('')
+      console.log(this.Documents.annexes.ContractAnnexes)
+    },
+    DeleteContractAnnexes(index){
+      this.Documents.annexes.ContractAnnexes.splice(index,1)
     }
   }
 }
