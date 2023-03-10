@@ -139,7 +139,6 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
-
       filter_farms: {
         number: "",
         counterparty__full_name: "",
@@ -149,8 +148,6 @@ export default {
   methods: {
     getGroupName(group) {
       // console.log(groups)
-      
-      console.log(1);
       return groups.groups[group] ;
     },
     goToPage(link) {
