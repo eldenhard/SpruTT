@@ -130,42 +130,42 @@
                 <input type="text" v-model="ContractAnnexes[index]">
             </label> -->
 
-<div class="d-block text-center"  v-for="(guest, index) in ContractAnnexes" :key="guest.id" style="margin-top: 3%;">
-  <h4>Приложение {{ index+1 }}</h4>
+<div class="d-block text-center"  v-for="(item, index) in ContractAnnexes" :key="item.id" style="margin-top: 3%;">
+  <h4>Приложение {{ item.id+1 }}</h4>
       <div  style="display: flex; justify-content: space-around;">
         <label for="">Тип приложения <br>
-          <input type="text" class="textarea" v-model="Documents.annexes.ContractAnnexes.doc_type">
+          <input type="text" class="textarea">
         </label>
         <label for="">Номер приложения <br>
-          <input type="text" class="textarea" v-model="Documents.annexes.ContractAnnexes.number">
+          <input type="text" class="textarea" >
         </label>
         <label for="">Дата <br>
-          <input type="date" class="textarea" v-model="Documents.annexes.ContractAnnexes.created_at">
+          <input type="date" class="textarea" >
         </label>
       </div>
 
       <div  style="display: flex; justify-content: space-around;">
         <label for="">Примечание<br>
-          <input type="text" class="textarea" v-model="Documents.annexes.ContractAnnexes.comment">
+          <input type="text" class="textarea" >
         </label>
         <label for="">Скан-копия  <br>
-          <input type="text" class="textarea" v-model="Documents.annexes.ContractAnnexes.scan">
+          <input type="text" class="textarea" >
         </label>
         <label for="">Номер договора <br>
-          <input type="text" class="textarea" v-model="Documents.annexes.ContractAnnexes.contract">
+          <input type="text" class="textarea" >
         </label>
       </div>
-     <div style="display: flex; justify-content: space-between; margin-top: 2%;">
-      <button style="width: 15%" class="button Delete" @click="DeleteContractAnnexes(index)">Удалить приложение</button>
-      <button style="width: 15%" class="button Cancel" @click="AddContractAnnexes()">Добавить приложение</button>
-
+     <div style="display: flex; justify-content: space-around; margin-top: 2%;">
+      <button style="width: 15%" class="button Delete"  @click="DeleteContractAnnexes(index)">Удалить приложение</button>
      </div>
      <hr>
   </div>  
-  <b-button  @click="AddContractAnnexes()" v-if="ContractAnnexes.length == 0">Добавить приложение к договору</b-button><br>
-         
-<b-button class="mt-3" @click="createReport()">Создать</b-button><br>
-<b-button class="mt-3" block variant="danger" @click="$bvModal.hide('bv-modal-example')">Закрыть</b-button>
+  <div style="display: flex; justify-content: space-around;">
+    <button style="width: 15%" class="button Cancel"  @click="AddContractAnnexes()" >Добавить приложение</button><br>  
+    <button style="width: 15%" class="button Accept"  @click="createReport()">Создать</button><br>
+    <button style="width: 15%" class="button Delete"  block variant="danger" @click="$bvModal.hide('bv-modal-example')">Закрыть</button>
+  </div>
+
   </b-modal>
 </div>
 </template>
@@ -195,16 +195,9 @@ export default{
     return{
       groups: groups.groups,
       ContractAnnexes: [],
+  
+      nextTodoId:0,
       Documents: {
-        annexes: {
-          ContractAnnexes: {
-            doc_type: '',
-            number: '',
-            comment: '',
-            scan: '',
-            contract: ''
-          }
-        },
         number:'',
         company_status: '',
         created_at: '',
@@ -240,11 +233,15 @@ export default{
       allGroups: (state) => state.auth.groups,
       staffGlobal: (state) => state.auth.users,
     }),
+
   },
   methods: {
     getGroupName(id) {
       const group = getGroupName(this.allGroups, id);
       return group[0]?.name;
+    },
+    evenNumbers(x) {
+    return this.ContractAnnexes.filter(num=> num == x)
     },
     getGroupName(group) {
       // console.log(groups)
@@ -257,11 +254,20 @@ export default{
       })
     },
     AddContractAnnexes(){
-      this.ContractAnnexes.push('')
-      console.log(this.Documents.annexes.ContractAnnexes)
+      this.ContractAnnexes.push({
+        id: this.nextTodoId++,
+        date: '',
+        doc_type: '',
+        number:'',
+        comment:'',
+        scan: '',
+        contract: ''
+    })
+    console.log(this.ContractAnnexes)
     },
     DeleteContractAnnexes(index){
-      this.Documents.annexes.ContractAnnexes.splice(index,1)
+      console.log(index)
+      this.ContractAnnexes.splice(index, 1);
     }
   }
 }

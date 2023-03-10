@@ -34,7 +34,6 @@
             <div v-if="i.name === 'Сотрудники'">
                 <StaffTable />
               </div>
-
             <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
               <ReportAbandoned />
             </b-card-text>
