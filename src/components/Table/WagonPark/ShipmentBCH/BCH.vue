@@ -20,8 +20,7 @@
     </div>
     <button id="btnfile" class='button Accept'
       style="height: 40px; width: 40vw !important; position: relative; left: 50%; transform: translate(-50%, 0); margin-top: 3%;"
-      @click="SendFile()">Преобразовать
-      файл</button>
+      @click="SendFile()">Преобразовать файл</button>
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
 
   </div>

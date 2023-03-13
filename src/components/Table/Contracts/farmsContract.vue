@@ -46,6 +46,8 @@
         class="table table-sm table-bordered table-hover"
         style="margin: 0; border: 1px solid black"
       >
+
+      
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr>
             <th>Номер договора</th>
@@ -152,8 +154,6 @@ export default {
     },
     getGroupName(group) {
       // console.log(groups)
-      
-      console.log(1);
       return groups.groups[group] ;
     },
     goToPage(link) {

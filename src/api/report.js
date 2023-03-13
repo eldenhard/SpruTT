@@ -2,6 +2,8 @@ import { api } from "@/helpers/axios"
 
 export const resource = "personal"
 export const reports = "reports"
+export const documents = "documents"
+
 
 const getUsers = () => {
     return api.get(`${resource}/users/`)
@@ -93,6 +95,11 @@ const getKeyFactsSpeed = () => {
 const getAllDataLastReportAdmin = (data) => {
     return api.get(`${reports}/kpi/get-all-last?date_begin=${data[0]}&date_end=${data[1]}`)
 }
+
+// ДОГОВОРА
+const createDocument = (data) => {
+    api.post(`${documents}/contract/`, data)
+}
 export default {
     getUsers,
     getReportById,
@@ -123,7 +130,7 @@ export default {
 
     // справовчник
     createCounterparties,
-
+    createDocument,
     // Ключевые факты
     getKeyFacts,
     getKeyFactsSpeedTon,
