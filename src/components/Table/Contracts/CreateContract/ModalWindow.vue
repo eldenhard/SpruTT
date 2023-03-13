@@ -2,12 +2,12 @@
     <div>
   <!-- <b-button id="show-btn" @click="$bvModal.show('bv-modal-example')">Open Modal</b-button> -->
 
-  <b-modal id="bv-modal-example" hide-footer size="lg">
+  <b-modal id="bv-modal-example" hide-footer size="md">
     <template #modal-title>
      Добавление договора
     </template>
     <div class="d-block text-center">
-      <div  style="display: flex; justify-content: space-around;">
+      <div  style="display: flex; justify-content: space-between;">
         <label for="">Номер договора <br>
           <input type="text" class="textarea">
         </label>
@@ -19,7 +19,7 @@
         </label>
       </div>
 
-      <div  style="display: flex; justify-content: space-around;">
+      <div  style="display: flex; justify-content: space-between;">
         <label for="">Статус ТТ по договору <br>
           <input type="text" class="textarea">
         </label>
@@ -30,7 +30,7 @@
           <input type="text" class="textarea">
         </label>
       </div>
-      <div  style="display: flex; justify-content: space-around;">
+      <div  style="display: flex; justify-content: space-between;">
         <label for=""> Статус ТТ по договору <br>
           <input type="text" class="textarea">
         </label>
@@ -41,7 +41,7 @@
           <input type="text" class="textarea">
         </label>
       </div>
-<div  style="display: flex; justify-content: space-around;">
+<div  style="display: flex; justify-content: space-between;">
         <label for="">Срок действия договора <br>
           <input type="text" class="textarea">
         </label>
@@ -53,7 +53,7 @@
         </label>
       </div>
 
-<div  style="display: flex; justify-content: space-around;">
+<div  style="display: flex; justify-content: space-between;">
         <label for="">Скан-копия <br>
           <input type="text" class="textarea">
         </label>
@@ -64,7 +64,7 @@
           <input type="text" class="textarea">
         </label>
       </div>
-<div  style="display: flex; justify-content: space-around;">
+<div  style="display: flex; justify-content: space-between;">
         <label for="">Рабочее наименование <br>
           <input type="text" class="textarea">
         </label>
@@ -75,7 +75,7 @@
           <input type="text" class="textarea">
         </label>
       </div>
-<div  style="display: flex; justify-content: space-around;">
+<div  style="display: flex; justify-content: space-between;">
         <label for="">ЕЛС <br>
           <input type="text" class="textarea">
         </label>
@@ -86,7 +86,7 @@
           <input type="text" class="textarea">
         </label>
       </div>
-<div  style="display: flex; justify-content: space-around;">
+<div  style="display: flex; justify-content: space-between;">
         <label for="">КПП/№ Св-ва НДС <br>
           <input type="text" class="textarea">
         </label>
@@ -97,7 +97,7 @@
           <input type="text" class="textarea">
         </label>
       </div>
-<div  style="display: flex; justify-content: space-around;">
+<div  style="display: flex; justify-content: space-between;">
         <label for="">Руководитель <br>
           <input type="text" class="textarea">
         </label>
@@ -109,7 +109,7 @@
         </label>
       </div>
 </div>
-    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Close Me</b-button>
+    <b-button class="mt-3" variant="danger"  block @click="$bvModal.hide('bv-modal-example')" style="width:10%; float:right">Закрыть</b-button>
   </b-modal>
 </div>
 </template>
@@ -117,6 +117,7 @@
 .textarea{
   background: white;
   height: 25px;
+  width: 300px;
 }
 label{
   color:grey;
