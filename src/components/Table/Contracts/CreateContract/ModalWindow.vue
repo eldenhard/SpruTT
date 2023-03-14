@@ -1,6 +1,6 @@
 <template>
     <div>
-  <!-- <b-button id="show-btn" @click="$bvModal.show('bv-modal-example')">Open Modal</b-button> -->
+  <!-- <b-button id="show-btn" @click="$bvModal.show("bv-modal-example")">Open Modal</b-button> -->
 
   <b-modal id="bv-modal-example" hide-footer size="lg">
     <template #modal-title>
@@ -10,40 +10,41 @@
 
     
     
-<h4>Договор</h4>
+<form  v-on:submit="createReport">
+
     <div class="d-block text-center">
       <div  style="display: flex; justify-content: space-around;">
         <label for="">Номер договора <br>
-          <input type="text" class="textarea" v-model="Documents.number">
+          <input type="text" class="textarea" name="number"  v-model="Documents.number">
         </label>
         <label for="">Статус ТТ по договору <br>
-          <input type="text" class="textarea" v-model="Documents.company_status">
+          <input type="text" class="textarea" name="company_status" v-model="Documents.company_status">
         </label>
         <label for="">Дата заключения <br>
-          <input type="date" class="textarea" v-model="Documents.created_at">
+          <input type="date" class="textarea" name="created_at" v-model="Documents.created_at">
         </label>
       </div>
 
       <div  style="display: flex; justify-content: space-around;">
         <label for="">Подразделение инициатора <br>
-          <input type="text" class="textarea" v-model="Documents.department">
+          <input type="text" class="textarea" name="department" v-model="Documents.department">
         </label>
         <label for="">Вид договора  <br>
-          <input type="text" class="textarea" v-model="Documents.contract_type">
+          <input type="text" class="textarea" name="contract_type" v-model="Documents.contract_type">
         </label>
         <label for="">Предмет договора <br>
-          <input type="text" class="textarea" v-model="Documents.contract_object">
+          <input type="text" class="textarea" name="contract_object" v-model="Documents.contract_object">
         </label>
       </div>
       <div  style="display: flex; justify-content: space-around;">
         <label for="">Сумма договора  <br>
-          <input type="text" class="textarea" v-model="Documents.fiat_amount">
+          <input type="text" class="textarea" name="fiat_amount" v-model="Documents.fiat_amount">
         </label>
         <label for="">Срок действия договора  <br>
-          <input type="text" class="textarea" v-model="Documents.expiration_date">
+          <input type="text" class="textarea" name="expiration_date" v-model="Documents.expiration_date">
         </label>
         <label for="">Пролонгация <br>
-          <select type="text"  v-model="Documents.prolongation">
+          <select type="text" name="prolongation"  v-model="Documents.prolongation">
             <option disabled>Пролонгация</option>
             <option value="true">Да</option>
             <option value="false">Нет</option>
@@ -61,7 +62,7 @@
         </label>
         <!-- ДОБАВИТЬ ПЕРЕДАЧУ ДАННЫХ ФАЙЛА -->
         <label for="">Скан-копия  <br>
-          <input type="file" ref="file" @change="readFile()"  class="textarea"  style="background: transparent; border: none !important; padding: none;"/>
+          <input type="file" ref="file"  class="textarea" name="scan"  style="background: transparent; border: none !important; padding: none;"/>
         </label>
         <label for="">Категория <br>
           <select type="text"  v-model="Documents.category">
@@ -74,68 +75,25 @@
             </select>
         </label>
       </div>
-<!-- counterarty -->
-<div  style="display: flex; justify-content: space-around;">
-        <label for="">Дата создания  <br>
-          <input type="date" class="textarea" v-model="Documents.counterparty.created_at">
-        </label>
-        <label for="">Рабочее наименование  <br>
-          <input type="text" class="textarea" v-model="Documents.counterparty.work_name">
-        </label>
-        <label for="">Краткое наименование <br>
-          <input type="text" class="textarea" v-model="Documents.counterparty.short_name">
-        </label>
-      </div>
-<div  style="display: flex; justify-content: space-around;">
-        <label for="">Полное наименование <br>
-          <input type="text" class="textarea" v-model="Documents.counterparty.full_name">
-        </label>
-        <label for="">ЕЛС <br>
-          <input type="text" class="textarea" v-model="Documents.counterparty.els">
-        </label>
-        <label for="">ОГРН/ЕГРПОУ/БИН  <br>
-          <input type="text" class="textarea" v-model="Documents.counterparty.ogrn">
-        </label>
-      </div>
-<div  style="display: flex; justify-content: space-around;">
-        <label for="">ИНН/РНН  <br>
-          <input type="text" class="textarea" v-model="Documents.counterparty.inn">
-        </label>
-        <label for="">КПП/№ Св-ва НДС  <br>
-          <input type="text" class="textarea" v-model="Documents.counterparty.kpp">
-        </label>
-        <label for="">Юридический адрес <br>
-          <input type="text" class="textarea" v-model="Documents.counterparty.legal_address">
-        </label>
-      </div>
-<div  style="display: flex; justify-content: space-around;">
-        <label for="">Руководитель <br>
-          <input type="text" class="textarea" v-model="Documents.counterparty.manager">
-        </label>
-        <label for="">Телефон <br>
-          <input type="text" class="textarea" v-model="Documents.counterparty.phone">
-        </label>
-        <label for="">Группа  <br>
-          <select type="text"  v-model="Documents.counterparty.group">
-            <option value="" disabled>Выберите группу</option>
-            <option :value="g[0]" v-for="g in Object.entries(groups)" :key="g[0]">
-                {{ g[1] }}
-              </option>
-            </select>
-        </label>
-      </div>
 
-</div>
-<!-- <label for="text" v-for="(guest, index) in ContractAnnexes" :key="guest.id">Гость: {{ index }} <br>
-                <input type="text" v-model="ContractAnnexes[index]">
-            </label> -->
-<annexes :ContractAnnexes="ContractAnnexes"></annexes>
-  
+<div  style="display: flex; justify-content: space-around;">
+      <label for="">Контрагент<br>
+          <input type="text" class="textarea"  name="counterparty" v-model="Documents.counterparty">
+      </label>
+
+ </div>
+ 
+ 
+    </div>
   <div style="display: flex; justify-content: space-around; margin-top: 3%;">
-    <button style="width: 15%" class="button Cancel"  @click="AddContractAnnexes()" >Добавить приложение</button><br>  
-    <button style="width: 15%" class="button Accept"  @click="createReport()">Создать</button><br>
+    <button  type="submit" style="width: 15%" class="button Accept"  @click="createReport()">Создать</button><br>
     <button style="width: 15%" class="button Delete"  block variant="danger" @click="$bvModal.hide('bv-modal-example')">Закрыть</button>
   </div>
+</form>
+
+<annexes :ContractAnnexes="ContractAnnexes"></annexes>
+  
+
 
   </b-modal>
 </div>
@@ -173,54 +131,32 @@ select{
 import { getGroupName } from "@/helpers/getGroupName";
 import { mapState } from "vuex";
 import groups from "@/helpers/groups";
-import api from '@/api/report'
-import annexes from './Annexes.vue'
+import api from "@/api/report"
+import annexes from "./Annexes.vue"
 export default{
   components: {annexes},
   data(){
     return{
       groups: groups.groups,
-
+      formData: {},
       ContractAnnexes: [],
       nextTodoId:0,
       Documents: {
-        number:'',
-        company_status: '',
-        created_at: '',
-        department: '',
-        contract_type: '',
-        contract_object: '',
-        fiat_amount: '',
-        expiration_date: '',
-        prolongation: '',
-        is_active : '',
-        file:'',
-            counterparty: {
-              created_at: '',
-              work_name: '',
-              short_name: '',
-              full_name: '',
-              els: '',
-              ogrn: '',
-              inn: '',
-              kpp: '',
-              legal_address: '',
-              manager: '',
-              phone: '',
-              group: '',
-            },
-            annexes: {
-              date: '',
-              doc_type: '',
-              number:'',
-              comment:'',
-              scan: '',
-              contract: ''
-            }
-         } 
+        number:"",
+        company_status: "",
+        created_at: "",
+        department: "",
+        contract_type: "",
+        contract_object: "",
+        fiat_amount: "",
+        expiration_date: "",
+        prolongation: "",
+        is_active : "",
+        counterparty: "",
+      } 
       }  
   },
-    props: ['modal'],
+    props: ["modal"],
     computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -231,38 +167,27 @@ export default{
 
   },
   methods: {
-    readFile() {
-      console.log('1')
-      this.Documents.file = this.$refs.file.files[0];
-    },
+ 
     getGroupName(id) {
       const group = getGroupName(this.allGroups, id);
       return group[0]?.name;
     },
-    evenNumbers(x) {
-    return this.ContractAnnexes.filter(num=> num == x)
-    },
+
     getGroupName(group) {
       // console.log(groups)
       return groups.groups[group] ;
     },
-    createReport(){
-      api.createDocument(this.Documents)
+    createReport(e){
+      e.preventDefault();
+      let data = new FormData(e.target);
+      api.createDocument(data)
       .then(response => {
         console.log(response.data)
+      }).catch(error => {
+        console.log(error)
       })
     },
-    AddContractAnnexes(){
-      this.ContractAnnexes.push({
-        id: this.nextTodoId++,
-        date: '',
-        doc_type: '',
-        number:'',
-        comment:'',
-        scan: '',
-        contract: ''
-    })
-    },
+
    
   }
 }
