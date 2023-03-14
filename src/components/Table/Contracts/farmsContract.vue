@@ -9,7 +9,7 @@
       :block-class="notifyClass"
       id="notif"
     />
-    <!-- <Loader :loader="loader"></Loader> -->
+    <Loader :loader="loader"></Loader>
     <button
       class="Accept"
       @click="getFarmContract()"
@@ -39,15 +39,12 @@
         position: relative;
         left: 50%;
         transform: translate(-50%, 0);
-        max-height: 60vh;
+        max-height: 150vh;
       "
     >
       <table
         class="table table-sm table-bordered table-hover"
-        style="margin: 0; border: 1px solid black"
-      >
-
-      
+        style="margin: 0; border: 1px solid black">
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr>
             <th>Номер договора</th>
@@ -87,8 +84,8 @@
         </thead>
         <tbody id="tableMain">
 
-
         </tbody>
+
       </table>
     </div>
 
@@ -149,7 +146,6 @@ export default {
   },
   methods: {
     CreateContract(){
-      console.log('1')
       this.$bvModal.show('bv-modal-example')
     },
     getGroupName(group) {
@@ -167,14 +163,23 @@ export default {
       this.getFarmContract();
     },
     getFarmContract() {
-      // this.loader = true;
+      
+      this.loader = true;
       api
         .getDirectoryFarm(this.filter_farms)
         .then((response) => {
+          this.loader = false;
+          this.total_objects = response.data.total_objects;
+          this.amount = response.data.amount;
           this.nextLink = response.data.links.next;
           this.prevLink = response.data.links.previous;
           this.farmDirecory = response.data.data;
-          let lengthFarm = this.farmDirecory.length;
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Данные отфильтрованы";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 1500);
+
           let table = document.querySelector('#tableMain')
           table.innerHTML = ""
           this.farmDirecory.forEach((el => {
@@ -191,31 +196,31 @@ export default {
             <td >${el.prolongation}</td>
             <td>${el.is_active}</td>
             <td>
-             <a href="${el.scan}" target="_blank"
-                ><img style="height: 20px" src="@/assets/pdf.png" alt="скан"
-              /></a>
+             <a href="${el.scan}" target="_blank"><img style="height: 20px" src="@/assets/pdf.png" alt="скан"/></a>
             </td>
             <td>${ el.category }</td>
             <td>${ el.comment }</td>
             <td>${ el.counterparty?.work_name } </td>
-            <td>${ el.counterparty.short_name }</td>
-            <td>${ el.counterparty.full_name }</td>
-            <td >${ el.counterparty.els }</td>
-            <td >${ el.counterparty.ogrn }</td>
-            <td>${ el.counterparty.inn }</td>
-            <td>${ el.counterparty.kpp }</td>
-            <td>${ el.counterparty.legal_address }</td>
-            <td>${ new Date(el.counterparty.created_at).toLocaleString() }</td>
-            <td>${ el.counterparty.manager }</td>
-            <td>${ el.counterparty.phone }</td>
-            <td>${ this.getGroupName(el.counterparty.group) }</td> 
+            <td>${ el.counterparty?.short_name }</td>
+            <td>${ el.counterparty?.full_name }</td>
+            <td >${ el.counterparty?.els }</td>
+            <td >${ el.counterparty?.ogrn }</td>
+            <td>${ el.counterparty?.inn }</td>
+            <td>${ el.counterparty?.kpp }</td>
+            <td>${ el.counterparty?.legal_address }</td>
+            <td>${ new Date(el.counterparty?.created_at).toLocaleString() }</td>
+            <td>${ el.counterparty?.manager }</td>
+            <td>${ el.counterparty?.phone }</td>
+            <td>${ this.getGroupName(el.counterparty?.group) }</td> 
               </tr>`;
             table.insertAdjacentHTML('beforeend', doc)
     
-            let annex_head = `<tr>
-                  <th>>></th>
+
+if(el.annex != []){
+  let annex_head = `<tr>
+                  <th><button class="button Accept" style="height: 25px" onclick="console.log(${el.id})">Скрыть</button></th>
                   <th style="background: burlywood !important">Номер приложения</th>
-                  <th  style="background: burlywood !important">Тип приложения</th>
+                  <th style="background: burlywood !important">Тип приложения</th>
                   <th style="background: burlywood !important">Дата</th>
                   <th style="background: burlywood !important">Примечание</th>
                   <th style="background: burlywood !important">Скан-копия</th>
@@ -223,38 +228,28 @@ export default {
               </tr>`
 
             table.insertAdjacentHTML('beforeend', annex_head)
-
-            el.annexes.forEach((a_el) => {
+           el.annexes.forEach((a_el) => {
               let annex = `<tr id="annex_${a_el.id}">
-                  <td style="border: none !important">---</td>
-                  <td>${ a_el.doc_type }</td>
-                  <td>${ a_el.number }</td>
-                  <td>${ new Date(a_el.created_at).toLocaleString() }</td>
-                  <td>${ a_el.comment }</td>
-                  <td>
+                  <td style="border: none !important; font-style: italic">Приложение</td>
+                  <td style="background: lightgrey !important">${ a_el.doc_type }</td>
+                  <td style="background: lightgrey !important">${ a_el.number }</td>
+                  <td style="background: lightgrey !important">${ new Date(a_el.created_at).toLocaleString() }</td>
+                  <td style="background: lightgrey !important">${ a_el.comment }</td>
+                  <td style="background: lightgrey !important">
                     <a href="${a_el.scan}" target="_blank"
                       ><img src="@/assets/excel.png"
                     /></a>
                   </td>
-                  <td>${ a_el.contract }</td>
+                  <td style="background: lightgrey !important">${ a_el.contract }</td>
                </tr>`;
                table.insertAdjacentHTML('beforeend', annex);
             })
-          }))
-
-          console.log(table)
-          this.total_objects = response.data.total_objects;
-          this.amount = response.data.amount;
-
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Данные отфильтрованы";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 1500);
-          // this.loader = false;
-        })
-        .catch((err) => {
-          // this.loader = false;
+      } 
+    }))
+  })
+    .catch((err) => {
+          this.loader = false;
+          console.log(err.response.data)
           this.notifyHead = "Ошибка";
           this.notifyMessage = "Данные не отфильтрованы, попробуйте еще раз";
           this.notifyClass = "wrapper-error";
@@ -268,6 +263,9 @@ export default {
     },
     updateFilterDataFarms(filter_farms) {
       this.filter_farms = filter_farms;
+    },
+    amen(a){
+      alert(a)
     },
   },
   computed: {
