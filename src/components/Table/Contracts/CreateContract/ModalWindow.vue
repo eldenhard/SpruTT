@@ -10,7 +10,7 @@
 
     
     
-<form  v-on:submit="createReport">
+<form  v-on:submit="createReport" >
 
     <div class="d-block text-center">
       <div  style="display: flex; justify-content: space-around;">
@@ -75,17 +75,32 @@
             </select>
         </label>
       </div>
-
 <div  style="display: flex; justify-content: space-around;">
+
       <label for="">Контрагент<br>
-          <input type="text" class="textarea"  name="counterparty" v-model="Documents.counterparty">
+        <div class="inputcontainer">
+            <input class="textarea" v-model="user_counterparty" v-on:input="debouncedHandler" 
+            style=" background: white; border: 1px solid grey !important; position: relative; box-sizing: border-box;" />
+            <input type="text" style="display: none" name="counterparty" v-model="Documents.counterparty">
+            <div class="icon-container" v-if="loaderInputDep">
+              <i class="loader"></i>
+            </div>
+        </div>
       </label>
 
+      <div class="dataDeparture" v-if="variants">
+        <ul>
+          <li v-for="counterparty in counterparties" :key="counterparty.id" 
+          @click="checkCounterparty(counterparty.work_name, counterparty.id)"
+        >
+            {{ counterparty.work_name }}
+          </li>
+        </ul>
+      </div>
  </div>
- 
- 
+
     </div>
-  <div style="display: flex; justify-content: space-around; margin-top: 3%;">
+  <div style="display: flex; justify-content: space-around; margin-top: 9%;">
     <button  type="submit" style="width: 15%" class="button Accept"  @click="createReport()">Создать</button><br>
     <button style="width: 15%" class="button Delete"  block variant="danger" @click="$bvModal.hide('bv-modal-example')">Закрыть</button>
   </div>
@@ -96,9 +111,95 @@
 
 
   </b-modal>
+  <Notifications
+        :show="showNotify"
+        :header="notifyHead"
+        :message="notifyMessage"
+        :block-class="notifyClass"
+        id="notif"
+      />
 </div>
 </template>
 <style scoped>
+
+ul {
+  width: 100%;
+  padding: 0 !important;
+}
+li {
+  border: 1px solid lightgrey;
+  list-style-type: none;
+  cursor: pointer;
+  width: 100%;
+}
+li:hover {
+  background: white;
+  color: black;
+  border: 1px solid rgb(143, 143, 143);
+}
+.dataDeparture {
+  width: 20%;
+  height: 90px;
+  overflow: auto;
+  border: 1px solid grey;
+  position: absolute;
+  left: 50%;
+  border-top: none;
+  background: rgb(245, 245, 245);
+  transform: translate(-50%, 0);
+  /* z-index: 10; */
+  margin-top: 4%;
+}
+.inputcontainer {
+  position: relative;
+}
+
+.icon-container {
+  position: absolute;
+  right: 15px;
+  top: calc(50% - 10px);
+}
+.loader {
+  position: relative;
+  z-index: 1000000000000000000000;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  animation: around 5.4s infinite;
+}
+
+@keyframes around {
+  0% {
+    transform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(360deg)
+  }
+}
+
+.loader::after, .loader::before {
+  content: "";
+  background: white;
+  position: absolute;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  border-width: 2px;
+  border-color: #646464 #646464 transparent transparent;
+  border-style: solid;
+  border-radius: 20px;
+  box-sizing: border-box;
+  top: 0;
+  right: 0;
+  animation: around 0.7s ease-in-out infinite;
+}
+
+.loader::after {
+  animation: around 0.7s ease-in-out 0.1s infinite;
+  background: transparent;
+}
+
+
 .textarea{
   background: transparent;
   height: 30px;
@@ -133,14 +234,23 @@ import { mapState } from "vuex";
 import groups from "@/helpers/groups";
 import api from "@/api/report"
 import annexes from "./Annexes.vue"
+import debounce from "lodash.debounce";
+import apiCounter from "@/api/counterparties"
+import Notifications from "@/components/notifications/Notifications.vue";
+
 export default{
-  components: {annexes},
+  components: {annexes, Notifications},
   data(){
     return{
       groups: groups.groups,
       formData: {},
       ContractAnnexes: [],
       nextTodoId:0,
+      loaderInputDep: false,
+      variants: false,
+      counterparties: '',
+      user_counterparty: '',
+
       Documents: {
         number:"",
         company_status: "",
@@ -153,7 +263,12 @@ export default{
         prolongation: "",
         is_active : "",
         counterparty: "",
-      } 
+      },
+
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
       }  
   },
     props: ["modal"],
@@ -167,7 +282,11 @@ export default{
 
   },
   methods: {
- 
+    checkCounterparty(data_name, data_id) {
+      this.user_counterparty = data_name
+      this.Documents.counterparty = data_id
+      this.variants = false
+    },
     getGroupName(id) {
       const group = getGroupName(this.allGroups, id);
       return group[0]?.name;
@@ -182,13 +301,37 @@ export default{
       let data = new FormData(e.target);
       api.createDocument(data)
       .then(response => {
-        console.log(response.data)
+        this.notifyHead = "Успешно";
+        this.notifyMessage = "Договор составлен";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
       }).catch(error => {
-        console.log(error)
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = error.response.data;
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
       })
     },
 
    
+  },
+  created() {
+    this.debouncedHandler = debounce(event => {
+      this.loaderInputDep = true
+      apiCounter.getAllcounterpartie(event.target.value)
+      .then(response => {
+        this.counterparties = response.data.data
+        this.loaderInputDep = false
+        this.variants = true
+      }).catch(error => {
+        this.loaderInputDep = false
+      })
+    }, 500);
+  },
+  beforeUnmount() {
+    this.debouncedHandler.cancel();
   }
 }
 </script>

@@ -168,7 +168,7 @@ li:hover {
 }
 .dataDeparture {
   width: 80%;
-  height: 90px;
+  /* height: 90px; */
   overflow: auto;
   border: 1px solid grey;
   position: absolute;

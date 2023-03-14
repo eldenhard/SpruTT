@@ -9,7 +9,7 @@
       :block-class="notifyClass"
       id="notif"
     />
-    <!-- <Loader :loader="loader"></Loader> -->
+    <Loader :loader="loader"></Loader>
     <button
       class="Accept"
       @click="getFarmContract()"
@@ -164,10 +164,11 @@ export default {
     },
     getFarmContract() {
       
-      // this.loader = true;
+      this.loader = true;
       api
         .getDirectoryFarm(this.filter_farms)
         .then((response) => {
+          this.loader = false;
           this.total_objects = response.data.total_objects;
           this.amount = response.data.amount;
           this.nextLink = response.data.links.next;
@@ -247,7 +248,7 @@ if(el.annex != []){
     }))
   })
     .catch((err) => {
-          // this.loader = false;
+          this.loader = false;
           console.log(err.response.data)
           this.notifyHead = "Ошибка";
           this.notifyMessage = "Данные не отфильтрованы, попробуйте еще раз";
