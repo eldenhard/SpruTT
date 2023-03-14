@@ -77,7 +77,7 @@
         </thead>
         <tbody id="tableMain">
           <template v-for=" el in this.farmDirecory">
-          <tr  :key="el.id">
+          <tr :key="el.id">
               <td>{{ el.number }}</td>
             <td>{{ el.company_status }}</td>
             <td>{{ el.created_at }}</td>
@@ -106,9 +106,10 @@
             <td>{{ el.counterparty?.phone }}</td>
             <td>{{ getGroupName(el.counterparty?.group) }}</td> 
           </tr>
-                <template v-for="e in el.annexes" >
+                <template v-for="e in el.annexes"  >
+
                   <tr :key="e.id">
-                      <th>>>></th>
+                      <th @click="collapse()"><img :src="ArrowPosition" alt=""></th>
                       <th style="background: burlywood !important">Номер приложения</th>
                       <th style="background: burlywood !important">Тип приложения</th>
                       <th style="background: burlywood !important">Дата</th>
@@ -117,9 +118,16 @@
                       <th style="background: burlywood !important">Номер договора</th>
                   </tr>
                   <tr >
+                    <!-- <th @click="collapse()"><img :src="ArrowPosition" alt=""></th>
+                      <th style="background: burlywood !important">Номер приложения</th>
+                      <th style="background: burlywood !important">Тип приложения</th>
+                      <th style="background: burlywood !important">Дата</th>
+                      <th style="background: burlywood !important">Примечание</th>
+                      <th style="background: burlywood !important">Скан-копия</th>
+                      <th style="background: burlywood !important">Номер договора</th> -->
                   <td style="border: none !important; font-style: italic">Приложение</td>
                   <td style="background: lightgrey !important">{{ e.doc_type }}</td>
-                  <td style="background: lightgrey !important">{{e.number }}</td>
+                  <td style="background: lightgrey !important"> {{e.number }}</td>
                   <td style="background: lightgrey !important">{{ new Date(e.created_at).toLocaleString() }}</td>
                   <td style="background: lightgrey !important">{{ e.comment }}</td>
                   <td style="background: lightgrey !important">
@@ -177,6 +185,7 @@ export default {
       total_objects: "",
       amount: "",
       farmDirecory: [],
+      collapseWatch: false,
       groups: groups.groups,
       // Уведомления
       showNotify: false,
@@ -191,18 +200,13 @@ export default {
       },
     };
   },
-  mounted(){
-    table.onclick = function(event) {
-  let target = event.target; // где был клик?
-
-  if (target.tagName != 'button') return; // не на TD? тогда не интересует
-  this.highlight(target)
-};
-  },
 
   methods: {
-    highlight(td) {
-      alert(td)
+    collapse() {
+      this.collapseWatch = true
+      // if(this.collapseWatch == false){
+      //   this.collapseWatch = true
+      // } this.collapseWatch = false
     },
     CreateContract(){
       this.$bvModal.show('bv-modal-example')
@@ -343,6 +347,13 @@ export default {
       }
       return count;
     },
+    ArrowPosition(){
+      if(this.collapseWatch = false){
+        return '@/assets/arrow-down.png'
+      }
+      return '@/assets/arrow-up2.png'
+
+    }
   },
 };
 </script>
