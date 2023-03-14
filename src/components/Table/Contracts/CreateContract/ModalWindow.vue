@@ -134,7 +134,7 @@
   <h4>Приложение {{ item.id+1 }}</h4>
       <div  style="display: flex; justify-content: space-around;">
         <label for="">Тип приложения <br>
-          <input type="text" class="textarea">
+          <input type="text" class="textarea" :value="item.doc_type[index]">
         </label>
         <label for="">Номер приложения <br>
           <input type="text" class="textarea" >
@@ -197,6 +197,12 @@ export default{
       ContractAnnexes: [],
   
       nextTodoId:0,
+       date: '',
+        doc_type: '',
+        number:'',
+        comment:'',
+        scan: '',
+        contract:'',
       Documents: {
         number:'',
         company_status: '',
@@ -251,17 +257,19 @@ export default{
       api.createDocument(this.Documents)
       .then(response => {
         console.log(response.data)
+      }).catch(error => {
+        console.log(error.response.data)
       })
     },
     AddContractAnnexes(){
       this.ContractAnnexes.push({
         id: this.nextTodoId++,
-        date: '',
-        doc_type: '',
-        number:'',
-        comment:'',
-        scan: '',
-        contract: ''
+        date: this.date,
+        doc_type: this.doc_type,
+        number: this.number,
+        comment: this.comment,
+        scan: this.scan,
+        contract: this.contract
     })
     console.log(this.ContractAnnexes)
     },
