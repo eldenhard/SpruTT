@@ -10,7 +10,7 @@
 
     
     
-<form  v-on:submit="createReport" >
+<form id="FormContract"  @submit="createReport" >
 
     <div class="d-block text-center">
       <div  style="display: flex; justify-content: space-around;">
@@ -112,6 +112,7 @@
 
   </b-modal>
   <Notifications
+  sty
         :show="showNotify"
         :header="notifyHead"
         :message="notifyMessage"
@@ -252,11 +253,20 @@ export default{
       user_counterparty: '',
 
       Documents: {
+        number:"",
+        company_status: "",
+        created_at: "",
+        department: "",
+        contract_type: "",
+        contract_object: "",
+        fiat_amount: "",
+        expiration_date: "",
         prolongation: "",
         is_active : "",
         counterparty: "",
       },
 
+      showNotify: false,
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
@@ -273,6 +283,9 @@ export default{
 
   },
   methods: {
+    hideModal(){
+      this.$refs['bv-modal-example'].hide()
+    },
     checkCounterparty(data_name, data_id) {
       this.user_counterparty = data_name
       this.Documents.counterparty = data_id
@@ -288,11 +301,38 @@ export default{
       return groups.groups[group] ;
     },
     createReport(e){
-      e.preventDefault();
+      // e.preventDefault();
+      if (e && e.preventDefault) { e.preventDefault(); }
       let data = new FormData(e.target);
       api.createDocument(data)
       .then(response => {
+        document.querySelector('#FormContract').reset()
+        console.log('11111111')
+        this.hideModal()
         this.notifyHead = "Успешно";
+        this.notifyMessage = "Договор составлен";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        // setTimeout(() => (this.showNotify = false), 2000);
+      }).catch(error => {
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = error.response.data;
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
+      })
+    },
+
+   
+  },
+  created() {
+    this.debouncedHandler = debounce(event => {
+      this.loaderInputDep = true
+      apiCounter.getAllcounterpartie(event.target.value)
+      .then(response => {
+        this.counterparties = response.data.data
+        this.loaderInputDep = false
+        this.variants = true
       }).catch(error => {
         this.loaderInputDep = false
       })

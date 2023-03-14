@@ -48,7 +48,8 @@ export default{
     position: fixed;
     top: 1%;
     left: 3%;
-    z-index: 1060;
+    z-index: 9999999999999 !important;
+
   }
   .wrapper-success .notifications-main {
     width: 100%;

@@ -43,7 +43,7 @@
       "
     >
       <table
-        class="table table-sm table-bordered table-hover"
+        class="table table-sm table-bordered table-hover" id="table"
         style="margin: 0; border: 1px solid black">
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr>
@@ -60,16 +60,9 @@
             <th>Скан-копия</th>
             <th>Категория</th>
             <th>Примечание</th>
-
-            <th>
-              Рабочее наименование
-            </th>
-            <th>
-              Краткое наименование
-            </th>
-            <th>
-              Полное наименование
-            </th>
+            <th>Рабочее наименование</th>
+            <th>Краткое наименование</th>
+            <th> Полное наименование</th>
             <th>ЕЛС</th>
             <th>ОГРН/ЕГРПОУ/БИН</th>
             <th>ИНН/РНН</th>
@@ -83,7 +76,61 @@
           </tr>
         </thead>
         <tbody id="tableMain">
-
+          <template v-for=" el in this.farmDirecory">
+          <tr  :key="el.id">
+              <td>{{ el.number }}</td>
+            <td>{{ el.company_status }}</td>
+            <td>{{ el.created_at }}</td>
+            <td>{{ el.department }}</td>
+            <td>{{ el.contract_type }}</td>
+            <td>{{ el.contract_object }}</td>
+            <td>{{ el.fiat_amount }}</td>
+            <td>{{ el.expiration_date }}</td>
+            <td >{{el.prolongation}}</td>
+            <td>{{el.is_active}}</td>
+            <td>
+             <a href="el.scan" target="_blank"><img style="height: 20px" src="@/assets/pdf.png" alt="скан"/></a>
+            </td>
+            <td>{{ el.category }}</td>
+            <td>{{ el.comment }}</td>
+            <td>{{ el.counterparty?.work_name }} </td>
+            <td>{{ el.counterparty?.short_name }}</td>
+            <td>{{ el.counterparty?.full_name }}</td>
+            <td >{{ el.counterparty?.els }}</td>
+            <td >{{ el.counterparty?.ogrn }}</td>
+            <td>{{ el.counterparty?.inn }}</td>
+            <td>{{ el.counterparty?.kpp }}</td>
+            <td>{{ el.counterparty?.legal_address }}</td>
+            <td>{{ new Date(el.counterparty?.created_at).toLocaleString() }}</td>
+            <td>{{ el.counterparty?.manager }}</td>
+            <td>{{ el.counterparty?.phone }}</td>
+            <td>{{ getGroupName(el.counterparty?.group) }}</td> 
+          </tr>
+                <template v-for="e in el.annexes" >
+                  <tr :key="e.id">
+                      <th>>>></th>
+                      <th style="background: burlywood !important">Номер приложения</th>
+                      <th style="background: burlywood !important">Тип приложения</th>
+                      <th style="background: burlywood !important">Дата</th>
+                      <th style="background: burlywood !important">Примечание</th>
+                      <th style="background: burlywood !important">Скан-копия</th>
+                      <th style="background: burlywood !important">Номер договора</th>
+                  </tr>
+                  <tr >
+                  <td style="border: none !important; font-style: italic">Приложение</td>
+                  <td style="background: lightgrey !important">{{ e.doc_type }}</td>
+                  <td style="background: lightgrey !important">{{e.number }}</td>
+                  <td style="background: lightgrey !important">{{ new Date(e.created_at).toLocaleString() }}</td>
+                  <td style="background: lightgrey !important">{{ e.comment }}</td>
+                  <td style="background: lightgrey !important">
+                    <a href="el.scan" target="_blank"
+                      ><img src="@/assets/excel.png"
+                    /></a>
+                  </td>
+                  <td style="background: lightgrey !important">{{ e.contract }}</td>
+               </tr>
+                </template>
+            </template>
         </tbody>
 
       </table>
@@ -144,7 +191,19 @@ export default {
       },
     };
   },
+  mounted(){
+    table.onclick = function(event) {
+  let target = event.target; // где был клик?
+
+  if (target.tagName != 'button') return; // не на TD? тогда не интересует
+  this.highlight(target)
+};
+  },
+
   methods: {
+    highlight(td) {
+      alert(td)
+    },
     CreateContract(){
       this.$bvModal.show('bv-modal-example')
     },
@@ -180,72 +239,72 @@ export default {
           this.showNotify = true;
           setTimeout(this.closeNotification, 1500);
 
-          let table = document.querySelector('#tableMain')
-          table.innerHTML = ""
-          this.farmDirecory.forEach((el => {
-            let doc = `
-            <tr id="doc_${el.id}">
-            <td>${ el.number }</td>
-            <td>${ el.company_status }</td>
-            <td>${ el.created_at }</td>
-            <td>${ el.department }</td>
-            <td>${ el.contract_type }</td>
-            <td>${ el.contract_object }</td>
-            <td>${ el.fiat_amount }</td>
-            <td>${ el.expiration_date }}</td>
-            <td >${el.prolongation}</td>
-            <td>${el.is_active}</td>
-            <td>
-             <a href="${el.scan}" target="_blank"><img style="height: 20px" src="@/assets/pdf.png" alt="скан"/></a>
-            </td>
-            <td>${ el.category }</td>
-            <td>${ el.comment }</td>
-            <td>${ el.counterparty?.work_name } </td>
-            <td>${ el.counterparty?.short_name }</td>
-            <td>${ el.counterparty?.full_name }</td>
-            <td >${ el.counterparty?.els }</td>
-            <td >${ el.counterparty?.ogrn }</td>
-            <td>${ el.counterparty?.inn }</td>
-            <td>${ el.counterparty?.kpp }</td>
-            <td>${ el.counterparty?.legal_address }</td>
-            <td>${ new Date(el.counterparty?.created_at).toLocaleString() }</td>
-            <td>${ el.counterparty?.manager }</td>
-            <td>${ el.counterparty?.phone }</td>
-            <td>${ this.getGroupName(el.counterparty?.group) }</td> 
-              </tr>`;
-            table.insertAdjacentHTML('beforeend', doc)
+//           let table = document.querySelector('#tableMain')
+//           table.innerHTML = ""
+//           this.farmDirecory.forEach((el => {
+//             let doc = `
+//             <tr id="doc_${el.id}">
+//             <td>${ el.number }</td>
+//             <td>${ el.company_status }</td>
+//             <td>${ el.created_at }</td>
+//             <td>${ el.department }</td>
+//             <td>${ el.contract_type }</td>
+//             <td>${ el.contract_object }</td>
+//             <td>${ el.fiat_amount }</td>
+//             <td>${ el.expiration_date }}</td>
+//             <td >${el.prolongation}</td>
+//             <td>${el.is_active}</td>
+//             <td>
+//              <a href="${el.scan}" target="_blank"><img style="height: 20px" src="@/assets/pdf.png" alt="скан"/></a>
+//             </td>
+//             <td>${ el.category }</td>
+//             <td>${ el.comment }</td>
+//             <td>${ el.counterparty?.work_name } </td>
+//             <td>${ el.counterparty?.short_name }</td>
+//             <td>${ el.counterparty?.full_name }</td>
+//             <td >${ el.counterparty?.els }</td>
+//             <td >${ el.counterparty?.ogrn }</td>
+//             <td>${ el.counterparty?.inn }</td>
+//             <td>${ el.counterparty?.kpp }</td>
+//             <td>${ el.counterparty?.legal_address }</td>
+//             <td>${ new Date(el.counterparty?.created_at).toLocaleString() }</td>
+//             <td>${ el.counterparty?.manager }</td>
+//             <td>${ el.counterparty?.phone }</td>
+//             <td>${ this.getGroupName(el.counterparty?.group) }</td> 
+//               </tr>`;
+//             table.insertAdjacentHTML('beforeend', doc)
     
 
-if(el.annex != []){
-  let annex_head = `<tr>
-                  <th><button class="button Accept" style="height: 25px" onclick="console.log(${el.id})">Скрыть</button></th>
-                  <th style="background: burlywood !important">Номер приложения</th>
-                  <th style="background: burlywood !important">Тип приложения</th>
-                  <th style="background: burlywood !important">Дата</th>
-                  <th style="background: burlywood !important">Примечание</th>
-                  <th style="background: burlywood !important">Скан-копия</th>
-                  <th style="background: burlywood !important">Номер договора</th>
-              </tr>`
+// if(el.annex != []){
+//   let annex_head = `<tr >
+//                   <th>>>></th>
+//                   <th style="background: burlywood !important">Номер приложения</th>
+//                   <th style="background: burlywood !important">Тип приложения</th>
+//                   <th style="background: burlywood !important">Дата</th>
+//                   <th style="background: burlywood !important">Примечание</th>
+//                   <th style="background: burlywood !important">Скан-копия</th>
+//                   <th style="background: burlywood !important">Номер договора</th>
+//               </tr>`
 
-            table.insertAdjacentHTML('beforeend', annex_head)
-           el.annexes.forEach((a_el) => {
-              let annex = `<tr id="annex_${a_el.id}">
-                  <td style="border: none !important; font-style: italic">Приложение</td>
-                  <td style="background: lightgrey !important">${ a_el.doc_type }</td>
-                  <td style="background: lightgrey !important">${ a_el.number }</td>
-                  <td style="background: lightgrey !important">${ new Date(a_el.created_at).toLocaleString() }</td>
-                  <td style="background: lightgrey !important">${ a_el.comment }</td>
-                  <td style="background: lightgrey !important">
-                    <a href="${a_el.scan}" target="_blank"
-                      ><img src="@/assets/excel.png"
-                    /></a>
-                  </td>
-                  <td style="background: lightgrey !important">${ a_el.contract }</td>
-               </tr>`;
-               table.insertAdjacentHTML('beforeend', annex);
-            })
-      } 
-    }))
+//             table.insertAdjacentHTML('beforeend', annex_head)
+//            el.annexes.forEach((a_el) => {
+//               let annex = `<tr id="annex_${a_el.id}">
+//                   <td style="border: none !important; font-style: italic">Приложение</td>
+//                   <td style="background: lightgrey !important">${ a_el.doc_type }</td>
+//                   <td style="background: lightgrey !important">${ a_el.number }</td>
+//                   <td style="background: lightgrey !important">${ new Date(a_el.created_at).toLocaleString() }</td>
+//                   <td style="background: lightgrey !important">${ a_el.comment }</td>
+//                   <td style="background: lightgrey !important">
+//                     <a href="${a_el.scan}" target="_blank"
+//                       ><img src="@/assets/excel.png"
+//                     /></a>
+//                   </td>
+//                   <td style="background: lightgrey !important">${ a_el.contract }</td>
+//                </tr>`;
+//                table.insertAdjacentHTML('beforeend', annex);
+//             })
+//       } 
+//     }))
   })
     .catch((err) => {
           this.loader = false;
@@ -264,9 +323,9 @@ if(el.annex != []){
     updateFilterDataFarms(filter_farms) {
       this.filter_farms = filter_farms;
     },
-    amen(a){
-      alert(a)
-    },
+    save() {
+      alert('сохраняю');
+    }
   },
   computed: {
     ...mapState({
@@ -282,7 +341,6 @@ if(el.annex != []){
           if (el.annexes.length > count) count = el.annexes.length;
         });
       }
-
       return count;
     },
   },
