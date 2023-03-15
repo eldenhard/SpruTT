@@ -184,7 +184,7 @@ export default {
           table.innerHTML = ""
           this.farmDirecory.forEach((el => {
             let doc = `
-            <tr id="doc_${el.id}">
+            <tr id="doc_${el.id}" onclick="alert(${el.id})">
             <td>${ el.number }</td>
             <td>${ el.company_status }</td>
             <td>${ el.created_at }</td>
@@ -193,10 +193,11 @@ export default {
             <td>${ el.contract_object }</td>
             <td>${ el.fiat_amount }</td>
             <td>${ el.expiration_date }}</td>
-            <td >${el.prolongation}</td>
-            <td>${el.is_active}</td>
+            <td >${el.prolongation ? 'Да' : 'Нет'}</td>
+            <td>${el.is_active ? 'Активный' : 'Неактивный'}</td>
             <td>
-             <a href="${el.scan}" target="_blank"><img style="height: 20px" src="@/assets/pdf.png" alt="скан"/></a>
+              
+             <a href="${el.scan}" target="_blank"><img style="height: 20px" src="C:/Users/a.reshetilo/Desktop/VueTTre/SpruTT/src/z\" alt="скан"/></a>
             </td>
             <td>${ el.category }</td>
             <td>${ el.comment }</td>
@@ -217,7 +218,7 @@ export default {
     
 
 if(el.annex != []){
-  let annex_head = `<tr>
+  let annex_head = `<tr class="annexes">
                   <th><button class="button Accept" style="height: 25px" onclick="console.log(${el.id})">Скрыть</button></th>
                   <th style="background: burlywood !important">Номер приложения</th>
                   <th style="background: burlywood !important">Тип приложения</th>
@@ -229,7 +230,7 @@ if(el.annex != []){
 
             table.insertAdjacentHTML('beforeend', annex_head)
            el.annexes.forEach((a_el) => {
-              let annex = `<tr id="annex_${a_el.id}">
+              let annex = `<tr id="annex_${a_el.id}" class="annexes">
                   <td style="border: none !important; font-style: italic">Приложение</td>
                   <td style="background: lightgrey !important">${ a_el.doc_type }</td>
                   <td style="background: lightgrey !important">${ a_el.number }</td>
@@ -297,6 +298,9 @@ if(el.annex != []){
 .td-btr {
   padding: 0 !important;
   vertical-align: middle !important;
+}
+.annexes{
+  display: none;
 }
 </style>
     

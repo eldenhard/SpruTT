@@ -100,7 +100,7 @@
  </div>
 
     </div>
-  <div style="display: flex; justify-content: space-around; margin-top: 9%;">
+  <div style="display: flex; justify-content: space-around; margin-top: 7%;">
     <button  type="submit" style="width: 15%" class="button Accept"  @click="createReport()">Создать</button><br>
     <button style="width: 15%" class="button Delete"  block variant="danger" @click="$bvModal.hide('bv-modal-example')">Закрыть</button>
   </div>
