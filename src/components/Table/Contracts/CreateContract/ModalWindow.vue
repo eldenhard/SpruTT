@@ -10,7 +10,7 @@
 
     
     
-<form  v-on:submit="createReport" >
+<form id="FormContract"  @submit="createReport" >
 
     <div class="d-block text-center">
       <div  style="display: flex; justify-content: space-around;">
@@ -112,6 +112,7 @@
 
   </b-modal>
   <Notifications
+  sty
         :show="showNotify"
         :header="notifyHead"
         :message="notifyMessage"
@@ -282,6 +283,9 @@ export default{
 
   },
   methods: {
+    hideModal(){
+      this.$refs['bv-modal-example'].hide()
+    },
     checkCounterparty(data_name, data_id) {
       this.user_counterparty = data_name
       this.Documents.counterparty = data_id
@@ -297,15 +301,19 @@ export default{
       return groups.groups[group] ;
     },
     createReport(e){
-      e.preventDefault();
+      // e.preventDefault();
+      if (e && e.preventDefault) { e.preventDefault(); }
       let data = new FormData(e.target);
       api.createDocument(data)
       .then(response => {
+        document.querySelector('#FormContract').reset()
+        console.log('11111111')
+        this.hideModal()
         this.notifyHead = "Успешно";
         this.notifyMessage = "Договор составлен";
         this.notifyClass = "wrapper-success";
         this.showNotify = true;
-        setTimeout(() => (this.showNotify = false), 2000);
+        // setTimeout(() => (this.showNotify = false), 2000);
       }).catch(error => {
         this.notifyHead = "Ошибка";
         this.notifyMessage = error.response.data;
