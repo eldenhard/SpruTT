@@ -3,7 +3,7 @@
     <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
     <ModalContractCreate />
     <Annexes :contract="contract_number" :btnClickHandler="getFarmContract"/>
-    <EditAnnexe :contract="contract_number" />
+    <EditAnnexe :contract="contract_number" :obj="editAnnexe" />
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -115,7 +115,7 @@
                       <td>
                         <b-dropdown id="dropdown-1" text="Действие приложение" size="sm" style="width: 95% !important;">
                           <b-dropdown-item @click="deleteCurrentAnnexes(e.id)">Удалить</b-dropdown-item>
-                          <b-dropdown-item @click="OpenModalEditAnnexe(el.number)">Редактировать</b-dropdown-item>
+                          <b-dropdown-item @click="OpenModalEditAnnexe(el.number, el)">Редактировать</b-dropdown-item>
                         </b-dropdown>
                       </td>
                       <td style="border: none !important; font-style: italic">Приложение</td>
@@ -214,7 +214,7 @@ export default {
       },
       users: [],
       // Для компонента editAnnexe
-      editAnnexe: ""
+      editAnnexe: []
     };
   },
 mounted(){
@@ -275,8 +275,9 @@ mounted(){
       this.contract_number = number
       this.$bvModal.show('bv-modal-annex-modal')
     },
-    OpenModalEditAnnexe(number){
+    OpenModalEditAnnexe(number, obj){
       this.contract_number = number
+      this.editAnnexe = obj
       this.$bvModal.show('bv-modal-contract-modal')
     },
     getGroupName(group) {

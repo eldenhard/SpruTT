@@ -18,12 +18,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th style="padding: 0"><input type="text" name="contract" v-model="contract" style="width:100% !important; text-align: center;"></th>
+    <tr >
+      <th style="padding: 0"><input type="text" name="contract" v-model="contract" style="width:100% !important; text-align: center;" readonly></th>
       <td style="padding: 0"><input type="text" name="doc_type"  style="width:100% !important; text-align: center;"></td>
-      <td style="padding: 0"><input type="text" name="number" style="width:100% !important; text-align: center;"></td>
-      <td style="padding: 0"><input type="date" name="created_at"  style="width:100% !important; text-align: center;"></td>
-      <td style="padding: 0"><input type="text" name="comment"  style="width:100% !important; text-align: center;"></td>
+      <td style="padding: 0"><input type="text" name="number"   style="width:100% !important; text-align: center;"></td>
+      <td style="padding: 0"><input type="date" name="created_at"   style="width:100% !important; text-align: center;"></td>
+      <td style="padding: 0"><input type="text" name="comment"    style="width:100% !important; text-align: center;"></td>
       <td><input type="file" name="scan"></td>
     </tr>
    
@@ -45,6 +45,6 @@
 <script>
 export default{
   name: 'EditAnnexe',
-  props: ['contract']
+  props: ['contract', 'obj']
 }
 </script>
