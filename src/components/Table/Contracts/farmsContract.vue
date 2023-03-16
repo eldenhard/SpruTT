@@ -3,6 +3,7 @@
     <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
     <ModalContractCreate />
     <Annexes :contract="contract_number" :btnClickHandler="getFarmContract"/>
+    <EditAnnexe :contract="contract_number" />
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -114,7 +115,7 @@
                       <td>
                         <b-dropdown id="dropdown-1" text="Действие приложение" size="sm" style="width: 95% !important;">
                           <b-dropdown-item @click="deleteCurrentAnnexes(e.id)">Удалить</b-dropdown-item>
-                          <b-dropdown-item>Редактировать</b-dropdown-item>
+                          <b-dropdown-item @click="OpenModalEditAnnexe(el.number)">Редактировать</b-dropdown-item>
                         </b-dropdown>
                       </td>
                       <td style="border: none !important; font-style: italic">Приложение</td>
@@ -150,10 +151,8 @@
                 </template>
             </template>
         </tbody>
-
       </table>
     </div>
-
 
     <div style="display: flex; justify-content: space-around; margin-top: 2%">
       <button
@@ -188,10 +187,10 @@ import FilterFarms from "@/components/filter/contractFilter/filter_farms.vue";
 import ModalContractCreate from '@/components/Table/Contracts/CreateContract/ModalWindow.vue'
 import Annexes from "./CreateContract/Annexes.vue";
 import { getUserById } from "@/helpers/getAllUsers";
-
+import EditAnnexe from "@/components/Table/Contracts/CreateContract/EditAnnexe.vue"
 export default {
   name: "PartnerTable",
-  components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes },
+  components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe },
   data() {
     return {
       nextLink: null,
@@ -214,6 +213,8 @@ export default {
         counterparty__full_name: "",
       },
       users: [],
+      // Для компонента editAnnexe
+      editAnnexe: ""
     };
   },
 mounted(){
@@ -230,7 +231,6 @@ mounted(){
 },
   methods: {
     ChangeIdByName(id){
-      // console.log(id)
      const users = getUserById(this.users, id)
      if (users[0]) {
         return users[0]?.last_name + " " + users[0]?.first_name[0] + ".";
@@ -246,7 +246,6 @@ mounted(){
       return "";
     },
     DeleteCurrentContract(id){
-      // console.log(id)
       this.loader = true
       api.deleteCurrentContract(id)
       .then(response => {
@@ -276,8 +275,11 @@ mounted(){
       this.contract_number = number
       this.$bvModal.show('bv-modal-annex-modal')
     },
+    OpenModalEditAnnexe(number){
+      this.contract_number = number
+      this.$bvModal.show('bv-modal-contract-modal')
+    },
     getGroupName(group) {
-      // console.log(groups)
       return groups.groups[group] ;
     },
     goToPage(link) {
