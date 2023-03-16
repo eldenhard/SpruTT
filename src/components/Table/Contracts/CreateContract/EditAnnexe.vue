@@ -20,10 +20,10 @@
   <tbody>
     <tr >
       <th style="padding: 0"><input type="text" name="contract" v-model="contract" style="width:100% !important; text-align: center;" readonly></th>
-      <td style="padding: 0"><input type="text" name="doc_type"  style="width:100% !important; text-align: center;"></td>
-      <td style="padding: 0"><input type="text" name="number"   style="width:100% !important; text-align: center;"></td>
-      <td style="padding: 0"><input type="date" name="created_at"   style="width:100% !important; text-align: center;"></td>
-      <td style="padding: 0"><input type="text" name="comment"    style="width:100% !important; text-align: center;"></td>
+      <td style="padding: 0"><input type="text" name="doc_type" v-model="annex.doc_type" style="width:100% !important; text-align: center;"></td>
+      <td style="padding: 0"><input type="text" name="number"   v-model="annex.number"  style="width:100% !important; text-align: center;"></td>
+      <td style="padding: 0"><input type="date" name="created_at"  v-model="annex.created_at"   style="width:100% !important; text-align: center;"></td>
+      <td style="padding: 0"><input type="text" name="comment"  v-model="annex.comment"   style="width:100% !important; text-align: center;"></td>
       <td><input type="file" name="scan"></td>
     </tr>
    
@@ -43,8 +43,15 @@
 </template>
 
 <script>
+import api from '@/api/report'
 export default{
   name: 'EditAnnexe',
-  props: ['contract', 'obj']
+  props: ['contract', 'annex'],
+  data(){
+    return {
+       
+    }
+  },
+
 }
 </script>

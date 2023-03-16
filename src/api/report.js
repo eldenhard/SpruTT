@@ -100,6 +100,9 @@ const getAllDataLastReportAdmin = (data) => {
 const createDocument = (data) => {
     return api.post(`${documents}/contract/`, data)
 }
+const getContractAnnex= (id) => {
+    return api.get(`${documents}/contract-annex/${id}`)
+}
 export default {
     getUsers,
     getReportById,
@@ -118,7 +121,7 @@ export default {
     // Личный кабинет 
     getUsersLK,
     getManagerLK,
-
+    getContractAnnex,
     // БДР отчет
 
     createBDRreport,

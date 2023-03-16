@@ -3,7 +3,7 @@
     <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
     <ModalContractCreate />
     <Annexes :contract="contract_number" :btnClickHandler="getFarmContract"/>
-    <EditAnnexe :contract="contract_number" :obj="editAnnexe" />
+    <EditAnnexe :contract="contract_number" :annex="editAnnexe" />
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -115,7 +115,7 @@
                       <td>
                         <b-dropdown id="dropdown-1" text="Действие приложение" size="sm" style="width: 95% !important;">
                           <b-dropdown-item @click="deleteCurrentAnnexes(e.id)">Удалить</b-dropdown-item>
-                          <b-dropdown-item @click="OpenModalEditAnnexe(el.number, el)">Редактировать</b-dropdown-item>
+                          <b-dropdown-item @click="OpenModalEditAnnexe(el.number, e.id)">Редактировать</b-dropdown-item>
                         </b-dropdown>
                       </td>
                       <td style="border: none !important; font-style: italic">Приложение</td>
@@ -178,7 +178,7 @@
 <script>
 import api from "@/api/directory";
 import apiCounter from "@/api/counterparties"
-
+import apiRep from '@/api/report'
 import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
@@ -215,6 +215,7 @@ export default {
       users: [],
       // Для компонента editAnnexe
       editAnnexe: []
+
     };
   },
 mounted(){
@@ -275,10 +276,20 @@ mounted(){
       this.contract_number = number
       this.$bvModal.show('bv-modal-annex-modal')
     },
-    OpenModalEditAnnexe(number, obj){
+    OpenModalEditAnnexe(number, id){
+      this.loader = true
       this.contract_number = number
-      this.editAnnexe = obj
-      this.$bvModal.show('bv-modal-contract-modal')
+      apiRep.getContractAnnex(id)
+      .then(response => {
+        console.log('!!!!!!!!')
+        this.editAnnexe = response.data
+        this.loader = false
+        this.$bvModal.show('bv-modal-contract-modal')
+      }).catch(error => {
+        console.log(error)
+        this.loader = false
+      })
+     
     },
     getGroupName(group) {
       return groups.groups[group] ;
@@ -304,8 +315,6 @@ mounted(){
             item.hhh = true;
           })
           this.farmDirecory = l_data;
-          console.log( this.farmDirecory)
-
           this.total_objects = response.data.total_objects;
           this.amount = response.data.amount;
           this.nextLink = response.data.links.next;
