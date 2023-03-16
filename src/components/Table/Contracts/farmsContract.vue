@@ -2,6 +2,7 @@
   <div>
     <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
     <ModalContractCreate />
+    <Annexes :contract="contract_number" :btnClickHandler="getFarmContract"/>
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -39,7 +40,7 @@
         position: relative;
         left: 50%;
         transform: translate(-50%, 0);
-        max-height: 150vh;
+        max-height: 70vh;
       "
     >
       <table
@@ -47,6 +48,7 @@
         style="margin: 0; border: 1px solid black">
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr>
+            <th>Действие</th>
             <th>Номер договора</th>
             <th>Статус ТТ по договору</th>
             <th>Дата заключения</th>
@@ -60,25 +62,20 @@
             <th>Скан-копия</th>
             <th>Категория</th>
             <th>Примечание</th>
-            <th>Рабочее наименование</th>
-            <th>Краткое наименование</th>
-            <th> Полное наименование</th>
-            <th>ЕЛС</th>
-            <th>ОГРН/ЕГРПОУ/БИН</th>
-            <th>ИНН/РНН</th>
-            <th>КПП/№ Св-ва НДС</th>
-            <th>Юридический адрес</th>
-            <th>Дата создания</th>
-            <th>Руководитель</th>
-            <th>Телефон</th>
-            <th>Группа</th>
-
+            <th>Контрагент</th>
+            <th>Ответственный</th>
           </tr>
         </thead>
         <tbody id="tableMain">
           <template v-for=" el in this.farmDirecory">
           <tr :key="el.id">
-              <td>{{ el.number }}</td>
+            <td>
+                <b-dropdown id="dropdown-1" text="Действие договор" size="sm" style="width: 95% !important;">
+                        <b-dropdown-item @click="DeleteCurrentContract(el.id)">Удалить</b-dropdown-item>
+                        <b-dropdown-item>Редактировать</b-dropdown-item>
+                </b-dropdown>
+            </td>
+            <td>{{ el.number }}</td>
             <td>{{ el.company_status }}</td>
             <td>{{ el.created_at }}</td>
             <td>{{ el.department }}</td>
@@ -93,23 +90,16 @@
             </td>
             <td>{{ el.category }}</td>
             <td>{{ el.comment }}</td>
-            <td>{{ el.counterparty?.work_name }} </td>
-            <td>{{ el.counterparty?.short_name }}</td>
-            <td>{{ el.counterparty?.full_name }}</td>
-            <td >{{ el.counterparty?.els }}</td>
-            <td >{{ el.counterparty?.ogrn }}</td>
-            <td>{{ el.counterparty?.inn }}</td>
-            <td>{{ el.counterparty?.kpp }}</td>
-            <td>{{ el.counterparty?.legal_address }}</td>
-            <td>{{ new Date(el.counterparty?.created_at).toLocaleString() }}</td>
-            <td>{{ el.counterparty?.manager }}</td>
-            <td>{{ el.counterparty?.phone }}</td>
-            <td>{{ getGroupName(el.counterparty?.group) }}</td> 
+            <td>{{ ChangeIdCounterByName(el.counterparty) }} </td>
+            <td>{{ ChangeIdByName(el.responsible) }}</td>
           </tr>
                 <template >
                   <tr>
-                      <th style="cursor: pointer" @click="el.hhh = !el.hhh">
-                          <img :src="ArrowPosition" alt="">
+                    <th>
+                      <b-button variant="success" size="sm" style="width: 100% !important; margin: 0 !important;" @click=" CreateAnnex(el.number)">Добавить приложение</b-button>
+                    </th>
+                      <th style="cursor: pointer" @click="el.hhh = !el.hhh" >
+                          <img :src="el.hhh ? require('@/assets/arrow-down.png') : require('@/assets/arrow-up2.png')" alt="">
                       </th>
                       <th style="background: burlywood !important">Тип приложения</th>
                       <th style="background: burlywood !important">Номер  приложения</th>
@@ -117,9 +107,16 @@
                       <th style="background: burlywood !important">Примечание</th>
                       <th style="background: burlywood !important">Скан-копия</th>
                       <th style="background: burlywood !important">Номер договора</th>
+
                   </tr>
                   <template >
                     <tr v-for="e in el.annexes" :key="e.id" :class="{ 'red' : el.hhh }"> 
+                      <td>
+                        <b-dropdown id="dropdown-1" text="Действие приложение" size="sm" style="width: 95% !important;">
+                          <b-dropdown-item @click="deleteCurrentAnnexes(e.id)">Удалить</b-dropdown-item>
+                          <b-dropdown-item>Редактировать</b-dropdown-item>
+                        </b-dropdown>
+                      </td>
                       <td style="border: none !important; font-style: italic">Приложение</td>
                       <td style="background: lightgrey !important">{{ e.number }}</td>
                       <td style="background: lightgrey !important"> {{e.doc_type }}</td>
@@ -133,6 +130,23 @@
                         <td style="background: lightgrey !important">{{ e.contract }}</td>
                     </tr>
                   </template>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
                 </template>
             </template>
         </tbody>
@@ -164,15 +178,20 @@
     
 <script>
 import api from "@/api/directory";
+import apiCounter from "@/api/counterparties"
+
 import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import groups from "@/helpers/groups";
 import FilterFarms from "@/components/filter/contractFilter/filter_farms.vue";
 import ModalContractCreate from '@/components/Table/Contracts/CreateContract/ModalWindow.vue'
+import Annexes from "./CreateContract/Annexes.vue";
+import { getUserById } from "@/helpers/getAllUsers";
+
 export default {
   name: "PartnerTable",
-  components: { Loader, Notifications, FilterFarms,ModalContractCreate },
+  components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes },
   data() {
     return {
       nextLink: null,
@@ -189,24 +208,73 @@ export default {
       notifyMessage: "",
       notifyClass: "",
       // modal: false,
-
+      contract_number: '',
       filter_farms: {
         number: "",
         counterparty__full_name: "",
       },
+      users: [],
     };
   },
+mounted(){
+  this.loader = true
+  apiCounter.getUsers()
+  .then(response => {
 
+      this.users = response.data.data
+      // console.log(response.data.data ,"AAAAA")
+      this.loader = false
+  }).catch(error => {
+    this.loader = false
+  })
+},
   methods: {
-    collapse(e){
-      console.log(e)
-      this.collapseWatch = !this.collapseWatch
+    ChangeIdByName(id){
+      // console.log(id)
+     const users = getUserById(this.users, id)
+     if (users[0]) {
+        return users[0]?.last_name + " " + users[0]?.first_name[0] + ".";
+      }
+      return "";
     },
-    newVal(val){
+    ChangeIdCounterByName(id){
+      let count_data = this.$store.state.counterparties.counterparties
+      const counterpart = getUserById(count_data, id)
+     if (counterpart[0]) {
+        return counterpart[0]?.work_name;
+      }
+      return "";
+    },
+    DeleteCurrentContract(id){
+      // console.log(id)
+      this.loader = true
+      api.deleteCurrentContract(id)
+      .then(response => {
+        this.getFarmContract()
+        this.loader = false
+      }).catch(error => {
+        console.log(error)
+        this.loader = false
+      })
+    },
+    deleteCurrentAnnexes(id){
+      this.loader = true
+      api.deleteCurrentAnnex(id)
+      .then(response => {
+        this.getFarmContract()
+        this.loader = false
+      }).catch(error => {
+        console.log(error)
+        this.loader = false
+      })
+    },
 
-    },
     CreateContract(){
       this.$bvModal.show('bv-modal-example')
+    },
+    CreateAnnex(number){
+      this.contract_number = number
+      this.$bvModal.show('bv-modal-annex-modal')
     },
     getGroupName(group) {
       // console.log(groups)
@@ -223,7 +291,6 @@ export default {
       this.getFarmContract();
     },
     getFarmContract() {
-      
       this.loader = true;
       api
         .getDirectoryFarm(this.filter_farms)
@@ -264,9 +331,7 @@ export default {
     updateFilterDataFarms(filter_farms) {
       this.filter_farms = filter_farms;
     },
-    save() {
-      alert('сохраняю');
-    }
+ 
   },
   computed: {
     ...mapState({
@@ -284,9 +349,6 @@ export default {
       }
       return count;
     },
-    ArrowPosition(){
-      return this.comput === true ? require('@/assets/arrow-up2.png') :  require('@/assets/arrow-down.png')
-    }
   },
 };
 </script>

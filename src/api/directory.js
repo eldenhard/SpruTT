@@ -28,7 +28,15 @@ const getDirectoryFinance = (filter_finance) => {
 const getNumberDog = (url) => {
     return api.get(`${url}`)
 }
-
+const deleteCurrentContract = (id) => {
+    return api.delete(`${documents}/contract/${id}`)
+}
+const deleteCurrentAnnex = (id) => {
+    return api.delete(`${documents}/contract-annex/${id}`)
+}
+const CreateCurrentAnnex = (data) => {
+    return api.post(`${documents}/contract-annex/`, data)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -37,7 +45,9 @@ export default {
     getDirectoryBuyer,
     getDirectoryProvider,
     getDirectoryFinance,
-
+    deleteCurrentContract,
+    deleteCurrentAnnex,
+    CreateCurrentAnnex,
     // Телеграммы
     getNumberDog
 }

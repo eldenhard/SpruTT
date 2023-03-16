@@ -1,8 +1,9 @@
+
 <template>
     <div>
   <!-- <b-button id="show-btn" @click="$bvModal.show("bv-modal-example")">Open Modal</b-button> -->
 
-  <b-modal id="bv-modal-example" hide-footer size="lg">
+  <b-modal id="bv-modal-example" ref="example" hide-footer size="lg">
     <template #modal-title>
      Добавление договора
     </template>
@@ -10,7 +11,7 @@
 
     
     
-<form id="FormContract"  @submit="createReport" >
+<form  v-on:submit="createReport" >
 
     <div class="d-block text-center">
       <div  style="display: flex; justify-content: space-around;">
@@ -75,9 +76,9 @@
             </select>
         </label>
       </div>
-<div  style="display: flex; justify-content: space-around;">
-
-      <label for="">Контрагент<br>
+<div class="my-flex-cont"  style="display: flex; justify-content: space-evenly;">
+<div  >
+  <label for="">Контрагент<br>
         <div class="inputcontainer">
             <input class="textarea" v-model="user_counterparty" v-on:input="debouncedHandler" 
             style=" background: white; border: 1px solid grey !important; position: relative; box-sizing: border-box;" />
@@ -87,21 +88,50 @@
             </div>
         </div>
       </label>
-
-      <div class="dataDeparture" v-if="variants">
+      <div class="dataDeparture" v-if="variants"  style="margin-left: 10%;">
         <ul>
           <li v-for="counterparty in counterparties" :key="counterparty.id" 
-          @click="checkCounterparty(counterparty.work_name, counterparty.id)"
-        >
+          @click="checkCounterparty(counterparty.work_name, counterparty.id)">
             {{ counterparty.work_name }}
           </li>
         </ul>
       </div>
+</div>
+
+      
+<div    >
+  <label for="">Ответственный<br>
+  <div class="inputcontainer">
+      <input class="textarea" v-model="responsible" v-on:input="debouncedHandler2" 
+      style=" background: white; border: 1px solid grey !important; position: relative; box-sizing: border-box;" />
+      <input type="text" style="display: none" name="responsible" v-model="Documents.responsible">
+      <div class="icon-container" v-if="loaderInputDep2">
+        <i class="loader"></i>
+      </div>
+  </div>
+</label>
+<!-- @click="checkUser(user.last_name, user.id)" -->
+  <div class="dataDeparture" v-if="variantsUser2" style="margin-left: 10%;">
+    <ul>
+      <li v-for="user in all_user" :key="user.id" 
+      @click="checkUser(user.last_name, user.id)"
+>
+        {{ user.last_name }} {{ user.first_name }}
+
+
+      </li>
+    </ul>
+  </div>
  </div>
+</div>
+      
+
+
+
 
     </div>
   <div style="display: flex; justify-content: space-around; margin-top: 7%;">
-    <button  type="submit" style="width: 15%" class="button Accept"  @click="createReport()">Создать</button><br>
+    <button  type="submit" style="width: 15%" class="button Accept">Создать</button><br>
     <button style="width: 15%" class="button Delete"  block variant="danger" @click="$bvModal.hide('bv-modal-example')">Закрыть</button>
   </div>
 </form>
@@ -112,7 +142,6 @@
 
   </b-modal>
   <Notifications
-  sty
         :show="showNotify"
         :header="notifyHead"
         :message="notifyMessage"
@@ -122,6 +151,11 @@
 </div>
 </template>
 <style scoped>
+.my-flex-cont {
+ display: flex;
+ justify-content: space-around;
+
+}
 
 ul {
   width: 100%;
@@ -144,7 +178,7 @@ li:hover {
   overflow: auto;
   border: 1px solid grey;
   position: absolute;
-  left: 50%;
+  /* left: 25%; */
   border-top: none;
   background: rgb(245, 245, 245);
   transform: translate(-50%, 0);
@@ -154,7 +188,6 @@ li:hover {
 .inputcontainer {
   position: relative;
 }
-
 .icon-container {
   position: absolute;
   right: 15px;
@@ -168,7 +201,6 @@ li:hover {
   display: inline-block;
   animation: around 5.4s infinite;
 }
-
 @keyframes around {
   0% {
     transform: rotate(0deg)
@@ -177,7 +209,6 @@ li:hover {
     transform: rotate(360deg)
   }
 }
-
 .loader::after, .loader::before {
   content: "";
   background: white;
@@ -194,13 +225,10 @@ li:hover {
   right: 0;
   animation: around 0.7s ease-in-out infinite;
 }
-
 .loader::after {
   animation: around 0.7s ease-in-out 0.1s infinite;
   background: transparent;
 }
-
-
 .textarea{
   background: transparent;
   height: 30px;
@@ -226,7 +254,6 @@ select{
   width: 20rem;
   height: 30px;
   padding: 0rem 1rem;
-
 }
 </style>
 <script>
@@ -238,7 +265,6 @@ import annexes from "./Annexes.vue"
 import debounce from "lodash.debounce";
 import apiCounter from "@/api/counterparties"
 import Notifications from "@/components/notifications/Notifications.vue";
-
 export default{
   components: {annexes, Notifications},
   data(){
@@ -248,10 +274,15 @@ export default{
       ContractAnnexes: [],
       nextTodoId:0,
       loaderInputDep: false,
+      loaderInputDep2: false,
       variants: false,
-      counterparties: '',
-      user_counterparty: '',
+      variantsUser: false,
+      variantsUser2: false,
 
+      counterparties: '',
+      all_user: '',
+      user_counterparty: '',
+      responsible: '',
       Documents: {
         number:"",
         company_status: "",
@@ -264,8 +295,8 @@ export default{
         prolongation: "",
         is_active : "",
         counterparty: "",
+        responsible: "",
       },
-
       showNotify: false,
       notifyHead: "",
       notifyMessage: "",
@@ -280,49 +311,52 @@ export default{
       allGroups: (state) => state.auth.groups,
       staffGlobal: (state) => state.auth.users,
     }),
-
   },
   methods: {
-    hideModal(){
-      this.$refs['bv-modal-example'].hide()
-    },
+    hideModal() {
+        this.$refs['example'].hide()
+      },
     checkCounterparty(data_name, data_id) {
       this.user_counterparty = data_name
       this.Documents.counterparty = data_id
       this.variants = false
     },
+    checkUser(data_name, data_id) {
+      this.responsible = data_name
+      this.Documents.responsible = data_id
+      this.variantsUser2 = false
+    },
     getGroupName(id) {
       const group = getGroupName(this.allGroups, id);
       return group[0]?.name;
     },
-
     getGroupName(group) {
       // console.log(groups)
       return groups.groups[group] ;
     },
     createReport(e){
-      // e.preventDefault();
-      if (e && e.preventDefault) { e.preventDefault(); }
+      e.preventDefault();
+      // console.log(e.target);
       let data = new FormData(e.target);
       api.createDocument(data)
       .then(response => {
-        document.querySelector('#FormContract').reset()
-        console.log('11111111')
+        console.log(response)
+        // document.querySelector('#FormContract').reset()
         this.hideModal()
         this.notifyHead = "Успешно";
         this.notifyMessage = "Договор составлен";
         this.notifyClass = "wrapper-success";
         this.showNotify = true;
-        // setTimeout(() => (this.showNotify = false), 2000);
+        setTimeout(() => (this.showNotify = false), 2000);
+        
       }).catch(error => {
         this.notifyHead = "Ошибка";
-        this.notifyMessage = error.response.data;
+        this.notifyMessage = error.response;
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 2000);
       })
     },
-
    
   },
   created() {
@@ -337,9 +371,23 @@ export default{
         this.loaderInputDep = false
       })
     }, 500);
+    this.debouncedHandler2 = debounce(event => {
+      this.loaderInputDep2 = true
+      apiCounter.getAllUser(event.target.value)
+      .then(response => {
+        console.log('AAAAAAAAA')
+        console.log(response.data.data)
+        this.all_user = response.data.data
+        this.loaderInputDep2 = false
+        this.variantsUser2 = true
+      }).catch(error => {
+        this.loaderInputDep2 = false
+      })
+    }, 500);
   },
   beforeUnmount() {
     this.debouncedHandler.cancel();
+    this.debouncedHandler2.cancel();
   }
 }
 </script>

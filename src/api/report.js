@@ -98,7 +98,7 @@ const getAllDataLastReportAdmin = (data) => {
 
 // ДОГОВОРА
 const createDocument = (data) => {
-    api.post(`${documents}/contract/`, data)
+    return api.post(`${documents}/contract/`, data)
 }
 export default {
     getUsers,
