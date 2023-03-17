@@ -11,19 +11,19 @@ const putCounterparties = (id, data) => {
 }
 // типы договоров
 const getDirectoryFarm = (filter_farms) => {
-    return api.get(`${documents}/contract/?category=Общехозяйственные`,  {params: filter_farms})
+    return api.get(`${documents}/contract/?category=economic`,  {params: filter_farms})
 }
 const getDirectoryRenovation = (filter_renovation) => {
-    return api.get(`${documents}/contract/?category=Ремонтные`,  {params: filter_renovation})
+    return api.get(`${documents}/contract/?category=repair`,  {params: filter_renovation})
 }
 const getDirectoryBuyer = (filter_buyer) => {
-    return api.get(`${documents}/contract/?category=С+Покупателями`,  {params: filter_buyer})
+    return api.get(`${documents}/contract/?category=buyer`,  {params: filter_buyer})
 }
 const getDirectoryProvider = (filter_provider) => {
-    return api.get(`${documents}/contract/?category=С+Поставщиками`,  {params: filter_provider})
+    return api.get(`${documents}/contract/?category=other `,  {params: filter_provider})
 }
 const getDirectoryFinance = (filter_finance) => {
-    return api.get(`${documents}/contract/?category=Финансовые`,  {params: filter_finance})
+    return api.get(`${documents}/contract/?category=financial`,  {params: filter_finance})
 }
 const getNumberDog = (url) => {
     return api.get(`${url}`)
@@ -37,6 +37,12 @@ const deleteCurrentAnnex = (id) => {
 const CreateCurrentAnnex = (data) => {
     return api.post(`${documents}/contract-annex/`, data)
 }
+const ChangeCurrentAnnex = (id,data) => {
+    return api.put(`${documents}/contract-annex/${id}/`, data)
+}
+const getCurrentContract= (id) => {
+    return api.get(`${documents}/contract/${id}/`)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -48,6 +54,8 @@ export default {
     deleteCurrentContract,
     deleteCurrentAnnex,
     CreateCurrentAnnex,
+    ChangeCurrentAnnex,
+    getCurrentContract,
     // Телеграммы
     getNumberDog
 }

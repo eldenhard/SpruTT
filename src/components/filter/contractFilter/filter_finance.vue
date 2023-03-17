@@ -2,7 +2,7 @@
     <div class="filterContract">
         <div style="display:flex; flex-direction:column;">
             <div class='bg'>
-                <input class='textarea' id='contract-finance' name='Pwd' v-model="filter_finance.number"
+                <input class='textarea' id='contract-finance' name='Pwd' v-model="filter_finance.search"
                     @change="updateFilterDataFinance" />
                 <br>
                 <label for='contract-finance' class='label'>Номер договора</label>
@@ -51,7 +51,7 @@ export default {
     data() {
         return {
             filter_finance: {
-                number: '',
+                search: '',
                 counterparty__full_name: '',
 
 

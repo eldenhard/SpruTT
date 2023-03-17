@@ -1,13 +1,13 @@
 <template>
 <div>
 
-  <b-modal id="bv-modal-annex-modal" ref="annex-modal" hide-footer size="lg">
+  <b-modal id="bv-modal-annex-modal" ref="annex-modal" hide-footer size="md">
     <template #modal-title>
      Добавление приложения к договору № {{ contract }}
     </template>
 
 <form id="FormAnnex"  @submit="createAnnex">
-  <table class="table table-sm table-bordered">
+  <table class="table-sm table-bordered">
   <thead>
     <tr>
       <th>Номер договора</th>
@@ -23,8 +23,8 @@
       <th style="padding: 0"><input type="text" name="contract" v-model="contract" readonly style="width:100% !important; text-align: center;"></th>
       <td style="padding: 0"><input type="text" name="doc_type" v-model="doc_type" style="width:100% !important; text-align: center;"></td>
       <td style="padding: 0"><input type="text" name="number" v-model="number" style="width:100% !important; text-align: center;"></td>
-      <td style="padding: 0"><input type="date" name="created_at" v-model="created_at" style="width:100% !important; text-align: center;"></td>
-      <td style="padding: 0"><input type="text" name="comment" v-model="comment" style="width:100% !important; text-align: center;"></td>
+      <td style="padding: 0"><input type="date" name="created_at" v-model="created_at" style="width:100% !important; text-align: center; border: none;"></td>
+      <td style="padding: 0"><input type="text" name="comment" v-model="comment" style="width:100% !important; text-align: center; background: white !important"></td>
       <td><input type="file" name="scan"></td>
     </tr>
    
@@ -33,7 +33,7 @@
 
   <div style="display: flex; justify-content: space-around; margin-top: 7%;">
     <button  type="submit" style="width: 15%" class="button Accept">Создать</button><br>
-    <button style="width: 15%" class="button Delete"  block variant="danger" @click="$bvModal.hide('bv-modal-annex-modal')">Закрыть</button>
+    <a style="width: 15%; height: 25px; text-decoration: none; color: white !important; outline: none; border: none !important;" class="button Delete"  block variant="danger" @click="$bvModal.hide('bv-modal-annex-modal')">Закрыть</a>
   </div>
 </form>
 

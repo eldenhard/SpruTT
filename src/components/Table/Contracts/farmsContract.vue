@@ -3,7 +3,8 @@
     <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
     <ModalContractCreate />
     <Annexes :contract="contract_number" :btnClickHandler="getFarmContract"/>
-    <EditAnnexe :contract="contract_number" :annex="editAnnexe" />
+    <EditAnnexe :contract="contract_number" :annex="editAnnexe" :btnClickHandler="getFarmContract"/>
+    <EditContract :contract="contract_number" :contract_data="editContract"/>
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -73,7 +74,7 @@
             <td>
                 <b-dropdown id="dropdown-1" text="Действие договор" size="sm" style="width: 95% !important;">
                         <b-dropdown-item @click="DeleteCurrentContract(el.id)">Удалить</b-dropdown-item>
-                        <b-dropdown-item>Редактировать</b-dropdown-item>
+                        <b-dropdown-item @click="EditCurrentContract(el.number, el.id)">Редактировать</b-dropdown-item>
                 </b-dropdown>
             </td>
             <td>{{ el.number }}</td>
@@ -125,7 +126,7 @@
                       <td style="background: lightgrey !important">{{ e.comment }}</td>
                       <td style="background: lightgrey !important">
                         <a href="el.scan" target="_blank"
-                          ><img src="@/assets/excel.png"
+                          ><img src="@/assets/pdf.png" style="height: 20px"
                         /></a>
                       </td>
                         <td style="background: lightgrey !important">{{ e.contract }}</td>
@@ -188,9 +189,10 @@ import ModalContractCreate from '@/components/Table/Contracts/CreateContract/Mod
 import Annexes from "./CreateContract/Annexes.vue";
 import { getUserById } from "@/helpers/getAllUsers";
 import EditAnnexe from "@/components/Table/Contracts/CreateContract/EditAnnexe.vue"
+import EditContract from "./CreateContract/EditContract.vue";
 export default {
   name: "PartnerTable",
-  components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe },
+  components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe, EditContract },
   data() {
     return {
       nextLink: null,
@@ -214,8 +216,9 @@ export default {
       },
       users: [],
       // Для компонента editAnnexe
-      editAnnexe: []
-
+      editAnnexe: [],
+      // Для компонента editContract
+      editContract: [],
     };
   },
 mounted(){
@@ -276,15 +279,29 @@ mounted(){
       this.contract_number = number
       this.$bvModal.show('bv-modal-annex-modal')
     },
+    EditCurrentContract(number, id){
+      this.loader = true
+      this.contract_number = number
+      api.getCurrentContract(id)
+      .then(response => {
+        this.editContract = response.data
+        console.log(response.data)
+        this.loader = false
+        this.$bvModal.show('bv-modal-editContract')
+      }).catch(error => {
+        console.log(error)
+        this.loader = false
+      })
+     
+    },
     OpenModalEditAnnexe(number, id){
       this.loader = true
       this.contract_number = number
       apiRep.getContractAnnex(id)
       .then(response => {
-        console.log('!!!!!!!!')
         this.editAnnexe = response.data
         this.loader = false
-        this.$bvModal.show('bv-modal-contract-modal')
+        this.$bvModal.show('bv-modal-annexEdit-modal')
       }).catch(error => {
         console.log(error)
         this.loader = false

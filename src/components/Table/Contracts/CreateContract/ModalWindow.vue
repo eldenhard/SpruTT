@@ -3,7 +3,7 @@
     <div>
   <!-- <b-button id="show-btn" @click="$bvModal.show("bv-modal-example")">Open Modal</b-button> -->
 
-  <b-modal id="bv-modal-example" ref="example" hide-footer size="lg">
+  <b-modal id="bv-modal-example" ref="example" hide-footer size="md">
     <template #modal-title>
      Добавление договора
     </template>
@@ -88,7 +88,7 @@
             </div>
         </div>
       </label>
-      <div class="dataDeparture" v-if="variants"  style="margin-left: 10%;">
+      <div class="dataDeparture" v-if="variants"  style="margin-left: 16%;">
         <ul>
           <li v-for="counterparty in counterparties" :key="counterparty.id" 
           @click="checkCounterparty(counterparty.work_name, counterparty.id)">
@@ -111,7 +111,7 @@
   </div>
 </label>
 <!-- @click="checkUser(user.last_name, user.id)" -->
-  <div class="dataDeparture" v-if="variantsUser2" style="margin-left: 10%;">
+  <div class="dataDeparture" v-if="variantsUser2" style="margin-left: 16%;">
     <ul>
       <li v-for="user in all_user" :key="user.id" 
       @click="checkUser(user.last_name, user.id)"
@@ -130,13 +130,12 @@
 
 
     </div>
-  <div style="display: flex; justify-content: space-around; margin-top: 7%;">
+<div style="display: flex; justify-content: space-around; margin-top: 7%;">
     <button  type="submit" style="width: 15%" class="button Accept">Создать</button><br>
-    <button style="width: 15%" class="button Delete"  block variant="danger" @click="$bvModal.hide('bv-modal-example')">Закрыть</button>
+    <a style="width: 15%; height: 25px; text-decoration: none; color: white !important; outline: none; border: none !important;" class="button Delete"  block variant="danger" @click="$bvModal.hide('bv-modal-example')">Закрыть</a>
   </div>
 </form>
 
-<annexes :ContractAnnexes="ContractAnnexes"></annexes>
   
 
 
@@ -156,7 +155,10 @@
  justify-content: space-around;
 
 }
-
+a:hover{
+  outline: none !important;
+  border-bottom: none !important;
+}
 ul {
   width: 100%;
   padding: 0 !important;
@@ -173,8 +175,9 @@ li:hover {
   border: 1px solid rgb(143, 143, 143);
 }
 .dataDeparture {
-  width: 20%;
-  height: 90px;
+  width: 32%;
+  height: auto;
+  max-height: 90px;
   overflow: auto;
   border: 1px solid grey;
   position: absolute;
@@ -183,7 +186,7 @@ li:hover {
   background: rgb(245, 245, 245);
   transform: translate(-50%, 0);
   /* z-index: 10; */
-  margin-top: 4%;
+  margin-top: 6%;
 }
 .inputcontainer {
   position: relative;

@@ -2,7 +2,7 @@
     <div class="filterFarms">
         <div style="display:flex; flex-direction:column;">
             <div class='bg'>
-                <input class='textarea' id='contract-farms' name='Pwd' v-model="filter_farms.number"
+                <input class='textarea' id='contract-farms' name='Pwd' v-model="filter_farms.search"
                     @change="updateFilterDataFarms" />
                 <br>
                 <label for='contract-farms' class='label'>Номер договора</label>
@@ -41,7 +41,7 @@ export default {
     data() {
         return {
             filter_farms: {
-                number: '',
+                search: '',
 
             },
         }
