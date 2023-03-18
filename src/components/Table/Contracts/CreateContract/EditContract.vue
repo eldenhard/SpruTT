@@ -149,10 +149,6 @@
 </div>
 </template>
 <style scoped>
-.modal-lg {
-    max-width: 80% !important;
-}
-
 .my-flex-cont {
  display: flex;
  justify-content: space-around;
