@@ -22,7 +22,7 @@
       "
     >
    
-      Запросить общехозяйственные договора
+      Запросить договора
     </button>
     <br /><br />
     <p class="amount">всего записей: {{ total_objects }}</p>
@@ -192,9 +192,11 @@ import EditAnnexe from "@/components/Table/Contracts/CreateContract/EditAnnexe.v
 import EditContract from "./CreateContract/EditContract.vue";
 export default {
   name: "PartnerTable",
+  props: ['named'],
   components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe, EditContract },
   data() {
     return {
+      category: '',
       nextLink: null,
       prevLink: null,
       loader: false,
@@ -271,7 +273,6 @@ mounted(){
         this.loader = false
       })
     },
-
     CreateContract(){
       this.$bvModal.show('bv-modal-example')
     },
@@ -306,7 +307,6 @@ mounted(){
         console.log(error)
         this.loader = false
       })
-     
     },
     getGroupName(group) {
       return groups.groups[group] ;
@@ -322,9 +322,9 @@ mounted(){
       this.getFarmContract();
     },
     getFarmContract() {
+      console.log(this.named)
       this.loader = true;
-      api
-        .getDirectoryFarm(this.filter_farms)
+      api.getDirectoryFarm(this.category, this.filter_farms)
         .then((response) => {
           this.loader = false;
           let l_data = response.data.data;
@@ -369,6 +369,20 @@ mounted(){
       allGroups: (state) => state.auth.groups,
       staffGlobal: (state) => state.auth.users,
     }),
+    CurrentPathApi(){
+      if(this.named == 'Общехозяйственные'){
+        return this.category = 'economic'
+      }
+      if(this.named == 'Ремонтные'){
+        return this.category = 'repair'
+      }
+      if(this.named == 'Прочие'){
+        return this.category = 'other'
+      }
+      else{
+        return this.category = 'financial'
+      }
+    },
     countAnnexes() {
       let count = 0;
       if (this.farmDirecory.length) {

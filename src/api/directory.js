@@ -9,9 +9,11 @@ const getAllcounterparties = (filter_directory) => {
 const putCounterparties = (id, data) => {
     return api.put(`${resource}/counterparties/update/` + `${id}`, data)
 }
+
+
 // типы договоров
-const getDirectoryFarm = (filter_farms) => {
-    return api.get(`${documents}/contract/?category=economic`,  {params: filter_farms})
+const getDirectoryFarm = (category, filter_farms) => {
+    return api.get(`${documents}/contract/?category=${category}`,  {params: filter_farms})
 }
 const getDirectoryRenovation = (filter_renovation) => {
     return api.get(`${documents}/contract/?category=repair`,  {params: filter_renovation})
@@ -25,6 +27,11 @@ const getDirectoryProvider = (filter_provider) => {
 const getDirectoryFinance = (filter_finance) => {
     return api.get(`${documents}/contract/?category=financial`,  {params: filter_finance})
 }
+
+
+
+
+
 const getNumberDog = (url) => {
     return api.get(`${url}`)
 }

@@ -1,6 +1,7 @@
 
 <template>
     <div>
+      <Loader :loader="loader" />
   <!-- <b-button id="show-btn" @click="$bvModal.show("bv-modal-example")">Open Modal</b-button> -->
 
   <b-modal id="bv-modal-example" ref="example" hide-footer size="md">
@@ -268,8 +269,9 @@ import annexes from "./Annexes.vue"
 import debounce from "lodash.debounce";
 import apiCounter from "@/api/counterparties"
 import Notifications from "@/components/notifications/Notifications.vue";
+import Loader from "@/components/loader/loader.vue";
 export default{
-  components: {annexes, Notifications},
+  components: {annexes, Notifications, Loader},
   data(){
     return{
       groups: groups.groups,
@@ -304,6 +306,7 @@ export default{
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+      loader: false,
       }  
   },
     props: ["modal"],
@@ -339,6 +342,7 @@ export default{
     },
     createReport(e){
       e.preventDefault();
+      this.loader = true
       // console.log(e.target);
       let data = new FormData(e.target);
       api.createDocument(data)
@@ -346,6 +350,7 @@ export default{
         console.log(response)
         // document.querySelector('#FormContract').reset()
         this.hideModal()
+        this.loader = false
         this.notifyHead = "Успешно";
         this.notifyMessage = "Договор составлен";
         this.notifyClass = "wrapper-success";
@@ -353,8 +358,9 @@ export default{
         setTimeout(() => (this.showNotify = false), 2000);
         
       }).catch(error => {
+        this.loader = false
         this.notifyHead = "Ошибка";
-        this.notifyMessage = error.response;
+        this.notifyMessage = error.response.data;
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 2000);
