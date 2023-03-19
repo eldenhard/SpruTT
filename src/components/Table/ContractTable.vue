@@ -13,17 +13,19 @@
             <farmsContract :named="'Ремонтные'"/>
           </b-card-text>
         </b-tab>
-        <b-tab title="Прочие" style="color: black  !important"  title-item-class="w-30">
-          <b-card-text>
-            <farmsContract :named="'Прочие'"/>
-          </b-card-text>
-        </b-tab>
-   
+
         <b-tab title="Финансовые" style="color: black  !important"  title-item-class="w-30">
           <b-card-text>
             <farmsContract :named="'Финансовые'"/>
           </b-card-text>
         </b-tab>
+
+        <b-tab title="Прочие" style="color: black  !important"  title-item-class="w-30">
+          <b-card-text>
+            <farmsContract :named="'Прочие'"/>
+          </b-card-text>
+        </b-tab>
+        
       </b-tabs>
     </b-card>
   </div>

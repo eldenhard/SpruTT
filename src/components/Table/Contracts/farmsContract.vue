@@ -1,7 +1,7 @@
 <template>
   <div>
     <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
-    <ModalContractCreate />
+    <ModalContractCreate :id="CurrentPathApi"/>
     <Annexes :contract="contract_number" :btnClickHandler="getFarmContract"/>
     <EditAnnexe :contract="contract_number" :annex="editAnnexe" :btnClickHandler="getFarmContract"/>
     <EditContract :contract="contract_number" :contract_data="editContract"/>
@@ -196,7 +196,10 @@ export default {
   components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe, EditContract },
   data() {
     return {
-      category: '',
+      // Для модальных окон
+      current_id_by_modal: '',
+
+
       nextLink: null,
       prevLink: null,
       loader: false,
@@ -214,7 +217,6 @@ export default {
       contract_number: '',
       filter_farms: {
         number: "",
-        counterparty__full_name: "",
       },
       users: [],
       // Для компонента editAnnexe
@@ -274,7 +276,8 @@ mounted(){
       })
     },
     CreateContract(){
-      this.$bvModal.show('bv-modal-example')
+      console.log(this.CurrentPathApi)
+      this.$bvModal.show(this.CurrentPathApi)
     },
     CreateAnnex(number){
       this.contract_number = number
@@ -322,9 +325,8 @@ mounted(){
       this.getFarmContract();
     },
     getFarmContract() {
-      console.log(this.named)
       this.loader = true;
-      api.getDirectoryFarm(this.category, this.filter_farms)
+      api.getDirectoryFarm(this.CurrentPathApi, this.filter_farms)
         .then((response) => {
           this.loader = false;
           let l_data = response.data.data;
@@ -370,17 +372,35 @@ mounted(){
       staffGlobal: (state) => state.auth.users,
     }),
     CurrentPathApi(){
-      if(this.named == 'Общехозяйственные'){
-        return this.category = 'economic'
+      switch(this.named) {
+            case 'Общехозяйственные': 
+            return 'economic'
+          break;
+            case 'Ремонтные': 
+            return 'repair'
+          break;
+            case 'Прочие': 
+            return 'other'
+          break;
+            case 'Финансовые': 
+            return 'financial'
+          break;
       }
-      if(this.named == 'Ремонтные'){
-        return this.category = 'repair'
-      }
-      if(this.named == 'Прочие'){
-        return this.category = 'other'
-      }
-      else{
-        return this.category = 'financial'
+    },
+    CurrentIdByModalWindow(){
+      switch(this.named) {
+            case 'Общехозяйственные': 
+            this.current_id_by_modal = 'economic'
+          break;
+            case 'Ремонтные': 
+            this.current_id_by_modal = 'repair'
+          break;
+            case 'Прочие': 
+            this.current_id_by_modal = 'other'
+          break;
+            case 'Финансовые': 
+            this.current_id_by_modal = 'financial'
+          break;
       }
     },
     countAnnexes() {

@@ -4,7 +4,7 @@
       <Loader :loader="loader" />
   <!-- <b-button id="show-btn" @click="$bvModal.show("bv-modal-example")">Open Modal</b-button> -->
 
-  <b-modal id="bv-modal-example" ref="example" hide-footer size="md">
+  <b-modal :id="id" ref="example" hide-footer size="md">
     <template #modal-title>
      Добавление договора
     </template>
@@ -133,7 +133,7 @@
     </div>
 <div style="display: flex; justify-content: space-around; margin-top: 7%;">
     <button  type="submit" style="width: 15%" class="button Accept">Создать</button><br>
-    <a style="width: 15%; height: 25px; text-decoration: none; color: white !important; outline: none; border: none !important;" class="button Delete"  block variant="danger" @click="$bvModal.hide('bv-modal-example')">Закрыть</a>
+    <a style="width: 15%; height: 25px; text-decoration: none; color: white !important; outline: none; border: none !important;" class="button Delete"  block variant="danger" @click="$bvModal.hide(this.id)">Закрыть</a>
   </div>
 </form>
 
@@ -309,7 +309,7 @@ export default{
       loader: false,
       }  
   },
-    props: ["modal"],
+    props: ["modal", 'id'],
     computed: {
     ...mapState({
       user: (state) => state.auth.user,
