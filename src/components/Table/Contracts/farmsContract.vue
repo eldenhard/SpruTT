@@ -2,9 +2,9 @@
   <div>
     <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
     <ModalContractCreate :id="CurrentPathApi"/>
-    <Annexes :contract="contract_number" :btnClickHandler="getFarmContract"/>
-    <EditAnnexe :contract="contract_number" :annex="editAnnexe" :btnClickHandler="getFarmContract"/>
-    <EditContract :contract="contract_number" :contract_data="editContract"/>
+    <Annexes :contract="contract_number" :btnClickHandler="getFarmContract" :id="CurrentPathApi3"/>
+    <EditAnnexe :contract="contract_number" :annex="editAnnexe" :btnClickHandler="getFarmContract" :id="CurrentPathApi4"/>
+    <EditContract :contract="contract_number" :contract_data="editContract" :id="CurrentPathApi2"/>
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -198,7 +198,9 @@ export default {
     return {
       // Для модальных окон
       current_id_by_modal: '',
-
+      current_id_by_annexes: '',
+      current_id_by_editannexe: '',
+      current_id_by_editcontract: '',
 
       nextLink: null,
       prevLink: null,
@@ -276,13 +278,13 @@ mounted(){
       })
     },
     CreateContract(){
-      console.log(this.CurrentPathApi)
-      this.$bvModal.show(this.CurrentPathApi)
+      this.$bvModal.show(this.CurrentPathApi) ///////////////////////
     },
     CreateAnnex(number){
       this.contract_number = number
-      this.$bvModal.show('bv-modal-annex-modal')
+      this.$bvModal.show(this.CurrentPathApi3) /////////////////////////
     },
+    // Редактирование договора
     EditCurrentContract(number, id){
       this.loader = true
       this.contract_number = number
@@ -291,7 +293,8 @@ mounted(){
         this.editContract = response.data
         console.log(response.data)
         this.loader = false
-        this.$bvModal.show('bv-modal-editContract')
+        console.log(this.CurrentPathApi2)
+        this.$bvModal.show(this.CurrentPathApi2) ////////////////////////
       }).catch(error => {
         console.log(error)
         this.loader = false
@@ -305,7 +308,7 @@ mounted(){
       .then(response => {
         this.editAnnexe = response.data
         this.loader = false
-        this.$bvModal.show('bv-modal-annexEdit-modal')
+        this.$bvModal.show(this.CurrentPathApi4) /////////////////////////////////
       }).catch(error => {
         console.log(error)
         this.loader = false
@@ -371,6 +374,8 @@ mounted(){
       allGroups: (state) => state.auth.groups,
       staffGlobal: (state) => state.auth.users,
     }),
+
+    // Для создания договора
     CurrentPathApi(){
       switch(this.named) {
             case 'Общехозяйственные': 
@@ -390,7 +395,7 @@ mounted(){
     CurrentIdByModalWindow(){
       switch(this.named) {
             case 'Общехозяйственные': 
-            this.current_id_by_modal = 'economic'
+            this.current_id_by_modal = 'economic' 
           break;
             case 'Ремонтные': 
             this.current_id_by_modal = 'repair'
@@ -403,6 +408,109 @@ mounted(){
           break;
       }
     },
+
+// Для редактиварония договора
+CurrentPathApi2(){
+      switch(this.named) {
+            case 'Общехозяйственные': 
+            return 'economic_ed_contr'
+          break;
+            case 'Ремонтные': 
+            return 'repair_ed_contr'
+          break;
+            case 'Прочие': 
+            return 'other_ed_contr'
+          break;
+            case 'Финансовые': 
+            return 'financial_ed_contr'
+          break;
+      }
+    },
+    CurrentIdByEditContract(){
+      switch(this.named) {
+            case 'Общехозяйственные': 
+            this.current_id_by_editcontract = 'economic_ed_contr' 
+          break;
+            case 'Ремонтные': 
+            this.current_id_by_editcontract = 'repair_ed_contr'
+          break;
+            case 'Прочие': 
+            this.current_id_by_editcontract = 'other_ed_contr'
+          break;
+            case 'Финансовые': 
+            this.current_id_by_editcontract = 'financial_ed_contr'
+          break;
+      }
+    },
+
+// Для создания приложения
+CurrentPathApi3(){
+      switch(this.named) {
+            case 'Общехозяйственные': 
+            return 'economic_annexes'
+          break;
+            case 'Ремонтные': 
+            return 'repair_annexes'
+          break;
+            case 'Прочие': 
+            return 'other_annexes'
+          break;
+            case 'Финансовые': 
+            return 'financial_annexes'
+          break;
+      }
+    },
+
+    CurrentIdByAnnexes(){
+      switch(this.named) {
+            case 'Общехозяйственные': 
+            this.current_id_by_annexes = 'economic_annexes' 
+          break;
+            case 'Ремонтные': 
+            this.current_id_by_annexes = 'repair_annexes'
+          break;
+            case 'Прочие': 
+            this.current_id_by_annexes = 'other_annexes'
+          break;
+            case 'Финансовые': 
+            this.current_id_by_annexes = 'financial_annexes'
+          break;
+      }
+    },
+    // Для редактирования приложения
+    CurrentPathApi4(){
+      switch(this.named) {
+            case 'Общехозяйственные': 
+            return 'economic_ed_annexes'
+          break;
+            case 'Ремонтные': 
+            return 'repair_ed_annexes'
+          break;
+            case 'Прочие': 
+            return 'other_ed_annexes'
+          break;
+            case 'Финансовые': 
+            return 'financial_ed_annexes'
+          break;
+      }
+    },
+    CurrentIdByEditAnnexes(){
+      switch(this.named) {
+            case 'Общехозяйственные': 
+            this.current_id_by_editannexe = 'economic_ed_annexes' 
+          break;
+            case 'Ремонтные': 
+            this.current_id_by_editannexe = 'repair_ed_annexes'
+          break;
+            case 'Прочие': 
+            this.current_id_by_editannexe = 'other_ed_annexes'
+          break;
+            case 'Финансовые': 
+            this.current_id_by_editannexe = 'financial_ed_annexes'
+          break;
+      }
+    },
+
     countAnnexes() {
       let count = 0;
       if (this.farmDirecory.length) {

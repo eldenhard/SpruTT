@@ -2,7 +2,7 @@
     <div>
   <!-- <b-button id="show-btn" @click="$bvModal.show("bv-modal-example")">Open Modal</b-button> -->
 
-  <b-modal id="bv-modal-editContract" ref="example-contract" size="md" hide-footer >
+  <b-modal :id="id" ref="example-contract" size="md" hide-footer >
     <template #modal-title>
      Редактирование договора {{ contract }}
     </template>
@@ -267,7 +267,7 @@ import apiCounter from "@/api/counterparties"
 import Notifications from "@/components/notifications/Notifications.vue";
 export default {
     name: 'editContract',
-    props: ['contract', 'contract_data'],
+    props: ['contract', 'contract_data', 'id'],
     components: { Notifications },
 
     data(){
