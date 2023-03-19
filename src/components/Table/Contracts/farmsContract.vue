@@ -95,24 +95,28 @@
             <td>{{ ChangeIdCounterByName(el.counterparty) }} </td>
             <td>{{ ChangeIdByName(el.responsible) }}</td>
           </tr>
+          <!-- ПРИЛОЖЕНИЯ -->
                 <template >
                   <tr>
                     <th>
                       <b-button variant="success" size="sm" style="width: 100% !important; margin: 0 !important;" @click=" CreateAnnex(el.number)">Добавить приложение</b-button>
                     </th>
-                      <th style="cursor: pointer" @click="el.hhh = !el.hhh" >
+                      <th style="cursor: pointer" @click="el.hhh = !el.hhh"  v-if="el.annexes.length != 0">
                           <img :src="el.hhh ? require('@/assets/arrow-down.png') : require('@/assets/arrow-up2.png')" alt="">
                       </th>
-                      <th style="background: burlywood !important">Тип приложения</th>
-                      <th style="background: burlywood !important">Номер  приложения</th>
-                      <th style="background: burlywood !important">Дата</th>
-                      <th style="background: burlywood !important">Примечание</th>
-                      <th style="background: burlywood !important">Скан-копия</th>
-                      <th style="background: burlywood !important">Номер договора</th>
+                          <template  v-if="el.annexes.length != 0">
+                            <th style="background: burlywood !important">Тип приложения</th>
+                            <th style="background: burlywood !important">Номер  приложения</th>
+                            <th style="background: burlywood !important">Дата</th>
+                            <th style="background: burlywood !important">Примечание</th>
+                            <th style="background: burlywood !important">Скан-копия</th>
+                            <th style="background: burlywood !important">Номер договора</th>
+                          </template>
+                    
 
                   </tr>
                   <template >
-                    <tr v-for="e in el.annexes" :key="e.id" :class="{ 'red' : el.hhh }"> 
+                    <tr v-for="e in el.annexes" :key="e.id" :class="{ 'red' : el.hhh }" :id="e.id"> 
                       <td>
                         <b-dropdown id="dropdown-1" text="Действие приложение" size="sm" style="width: 95% !important;">
                           <b-dropdown-item @click="deleteCurrentAnnexes(e.id)">Удалить</b-dropdown-item>
@@ -121,12 +125,11 @@
                       </td>
                       <td style="border: none !important; font-style: italic">Приложение</td>
                       <td style="background: lightgrey !important">{{ e.number }}</td>
-                      <td style="background: lightgrey !important"> {{e.doc_type }}</td>
-                      <td style="background: lightgrey !important">{{ new Date(e.created_at).toLocaleString() }}</td>
-                      <td style="background: lightgrey !important">{{ e.comment }}</td>
+                      <td style="background: lightgrey !important" > {{e.doc_type }}</td>
+                      <td style="background: lightgrey !important" >{{ new Date(e.created_at).toLocaleString() }}</td>
+                      <td style="background: lightgrey !important" >{{ e.comment }}</td>
                       <td style="background: lightgrey !important">
-                        <a href="el.scan" target="_blank"
-                          ><img src="@/assets/pdf.png" style="height: 20px"
+                        <a :href="el.scan" target="_blank"><img src="@/assets/pdf.png" style="height: 20px"
                         /></a>
                       </td>
                         <td style="background: lightgrey !important">{{ e.contract }}</td>
@@ -270,7 +273,9 @@ mounted(){
       this.loader = true
       api.deleteCurrentAnnex(id)
       .then(response => {
-        this.getFarmContract()
+      let table_tr = document.getElementById(id)
+      table_tr.remove();
+        // this.getFarmContract()
         this.loader = false
       }).catch(error => {
         console.log(error)
@@ -337,6 +342,7 @@ mounted(){
             item.hhh = true;
           })
           this.farmDirecory = l_data;
+          console.log(this.farmDirecory)
           this.total_objects = response.data.total_objects;
           this.amount = response.data.amount;
           this.nextLink = response.data.links.next;
@@ -392,22 +398,6 @@ mounted(){
           break;
       }
     },
-    CurrentIdByModalWindow(){
-      switch(this.named) {
-            case 'Общехозяйственные': 
-            this.current_id_by_modal = 'economic' 
-          break;
-            case 'Ремонтные': 
-            this.current_id_by_modal = 'repair'
-          break;
-            case 'Прочие': 
-            this.current_id_by_modal = 'other'
-          break;
-            case 'Финансовые': 
-            this.current_id_by_modal = 'financial'
-          break;
-      }
-    },
 
 // Для редактиварония договора
 CurrentPathApi2(){
@@ -423,22 +413,6 @@ CurrentPathApi2(){
           break;
             case 'Финансовые': 
             return 'financial_ed_contr'
-          break;
-      }
-    },
-    CurrentIdByEditContract(){
-      switch(this.named) {
-            case 'Общехозяйственные': 
-            this.current_id_by_editcontract = 'economic_ed_contr' 
-          break;
-            case 'Ремонтные': 
-            this.current_id_by_editcontract = 'repair_ed_contr'
-          break;
-            case 'Прочие': 
-            this.current_id_by_editcontract = 'other_ed_contr'
-          break;
-            case 'Финансовые': 
-            this.current_id_by_editcontract = 'financial_ed_contr'
           break;
       }
     },
@@ -461,23 +435,7 @@ CurrentPathApi3(){
       }
     },
 
-    CurrentIdByAnnexes(){
-      switch(this.named) {
-            case 'Общехозяйственные': 
-            this.current_id_by_annexes = 'economic_annexes' 
-          break;
-            case 'Ремонтные': 
-            this.current_id_by_annexes = 'repair_annexes'
-          break;
-            case 'Прочие': 
-            this.current_id_by_annexes = 'other_annexes'
-          break;
-            case 'Финансовые': 
-            this.current_id_by_annexes = 'financial_annexes'
-          break;
-      }
-    },
-    // Для редактирования приложения
+  // Для редактирования приложения
     CurrentPathApi4(){
       switch(this.named) {
             case 'Общехозяйственные': 
@@ -494,32 +452,7 @@ CurrentPathApi3(){
           break;
       }
     },
-    CurrentIdByEditAnnexes(){
-      switch(this.named) {
-            case 'Общехозяйственные': 
-            this.current_id_by_editannexe = 'economic_ed_annexes' 
-          break;
-            case 'Ремонтные': 
-            this.current_id_by_editannexe = 'repair_ed_annexes'
-          break;
-            case 'Прочие': 
-            this.current_id_by_editannexe = 'other_ed_annexes'
-          break;
-            case 'Финансовые': 
-            this.current_id_by_editannexe = 'financial_ed_annexes'
-          break;
-      }
-    },
 
-    countAnnexes() {
-      let count = 0;
-      if (this.farmDirecory.length) {
-        this.farmDirecory.forEach((el) => {
-          if (el.annexes.length > count) count = el.annexes.length;
-        });
-      }
-      return count;
-    },
   },
 };
 </script>
