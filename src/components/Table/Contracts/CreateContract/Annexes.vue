@@ -1,6 +1,6 @@
 <template>
 <div>
-
+<Loader :loader="loader" />
   <b-modal :id="id" ref="annex-modal" hide-footer size="md">
     <template #modal-title>
      Добавление приложения к договору № {{ contract }}
@@ -64,13 +64,14 @@
 <script>
 import Notifications from "@/components/notifications/Notifications.vue";
 import api from "@/api/directory"
-
+import Loader from "@/components/loader/loader.vue";
 export default{
     name: 'annexes',
-    components: { Notifications},
+    components: { Notifications, Loader},
     props: ['contract', 'btnClickHandler', 'id'],
     data(){
         return {
+          loader: false,
           doc_type: '',
           number: '',
           comment: '',
@@ -86,6 +87,7 @@ export default{
         this.$refs['annex-modal'].hide()
       },
       createAnnex(e){
+        this.loader = true
       if (e && e.preventDefault) { e.preventDefault(); }
       let data = new FormData(e.target);
       // console.log(data)
@@ -99,9 +101,11 @@ export default{
         this.notifyClass = "wrapper-success";
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 2000);
+        this.loader = false
       }).catch(error => {
+        this.loader = false
         this.notifyHead = "Ошибка";
-        this.notifyMessage = "Составьте приложение повторно";
+        this.notifyMessage = "Приложение не составлено";
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 2000);
