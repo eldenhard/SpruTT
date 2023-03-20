@@ -79,7 +79,7 @@
 <div  >
   <label for="">Контрагент<br>
         <div class="inputcontainer">
-            <input class="textarea" v-model="user_counterparty" v-on:input="debouncedHandler" 
+            <input class="textarea" :placeholder="Counterparties" v-model="user_counterparty" v-on:input="debouncedHandler" 
             style=" background: white; border: 1px solid grey !important; position: relative; box-sizing: border-box;" />
             <input type="text" style="display: none" name="counterparty" v-model="contract_data.counterparty">
             <div class="icon-container" v-if="loaderInputDep">
@@ -101,7 +101,7 @@
 <div    >
   <label for="">Ответственный<br>
   <div class="inputcontainer">
-      <input class="textarea" v-model="responsible" v-on:input="debouncedHandler2" 
+      <input class="textarea"  :placeholder="Users" v-model="responsible" v-on:input="debouncedHandler2" 
       style=" background: white; border: 1px solid grey !important; position: relative; box-sizing: border-box;" />
       <input type="text" style="display: none" name="responsible" v-model="contract_data.responsible">
       <div class="icon-container" v-if="loaderInputDep2">
@@ -265,6 +265,8 @@ import groups from "@/helpers/groups";
 import debounce from "lodash.debounce";
 import apiCounter from "@/api/counterparties"
 import Notifications from "@/components/notifications/Notifications.vue";
+import { getUserById } from "@/helpers/getAllUsers";
+
 export default {
     name: 'editContract',
     props: ['contract', 'contract_data', 'id'],
@@ -283,17 +285,37 @@ export default {
       all_user: '',
       user_counterparty: '',
       responsible: '',
-
+      users: [],
       showNotify: false,
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
         }
     },
+    mounted(){
+    this.loader = true
+      apiCounter.getUsers()
+      .then(response => {
+          this.users = response.data.data
+          this.loader = false
+      }).catch(error => {
+        this.loader = false
+      })
+    },
+
     methods: {
         hideModal() {
         this.$refs['example-contract'].hide()
       },
+
+    ChangeIdCounterByName(id){
+      let count_data = this.$store.state.counterparties.counterparties
+      const counterpart = getUserById(count_data, id)
+     if (counterpart[0]) {
+        return counterpart[0]?.work_name;
+      }
+      return "";
+    },
     checkCounterparty(data_name, data_id) {
       this.user_counterparty = data_name
       this.contract_data.counterparty = data_id
@@ -338,6 +360,19 @@ export default {
       })
     }, 500);
   },
+  computed: {
+    Counterparties(){
+     return this.ChangeIdCounterByName(this.contract_data.counterparty)
+    },
+    Users(){
+    const users = getUserById(this.users, this.contract_data.responsible)
+     if (users[0]) {
+        return users[0]?.last_name + " " + users[0]?.first_name[0] + ".";
+      }
+      return "";
+    }
+  },
+
   beforeUnmount() {
     this.debouncedHandler.cancel();
     this.debouncedHandler2.cancel();

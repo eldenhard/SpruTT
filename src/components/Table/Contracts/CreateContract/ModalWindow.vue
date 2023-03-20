@@ -360,7 +360,7 @@ export default{
       }).catch(error => {
         this.loader = false
         this.notifyHead = "Ошибка";
-        this.notifyMessage = error.response.data;
+        this.notifyMessage = Object.values(error.response.data);
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 2000);
