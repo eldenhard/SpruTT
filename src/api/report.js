@@ -103,6 +103,9 @@ const createDocument = (data) => {
 const getContractAnnex= (id) => {
     return api.get(`${documents}/contract-annex/${id}`)
 }
+const putContract= (id, data) => {
+    return api.put(`${documents}/contract/${id}/`, data)
+}
 export default {
     getUsers,
     getReportById,
@@ -118,6 +121,7 @@ export default {
     getLastDataReports,
     getReportByIdCreator,
     getAllDataLastReportAdmin,
+    putContract,
     // Личный кабинет 
     getUsersLK,
     getManagerLK,

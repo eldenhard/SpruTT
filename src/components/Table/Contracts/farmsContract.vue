@@ -1,7 +1,7 @@
 <template>
   <div>
     <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
-    <ModalContractCreate :id="CurrentPathApi"/>
+    <ModalContractCreate :id="CurrentPathApi" :btnClickHandler="getFarmContract"/>
     <Annexes :contract="contract_number" :btnClickHandler="getFarmContract" :id="CurrentPathApi3"/>
     <EditAnnexe :contract="contract_number" :annex="editAnnexe" :btnClickHandler="getFarmContract" :id="CurrentPathApi4"/>
     <EditContract :contract="contract_number" :contract_data="editContract" :id="CurrentPathApi2"/>

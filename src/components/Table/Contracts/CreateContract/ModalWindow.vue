@@ -67,7 +67,7 @@
           <input type="file" ref="file"  class="textarea" name="scan"  style="background: transparent; border: none !important; padding: none;"/>
         </label>
         <label for="">Категория <br>
-          <select type="text"  v-model="Documents.category">
+          <select type="text" name='category'  v-model="Documents.category">
             <option value="economic">Общехозяйственные</option>
             <option value="repair">Ремонтные</option>
             <option value="buyer">С покупателем</option>
@@ -133,7 +133,8 @@
     </div>
 <div style="display: flex; justify-content: space-around; margin-top: 7%;">
     <button  type="submit" style="width: 15%" class="button Accept">Создать</button><br>
-    <a style="width: 15%; height: 25px; text-decoration: none; color: white !important; outline: none; border: none !important;" class="button Delete"  block variant="danger" @click="$bvModal.hide(this.id)">Закрыть</a>
+    <a style="width: 15%; height: 25px; text-decoration: none; color: white !important; outline: none; border: none !important;" class="button Delete"
+      block variant="danger" @click="$bvModal.hide(this.id)">Закрыть</a>
   </div>
 </form>
 
@@ -309,7 +310,7 @@ export default{
       loader: false,
       }  
   },
-    props: ["modal", 'id'],
+    props: ["modal", 'id', 'btnClickHandler'],
     computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -356,7 +357,7 @@ export default{
         this.notifyClass = "wrapper-success";
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 2000);
-        
+        this.btnClickHandler()
       }).catch(error => {
         this.loader = false
         this.notifyHead = "Ошибка";

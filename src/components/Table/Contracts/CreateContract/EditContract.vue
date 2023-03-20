@@ -10,7 +10,7 @@
 
     
     
-<form  >
+<form   v-on:submit="createReport">
 
     <div class="d-block text-center">
       <div  style="display: flex; justify-content: space-around;">
@@ -130,8 +130,9 @@
 
     </div>
 <div style="display: flex; justify-content: space-around; margin-top: 7%;">
-    <button  type="submit" style="width: 15%" class="button Accept">Создать</button><br>
-    <a style="width: 15%; height: 25px; text-decoration: none; color: white !important; outline: none; border: none !important;" class="button Delete"  block variant="danger" @click="$bvModal.hide('bv-modal-example')">Закрыть</a>
+    <button  type="submit" style="width: 15%" class="button Accept">Редактировать</button><br>
+    <a style="width: 15%; height: 25px; text-decoration: none; color: white !important; outline: none; border: none !important;" class="button Delete"
+      block variant="danger" @click="$bvModal.hide(this.id)">Закрыть</a>
   </div>
 </form>
 
@@ -266,6 +267,7 @@ import debounce from "lodash.debounce";
 import apiCounter from "@/api/counterparties"
 import Notifications from "@/components/notifications/Notifications.vue";
 import { getUserById } from "@/helpers/getAllUsers";
+import api from "@/api/report"
 
 export default {
     name: 'editContract',
@@ -307,7 +309,29 @@ export default {
         hideModal() {
         this.$refs['example-contract'].hide()
       },
-
+      createReport(e){
+      if (e && e.preventDefault) { e.preventDefault(); }
+      this.loader = true
+      let data = new FormData(e.target);
+      api.putContract(this.contract_data.id, data)
+      .then(response => {
+        this.hideModal()
+        this.loader = false
+        this.notifyHead = "Успешно";
+        this.notifyMessage = "Договор составлен";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
+        this.btnClickHandler()
+      }).catch(error => {
+        this.loader = false
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = Object.values(error.response.data);
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
+      })
+    },
     ChangeIdCounterByName(id){
       let count_data = this.$store.state.counterparties.counterparties
       const counterpart = getUserById(count_data, id)
