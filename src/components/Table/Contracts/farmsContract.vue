@@ -224,6 +224,7 @@ export default {
         number: "",
       },
       users: [],
+      userok: [],
       // Для компонента editAnnexe
       editAnnexe: [],
       // Для компонента editContract
@@ -231,16 +232,18 @@ export default {
     };
   },
 mounted(){
-  this.loader = true
-  apiCounter.getUsers()
-  .then(response => {
+  this.users = this.$store.state.users.users
+  //   console.log(this.userok, 'AAAAAAAAAAAAA')
+  // this.loader = true
+  // apiCounter.getUsers()
+  // .then(response => {
 
-      this.users = response.data.data
-      // console.log(response.data.data ,"AAAAA")
-      this.loader = false
-  }).catch(error => {
-    this.loader = false
-  })
+  //     this.users = response.data.data
+  //     // console.log(response.data.data ,"AAAAA")
+  //     this.loader = false
+  // }).catch(error => {
+  //   this.loader = false
+  // })
 },
   methods: {
     ChangeIdByName(id){
@@ -262,10 +265,16 @@ mounted(){
       this.loader = true
       api.deleteCurrentContract(id)
       .then(response => {
+        let table_tr = document.getElementById(id)
+        table_tr.remove();
         this.getFarmContract()
         this.loader = false
       }).catch(error => {
-        console.log(error)
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Договору не удалено, повторите операцию";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(this.closeNotification, 1500);
         this.loader = false
       })
     },
@@ -275,10 +284,19 @@ mounted(){
       .then(response => {
       let table_tr = document.getElementById(id)
       table_tr.remove();
+      this.notifyHead = "Успешно";
+      this.notifyMessage = "Приложение к договору удалено";
+      this.notifyClass = "wrapper-success";
+      this.showNotify = true;
+      setTimeout(this.closeNotification, 1500);
         // this.getFarmContract()
         this.loader = false
       }).catch(error => {
-        console.log(error)
+        this.notifyHead = "Ошибка";
+          this.notifyMessage = "Приложение к договору не удалено, повторите операцию";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 1500);
         this.loader = false
       })
     },
@@ -392,6 +410,9 @@ mounted(){
           break;
             case 'Прочие': 
             return 'other'
+          break;
+          case 'С покупателем':
+          return 'buyer'
           break;
             case 'Финансовые': 
             return 'financial'

@@ -12,6 +12,8 @@ import UpNavbar from './views/UpNavbar.vue'
 import Authorization from './views/Authorization.vue'
 import { actionTypes } from './store/modules/auth';
 import { actionTypes as cpActionTypes } from './store/modules/counterparties';
+import { actionTypes as userActionTypes } from './store/modules/users';
+
 // import { actionTypes as stActionTypes } from './store/modules/stations';
 // import { actionTypes as dnActionTypes } from './store/modules/dog_number';
 // import { actionTypes as ccActionTypes } from './store/modules/cargo_code';
@@ -27,10 +29,10 @@ export default {
     }
   },
   async mounted() {
-    // this.loader = true
+    this.loader = true
     await this.loading()
 
-    // this.loader = false
+    this.loader = false
   },
   methods: {
     async loading() {
@@ -38,6 +40,8 @@ export default {
        this.$store.dispatch(actionTypes.getStaffGroups)
        this.$store.dispatch(actionTypes.staffGlobal)
        this.$store.dispatch(cpActionTypes.getCounterparties, { url: 'personal/counterparties/?page_size=700', clear: true })
+       this.$store.dispatch(userActionTypes.getUsers, { url: 'personal/users/?page_size=700', clear: true })
+
       //  this.$store.dispatch(stActionTypes.checkLocalStations, { url: 'wagon-park/station?page_size=1000' })
       //  this.$store.dispatch(ccActionTypes.getCargoCode, { url: 'wagon-park/cargo?page_size=500', clear: true })
 

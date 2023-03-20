@@ -20,6 +20,12 @@
           </b-card-text>
         </b-tab>
 
+        <b-tab title="С покупателем" style="color: black  !important"  title-item-class="w-30">
+          <b-card-text>
+            <farmsContract :named="'С покупателем'"/>
+          </b-card-text>
+        </b-tab>
+
         <b-tab title="Прочие" style="color: black  !important"  title-item-class="w-30">
           <b-card-text>
             <farmsContract :named="'Прочие'"/>

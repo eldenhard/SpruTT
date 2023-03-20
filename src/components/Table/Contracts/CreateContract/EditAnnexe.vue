@@ -43,9 +43,9 @@
 </table>
 
   <div style="display: flex; justify-content: space-around; margin-top: 7%;">
-    <button  type="submit" style="width: 15%" class="button Accept" >Создать</button><br>
+    <button  type="submit" style="width: 15%" class="button Accept" >Редактировать</button><br>
     <a style="width: 15%; height: 25px; text-decoration: none; color: white !important; outline: none; border: none !important;"
-     class="button Delete"  block variant="danger" @click="$bvModal.hide(this.id)">Закрыть</a>
+     class="button Delete"  block variant="danger" @click="hideModal">Закрыть</a>
   </div>
 </form>
 

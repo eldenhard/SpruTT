@@ -17,7 +17,7 @@
     <div class="d-block text-center">
       <div  style="display: flex; justify-content: space-around;">
         <label for="">Номер договора <br>
-          <input type="text" class="textarea" name="number"  v-model="Documents.number">
+          <input type="text" class="textarea" name="number"  v-model="Documents.number" required>
         </label>
         <label for="">Статус ТТ по договору <br>
           <input type="text" class="textarea" name="company_status" v-model="Documents.company_status">
@@ -72,7 +72,7 @@
             <option value="repair">Ремонтные</option>
             <option value="buyer">С покупателем</option>
             <option value="financial">Финансовые</option>
-            <option value="other">Дургие</option>
+            <option value="other">Другие</option>
 
             </select>
         </label>
@@ -134,7 +134,7 @@
 <div style="display: flex; justify-content: space-around; margin-top: 7%;">
     <button  type="submit" style="width: 15%" class="button Accept">Создать</button><br>
     <a style="width: 15%; height: 25px; text-decoration: none; color: white !important; outline: none; border: none !important;" class="button Delete"
-      block variant="danger" @click="$bvModal.hide(this.id)">Закрыть</a>
+      block variant="danger" @click="hideModal">Закрыть</a>
   </div>
 </form>
 

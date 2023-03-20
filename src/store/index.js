@@ -7,6 +7,7 @@ import counterparties from '@/store/modules/counterparties'
 import stations  from "@/store/modules/stations";
 import dog_number from "./modules/dog_number";
 import cargo_code from "./modules/cargo_code";
+import users from "./modules/users"
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -22,6 +23,7 @@ const store = new Vuex.Store({
     stations,
     dog_number,
     cargo_code,
+    users,
   }
 })
 
