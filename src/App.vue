@@ -28,19 +28,18 @@ export default {
       loader: false
     }
   },
-  async mounted() {
+   mounted() {
     this.loader = true
-    await this.loading()
-
+    this.$store.dispatch(actionTypes.getStaffGroups)
+    this.$store.dispatch(actionTypes.staffGlobal)
+    this.$store.dispatch(cpActionTypes.getCounterparties, { url: 'personal/counterparties/?page_size=700', clear: true })
+    this.$store.dispatch(userActionTypes.getUsers, { url: 'personal/users/?page_size=700', clear: true })
     this.loader = false
   },
   methods: {
-    async loading() {
+     loading() {
       
-       this.$store.dispatch(actionTypes.getStaffGroups)
-       this.$store.dispatch(actionTypes.staffGlobal)
-       this.$store.dispatch(cpActionTypes.getCounterparties, { url: 'personal/counterparties/?page_size=700', clear: true })
-       this.$store.dispatch(userActionTypes.getUsers, { url: 'personal/users/?page_size=700', clear: true })
+       
 
       //  this.$store.dispatch(stActionTypes.checkLocalStations, { url: 'wagon-park/station?page_size=1000' })
       //  this.$store.dispatch(ccActionTypes.getCargoCode, { url: 'wagon-park/cargo?page_size=500', clear: true })

@@ -4,7 +4,7 @@
     <ModalContractCreate :id="CurrentPathApi" :btnClickHandler="getFarmContract"/>
     <Annexes :contract="contract_number" :btnClickHandler="getFarmContract" :id="CurrentPathApi3"/>
     <EditAnnexe :contract="contract_number" :annex="editAnnexe" :btnClickHandler="getFarmContract" :id="CurrentPathApi4"/>
-    <EditContract :contract="contract_number" :contract_data="editContract" :id="CurrentPathApi2"/>
+    <EditContract :contract="contract_number" :contract_data="editContract" :id="CurrentPathApi2" :btnClickHandler="getFarmContract"/>
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -15,14 +15,11 @@
     <Loader :loader="loader"></Loader>
     <button
       class="Accept"
-      @click="getFarmContract()"
+      v-on:keydown.13="getFarmContract()"
       style="width: 100%;position: relative;
         left: 50%;
-        transform: translate(-50%, 0);
-      "
-    >
-   
-      Запросить договора
+        transform: translate(-50%, 0);">
+         Запросить договора
     </button>
     <br /><br />
     <p class="amount">всего записей: {{ total_objects }}</p>
@@ -85,12 +82,12 @@
             <td>{{ el.contract_object }}</td>
             <td>{{ el.fiat_amount }}</td>
             <td>{{ el.expiration_date }}</td>
-            <td >{{el.prolongation}}</td>
-            <td>{{el.is_active}}</td>
-            <td>
-             <a href="el.scan" target="_blank"><img style="height: 20px" src="@/assets/pdf.png" alt="скан"/></a>
+            <td >{{el.prolongation ? 'Да' : 'Нет'}}</td>
+            <td>{{el.is_active ? 'Активный' : 'Неактивный'}}</td>
+            <td >
+             <a :href="el.scan" target="_blank" v-if="el.scan"><img style="height: 30px" src="@/assets/pdf.png" alt="скан"/></a>
             </td>
-            <td>{{ el.category }}</td>
+            <td>{{ CategoryTranslate( el.category) }}</td>
             <td>{{ el.comment }}</td>
             <td>{{ ChangeIdCounterByName(el.counterparty) }} </td>
             <td>{{ ChangeIdByName(el.responsible) }}</td>
@@ -129,28 +126,14 @@
                       <td style="background: lightgrey !important" >{{ new Date(e.created_at).toLocaleString() }}</td>
                       <td style="background: lightgrey !important" >{{ e.comment }}</td>
                       <td style="background: lightgrey !important">
-                        <a :href="el.scan" target="_blank"><img src="@/assets/pdf.png" style="height: 20px"
+                        <a :href="e.scan" target="_blank"><img src="@/assets/pdf.png" style="height: 20px"
                         /></a>
                       </td>
                         <td style="background: lightgrey !important">{{ e.contract }}</td>
                     </tr>
                   </template>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                  <tr >
+                    <th colspan="17"></th>
                   </tr>
                 </template>
             </template>
@@ -195,7 +178,7 @@ import EditAnnexe from "@/components/Table/Contracts/CreateContract/EditAnnexe.v
 import EditContract from "./CreateContract/EditContract.vue";
 export default {
   name: "PartnerTable",
-  props: ['named'],
+  props: ['named', 'namo'],
   components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe, EditContract },
   data() {
     return {
@@ -232,21 +215,14 @@ export default {
     };
   },
 mounted(){
-  this.users = this.$store.state.users.users
-  //   console.log(this.userok, 'AAAAAAAAAAAAA')
+  // this.getFarmContract();
   // this.loader = true
-  // apiCounter.getUsers()
-  // .then(response => {
+  // setTimeout(() =>  this.loader= false, 6500)
 
-  //     this.users = response.data.data
-  //     // console.log(response.data.data ,"AAAAA")
-  //     this.loader = false
-  // }).catch(error => {
-  //   this.loader = false
-  // })
 },
   methods: {
     ChangeIdByName(id){
+      this.users = this.$store.state.users.users
      const users = getUserById(this.users, id)
      if (users[0]) {
         return users[0]?.last_name + " " + users[0]?.first_name[0] + ".";
@@ -261,14 +237,36 @@ mounted(){
       }
       return "";
     },
+    CategoryTranslate(name){
+        switch(name){
+          case 'economic':
+            return 'Общехозяйственные'
+          break; 
+          case 'repair':
+            return 'Ремотные'
+          break; 
+          case 'buyer':
+            return 'С покупателем'
+          break; 
+          case 'financial':
+            return 'Финансовые'
+          break; 
+          case 'other ':
+            return 'Другие'
+          break;  
+        }
+    },
     DeleteCurrentContract(id){
       this.loader = true
       api.deleteCurrentContract(id)
       .then(response => {
-        let table_tr = document.getElementById(id)
-        table_tr.remove();
         this.getFarmContract()
         this.loader = false
+        this.notifyHead = "Успешно";
+        this.notifyMessage = "Договор удален";
+        this.notifyClass = "wrapper-succes";
+        this.showNotify = true;
+        setTimeout(this.closeNotification, 1500);
       }).catch(error => {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Договору не удалено, повторите операцию";
@@ -314,12 +312,12 @@ mounted(){
       api.getCurrentContract(id)
       .then(response => {
         this.editContract = response.data
-        console.log(response.data)
+        // console.log(response.data)
         this.loader = false
-        console.log(this.CurrentPathApi2)
+        // console.log(this.CurrentPathApi2)
         this.$bvModal.show(this.CurrentPathApi2) ////////////////////////
       }).catch(error => {
-        console.log(error)
+        // console.log(error)
         this.loader = false
       })
      
@@ -333,7 +331,7 @@ mounted(){
         this.loader = false
         this.$bvModal.show(this.CurrentPathApi4) /////////////////////////////////
       }).catch(error => {
-        console.log(error)
+        // console.log(error)
         this.loader = false
       })
     },
@@ -360,7 +358,7 @@ mounted(){
             item.hhh = true;
           })
           this.farmDirecory = l_data;
-          console.log(this.farmDirecory)
+          // console.log(this.farmDirecory, 'SCAN')
           this.total_objects = response.data.total_objects;
           this.amount = response.data.amount;
           this.nextLink = response.data.links.next;
@@ -374,7 +372,7 @@ mounted(){
   })
     .catch((err) => {
           this.loader = false;
-          console.log(err)
+          // console.log(err)
           this.notifyHead = "Ошибка";
           this.notifyMessage = "Данные не отфильтрованы, попробуйте еще раз";
           this.notifyClass = "wrapper-error";

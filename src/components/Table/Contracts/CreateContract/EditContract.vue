@@ -1,10 +1,11 @@
 <template>
     <div>
+      <Loader :loader="loader" />
   <!-- <b-button id="show-btn" @click="$bvModal.show("bv-modal-example")">Open Modal</b-button> -->
 
   <b-modal :id="id" ref="example-contract" size="md" hide-footer >
     <template #modal-title>
-     Редактирование договора {{ contract }}
+     Редактирование договора № {{ contract }}
     </template>
 
 
@@ -15,7 +16,7 @@
     <div class="d-block text-center">
       <div  style="display: flex; justify-content: space-around;">
         <label for="">Номер договора <br>
-          <input type="text" class="textarea" name="number"  v-model="contract_data.number">
+          <input type="text" class="textarea" name="number"  v-model="contract_data.number" readonly>
         </label>
         <label for="">Статус ТТ по договору <br>
           <input type="text" class="textarea" name="company_status" v-model="contract_data.company_status">
@@ -62,15 +63,20 @@
         </label>
         <!-- ДОБАВИТЬ ПЕРЕДАЧУ ДАННЫХ ФАЙЛА -->
         <label for="">Скан-копия  <br>
-          <input type="file" ref="file"  class="textarea" name="scan"  style="background: transparent; border: none !important; padding: none;"/>
-        </label>
+        <div style="position: relative">
+          <button type="button" class="Accept textarea" style="background: green; color: white;" >{{ contract_data.scan ? 'Заменить' : 'Добавить' }}</button>
+          <input type="file" ref="scan" name="scan" :class="{'displayNone': isdisplayNone}" @change="ReadFile()">
+        </div>
+        {{ pre_scan.name }}  
+      </label>
+       
         <label for="">Категория <br>
           <select type="text"  v-model="contract_data.category">
             <option value="economic">Общехозяйственные</option>
             <option value="repair">Ремонтные</option>
             <option value="buyer">С покупателем</option>
             <option value="financial">Финансовые</option>
-            <option value="other">Дургие</option>
+            <option value="other">Другие</option>
 
             </select>
         </label>
@@ -150,6 +156,17 @@
 </div>
 </template>
 <style scoped>
+.displayNone{
+  display: inline-block;
+  position: absolute; 
+  top: 0%; 
+  bottom: 0; 
+  left: 0; 
+  right: 0; 
+  width: 100%; 
+  height: 100%; 
+  opacity: 0;
+}
 .my-flex-cont {
  display: flex;
  justify-content: space-around;
@@ -268,14 +285,16 @@ import apiCounter from "@/api/counterparties"
 import Notifications from "@/components/notifications/Notifications.vue";
 import { getUserById } from "@/helpers/getAllUsers";
 import api from "@/api/report"
-
+import Loader from "@/components/loader/loader.vue";
 export default {
     name: 'editContract',
-    props: ['contract', 'contract_data', 'id'],
-    components: { Notifications },
+    props: ['contract', 'contract_data', 'id', 'btnClickHandler'],
+    components: { Notifications, Loader },
 
     data(){
         return{
+      isdisplayNone: true,
+      loader: false,
       ContractAnnexes: [],
       loaderInputDep: false,
       loaderInputDep2: false,
@@ -292,6 +311,7 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+      pre_scan: "",
         }
     },
     mounted(){
@@ -313,24 +333,28 @@ export default {
         hideModal() {
         this.$refs['example-contract'].hide()
       },
+      ReadFile(){
+        this.pre_scan = this.$refs.scan.files[0];
+      },
       createReport(e){
-      if (e && e.preventDefault) { e.preventDefault(); }
       this.loader = true
-      let data = new FormData(e.target);
-      api.putContract(this.contract_data.id, data)
+      if (e && e.preventDefault) { e.preventDefault(); }
+      let data_inform = new FormData(e.target);
+      api.putContract(this.contract_data.id, data_inform)
       .then(response => {
         this.hideModal()
         this.loader = false
+        this.btnClickHandler()
         this.notifyHead = "Успешно";
         this.notifyMessage = "Договор составлен";
         this.notifyClass = "wrapper-success";
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 2000);
-        this.btnClickHandler()
+        
       }).catch(error => {
         this.loader = false
         this.notifyHead = "Ошибка";
-        this.notifyMessage = Object.values(error.response.data);
+        this.notifyMessage = Object.values(error.response?.data);
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 2000);
@@ -352,7 +376,7 @@ export default {
     checkUser(data_name, data_id) {
       this.responsible = data_name
       this.contract_data.responsible = data_id
-      console.log( this.contract_data.responsible)
+      // console.log( this.contract_data.responsible)
       this.variantsUser2 = false
     },
     getGroupName(id) {

@@ -88,7 +88,7 @@ export default{
       createAnnex(e){
       if (e && e.preventDefault) { e.preventDefault(); }
       let data = new FormData(e.target);
-      console.log(data)
+      // console.log(data)
       api.CreateCurrentAnnex(data)
       .then(response => {
         document.querySelector('#FormAnnex').reset()

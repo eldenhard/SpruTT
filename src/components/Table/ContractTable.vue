@@ -4,8 +4,8 @@
     <b-card no-body >
       <b-tabs  align="center" style="width: 90%">
         <b-tab title="Общехозяйственные" active style="color: black !important"  title-item-class="w-30">
-          <b-card-text>
-            <farmsContract :named="'Общехозяйственные'"/>
+          <b-card-text >
+            <farmsContract :named="'Общехозяйственные'" />
           </b-card-text>
         </b-tab>
         <b-tab title="Ремонтные" style="color: black  !important"  title-item-class="w-30">
@@ -46,6 +46,7 @@ import farmsContract from '@/components/Table/Contracts/farmsContract.vue'
 export default {
   name: 'ContractTable',
   components: { farmsContract },
+ 
   // mounted(){
   //   let container = document.querySelector('.container')
   //   container.classList.remove("container")

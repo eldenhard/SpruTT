@@ -25,7 +25,7 @@
       <td style="padding: 0"><input type="date" name="created_at"  v-model="annex.created_at"   style="width:100% !important; text-align: center;"></td>
       <td style="padding: 0"><input type="text" name="comment"  v-model="annex.comment"   style="width:100% !important; text-align: center;"></td>
       <td style="position: relative;">
-        <button class="Accept" style="height: 15px; border-radius: 0 !important;" >{{ annex.scan ? 'Заменить' : 'Добавить' }}</button>
+        <button type="button" class="Accept" style="height: 15px; border-radius: 0 !important;" >{{ annex.scan ? 'Заменить' : 'Добавить' }}</button>
         <input type="file" ref="scan" name="scan" @change="ReadFile()" :class="{'displayNone': isdisplayNone}" >
         
       </td>
@@ -99,13 +99,13 @@ export default{
       },
       ReadFile(){
         this.pre_scan = this.$refs.scan.files[0];
-        console.log(this.pre_scan)
+        // console.log(this.pre_scan)
       },
       EditAnnex(e){
      
       if (e && e.preventDefault) { e.preventDefault(); }
       let data = new FormData(e.target);
-      console.log(data)
+      // console.log(data)
       api.ChangeCurrentAnnex(this.annex.id, data)
       .then(response => {
         document.querySelector('#EditAnnex').reset()
