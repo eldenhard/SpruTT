@@ -15,7 +15,7 @@
     <Loader :loader="loader"></Loader>
     <button
       class="Accept"
-      v-on:keydown.13="getFarmContract()"
+      @click="getFarmContract()"
       style="width: 100%;position: relative;
         left: 50%;
         transform: translate(-50%, 0);">
