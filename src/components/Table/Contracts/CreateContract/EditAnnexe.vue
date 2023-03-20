@@ -1,5 +1,6 @@
 <template>
     <div>
+      <Loader :loader="loader" />
         <b-modal :id="id" ref="annex-modal" hide-footer size="md">
     <template #modal-title>
      Редактирование приложения к договору № {{ contract }}
@@ -78,11 +79,11 @@
 <script>
 import Notifications from "@/components/notifications/Notifications.vue";
 import api from "@/api/directory"
-
+import Loader from '@/components/loader/loader.vue'
 export default{
   name: 'EditAnnexe',
   props: ['contract', 'annex', 'btnClickHandler', 'id'],
-  components: {Notifications},
+  components: {Notifications, Loader},
   data(){
     return {
       showNotify: false,
@@ -91,6 +92,7 @@ export default{
       notifyClass: "",
       isdisplayNone: true,
       pre_scan: '',
+      loader: false,
     }
   },
   methods: {
@@ -102,13 +104,14 @@ export default{
         // console.log(this.pre_scan)
       },
       EditAnnex(e){
-     
+     this.loader = true
       if (e && e.preventDefault) { e.preventDefault(); }
       let data = new FormData(e.target);
       // console.log(data)
       api.ChangeCurrentAnnex(this.annex.id, data)
       .then(response => {
         document.querySelector('#EditAnnex').reset()
+        this.loader = false
         this.hideModal()
         this.btnClickHandler()
         this.notifyHead = "Успешно";
@@ -117,6 +120,7 @@ export default{
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 2000);
       }).catch(error => {
+        this.loader = false
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Составьте приложение повторно";
         this.notifyClass = "wrapper-error";
