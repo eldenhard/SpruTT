@@ -67,7 +67,7 @@
         </thead>
         <tbody id="tableMain">
           <template v-for=" el in this.farmDirecory">
-          <tr :key="el.id">
+            <tr :key="el.id">
             <td>
                 <b-dropdown id="dropdown-1" text="Действие договор" size="sm" style="width: 95% !important;">
                         <b-dropdown-item @click="DeleteCurrentContract(el.id)">Удалить</b-dropdown-item>
@@ -82,7 +82,7 @@
             <td>{{ el.contract_object }}</td>
             <td>{{ el.fiat_amount }}</td>
             <td>{{ el.expiration_date }}</td>
-            <td >{{el.prolongation ? 'Да' : 'Нет'}}</td>
+            <td>{{el.prolongation ? 'Да' : 'Нет'}}</td>
             <td>{{el.is_active ? 'Активный' : 'Неактивный'}}</td>
             <td >
              <a :href="el.scan" target="_blank" v-if="el.scan"><img style="height: 30px" src="@/assets/pdf.png" alt="скан"/></a>
@@ -93,7 +93,7 @@
             <td>{{ ChangeIdByName(el.responsible) }}</td>
           </tr>
           <!-- ПРИЛОЖЕНИЯ -->
-                <template >
+                <template>
                   <tr>
                     <th>
                       <b-button variant="success" size="sm" style="width: 100% !important; margin: 0 !important;" @click=" CreateAnnex(el.number)">Добавить приложение</b-button>
@@ -136,7 +136,7 @@
                     <th colspan="17"></th>
                   </tr>
                 </template>
-            </template>
+              </template>
         </tbody>
       </table>
     </div>
@@ -257,22 +257,27 @@ mounted(){
         }
     },
     DeleteCurrentContract(id){
+      // let table_tr = document.getElementById(id)
+      //   // table_tr.remove();
+        // console.log(table_tr)
       this.loader = true
       api.deleteCurrentContract(id)
       .then(response => {
-        this.getFarmContract()
+        // let table_tr = document.getElementById(id)
+        // table_tr.remove();
+        this.DeleteGetFarmContract()
         this.loader = false
         this.notifyHead = "Успешно";
         this.notifyMessage = "Договор удален";
-        this.notifyClass = "wrapper-succes";
+        this.notifyClass = "wrapper-success";
         this.showNotify = true;
-        setTimeout(this.closeNotification, 1500);
+        setTimeout(this.closeNotification, 2500);
       }).catch(error => {
         this.notifyHead = "Ошибка";
-        this.notifyMessage = "Договору не удалено, повторите операцию";
+        this.notifyMessage = "Договор не удален, повторите операцию";
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
-        setTimeout(this.closeNotification, 1500);
+        setTimeout(this.closeNotification, 2500);
         this.loader = false
       })
     },
@@ -286,7 +291,7 @@ mounted(){
       this.notifyMessage = "Приложение к договору удалено";
       this.notifyClass = "wrapper-success";
       this.showNotify = true;
-      setTimeout(this.closeNotification, 1500);
+      setTimeout(this.closeNotification, 2500);
         // this.getFarmContract()
         this.loader = false
       }).catch(error => {
@@ -294,7 +299,7 @@ mounted(){
           this.notifyMessage = "Приложение к договору не удалено, повторите операцию";
           this.notifyClass = "wrapper-error";
           this.showNotify = true;
-          setTimeout(this.closeNotification, 1500);
+          setTimeout(this.closeNotification, 2500);
         this.loader = false
       })
     },
@@ -348,6 +353,21 @@ mounted(){
       }
       this.getFarmContract();
     },
+    DeleteGetFarmContract(){
+      api.getDirectoryFarm(this.CurrentPathApi, this.filter_farms)
+        .then((response) => {
+          let l_data = response.data.data;
+          l_data.forEach((item)=>{
+            item.hhh = true;
+          })
+          this.farmDirecory = l_data;
+          this.total_objects = response.data.total_objects;
+          this.amount = response.data.amount;         
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    },
     getFarmContract() {
       this.loader = true;
       api.getDirectoryFarm(this.CurrentPathApi, this.filter_farms)
@@ -368,8 +388,8 @@ mounted(){
           this.notifyMessage = "Данные отфильтрованы";
           this.notifyClass = "wrapper-success";
           this.showNotify = true;
-          setTimeout(this.closeNotification, 1500);
-  })
+          setTimeout(this.closeNotification, 2500);
+        })
     .catch((err) => {
           this.loader = false;
           // console.log(err)
@@ -377,7 +397,7 @@ mounted(){
           this.notifyMessage = "Данные не отфильтрованы, попробуйте еще раз";
           this.notifyClass = "wrapper-error";
           this.showNotify = true;
-          setTimeout(this.closeNotification, 1500);
+          setTimeout(this.closeNotification, 2500);
         });
     },
 
