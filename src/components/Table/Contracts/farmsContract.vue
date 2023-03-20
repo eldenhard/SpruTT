@@ -216,8 +216,8 @@ export default {
   },
 mounted(){
   // this.getFarmContract();
-  // this.loader = true
-  // setTimeout(() =>  this.loader= false, 6500)
+  this.loader = true
+  setTimeout(() =>  this.loader= false, 6500)
 
 },
   methods: {
