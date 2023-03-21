@@ -9,7 +9,7 @@
             class="textarea"
             id="input_filter_wagon_dislocation"
             name="Pwd"
-            v-model="filter.wagon_type"
+            v-model="filter.wagon__wagon_type"
             @change="updateSelectedWagonType"
             style="cursor: pointer; background-color: white;">
             <!-- <option value="">Все вагоны</option> -->
@@ -84,15 +84,7 @@
     </div>
 
     <div class="option_select_block">
-      <div class="row">
-        <!-- <template v-if="selectedWagonType">
-                    <span class="option_select_block_check" v-for="p in selectedWagonType" :key="p.id"
-                        @click="removeSelectedWagonType(p.id)">
-                        <span style="color: black; font-size: 15px;"> &#43;</span>
-                        {{ p.value }}
-                    </span>
-                </template> -->
-
+      <div style="display: flex; justify-content: start; flex-wrap: wrap;">
         <template v-if="selectedPoligons">
           <span
             class="option_select_block_check"
@@ -180,7 +172,7 @@ export default {
             filter: {
                 polygon__in: '',
                 wagon_belong_manager__in: '',
-                wagon_type: '',
+                wagon__wagon_type: '',
                 last_operation_datetime_begin: '',
                 last_operation_datetime_end: '',
             },

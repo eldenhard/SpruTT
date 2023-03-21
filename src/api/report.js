@@ -33,7 +33,7 @@ const deleteReportAbandon = (id) => {
 // const CreateReportAbandone = () => {
 //     return api.post(`${reports}/drop/cs/create/`)
 // }
-const getFilterWafonAbadone = (format,filter) => {
+const getFilterWafonAbadone = (format, filter) => {
     return api.get(`${reports}/drop/create-report?report_type=${format}`, { params: filter }, {timeout: 60000})
 }
 const GetReportAbandone = () => {

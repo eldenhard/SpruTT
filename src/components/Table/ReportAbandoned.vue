@@ -184,7 +184,7 @@ export default {
       this.loader = true;
       api
         .getFilterWafonAbadone(this.format, this.filter = {
-        ...this.filter, wagon__wagon_type: this.filter.wagon_type.name
+        ...this.filter, wagon__wagon_type: this.filter.wagon__wagon_type.name
       })
         .then((response) => {
           this.notifyHead = "Успешно";
