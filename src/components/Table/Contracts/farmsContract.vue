@@ -418,7 +418,7 @@ mounted(){
     }),
 
     // Для создания договора
-    CurrentPathApi(){
+CurrentPathApi(){
       switch(this.named) {
             case 'Общехозяйственные': 
             return 'economic'
@@ -436,7 +436,7 @@ mounted(){
             return 'financial'
           break;
       }
-    },
+  },
 
 // Для редактиварония договора
 CurrentPathApi2(){
@@ -491,7 +491,6 @@ CurrentPathApi3(){
           break;
       }
     },
-
   },
 };
 </script>

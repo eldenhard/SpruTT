@@ -287,7 +287,6 @@ table {
 }
 
 th {
-
   width: 200px;
   height: 20px;
   vertical-align: middle !important;
@@ -316,7 +315,6 @@ td {
   background: #2c3e50 !important;
   color: white;
 }
-
 
 .amount{
   color:#909092;
