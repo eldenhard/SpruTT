@@ -29,7 +29,7 @@
       style="border-top-left-radius: 10px; border-top-right-radius: 10px" @click="CreateContract()">
       Добавить договор
     </button>
-
+<br>
 
     <div
       style="

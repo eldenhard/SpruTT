@@ -14,6 +14,7 @@
       " @click="addStaff()">
       Добавить сотрудника
     </button>
+    <br>
     <span id="big-photo" @click="close_photo"></span>
 
     <div style="

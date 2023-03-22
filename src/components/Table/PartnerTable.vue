@@ -207,6 +207,7 @@
     >
       Запросить контрагентов
     </button>
+    <!-- <input type="button" v-on:keyup.enter="alert1()"> -->
     <br /><br />
 
     <p class="amount">всего записей: {{ total_objects }}</p>
@@ -219,6 +220,7 @@
     >
       Добавить контрагента
     </button>
+    <br>
     <div style="width: 100%; overflow-x: auto;
         overflow-y: auto;
         position: relative;
@@ -437,6 +439,12 @@ export default {
     };
   },
   methods: {
+    // alert1(event){
+    //   alert('ПРИВЕТ')
+    //   if(event){
+    //     alert(event.target.TagName)
+    //   }
+    // },
     goToPage(link) {
       let url = new URL(link);
       let pageNumber = url.searchParams.get("page");
