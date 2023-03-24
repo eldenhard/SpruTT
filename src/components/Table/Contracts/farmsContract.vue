@@ -21,6 +21,7 @@
         transform: translate(-50%, 0);">
          Запросить договора
     </button>
+    {{ text }}
     <br /><br />
     <p class="amount">всего записей: {{ total_objects }}</p>
     <p class="amount">всего на странице: {{ amount }}</p>
@@ -176,9 +177,12 @@ import Annexes from "./CreateContract/Annexes.vue";
 import { getUserById } from "@/helpers/getAllUsers";
 import EditAnnexe from "@/components/Table/Contracts/CreateContract/EditAnnexe.vue"
 import EditContract from "./CreateContract/EditContract.vue";
+import MixinTest from "@/mixins/mixin-test.js"
+
 export default {
   name: "PartnerTable",
   props: ['named', 'namo'],
+  mixins: [ MixinTest ],
   components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe, EditContract },
   data() {
     return {
@@ -217,6 +221,7 @@ export default {
 mounted(){
   // this.getFarmContract();
   this.loader = true
+  this.log()
   setTimeout(() =>  this.loader= false, 6500)
 
 },
