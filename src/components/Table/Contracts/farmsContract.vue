@@ -262,14 +262,9 @@ mounted(){
         }
     },
     DeleteCurrentContract(id){
-      // let table_tr = document.getElementById(id)
-      //   // table_tr.remove();
-        // console.log(table_tr)
       this.loader = true
       api.deleteCurrentContract(id)
       .then(response => {
-        // let table_tr = document.getElementById(id)
-        // table_tr.remove();
         this.DeleteGetFarmContract()
         this.loader = false
         this.notifyHead = "Успешно";
