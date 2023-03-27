@@ -18,7 +18,6 @@
         <label for="input-filter-staff1" class="label" style="margin-left: 10%">Тип отчета</label>
       </div>
 
-      <!-- <input type="date" v-model="filter.current_station_arrival_end" style="width: 40%"> -->
 
       <b-button class="mt-2" variant="success" block @click="CreateReportAbandones()">Создать отчет
       </b-button>

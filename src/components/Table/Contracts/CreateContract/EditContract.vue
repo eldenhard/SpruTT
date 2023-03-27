@@ -315,18 +315,7 @@ export default {
         }
     },
     mounted(){
-    // this.loader = true
-    //   apiCounter.getUsers()
-    //   .then(response => {
-    //       this.users = response.data.data
-    //       this.loader = false
-    //   }).catch(error => {
-    //     this.loader = false
-    //   })
     this.users = this.$store.state.users.users
-
-    // this.users = this.$store.state.users.Users
-
     },
 
     methods: {
