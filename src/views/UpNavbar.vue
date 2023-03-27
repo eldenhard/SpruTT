@@ -8,31 +8,31 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item>
-          <router-link  to="/directory"  style="color: black; text-decoration: none; font-size: 15px;">Справочники</router-link>
+          <router-link  to="/directory"  class="router-link">Справочники</router-link>
         </b-nav-item>
 
         <b-nav-item >
-          <router-link to="/wagonpark" style="color: black; text-decoration: none; font-size: 15px;"> Вагонный парк</router-link>
+          <router-link to="/wagonpark" class="router-link"> Вагонный парк</router-link>
         </b-nav-item>
 
         <b-nav-item >
-          <router-link to="/lk"  style="color: black; text-decoration: none; font-size: 15px;">Личный кабинет</router-link>
+          <router-link to="/lk"  class="router-link">Личный кабинет</router-link>
         </b-nav-item>
 
         <b-nav-item>
-          <router-link to="/report"  style="color: black; text-decoration: none; font-size: 15px;">Отчеты</router-link>
+          <router-link to="/report"  class="router-link">Отчеты</router-link>
         </b-nav-item>
 
         <b-nav-item >
-          <router-link to="/personnel-service" style="color: black; text-decoration: none; font-size: 15px;">Кадровая служба</router-link>
+          <router-link to="/personnel-service" class="router-link">Кадровая служба</router-link>
         </b-nav-item>
 
         <b-nav-item >
-          <router-link to="/key-facts" style="color: black; text-decoration: none; font-size: 15px;">Ключевые факты</router-link>
+          <router-link to="/key-facts" class="router-link">Ключевые факты</router-link>
         </b-nav-item>
 
         <li class="nav-item" style="padding-top: 1px">
-          <a class="nav-link" href="/" @click="logout" style="color: black; text-decoration: none; font-size: 15px;">Выход</a>
+          <a class="nav-link" href="/" @click="logout" style="color: black; text-decoration: none; font-size: 15px;" >Выход</a>
         </li>
       </b-navbar-nav>
 
@@ -60,6 +60,9 @@ export default {
 
 
 <style scoped>
+.router-link{
+  color: black; text-decoration: none; font-size: 15px;
+}
 .disabled{
   pointer-events: none;
   color: #E4E4E4;
