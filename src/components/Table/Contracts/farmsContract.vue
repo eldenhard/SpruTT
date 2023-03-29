@@ -21,7 +21,7 @@
         transform: translate(-50%, 0);">
          Запросить договора
     </button>
-    {{ text }}
+   
     <br /><br />
     <p class="amount">всего записей: {{ total_objects }}</p>
     <p class="amount">всего на странице: {{ amount }}</p>
