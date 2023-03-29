@@ -854,8 +854,8 @@ export default {
 
     }
     // Получить все отчеты созданные сотрудником
-    fetch("http://10.1.5.20/api/reports/kpi?" + `creator=${id}`, {
-      // fetch('/api/reports/kpi?'+ `creator=${id}`, {
+    // fetch("http://10.1.5.20/api/reports/kpi?" + `creator=${id}`, {
+      fetch('/api/reports/kpi?'+ `creator=${id}`, {
 
       headers: {
         Authorization: `Basic ${token}`,
