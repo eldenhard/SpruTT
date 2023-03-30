@@ -8,27 +8,27 @@
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
         <b-nav-item>
-          <router-link  to="/directory"  class="router-link">Справочники</router-link>
+          <router-link  to="/directory"  class="router-links">Справочники</router-link>
         </b-nav-item>
 
         <b-nav-item >
-          <router-link to="/wagonpark" class="router-link"> Вагонный парк</router-link>
+          <router-link to="/wagonpark" class="router-links"> Вагонный парк</router-link>
         </b-nav-item>
 
         <b-nav-item >
-          <router-link to="/lk"  class="router-link">Личный кабинет</router-link>
+          <router-link to="/lk"  class="router-links">Личный кабинет</router-link>
         </b-nav-item>
 
         <b-nav-item>
-          <router-link to="/report"  class="router-link">Отчеты</router-link>
+          <router-link to="/report"  class="router-links">Отчеты</router-link>
         </b-nav-item>
 
         <b-nav-item >
-          <router-link to="/personnel-service" class="router-link">Кадровая служба</router-link>
+          <router-link to="/personnel-service" class="router-links">Кадровая служба</router-link>
         </b-nav-item>
 
         <b-nav-item >
-          <router-link to="/key-facts" class="router-link">Ключевые факты</router-link>
+          <router-link to="/key-facts" class="router-links">Ключевые факты</router-link>
         </b-nav-item>
 
         <li class="nav-item" style="padding-top: 1px">
@@ -60,7 +60,7 @@ export default {
 
 
 <style scoped>
-.router-link{
+.router-links{
   color: black; text-decoration: none; font-size: 15px;
 }
 .disabled{

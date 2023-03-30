@@ -703,11 +703,11 @@
       </div>
       <br />
       <!-- http://10.1.5.20/api/reports/kpi/get-all-last?date_begin=${this.period_begin}&date_end=${this.period_end} -->
-
-      <b-button
+<div style="display: flex; justify-content: space-evenly;">
+  <b-button
         class="button"
         variant="success"
-        style="height: 50px"
+        style="height: 40px; width: 20%"
         @click="getMark()"
         >Создать</b-button
       >
@@ -715,10 +715,12 @@
       <b-button
         class="button"
         variant="danger"
-        style="height: 50px; margin: 5% 0"
+        style="height: 40px;  width: 20%"
         @click="hideModal"
         >Закрыть</b-button
       >
+</div>
+
     </b-modal>
 
     <Notifications
