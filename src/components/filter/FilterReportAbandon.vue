@@ -62,7 +62,8 @@
         <div class="bg" style="background-color: white;">
           <input
             class="textarea"
-            type="date"
+            type="datetime-local"
+            step="1"
             v-model="filter.last_operation_datetime_begin"
             @change="updateSelected_arrival_begin"
             style="width: 125px; cursor: pointer; margin-top: 9%; background-color: white;"
@@ -74,7 +75,8 @@
         <div class="bg" style="background-color: white;">
           <input
             class="textarea"
-            type="date"
+            type="datetime-local"
+            step="1"
             v-model="filter.last_operation_datetime_end"
             @change="updateSelectedWagonType_arrival_end"
             style="width: 125px; cursor: pointer; margin-top: 9%; background-color: white;"
