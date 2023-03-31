@@ -20,7 +20,8 @@
     <div style="
         width: 95%;
         overflow-x: auto;
-        height: 80vh;
+        height: auto;
+        max-height: 80vh;
         overflow-y: auto;
         position: relative;
         left: 50%;
@@ -426,9 +427,6 @@
     </b-modal>
 
 
-
-
-
     <b-modal ref="add-user" hide-footer title="Добавление сотрудника">
       <div class="row">
         <div class="col-md-3">
@@ -638,10 +636,10 @@ export default {
   methods: {
     openModalView(id) {
       this.loader = true;
-      this.OpenModalView(id);
       api.currentUser(id).then((response) => {
-        this.loader = false;
+        this.OpenModalView(id);
         this.current_user_staff = response.data;
+        this.loader = false;
       });
     },
     OpenModalView() {
@@ -751,11 +749,14 @@ export default {
     // получение пользователя подлежащего удалению
     getCurrentUser(id) {
       this.loader = true;
-      this.$refs["delete-user"].show();
       api.currentUser(id).then((response) => {
-        this.loader = false;
         this.current_user_staff = response.data;
+        this.$refs["delete-user"].show();
+        this.loader = false;
+
       });
+
+      
     },
     // Удаление текущего пользователя
     deleteCurrentUser(id) {
