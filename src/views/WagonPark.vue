@@ -31,6 +31,9 @@
             <b-card-text v-if="i.name === 'Ремонты'">
               <WagonRepair />
             </b-card-text>
+            <b-card-text v-if="i.name === 'Тариф по сопредельным территориям'">
+              <TerritoryTable />
+            </b-card-text>
             <div v-if="i.name === 'Сотрудники'">
                 <StaffTable />
               </div>
@@ -53,7 +56,7 @@ import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue"
 import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
 import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
 import StaffTable from "@/components/Table/StaffTable.vue";
-
+import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
 export default {
   name: "WagonPark",
   components: {
@@ -65,6 +68,7 @@ export default {
     WagonRepair,
     BCH,
     StaffTable,
+    TerritoryTable,
   },
   data() {
     return {

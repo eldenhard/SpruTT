@@ -2,14 +2,14 @@
   <div id="navbarMain">
     <b-card no-body>
       <b-tabs pills card vertical nav-wrapper-class="w-100" class="test" style="background: white;height: 100vh !important;text-align:center !important;
-            justify-content: center !important;
-            ">
+            justify-content: center !important;">
         <b-container class="bv-example-row">
           <b-tab title="Вагоны" @click="newTab('Вагоны')" style="display: none !important"> </b-tab>
           <b-tab title="Телеграммы" @click="newTab('Телеграммы')" style="display: none !important"> </b-tab>
           <b-tab title="Ремонты" @click="newTab('Ремонты')" style="display: none !important"> </b-tab>
           <b-tab title="Расчет" @click="newTab('Расчет')" style="display: none !important"> </b-tab>
           <b-tab  title="Отправки БЧ" @click="newTab('Отправки БЧ')" style="display: none !important"> </b-tab>
+          <b-tab  title="Тариф по сопр. терр." @click="newTab('Тариф по сопредельным территориям')" style="display: none !important"> </b-tab>
 
         </b-container>
       </b-tabs>
