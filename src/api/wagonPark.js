@@ -127,7 +127,7 @@ const postRailTarif = (data) => {
 }
 // Преобразование файла БЧ
 const postShipmentList = (data) =>{
-    return api.post(`${resource}/shipment-list/make-file/`, data)
+    return api.post(`${resource}/shipments/convert-file/`, data)
 }
 export default {
     getWagons,
