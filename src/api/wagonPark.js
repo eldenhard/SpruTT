@@ -129,6 +129,9 @@ const postRailTarif = (data) => {
 const postShipmentList = (data) =>{
     return api.post(`${resource}/shipments/convert-file/`, data)
 }
+const postViewFile = (view, data) =>{
+    return api.post(`${resource}/shipments/${view}/load-file/`, data)
+}
 export default {
     getWagons,
     getPassport,
@@ -149,6 +152,7 @@ export default {
     getReportRepairData,
     getCurrentStation,
     getCargoCodeSearch,
+    postViewFile,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,
