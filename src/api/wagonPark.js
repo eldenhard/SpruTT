@@ -132,6 +132,9 @@ const postShipmentList = (data) =>{
 const postViewFile = (view, data) =>{
     return api.post(`${resource}/shipments/${view}/load-file/`, data)
 }
+const createReportTerritory = (data) => {
+    return api.post(`${resource}/shipments/export/`, {'wagons': data})
+}
 export default {
     getWagons,
     getPassport,
@@ -153,6 +156,7 @@ export default {
     getCurrentStation,
     getCargoCodeSearch,
     postViewFile,
+    createReportTerritory,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

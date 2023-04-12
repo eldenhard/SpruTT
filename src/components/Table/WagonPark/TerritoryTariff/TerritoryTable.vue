@@ -2,6 +2,7 @@
   <div>
     <Loader :loader="loader"></Loader>
     <div class="grid_net">
+      <!-- Левый блок -->
       <div>
         <div style="display: flex; justify-content: start; height: 50px">
           <b-button
@@ -9,7 +10,7 @@
             style="width: 85%; height: 80%; margin-top: 14px; float: left"
             class="search"
             @click="getCurrentWagon()"
-            >Найти</b-button
+            >Создать отчет</b-button
           >
         </div>
         <br />
@@ -159,11 +160,23 @@ watch: {
         this.searchData = true;
         let trim_data = this.SearchRepairWagon.trim();
         let data = trim_data.replace(regExps, ",");
-        // api.getRepairWagon(data)
-        // .then(response => {
-        //     console.log(response.data)
-        //     this.loader = false
-        // })
+        api.createReportTerritory(data)
+        .then(response => {
+          this.showNotify = true;
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = "Успешно, данные переданы на обработку";
+          this.notifyClass = "wrapper-error";
+          this.loader = false;
+          setTimeout(() => (this.showNotify = false), 2000);
+            this.loader = false
+        }).catch(error => {
+          this.showNotify = true;
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = error.response.data;
+          this.notifyClass = "wrapper-error";
+          this.loader = false;
+          setTimeout(() => (this.showNotify = false), 2000);
+        })
       }
     },
     SendFile() {
