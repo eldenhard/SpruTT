@@ -162,12 +162,13 @@ watch: {
         this.searchData = true;
         let trim_data = this.SearchRepairWagon.trim();
         let data = trim_data.replace(regExps, ",");
+        this.loader = true
         api.createReportTerritory(data)
         .then(response => {
           this.showNotify = true;
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Успешно, данные переданы на обработку";
-          this.notifyClass = "wrapper-error";
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Данные переданы на обработку";
+          this.notifyClass = "wrapper-success";
           this.loader = false;
           setTimeout(() => (this.showNotify = false), 2000);
             this.loader = false
