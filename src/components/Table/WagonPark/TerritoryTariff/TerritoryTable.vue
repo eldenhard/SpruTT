@@ -202,10 +202,16 @@ watch: {
         .postViewFile(this.btlc, formData)
         .then((response) => {
           this.loader = false;
-          console.log(response);
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Задача передана в обработку";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(() => (this.showNotify = false), 1500);
+          this.loader = false;
           let a = response.data;
           window.location.href = a;
-        }).catch((error) => {
+        })
+          .catch((error) => {
           this.notifyHead = "Ошибка";
           this.notifyMessage =
             "Ошибка, файл не создан, выберите корректный тип файла";
