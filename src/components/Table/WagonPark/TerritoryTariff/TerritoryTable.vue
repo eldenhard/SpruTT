@@ -1,6 +1,7 @@
 <template>
   <div>
     <Loader :loader="loader"></Loader>
+
     <div class="grid_net">
       <div>
         <div style="display: flex; justify-content: start; height: 50px">
@@ -89,6 +90,7 @@ export default {
       file: null,
       loader: false,
       SearchRepairWagon: [],
+      poup: '',
       amount_wagon: 0,
       showNotify: false,
       notifyHead: "",
@@ -116,6 +118,7 @@ export default {
     }),
   },
 watch: {
+ 
     SearchRepairWagon(){
         let regExps = /\s/g;
         let trim_data = this.SearchRepairWagon.trim();
@@ -181,9 +184,12 @@ watch: {
 </script>
 
 <style scoped>
+#poup{
+  border: 1px solid black
+}
 .explanation {
   font-size: 13px;
-  color: #98ce6b;
+  color: grey;
 }
 .grid_net {
   display: grid;
