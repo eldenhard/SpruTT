@@ -127,7 +127,13 @@ const postRailTarif = (data) => {
 }
 // Преобразование файла БЧ
 const postShipmentList = (data) =>{
-    return api.post(`${resource}/shipment-list/make-file/`, data)
+    return api.post(`${resource}/shipments/convert-file/`, data)
+}
+const postViewFile = (view, data) =>{
+    return api.post(`${resource}/shipments/${view}/load-file/`, data)
+}
+const createReportTerritory = (data) => {
+    return api.post(`${resource}/shipments/export/`, {'wagons': data})
 }
 export default {
     getWagons,
@@ -149,6 +155,8 @@ export default {
     getReportRepairData,
     getCurrentStation,
     getCargoCodeSearch,
+    postViewFile,
+    createReportTerritory,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

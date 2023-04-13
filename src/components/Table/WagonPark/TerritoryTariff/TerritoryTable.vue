@@ -3,6 +3,7 @@
     <Loader :loader="loader"></Loader>
 
     <div class="grid_net">
+      <!-- Левый блок -->
       <div>
         <div style="display: flex; justify-content: start; height: 50px">
           <b-button
@@ -10,7 +11,7 @@
             style="width: 85%; height: 80%; margin-top: 14px; float: left"
             class="search"
             @click="getCurrentWagon()"
-            >Найти</b-button
+            >Создать отчет</b-button
           >
         </div>
         <br />
@@ -31,6 +32,7 @@
           </div>
         </div>
       </div>
+      <!-- правый блок -->
       <div>
         <div class="form-group">
           <button
@@ -46,6 +48,15 @@
           >
             Отправить файл
           </button>
+          <select class="textareas" v-model="btlc" :class="{'errorSelect' : isError}">
+            <option value="" disabled>Выберите вид файла</option>
+            <option value="arktur">Арктур</option>
+            <option value="bmp">БМП</option>
+            <option value="btlc">БТЛЦ</option>
+            <option value="glp">GLP</option>
+            <option value="doom">ДУМ</option>
+
+          </select>
           <label :for="fileField" class="attachment">
             <div class="btn-file__actions">
               <div class="btn-file__actions__item text-center">
@@ -88,6 +99,8 @@ export default {
   data() {
     return {
       file: null,
+      isError: false,
+      btlc: '',
       loader: false,
       SearchRepairWagon: [],
       poup: '',
@@ -118,7 +131,9 @@ export default {
     }),
   },
 watch: {
- 
+  btlc(){
+    return this.btlc == '' ? this.isError = true : this.isError = false 
+  },
     SearchRepairWagon(){
         let regExps = /\s/g;
         let trim_data = this.SearchRepairWagon.trim();
@@ -147,11 +162,23 @@ watch: {
         this.searchData = true;
         let trim_data = this.SearchRepairWagon.trim();
         let data = trim_data.replace(regExps, ",");
-        // api.getRepairWagon(data)
-        // .then(response => {
-        //     console.log(response.data)
-        //     this.loader = false
-        // })
+        api.createReportTerritory(data)
+        .then(response => {
+          this.showNotify = true;
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = "Успешно, данные переданы на обработку";
+          this.notifyClass = "wrapper-error";
+          this.loader = false;
+          setTimeout(() => (this.showNotify = false), 2000);
+            this.loader = false
+        }).catch(error => {
+          this.showNotify = true;
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = error.response.data;
+          this.notifyClass = "wrapper-error";
+          this.loader = false;
+          setTimeout(() => (this.showNotify = false), 2000);
+        })
       }
     },
     SendFile() {
@@ -160,15 +187,24 @@ watch: {
       this.loader = true;
       let formData = new FormData();
       formData.append("file", this.file);
-      api
-        .postShipmentList(formData)
+      if(this.btlc == ''){
+        this.isError = true
+        this.notifyHead = "Ошибка";
+          this.notifyMessage =
+            "Выберите вид файла";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(() => (this.showNotify = false), 1500);
+          this.loader = false
+      } else {
+        api
+        .postViewFile(this.btlc, formData)
         .then((response) => {
           this.loader = false;
           console.log(response);
           let a = response.data;
           window.location.href = a;
-        })
-        .catch((error) => {
+        }).catch((error) => {
           this.notifyHead = "Ошибка";
           this.notifyMessage =
             "Ошибка, файл не создан, выберите корректный тип файла";
@@ -177,19 +213,35 @@ watch: {
           setTimeout(() => (this.showNotify = false), 1500);
           this.file = null;
           this.loader = false;
-        });
-    },
-  },
+        })
+      } 
+    }
+  }
 };
 </script>
 
 <style scoped>
-#poup{
-  border: 1px solid black
-}
 .explanation {
   font-size: 13px;
   color: grey;
+  text-align: left;
+  padding: 0 0 2% 4%;
+}
+.errorSelect {
+  border: 1px solid red;
+}
+.textareas {
+  width: 50%;
+  height: 30%;
+  margin-top: 4%;
+  background: url(@/assets/Caret_down_font_awesome_whitevariation.svg.png)
+      no-repeat right 0.8em center/1.4em,
+    linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em);
+
+}
+.explanation {
+  font-size: 14px;
+  color: #9b9b9b;
 }
 .grid_net {
   display: grid;
@@ -212,13 +264,13 @@ watch: {
 }
 
 .btn-file__actions__item:first-child {
-  border-top-left-radius: 35px;
-  border-bottom-left-radius: 35px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .btn-file__actions__item:last-child {
-  border-top-right-radius: 35px;
-  border-bottom-right-radius: 35px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   border-right: 3px dashed #535353;
 }
 
@@ -244,7 +296,7 @@ watch: {
   z-index: -1;
 }
 .attachment {
-  margin-top: 5%;
+  margin-top: 2%;
 }
 .form-group label.attachment {
   width: 100%;
