@@ -40,6 +40,7 @@
             style="
               height: 40px;
               width: 40vw;
+              font-size: 14px;
               margin-top: 14px;
               border-radius: 5px;
             "
@@ -165,7 +166,7 @@ watch: {
           this.showNotify = true;
           this.notifyHead = "Ошибка";
           this.notifyMessage = "Успешно, данные переданы на обработку";
-          this.notifyClass = "wrapper-error";
+          this.notifyClass = "wrapper-success";
           this.loader = false;
           setTimeout(() => (this.showNotify = false), 2000);
             this.loader = false
@@ -188,8 +189,7 @@ watch: {
       if(this.btlc == ''){
         this.isError = true
         this.notifyHead = "Ошибка";
-          this.notifyMessage =
-            "Выберите вид файла";
+          this.notifyMessage ="Выберите вид файла";
           this.notifyClass = "wrapper-error";
           this.showNotify = true;
           setTimeout(() => (this.showNotify = false), 1500);
@@ -202,6 +202,12 @@ watch: {
           console.log(response);
           let a = response.data;
           window.location.href = a;
+          this.notifyHead = "Успешно";
+          this.notifyMessage ="Данные переданы. Отчет придет на почту";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(() => (this.showNotify = false), 1500);
+          this.loader = false
         }).catch((error) => {
           this.notifyHead = "Ошибка";
           this.notifyMessage =
