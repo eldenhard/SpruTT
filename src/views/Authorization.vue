@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="id01" class="modal" v-if="showAuthForm" style="display: block">
+    <div id="id01" class="modal" v-if="showAuthForm">
       <div
         class="modal-content animate"
         style="width: 60% !important; margin: 0 !important"
@@ -28,26 +28,7 @@
       </div>
     </div>
 
-    <!-- <div class="mainModalProgressBar" v-if="progressBar">
-      <div
-        style="
-          width: 50%;
-          position: relative;
-          left: 50%;
-          transform: translate(-50%, 0);
-          margin-top: 15%;
-        "
-      >
-        <h2 style="color: lightgrey">Подождите, идёт загрузка данных</h2>
-        <b-progress
-          :value="value"
-          :max="max"
-          show-progress
-          animated
-          :label="`${((value / max) * 100).toFixed(2)}%`"
-        ></b-progress>
-      </div>
-    </div> -->
+ 
 
     <Notifications
       :show="showNotify"
@@ -75,9 +56,8 @@ export default {
       notifyMessage: "",
       notifyClass: "",
       showAuthForm: true,
-      value: 0,
-      max: 100,
-      progressBar: false,
+      CheckLocalStorage: localStorage.getItem('accessToken'),
+
     };
   },
   methods: {
@@ -94,8 +74,9 @@ export default {
               this.notifyHead = "Здравствуйте";
               this.notifyMessage = "Вы успешно авторизированы";
               this.notifyClass = "wrapper-success";
+              this.showAuthForm = false
               // location.reload();
-              document.location.href = '/'
+              // document.location.href = '/'
 
 
               // document.location.href = '/'
@@ -158,6 +139,14 @@ export default {
     // }
   },
   watch: {
+    CheckLocalStorage(){
+      if(this.CheckLocalStorage === ""){
+        this.showAuthForm = true
+      } else {
+        this.showAuthForm = false
+
+      }
+    },
     showNotify: function (v) {
       if (v) {
         setTimeout(() => {
@@ -176,6 +165,7 @@ export default {
   components: { Notifications },
   mounted() {
     if (this.authStatus) this.showAuthForm = false;
+ 
   },
 };
 </script>

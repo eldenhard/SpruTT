@@ -1,8 +1,9 @@
 <template>
   <div>
     <Loader :loader="loader" />
-
+ 
     <div class="form-group" style="width: 40vw !important; position: relative; left: 50%; transform: translate(-50%, 0);">
+      <p class="explanation" :class="{'errorFormatFile': errorFormatFile}"> * Загружаемый файл должен быть в формате <strong>xls</strong></p>
       <label :for="fileField" class="attachment">
         <div class="btn-file__actions">
           <div class="btn-file__actions__item text-center">
@@ -27,6 +28,16 @@
 </template>
 
 <style scoped>
+.explanation {
+  font-size: 13px;
+  color: grey;
+  text-align: left;
+  padding: 0 0 2% 0;
+}
+.errorFormatFile{
+  color: rgb(209, 1, 1) !important;
+  font-size: 14px;
+}
 .btn-file__actions {
   margin: 0;
   padding: 0;
@@ -44,13 +55,13 @@
 }
 
 .btn-file__actions__item:first-child {
-  border-top-left-radius: 35px;
-  border-bottom-left-radius: 35px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
 }
 
 .btn-file__actions__item:last-child {
-  border-top-right-radius: 35px;
-  border-bottom-right-radius: 35px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
   border-right: 3px dashed #535353;
 }
 
@@ -102,10 +113,18 @@ export default {
       file: null,
       loader: false,
       showNotify: false,
+      errorFormatFile: false,
+      explanation: false,
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
     };
+  },
+  watch: {
+    file(){
+      let formatExcel = (this.file.name).split('.')
+      return formatExcel[1] !== 'xls' ? this.errorFormatFile = true : this.errorFormatFile = false
+    }
   },
   components: { Loader, Notifications },
   computed: {
@@ -129,8 +148,8 @@ export default {
  
   methods: {
     readFile() {
-      console.log('1')
       this.file = this.$refs.file.files[0];
+      console.log(this.file.name)
     },
     SendFile() {    
       const pretoken = JSON.parse(localStorage.getItem("vuex"));
@@ -138,7 +157,18 @@ export default {
       this.loader = true
       let formData = new FormData();
       formData.append("file", this.file);
-      api
+
+      let formatExcel = (this.file.name).split('.')
+      if(formatExcel[1] !== 'xls'){
+        this.notifyHead = "Ошибка";
+          this.notifyMessage = "Ошибка, загружаемый файл должен быть в формате 'xls'";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(() => this.showNotify = false, 1500)
+
+          this.loader = false
+      } else {
+        api
         .postShipmentList(formData)
         .then(response => {
           this.loader = false
@@ -153,8 +183,9 @@ export default {
           setTimeout(() => this.showNotify = false, 1500)
           this.file = null
           this.loader = false
-
         })
+      }
+     
 
 
     },

@@ -1,6 +1,7 @@
 <template>
   <div>
     <Loader :loader="loader"></Loader>
+
     <div class="grid_net">
       <!-- Левый блок -->
       <div>
@@ -103,6 +104,7 @@ export default {
       btlc: '',
       loader: false,
       SearchRepairWagon: [],
+      poup: '',
       amount_wagon: 0,
       showNotify: false,
       notifyHead: "",
@@ -161,11 +163,12 @@ watch: {
         this.searchData = true;
         let trim_data = this.SearchRepairWagon.trim();
         let data = trim_data.replace(regExps, ",");
+        this.loader = true
         api.createReportTerritory(data)
         .then(response => {
           this.showNotify = true;
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Успешно, данные переданы на обработку";
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Данные переданы на обработку";
           this.notifyClass = "wrapper-success";
           this.loader = false;
           setTimeout(() => (this.showNotify = false), 2000);
@@ -199,16 +202,16 @@ watch: {
         .postViewFile(this.btlc, formData)
         .then((response) => {
           this.loader = false;
-          console.log(response);
-          let a = response.data;
-          window.location.href = a;
           this.notifyHead = "Успешно";
-          this.notifyMessage ="Данные переданы. Отчет придет на почту";
+          this.notifyMessage = "Задача передана в обработку";
           this.notifyClass = "wrapper-success";
           this.showNotify = true;
           setTimeout(() => (this.showNotify = false), 1500);
-          this.loader = false
-        }).catch((error) => {
+          this.loader = false;
+          let a = response.data;
+          window.location.href = a;
+        })
+          .catch((error) => {
           this.notifyHead = "Ошибка";
           this.notifyMessage =
             "Ошибка, файл не создан, выберите корректный тип файла";
@@ -225,6 +228,12 @@ watch: {
 </script>
 
 <style scoped>
+.explanation {
+  font-size: 13px;
+  color: grey;
+  text-align: left;
+  padding: 0 0 2% 4%;
+}
 .errorSelect {
   border: 1px solid red;
 }

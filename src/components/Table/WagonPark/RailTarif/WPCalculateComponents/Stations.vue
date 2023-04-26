@@ -42,7 +42,7 @@
         <ul>
           <li v-for="departure in station_departure_search" :key="departure.id"
             @click="checkThisDeparture(departure.name, departure.code6)">
-            {{ departure.name }}
+           {{  departure.name }} ({{ departure.code6 }})
           </li>
         </ul>
       </div>
@@ -81,7 +81,7 @@
       <div class="dataDeparture" v-if="warningDest">
         <ul>
           <li  v-for="destination in station_destination_search" :key="destination.id" @click="checkThisDestination(destination.name, destination.code6)">
-            {{ destination.name }}
+            {{  destination.name }} ({{ destination.code6 }})
           </li>
         </ul>
       </div>

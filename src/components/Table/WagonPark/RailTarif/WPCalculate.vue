@@ -356,7 +356,7 @@
      
       <button
         class="button Delete railbtn" style="width: 10%; float: right; margin-top: 1% !important;
-      margin-right: 1% !important; " block @click="hideModal">Закрыть
+    margin-right: 1% !important; " block @click="hideModal">Закрыть
       </button>
     </b-modal>
     <div style="display: flex">
@@ -406,12 +406,12 @@
       </div>
       <div class="result">
         <p>Дата: <span>{{ date }}</span></p>
-        <p>Ст. отправ: <span>{{ departure.departure }}</span></p>
-        <p>Ст. назнач: <span>{{ destination.destination }}</span></p>
+        <p>Ст. отправ: <span>{{ departure.departure }}</span> <span v-if="departure.code6">({{ departure.code6 }})</span></p>
+        <p>Ст. назнач: <span>{{ destination.destination }}</span> <span v-if="destination.code6">({{ destination.code6 }})</span></p>
         <p>Ст. возврата: <span>{{ reverse.reverse }}</span></p>
 
-        <p>Груж/Порожний:<span>{{ translateBoolIsLoaded(is_loaded) }}</span></p>
-        <p> Международный<span>{{ translateInternational(international) }}</span></p>
+        <p>Груж/Порожний: <span>{{ translateBoolIsLoaded(is_loaded) }}</span></p>
+        <p> Международный: <span>{{ translateInternational(international) }}</span></p>
         <!-- Отправка -->
         <p>Отправка: <span>{{ shipment.shipment }}</span></p>
         <p> Скорость: <span>{{ TranslateSpeed(speed) }}</span></p>
