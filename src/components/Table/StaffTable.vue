@@ -714,7 +714,7 @@ export default {
       api
         .getAllStaff(this.filter_staff)
         .then((response) => {
-          this.all_staff = response.data.data;
+          this.all_staff = response.data;
           this.all_staff.forEach((element) => {
             if (element.photo != null) {
               element.photo = element.photo.replace("10.1.5.65", "10.1.5.76");
