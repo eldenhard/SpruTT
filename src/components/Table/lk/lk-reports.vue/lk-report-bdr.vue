@@ -97,7 +97,7 @@ export default {
   mounted() {
     this.loader = true;
     api.getBDRreport().then((response) => {
-      this.BDRreport = response.data;
+      this.BDRreport = response.data.data;
       this.loader = false;
       this.notifyHead = "Успешно";
       this.notifyMessage = "Отчеты загружены";

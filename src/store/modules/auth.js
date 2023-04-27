@@ -79,8 +79,8 @@ const actions = {
         return new Promise((resolve, reject) => {
             staff_api.getStaffGroup()
                 .then((response) => {
-                    context.commit(mutationTypes.getStaffGroups, response.data)
-                    resolve(response.data)
+                    context.commit(mutationTypes.getStaffGroups, response.data.data)
+                    resolve(response.data.data)
                 }).catch(err => {
                     reject(new Error('Ошибка получения данных групп'))
                     // document.location.href = '/'
@@ -91,8 +91,8 @@ const actions = {
         return new Promise((resolve, reject) => {
             staff_api.staffGlobal()
                 .then((response) => {
-                    context.commit(mutationTypes.staffGlobal, response.data)
-                    resolve(response.data)
+                    context.commit(mutationTypes.staffGlobal, response.data.data)
+                    resolve(response.data.data)
                 }).catch(err => {
                     reject(new Error('Ошибка полуения данных о персонале'))
                 })

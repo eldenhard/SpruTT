@@ -129,7 +129,7 @@ export default {
       api
         .GetReportAbandone()
         .then((response) => {
-          this.report_abandoned = response.data;
+          this.report_abandoned = response.data.data;
           this.total_objects_report = response.data.total_objects;
           this.loader = false;
           this.notifyHead = "Успешно";

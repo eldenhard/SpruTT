@@ -73,7 +73,7 @@ export default {
     const id = preid.auth.uid
     api.getAllTelegrams(id)
       .then(response => {
-        this.telegrams = response.data
+        this.telegrams = response.data.data
         this.loader = false
       })
     
