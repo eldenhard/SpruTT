@@ -253,7 +253,7 @@ export default {
 
     api.getManagerLK(this.uid)
     .then((response) => {
-      this.emp = response.data.data;
+      this.emp = response.data;
       this.loader = false;
     });
     document.title = "Личный кабинет";
