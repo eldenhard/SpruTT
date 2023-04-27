@@ -110,7 +110,7 @@ export default {
 
     this.loader = true;
     api.getReportByIdCreator(id).then((response) => {
-      this.reports_creator = response.data.data;
+      this.reports_creator = response.data;
     });
     this.loader = false;
   },
