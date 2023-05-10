@@ -359,6 +359,8 @@
     margin-right: 1% !important; " block @click="hideModal">Закрыть
       </button>
     </b-modal>
+
+    <!-- ПОЛУЧЕНИЕ ДАННЫХ ОТ ДОЧЕРНЕГО ЭЛЕМЕНТА -->
     <div style="display: flex">
       <div style="width: 80% !important">
         <b-card
