@@ -39,7 +39,7 @@
                             <!-- Отравка -->
                             <td>
                                 <div class="inputcontainer" style="height: 100% !important;">
-                                    <input class="changeRow" v-model="departure_station_name" :type="'станция'" />
+                                    <input class="changeRow"  :value="drt" v-model="departure_station_name" :type="'станция'" />
                                     <div class="icon-container" v-if="loaderInputDep">
                                         <i class="loader"></i>
                                     </div>
@@ -47,7 +47,7 @@
 
                                     <div class="dataDeparture" v-if="warning">
                                         <ul>
-                                            <li v-for="departure in station_departure_search" :key="departure.id"
+                                            <li v-for="departure in station_departure_search"  :key="departure.id"
                                                 @click="checkThisDeparture(departure.name, departure.code6)">
                                                 {{ departure.name }} ({{ departure.code6 }})
                                             </li>
@@ -58,15 +58,16 @@
                             <!-- Назначение станция -->
                             <td>
                                 <div class="inputcontainer" style="height: 100% !important;">
-                                    <input class="changeRow" v-model="destination_station_name" :type="typeDest"
-                                        :placeholder="placeholderDest" />
+                                    <input class="changeRow" v-model="destination_station_name" :type="'станция'"
+                                        />
                                     <div class="icon-container" v-if="loaderInputDest">
                                         <i class="loader"></i>
                                     </div>
 
                                     <div class="dataDeparture" v-if="warningDest">
                                         <ul>
-                                            <li v-for="destination in station_destination_search" :key="destination.id">
+                                            <li v-for="destination in station_destination_search" :key="destination.id"
+                                            @click="checkThisDestination(destination.name, destination.code6)">
                                                 {{ destination.name }} ({{ destination.code6 }})
                                             </li>
                                         </ul>
@@ -110,6 +111,7 @@ export default {
     data() {
         return {
             cargo: '',
+            drt: '',
             // значения поиска
             departure_station_name: "",
             destination_station_name: "",
@@ -160,15 +162,13 @@ export default {
     created() {
 
         this.debouncedWatch = debounce((newValue, oldValue) => {
-            if (this.departure_station_name.length > 1) {
+            if (this.departure_station_name.length > 2) {
                 this.loaderInputDep = true
                 api.getCurrentStation(this.departure_station_name)
                     .then((response) => {
                         this.station_departure_search = response.data.data;
                         this.loaderInputDep = false
-                        console.log(response.data.data)
                         this.warning = true;
-                        this.warningDest = false;
                     }).catch(error => {
                         this.loaderInputDep = false
                         console.log(error.response)
@@ -184,7 +184,6 @@ export default {
                             this.station_destination_search = response.data.data;
                             this.loaderInputDest = false
                             this.warningDest = true;
-                            this.warning = false;
                         }).catch(error => {
                             this.loaderInputDest = false
                             console.log(error.response)
@@ -208,7 +207,6 @@ export default {
         document.body.removeEventListener('click', this.onClick);
     },
 
-
     methods: {
         onClick(ev) {
             this.warning = false;
@@ -217,6 +215,17 @@ export default {
         hideModal() {
             this.$refs['territiryModal'].hide()
         },
+        checkThisDeparture(name, code){
+            this.departure_station_name = name
+            
+        },
+        checkThisDestination(name, code){
+            console.log(name)
+            // this.destination_station_name = name
+            // this.drt = name
+            
+
+        }
     }
 };
 </script>
