@@ -39,7 +39,8 @@
                             <!-- Отравка -->
                             <td>
                                 <div class="inputcontainer" style="height: 100% !important;">
-                                    <input class="changeRow"  :value="drt" v-model="departure_station_name" :type="'станция'" />
+                                    <input class="changeRow" :value="drt" v-model="departure_station_name" :type="'станция'"
+                                        @input="debounceHandlers()" />
                                     <div class="icon-container" v-if="loaderInputDep">
                                         <i class="loader"></i>
                                     </div>
@@ -47,7 +48,7 @@
 
                                     <div class="dataDeparture" v-if="warning">
                                         <ul>
-                                            <li v-for="departure in station_departure_search"  :key="departure.id"
+                                            <li v-for="departure in station_departure_search" :key="departure.id"
                                                 @click="checkThisDeparture(departure.name, departure.code6)">
                                                 {{ departure.name }} ({{ departure.code6 }})
                                             </li>
@@ -58,8 +59,7 @@
                             <!-- Назначение станция -->
                             <td>
                                 <div class="inputcontainer" style="height: 100% !important;">
-                                    <input class="changeRow" v-model="destination_station_name" :type="'станция'"
-                                        />
+                                    <input class="changeRow" v-model="destination_station_name" :type="'станция'" />
                                     <div class="icon-container" v-if="loaderInputDest">
                                         <i class="loader"></i>
                                     </div>
@@ -67,7 +67,7 @@
                                     <div class="dataDeparture" v-if="warningDest">
                                         <ul>
                                             <li v-for="destination in station_destination_search" :key="destination.id"
-                                            @click="checkThisDestination(destination.name, destination.code6)">
+                                                @click="checkThisDestination(destination.name, destination.code6)">
                                                 {{ destination.name }} ({{ destination.code6 }})
                                             </li>
                                         </ul>
@@ -81,14 +81,14 @@
                             <!-- <td><textarea v-model="cargo" class="changeRow" v-on:blur="handleBlur()" id="txter"></textarea></td> -->
                             <td><input class="changeRow" type="number"></td>
                             <td><input class="changeRow" type="number"></td>
-                            <td><input class="changeRow" type="text"></td>
-                            <td><input class="changeRow" type="date"></td>
-                            <td><input class="changeRow" type="text"></td>
+                            <td><input class="changeRow" type="number"></td>
                             <td><input class="changeRow" type="date"></td>
                             <td><input class="changeRow" type="text"></td>
                             <td><input class="changeRow" type="number"></td>
                             <td><input class="changeRow" type="number"></td>
-                            <td><input class="changeRow" type="text"></td>
+                            <td><input class="changeRow" type="number"></td>
+                            <td><input class="changeRow" type="date"></td>
+                            <td><input class="changeRow" type="number"></td>
                             <td><input class="changeRow" type="number"></td>
                             <td><input class="changeRow" type="number"></td>
                         </tr>
@@ -161,35 +161,22 @@ export default {
 
     created() {
 
-        this.debouncedWatch = debounce((newValue, oldValue) => {
-            if (this.departure_station_name.length > 2) {
-                this.loaderInputDep = true
-                api.getCurrentStation(this.departure_station_name)
+
+
+        this.elementZ = debounce((newValue, oldValue) => {
+            if (this.destination_station_name.length > 1) {
+                this.loaderInputDest = true
+                api.getCurrentStation(this.destination_station_name)
                     .then((response) => {
-                        this.station_departure_search = response.data.data;
-                        this.loaderInputDep = false
-                        this.warning = true;
+                        this.station_destination_search = response.data.data;
+                        this.loaderInputDest = false
+                        this.warningDest = true;
                     }).catch(error => {
-                        this.loaderInputDep = false
+                        this.loaderInputDest = false
                         console.log(error.response)
                     })
             }
-        }, 300),
-
-            this.elementZ = debounce((newValue, oldValue) => {
-                if (this.destination_station_name.length > 1) {
-                    this.loaderInputDest = true
-                    api.getCurrentStation(this.destination_station_name)
-                        .then((response) => {
-                            this.station_destination_search = response.data.data;
-                            this.loaderInputDest = false
-                            this.warningDest = true;
-                        }).catch(error => {
-                            this.loaderInputDest = false
-                            console.log(error.response)
-                        })
-                }
-            }, 300)
+        }, 300)
 
 
     },
@@ -206,8 +193,25 @@ export default {
     beforeDestroy() {
         document.body.removeEventListener('click', this.onClick);
     },
-
+// Либо через метод, либо через создание (created)
     methods: {
+        debounceHandlers(a) {
+            
+            this.debouncedWatch = debounce((newValue, oldValue) => {
+                if (this.departure_station_name.length > 2) {
+                    this.loaderInputDep = true
+                    api.getCurrentStation(this.departure_station_name)
+                        .then((response) => {
+                            this.station_departure_search = response.data.data;
+                            this.loaderInputDep = false
+                            this.warning = true;
+                        }).catch(error => {
+                            this.loaderInputDep = false
+                            console.log(error.response)
+                        })
+                }
+            }, 300)
+        },
         onClick(ev) {
             this.warning = false;
             this.warningDest = false;
@@ -215,15 +219,17 @@ export default {
         hideModal() {
             this.$refs['territiryModal'].hide()
         },
-        checkThisDeparture(name, code){
+        checkThisDeparture(name, code) {
+            event.preventDefault()
             this.departure_station_name = name
             
+
         },
-        checkThisDestination(name, code){
+        checkThisDestination(name, code) {
             console.log(name)
             // this.destination_station_name = name
             // this.drt = name
-            
+
 
         }
     }
