@@ -1,7 +1,9 @@
 <template>
     <div>
-        <b-modal ref="territiryModal" id="territiryModal" hide-footer title="Добавление строки отчета в ручную"
-            style="width: 100vw !important">
+        <b-modal id="territoryModal" ref="territoryModal" hide-footer size="md">
+            <template #modal-title>
+            Добавление строки отчета в ручную
+            </template>
             <div class="d-block text-center modal-block">
                 <table border="1">
                     <thead>
@@ -27,7 +29,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <select>
+                                <select v-model="shipment_source">
                                     <option value="" disabled>Выберите вид файла</option>
                                     <option value="arktur">Арктур</option>
                                     <option value="bmp">БМП</option>
@@ -39,8 +41,8 @@
                             <!-- Отравка -->
                             <td>
                                 <div class="inputcontainer" style="height: 100% !important;">
-                                    <input class="changeRow" :value="drt" v-model="departure_station_name" :type="'станция'"
-                                        @input="debounceHandlers()" />
+                                    <input class="changeRow" v-model="departure_station" :type="'станция'"
+                                        @keypress="debounceHandlers()" />
                                     <div class="icon-container" v-if="loaderInputDep">
                                         <i class="loader"></i>
                                     </div>
@@ -59,7 +61,7 @@
                             <!-- Назначение станция -->
                             <td>
                                 <div class="inputcontainer" style="height: 100% !important;">
-                                    <input class="changeRow" v-model="destination_station_name" :type="'станция'" />
+                                    <input class="changeRow" v-model="destination_station" :type="'станция'" />
                                     <div class="icon-container" v-if="loaderInputDest">
                                         <i class="loader"></i>
                                     </div>
@@ -74,23 +76,20 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>
-                                <!-- <textarea id="view" class="textareas" @blur="handlerBlur">ТЕКСТ</textarea> -->
-                                <input type="text" class="changeRow cargo" v-model="cargo">
-                            </td>
+                            <td><input type="text" class="changeRow cargo" v-model="cargo"></td>
                             <!-- <td><textarea v-model="cargo" class="changeRow" v-on:blur="handleBlur()" id="txter"></textarea></td> -->
-                            <td><input class="changeRow" type="number"></td>
-                            <td><input class="changeRow" type="number"></td>
-                            <td><input class="changeRow" type="number"></td>
-                            <td><input class="changeRow" type="date"></td>
-                            <td><input class="changeRow" type="text"></td>
-                            <td><input class="changeRow" type="number"></td>
-                            <td><input class="changeRow" type="number"></td>
-                            <td><input class="changeRow" type="number"></td>
-                            <td><input class="changeRow" type="date"></td>
-                            <td><input class="changeRow" type="number"></td>
-                            <td><input class="changeRow" type="number"></td>
-                            <td><input class="changeRow" type="number"></td>
+                            <td><input class="changeRow" type="number" v-model="prev_cargo"></td>
+                            <td><input class="changeRow" type="number" v-model="weight"></td>
+                            <td><input class="changeRow" type="number" v-model="wagon"></td>
+                            <td><input class="changeRow" type="date" v-model="shipment_date"></td>
+                            <td><input class="changeRow" type="text" v-model="currency"></td>
+                            <td><input class="changeRow" type="number" v-model="sum_wo_nds_currency"></td>
+                            <td><input class="changeRow" type="number" v-model="sum_wo_nds"></td>
+                            <td><input class="changeRow" type="number" v-model="nds"></td>
+                            <td><input class="changeRow" type="date" v-model="act_date"></td>
+                            <td><input class="changeRow" type="number" v-model="invoice"></td>
+                            <td><input class="changeRow" type="number" v-model="rt_sum"></td>
+                            <td><input class="changeRow" type="number" v-model="tariff_rf"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -110,12 +109,25 @@ export default {
 
     data() {
         return {
+            shipment_source: '',
+            weight: '',
+            shipment_date: '',
+            currency : '',
+            sum_wo_nds_currency  : '',
+            nds_currency : '',
+            sum_wo_nds   : '',
+            nds  : '',
+            act_date : '',
+            rt_sum   : '',
+            tariff_rf: '',
+            departure_station: '',
+            destination_station  : '',
             cargo: '',
-            drt: '',
-            // значения поиска
-            departure_station_name: "",
-            destination_station_name: "",
-
+            prev_cargo   : '',
+            road : '',
+            wagon: '',
+            invoice: '',
+   
             departure_station_object: "",
             destionation_station_object: "",
 
@@ -141,13 +153,13 @@ export default {
     },
     components: { Notifications },
     watch: {
-        departure_station_name(...args) {
+        departure_station(...args) {
             this.debouncedWatch(...args);
             if (this.departure_station_name == '') {
                 this.warning = false
             }
         },
-        destination_station_name(...args) {
+        destination_station(...args) {
             this.elementZ(...args);
             if (this.destination_station_name == '') {
                 this.warningDest = false
@@ -164,9 +176,9 @@ export default {
 
 
         this.elementZ = debounce((newValue, oldValue) => {
-            if (this.destination_station_name.length > 1) {
+            if (this.destination_station.length > 1) {
                 this.loaderInputDest = true
-                api.getCurrentStation(this.destination_station_name)
+                api.getCurrentStation(this.destination_station)
                     .then((response) => {
                         this.station_destination_search = response.data.data;
                         this.loaderInputDest = false
@@ -196,11 +208,11 @@ export default {
 // Либо через метод, либо через создание (created)
     methods: {
         debounceHandlers(a) {
-            
+            console.log('1')
             this.debouncedWatch = debounce((newValue, oldValue) => {
-                if (this.departure_station_name.length > 2) {
+                if (this.departure_station.length > 2) {
                     this.loaderInputDep = true
-                    api.getCurrentStation(this.departure_station_name)
+                    api.getCurrentStation(this.departure_station)
                         .then((response) => {
                             this.station_departure_search = response.data.data;
                             this.loaderInputDep = false
@@ -217,18 +229,15 @@ export default {
             this.warningDest = false;
         },
         hideModal() {
-            this.$refs['territiryModal'].hide()
+            this.$refs['territoryModal'].hide()
         },
         checkThisDeparture(name, code) {
-            event.preventDefault()
-            this.departure_station_name = name
+            this.departure_station = name
             
-
         },
         checkThisDestination(name, code) {
-            console.log(name)
-            // this.destination_station_name = name
-            // this.drt = name
+            this.destination_station = name
+
 
 
         }
@@ -237,6 +246,9 @@ export default {
 </script>
 <style scoped>
 .dataDeparture {
+    height: auto;
+    max-height: 350px;
+    overflow: auto;
     width: 100%;
     margin-top: 21%;
     position: absolute;

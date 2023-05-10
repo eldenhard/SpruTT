@@ -124,7 +124,8 @@ export default {
   },
   methods: {
     showModalTerritory() {
-      this.$bvModal.show('territiryModal')
+      // this.$refs(['territoryModal']).show()
+      this.$bvModal.show('territoryModal')
     },
     readFile() {
       this.file = this.$refs.file.files[0];
