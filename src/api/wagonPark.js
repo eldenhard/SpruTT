@@ -5,7 +5,9 @@ export const resource = "wagon-park"
 const getWagons = (filters) => {
     return api.get(`${resource}/wagons`, {params: filters})
 }
-
+const getWagon = (number) => {
+    return api.get(`${resource}/wagons/${number}`)
+}
 const getPassport = (filter) => {
     return api.get(`${resource}/wagon-passport/`, {params: filter})
 }
@@ -121,6 +123,10 @@ const getRepairWagon = (data) => {
     return api.get(`${resource}/repair-axis-wheels/?wagon__in=` + data)
 }
 
+const postNewRowInReport = (data) =>{
+    return api.post(`${resource}/shipments/`, data)
+}
+
 // Запрос на рэйлтариф
 const postRailTarif = (data) => {
     return api.post(`${resource}/rt/tariff/`, data)
@@ -137,6 +143,7 @@ const createReportTerritory = (data) => {
 }
 export default {
     getWagons,
+    getWagon,
     getPassport,
     getArenda,
     getBelong,
@@ -157,6 +164,7 @@ export default {
     getCargoCodeSearch,
     postViewFile,
     createReportTerritory,
+    postNewRowInReport,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

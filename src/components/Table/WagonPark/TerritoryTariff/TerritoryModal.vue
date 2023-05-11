@@ -1,11 +1,12 @@
 <template>
     <div>
-        <b-modal id="territoryModal" ref="territoryModal" hide-footer size="md">
+        <b-modal  id="territoryModal" ref="territoryModal" hide-footer size="md">
             <template #modal-title>
             Добавление строки отчета в ручную
             </template>
-            <div class="d-block text-center modal-block">
-                <table border="1">
+            <div class="modal-block">
+                <div class="modal-block__table">
+                    <table border="1">
                     <thead>
                         <tr>
                             <th>Источник</th>
@@ -17,7 +18,7 @@
                             <th>Вагон</th>
                             <th>Дата отправ.</th>
                             <th>Валюта</th>
-                            <th>Без ндс в вал.</th>
+                            <th>Без НДС в вал.</th>
                             <th>НДС в вал.</th>
                             <th>НДС</th>
                             <th>Дата акта</th>
@@ -28,9 +29,10 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <!-- Источник файла -->
                             <td>
                                 <select v-model="shipment_source">
-                                    <option value="" disabled>Выберите вид файла</option>
+                                    <option value="" disabled>Источник файла</option>
                                     <option value="arktur">Арктур</option>
                                     <option value="bmp">БМП</option>
                                     <option value="btlc">БТЛЦ</option>
@@ -76,13 +78,52 @@
                                     </div>
                                 </div>
                             </td>
-                            <td><input type="text" class="changeRow cargo" v-model="cargo"></td>
-                            <!-- <td><textarea v-model="cargo" class="changeRow" v-on:blur="handleBlur()" id="txter"></textarea></td> -->
-                            <td><input class="changeRow" type="number" v-model="prev_cargo"></td>
+                            <!-- Груз -->
+                            <td>
+                                <div class="inputcontainer">
+                                    <input type="text" class="textarea" placeholder="введите наименование груза" v-model="cargo" style="background: white;"/>
+                                        <div class="icon-container" v-if="loaderInputCargo">
+                                        <i class="loader"></i>
+                                        </div>
+                                    </div>
+                                    <div class="dataDeparture" v-if="warningCargo" style="margin-top: 13%;">
+                                        <ul>
+                                            <li  v-for="information in this.SearchData" :key="information.id">
+                                                {{ information.name }} 
+                                            </li>
+                                        </ul>
+                                    </div>
+                            </td>
+                                <!-- Предыдущий груз -->
+                            <td> 
+                                <div class="inputcontainer">
+                                    <input type="text" class="textarea" placeholder="введите наименование груза" v-model="prev_cargo" style="background: white;"/>
+                                        <div class="icon-container" v-if="loaderInputPrevCargo">
+                                        <i class="loader"></i>
+                                        </div>
+                                    </div>
+                                    <div class="dataDeparture" v-if="warningPrevCargo" style="margin-top: 13%;">
+                                        <ul>
+                                            <li  v-for="information in this.SearchDataPrevCargo" :key="information.id">
+                                                {{ information.name }} 
+                                            </li>
+                                        </ul>
+                                    </div>
+                            </td>
+
                             <td><input class="changeRow" type="number" v-model="weight"></td>
                             <td><input class="changeRow" type="number" v-model="wagon"></td>
+
                             <td><input class="changeRow" type="date" v-model="shipment_date"></td>
-                            <td><input class="changeRow" type="text" v-model="currency"></td>
+                            <td>
+                                <select v-model="currency">
+                                    <option value="" disabled>Выберите вид валюты</option>
+                                    <option value="KZT">KZT</option>
+                                    <option value="BYN">BYN</option>
+                                    <option value="RUB">RUB</option>
+                                    <option value="USD">USD</option>
+                                </select>
+                            </td>
                             <td><input class="changeRow" type="number" v-model="sum_wo_nds_currency"></td>
                             <td><input class="changeRow" type="number" v-model="sum_wo_nds"></td>
                             <td><input class="changeRow" type="number" v-model="nds"></td>
@@ -93,8 +134,14 @@
                         </tr>
                     </tbody>
                 </table>
+
+                </div>
+                <div class="modal-block__buttons">
+                    <button class="button Accept" @click="postNewRowInReport()">Отправить</button>
+                    <button class="button Delete">Закрыть</button>
+                </div>          
             </div>
-            <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button>
+            <!-- <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button> -->
         </b-modal>
     </div>
 </template>
@@ -105,8 +152,7 @@ import Notifications from "@/components/notifications/Notifications.vue";
 import api from "@/api/wagonPark";
 import debounce from "lodash.debounce";
 export default {
-    name: "stations-railtarif",
-
+    props: ['id'],
     data() {
         return {
             shipment_source: '',
@@ -127,22 +173,33 @@ export default {
             road : '',
             wagon: '',
             invoice: '',
-   
+
+            cargo: '',
+            SearchData: '',
+            SearchDataPrevCargo: '',
+          
+
             departure_station_object: "",
             destionation_station_object: "",
 
             // появление- сокрытие элементов выпадающего списка подходящих значений
             warning: false,
             warningDest: false,
+            warningCargo: false,
+            warningPrevCargo: false,
+           
 
             station_departure_search: [],
             station_destination_search: [],
             elementZ: '',
-
+            elementO: '',
+           
             // loaders
             loaderInputDep: false,
             loaderInputDest: false,
-
+            loaderInputCargo: false,
+            loaderInputPrevCargo: false,
+            loaderInputWagon: false,
 
             showNotify: false,
             notifyHead: "",
@@ -165,6 +222,16 @@ export default {
                 this.warningDest = false
             }
         },
+        cargo(...args) {
+            this.debouncedWatchV(...args);
+        },
+        prev_cargo(...args){
+            this.debouncedWatchO(...args);
+            if (this.prev_cargo == '') {
+                this.warningDest = false
+            }
+        },
+       
 
     },
     beforeDestroy() {
@@ -173,8 +240,31 @@ export default {
 
     created() {
 
+        this.debouncedWatchV = debounce((newValue, oldValue) => {
+            if(this.cargo.length > 1){
+                this.loaderInputCargo = true
+                api.getCargoCodeSearch(this.cargo)
+            .then((response) => {
+                this.SearchData = response.data.data;
+                this.loaderInputCargo = false
+                this.warningCargo = true;
+            })
+            } 
+            }, 300),
 
+            this.debouncedWatchO = debounce((newValue, oldValue) => {
+            if(this.cargo.length > 1){
+                this.loaderInputPrevCargo = true
+                api.getCargoCodeSearch(this.prev_cargo)
+            .then((response) => {
+                this.SearchDataPrevCargo = response.data.data;
+                this.loaderInputPrevCargo = false
+                this.warningPrevCargo = true;
+            })
+            } 
+            }, 300),
 
+// получение точки доставки
         this.elementZ = debounce((newValue, oldValue) => {
             if (this.destination_station.length > 1) {
                 this.loaderInputDest = true
@@ -195,6 +285,7 @@ export default {
     beforeUnmount() {
         this.debouncedWatch.cancel();
         this.elementZ.cancel();
+        this.elementO.cancel();
 
     },
 
@@ -227,6 +318,35 @@ export default {
         onClick(ev) {
             this.warning = false;
             this.warningDest = false;
+            this.warningCargo = false
+            this.warningPrevCargo = false
+        },
+        postNewRowInReport(){
+          let data = {
+                "shipment_source": this.shipment_source,
+                "weight": this.weight,
+                "shipment_date": this.shipment_date,
+                "currency": this.currency,
+                "sum_wo_nds_currency": this.sum_wo_nds_currency,
+                "nds_currency": this.nds_currency,
+                "sum_wo_nds": this.sum_wo_nds,
+                "nds": this.nds,
+                "act_date": this.act_date,
+                "rt_sum": this.act_date,
+                "tariff_rf": this.tariff_rf,
+                "departure_station": this.departure_station,
+                "destination_station": this.destination_station,
+                "cargo": this.cargo,
+                "prev_cargo": this.prev_cargo,
+                "road": this.road,
+                "wagon": this.wagon,
+                "invoice": this.invoice
+                }
+            console.log(data)
+            // api.postNewRowInReport(data)
+            // .then(response => {
+            //     console.log(response)
+            // })
         },
         hideModal() {
             this.$refs['territoryModal'].hide()
@@ -247,13 +367,13 @@ export default {
 <style scoped>
 .dataDeparture {
     height: auto;
-    max-height: 350px;
+    max-height: 150px;
     overflow: auto;
     width: 100%;
     margin-top: 21%;
     position: absolute;
     top: 21%;
-    z-index: 15;
+    z-index: 15 !important;
     border: 1px solid grey;
     border-top: none;
     background: white;
@@ -302,11 +422,26 @@ th {
 }
 
 .modal-block {
-    height: 50vh;
-    overflow: auto;
-    /* width: 100vw !important; */
+    height: 30vh;
+    position: relative;
 }
-
+.modal-block__table{
+    overflow: auto;
+    height: 25vh;
+}
+.modal-block__buttons{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: 0;
+    right: 0;
+}
+.modal-block__buttons>button{
+    width: 35%;
+}
 .inputcontainer {
     position: relative;
 }
@@ -314,7 +449,9 @@ th {
 select {
     border: none;
     outline: none;
-    width: auto;
+    /* background: transparent; */
+    /* width: auto;
+    width: 100%; */
 }
 
 

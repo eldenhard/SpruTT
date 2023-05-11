@@ -1,7 +1,7 @@
 <template>
   <div>
     <Loader :loader="loader"></Loader>
-    <TerritoryModal />
+    <TerritoryModal id="territoryModal"/>
     <div class="grid_net">
       <!-- Левый блок -->
       <div>
@@ -43,7 +43,7 @@
               <option value="glp">GLP</option>
               <option value="doom">ДУМ</option>
             </select>
-            <button class="button Request" @click="showModalTerritory()">Отправка в ручную</button>
+            <button class="button Request" @click="$bvModal.show('territoryModal')">Отправка в ручную</button>
           </div>
 
           <label :for="fileField" class="attachment">
