@@ -41,6 +41,9 @@
               <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
                 <ReportAbandoned />
               </b-card-text>
+              <b-card-text v-if="i.name === 'Размещение парка'">
+                <AccomodationPark />
+              </b-card-text>
             </b-tab>
           </b-tabs>
         </b-card>
@@ -60,8 +63,9 @@
   import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
   import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
   import StaffTable from "@/components/Table/StaffTable.vue";
+  import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
   export default {
-    name: "Staff",
+    name: "managmentReporting",
     components: { 
     FormationPark,
     ManagemtRepNavbar,
@@ -72,6 +76,7 @@
       WPCalculate,
       WagonRepair,
       BCH, 
+      AccomodationPark,
     },
     data() {
       return {
