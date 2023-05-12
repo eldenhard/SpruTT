@@ -1,6 +1,6 @@
 <template>
   <div>
-   <Periods />
+   <Periods @Action="Actioned" @data="getCurrentData"/>
 
     <div style="overflow: auto; margin-top: 5%">
       <table border="1" align="center">
@@ -69,6 +69,8 @@ export default {
     return {
       index_font_size: "1%",
       responseData: responseData.responseData,
+      date_begin: '',
+      date_end: '',
     };
   },
  
@@ -85,6 +87,15 @@ export default {
       let getYear = date.getFullYear();
       return `${monthName}. ${getYear}`;
     },
+  },
+  methods:{
+    Actioned(){
+        console.log(this.date_begin)
+    },
+    getCurrentData(data){
+        this.date_begin = data.date_begin
+        this.date_end = data.date_end
+    }
   },
  
 };

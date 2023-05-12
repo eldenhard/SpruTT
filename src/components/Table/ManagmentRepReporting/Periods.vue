@@ -19,7 +19,9 @@
 </template>
 
 <script>
+
 export default {
+    props: ['func1'],
   data() {
     return {
       date_begin: "",
@@ -49,7 +51,11 @@ export default {
       } else {
         let date_beginTime = String(this.date_begin + 'T00:00:00')
         let date_endTime = String(this.date_end + 'T23:59:59')
-        console.log(date_beginTime, date_endTime)
+        this.$emit('data', {
+            date_begin: date_beginTime,
+            date_end: date_endTime,
+        })
+        this.$emit('Action')
       }
     },
   },
