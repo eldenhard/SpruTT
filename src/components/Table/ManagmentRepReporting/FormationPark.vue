@@ -1,18 +1,20 @@
 <template>
-    <div style="overflow: auto;">
-        <table border="1">
+    <div>
+        <Periods />
+        <div style="overflow: auto; margin-top: 5%;">
+        <table border="1" align="center">
             <thead>
                 <tr>
                     <th class="widthFirst"></th>
                     <th style="font-weight: bold !important;">Подвижной состав, ед</th>
                     <template v-for="(data, key) in dataFormation">
                         <th :key="data.id">{{ key }}</th>
-                <tr>
+                <tr :key="data.id">
                     <th colspan=2>{{ key | GetNameMounth }}</th>
                 </tr>
-                <tr>
-                    <th>Ввод</th>
-                    <th>Вывод</th>
+                <tr :key="data.id">
+                    <th class="col1" style="font-size: 13px !important">Ввод</th>
+                    <th class="col1" style="font-size: 13px !important">Вывод</th>
                 </tr>
                 </template>
                 </tr>
@@ -21,9 +23,9 @@
                     <th class="blue_line">Собственный парк</th>
                     <template v-for="data in dataFormation">
                         <th class="blue_line" :key="data.id" >{{ data.own?.total }}</th>
-                <tr>
-                    <th class="blue_line">{{ data.own?.total_in }}</th>
-                    <th class="blue_line">{{ data.own?.total_out }}</th>
+                <tr :key="data.id">
+                    <th class="blue_line col1">{{ data.own?.total_in }}</th>
+                    <th class="blue_line col1">{{ data.own?.total_out }}</th>
                 </tr>
                 </template>
 
@@ -33,9 +35,9 @@
                     <th> Полувагоны</th>
                     <template v-for="data in dataFormation">
                         <th :key="data.id" >{{ data.own?.pv?.on_date }}</th>
-                <tr>
-                    <th>{{ data.own?.pv?.in }}</th>
-                    <th>{{ data.own?.pv?.out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data.own?.pv?.in }}</th>
+                    <th class="col1">{{ data.own?.pv?.out }}</th>
                 </tr>
                 </template>
                 </tr>
@@ -44,9 +46,9 @@
                     <th>Цистерны</th>
                     <template  v-for="data in dataFormation" >
                         <th :key="data.id" >{{ data.own?.cs?.on_date }}</th>
-                    <tr>
-                    <th>{{ data.own?.cs?.in }}</th>
-                    <th>{{ data.own?.cs?.out }}</th>
+                    <tr :key="data.id">
+                    <th class="col1">{{ data.own?.cs?.in }}</th>
+                    <th class="col1">{{ data.own?.cs?.out }}</th>
                 </tr>
                 </template>
                    
@@ -56,9 +58,9 @@
                     <th style="font-style: italic;">в том числе</th>
                     <template  v-for="data in dataFormation">
                         <th :key="data.id">***</th>
-                <tr>
-                    <th>***</th>
-                    <th>***</th>
+                <tr :key="data.id">
+                    <th class="col1">***</th>
+                    <th class="col1">***</th>
                 </tr>
                 </template>
                 </tr>
@@ -67,9 +69,9 @@
                     <th>Парк в лизинге</th>
                     <template v-for="data in dataFormation">
                         <th :key="data.id">{{ data?.lease?.total }}</th>
-                <tr>
-                    <th>{{ data?.lease?.total_in }}</th>
-                    <th>{{ data?.lease?.total_out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data?.lease?.total_in }}</th>
+                    <th class="col1">{{ data?.lease?.total_out }}</th>
                 </tr>
                 </template>
                 </tr>
@@ -78,9 +80,9 @@
                     <th>Полувагоны</th>
                     <template v-for="data in dataFormation">
                         <th :key="data.id">{{ data?.lease?.pv?.on_date }}</th>
-                <tr>
-                    <th>{{ data?.lease?.pv?.in }}</th>
-                    <th>{{ data?.lease?.pv?.out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data?.lease?.pv?.in }}</th>
+                    <th class="col1">{{ data?.lease?.pv?.out }}</th>
                 </tr>
                 </template>
                 </tr>
@@ -89,20 +91,20 @@
                     <th> Цистерны</th>
                     <template v-for="data in dataFormation">
                         <th :key="data.id">{{ data?.lease?.cs?.on_date }}</th>
-                <tr>
-                    <th>{{ data?.lease?.cs?.in }}</th>
-                    <th>{{ data?.lease?.cs?.out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data?.lease?.cs?.in }}</th>
+                    <th class="col1">{{ data?.lease?.cs?.out }}</th>
                 </tr>
                 </template>
                 </tr>
                 <tr>
                     <th class="number widthFirst">8</th>
-                    <th>Арендованный парк</th>
+                    <th>Аренд. парк</th>
                     <template v-for="data in dataFormation">
                         <th :key="data.id">{{ data?.rent?.total }}</th>
-                <tr>
-                    <th>{{ data?.rent?.total_in }}</th>
-                    <th>{{ data?.rent?.total_out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data?.rent?.total_in }}</th>
+                    <th class="col1">{{ data?.rent?.total_out }}</th>
                 </tr>
                 </template>
                 </tr>
@@ -111,9 +113,9 @@
                     <th>Полувагоны</th>
                     <template v-for="data in dataFormation">
                         <th :key="data.id">{{ data?.rent?.pv?.on_date }}</th>
-                <tr>
-                    <th>{{ data?.rent?.pv?.in }}</th>
-                    <th>{{ data?.rent?.pv?.out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data?.rent?.pv?.in }}</th>
+                    <th class="col1">{{ data?.rent?.pv?.out }}</th>
                 </tr>
                 </template>
                 </tr>
@@ -122,20 +124,20 @@
                     <th>Цистерны</th>
                     <template v-for="data in dataFormation">
                         <th :key="data.id">{{ data?.rent?.cs?.on_date }}</th>
-                <tr>
-                    <th>{{ data?.rent?.cs?.in }}</th>
-                    <th>{{ data?.rent?.cs?.out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data?.rent?.cs?.in }}</th>
+                    <th class="col1">{{ data?.rent?.cs?.out }}</th>
                 </tr>
                 </template>
                 </tr>
                 <tr>
                     <th class="number widthFirst">11</th>
-                    <th class="blue_line">Привлеченный парк</th>
+                    <th class="blue_line">Привлеч. парк</th>
                     <template v-for="data in dataFormation">
                         <th class="blue_line" :key="data.id">{{ data?.attracted?.total }}</th>
-                <tr>
-                    <th class="blue_line">{{ data?.attracted?.total_in }}</th>
-                    <th class="blue_line">{{ data?.attracted?.total_out }}</th>
+                <tr :key="data.id">
+                    <th class="blue_line col1">{{ data?.attracted?.total_in }}</th>
+                    <th class="blue_line col1">{{ data?.attracted?.total_out }}</th>
                 </tr>
                 </template>
                 </tr>
@@ -144,9 +146,9 @@
                     <th>Полувагоны</th>
                     <template v-for="data in dataFormation">
                         <th :key="data.id">{{ data?.attracted?.pv?.on_date }}</th>
-                <tr>
-                    <th>{{ data?.attracted?.pv?.in }}</th>
-                    <th>{{ data?.attracted?.pv?.out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data?.attracted?.pv?.in }}</th>
+                    <th class="col1">{{ data?.attracted?.pv?.out }}</th>
                 </tr>
                 </template>
                 </tr>
@@ -155,9 +157,9 @@
                     <th>Цистерны</th>
                     <template v-for="data in dataFormation">
                         <th :key="data.id">{{ data?.attracted?.cs?.on_date }}</th>
-                <tr>
-                    <th>{{ data?.attracted?.cs?.in }}</th>
-                    <th>{{ data?.attracted?.cs?.out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data?.attracted?.cs?.in }}</th>
+                    <th class="col1">{{ data?.attracted?.cs?.out }}</th>
                 </tr>
                 </template>
                 </tr>
@@ -166,9 +168,9 @@
                     <th style="font-weight: bold !important;">Всего ПС</th>
                     <template v-for="data in dataFormation">
                         <th  :key="data.id">{{ data?.total?.total }}</th>
-                <tr>
-                    <th >{{ data?.total?.total_in }}</th>
-                    <th >{{ data?.total?.total_out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data?.total?.total_in }}</th>
+                    <th class="col1">{{ data?.total?.total_out }}</th>
                 </tr>
                 </template>
                 </tr>
@@ -177,9 +179,9 @@
                     <th>Полувагоны</th>
                     <template v-for="data in dataFormation">
                         <th :key="data.id">{{ data?.total?.pv?.on_date }}</th>
-                <tr>
-                    <th>{{ data?.total?.pv?.in }}</th>
-                    <th>{{ data?.total?.pv?.out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data?.total?.pv?.in }}</th>
+                    <th class="col1">{{ data?.total?.pv?.out }}</th>
                 </tr>
                 </template>
                 </tr>
@@ -188,9 +190,9 @@
                     <th>Цистерны</th>
                     <template v-for="data in dataFormation">
                         <th :key="data.id">{{ data?.total?.cs?.on_date }}</th>
-                <tr>
-                    <th>{{ data?.total?.cs?.in }}</th>
-                    <th>{{ data?.total?.cs?.out }}</th>
+                <tr :key="data.id">
+                    <th class="col1">{{ data?.total?.cs?.in }}</th>
+                    <th class="col1">{{ data?.total?.cs?.out }}</th>
                 </tr>
                 </template>
 
@@ -198,9 +200,13 @@
             </thead>
         </table>
     </div>
+    </div>
+
 </template>
 <script>
+import Periods from './Periods.vue'
 export default {
+    components: {Periods},
     data() {
         return {
             formation_park_data: true,
@@ -608,7 +614,11 @@ export default {
 tr:nth-child(1) {
     background: rgb(255, 255, 255);
 }
-
+.col1 {
+  min-width: 60px;
+  max-width: 60px;
+  /* border: lightgray; */
+}
 .number {
     background: #B6DF89;
     color: #41766F;
