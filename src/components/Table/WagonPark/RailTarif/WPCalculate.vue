@@ -355,8 +355,7 @@
       </div>
      
       <button
-        class="button Delete railbtn" style="width: 10%; float: right; margin-top: 1% !important;
-    margin-right: 1% !important; " block @click="hideModal">Закрыть
+        class="button Delete railbtn" style="width: 10%; float: right; margin-top: 1% !important; margin-right: 1% !important; " block @click="hideModal">Закрыть
       </button>
     </b-modal>
     <div style="display: flex">
