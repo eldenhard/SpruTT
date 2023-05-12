@@ -841,6 +841,7 @@ export default {
 
       // console.log(event);
     },
+    // Предпросмотр фото при редактиваронии сотрудника
     onFileSelectedSee(event) {
       this.photo = this.$refs.photo.files[0];
       let target = event.target;

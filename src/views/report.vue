@@ -870,6 +870,8 @@ export default {
         });
       } else {
         console.log("NOT OK");
+        this.loader = false;
+
       }
     }),
       // Получить все отчеты созданные на сотрудника
@@ -887,6 +889,8 @@ export default {
           });
         } else {
           console.log("NOT OK");
+          this.loader = false;
+
         }
       }),
       // получить данные по сотруднику за полсдение 2 месяца
@@ -899,7 +903,6 @@ export default {
       //       .substring(0, 10)}`,
       //   {
           fetch('/api/personal/users/?page_size=200&manager=' + `${id}` + '&last_kpi_graded__lte=' + `${new Date(new Date().setDate(new Date().getDate() - 60)).toISOString().substring(0, 10)}`, {
-
           headers: {
             Authorization: `Basic ${token}`,
           },
@@ -912,7 +915,6 @@ export default {
             for (let i in this.staff) {
               this.current_staff = this.staff[i].id;
             }
-
             this.loader = false;
           });
         } else {
@@ -1005,6 +1007,8 @@ export default {
           });
         } else {
           console.log("NOT OK");
+          this.loader = false;
+
         }
       }),
         // fetch("http://10.1.5.20/api/reports/kpi?" + `employee=${id}`, {
@@ -1022,6 +1026,8 @@ export default {
             });
           } else {
             console.log("NOT OK");
+            this.loader = false;
+
           }
         });
     },

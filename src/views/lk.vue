@@ -111,7 +111,7 @@
                         class="textarea"
                         id="input-filter-staff2"
                         name="Pwd"
-                        :value="getGroupName(personal)"
+                        :value="getGroupName(personal)" 
                         style="background: white"
                         readonly
                         v-for="personal in PersonalData.groups"
@@ -244,8 +244,11 @@ export default {
     apiStaff.currentUser(this.uid).then((response) => {
       this.current_photo = response.data;
     });
-    api.getUsersLK(this.uid).then((response) => {
+    api.getUsersLK(this.uid)
+    .then((response) => {
+      console.log('!!!!!!!!!!!!!!!')
       this.PersonalData = response.data;
+      console.log( this.PersonalData)
     });
 
     api.getManagerLK(this.uid)
