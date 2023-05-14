@@ -9,6 +9,7 @@ import report from '../views/report';
 import Staff from '../views/Staff';
 import editBDR from '../views/editBDR';
 import keyFact from '../views/KeyFacts';
+import managementReporting from '../views/ManagementReporting'
 
 Vue.use(Router)
 
@@ -47,6 +48,10 @@ export default new Router({
     {
       path: '/key-facts',
       component: keyFact
+    },
+    {
+      path: '/management-reporting',
+      component: managementReporting
     },
 
     {

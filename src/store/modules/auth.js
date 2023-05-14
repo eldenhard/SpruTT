@@ -83,6 +83,7 @@ const actions = {
                     resolve(response.data.data)
                 }).catch(err => {
                     reject(new Error('Ошибка получения данных групп'))
+                    // document.location.href = '/'
                 })
         })
     },
