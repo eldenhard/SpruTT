@@ -1,0 +1,21 @@
+version: '3'
+
+env:
+  testvar: "hello world"
+
+
+tasks:
+  build:
+    desc: "Собирает docker образ sprutt-app"
+    cmds:
+      - docker build . -t sprutt-app
+  run:
+    desc: "Запускает docker"
+    cmds:
+      -  docker run -d --name sprutt -p 80:80 sprutt-app
+  stop:
+    desc: "Останавливает docker-compose"
+    cmds:
+      - docker stop sprutt
+      - docker rm sprutt
+
