@@ -21,7 +21,7 @@
                     </tr>
                     <tr>
                         <th class="number widthFirst">1</th>
-                        <th class="blue_line">Собственный парк</th>
+                        <th class="blue_line headers">Собственный парк</th>
                         <template v-for="data in dataFormation">
                             <th class="blue_line" :key="data.id">{{ data.own?.total }}</th>
                     <tr :key="data.id">
@@ -56,7 +56,7 @@
                     </tr>
                     <tr>
                         <th class="number widthFirst"> 4</th>
-                        <th style="font-style: italic;">в том числе</th>
+                        <th style="font-style: italic;" class="headers">в том числе</th>
                         <template v-for="data in dataFormation">
                             <th :key="data.id">***</th>
                     <tr :key="data.id">
@@ -67,7 +67,7 @@
                     </tr>
                     <tr>
                         <th class="number widthFirst">5</th>
-                        <th>Парк в лизинге</th>
+                        <th class="headers">Парк в лизинге</th>
                         <template v-for="data in dataFormation">
                             <th :key="data.id">{{ data?.lease?.total }}</th>
                     <tr :key="data.id">
@@ -78,7 +78,7 @@
                     </tr>
                     <tr>
                         <th class="number widthFirst"> 6</th>
-                        <th>Полувагоны</th>
+                        <th >Полувагоны</th>
                         <template v-for="data in dataFormation">
                             <th :key="data.id">{{ data?.lease?.pv?.on_date }}</th>
                     <tr :key="data.id">
@@ -89,7 +89,7 @@
                     </tr>
                     <tr>
                         <th class="number widthFirst"> 7</th>
-                        <th> Цистерны</th>
+                        <th > Цистерны</th>
                         <template v-for="data in dataFormation">
                             <th :key="data.id">{{ data?.lease?.cs?.on_date }}</th>
                     <tr :key="data.id">
@@ -100,7 +100,7 @@
                     </tr>
                     <tr>
                         <th class="number widthFirst">8</th>
-                        <th>Аренд. парк</th>
+                        <th class="headers">Аренд. парк</th>
                         <template v-for="data in dataFormation">
                             <th :key="data.id">{{ data?.rent?.total }}</th>
                     <tr :key="data.id">
@@ -133,7 +133,7 @@
                     </tr>
                     <tr>
                         <th class="number widthFirst">11</th>
-                        <th class="blue_line">Привлеч. парк</th>
+                        <th class="blue_line headers">Привлеч. парк</th>
                         <template v-for="data in dataFormation">
                             <th class="blue_line" :key="data.id">{{ data?.attracted?.total }}</th>
                     <tr :key="data.id">
@@ -166,7 +166,7 @@
                     </tr>
                     <tr>
                         <th class="number widthFirst">14</th>
-                        <th style="font-weight: bold !important;">Всего ПС</th>
+                        <th style="font-weight: bold !important;" class="headers" >Всего ПС</th>
                         <template v-for="data in dataFormation">
                             <th :key="data.id">{{ data?.total?.total }}</th>
                     <tr :key="data.id">
@@ -226,6 +226,7 @@ export default {
                 .then((response) => {
                     this.loader = false
                    this.dataFormation = response.data
+                   console.log(response.data)
                 }).catch(error => {
                     this.loader = false
                     console.log(error, 'AAAAAAAAAAAAAAAAA')
@@ -286,5 +287,9 @@ th {
 
 .widthFirst {
     width: calc(v-bind('index_font_size') * 8)
+}
+.headers{
+    text-align: left !important;
+    padding-left: 1%;
 }
 </style>
