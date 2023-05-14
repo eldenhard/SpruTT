@@ -15,11 +15,6 @@
               <span @click="closeTab(i.id)">&nbsp;&nbsp;❌</span>
             </template>
 
-            <b-card-text>
-              <div v-if="i.name === 'Сотрудники'">
-                <StaffTable />
-              </div>
-            </b-card-text>
             <b-card-text v-if="i.name === 'Вагоны'">
               <component :is="wt"></component>
             </b-card-text>
@@ -35,10 +30,23 @@
             <b-card-text v-if="i.name === 'Ремонты'">
               <WagonRepair />
             </b-card-text>
-
+            <b-card-text v-if="i.name === 'Тариф по сопредельным территориям'">
+              <TerritoryTable />
+            </b-card-text>
+            <div v-if="i.name === 'Сотрудники'">
+                <StaffTable />
+              </div>
             <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
               <ReportAbandoned />
             </b-card-text>
+
+            <b-card-text v-if="i.name === 'Размещение парка'">
+                <AccomodationPark />
+              </b-card-text>
+
+              <b-card-text v-if="i.name === 'Формирование парка'">
+                <FormationPark />
+              </b-card-text>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -48,15 +56,17 @@
 </template>
 
 <script>
-import StaffNavbar from "@/components/Navbar/StaffNavbar.vue";
-import WagonNavbar from "../components/Navbar/WagonNavbar.vue";
-import WPMainData from "../components/Table/WagonPark/WPMainData.vue";
-import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
-import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
-import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
-import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
-import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
-import StaffTable from "@/components/Table/StaffTable.vue";
+import FormationPark from "@/components/Table/ManagmentRepReporting/FormationPark.vue";
+  import WPMainData from "../components/Table/WagonPark/WPMainData.vue";
+  import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
+  import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
+  import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
+  import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
+  import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
+  import StaffTable from "@/components/Table/StaffTable.vue";
+  import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
+  import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
+  import StaffNavbar from "@/components/Navbar/StaffNavbar.vue";
 export default {
   name: "Staff",
   components: { 
@@ -68,12 +78,18 @@ export default {
     WPCalculate,
     WagonRepair,
     BCH, 
+    TerritoryTable,
+    AccomodationPark,
+    FormationPark,
+    
   },
   data() {
     return {
       tabs: [],
       counter: 1,
       tabActive: 0,
+      wt: "WPMainData",
+
     };
   },
   methods: {

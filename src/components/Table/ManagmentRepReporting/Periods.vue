@@ -49,8 +49,8 @@ export default {
       } if (this.date_end == "") {
         this.is_error_end = true;
       } else {
-        let date_beginTime = String(this.date_begin + 'T00:00:00')
-        let date_endTime = String(this.date_end + 'T23:59:59')
+        let date_beginTime = String(this.date_begin + ' 00:00:00')
+        let date_endTime = String(this.date_end + ' 3:59:59')
         this.$emit('data', {
             date_begin: date_beginTime,
             date_end: date_endTime,

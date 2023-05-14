@@ -106,6 +106,8 @@ const getContractAnnex= (id) => {
 const putContract= (id, data) => {
     return api.put(`${documents}/contract/${id}/`, data)
 }
+
+
 export default {
     getUsers,
     getReportById,
