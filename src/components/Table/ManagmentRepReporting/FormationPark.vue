@@ -283,6 +283,7 @@ tr:hover{
 } */
 th {
     font-weight: 400 !important;
+    border: 1px solid grey
 }
 
 .widthFirst {

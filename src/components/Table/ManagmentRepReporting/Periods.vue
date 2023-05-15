@@ -67,8 +67,9 @@ export default {
   color: rgb(247, 0, 0);
 }
 .Request {
-  width: 23.5%;
+  width: 21.5%;
   float: right;
+  margin-top: 1%;
 }
 .btn-group {
   /* width: 25%; */
