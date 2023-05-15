@@ -94,12 +94,6 @@ export default {
   },
   methods: {
     sendData(){
-        // let wagon = [{
-        //     'wagon': this.wagon_arr
-        // }]
-        // let stavka = [{
-        //     'stavka': this.stavka_arr
-        // }]
         let wagon = []
         this.wagon_arr.forEach((item)=> {
             wagon.push({
