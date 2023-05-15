@@ -40,6 +40,14 @@
             <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
               <ReportAbandoned />
             </b-card-text>
+
+            <b-card-text v-if="i.name === 'Размещение парка'">
+                <AccomodationPark />
+              </b-card-text>
+
+              <b-card-text v-if="i.name === 'Формирование парка'">
+                <FormationPark />
+              </b-card-text>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -48,15 +56,18 @@
 </template>
   
 <script>
-import WagonNavbar from "../components/Navbar/WagonNavbar.vue";
-import WPMainData from "../components/Table/WagonPark/WPMainData.vue";
-import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
-import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
-import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
-import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
-import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
-import StaffTable from "@/components/Table/StaffTable.vue";
-import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
+  import FormationPark from "@/components/Table/ManagmentRepReporting/FormationPark.vue";
+  import ManagemtRepNavbar from "@/components/Navbar/ManagementRepNavbar.vue"
+  import WagonNavbar from "../components/Navbar/WagonNavbar.vue";
+  import WPMainData from "../components/Table/WagonPark/WPMainData.vue";
+  import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
+  import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
+  import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
+  import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
+  import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
+  import StaffTable from "@/components/Table/StaffTable.vue";
+  import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
+  import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
 export default {
   name: "WagonPark",
   components: {
@@ -69,6 +80,9 @@ export default {
     BCH,
     StaffTable,
     TerritoryTable,
+    FormationPark,
+    ManagemtRepNavbar,
+    AccomodationPark
   },
   data() {
     return {

@@ -15,34 +15,37 @@
                 <span @click="closeTab(i.id)">&nbsp;&nbsp;❌</span>
               </template>
   
-              <b-card-text>
-                <div v-if="i.name === 'Сотрудники'">
-                  <StaffTable />
-                </div>
-              </b-card-text>
               <b-card-text v-if="i.name === 'Вагоны'">
-                <component :is="wt"></component>
+              <component :is="wt"></component>
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Расчет'">
+              <WPCalculate />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Отправки БЧ'">
+              <BCH />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Телеграммы'">
+              <WagonTableTelegram />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Ремонты'">
+              <WagonRepair />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Тариф по сопредельным территориям'">
+              <TerritoryTable />
+            </b-card-text>
+            <div v-if="i.name === 'Сотрудники'">
+                <StaffTable />
+              </div>
+            <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
+              <ReportAbandoned />
+            </b-card-text>
+
+            <b-card-text v-if="i.name === 'Размещение парка'">
+                <AccomodationPark />
               </b-card-text>
-              <b-card-text v-if="i.name === 'Расчет'">
-                <WPCalculate />
-              </b-card-text>
-              <b-card-text v-if="i.name === 'Отправки БЧ'">
-                <BCH />
-              </b-card-text>
-              <b-card-text v-if="i.name === 'Телеграммы'">
-                <WagonTableTelegram />
-              </b-card-text>
-              <b-card-text v-if="i.name === 'Ремонты'">
-                <WagonRepair />
-              </b-card-text>
+
               <b-card-text v-if="i.name === 'Формирование парка'">
                 <FormationPark />
-              </b-card-text>
-              <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
-                <ReportAbandoned />
-              </b-card-text>
-              <b-card-text v-if="i.name === 'Размещение парка'">
-                <AccomodationPark />
               </b-card-text>
             </b-tab>
           </b-tabs>
@@ -64,6 +67,8 @@
   import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
   import StaffTable from "@/components/Table/StaffTable.vue";
   import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
+  import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
+
   export default {
     name: "managmentReporting",
     components: { 
@@ -77,12 +82,16 @@
       WagonRepair,
       BCH, 
       AccomodationPark,
+      TerritoryTable,
+
     },
     data() {
       return {
         tabs: [],
         counter: 1,
         tabActive: 0,
+        wt: "WPMainData",
+
       };
     },
     methods: {
