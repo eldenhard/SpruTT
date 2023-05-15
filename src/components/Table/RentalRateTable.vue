@@ -28,9 +28,9 @@
       </label>
     </div>
 
-    <div class="rent_person_answer">
+    <div class="rent_person_answer" style="height: auto">
       <div class="textarea m0p0" style="height: auto" >
-        <ul>
+        <ul id="root_tenant">
           <li
             v-for="item in filter_tenant"
             :key="item.id"
@@ -42,7 +42,7 @@
         </ul>
       </div>
       <div class="textarea m0p0" style="height: auto" >
-        <ul>
+        <ul id="root_landlord">
           <li
             v-for="item in filter_landlord"
             :key="item.id"
@@ -119,8 +119,6 @@ export default {
       days_amount_len: "0",
 
       ten_ans: [],
-      ten_fil: '',
-      land_fil: "",
     };
   },
 
@@ -158,20 +156,17 @@ export default {
     },
   },
   computed: {
-  
-    filter_tenant() {
-      this.ten_fil = this.tenant
-      return this.ten_fil.length > 1
+     filter_tenant() {
+      return this.tenant.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.includes(this.ten_fil)
+            i.work_name.includes(this.tenant)
           )
         : "";
     },
     filter_landlord() {
-      this.land_fil = this.landlord
-      return this.land_fil.length > 1
+      return this.landlord.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.includes(this.land_fil)
+            i.work_name.includes(this.landlord)
           )
         : "";
     },
@@ -179,11 +174,11 @@ export default {
   methods: {
     checkTenant(value) {
       this.tenant = value;
-      this.ten_fil = ''
+      // document.getElementById('root_tenant').innerHTML = ''
     },
     checkLanlord(value) {
       this.landlord = value;
-      this.land_fil = false;
+      // document.getElementById('root_landlord').innerHTML = ''
     },
     helper(a) {
       return [...new Set(a)].length == 1;
