@@ -72,7 +72,34 @@
       <p class="amount">Всего: {{ days_amount_len }}</p>
       <p class="amount">Всего: {{ stavka_len }}</p>
     </div>
-    <div class="rent_information">
+    <table border="1">
+      <thead>
+        <tr>
+          <th>№ вагона</th>
+          <th>Дата начала аренды</th>
+          <th>Дата начала аренды</th>
+          <th>Дата окончания аренды</th>
+          <th>Кол-во дней</th>
+          <th>Ставка</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr >
+          <td><input type="text" v-model="wagon">
+            <tr v-for="wagons in this.wagon_arr" :key="wagons.id">
+               <td> <input :value="wagons"> </td>
+            </tr>
+          </td>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+          <td><input type="text"></td>
+        </tr>
+        
+      </tbody>
+    </table>
+    <!-- <div class="rent_information">
       <textarea name="" id="" cols="10" rows="10" v-model="wagon"></textarea>
 
       <textarea name="" id="" cols="10" rows="10" v-model="start_date">
@@ -89,7 +116,7 @@
       ></textarea>
 
       <textarea name="" id="" cols="10" rows="10" v-model="stavka"></textarea>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -127,14 +154,16 @@ export default {
       land_visible: false,
     };
   },
-
+// 52458502 52568300 52577715
   watch: {
     wagon() {
       // console.log(this.wagon[this.wagon.length - 1])
-      let wagon_array = this.wagon.split("\n");
+      // let wagon_array = this.wagon.split("\n");
+      let wagon_array = this.wagon.split(" ");
+
       this.wagon_arr = wagon_array.filter((item) => item !== "");
       this.wagon_len = this.wagon_arr.length;
-      console.log("вагон");
+      console.log(this.wagon_arr);
     },
     stavka() {
       let stavka_arr = this.stavka.split("\n");
@@ -234,14 +263,7 @@ export default {
           days_amount: item,
         });
       });
-      let tenant = [];
-      tenant.push({
-        tenant: this.tenant,
-      });
-      let landlord = [];
-      landlord.push({
-        landlord: this.landlord,
-      });
+
       this.all_length.push(
         this.wagon_len,
         this.stavka_len,
@@ -252,11 +274,9 @@ export default {
 
       if (this.helper(this.all_length) == true) {
         let all_array = wagon.map((item, index) => ({
-          tenant,
-          landlord,
+          landlord: this.landlord,
+          tenant: this.tenant,
           ...item,
-          ...tenant[index],
-          ...landlord[index],
           ...stavka[index],
           ...start_date[index],
           ...end_date[index],
