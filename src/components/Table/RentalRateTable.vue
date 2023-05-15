@@ -10,16 +10,19 @@
       &nbsp;&nbsp;<u>Другой формат ввода даты не допускается. </u>
     </p>
     <div class="rent_person">
+
       <label for="tenant"
         >Арендатор
         <br />
         <input type="text" id="tenant" class="textarea" v-model="tenant" />
       </label>
+
       <label for="landlord"
         >Арендодатель
         <br />
         <input type="text" id="landlord" class="textarea" v-model="landlord" />
       </label>
+
       <label for="">
         <br />
         <button class="button textarea" @click="dataCollection()">
@@ -29,7 +32,7 @@
     </div>
 
     <div class="rent_person_answer" style="height: auto">
-      <div class="textarea m0p0" style="height: auto" >
+      <div class="textarea m0p0" style="height: auto" v-show="ten_visible">
         <ul id="root_tenant">
           <li
             v-for="item in filter_tenant"
@@ -41,7 +44,7 @@
           </li>
         </ul>
       </div>
-      <div class="textarea m0p0" style="height: auto" >
+      <div class="textarea m0p0" style="height: auto" v-show="land_visible">
         <ul id="root_landlord">
           <li
             v-for="item in filter_landlord"
@@ -119,6 +122,9 @@ export default {
       days_amount_len: "0",
 
       ten_ans: [],
+
+      ten_visible: false,
+      land_visible: false,
     };
   },
 
@@ -157,6 +163,10 @@ export default {
   },
   computed: {
      filter_tenant() {
+      if(this.tenant.length > 1) {
+        this.ten_visible = true
+      }
+      
       return this.tenant.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
             i.work_name.includes(this.tenant)
@@ -164,6 +174,9 @@ export default {
         : "";
     },
     filter_landlord() {
+      if(this.landlord.length > 1) {
+        this.land_visible = true
+      }
       return this.landlord.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
             i.work_name.includes(this.landlord)
@@ -174,10 +187,12 @@ export default {
   methods: {
     checkTenant(value) {
       this.tenant = value;
+      this.ten_visible = false
       // document.getElementById('root_tenant').innerHTML = ''
     },
     checkLanlord(value) {
       this.landlord = value;
+      this.land_visible = false
       // document.getElementById('root_landlord').innerHTML = ''
     },
     helper(a) {
@@ -225,7 +240,7 @@ export default {
       });
       let landlord = [];
       landlord.push({
-        landlord: this.tenant,
+        landlord: this.landlord,
       });
       this.all_length.push(
         this.wagon_len,
@@ -248,14 +263,11 @@ export default {
           ...days_amount[index],
         }));
         // console.log(all_array)
-        console.log(
-          this.$store.state.counterparties.counterparties,
-          "AAAAAAAAAA"
-        );
-        // api.postSaveMany(all_array)
-        // .then(response => {
-        //   console.log(response)
-        // });
+ 
+        api.postSaveMany(all_array)
+        .then(response => {
+          console.log(response)
+        });
       } else {
         console.log("выкинь ошибку");
       }
