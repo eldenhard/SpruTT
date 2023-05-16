@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loader :loader="loader" />
     <p class="explanation">
       * Ввод данных по вагонам, датам, дням и ставкам вводить через пробел
       <br />&nbsp;&nbsp;(при копировании из MS Excel, оставить введенные данные
@@ -18,12 +19,12 @@
     </p>
     <div class="rent_person">
 
-      <label for="tenant">Арендатор
+      <label for="tenant" :class="{ 'rentError_person' : ErrorPerson }">Арендатор
         <br />
         <input type="text" id="tenant" class="textarea" v-model="tenant" />
       </label>
 
-      <label for="landlord">Арендодатель
+      <label for="landlord" :class="{ 'rentError_person' : ErrorPersonLand }">Арендодатель
         <br />
         <input type="text" id="landlord" class="textarea" v-model="landlord" />
       </label>
@@ -221,16 +222,23 @@
       </tbody>
     </table>
 
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+      id="notif" />
   </div>
 </template>
 
 <script>
 import api from "@/api/directory";
 import { mapState } from "vuex";
+import Notifications from "@/components/notifications/Notifications.vue";
+import Loader from "../loader/loader.vue";
 export default {
   name: "rental-rate",
+  components: { Notifications, Loader },
   data() {
     return {
+      loader: false,
+
       wagon: '',
       stavka: "",
       start_date: "",
@@ -256,9 +264,15 @@ export default {
       success: false,
       ten_visible: true,
       land_visible: true,
-
+      ErrorPersonLand: false,
+      ErrorPerson: false,
       // анимация
       wagonSaveData: true,
+      // Уведомления
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
     };
   },
   // 52458502 52568300 52577715
@@ -277,16 +291,15 @@ export default {
     filter_tenant() {
       if (this.tenant.length > 1) {
         this.ten_visible = true
-        
       }
-      if (this.tenant == (this.$store.state.counterparties.counterparties.filter((i) =>
-        i.work_name.includes(this.tenant)))) {
-        this.ten_visible = false
+      return this.tenant.length > 1
+        ? this.$store.state.counterparties.counterparties.filter((i) =>
+          i.work_name.includes(this.tenant)
+        )
+        : "";
 
-      }
 
 
-     
     },
     filter_landlord() {
       if (this.landlord.length > 1) {
@@ -301,7 +314,10 @@ export default {
   },
   watch: {
     tenant() {
-      console.log('click')
+      return this.tenant == '' ? this.ErrorPerson = true : this.ErrorPerson = false 
+    },
+    landlord(){
+      return this.landlord == '' ? this.ErrorPersonLand = true : this.ErrorPersonLand = false
     }
   },
   methods: {
@@ -427,6 +443,7 @@ export default {
       return [...new Set(a)].length == 1;
     },
     dataCollection() {
+      this.loader = true
       let wagon = [];
       this.wagon_arr.forEach((item) => {
         wagon.push({
@@ -482,13 +499,56 @@ export default {
           ...days_amount[index],
         }));
         // console.log(all_array)
+        if (this.landlord == '' || this.tenant == '') {
+          this.loader = false
+          if(this.landlord == ''){
+            this.ErrorPersonLand = true
+          }
+          if(this.tenant == ''){
+            this.ErrorPerson = true
+          }
+          this.notifyHead = "Ошибка";
+              this.notifyMessage = 'Необходимо указать данные по Арендатору/Арендодателю';
+              this.notifyClass = "wrapper-error";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false
+              }
+                , 2500);
+        } else {
+          api.postSaveMany(all_array)
+            .then(response => {
+              this.loader = false
+              this.notifyHead = "Успешно";
+              this.notifyMessage = "Данные отправлены";
+              this.notifyClass = "wrapper-success";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false
+              }
+                , 2500);
+            }).catch((error) => {
+              this.loader = false
+              this.notifyHead = "Ошибка";
+              this.notifyMessage = error.response.data[0];
+              this.notifyClass = "wrapper-error";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false
+              }
+                , 2500);
+            })
+        }
 
-        api.postSaveMany(all_array)
-          .then(response => {
-            console.log(response)
-          });
       } else {
-        console.log("выкинь ошибку");
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Данные по вагонам, датам, дням и ставкам должны быть одной длины";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => {
+          this.showNotify = false
+        }
+          , 3500);
       }
       this.all_length = [];
     },
@@ -501,7 +561,9 @@ export default {
   background: url(@/assets/check-mark.png) no-repeat;
 }
 
-
+.rentError_person{
+  color: red
+}
 .success {
   transition: 0.5s ease-in-out;
   background: rgba(42, 190, 67, 0.4);
