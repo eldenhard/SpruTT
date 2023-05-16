@@ -1,32 +1,10 @@
-
-<!-- <template>
-  <div id="navbarMain">
-    <b-card no-body>
-      <b-tabs pills card vertical nav-wrapper-class="w-100" class="test" style="background: white;height: 100vh !important;text-align:center !important;
-            justify-content: center !important;">
-        <b-container class="bv-example-row">
-          <b-tab title="Вагоны" @click="newTab('Вагоны')" style="display: none !important"> </b-tab>
-          <b-tab title="Телеграммы" @click="newTab('Телеграммы')" style="display: none !important"> </b-tab>
-          <b-tab title="Ремонты" @click="newTab('Ремонты')" style="display: none !important"> </b-tab>
-          <b-tab title="Расчет" @click="newTab('Расчет')" style="display: none !important"> </b-tab>
-          <b-tab  title="Отправки БЧ" @click="newTab('Отправки БЧ')" style="display: none !important"> </b-tab>
-          <b-tab  title="Тариф по сопр. терр." @click="newTab('Тариф по сопредельным территориям')" style="display: none !important"> </b-tab>
-
-        </b-container>
-      </b-tabs>
-    </b-card>
-  </div>
-</template> -->
-
-
-
 <template>
   
-<b-card no-body style="margin-top: 1%">
-    <b-tabs pills card vertical style="background: white">
-      <b-container >
+<b-card no-body>
+    <b-tabs pills card vertical style="height: 100vh;">
+      <b-container>
         <b-tab title="Справочник контрагенты">
-                <b-card-text>
+                <b-card-text >
                     <partnerTable/>
               </b-card-text>
               </b-tab>
@@ -71,6 +49,10 @@ select {
 li.nav-item {
   text-align: center !important;
   justify-content: center !important;
+  background: red !important;
+}
+.nav-pills{
+  background: red !important;
 }
 </style>
 

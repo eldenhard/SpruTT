@@ -2,13 +2,13 @@
 <template>
   <div style="display: flex;">
     <div style="width: 15%;">
-      <WagonNavbar :tabs="tabs" :counter="counter"></WagonNavbar>
+      <WagonNavbar :tabs="tabs" :counter="counter" ></WagonNavbar>
     </div>
-    <div style="width: 85%;">
+    <div style="width: 85%; ">
       <p class="infoNull" v-if="tabs.length === 0">
         Вы не выбрали ещё ни одной таблицы
       </p>
-      <b-card no-body class="leftTable">
+      <b-card no-body class="leftTable" >
         <b-tabs card v-model="tabActive" @changed="onTabChanged">
           <b-tab v-for="i in tabs" :key="i.id">
             <template #title>

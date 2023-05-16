@@ -1,24 +1,29 @@
 <template>
   <div>
     <p class="explanation">
-      * Ввод данных по вагонам, датам, дням и ставкам вводить через Enter
+      * Ввод данных по вагонам, датам, дням и ставкам вводить через пробел
       <br />&nbsp;&nbsp;(при копировании из MS Excel, оставить введенные данные
       неизменными)
       <br />
-      * Ввод дат осуществлять только в строгом формате <b>21.01.2023</b> (через
-      точку). <br />
+      * Ввод дат осуществлять только в строгом формате <b>21.01.2023</b> <br />
       &nbsp;&nbsp;<u>Другой формат ввода даты не допускается. </u>
+      <br>
+      * Для удаления строки кликните на порядковый номер строки(левый столбец)
+      <br>
+      * Для сохранения изменненого поля кликните на галочку, <br>
+      &nbsp;&nbsp;зеленая индикация поля указывает на сохранение внесенных изменений
+      <br>
+      * Для выбора значения арендатора и арендодателя, дважды нажмите на подходящее значение
+      <br>
     </p>
     <div class="rent_person">
 
-      <label for="tenant"
-        >Арендатор
+      <label for="tenant">Арендатор
         <br />
         <input type="text" id="tenant" class="textarea" v-model="tenant" />
       </label>
 
-      <label for="landlord"
-        >Арендодатель
+      <label for="landlord">Арендодатель
         <br />
         <input type="text" id="landlord" class="textarea" v-model="landlord" />
       </label>
@@ -31,14 +36,44 @@
       </label>
     </div>
 
-    <div class="rent_person_answer" style="height: auto">
-      <div class="textarea m0p0" style="height: auto" v-show="ten_visible">
+    <div class="rent_person">
+
+      <label for="">
+
+        <div class="textarea" style="height: auto; width: 100%" v-show="ten_visible">
+          <ul id="root_tenant">
+            <li v-for="item in filter_tenant" :key="item.id" @click="checkTenant(item.work_name)">
+              <span>{{ item.work_name }}</span>
+              <hr />
+            </li>
+          </ul>
+        </div>
+      </label>
+
+
+
+      <label for="">
+        <div class="textarea" style="height: auto; width: 100%" v-show="land_visible">
+          <ul id="root_landlord">
+            <li v-for="item in filter_landlord" :key="item.id" @click="checkLanlord(item.work_name)">
+              <span>{{ item.work_name }}</span>
+              <hr />
+            </li>
+          </ul>
+        </div>
+      </label>
+
+
+
+      <button class=" textarea" style="background: transparent; color: white; border: none;" disabled>
+        Отправить данные
+      </button>
+
+    </div>
+    <!-- <div class="rent_person_answer" style="height: auto">
+      <div class="textarea m0p0" style="height: auto" >
         <ul id="root_tenant">
-          <li
-            v-for="item in filter_tenant"
-            :key="item.id"
-            @click="checkTenant(item.work_name)"
-          >
+          <li v-for="item in filter_tenant" :key="item.id" @click="checkTenant(item.work_name)">
             <span>{{ item.work_name }}</span>
             <hr />
           </li>
@@ -46,26 +81,21 @@
       </div>
       <div class="textarea m0p0" style="height: auto" v-show="land_visible">
         <ul id="root_landlord">
-          <li
-            v-for="item in filter_landlord"
-            :key="item.id"
-            @click="checkLanlord(item.work_name)"
-          >
+          <li v-for="item in filter_landlord" :key="item.id" @click="checkLanlord(item.work_name)">
             <span>{{ item.work_name }}</span>
             <hr />
           </li>
         </ul>
       </div>
       <div class="textarea" style="background: transparent; border: none"></div>
-    </div>
-    <div class="rent_information_placeholder">
-      <p class="amount">№ вагона</p>
-      <p class="amount">Дата начала аренды</p>
-      <p class="amount">Дата окончания аренды</p>
-      <p class="amount">Кол-во дней</p>
-      <p class="amount">Ставка</p>
-    </div>
+    </div> -->
+
+
+
+
     <div class="rent_information_lenght">
+
+      <p class="amount"></p>
       <p class="amount">Всего: {{ wagon_len }}</p>
       <p class="amount">Всего: {{ start_date_len }}</p>
       <p class="amount">Всего: {{ end_date_len }}</p>
@@ -75,8 +105,46 @@
     <table border="1">
       <thead>
         <tr>
+          <th></th>
+          <th>
+            <div class="inputWithIcon">
+              <input type="text" v-model="wagon" autocomplete="off" placeholder="введите номера " />
+              <i class="fa" aria-hidden="true" @click="CreateTable()" v-if="wagon.length > 1"></i>
+            </div>
+          </th>
+
+          <th>
+            <div class="inputWithIcon">
+              <input type="text" v-model="start_date" placeholder="введите дату " />
+              <i class="fa" aria-hidden="true" @click="CreateTableStartDate()" v-if="start_date.length > 1"></i>
+            </div>
+          </th>
+
+          <th>
+            <div class="inputWithIcon">
+              <input type="text" v-model="end_date" placeholder="введите дату " />
+              <i class="fa" aria-hidden="true" @click="CreateTableEndDate()" v-if="end_date.length > 1"></i>
+            </div>
+          </th>
+
+          <th>
+            <div class="inputWithIcon">
+              <input type="text" v-model="days_amount" placeholder="введите число " />
+              <i class="fa" aria-hidden="true" @click="CreateTableDaysAmount()" v-if="days_amount.length > 1"></i>
+            </div>
+          </th>
+
+          <th>
+            <div class="inputWithIcon">
+              <input type="text" v-model="stavka" placeholder="введите ставку " />
+              <i class="fa" aria-hidden="true" @click="CreateTableStavka()" v-if="stavka.length > 1"></i>
+            </div>
+          </th>
+
+        </tr>
+        <tr>
+          <th>#</th>
           <th>№ вагона</th>
-          <th>Дата начала аренды</th>
           <th>Дата начала аренды</th>
           <th>Дата окончания аренды</th>
           <th>Кол-во дней</th>
@@ -84,39 +152,75 @@
         </tr>
       </thead>
       <tbody>
-        <tr >
-          <td><input type="text" v-model="wagon">
-            <tr v-for="wagons in this.wagon_arr" :key="wagons.id">
-               <td> <input :value="wagons"> </td>
-            </tr>
-          </td>
-          <td><input type="text"></td>
-          <td><input type="text"></td>
-          <td><input type="text"></td>
-          <td><input type="text"></td>
-          <td><input type="text"></td>
-        </tr>
-        
+
+        <td style="width: 30px !important">
+          <tr v-for="(wag, index) in sort_data" :key="wag.id" style="width: 30px !important">
+            <td>
+              <input type="text" name="сheck_in" :value="index + 1" readonly
+                style="width: 30px !important; text-align: center;" @click="test(index)" />
+
+            </td>
+          </tr>
+        </td>
+
+        <td>
+          <tr v-for="(wag, index) in wagon_arr" :key="wag.id">
+            <td>
+              <div class="inputWithIcon">
+                <input type="text" name="сheck_in" :id='`wagon` + index' :value="wag" style="text-align: center;" />
+                <i class="fa" aria-hidden="true" @click="deleteArr(wag, index)" v-if="wagonSaveData"></i>
+              </div>
+            </td>
+          </tr>
+        </td>
+
+        <td>
+          <tr v-for="(start, index) in start_date_arr" :key="start.id">
+            <td>
+              <div class="inputWithIcon">
+                <input type="text" name="сheck_in" :id='`start` + index' :value="start" style="text-align: center;" />
+                <i class="fa" aria-hidden="true" @click="deleteStart(start, index)" v-if="wagonSaveData"></i>
+              </div>
+            </td>
+          </tr>
+        </td>
+
+        <td>
+          <tr v-for="(end, index) in end_date_arr" :key="end.id">
+            <td>
+              <div class="inputWithIcon">
+                <input type="text" name="сheck_in" :id='`end` + index' :value="end" style="text-align: center;" />
+                <i class="fa" aria-hidden="true" @click="deleteEnd(end, index)" v-if="wagonSaveData"></i>
+              </div>
+            </td>
+          </tr>
+        </td>
+
+        <td>
+          <tr v-for="(amount, index) in days_amount_arr" :key="amount.id">
+            <td>
+              <div class="inputWithIcon">
+                <input type="text" name="сheck_in" :id='`amount` + index' :value="amount" style="text-align: center;" />
+                <i class="fa" aria-hidden="true" @click="deleteAmount(amount, index)" v-if="wagonSaveData"></i>
+              </div>
+            </td>
+          </tr>
+        </td>
+
+        <td>
+          <tr v-for="(stavka, index) in stavka_arr" :key="stavka.id">
+            <td>
+              <div class="inputWithIcon">
+                <input type="text" name="сheck_in" :id='`stavka` + index' :value="stavka" style="text-align: center;" />
+                <i class="fa" aria-hidden="true" @click="deleteStavka(stavka, index)" v-if="wagonSaveData"></i>
+              </div>
+            </td>
+          </tr>
+        </td>
+
       </tbody>
     </table>
-    <!-- <div class="rent_information">
-      <textarea name="" id="" cols="10" rows="10" v-model="wagon"></textarea>
 
-      <textarea name="" id="" cols="10" rows="10" v-model="start_date">
-      </textarea>
-
-      <textarea name="" id="" cols="10" rows="10" v-model="end_date"></textarea>
-
-      <textarea
-        name=""
-        id=""
-        cols="10"
-        rows="10"
-        v-model="days_amount"
-      ></textarea>
-
-      <textarea name="" id="" cols="10" rows="10" v-model="stavka"></textarea>
-    </div> -->
   </div>
 </template>
 
@@ -127,7 +231,7 @@ export default {
   name: "rental-rate",
   data() {
     return {
-      wagon: "",
+      wagon: '',
       stavka: "",
       start_date: "",
       end_date: "",
@@ -149,79 +253,174 @@ export default {
       days_amount_len: "0",
 
       ten_ans: [],
+      success: false,
+      ten_visible: true,
+      land_visible: true,
 
-      ten_visible: false,
-      land_visible: false,
+      // анимация
+      wagonSaveData: true,
     };
   },
-// 52458502 52568300 52577715
-  watch: {
-    wagon() {
-      // console.log(this.wagon[this.wagon.length - 1])
-      // let wagon_array = this.wagon.split("\n");
-      let wagon_array = this.wagon.split(" ");
+  // 52458502 52568300 52577715
 
-      this.wagon_arr = wagon_array.filter((item) => item !== "");
-      this.wagon_len = this.wagon_arr.length;
-      console.log(this.wagon_arr);
-    },
-    stavka() {
-      let stavka_arr = this.stavka.split("\n");
-      this.stavka_arr = stavka_arr.filter((item) => item !== "");
-      this.stavka_len = this.stavka_arr.length;
-      console.log("stavka");
-    },
-    start_date() {
-      let start_date_arr = this.start_date.split("\n");
-      this.start_date_arr = start_date_arr.filter((item) => item !== "");
-      this.start_date_len = this.start_date_arr.length;
-      console.log("start_date");
-    },
-    end_date() {
-      let end_date_arr = this.end_date.split("\n");
-      this.end_date_arr = end_date_arr.filter((item) => item !== "");
-      this.end_date_len = this.end_date_arr.length;
-      console.log("end_date");
-    },
-    days_amount() {
-      let days_amount_arr = this.days_amount.split("\n");
-      this.days_amount_arr = days_amount_arr.filter((item) => item !== "");
-      this.days_amount_len = this.days_amount_arr.length;
-      console.log("days_amount");
-    },
-  },
   computed: {
-     filter_tenant() {
-      if(this.tenant.length > 1) {
+    sort_data() {
+      let sort_Array = []
+      sort_Array.push(this.wagon_arr.length,
+        this.stavka_arr.length,
+        this.start_date_arr.length,
+        this.end_date_arr.length,
+        this.days_amount_arr.length)
+      return Math.max.apply(null, sort_Array)
+
+    },
+    filter_tenant() {
+      if (this.tenant.length > 1) {
         this.ten_visible = true
+        
       }
-      
-      return this.tenant.length > 1
-        ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.includes(this.tenant)
-          )
-        : "";
+      if (this.tenant == (this.$store.state.counterparties.counterparties.filter((i) =>
+        i.work_name.includes(this.tenant)))) {
+        this.ten_visible = false
+
+      }
+
+
+     
     },
     filter_landlord() {
-      if(this.landlord.length > 1) {
+      if (this.landlord.length > 1) {
         this.land_visible = true
       }
       return this.landlord.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.includes(this.landlord)
-          )
+          i.work_name.includes(this.landlord)
+        )
         : "";
     },
   },
+  watch: {
+    tenant() {
+      console.log('click')
+    }
+  },
   methods: {
+    test(index) {
+      this.wagon_arr.splice(index, 1)
+      this.start_date_arr.splice(index, 1)
+      this.end_date_arr.splice(index, 1)
+      this.days_amount_arr.splice(index, 1)
+      this.stavka_arr.splice(index, 1)
+      this.wagon_len = this.wagon_arr.length;
+      this.stavka_len = this.stavka_arr.length;
+      this.start_date_len = this.start_date_arr.length;
+      this.end_date_len = this.end_date_arr.length;
+      this.days_amount_len = this.days_amount_arr.length;
+
+    },
+    CreateTable() {
+      let wagon_array = this.wagon.split(" ");
+      this.wagon_arr = [...wagon_array];
+      this.wagon_arr = this.wagon_arr.filter((item) => item !== "");
+      this.wagon_len = this.wagon_arr.length;
+      this.wagon = ""
+      // this.wagonSaveData = true
+    },
+    deleteArr(data_value, index) {
+      let data = document.getElementById(`wagon${index}`).value
+      this.wagon_arr.splice(index, 1, data);
+      let wagon_DOM = document.getElementById(`wagon${index}`)
+      wagon_DOM.classList.add('success')
+      setTimeout(() => {
+        wagon_DOM.classList.remove('success')
+      }, 1000)
+
+    },
+    CreateTableStartDate() {
+      let start_date_array = this.start_date.split(" ");
+      this.start_date_arr = [...start_date_array];
+      this.start_date_arr = this.start_date_arr.filter((item) => item !== "");
+      this.start_date_len = this.start_date_arr.length;
+      this.start_date = ''
+
+    },
+    deleteStart(data_value, index) {
+
+      let data = document.getElementById(`start${index}`).value
+      console.log(data)
+      this.start_date_arr.splice(index, 1, data);
+      // console.log(this.wagon_arr)
+      let wagon_DOM = document.getElementById(`start${index}`)
+      wagon_DOM.classList.add('success')
+      setTimeout(() => {
+        wagon_DOM.classList.remove('success')
+      }, 1000)
+
+    },
+    CreateTableEndDate() {
+      console.log('1')
+      let end_date_array = this.end_date.split(" ");
+      this.end_date_arr = [...end_date_array];
+      this.end_date_arr = this.end_date_arr.filter((item) => item !== "");
+      this.end_date_len = this.end_date_arr.length;
+      this.end_date = ''
+    },
+    deleteEnd(data_value, index) {
+      let data = document.getElementById(`end${index}`).value
+      this.end_date_arr.splice(index, 1, data);
+      let wagon_DOM = document.getElementById(`end${index}`)
+      wagon_DOM.classList.add('success')
+      setTimeout(() => {
+        wagon_DOM.classList.remove('success')
+      }, 1000)
+
+
+    },
+    CreateTableDaysAmount() {
+      let date_amount = this.days_amount.split(" ");
+      this.days_amount_arr = [...date_amount];
+      this.days_amount_arr = this.days_amount_arr.filter((item) => item !== "");
+      this.days_amount_len = this.days_amount_arr.length;
+      this.days_amount = ''
+    },
+    deleteAmount(data_value, index) {
+      let data = document.getElementById(`amount${index}`).value
+      this.days_amount_arr.splice(index, 1, data);
+      let wagon_DOM = document.getElementById(`amount${index}`)
+      wagon_DOM.classList.add('success')
+      setTimeout(() => {
+        wagon_DOM.classList.remove('success')
+      }, 1000)
+
+
+    },
+    CreateTableStavka() {
+      let stavka = this.stavka.split(" ");
+      this.stavka_arr = [...stavka];
+      this.stavka_arr = this.stavka_arr.filter((item) => item !== "");
+      this.stavka_len = this.stavka_arr.length;
+      this.stavka = ''
+    },
+    deleteStavka(data_value, index) {
+      let data = document.getElementById(`stavka${index}`).value
+      this.stavka_arr.splice(index, 1, data);
+      let wagon_DOM = document.getElementById(`stavka${index}`)
+      console.log(wagon_DOM)
+      wagon_DOM.classList.add('success')
+      setTimeout(() => {
+        wagon_DOM.classList.remove('success')
+      }, 1000)
+
+    },
     checkTenant(value) {
-      this.tenant = value;
       this.ten_visible = false
+      this.tenant = value;
+
       // document.getElementById('root_tenant').innerHTML = ''
     },
     checkLanlord(value) {
-      this.landlord = value;
       this.land_visible = false
+      this.landlord = value;
       // document.getElementById('root_landlord').innerHTML = ''
     },
     helper(a) {
@@ -283,11 +482,11 @@ export default {
           ...days_amount[index],
         }));
         // console.log(all_array)
- 
+
         api.postSaveMany(all_array)
-        .then(response => {
-          console.log(response)
-        });
+          .then(response => {
+            console.log(response)
+          });
       } else {
         console.log("выкинь ошибку");
       }
@@ -298,6 +497,45 @@ export default {
 </script>
 
 <style scoped>
+.fa {
+  background: url(@/assets/check-mark.png) no-repeat;
+}
+
+
+.success {
+  transition: 0.5s ease-in-out;
+  background: rgba(42, 190, 67, 0.4);
+  color: black
+}
+
+.inputWithIcon {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+i {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 14px 13px;
+  color: #aaa;
+  transition: 0.3s;
+}
+
+input {
+  width: 100%
+}
+
+/* input[type='text']:nth-child(7n) {
+  width: 100%;
+} */
+
+td {
+  vertical-align: top !important;
+}
+
+
 li {
   cursor: pointer;
   list-style-type: none;
@@ -305,14 +543,17 @@ li {
   margin: 0;
   padding: 0 0 0 0;
 }
-li > span {
+
+li>span {
   padding-left: 5%;
   text-align: center;
 }
+
 ul {
   margin: 0;
   padding: 0;
 }
+
 .m0p0 {
   padding: 0;
 }
@@ -320,34 +561,46 @@ ul {
 li:hover {
   background: lightgrey;
 }
+
 .button {
   float: right;
   background: #18842a !important;
 }
+
 .explanation {
   font-size: 13px;
   color: grey;
   text-align: left;
   padding: 0 0 2% 0%;
 }
+
 .rent_person {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  gap: 5%;
+  /* display: flex;
+  justify-content: space-around; */
 }
+
 .rent_person_answer {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+
 }
+
 .rent_information {
   display: grid;
   gap: 2%;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
+
 .rent_information_lenght {
   display: grid;
   gap: 2%;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr 1fr;
 }
+
 .rent_information_placeholder {
   margin-top: 7%;
   display: grid;
