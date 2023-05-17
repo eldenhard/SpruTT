@@ -315,7 +315,19 @@ td {
   background: #2c3e50 !important;
   color: white;
 }
+/* .nav-link{
+  background: #2c3e50 !important;
+  color: white;
+  margin-top: 4%;
+}
+.nav-link:hover{
+  background: #496683 !important;
+  color: white;
 
+}
+.nav-link.active:hover {
+color: white
+} */
 .amount{
   color:#909092;
   line-height: 10px;

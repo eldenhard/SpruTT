@@ -32,6 +32,7 @@
         </div>
         <p class="explanation">* Для добавления файла перетащите его в поле или нажмите на него, и выберите необходимый файл <br>
           * Загрузка файлов осуществляется строго <b>по одному файлу</b> <br>
+          * Загружаемый файл должен быть в формате <b>xlsx</b>
        </p>
         <div class="air_block_content__textarea">
           <div>
@@ -350,7 +351,7 @@ export default {
   transform: translate(-50%, 0);
 }
 .air_block_header> h5 {
-  padding: 1% 0 0 2%;
+  padding: 1% 0 0 0%;
   color: rgb(202, 202, 202);
 }
 .air_block_content {

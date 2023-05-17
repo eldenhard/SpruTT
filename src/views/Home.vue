@@ -51,9 +51,9 @@ li.nav-item {
   justify-content: center !important;
   background: red !important;
 }
-.nav-pills{
+/* .nav-pills{
   background: red !important;
-}
+} */
 </style>
 
 <script>
