@@ -81,26 +81,26 @@
       </tr>
       <tr>
         <th class="number">3</th>
-        <th>Итого</th>
-        <th>13 617</th>
+        <th style="font-weight: bold !important;">Итого</th>
+        <th style="font-weight: bold !important;">13 617</th>
         <th colspan="2">
             <tr>
-              <th class="col1">94</th>
-              <th class="col1">346</th>
+              <th class="col1" style="font-weight: bold !important;">94</th>
+              <th class="col1" style="font-weight: bold !important;">346</th>
             </tr>
           </th>
-          <th>14 595</th>
+          <th style="font-weight: bold !important;">14 595</th>
           <th colspan="2">
             <tr>
-              <th class="col1">242</th>
-              <th class="col1">1530</th>
+              <th class="col1" style="font-weight: bold !important;">242</th>
+              <th class="col1" style="font-weight: bold !important;">1530</th>
             </tr>
           </th>
-          <th>13 437</th>
+          <th style="font-weight: bold !important;">13 437</th>
           <th colspan="2">
             <tr>
-              <th class="col1">620</th>
-              <th class="col1">774</th>
+              <th class="col1" style="font-weight: bold !important;">620</th>
+              <th class="col1" style="font-weight: bold !important;">774</th>
             </tr>
           </th>
       </tr>
