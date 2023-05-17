@@ -732,7 +732,9 @@ input {
 /* input[type='text']:nth-child(7n) {
   width: 100%;
 } */
-
+tr,th,th{
+  border: 1px solid black
+}
 td {
   vertical-align: top !important;
 }
