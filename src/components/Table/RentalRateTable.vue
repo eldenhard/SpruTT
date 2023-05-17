@@ -658,8 +658,6 @@ export default {
               this.start_date_len = "0";
               this.end_date_len = "0";
               this.days_amount_len = "0";
-              this.tenant = ' '
-              this.landlord = ' '
              
             })
             .catch((error) => {

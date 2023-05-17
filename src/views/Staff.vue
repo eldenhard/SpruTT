@@ -40,12 +40,28 @@
               <ReportAbandoned />
             </b-card-text>
 
-            <b-card-text v-if="i.name === 'Размещение парка'">
+            <!-- <b-card-text v-if="i.name === 'Размещение парка'">
                 <AccomodationPark />
               </b-card-text>
 
               <b-card-text v-if="i.name === 'Формирование парка'">
                 <FormationPark />
+              </b-card-text> -->
+
+              <b-card-text v-if="i.name === 'Размещение парка'">
+                <Table2 />
+              </b-card-text>
+
+              <b-card-text v-if="i.name === 'Формирование парка'">
+                <Table1 />
+              </b-card-text>
+
+              <b-card-text v-if="i.name === 'Арендованный парк'">
+                <Table3 />
+              </b-card-text>
+
+              <b-card-text v-if="i.name === 'Парк в аренде'">
+                <Table4 />
               </b-card-text>
           </b-tab>
         </b-tabs>
@@ -67,6 +83,12 @@ import FormationPark from "@/components/Table/ManagmentRepReporting/FormationPar
   import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
   import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
   import StaffNavbar from "@/components/Navbar/StaffNavbar.vue";
+
+
+  import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
+import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
+import Table3 from "@/components/Table/ManagmentRepReporting/Table3.vue";
+import Table4 from "@/components/Table/ManagmentRepReporting/Table4.vue";
 export default {
   name: "Staff",
   components: { 
@@ -81,6 +103,12 @@ export default {
     TerritoryTable,
     AccomodationPark,
     FormationPark,
+
+
+    Table1,
+      Table2,
+      Table3,
+      Table4,
     
   },
   data() {
