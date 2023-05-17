@@ -1,5 +1,7 @@
 <template>
   <div style="overflow: auto; margin-top: 5%">
+    <p>Форма 4.3 "Арендованный парк"</p>
+
     <table border="1" align="center">
       <thead>
         <tr>
@@ -43,7 +45,7 @@
         </tr>
         <tr>
           <th class="number">4</th>
-          <th>ё</th>
+          <th>ИКК</th>
           <th>105</th>
           <th>105</th>
           <th>3 206</th>
@@ -80,14 +82,36 @@
         <tr>
           <th class="number">8</th>
           <th>Грузовая компания</th>
-          <th>1 046</th>
-          <th>1 444</th>
-          <th>38 147</th>
-          <th>5 650</th>
-          <th>60 346 550</th>
+          <th>800</th>
+          <th>800</th>
+          <th>24 544</th>
+          <th>1 350</th>
+          <th>33 134 400</th>
         </tr>
         <tr>
           <th class="number">9</th>
+          <th>Грузовая компания</th>
+          <th>134</th>
+          <th>532</th>
+          <th>10 192</th>
+          <th>1 850</th>
+          <th>18 855 200</th>
+        </tr>
+        <tr>
+          <th class="number">10</th>
+          <th>Грузовая компания</th>
+          <th>112</th>
+          <th>112</th>
+          <th>3 411</th>
+          <th>2 450</th>
+          <th>8 356 950</th>
+        </tr>
+
+
+
+
+        <tr>
+          <th class="number">11</th>
           <th>ИВК</th>
           <th>45</th>
           <th>45</th>
@@ -96,7 +120,7 @@
           <th>3 078 000</th>
         </tr>
         <tr>
-          <th class="number">10</th>
+          <th class="number">12</th>
           <th>Дельта Холдинг</th>
           <th>0</th>
           <th>0</th>
@@ -105,7 +129,7 @@
           <th>0</th>
         </tr>
         <tr>
-          <th class="number">11</th>
+          <th class="number">13</th>
           <th>ТЛС</th>
           <th>237</th>
           <th>333</th>
@@ -114,7 +138,7 @@
           <th>18 731 310</th>
         </tr>
         <tr>
-          <th class="number">12</th>
+          <th class="number">14</th>
           <th>АБЦ РЕЙЛ</th>
           <th>237</th>
           <th>333</th>
@@ -124,7 +148,7 @@
         </tr>
   
         <tr>
-          <th class="number">13</th>
+          <th class="number">15</th>
           <th>Атланта</th>
           <th>142</th>
           <th>142</th>
@@ -133,7 +157,7 @@
           <th>10 564 800</th>
         </tr>
         <tr>
-          <th class="number">14</th>
+          <th class="number">16</th>
           <th>ПромТранс</th>
           <th>6</th>
           <th>6</th>
@@ -142,7 +166,7 @@
           <th>418 500</th>
         </tr>
         <tr>
-          <th class="number">15</th>
+          <th class="number">17</th>
           <th>Транслизинг</th>
           <th>0</th>
           <th>0</th>
@@ -151,7 +175,7 @@
           <th>0</th>
         </tr>
         <tr>
-          <th class="number">16</th>
+          <th class="number">18</th>
           <th> ГС-Запад</th>
           <th>2</th>
           <th>2</th>
@@ -161,7 +185,7 @@
         </tr>
      
         <tr>
-          <th class="number">17</th>
+          <th class="number">19</th>
           <th>Брансвик/Вектор Рейл Актив</th>
           <th>37</th>
           <th>23</th>
@@ -170,7 +194,7 @@
           <th>1 171 050</th>
         </tr>
         <tr>
-          <th class="number">18</th>
+          <th class="number">20</th>
           <th>ВАГОН ПРОФИТ</th>
           <th>10</th>
           <th>10</th>
@@ -179,7 +203,7 @@
           <th>759 500</th>
         </tr>
         <tr>
-          <th class="number">19</th>
+          <th class="number">21</th>
           <th>КОНЦЕРН ДЛС</th>
           <th>100</th>
           <th>100</th>
@@ -189,7 +213,7 @@
         </tr>
 
         <tr>
-          <th class="number">20</th>
+          <th class="number">22</th>
           <th class="blue_line" style="font-weight: bold !important; text-align:  left !important;">Цистерны</th>
           <th class="blue_line" style="font-weight: bold !important;">2 131</th>
           <th class="blue_line" style="font-weight: bold !important;">2 141</th>
@@ -198,25 +222,43 @@
           <th class="blue_line" style="font-weight: bold !important;">97 418 700</th>
         </tr>
         <tr>
-          <th class="number">21</th>
-          <th>ДВ</th>
-          <th>479</th>
-          <th>479</th>
-          <th>14 574</th>
-          <th>3 200</th>
-          <th>24 467 600</th>
-        </tr>
-        <tr>
-          <th class="number">22</th>
-          <th>ТЭК Транслин</th>
-          <th>385</th>
-          <th>385</th>
-          <th>11 242</th>
-          <th>2 800</th>
-          <th>16 560 000</th>
-        </tr>
-        <tr>
           <th class="number">23</th>
+          <th>ДВ</th>
+          <th>52</th>
+          <th>52</th>
+          <th>1 541</th>
+          <th>1 500</th>
+          <th>2 311 500</th>
+        </tr>
+        <tr>
+          <th class="number">24</th>
+          <th>ДВ</th>
+          <th>429</th>
+          <th>429</th>
+          <th>13 033</th>
+          <th>1 700</th>
+          <th>22 156 100</th>
+        </tr>
+        <tr>
+          <th class="number">25</th>
+          <th>ТЭК Транслин (3,2)</th>
+          <th>334</th>
+          <th>334</th>
+          <th>9 727</th>
+          <th>1 500</th>
+          <th>14 590 500</th>
+        </tr>
+        <tr>
+          <th class="number">26</th>
+          <th>ТЭК Транслин (3,0)</th>
+          <th>51</th>
+          <th>51</th>
+          <th>11 515</th>
+          <th>1 300</th>
+          <th>1 969 500</th>
+        </tr>
+        <tr>
+          <th class="number">27</th>
           <th>Промтранс</th>
           <th>85</th>
           <th>85</th>
@@ -225,7 +267,7 @@
           <th>4 134 900</th>
         </tr>
         <tr>
-          <th class="number">24</th>
+          <th class="number">28</th>
           <th>TRANSPORT TECHNOLOGIES GP</th>
           <th>0</th>
           <th>6</th>
@@ -234,7 +276,7 @@
           <th>166 500</th>
         </tr>
         <tr>
-          <th class="number">25</th>
+          <th class="number">29</th>
           <th>ОйлТранс</th>
           <th>10</th>
           <th>10</th>
@@ -243,7 +285,7 @@
           <th>387 500</th>
         </tr>
         <tr>
-          <th class="number">26</th>
+          <th class="number">30</th>
           <th>Атланта</th>
           <th>50</th>
           <th>50</th>
@@ -252,7 +294,7 @@
           <th>2 635 000</th>
         </tr>
         <tr>
-          <th class="number">27</th>
+          <th class="number">31</th>
           <th>Итек-Логистик</th>
           <th>262</th>
           <th>262</th>
@@ -261,7 +303,7 @@
           <th>12 134 400</th>
         </tr>
         <tr>
-          <th class="number">28</th>
+          <th class="number">32</th>
           <th>ТЭК ННЭ</th>
           <th>856</th>
           <th>860</th>
@@ -270,7 +312,7 @@
           <th>36 722 000</th>
         </tr>
         <tr>
-          <th class="number">29</th>
+          <th class="number">33</th>
           <th>ТехРесурс</th>
           <th>4</th>
           <th>4</th>
@@ -279,7 +321,7 @@
           <th>210 800</th>
         </tr>
         <tr>
-          <th class="number">30</th>
+          <th class="number">34</th>
           <th class="blue_line" style="font-weight: bold !important;">Итого</th>
           <th class="blue_line" style="font-weight: bold !important;">4 028</th>
           <th class="blue_line" style="font-weight: bold !important;">4 518</th>

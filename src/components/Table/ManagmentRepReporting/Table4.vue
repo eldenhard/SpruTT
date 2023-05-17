@@ -1,5 +1,7 @@
 <template>
     <div style="overflow: auto; margin-top: 5%">
+        <p>Форма 4.4 "Парк, переданный в аренду"</p>
+
       <table border="1" align="center">
         <thead>
           <tr>
@@ -70,15 +72,24 @@
           </tr>
           <tr>
             <th class="number">7</th>
-            <th>Софит</th>
-            <th>101</th>
-            <th>95</th>
-            <th>2 955</th>
-            <th>4 800</th>
-            <th>7 092 000</th>
+            <th>Софит (химия)</th>
+            <th>40</th>
+            <th>40</th>
+            <th>1 221</th>
+            <th>2 400</th>
+            <th>2 930 400</th>
           </tr>
           <tr>
             <th class="number">8</th>
+            <th>Софит (н/бенз)</th>
+            <th>61</th>
+            <th>55</th>
+            <th>1 734</th>
+            <th>2 400</th>
+            <th>4 161 600</th>
+          </tr>
+          <tr>
+            <th class="number">9</th>
             <th>Союзметаллсервис</th>
             <th>77</th>
             <th>88</th>
@@ -87,7 +98,7 @@
             <th>6 675 000</th>
           </tr>
           <tr>
-            <th class="number">9</th>
+            <th class="number">10</th>
             <th>Рутгерс Севертар</th>
             <th>30</th>
             <th>30</th>
@@ -105,16 +116,25 @@
             <th>173 600</th>
           </tr>
           <tr>
-            <th class="number">11</th>
+            <th class="number">12</th>
             <th>РТС-Транс/PTC Operator</th>
             <th>295</th>
-            <th>186</th>
-            <th>7 779</th>
-            <th>2 550</th>
-            <th>11 849 000</th>
+            <th>93</th>
+            <th>6 161</th>
+            <th>1 700</th>
+            <th>10 473 700</th>
           </tr>
           <tr>
-            <th class="number">12</th>
+            <th class="number">13</th>
+            <th>РТС-Транс/PTC Operator</th>
+            <th>0</th>
+            <th>93</th>
+            <th>1 618</th>
+            <th>850</th>
+            <th>1 375 300</th>
+          </tr>
+          <tr>
+            <th class="number">14</th>
             <th>ПМХ-Транспорт</th>
             <th>1</th>
             <th>1</th>
@@ -123,7 +143,7 @@
             <th>32 550</th>
           </tr>
           <tr>
-            <th class="number">13</th>
+            <th class="number">15</th>
             <th>ПромСтройМаш</th>
             <th>3</th>
             <th>3</th>
@@ -132,16 +152,25 @@
             <th>93 930</th>
           </tr>
           <tr>
-            <th class="number">14</th>
+            <th class="number">16</th>
             <th>Нефтетранспорт/ ТрансОйл</th>
             <th>973</th>
-            <th>437</th>
-            <th>23 757</th>
-            <th>1 245</th>
-            <th>19 705 445</th>
+            <th>436</th>
+            <th>23 726</th>
+            <th>830</th>
+            <th>19 692 580</th>
           </tr>
           <tr>
-            <th class="number">15</th>
+            <th class="number">17</th>
+            <th>Нефтетранспорт/ ТрансОйл</th>
+            <th>0</th>
+            <th>1</th>
+            <th>31</th>
+            <th>415</th>
+            <th>12 865</th>
+          </tr>
+          <tr>
+            <th class="number">18</th>
             <th>Дулаанвинг</th>
             <th>30</th>
             <th>26</th>
@@ -150,7 +179,7 @@
             <th>1 980 000</th>
           </tr>
           <tr>
-            <th class="number">16</th>
+            <th class="number">19</th>
             <th>Тонжлогистик</th>
             <th>123</th>
             <th>116</th>
@@ -159,7 +188,7 @@
             <th>9 310 600</th>
           </tr>
           <tr>
-            <th class="number">17</th>
+            <th class="number">20</th>
             <th class="blue_line" style="font-weight: bold !important; text-align:  left !important;">Итого</th>
             <th class="blue_line" style="font-weight: bold !important;">1 905</th>
             <th class="blue_line" style="font-weight: bold !important;">1 263</th>

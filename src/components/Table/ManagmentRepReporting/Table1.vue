@@ -1,5 +1,6 @@
 <template>
   <div style="overflow: auto; margin-top: 5%">
+    <p>Форма 4.1 "Формирование парка"</p>
     <table border="1" align="center">
       <thead>
         <tr>
@@ -29,56 +30,77 @@
               <th class="col1">Вывод</th>
             </tr>
           </th>
-         
+          <th>На 01.04.2023</th>
+          <th colspan="2" class="col2">
+            Апр. 2023
+            <tr>
+              <th class="col1">Ввод</th>
+              <th class="col1">Вывод</th>
+            </tr>
+          </th>
         </tr>
 
         <tr>
           <th class="number">1</th>
           <th class="blue_line" style="text-align: left !important;">Собственный парк</th>
-          <th class="blue_line">6 221</th>
+          <th class="blue_line">{{ 1313+4654+9+269 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1 blue_line">0</th>
-              <th class="col1 blue_line">5</th>
+              <th class="col1 blue_line">{{ 8+0+0+0 }}</th>
+              <th class="col1 blue_line">{{ 0+1+0+0 }}</th>
             </tr>
           </th>
-          <th class="blue_line">7 406</th>
+          <th class="blue_line">{{ 1321+4644+9+269 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1 blue_line">96</th>
-              <th class="col1 blue_line">3</th>
+              <th class="col1 blue_line">{{ 1286+0+0+0 | filter }}</th>
+              <th class="col1 blue_line">{{ 0 }}</th>
             </tr>
           </th>
-          <th class="blue_line">7 502</th>
+          <th class="blue_line">{{ 2607+4644+9+269 | filter}}</th>
           <th colspan="2">
             <tr>
-              <th class="col1 blue_line">0</th>
-              <th class="col1 blue_line">4</th>
+              <th class="col1 blue_line">{{ 0+0+0+0 }}</th>
+              <th class="col1 blue_line">{{ 0+0+0+0 }}</th>
+            </tr>
+          </th>
+          <th class="blue_line">{{ 2607+4636+9+269 | filter}}</th>
+          <th colspan="2">
+            <tr>
+              <th class="col1 blue_line">{{ 0+4+0+0 }}</th>
+              <th class="col1 blue_line">{{ 0+1+0+0 }}</th>
             </tr>
           </th>
         </tr>
         <tr>
           <th class="number">2</th>
           <th>Полувагоны</th>
-          <th>1 317</th>
+          <th>{{ 1313+9 | filter}}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">0</th>
-              <th class="col1">0</th>
+              <th class="col1">{{ 8+0 }}</th>
+              <th class="col1">{{ 0 }}</th>
             </tr>
           </th>
-          <th>2 507</th>
+          <th>{{ 1321+9 | filter}}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">96</th>
-              <th class="col1">0</th>
+              <th class="col1">{{ 1286+0 | filter}}</th>
+              <th class="col1">{{ 0 }}</th>
             </tr>
           </th>
-          <th>2 603</th>
+          <th>{{ 2607+9 | filter}}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">0</th>
-              <th class="col1">0</th>
+              <th class="col1">{{0}}</th>
+              <th class="col1">{{0}}</th>
+            </tr>
+          </th>
+          <th>{{ 2607+9 | filter}}</th>
+          <th colspan="2">
+            <tr>
+              <th class="col1">{{0}}</th>
+              <th class="col1">{{0}}</th>
             </tr>
           </th>
         </tr>
@@ -86,25 +108,32 @@
         <tr>
           <th class="number">3</th>
           <th>Цистерны</th>
-          <th>4 904</th>
+          <th>{{ 4654+269 | filter}}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">0</th>
-              <th class="col1">5</th>
+              <th class="col1">{{0+0}}</th>
+              <th class="col1">{{1+0}}</th>
             </tr>
           </th>
-          <th>4 899</th>
+          <th>{{ 4644+269 | filter}}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">0</th>
-              <th class="col1">3</th>
+              <th class="col1">{{0}}</th>
+              <th class="col1">{{0}}</th>
             </tr>
           </th>
-          <th>4 899</th>
+          <th>{{ 4644+269 | filter}}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">0</th>
-              <th class="col1">4</th>
+              <th class="col1">{{0}}</th>
+              <th class="col1">{{ 0 }}</th>
+            </tr>
+          </th>
+          <th>{{ 4636+269 | filter}}</th>
+          <th colspan="2">
+            <tr>
+              <th class="col1">{{4}}</th>
+              <th class="col1">{{ 1 }}</th>
             </tr>
           </th>
         </tr>
@@ -122,7 +151,7 @@
           <th colspan="2">
             <tr>
               <th class="col1 blue_line">141</th>
-              <th class="col1 blue_line">1362</th>
+              <th class="col1 blue_line">1 362</th>
             </tr>
           </th>
           <th class="blue_line">4 030</th>
@@ -130,6 +159,13 @@
             <tr>
               <th class="col1 blue_line">514</th>
               <th class="col1 blue_line">14</th>
+            </tr>
+          </th>
+          <th class="blue_line">{{ 1865 | filter}}</th>
+          <th colspan="2">
+            <tr>
+              <th class="col1 blue_line">{{366}}</th>
+              <th class="col1 blue_line">{{ 4 }}</th>
             </tr>
           </th>
         </tr>
@@ -147,7 +183,7 @@
           <th colspan="2">
             <tr>
               <th class="col1">126</th>
-              <th class="col1">1361</th>
+              <th class="col1">1 361</th>
             </tr>
           </th>
           <th>1 897</th>
@@ -155,6 +191,13 @@
             <tr>
               <th class="col1">494</th>
               <th class="col1">14</th>
+            </tr>
+          </th>
+          <th>{{ 1801 | filter}}</th>
+          <th colspan="2">
+            <tr>
+              <th class="col1">{{366}}</th>
+              <th class="col1">{{ 4 }}</th>
             </tr>
           </th>
         </tr>
@@ -182,30 +225,44 @@
               <th class="col1">0</th>
             </tr>
           </th>
+          <th>{{ 64}}</th>
+          <th colspan="2">
+            <tr>
+              <th class="col1">{{0}}</th>
+              <th class="col1">{{ 0 }}</th>
+            </tr>
+          </th>
         </tr>
         
         <tr>
           <th class="number">7</th>
-          <th style="font-weight: bold !important; text-align: left !important;">Всего ПС</th>
-          <th>11 621</th>
+          <th  class="blue_line" style="font-weight: bold !important; text-align: left !important;">Всего ПС</th>
+          <th class="blue_line">11 621</th>
           <th colspan="2">
             <tr>
-              <th class="col1">226</th>
-              <th class="col1">312</th>
+              <th class="col1 blue_line">226</th>
+              <th class="col1 blue_line">312</th>
             </tr>
           </th>
-          <th>12 659</th>
+          <th class="blue_line">12 659</th>
           <th colspan="2">
             <tr>
-              <th class="col1">237</th>
-              <th class="col1">1 365</th>
+              <th class="col1 blue_line">237</th>
+              <th class="col1 blue_line ">1 365</th>
             </tr>
           </th>
-          <th>11 532</th>
+          <th class="blue_line">11 532</th>
           <th colspan="2">
             <tr>
-              <th class="col1">514</th>
-              <th class="col1">18</th>
+              <th class="col1 blue_line">514</th>
+              <th class="col1 blue_line">18</th>
+            </tr>
+          </th>
+          <th class="blue_line">{{ 7521+1865 }}</th>
+          <th colspan="2">
+            <tr>
+              <th class="col1 blue_line">{{4+366 }}</th>
+              <th class="col1 blue_line">{{ 1+4 }}</th>
             </tr>
           </th>
         </tr>
@@ -233,6 +290,13 @@
               <th class="col1">14</th>
             </tr>
           </th>
+          <th>{{ 2616+1801 | filter}}</th>
+          <th colspan="2">
+            <tr>
+              <th class="col1">{{0+366}}</th>
+              <th class="col1">{{ 0+4 }}</th>
+            </tr>
+          </th>
         </tr>
         <tr>
           <th class="number">9</th>
@@ -256,6 +320,13 @@
             <tr>
               <th class="col1">20</th>
               <th class="col1">5</th>
+            </tr>
+          </th>
+          <th>{{ 4905+64 | filter}}</th>
+          <th colspan="2">
+            <tr>
+              <th class="col1">{{4+0}}</th>
+              <th class="col1">{{ 1+0 }}</th>
             </tr>
           </th>
         </tr>
@@ -308,7 +379,22 @@
 </template>
 
 
-
+<script>
+import api from '@/api/reportUO'
+export default{
+  data(){
+    return {
+      data_response: ''
+    }
+  },
+  filters: {
+    filter(value){
+         return  String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+        },
+  }
+ 
+}
+</script>
 
 
 <style scoped>
