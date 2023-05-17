@@ -105,32 +105,32 @@
       <tr>
         <th class="number">3</th>
         <th class="blue_line" style="font-weight: bold !important; text-align:  left !important;">Итого</th>
-        <th class="blue_line"  style="font-weight: bold !important;">13 617</th>
+        <th class="blue_line"  style="font-weight: bold !important;">{{ 11621+1996 | filter }}</th>
         <th colspan="2">
             <tr>
-              <th class="col1 blue_line" style="font-weight: bold !important;">94</th>
-              <th class="col1 blue_line" style="font-weight: bold !important;">346</th>
+              <th class="col1 blue_line" style="font-weight: bold !important;">{{ 135+24 }}</th>
+              <th class="col1 blue_line" style="font-weight: bold !important;">{{ 312+34 }}</th>
             </tr>
           </th>
-          <th  class="blue_line"  style="font-weight: bold !important;">14 595</th>
+          <th  class="blue_line"  style="font-weight: bold !important;">{{ 12659+1936 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1 blue_line" style="font-weight: bold !important;">242</th>
-              <th class="col1 blue_line" style="font-weight: bold !important;">1530</th>
+              <th class="col1 blue_line" style="font-weight: bold !important;">{{ 237+5 }}</th>
+              <th class="col1 blue_line" style="font-weight: bold !important;">{{1365 +165 | filter}}</th>
             </tr>
           </th>
-          <th class="blue_line"  style="font-weight: bold !important;">13 437</th>
+          <th class="blue_line"  style="font-weight: bold !important;">{{ 11532 +1905 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1 blue_line" style="font-weight: bold !important;">620</th>
-              <th class="col1 blue_line" style="font-weight: bold !important;">774</th>
+              <th class="col1 blue_line" style="font-weight: bold !important;">{{ 506+114 | filter }}</th>
+              <th class="col1 blue_line" style="font-weight: bold !important;">{{ 756+18 | filter }}</th>
             </tr>
           </th>
-          <th class="blue_line">2 173 </th>
+          <th class="blue_line" style="font-weight: bold !important;">{{ 1865+308 | filter }} </th>
           <th colspan="2">
             <tr>
-              <th class="col1 blue_line"> 366 </th>
-              <th class="col1 blue_line">143</th>
+              <th class="col1 blue_line" style="font-weight: bold !important;"> 366 </th>
+              <th class="col1 blue_line" style="font-weight: bold !important;">143</th>
             </tr>
           </th>
       </tr>
@@ -138,7 +138,22 @@
   </div>
 </template>
 
-
+<script>
+import api from '@/api/reportUO'
+export default{
+  data(){
+    return {
+      data_response: ''
+    }
+  },
+  filters: {
+    filter(value){
+         return  String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+        },
+  }
+ 
+}
+</script>
 
 <style scoped>
 .col1 {

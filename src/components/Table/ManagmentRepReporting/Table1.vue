@@ -237,25 +237,25 @@
         <tr>
           <th class="number">7</th>
           <th  class="blue_line" style="font-weight: bold !important; text-align: left !important;">Всего ПС</th>
-          <th class="blue_line">11 621</th>
+          <th class="blue_line">{{ 6245+ 5400 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1 blue_line">226</th>
-              <th class="col1 blue_line">312</th>
+              <th class="col1 blue_line">{{8+226}}</th>
+              <th class="col1 blue_line">{{ 1+307 }}</th>
             </tr>
           </th>
-          <th class="blue_line">12 659</th>
+          <th class="blue_line">{{ 6243+5253 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1 blue_line">237</th>
-              <th class="col1 blue_line ">1 365</th>
+              <th class="col1 blue_line">{{ 1286+141 | filter }}</th>
+              <th class="col1 blue_line ">{{ 0+1362 | filter }}</th>
             </tr>
           </th>
-          <th class="blue_line">11 532</th>
+          <th class="blue_line">{{ 7529+4030 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1 blue_line">514</th>
-              <th class="col1 blue_line">18</th>
+              <th class="col1 blue_line">{{ 0+514 }}</th>
+              <th class="col1 blue_line">{{ 0+14 }}</th>
             </tr>
           </th>
           <th class="blue_line">{{ 7521+1865 }}</th>
@@ -269,25 +269,25 @@
         <tr>
           <th class="number">8</th>
           <th>Полувагоны</th>
-          <th>4 661</th>
+          <th>{{ 1322+3344 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">96</th>
-              <th class="col1">307</th>
+              <th class="col1">{{ 8+96 }}</th>
+              <th class="col1">{{ 0+307 }}</th>
             </tr>
           </th>
-          <th>5 639</th>
+          <th>{{ 1330+3132 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">222</th>
-              <th class="col1">1 361</th>
+              <th class="col1">{{ 1286+126 | filter }}</th>
+              <th class="col1">{{ 0+1361 | filter }}</th>
             </tr>
           </th>
-          <th>4 500</th>
+          <th>{{ 2616 + 1897 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">494</th>
-              <th class="col1">14</th>
+              <th class="col1">{{ 0+494  }}</th>
+              <th class="col1">{{ 0+14 }}</th>
             </tr>
           </th>
           <th>{{ 2616+1801 | filter}}</th>
@@ -301,25 +301,25 @@
         <tr>
           <th class="number">9</th>
           <th>Цистерны</th>
-          <th>6 960</th>
+          <th>{{ 4923 +2056 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">130</th>
-              <th class="col1">5</th>
+              <th class="col1">{{ 0+130 }}</th>
+              <th class="col1">{{ 1+0 }}</th>
             </tr>
           </th>
-          <th>7 020</th>
+          <th>{{ 4913 +2121 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">15</th>
-              <th class="col1">4</th>
+              <th class="col1">{{ 0+15 }}</th>
+              <th class="col1">{{ 0+1 }}</th>
             </tr>
           </th>
-          <th>7 032</th>
+          <th>{{ 4913 + 2131 | filter }}</th>
           <th colspan="2">
             <tr>
-              <th class="col1">20</th>
-              <th class="col1">5</th>
+              <th class="col1">{{0+20}}</th>
+              <th class="col1">{{0+0}}</th>
             </tr>
           </th>
           <th>{{ 4905+64 | filter}}</th>
