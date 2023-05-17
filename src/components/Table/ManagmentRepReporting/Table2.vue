@@ -1,5 +1,6 @@
 <template>
    <div style="overflow: auto; margin-top: 5%">
+    <p>Форма 4.2 "Размещение парка"</p>
     <table border="1" align="center">
       <tr>
         <th></th>
@@ -27,7 +28,15 @@
               <th class="col1">Ввод</th>
               <th class="col1">Вывод</th>
             </tr>
-          </th>       
+          </th>   
+          <th>На 01.04.2023</th>
+          <th colspan="2" class="col2">
+            Апр. 2023
+            <tr>
+              <th class="col1">Ввод</th>
+              <th class="col1">Вывод</th>
+            </tr>
+          </th>     
       </tr>
       <tr>
         <th class="number">1</th>
@@ -51,6 +60,13 @@
             <tr>
               <th class="col1">506</th>
               <th class="col1">18</th>
+            </tr>
+          </th>
+          <th> 1 865 </th>
+          <th colspan="2">
+            <tr>
+              <th class="col1"> 366 </th>
+              <th class="col1"> 4 </th>
             </tr>
           </th>
       </tr>
@@ -78,6 +94,13 @@
               <th class="col1">756</th>
             </tr>
           </th>
+          <th> 308</th>
+          <th colspan="2">
+            <tr>
+              <th class="col1"> 0 </th>
+              <th class="col1">139</th>
+            </tr>
+          </th>
       </tr>
       <tr>
         <th class="number">3</th>
@@ -101,6 +124,13 @@
             <tr>
               <th class="col1 blue_line" style="font-weight: bold !important;">620</th>
               <th class="col1 blue_line" style="font-weight: bold !important;">774</th>
+            </tr>
+          </th>
+          <th class="blue_line">2 173 </th>
+          <th colspan="2">
+            <tr>
+              <th class="col1 blue_line"> 366 </th>
+              <th class="col1 blue_line">143</th>
             </tr>
           </th>
       </tr>

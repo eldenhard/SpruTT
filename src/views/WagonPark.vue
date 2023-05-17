@@ -64,7 +64,7 @@
                 <Table3 />
               </b-card-text>
 
-              <b-card-text v-if="i.name === 'Парк в аренде'">
+              <b-card-text v-if="i.name === 'Парк, переданный в аренду'">
                 <Table4 />
               </b-card-text>
           </b-tab>
