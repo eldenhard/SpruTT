@@ -3,7 +3,7 @@
     <b-card no-body >
     <b-tabs pills card vertical style="height: 100vh;">
         <b-container>
-          <b-tab title="Вагоны" @click="newTab('Вагоны')" > </b-tab>
+          <b-tab title="Вагоны" @click="newTab('Вагоны')"> </b-tab>
           <b-tab title="Телеграммы" @click="newTab('Телеграммы')" > </b-tab>
           <b-tab title="Ремонты" @click="newTab('Ремонты')" > </b-tab>
           <b-tab title="Расчет" @click="newTab('Расчет')" > </b-tab>

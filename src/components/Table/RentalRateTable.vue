@@ -154,15 +154,39 @@
       </thead>
       <tbody>
 
+
+
+
         <td style="width: 30px !important">
           <tr v-for="(wag, index) in sort_data" :key="wag.id" style="width: 30px !important">
             <td>
-              <input type="text" name="сheck_in" :value="index + 1" readonly
-                style="width: 30px !important; text-align: center;" @click="test(index)" />
+
+
+              <div class="inputWithIcon">
+                <input type="text" :id='`indexRow`' name="сheck_in" :value="index + 1" readonly
+                  style="width: 100% !important; text-align: center;" @click="test(index)" />
+                 
+                    <i class="delete_row"></i> 
+                
+              </div>
+
+
+
+
 
             </td>
           </tr>
         </td>
+
+
+
+
+
+
+
+
+
+
 
         <td>
           <tr v-for="(wag, index) in wagon_arr" :key="wag.id">
@@ -557,6 +581,15 @@ export default {
 </script>
 
 <style scoped>
+#indexRow:hover{
+  background: rgb(255, 0, 0, 0.2);
+}
+.delete_row{
+  background: url(@/assets/delete_row.png) no-repeat;
+  display: none;
+}
+
+
 .fa {
   background: url(@/assets/check-mark.png) no-repeat;
 }

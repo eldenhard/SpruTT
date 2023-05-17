@@ -4,13 +4,13 @@
       <label for="dateStart" :class="{ Error: is_error_start }"
         >Начало периода
         <br />
-        <input type="date" id="dateStart" v-model="date_begin" />
+        <input type="date" id="dateStart" v-model="date_begin" min="2022-01-01"/>
       </label>
 
       <label for="dateEnd" :class="{ Error: is_error_end }"
         >Конец периода
         <br />
-        <input type="date" id="dateEnd" v-model="date_end" />
+        <input type="date" id="dateEnd" v-model="date_end" min="2022-01-01"/>
       </label>
     </div>
 

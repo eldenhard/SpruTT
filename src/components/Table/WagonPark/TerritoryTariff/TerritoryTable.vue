@@ -3,10 +3,111 @@
     <Loader :loader="loader"></Loader>
     <TerritoryModal id="territoryModal" />
 
+    <div class="air_block">
+      <div class="air_block_content">
 
 
-    <div class="grid_net">
-      <!-- Левый блок -->
+        <div class="air_block_header">
+          <h5>Ручной ввод исправлений в отчет</h5>
+          <hr />
+        </div>
+        <p class="explanation">* Для ввода строк отчета которые были помечены ошибкой, выберите тип отчета и  <br>
+          * Номер вагон должен содержать 8 цифр <br>
+          * При копировании столбца вагонов из MS Excel оставить как есть </p>
+        <div class="air_block_content__textarea">
+          <b-button
+            variant="success"
+            class="btn_create"
+            style="margin-left: auto"
+            @click="$bvModal.show('territoryModal')"
+            >Отправка в ручную</b-button
+          >
+        </div>
+
+
+
+        <div class="air_block_header" >
+          <h5>Тарифы по сопредельным территориям</h5>
+          <hr />
+        </div>
+        <p class="explanation">* Для добавления файла перетащите его в поле или нажмите на него, и выберите необходимый файл <br>
+          * Загрузка файлов осуществляется строго <b>по одному файлу</b> <br>
+       </p>
+        <div class="air_block_content__textarea">
+          <div>
+            <label :for="fileField" class="attachment">
+              <div class="btn-file__actions">
+                <div class="btn-file__actions__item text-center">
+                  <div class="btn-file__actions__item--shadow">
+                    <b-icon-cloud-plus />
+                    <div class="visible-xs-block"></div>
+                    {{ changeText }}
+                  </div>
+                </div>
+              </div>
+              <input
+                type="file"
+                ref="file"
+                @change="readFile()"
+                :id="fileField"
+              />
+            </label>
+          </div>
+
+          <div class="right_btn_group">
+            <b-button
+              variant="success"
+              @click="SendFile()"
+              class="btn_create"
+              style="width: 100%"
+              >Отправить файл</b-button
+            >
+
+            <select
+              class="textareas"
+              v-model="btlc"
+              :class="{ errorSelect: isError }"
+            >
+              <option value="" disabled>Выберите вид файла</option>
+              <option value="arktur">Арктур</option>
+              <option value="bmp">БМП</option>
+              <option value="btlc">БТЛЦ</option>
+              <option value="glp">GLP</option>
+              <option value="doom">ДУМ</option>
+            </select>
+          </div>
+        </div>
+
+
+
+
+        <div class="air_block_header" style="margin-top: 5%;">
+          <h5>Экспорт отправок по вагонам</h5>
+          <hr />
+        </div>
+        <div>
+          <p class="explanation">* Введите номера вагонов через пробел <br>
+          * Номер вагон должен содержать 8 цифр <br>
+          * При копировании столбца вагонов из MS Excel оставить как есть </p>
+          <p class="explanation">Вагонов загружено: {{ amount_wagon }}</p>
+          <div class="air_block_content__textarea">
+            <textarea
+              rows="4"
+              class=""
+              v-model="SearchRepairWagon"
+              placeholder="Номера вагонов через 1 пробел"
+            ></textarea>
+            <b-button
+              variant="success"
+              class="btn_create"
+              @click="getCurrentWagon()"
+              >Создать отчет</b-button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="grid_net">
 
       <div class="air_block" style="height: 35vh; float: right;">
           <div class="air_block_header">
@@ -44,7 +145,6 @@
 
 
 
-<!-- Центральный блок -->
 <div class="air_block" style="height: 40vh;">
   <div class="air_block_header">
           <h5>Тарифы по сопредельным территориям</h5>
@@ -78,16 +178,18 @@
             <input type="file" ref="file" @change="readFile()" :id="fileField" />
           </label>
 
-      </div>
-
-
-      <!-- правый блок -->
+      </div> 
   
        
       
-    </div>
+    </div>-->
 
-    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
+    <Notifications
+      :show="showNotify"
+      :header="notifyHead"
+      :message="notifyMessage"
+      :block-class="notifyClass"
+    />
   </div>
 </template>
 
@@ -104,10 +206,10 @@ export default {
     return {
       file: null,
       isError: false,
-      btlc: '',
+      btlc: "",
       loader: false,
       SearchRepairWagon: [],
-      poup: '',
+      poup: "",
       amount_wagon: 0,
       showNotify: false,
       notifyHead: "",
@@ -136,21 +238,21 @@ export default {
   },
   watch: {
     btlc() {
-      return this.btlc == '' ? this.isError = true : this.isError = false
+      return this.btlc == "" ? (this.isError = true) : (this.isError = false);
     },
     SearchRepairWagon() {
       let regExps = /\s/g;
       let trim_data = this.SearchRepairWagon.trim();
       let data = trim_data.replace(regExps, ",");
       let array_amountWagon = data.split(",");
-      this.amount_wagon = array_amountWagon.length
-      return array_amountWagon[0] == '' ? this.amount_wagon = 0 : ''
-    }
+      this.amount_wagon = array_amountWagon.length;
+      return array_amountWagon[0] == "" ? (this.amount_wagon = 0) : "";
+    },
   },
   methods: {
     showModalTerritory() {
       // this.$refs(['territoryModal']).show()
-      this.$bvModal.show('territoryModal')
+      this.$bvModal.show("territoryModal");
     },
     readFile() {
       this.file = this.$refs.file.files[0];
@@ -170,24 +272,26 @@ export default {
         this.searchData = true;
         let trim_data = this.SearchRepairWagon.trim();
         let data = trim_data.replace(regExps, ",");
-        this.loader = true
-        api.createReportTerritory(data)
-          .then(response => {
+        this.loader = true;
+        api
+          .createReportTerritory(data)
+          .then((response) => {
             this.showNotify = true;
             this.notifyHead = "Успешно";
             this.notifyMessage = "Данные переданы на обработку";
             this.notifyClass = "wrapper-success";
             this.loader = false;
             setTimeout(() => (this.showNotify = false), 2000);
-            this.loader = false
-          }).catch(error => {
+            this.loader = false;
+          })
+          .catch((error) => {
             this.showNotify = true;
             this.notifyHead = "Ошибка";
             this.notifyMessage = error.response.data;
             this.notifyClass = "wrapper-error";
             this.loader = false;
             setTimeout(() => (this.showNotify = false), 2000);
-          })
+          });
       }
     },
     SendFile() {
@@ -196,14 +300,14 @@ export default {
       this.loader = true;
       let formData = new FormData();
       formData.append("file", this.file);
-      if (this.btlc == '') {
-        this.isError = true
+      if (this.btlc == "") {
+        this.isError = true;
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Выберите вид файла";
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 1500);
-        this.loader = false
+        this.loader = false;
       } else {
         api
           .postViewFile(this.btlc, formData)
@@ -227,80 +331,69 @@ export default {
             setTimeout(() => (this.showNotify = false), 1500);
             this.file = null;
             this.loader = false;
-          })
+          });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
 .air_block {
-  width: 100%;
+  width: 70%;
   height: auto;
   border-radius: 15px;
   background: #ffffff;
-  box-shadow: -25px 25px 41px #cfcfcf,
-    25px -25px 41px #ffffff;
-    position: relative;
-}
-.air_block_header>h5{
-  padding: 1% 0 0 2%;
-  color: rgb(202, 202, 202) ;
-}
-.air_block_content {
-  display: flex;
-  justify-content: space-between;
-  margin: 4% 4% 0;
-  align-items: baseline;
-}
-.air_block_content_textarea {
-  width: 90%;
-  text-align: center;
-  font-size: 16px;
+  box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
 }
-
+.air_block_header> h5 {
+  padding: 1% 0 0 2%;
+  color: rgb(202, 202, 202);
+}
+.air_block_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  margin: 4% 4% 0;
+  gap: 20px;
+  /* align-items: baseline; */
+}
+.air_block_content__textarea {
+  display: flex;
+  justify-content: space-between;
+}
+.air_block_content__textarea > textarea {
+  width: 60%;
+  margin-bottom: 2%;
+  text-align: center;
+}
 .btn_create {
-  width: 30%;
+  width: 24%;
   height: 80%;
   font-size: 12px;
+}
+.right_btn_group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .explanation {
   font-size: 14px;
   color: #9b9b9b;
 }
-.explanation:nth-child(1){
+/* .explanation:nth-child(1) {
   margin-top: 2%;
-}
-
-.grid_net {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10%;
-  position: relative;
-  left: 50%;
-  transform: translate(-50%, 0);
-  margin-top: 2%;
-}
-
-
-
-.select-addRow {
-  display: flex;
-  justify-content: space-between;
-  vertical-align: baseline;
-  margin-top: 5%;
-}
+} */
 
 .explanation {
   font-size: 13px;
   color: grey;
   text-align: left;
-  padding: 0 0 2% 4%;
+  /* padding: 0 0 2% 4%; */
 }
 
 .errorSelect {
@@ -308,37 +401,33 @@ export default {
 }
 
 .textareas {
-  width: 50%;
+  width: 100%;
   height: 30%;
   margin-top: 4%;
-  background: url(@/assets/Caret_down_font_awesome_whitevariation.svg.png) no-repeat right 0.8em center/1.4em,
-    linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em);
-
+  background: url(@/assets/Caret_down_font_awesome_whitevariation.svg.png)
+      no-repeat right 0.8em center/1.4em,
+    linear-gradient(
+      to left,
+      rgba(255, 255, 255, 0.3) 3em,
+      rgba(255, 255, 255, 0.2) 3em
+    );
 }
 
-
-
-
-
 .btn-file__actions {
-  /* margin: 0;
-  padding: 0; */
- 
   position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 90%;
+  width: 55%;
 }
 
 .btn-file__actions__item {
-  padding: 35px;
+  padding: 15px;
   font-size: 1.5em;
   color: #abb1b6;
+  background: rgb(240, 240, 240, 0.5);
   cursor: pointer;
   text-decoration: none;
-  border-top: 3px dashed #535353;
-  border-left: 3px dashed #535353;
-  border-bottom: 3px dashed #535353;
+  border-top: 2px dashed #535353;
+  border-left: 2px dashed #535353;
+  border-bottom: 2px dashed #535353;
 }
 
 .btn-file__actions__item:first-child {
@@ -349,7 +438,7 @@ export default {
 .btn-file__actions__item:last-child {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  border-right: 3px dashed #535353;
+  border-right: 2px dashed #535353;
 }
 
 .btn-file__actions__item:hover,
@@ -362,7 +451,6 @@ export default {
   display: inline-block;
   position: relative;
   z-index: 1;
-
 }
 
 .btn-file__actions__item--shadow::before {
@@ -383,16 +471,15 @@ export default {
   width: 100%;
 }
 
-.form-group label.attachment .btn-create>a,
-.form-group label.attachment .btn-create>div {
+.form-group label.attachment .btn-create > a,
+.form-group label.attachment .btn-create > div {
   margin-top: 5px;
 }
 
 .form-group label.attachment input[type="file"] {
   display: none;
 }
-input[type="file"]{
+input[type="file"] {
   display: none;
 }
-
 </style>
