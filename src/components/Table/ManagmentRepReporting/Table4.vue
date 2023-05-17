@@ -13,12 +13,12 @@
           </tr>
           <tr>
             <th class="number">1</th>
-            <th>Полувагоны</th>
-            <th>96</th>
-            <th>105</th>
-            <th>3 138</th>
-            <th>7 000</th>
-            <th>10 979 200</th>
+            <th class="blue_line" style="font-weight: bold !important; text-align:  left !important;">Полувагоны</th>
+            <th class="blue_line" style="font-weight: bold !important;">96</th>
+            <th class="blue_line" style="font-weight: bold !important;">105</th>
+            <th class="blue_line" style="font-weight: bold !important;">3 138</th>
+            <th class="blue_line" style="font-weight: bold !important;">7 000</th>
+            <th class="blue_line" style="font-weight: bold !important;">10 979 200</th>
           </tr>
           <tr>
             <th class="number">2</th>
@@ -43,12 +43,12 @@
         
           <tr>
             <th class="number">4</th>
-            <th>Цистерны</th>
-            <th>1 809</th>
-            <th>1 158</th>
-            <th>48 039</th>
-            <th>26 155</th>
-            <th>71 607 325</th>
+            <th class="blue_line" style="font-weight: bold !important; text-align:  left !important;">Цистерны</th>
+            <th class="blue_line" style="font-weight: bold !important;">1 809</th>
+            <th class="blue_line" style="font-weight: bold !important;">1 158</th>
+            <th class="blue_line" style="font-weight: bold !important;">48 039</th>
+            <th class="blue_line" style="font-weight: bold !important;">26 155</th>
+            <th class="blue_line" style="font-weight: bold !important;">71 607 325</th>
           </tr>
           <tr>
             <th class="number">5</th>
@@ -160,12 +160,12 @@
           </tr>
           <tr>
             <th class="number">17</th>
-            <th>Итого</th>
-            <th>1 905</th>
-            <th>1 263</th>
-            <th>51 177</th>
-            <th>33 155</th>
-            <th>82 586 525</th>
+            <th class="blue_line" style="font-weight: bold !important; text-align:  left !important;">Итого</th>
+            <th class="blue_line" style="font-weight: bold !important;">1 905</th>
+            <th class="blue_line" style="font-weight: bold !important;">1 263</th>
+            <th class="blue_line" style="font-weight: bold !important;">51 177</th>
+            <th class="blue_line" style="font-weight: bold !important;">33 155</th>
+            <th class="blue_line" style="font-weight: bold !important;">82 586 525</th>
           </tr>
         </thead>
       </table>

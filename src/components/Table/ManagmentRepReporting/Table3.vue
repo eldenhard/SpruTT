@@ -13,12 +13,12 @@
         </tr>
         <tr>
           <th class="number">1</th>
-          <th>Полувагоны</th>
-          <th>1 897</th>
-          <th>2 377</th>
-          <th>62 902</th>
-          <th>43 390</th>
-          <th>122 967 360</th>
+          <th class="blue_line" style="font-weight: bold !important; text-align:  left !important;">Полувагоны</th>
+          <th class="blue_line" style="font-weight: bold !important;">1 897</th>
+          <th class="blue_line" style="font-weight: bold !important;">2 377</th>
+          <th class="blue_line" style="font-weight: bold !important;">62 902</th>
+          <th class="blue_line" style="font-weight: bold !important;">43 390</th>
+          <th class="blue_line" style="font-weight: bold !important;">122 967 360</th>
         </tr>
         <tr>
           <th class="number">2</th>
@@ -190,12 +190,12 @@
 
         <tr>
           <th class="number">20</th>
-          <th>Цистерны</th>
-          <th>4 028</th>
-          <th>4 518</th>
-          <th>127 133</th>
-          <th>60 190</th>
-          <th>220 386 060</th>
+          <th class="blue_line" style="font-weight: bold !important; text-align:  left !important;">Цистерны</th>
+          <th class="blue_line" style="font-weight: bold !important;">4 028</th>
+          <th class="blue_line" style="font-weight: bold !important;">4 518</th>
+          <th class="blue_line" style="font-weight: bold !important;">127 133</th>
+          <th class="blue_line" style="font-weight: bold !important;">60 190</th>
+          <th class="blue_line" style="font-weight: bold !important;">220 386 060</th>
         </tr>
         <tr>
           <th class="number">21</th>
