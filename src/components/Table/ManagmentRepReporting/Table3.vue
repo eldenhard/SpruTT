@@ -191,11 +191,11 @@
         <tr>
           <th class="number">20</th>
           <th class="blue_line" style="font-weight: bold !important; text-align:  left !important;">Цистерны</th>
-          <th class="blue_line" style="font-weight: bold !important;">4 028</th>
-          <th class="blue_line" style="font-weight: bold !important;">4 518</th>
-          <th class="blue_line" style="font-weight: bold !important;">127 133</th>
-          <th class="blue_line" style="font-weight: bold !important;">60 190</th>
-          <th class="blue_line" style="font-weight: bold !important;">220 386 060</th>
+          <th class="blue_line" style="font-weight: bold !important;">2 131</th>
+          <th class="blue_line" style="font-weight: bold !important;">2 141</th>
+          <th class="blue_line" style="font-weight: bold !important;">64 231</th>
+          <th class="blue_line" style="font-weight: bold !important;">16 800</th>
+          <th class="blue_line" style="font-weight: bold !important;">97 418 700</th>
         </tr>
         <tr>
           <th class="number">21</th>
@@ -277,6 +277,15 @@
           <th>124</th>
           <th>1 700</th>
           <th>210 800</th>
+        </tr>
+        <tr>
+          <th class="number">30</th>
+          <th class="blue_line" style="font-weight: bold !important;">Итого</th>
+          <th class="blue_line" style="font-weight: bold !important;">4 028</th>
+          <th class="blue_line" style="font-weight: bold !important;">4 518</th>
+          <th class="blue_line" style="font-weight: bold !important;">127 133</th>
+          <th class="blue_line" style="font-weight: bold !important;">60 190</th>
+          <th class="blue_line" style="font-weight: bold !important;">220 386 060</th>
         </tr>
  
       </thead>
