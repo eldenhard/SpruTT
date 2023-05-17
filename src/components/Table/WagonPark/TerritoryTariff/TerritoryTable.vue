@@ -1,41 +1,74 @@
 <template>
   <div>
     <Loader :loader="loader"></Loader>
-    <TerritoryModal id="territoryModal"/>
-    <div class="grid_net">
-      <!-- Левый блок -->
-      <div>
-        <div style="display: flex; justify-content: start; height: 50px">
-          <b-button variant="primary" style="width: 85%; height: 80%; margin-top: 14px; float: left" class="search"
-            @click="getCurrentWagon()">Создать отчет</b-button>
+    <TerritoryModal id="territoryModal" />
+
+    <div class="air_block">
+      <div class="air_block_content">
+
+
+        <div class="air_block_header">
+          <h5>Ручной ввод исправлений в отчет</h5>
+          <hr />
         </div>
-        <br />
-        <div>
+        <p class="explanation">* Для ввода строк отчета которые были помечены ошибкой, выберите тип отчета и  <br>
+          * Номер вагон должен содержать 8 цифр <br>
+          * При копировании столбца вагонов из MS Excel оставить как есть </p>
+        <div class="air_block_content__textarea">
+          <b-button
+            variant="success"
+            class="btn_create"
+            style="margin-left: auto"
+            @click="$bvModal.show('territoryModal')"
+            >Отправка в ручную</b-button
+          >
+        </div>
+
+
+
+        <div class="air_block_header" >
+          <h5>Тарифы по сопредельным территориям</h5>
+          <hr />
+        </div>
+        <p class="explanation">* Для добавления файла перетащите его в поле или нажмите на него, и выберите необходимый файл <br>
+          * Загрузка файлов осуществляется строго <b>по одному файлу</b> <br>
+          * Загружаемый файл должен быть в формате <b>xlsx</b>
+       </p>
+        <div class="air_block_content__textarea">
           <div>
-            <p class="explanation">Вагонов загружено: {{ amount_wagon }}</p>
-            <textarea rows="1" class="textarea" v-model="SearchRepairWagon" placeholder="Номера вагонов через 1 пробел"
-              style="width: 85%;
-                text-align: center;
-                height: 500px;
-                font-size: 20px;
-              "></textarea>
+            <label :for="fileField" class="attachment">
+              <div class="btn-file__actions">
+                <div class="btn-file__actions__item text-center">
+                  <div class="btn-file__actions__item--shadow">
+                    <b-icon-cloud-plus />
+                    <div class="visible-xs-block"></div>
+                    {{ changeText }}
+                  </div>
+                </div>
+              </div>
+              <input
+                type="file"
+                ref="file"
+                @change="readFile()"
+                :id="fileField"
+              />
+            </label>
           </div>
-        </div>
-      </div>
-      <!-- правый блок -->
-      <div>
-        <div class="form-group">
-          <button id="btnfile" class="button Accept" style="
-              height: 40px;
-              width: 40vw;
-              font-size: 14px;
-              margin-top: 14px;
-              border-radius: 5px;
-            " @click="SendFile()">
-            Отправить файл
-          </button>
-          <div class="select-addRow">
-            <select class="textareas" v-model="btlc" :class="{ 'errorSelect': isError }">
+
+          <div class="right_btn_group">
+            <b-button
+              variant="success"
+              @click="SendFile()"
+              class="btn_create"
+              style="width: 100%"
+              >Отправить файл</b-button
+            >
+
+            <select
+              class="textareas"
+              v-model="btlc"
+              :class="{ errorSelect: isError }"
+            >
               <option value="" disabled>Выберите вид файла</option>
               <option value="arktur">Арктур</option>
               <option value="bmp">БМП</option>
@@ -43,10 +76,97 @@
               <option value="glp">GLP</option>
               <option value="doom">ДУМ</option>
             </select>
-            <button class="button Request" @click="$bvModal.show('territoryModal')">Отправка в ручную</button>
           </div>
+        </div>
 
-          <label :for="fileField" class="attachment">
+
+
+
+        <div class="air_block_header" style="margin-top: 5%;">
+          <h5>Экспорт отправок по вагонам</h5>
+          <hr />
+        </div>
+        <div>
+          <p class="explanation">* Введите номера вагонов через пробел <br>
+          * Номер вагон должен содержать 8 цифр <br>
+          * При копировании столбца вагонов из MS Excel оставить как есть </p>
+          <p class="explanation">Вагонов загружено: {{ amount_wagon }}</p>
+          <div class="air_block_content__textarea">
+            <textarea
+              rows="4"
+              class=""
+              v-model="SearchRepairWagon"
+              placeholder="Номера вагонов через 1 пробел"
+            ></textarea>
+            <b-button
+              variant="success"
+              class="btn_create"
+              @click="getCurrentWagon()"
+              >Создать отчет</b-button
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="grid_net">
+
+      <div class="air_block" style="height: 35vh; float: right;">
+          <div class="air_block_header">
+          <h5>Ручной ввод исправлений в отчет</h5>
+          <hr>
+        </div>
+          <p class="explanation">* Для ввода строк отчета которые были помечены ошибкой, выберите тип отчета и  <br>
+          * Номер вагон должен содержать 8 цифр <br>
+          * При копировании столбца вагонов из MS Excel оставить как есть </p>
+          <div class="air_block_content">
+            
+            <b-button variant="success" class="btn_create"  @click="$bvModal.show('territoryModal')">Отправка в ручную</b-button>
+          </div>
+        </div>
+
+
+
+      <div class="air_block" >
+        <div class="air_block_header">
+          <h5>Экспорт отправок по вагонам</h5>
+          <hr>
+        </div>
+        <p class="explanation">* Введите номера вагонов через пробел <br>
+          * Номер вагон должен содержать 8 цифр <br>
+          * При копировании столбца вагонов из MS Excel оставить как есть </p>
+
+        <div class="air_block_content">
+          <p class="explanation">Вагонов загружено: {{ amount_wagon }}</p>
+          <b-button variant="success" class="btn_create" @click="getCurrentWagon()">Создать отчет</b-button>
+        </div>
+        <textarea rows="4" class="air_block_content_textarea" v-model="SearchRepairWagon"
+          placeholder="Номера вагонов через 1 пробел"></textarea>
+
+      </div>
+
+
+
+<div class="air_block" style="height: 40vh;">
+  <div class="air_block_header">
+          <h5>Тарифы по сопредельным территориям</h5>
+          <hr>
+        </div>
+        <p class="explanation">* Для добавления файла перетащите его в поле или нажмите на него, &nbsp;&nbsp;и выберите необходимый файл <br>
+          * Загрузка файлов осуществляется строго <b>по одному файлу</b> <br>
+       </p>
+
+        <div class="air_block_content">
+          <select class="textareas" v-model="btlc" :class="{ 'errorSelect': isError }">
+              <option value="" disabled>Выберите вид файла</option>
+              <option value="arktur">Арктур</option>
+              <option value="bmp">БМП</option>
+              <option value="btlc">БТЛЦ</option>
+              <option value="glp">GLP</option>
+              <option value="doom">ДУМ</option>
+            </select>
+          <b-button variant="success" class="btn_create" @click="SendFile()">Отправить файл</b-button>
+        </div>
+        <label :for="fileField" class="attachment">
             <div class="btn-file__actions">
               <div class="btn-file__actions__item text-center">
                 <div class="btn-file__actions__item--shadow">
@@ -58,11 +178,19 @@
             </div>
             <input type="file" ref="file" @change="readFile()" :id="fileField" />
           </label>
-        </div>
-      </div>
-    </div>
 
-    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
+      </div> 
+  
+       
+      
+    </div>-->
+
+    <Notifications
+      :show="showNotify"
+      :header="notifyHead"
+      :message="notifyMessage"
+      :block-class="notifyClass"
+    />
   </div>
 </template>
 
@@ -79,10 +207,10 @@ export default {
     return {
       file: null,
       isError: false,
-      btlc: '',
+      btlc: "",
       loader: false,
       SearchRepairWagon: [],
-      poup: '',
+      poup: "",
       amount_wagon: 0,
       showNotify: false,
       notifyHead: "",
@@ -111,21 +239,21 @@ export default {
   },
   watch: {
     btlc() {
-      return this.btlc == '' ? this.isError = true : this.isError = false
+      return this.btlc == "" ? (this.isError = true) : (this.isError = false);
     },
     SearchRepairWagon() {
       let regExps = /\s/g;
       let trim_data = this.SearchRepairWagon.trim();
       let data = trim_data.replace(regExps, ",");
       let array_amountWagon = data.split(",");
-      this.amount_wagon = array_amountWagon.length
-      return array_amountWagon[0] == '' ? this.amount_wagon = 0 : ''
-    }
+      this.amount_wagon = array_amountWagon.length;
+      return array_amountWagon[0] == "" ? (this.amount_wagon = 0) : "";
+    },
   },
   methods: {
     showModalTerritory() {
       // this.$refs(['territoryModal']).show()
-      this.$bvModal.show('territoryModal')
+      this.$bvModal.show("territoryModal");
     },
     readFile() {
       this.file = this.$refs.file.files[0];
@@ -145,24 +273,26 @@ export default {
         this.searchData = true;
         let trim_data = this.SearchRepairWagon.trim();
         let data = trim_data.replace(regExps, ",");
-        this.loader = true
-        api.createReportTerritory(data)
-          .then(response => {
+        this.loader = true;
+        api
+          .createReportTerritory(data)
+          .then((response) => {
             this.showNotify = true;
             this.notifyHead = "Успешно";
             this.notifyMessage = "Данные переданы на обработку";
             this.notifyClass = "wrapper-success";
             this.loader = false;
             setTimeout(() => (this.showNotify = false), 2000);
-            this.loader = false
-          }).catch(error => {
+            this.loader = false;
+          })
+          .catch((error) => {
             this.showNotify = true;
             this.notifyHead = "Ошибка";
             this.notifyMessage = error.response.data;
             this.notifyClass = "wrapper-error";
             this.loader = false;
             setTimeout(() => (this.showNotify = false), 2000);
-          })
+          });
       }
     },
     SendFile() {
@@ -171,14 +301,14 @@ export default {
       this.loader = true;
       let formData = new FormData();
       formData.append("file", this.file);
-      if (this.btlc == '') {
-        this.isError = true
+      if (this.btlc == "") {
+        this.isError = true;
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Выберите вид файла";
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 1500);
-        this.loader = false
+        this.loader = false;
       } else {
         api
           .postViewFile(this.btlc, formData)
@@ -202,31 +332,69 @@ export default {
             setTimeout(() => (this.showNotify = false), 1500);
             this.file = null;
             this.loader = false;
-          })
+          });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
-.Request {
-  width: 40%;
-  margin-top: 4%;
+.air_block {
+  width: 70%;
+  height: auto;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
-
-.select-addRow {
+.air_block_header> h5 {
+  padding: 1% 0 0 0%;
+  color: rgb(202, 202, 202);
+}
+.air_block_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  margin: 4% 4% 0;
+  gap: 20px;
+  /* align-items: baseline; */
+}
+.air_block_content__textarea {
   display: flex;
   justify-content: space-between;
-  vertical-align: baseline;
-  margin-top: 5%;
 }
+.air_block_content__textarea > textarea {
+  width: 60%;
+  margin-bottom: 2%;
+  text-align: center;
+}
+.btn_create {
+  width: 24%;
+  height: 80%;
+  font-size: 12px;
+}
+.right_btn_group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.explanation {
+  font-size: 14px;
+  color: #9b9b9b;
+}
+/* .explanation:nth-child(1) {
+  margin-top: 2%;
+} */
 
 .explanation {
   font-size: 13px;
   color: grey;
   text-align: left;
-  padding: 0 0 2% 4%;
+  /* padding: 0 0 2% 4%; */
 }
 
 .errorSelect {
@@ -234,38 +402,33 @@ export default {
 }
 
 .textareas {
-  width: 50%;
+  width: 100%;
   height: 30%;
   margin-top: 4%;
-  background: url(@/assets/Caret_down_font_awesome_whitevariation.svg.png) no-repeat right 0.8em center/1.4em,
-    linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em);
-
-}
-
-.explanation {
-  font-size: 14px;
-  color: #9b9b9b;
-}
-
-.grid_net {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  background: url(@/assets/Caret_down_font_awesome_whitevariation.svg.png)
+      no-repeat right 0.8em center/1.4em,
+    linear-gradient(
+      to left,
+      rgba(255, 255, 255, 0.3) 3em,
+      rgba(255, 255, 255, 0.2) 3em
+    );
 }
 
 .btn-file__actions {
-  margin: 0;
-  padding: 0;
+  position: absolute;
+  width: 55%;
 }
 
 .btn-file__actions__item {
-  padding: 35px;
+  padding: 15px;
   font-size: 1.5em;
   color: #abb1b6;
+  background: rgb(240, 240, 240, 0.5);
   cursor: pointer;
   text-decoration: none;
-  border-top: 3px dashed #535353;
-  border-left: 3px dashed #535353;
-  border-bottom: 3px dashed #535353;
+  border-top: 2px dashed #535353;
+  border-left: 2px dashed #535353;
+  border-bottom: 2px dashed #535353;
 }
 
 .btn-file__actions__item:first-child {
@@ -276,7 +439,7 @@ export default {
 .btn-file__actions__item:last-child {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  border-right: 3px dashed #535353;
+  border-right: 2px dashed #535353;
 }
 
 .btn-file__actions__item:hover,
@@ -297,7 +460,7 @@ export default {
   position: absolute;
   top: 50%;
   left: 0;
-  width: 100vw;
+  /* width: 100vw; */
   z-index: -1;
 }
 
@@ -309,12 +472,15 @@ export default {
   width: 100%;
 }
 
-.form-group label.attachment .btn-create>a,
-.form-group label.attachment .btn-create>div {
+.form-group label.attachment .btn-create > a,
+.form-group label.attachment .btn-create > div {
   margin-top: 5px;
 }
 
 .form-group label.attachment input[type="file"] {
+  display: none;
+}
+input[type="file"] {
   display: none;
 }
 </style>

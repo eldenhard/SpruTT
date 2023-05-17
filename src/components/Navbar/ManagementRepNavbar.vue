@@ -10,6 +10,9 @@
           <b-container class="bv-example-row">
             <b-tab title="Формирование парка " active @click="newTab('Формирование парка')"> </b-tab>
             <b-tab title="Размещение парка " active @click="newTab('Размещение парка')"> </b-tab>
+            <b-tab title="Арендованный парк " active @click="newTab('Арендованный парк')"> </b-tab>
+            <b-tab title="Парк в аренде " active @click="newTab('Парк в аренде')"> </b-tab>
+
           </b-container>
         </b-tabs>
       </b-card>

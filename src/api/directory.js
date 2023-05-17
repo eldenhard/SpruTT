@@ -2,6 +2,7 @@ import {api} from '@/helpers/axios'
 
 export const resource = 'personal'
 export const documents = 'documents'
+export const finance = 'finance'
 
 const getAllcounterparties = (filter_directory) => {
     return api.get(`${resource}/counterparties`, {params: filter_directory})
@@ -50,6 +51,12 @@ const ChangeCurrentAnnex = (id,data) => {
 const getCurrentContract= (id) => {
     return api.get(`${documents}/contract/${id}/`)
 }
+
+
+// Ставки по аренде
+const postSaveMany = (data) => {
+    return api.post(`${finance}/stavki-arenda/save-many/` , data)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -64,6 +71,9 @@ export default {
     ChangeCurrentAnnex,
     getCurrentContract,
     // Телеграммы
-    getNumberDog
+    getNumberDog,
+
+    // Ставки по аренде
+    postSaveMany,
 }
 

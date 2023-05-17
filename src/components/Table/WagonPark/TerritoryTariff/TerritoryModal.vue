@@ -138,7 +138,7 @@
                 </div>
                 <div class="modal-block__buttons">
                     <button class="button Accept" @click="postNewRowInReport()">Отправить</button>
-                    <button class="button Delete">Закрыть</button>
+                    <button class="button Delete" @click="hideModal()">Закрыть</button>
                 </div>          
             </div>
             <!-- <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button> -->

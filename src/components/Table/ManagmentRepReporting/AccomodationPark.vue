@@ -25,10 +25,10 @@
             <th class="number">1</th>
             <th class="styles">Оперерирование</th>
             <template v-for="data in responseData">
-              <th :key="data.id">{{ data?.operating?.on_date }}</th>
+              <th :key="data.id">{{ data?.operating?.on_date | format}}</th>
           <tr :key="data.id">
-            <th class="col1">{{ data?.operating?.in }}</th>
-            <th class="col1">{{ data?.operating?.out }}</th>
+            <th class="col1">{{ data?.operating?.in | format}}</th>
+            <th class="col1">{{ data?.operating?.out | format}}</th>
           </tr>
           </template>
           </tr>
@@ -37,10 +37,10 @@
             <th class="number">2</th>
             <th class="styles">Сдача в аренду</th>
             <template v-for="data in responseData">
-              <th :key="data.id">{{ data?.renting?.on_date }}</th>
+              <th :key="data.id">{{ data?.renting?.on_date | format}}</th>
           <tr :key="data.id">
-            <th class="col1">{{ data?.renting?.in }}</th>
-            <th class="col1">{{ data?.renting?.out }}</th>
+            <th class="col1">{{ data?.renting?.in | format}}</th>
+            <th class="col1">{{ data?.renting?.out | format}}</th>
           </tr>
           </template>
           </tr>
@@ -49,10 +49,10 @@
             <th class="number">3</th>
             <th class="styles">Итого</th>
             <template v-for="data in responseData">
-              <th :key="data.id">{{ data.total?.on_date }}</th>
+              <th :key="data.id">{{ data.total?.on_date | format}}</th>
           <tr :key="data.id">
-            <th class="col1">{{ data?.total?.in }}</th>
-            <th class="col1">{{ data?.total?.out }}</th>
+            <th class="col1">{{ data?.total?.in | format}}</th>
+            <th class="col1">{{ data?.total?.out | format}}</th>
           </tr>
           </template>
           </tr>
@@ -91,6 +91,9 @@ export default {
       let getYear = date.getFullYear();
       return `${monthName}. ${getYear}`;
     },
+    format(value){
+         return  String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+        },
   },
   methods: {
     Actioned() {
@@ -139,5 +142,6 @@ tr:hover{
 }
 th {
   font-weight: 400 !important;
+  border: 1px solid grey
 }
 </style>
