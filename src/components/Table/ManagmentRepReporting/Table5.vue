@@ -15,7 +15,7 @@
 
 
                 <tr  v-for="(al, index) in data" :key="al.id">
-                    <td>1</td>
+                    <td>Номер строки</td>
                     <td >{{index}}
                         <td>
                             <tr v-for="(r, index) in al" :key="r.id">
@@ -30,6 +30,7 @@
                                     </tr>   
                                </td>
                             </tr>
+
                         </td> 
                     </td>
                 </tr>
@@ -101,10 +102,10 @@ export default{
                             "road": "Дорога 1"
                         }
                     ,
-                    "Итого": [{
+                    "Итого": {
                         "amount": 2,
                         "wo_nds": 123
-                    }]
+                    }
                 },
                 "Клиент_2": {
                     "Данные": 
