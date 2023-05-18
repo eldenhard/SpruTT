@@ -1,7 +1,8 @@
 <template>
   <div>
     <table class="tcont countLines" border="1">
-            <thead>
+
+		<tr>
             <tr>
                 <th></th>
                 <th>Дорога погрузки</th>
@@ -11,17 +12,23 @@
                 <th>Кол-во погрузок</th>
                 <th>Выручка,руб. без НДС</th>
             </tr>
-        </thead>
-	<tbody>
-		<tr>
-          <td></td>
-          <!-- Дорога погрузки -->
-          <!-- <td>  -->
+
+
                 <tr  v-for="(al, index) in data" :key="al.id">
+                    <td>1</td>
                     <td >{{index}}
                         <td>
                             <tr v-for="(r, index) in al" :key="r.id">
-                                {{ index }}
+                               <td>{{ index }}</td>
+                               <td>
+                                    <tr v-for="a in al" :key="a.id">
+                                            <td>{{ a.Данные.road }}</td>
+                                            <td>{{ a.Данные.cargo }}</td>
+                                            <td>{{ a.Данные.amount }}</td>
+                                            <td>{{ a.Данные.wo_nds }}</td>
+
+                                    </tr>   
+                               </td>
                             </tr>
                         </td> 
                     </td>
@@ -73,7 +80,7 @@
   
        
 		
-	</tbody>
+	<!-- </tbody> -->
 </table>
   </div>
 </template>
