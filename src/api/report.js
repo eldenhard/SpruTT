@@ -106,8 +106,13 @@ const getContractAnnex= (id) => {
 const putContract= (id, data) => {
     return api.put(`${documents}/contract/${id}/`, data)
 }
-
-
+// Финансовые отчеты
+const getFinRep1= (date_begin, date_end) => {
+    return api.get(`${reports}/fin/1?date_begin=${date_begin}&date_end=${date_end}`)
+}
+const getFinRep2= (date_begin, date_end) => {
+    return api.get(`${reports}/fin/2?date_begin=${date_begin}&date_end=${date_end}`)
+}
 export default {
     getUsers,
     getReportById,
@@ -144,4 +149,7 @@ export default {
     getKeyFacts,
     getKeyFactsSpeedTon,
     getKeyFactsSpeed,
+
+    getFinRep1,
+    getFinRep2,
 }

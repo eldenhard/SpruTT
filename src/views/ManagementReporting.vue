@@ -40,6 +40,7 @@
               <ReportAbandoned />
             </b-card-text>
 
+
             <!-- <b-card-text v-if="i.name === 'Размещение парка'">
                 <AccomodationPark />
               </b-card-text> -->
@@ -60,6 +61,14 @@
               <b-card-text v-if="i.name === 'Парк, переданный в аренду'">
                 <Table4 />
               </b-card-text>
+
+              
+            <b-card-text v-if="i.name === 'Фин. отчет №1'">
+              <FinanceReport />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Фин. отчет №2'">
+              <FinanceReport2 />
+            </b-card-text>
             </b-tab>
           </b-tabs>
         </b-card>
@@ -81,7 +90,8 @@
   import StaffTable from "@/components/Table/StaffTable.vue";
   import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
   import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
-
+import FinanceReport from "@/components/Table/ManagmentRepReporting/FinanceReport.vue";
+import FinanceReport2 from "@/components/Table/ManagmentRepReporting/FinanceReport2.vue";
 
 import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
 import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
@@ -102,6 +112,8 @@ import Table4 from "@/components/Table/ManagmentRepReporting/Table4.vue";
       BCH, 
       AccomodationPark,
       TerritoryTable,
+      FinanceReport,
+      FinanceReport2,
 
 
       Table1,
