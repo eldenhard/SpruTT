@@ -12,6 +12,8 @@
             <b-tab title="Размещение парка " active @click="newTab('Размещение парка')"> </b-tab>
             <b-tab title="Арендованный парк " active @click="newTab('Арендованный парк')"> </b-tab>
             <b-tab title="Парк, переданный в аренду " active @click="newTab('Парк, переданный в аренду')"> </b-tab>
+            <b-tab title="Справка о выполнении перевозок полувагонами " active @click="newTab('Справка о выполнении перевозок полувагонами')"> </b-tab>
+
             <b-tab title="Фин. отчет №1" active @click="newTab('Фин. отчет №1')"> </b-tab>
             <b-tab title="Фин. отчет №2" active @click="newTab('Фин. отчет №2')"> </b-tab>
 

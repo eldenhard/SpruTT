@@ -63,6 +63,9 @@
               </b-card-text>
 
               
+              <b-card-text v-if="i.name === 'Справка о выполнении перевозок полувагонами'">
+                <Table5 />
+              </b-card-text>
             <b-card-text v-if="i.name === 'Фин. отчет №1'">
               <FinanceReport />
             </b-card-text>
@@ -97,6 +100,7 @@ import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
 import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
 import Table3 from "@/components/Table/ManagmentRepReporting/Table3.vue";
 import Table4 from "@/components/Table/ManagmentRepReporting/Table4.vue";
+import Table5 from "@/components/Table/ManagmentRepReporting/Table5.vue";
 
   export default {
     name: "managmentReporting",
@@ -120,6 +124,7 @@ import Table4 from "@/components/Table/ManagmentRepReporting/Table4.vue";
       Table2,
       Table3,
       Table4,
+      Table5,
 
     },
     data() {
