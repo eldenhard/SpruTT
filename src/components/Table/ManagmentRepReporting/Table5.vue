@@ -16,13 +16,20 @@
 		<tr>
           <td></td>
           <!-- Дорога погрузки -->
-          <td> 
-                <tr  v-for="(al, index) in data" :key="al.id" >
-                    <td>{{index}}</td>
+          <!-- <td>  -->
+                <tr  v-for="(al, index) in data" :key="al.id">
+                    <td >{{index}}
+                        <td>
+                            <tr v-for="(r, index) in al" :key="r.id">
+                                {{ index }}
+                            </tr>
+                        </td> 
+                    </td>
                 </tr>
-          </td>
+        </tr>
+          <!-- </td> -->
 
-        <!-- Клиент -->
+        <!-- Клиент
           <td>
             <template v-for="a in data" >
                 <tr v-for="(r, index) in a" :key="r.id">
@@ -30,40 +37,40 @@
                 </tr>
             </template>   
           </td>
-        <!-- Дорога выгрузки -->
-          <td>
+         Дорога выгрузки -->
+          <!-- <td>
             <template v-for="a in data" >
-                <tr v-for="(r, index) in a" :key="r.id">
+                <tr v-for="(r) in a" :key="r.id">
                     <td>{{ r.Данные.road }}</td>
                 </tr>
             </template>   
-          </td>
+          </td> -->
            <!-- Груз -->
-           <td>
+           <!-- <td>
             <template v-for="a in data" >
-                <tr v-for="(r, index) in a" :key="r.id">
+                <tr v-for="(r) in a" :key="r.id">
                     <td>{{ r.Данные.cargo }}</td>
                 </tr>
             </template>   
-          </td>
+          </td> -->
           <!-- Кол-во -->
-          <td>
+          <!-- <td>
             <template v-for="a in data" >
-                <tr v-for="(r, index) in a" :key="r.id">
+                <tr v-for="(r) in a" :key="r.id">
                     <td>{{ r.Данные.amount }}</td>
                 </tr>
             </template>   
-          </td>
+          </td> -->
           <!-- Кол-во -->
-          <td>
+          <!-- <td>
             <template v-for="a in data" >
-                <tr v-for="(r, index) in a" :key="r.id">
+                <tr v-for="(r) in a" :key="r.id">
                     <td>{{ r.Данные.wo_nds }}</td>
                 </tr>
             </template>   
-          </td>
+          </td> --> 
    
-        </tr>
+  
        
 		
 	</tbody>
