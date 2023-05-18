@@ -16,7 +16,13 @@
         <div class="air_block_content__textarea">
           <label for="">
             Начало периода <br />
-            <input type="date" class="textarea" v-model="date_begin"  :class="{ 'error': isErrorEnd }"/>
+            <input
+              type="date"
+              class="textarea"
+              v-model="date_begin"
+              :class="{ error: isErrorEnd }"
+              style="max-width: 100%"
+            />
           </label>
           <label for="">
             Конец периода <br />
@@ -24,7 +30,8 @@
               type="date"
               class="textarea"
               v-model="date_end"
-              :class="{ 'error': isErrorEnd }"
+              :class="{ error: isErrorEnd }"
+              style="max-width: 100%"
             />
           </label>
         </div>
@@ -66,17 +73,15 @@ export default {
 
   methods: {
     getFinRep1() {
-      if (this.date_begin == " " || this.date_end == '') {
+      if (this.date_begin == " " || this.date_end == "") {
         this.loader = false;
-        
+
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Укажите даты начала/конца периода";
         this.notifyClass = "wrapper-error";
-        this.showNotify = true,
-
-        setTimeout(() => (this.showNotify = false), 2000);
-      } 
-      else {
+        (this.showNotify = true),
+          setTimeout(() => (this.showNotify = false), 2000);
+      } else {
         this.loader = true;
         let date1 = this.date_begin + " 00:00:00";
         let date2 = this.date_end + " 23:59:59";
@@ -111,7 +116,7 @@ export default {
   color: red;
 }
 .air_block {
-  width: 60%;
+  width: 80%;
   height: auto;
   border-radius: 15px;
   background: #ffffff;
@@ -148,7 +153,7 @@ label {
   background: white;
 }
 .btn_create {
-  width: 41%;
+  width: 30%;
   height: 80%;
   font-size: 12px;
   margin-left: auto;
