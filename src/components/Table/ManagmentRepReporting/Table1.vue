@@ -42,7 +42,7 @@
 
         <tr>
           <th class="number">1</th>
-          <th class="blue_line" style="text-align: left !important;">Собственный парк</th>
+          <th class="blue_line" style="text-align: left !important;">Собс. парк</th>
           <th class="blue_line">{{ 1313+4654+9+269 | filter }}</th>
           <th colspan="2">
             <tr>
@@ -139,7 +139,7 @@
         </tr>
         <tr>
           <th class="number">4</th>
-          <th class="blue_line" style="text-align: left !important;">Арендованный парк</th>
+          <th class="blue_line" style="text-align: left !important;">Арен. парк</th>
           <th class="blue_line">5 400</th>
           <th colspan="2">
             <tr>
@@ -234,6 +234,8 @@
           </th>
         </tr>
         
+ 
+
         <tr>
           <th class="number">7</th>
           <th  class="blue_line" style="font-weight: bold !important; text-align: left !important;">Всего ПС</th>

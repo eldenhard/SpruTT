@@ -1,7 +1,7 @@
 <template>
   <div>
     <Loader :loader="loader" />
-    <div class="air_block">
+    <div class="air_block" >
       <div class="air_block_content">
         <div class="air_block_header">
           <h5>Финансовый отчет №1</h5>
@@ -16,11 +16,11 @@
         <div class="air_block_content__textarea">
           <label for="">
             Начало периода <br />
-            <input type="date" class="textarea" v-model="date_begin" />
+            <input type="date" class="textarea" v-model="date_begin" style="max-width:100%"/>
           </label>
           <label for="">
             Конец периода <br />
-            <input type="date" class="textarea" v-model="date_end" />
+            <input type="date" class="textarea" v-model="date_end" style="max-width:100%"/>
           </label>
         </div>
         <b-button variant="success" class="btn_create" @click="getFinRep1()"
@@ -98,7 +98,7 @@ export default {
 
 <style scoped>
 .air_block {
-  width: 60%;
+  width: 85%;
   height: auto;
   border-radius: 15px;
   background: #ffffff;
@@ -135,7 +135,7 @@ label {
   background: white;
 }
 .btn_create {
-  width: 41%;
+  width: 30%;
   height: 80%;
   font-size: 12px;
   margin-left: auto;
