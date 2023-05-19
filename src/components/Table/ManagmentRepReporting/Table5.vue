@@ -1,177 +1,135 @@
 <template>
   <div>
-    <table class="tcont countLines" border="1">
+    <table class="table">
+      <thead>
+        <th>Дорога погрузки</th>
+        <th>Клиент</th>
+        <th>Дорога выгрузки</th>
+      </thead>
+      <template v-for="obj in objects">
 
-		<tr>
-            <tr>
-                <th></th>
-                <th>Дорога погрузки</th>
-                <th>Клиент</th>
-                <th>Дорога выгрузки</th>
-                <th>Груз</th>
-                <th>Кол-во погрузок</th>
-                <th>Выручка,руб. без НДС</th>
-            </tr>
-
-
-                <tr  v-for="(al, index) in data" :key="al.id">
-                    <td>Номер строки</td>
-                    <td >{{index}}
-                        <td>
-                            <tr v-for="(r, index) in al" :key="r.id">
-                               <td>{{ index }}</td>
-                               <td>
-                                    <tr v-for="a in al" :key="a.id">
-                                            <td>{{ a.Данные.road }}</td>
-                                            <td>{{ a.Данные.cargo }}</td>
-                                            <td>{{ a.Данные.amount }}</td>
-                                            <td>{{ a.Данные.wo_nds }}</td>
-
-                                    </tr>   
-                               </td>
-                            </tr>
-
-                        </td> 
-                    </td>
-                </tr>
+        <tr :key="obj.id">
+          <td :rowspan="getRowCount(obj)">{{ obj.road }}</td>
+          <td :rowspan="obj.attr1[0].attr3.length">{{ obj.attr1[0].attr2 }}</td>
+          <td>{{ obj.attr1[0].attr3[0] }}</td>
+          <td>{{ obj.attr1[0].attr4[0] }}</td>
         </tr>
-          <!-- </td> -->
 
-        <!-- Клиент
-          <td>
-            <template v-for="a in data" >
-                <tr v-for="(r, index) in a" :key="r.id">
-                    <td>{{ index }}</td>
-                </tr>
-            </template>   
-          </td>
-         Дорога выгрузки -->
-          <!-- <td>
-            <template v-for="a in data" >
-                <tr v-for="(r) in a" :key="r.id">
-                    <td>{{ r.Данные.road }}</td>
-                </tr>
-            </template>   
-          </td> -->
-           <!-- Груз -->
-           <!-- <td>
-            <template v-for="a in data" >
-                <tr v-for="(r) in a" :key="r.id">
-                    <td>{{ r.Данные.cargo }}</td>
-                </tr>
-            </template>   
-          </td> -->
-          <!-- Кол-во -->
-          <!-- <td>
-            <template v-for="a in data" >
-                <tr v-for="(r) in a" :key="r.id">
-                    <td>{{ r.Данные.amount }}</td>
-                </tr>
-            </template>   
-          </td> -->
-          <!-- Кол-во -->
-          <!-- <td>
-            <template v-for="a in data" >
-                <tr v-for="(r) in a" :key="r.id">
-                    <td>{{ r.Данные.wo_nds }}</td>
-                </tr>
-            </template>   
-          </td> --> 
-   
-  
-       
-		
-	<!-- </tbody> -->
-</table>
+        <tr v-for="val2 in obj.attr1[0].attr3.slice(1) " :key="val2.id">
+          <td>{{ val2 }}</td>
+          <template  v-for="val3 in obj.attr1[0].attr4.slice(1) " >
+            <td :key="val3.id">{{ val3 }}</td>
+          </template>
+        </tr>
+
+        <template v-for="subkey in obj.attr1.slice(1)">
+          <tr :key="subkey.id">
+            <td :rowspan="subkey.attr3.length">{{ subkey.attr2 }}</td>
+            <td>{{ subkey.attr3[0] }}</td>
+            <td>{{ subkey.attr4[0] }}</td>
+          </tr>
+
+          <tr v-for="value3 in subkey.attr3.slice(1)" :key="value3.id">
+            <td>{{ value3 }}</td>
+                <template v-for="value4 in subkey.attr4.slice(1)" >
+                    <td :key="value4.id">{{ value4 }}</td>
+                </template>
+          </tr>
+
+        </template>
+      </template>
+    </table>
   </div>
 </template>
 
 
 <script>
-export default{
-    data(){
-        return{
-        data:     {
-            "Дорога_1": {
-                "Клиент_1": {
-                    "Данные": 
-                        {
-                            "cargo": 123,
-                            "amount": 2,
-                            "wo_nds": 123,
-                            "road": "Дорога 1"
-                        }
-                    ,
-                    "Итого": {
-                        "amount": 2,
-                        "wo_nds": 123
-                    }
-                },
-                "Клиент_2": {
-                    "Данные": 
-                        {
-                            "cargo": 123,
-                            "amount": 2,
-                            "wo_nds": 123,
-                            "road": "Дорога 12"
-                        }
-                    ,
-                    "Итого": [{
-                        "amount": 2,
-                        "wo_nds": 123
-                    }]
-                },
-          
+export default {
+  data() {
+    return {
+      first: [],
+      second: [],
+      objects: [
+        {
+          road: "Дорога_1",
+          attr1: [
+            {
+              attr2: "Клиент_1",
+              attr3: ["a", "b", "c"],
+              attr4: ["1", "2", "3"],
             },
-            // "Итого Дорога_1": {
-            //     "amount23": 123,
-            //     "wo_nds234": 100
-            // },
-            "Дорога_2": {
-                "Клиент_2113": {
-                    "Данные": 
-                        {
-                            "cargo": 123,
-                            "amount": 2,
-                            "wo_nds": 123,
-                            "road": "Дорога 11"
-                        }
-                    ,
-                    "Итого": {
-                        "amount": 2,
-                        "wo_nds": 123
-                    }
-                },
-              
+            {
+              attr2: "Клиент_2",
+              attr3: ["d", "e"],
+              attr4: ["4", "5"],
+
             },
-            "Дорога_3": {
-                "Клиент_4": {
-                    "Данные": 
-                        {
-                            "cargo": 123,
-                            "amount": 2,
-                            "wo_nds": 123,
-                            "road": "Дорога 13"
-                        }
-                    ,
-                    "Итого": {
-                        "amount": 2,
-                        "wo_nds": 123
-                    }
-                },
-              
+          ],
+        },
+        {
+          road: "Дорога_2",
+          attr1: [
+            {
+              attr2: "Клиент_3",
+              attr3: ["f", "s", "a"],
+              attr4: ["6", "7", "8"],
+
             },
-            // "Итого Дорога_2": {
-            //     "amount": 123,
-            //     "wo_nds": 100
-            // }
-        }
-        }
-    }
-}
+            {
+              attr2: "Клиент_4",
+              attr3: ["g", "h"],
+              attr4: ["9", "10"],
+
+            },
+          ],
+        },
+      ],
+    };
+  },
+  methods: {
+    getRowCount(obj) {
+      let total = 0;
+      obj.attr1.forEach((item) => {
+        total += item.attr3.length;
+      });
+      return total;
+    },
+  },
+};
 </script>
 
 
 <style scoped>
-
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table > tbody > tr > td,
+table > tbody > tr > td.inner > div {
+  vertical-align: top;
+  border: 1px solid #ddd;
+}
+table > tbody > tr > td.inner {
+  padding: 0;
+  border-right: 0;
+}
+table > tbody > tr > td.inner > div {
+  padding: 5px;
+  border-width: 0 0 1px 0;
+}
+table > tbody > tr > td.inner > div:last-child {
+  border: 0;
+}
+table > tbody > tr > td.inner > table {
+  margin-bottom: 0;
+}
+table > tbody > tr > td.inner > table td {
+  border-width: 0 1px 1px 0;
+}
+table > tbody > tr > td.inner > table tr:last-child td {
+  border-bottom: 0;
+}
+table > tbody > tr > td.inner > div {
+  border-right: 0;
+}
 </style>
