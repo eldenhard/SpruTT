@@ -5,35 +5,51 @@
         <th>Дорога погрузки</th>
         <th>Клиент</th>
         <th>Дорога выгрузки</th>
+        <th>Груз</th>
+        <th>Кол-во погрузок</th>
+        <th>Выручка руб, без НДС</th>
+
       </thead>
       <template v-for="obj in objects">
 
-        <tr :key="obj.id">
-          <td :rowspan="getRowCount(obj)">{{ obj.road }}</td>
-          <td :rowspan="obj.attr1[0].attr3.length">{{ obj.attr1[0].attr2 }}</td>
-          <td>{{ obj.attr1[0].attr3[0] }}</td>
-          <td>{{ obj.attr1[0].attr4[0] }}</td>
+        <tr :key="obj.id" >
+          <td :rowspan="getRowCount(obj)" >{{ obj.road }}</td>
+          <td :rowspan="obj.attr1[0].attr3.length" >{{ obj.attr1[0].attr2 }}</td>
+          <td>{{ obj.attr1[0].attr3[0].road }}</td>
+          <td>{{ obj.attr1[0].attr3[0].cargo }}</td>
+          <td>{{ obj.attr1[0].attr3[0].amount }}</td>
+          <td>{{ obj.attr1[0].attr3[0].wo_nds }}</td>
+
+        </tr>
+        
+
+        <tr v-for="val2 in obj.attr1[0].attr3.slice(1) " :key="val2.id" >
+          <td>{{ val2.road }}</td>
+          <td>{{ val2.cargo }}</td>
+          <td>{{ val2.amount }}</td>
+          <td>{{ val2.wo_nds }}</td>
+
         </tr>
 
-        <tr v-for="val2 in obj.attr1[0].attr3.slice(1) " :key="val2.id">
-          <td>{{ val2 }}</td>
-          <template  v-for="val3 in obj.attr1[0].attr4.slice(1) " >
-            <td :key="val3.id">{{ val3 }}</td>
-          </template>
-        </tr>
+ 
+
 
         <template v-for="subkey in obj.attr1.slice(1)">
-          <tr :key="subkey.id">
+          <tr :key="subkey.id" >
             <td :rowspan="subkey.attr3.length">{{ subkey.attr2 }}</td>
-            <td>{{ subkey.attr3[0] }}</td>
-            <td>{{ subkey.attr4[0] }}</td>
+            <td>{{ subkey.attr3[0].road }}</td>
+            <td>{{ subkey.attr3[0].cargo }}</td>
+            <td>{{ subkey.attr3[0].amount }}</td>
+            <td>{{ subkey.attr3[0].wo_nds }}</td>
+
           </tr>
 
-          <tr v-for="value3 in subkey.attr3.slice(1)" :key="value3.id">
-            <td>{{ value3 }}</td>
-                <template v-for="value4 in subkey.attr4.slice(1)" >
-                    <td :key="value4.id">{{ value4 }}</td>
-                </template>
+          <tr v-for="value3 in subkey.attr3.slice(1)" :key="value3.id" >
+            <td>{{ value3.road }}</td>
+            <td>{{ value3.cargo }}</td>
+            <td>{{ value3.amount }}</td>
+            <td>{{ value3.wo_nds }}</td>
+
           </tr>
 
         </template>
@@ -55,13 +71,11 @@ export default {
           attr1: [
             {
               attr2: "Клиент_1",
-              attr3: ["a", "b", "c"],
-              attr4: ["1", "2", "3"],
+              attr3: [{road: "Дорога_2", cargo: 'нефть1', amount: '1', wo_nds: '1'}, {road: "Дорога_3", cargo: 'нефть2', amount: '12', wo_nds: '12'}, {road: "Дорога_4", cargo: 'нефть3', amount: '3', wo_nds: '31'}],
             },
             {
               attr2: "Клиент_2",
-              attr3: ["d", "e"],
-              attr4: ["4", "5"],
+              attr3: [{road: "Дорога_5", cargo: 'рис1', amount: '14', wo_nds: '41'}, {road: "Дорога_6", cargo: 'рис2', amount: '15', wo_nds: '61'}],
 
             },
           ],
@@ -71,14 +85,12 @@ export default {
           attr1: [
             {
               attr2: "Клиент_3",
-              attr3: ["f", "s", "a"],
-              attr4: ["6", "7", "8"],
+              attr3: [{road: "Дорога_7", cargo: 'лом1', amount: '16', wo_nds: '19'}, {road: "Дорога_8", cargo: 'лом2', amount: '17', wo_nds: '10'}, {road: "Дорога_9", cargo: 'лом3', amount: '18', wo_nds: '12'}],
 
             },
             {
               attr2: "Клиент_4",
-              attr3: ["g", "h"],
-              attr4: ["9", "10"],
+              attr3: [{road: "Дорога_10", cargo: 'рыба1', amount: '19', wo_nds: '145'}, { road: "Дорога_11", cargo: 'рыба2', amount: '20', wo_nds: '15'}],
 
             },
           ],
@@ -100,6 +112,9 @@ export default {
 
 
 <style scoped>
+td{
+    border: 1px solid black !important
+}
 table {
   width: 100%;
   border-collapse: collapse;
