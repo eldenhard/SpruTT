@@ -10,7 +10,7 @@
         <th>Выручка руб, без НДС</th>
         <!-- <th>Всего</th> -->
       </thead>
-      <template v-for="obj in objects">
+      <template v-for="obj in this.objects[0].data">
         <tr :key="obj.id">
           <td :rowspan="getRowCount(obj)">{{ obj.road }}</td>
           <td :rowspan="obj.attr1[0].attr3.length">{{ obj.attr1[0].attr2 }}</td>
@@ -55,7 +55,12 @@
       </template>
       <tr v-for="obj in objects">
         <td>Всего погрузки</td>
-        <td>{{ obj.ALL_TOTAL }}</td>
+        <td></td>
+        <td></td>
+        <td>{{ obj.ALL_TOTAL.cargo }}</td>
+        <td>{{ obj.ALL_TOTAL.amount }}</td>
+        <td>{{ obj.ALL_TOTAL.wo_nds }}</td>
+
       </tr>
     </table>
   </div>
@@ -68,8 +73,10 @@ export default {
     return {
       first: [],
       second: [],
-      objects: [
-         {
+
+      objects: [{
+        data: [
+        {
           road: "Дорога_1",
           attr1: [
             {
@@ -161,14 +168,18 @@ export default {
           },
          
         },
-        // 'ALL_TOTAL': {
-        //     cargo: 'ALL_TOTAL',
-        //     amount: 'ALL_TOTALA',
-        //     wo_nds: 'ALL_TOTALWO'
-        //   }
-      ],
+        ],
+        ALL_TOTAL: {
+            cargo: 'ALL_TOTAL',
+            amount: 'ALL_TOTALA',
+            wo_nds: 'ALL_TOTALWO'
+          }
+      }
+     
+   ],
     };
   },
+
   methods: {
     getRowCount(obj) {
       let total = 0;
