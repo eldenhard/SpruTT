@@ -1,6 +1,7 @@
 <template>
   <div>
-    <table class="table">
+    <p>Форма 4.5. "Справка о выполнении перевозок полувагонами"</p>
+    <table class="tbl_search">
       <thead>
         <th>Дорога погрузки</th>
         <th>Клиент</th>
@@ -10,58 +11,40 @@
         <th>Выручка руб, без НДС</th>
         <!-- <th>Всего</th> -->
       </thead>
-      <template v-for="obj in this.objects[0].data">
-        <tr :key="obj.id">
-          <td :rowspan="getRowCount(obj)">{{ obj.road }}</td>
-          <td :rowspan="obj.attr1[0].attr3.length">{{ obj.attr1[0].attr2 }}</td>
-          <td>{{ obj.attr1[0].attr3[0].road }}</td>
-          <td>{{ obj.attr1[0].attr3[0].cargo }}</td>
-          <td>{{ obj.attr1[0].attr3[0].amount }}</td>
-          <td>{{ obj.attr1[0].attr3[0].wo_nds }}</td>
-        </tr>
 
-        <tr v-for="val2 in obj.attr1[0].attr3.slice(1)" :key="val2.id">
-          <td>{{ val2.road }}</td>
-          <td>{{ val2.cargo }}</td>
-          <td>{{ val2.amount }}</td>
-          <td>{{ val2.wo_nds }}</td>
-        </tr>
-
-        <template v-for="subkey in obj.attr1.slice(1)">
-          <tr :key="subkey.id">
-            <td :rowspan="subkey.attr3.length">{{ subkey.attr2 }}</td>
-            <td>{{ subkey.attr3[0].road }}</td>
-            <td>{{ subkey.attr3[0].cargo }}</td>
-            <td>{{ subkey.attr3[0].amount }}</td>
-            <td>{{ subkey.attr3[0].wo_nds }}</td>
-          </tr>
-
-          <tr v-for="value3 in subkey.attr3.slice(1)" :key="value3.id">
-            <td>{{ value3.road }}</td>
-            <td>{{ value3.cargo }}</td>
-            <td>{{ value3.amount }}</td>
-            <td>{{ value3.wo_nds }}</td>
-          </tr>
-        </template>
-        <tr style="background: lightgray;">
-            <td>Итого {{ obj.road }}</td>
-            <td></td>
-            <td></td>
-            <td>{{ obj.TOTAL.cargo }}</td>
-            <td>{{ obj.TOTAL.amount }}</td>
-            <td>{{ obj.TOTAL.wo_nds }}</td>
-
-        </tr>
-      </template>
-      <tr v-for="obj in objects">
-        <td>Всего погрузки</td>
-        <td></td>
-        <td></td>
-        <td>{{ obj.ALL_TOTAL.cargo }}</td>
-        <td>{{ obj.ALL_TOTAL.amount }}</td>
-        <td>{{ obj.ALL_TOTAL.wo_nds }}</td>
-
+      <template v-for="obj in objects">
+  <template v-for="{ road, attr1, TOTAL_CLIENT } in obj.data">
+    <template v-for="({ client, attr3, total }, iAttr1) in attr1">
+      <tr v-for="(attr3Item, iAttr3) in attr3">
+        <td :rowspan="rowspan(attr1)" v-if="!iAttr1 && !iAttr3">{{ road }}</td>
+        <td :rowspan="attr3.length" v-if="!iAttr3">{{ client }}</td>
+        <td>{{ attr3Item.road }}</td>
+        <td>{{ attr3Item.cargo }}</td>
+        <td>{{ attr3Item.amount }}</td>
+        <td>{{ attr3Item.wo_nds }}</td>
       </tr>
+      <tr class="total">
+        <td colspan="2">Итого {{ client }}:</td>
+        <td>{{ total.cargo }}</td>
+        <td>{{ total.amount }}</td>
+        <td>{{ total.wo_nds }}</td>
+      </tr>
+    </template>
+    <tr class="total_2">
+      <td colspan="3">Итого {{ road }}:</td>
+      <td>{{ TOTAL_CLIENT.cargo }}</td>
+      <td>{{ TOTAL_CLIENT.amount }}</td>
+      <td>{{ TOTAL_CLIENT.wo_nds }}</td>
+    </tr>
+  </template>
+</template>
+<tr v-for="obj in objects" :key="obj.id" style="border: 1px solid black" class="all_total">
+  <td colspan="3">Всего погрузки</td>
+      <td>{{ obj.ALL_TOTAL.cargo }}</td>
+      <td>{{ obj.ALL_TOTAL.amount }}</td>
+      <td>{{ obj.ALL_TOTAL.wo_nds }}</td>
+  </tr>
+
     </table>
   </div>
 </template>
@@ -71,104 +54,61 @@
 export default {
   data() {
     return {
-      first: [],
-      second: [],
-
       objects: [{
         data: [
         {
           road: "Дорога_1",
           attr1: [
             {
-              attr2: "Клиент_1",
-              attr3: [
-                { road: "Дорога_2", cargo: "нефть1", amount: "1", wo_nds: "1" },
-                {
-                  road: "Дорога_3",
-                  cargo: "нефть2",
-                  amount: "12",
-                  wo_nds: "12",
-                },
-                {
-                  road: "Дорога_4",
-                  cargo: "нефть3",
-                  amount: "3",
-                  wo_nds: "31",
-                },
-                {
-                  road: "Итого",
-                  cargo: "СУММА",
-                  amount: "СУММА",
-                  wo_nds: "СУММА",
-                },
+              client: "Клиент_1",
+              attr3: [{ road: "Дорога_2", cargo: "нефть1", amount: "1", wo_nds: "1" },
+                      { road: "Дорога_3", cargo: "нефть2", amount: "12", wo_nds: "12"},
+                      { road: "Дорога_4",cargo: "нефть3",amount: "3",wo_nds: "31" },
               ],
+              total: {cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"}
             },
             {
-              attr2: "Клиент_2",
-              attr3: [
-                { road: "Дорога_5", cargo: "рис1", amount: "14", wo_nds: "41" },
-                { road: "Дорога_6", cargo: "рис2", amount: "15", wo_nds: "61" },
-                { road: "Итого", cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"},
+              client: "Клиент_2",
+              attr3: [{ road: "Дорога_5", cargo: "рис1", amount: "14", wo_nds: "41" },
+                      { road: "Дорога_6", cargo: "рис2", amount: "15", wo_nds: "61" },
               ],
+              total: {cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"}
+
             },
           ],
-          TOTAL : {
+          TOTAL_CLIENT : {
             cargo: 'TOTAL',
             amount: 'TOTALA',
             wo_nds: 'TOTALWO'
           }
         },
         {
-          road: "Дорога_2",
+          road: "Дорога_1",
           attr1: [
             {
-              attr2: "Клиент_3",
-              total: "Итого Клиент_3",
-              attr3: [
-                { road: "Дорога_7", cargo: "лом1", amount: "16", wo_nds: "19" },
-                { road: "Дорога_8", cargo: "лом2", amount: "17", wo_nds: "10" },
-                { road: "Дорога_9", cargo: "лом3", amount: "18", wo_nds: "12" },
-                {
-                  road: "Итого",
-                  cargo: "СУММА",
-                  amount: "СУММА",
-                  wo_nds: "СУММА",
-                },
+              client: "Клиент_1",
+              attr3: [{ road: "Дорога_2", cargo: "нефть1", amount: "1", wo_nds: "1" },
+                      { road: "Дорога_3", cargo: "нефть2", amount: "12", wo_nds: "12"},
+                      { road: "Дорога_4",cargo: "нефть3",amount: "3",wo_nds: "31" },
               ],
+              total: {cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"}
             },
             {
-              attr2: "Клиент_4",
-              total: "Итого Клиент_4",
-              attr3: [
-                {
-                  road: "Дорога_10",
-                  cargo: "рыба1",
-                  amount: "19",
-                  wo_nds: "145",
-                },
-                {
-                  road: "Дорога_11",
-                  cargo: "рыба2",
-                  amount: "20",
-                  wo_nds: "15",
-                },
-                {
-                  road: "Итого",
-                  cargo: "СУММА",
-                  amount: "СУММА",
-                  wo_nds: "СУММА",
-                },
+              client: "Клиент_2",
+              attr3: [{ road: "Дорога_5", cargo: "рис1", amount: "14", wo_nds: "41" },
+                      { road: "Дорога_6", cargo: "рис2", amount: "15", wo_nds: "61" },
               ],
+              total: {cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"}
+
             },
           ],
-          TOTAL : {
+          TOTAL_CLIENT : {
             cargo: 'TOTAL',
             amount: 'TOTALA',
             wo_nds: 'TOTALWO'
-          },
-         
+          }
         },
-        ],
+],
         ALL_TOTAL: {
             cargo: 'ALL_TOTAL',
             amount: 'ALL_TOTALA',
@@ -179,23 +119,37 @@ export default {
    ],
     };
   },
-
+mounted(){
+  
+},
   methods: {
-    getRowCount(obj) {
-      let total = 0;
-      obj.attr1.forEach((item) => {
-        total += item.attr3.length;
-      });
-      return total;
-    },
+    rowspan: attr1 => attr1.reduce((acc, n) => acc + n.attr3.length + 1, 0),
+    // getRowCount(obj) {
+    //   let total = 0;
+    //   let last_item = '';
+    //   obj.attr1.forEach((item) => {
+    //     total += item.attr3.length;
+    //   });
+    //   return total;
+    // },
   },
 };
 </script>
 
 
 <style scoped>
+.total{
+  background: #FDFFD9;
+}
+.total_2{
+  background: #DDFACE;
+}
+tr:hover{
+  background: rgb(236, 236, 236);
+}
 td {
   border: 1px solid black !important;
+  color: black !important;
 }
 table {
   width: 100%;
@@ -229,4 +183,19 @@ table > tbody > tr > td.inner > table tr:last-child td {
 table > tbody > tr > td.inner > div {
   border-right: 0;
 }
+thead > th {
+  border: 1px solid black;
+}
+.total_row {
+  background: #DDFACE;
+}
+.total_road{
+  background: greenyellow;
+}
+/* .road:nth-last-child(n){
+  background: red;
+}
+.road2:last-child{
+  background: green;
+} */
 </style>
