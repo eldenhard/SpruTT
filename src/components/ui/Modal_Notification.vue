@@ -8,9 +8,24 @@
         </div>
         <hr>
     <div class="content">
-        <p>Имя файла</p>
-        <p>дата создания</p>
-        <p>статус</p>
+        <p style="font-weight: bold;">ОТчет БДР</p>
+        <p>21.01.2023</p>
+        <p>Ожидает</p>
+    </div>
+    <div class="content">
+        <p style="font-weight: bold;">ОТчет БДР</p>
+        <p>21.01.2023</p>
+        <p>Выполняется</p>
+    </div>
+    <div class="content">
+        <p style="font-weight: bold;">ОТчет БДР</p>
+        <p>21.01.2023</p>
+        <p>Успешно</p>
+    </div>
+    <div class="content">
+        <p style="font-weight: bold;">ОТчет БДР</p>
+        <p>21.01.2023</p>
+        <p>Ошибка</p>
     </div>
     </div>
 </template>
@@ -68,9 +83,16 @@ hr {margin: 0; padding: 0;}
 .content{
     display: flex;
     justify-content: space-between;
-    padding: 0% 3% 0 2%;
-    border: 1px solid #cfcfcf ;
+    padding: 2% 3% 0 2%;
+    border-bottom: 1px solid #cfcfcf;
+    vertical-align: middle;
+    color: #5c5c5c
 
+}
+.circle{
+    width: 10px;
+    height: 10px;
+    background: red;
 }
 </style>
 
