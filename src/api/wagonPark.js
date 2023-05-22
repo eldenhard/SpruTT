@@ -141,6 +141,9 @@ const postViewFile = (view, data) =>{
 const createReportTerritory = (data) => {
     return api.post(`${resource}/shipments/export/`, {'wagons': data})
 }
+const getAmountShipments = (source, date) => {
+    return api.get(`${resource}/shipments/?shipment_source=${source}&act_date=${date}`)
+}
 export default {
     getWagons,
     getWagon,
@@ -165,6 +168,7 @@ export default {
     postViewFile,
     createReportTerritory,
     postNewRowInReport,
+    getAmountShipments,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

@@ -13,7 +13,7 @@
                 <contractTable/>
               </b-card-text>
             </b-tab>
-            <b-tab title="Ставки по аренде" active>
+            <b-tab title="Данные по аренде" active>
                 <b-card-text>
                     <rentalrateTable/>
               </b-card-text>

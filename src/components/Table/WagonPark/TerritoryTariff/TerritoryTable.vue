@@ -105,7 +105,53 @@
               >Создать отчет</b-button
             >
           </div>
+
+
         </div>
+
+        <div class="air_block_header">
+          <h5>
+            Узнать количество отправок
+          </h5>
+          <hr />
+        </div>
+        <p class="explanation"> </p>
+        <div class="air_block_content__textarea">
+          <div>
+            <select
+              class="textareas"
+              v-model="shipment_source"
+              :class="{ errorSelect: isError }"
+            >
+              <option value="" disabled>Выберите вид файла</option>
+              <option value="arktur">Арктур</option>
+              <option value="bmp">БМП</option>
+              <option value="btlc">БТЛЦ</option>
+              <option value="glp">GLP</option>
+              <option value="doom">ДУМ</option>
+            </select>
+              <br>
+              <br>
+            <label for="">Дата акта<br>
+              <input type="date" class="textarea" style="background: white;" v-model="act_date">
+            </label>
+          </div>
+
+          <div style="width: 100%; margin-top: 1%;" class="btn_create">
+            <b-button variant="success"
+                        @click="getAmountShipment()"
+                        class="btn_create"
+                        style="width: 36%; float: right;"
+                        >Получить количество</b-button>
+                        <br><br><br>
+            <h4 style="float: right; color: grey;">Итого:  {{ total_shipments + ' шт'}}</h4>
+
+          </div>
+         
+           
+         
+        </div>
+<br>
       </div>
     </div>
    
@@ -141,6 +187,9 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+      shipment_source: '',
+      act_date: "",
+      total_shipments: '0',
     };
   },
   components: { Loader, Notifications, TerritoryModal },
@@ -176,6 +225,17 @@ export default {
     },
   },
   methods: {
+    getAmountShipment(){
+      this.loader = true;
+      api.getAmountShipments(this.shipment_source, this.act_date)
+      .then(response => {
+        this.loader = false
+        this.total_shipments = response.data.total_objects
+      }).catch(error => {
+        console.log(error)
+        this.loader = false
+      })
+    },
     showModalTerritory() {
       // this.$refs(['territoryModal']).show()
       this.$bvModal.show("territoryModal");
@@ -267,6 +327,9 @@ export default {
 </script>
 
 <style scoped>
+.third{
+  border: 1px solid black;
+}
 .air_block {
   width: 70%;
   height: auto;
