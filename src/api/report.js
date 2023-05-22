@@ -113,6 +113,11 @@ const getFinRep1= (date_begin, date_end) => {
 const getFinRep2= (date_begin, date_end) => {
     return api.get(`${reports}/fin/2?date_begin=${date_begin}&date_end=${date_end}`)
 }
+
+// Уведомления
+const personalTasks = (id) => {
+    return api.get(`${resource}/tasks/?user=${id}`)
+}
 export default {
     getUsers,
     getReportById,
@@ -149,6 +154,8 @@ export default {
     getKeyFacts,
     getKeyFactsSpeedTon,
     getKeyFactsSpeed,
+    // Уведомеления
+    personalTasks,
 
     getFinRep1,
     getFinRep2,

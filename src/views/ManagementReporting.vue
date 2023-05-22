@@ -62,6 +62,22 @@
                 <Table4 />
               </b-card-text>
 
+              <b-card-text v-if="i.name === 'Справка о выполнении перевозок полувагонами'">
+                <Table5 />
+              </b-card-text>
+
+              <b-card-text v-if="i.name === 'Анализ перевозки и выручки по сегменту полувагонов'">
+                <Table7 />
+              </b-card-text>
+
+              <b-card-text v-if="i.name === 'Производство по универсальным перевозкам (собственный парк)'">
+                <Table8 />
+              </b-card-text>
+              <b-card-text v-if="i.name === 'Производство по универсальным перевозкам (привлеченный парк)'">
+                <Table9 />
+              </b-card-text>
+
+
               
             <b-card-text v-if="i.name === 'Фин. отчет №1'">
               <FinanceReport />
@@ -74,7 +90,6 @@
         </b-card>
       </div>
     </div>
-  
   </template>
   
   <script>
@@ -97,7 +112,10 @@ import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
 import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
 import Table3 from "@/components/Table/ManagmentRepReporting/Table3.vue";
 import Table4 from "@/components/Table/ManagmentRepReporting/Table4.vue";
-
+import Table5 from "@/components/Table/ManagmentRepReporting/Table5.vue";
+import Table7 from "@/components/Table/ManagmentRepReporting/Table7.vue";
+import Table8 from "@/components/Table/ManagmentRepReporting/Table8.vue";
+import Table9 from "@/components/Table/ManagmentRepReporting/Table9.vue";
   export default {
     name: "managmentReporting",
     components: { 
@@ -120,6 +138,10 @@ import Table4 from "@/components/Table/ManagmentRepReporting/Table4.vue";
       Table2,
       Table3,
       Table4,
+      Table5,
+      Table7,
+      Table8,
+      Table9
 
     },
     data() {

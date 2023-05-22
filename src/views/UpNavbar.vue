@@ -1,62 +1,112 @@
 <template>
   <div>
+    <Modal_Notification :modal_notifications="modal_notifications" @close="close_modal" :data="data"/>
 
     <b-navbar toggleable="lg" type="light" style="background: #F8F9FA !important;">
 
-    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-    <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav>
-        <b-nav-item>
-          <router-link  to="/directory"  class="router-links">Справочники</router-link>
-        </b-nav-item>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item>
+            <router-link to="/directory" class="router-links">Справочники</router-link>
+          </b-nav-item>
 
-        <b-nav-item >
-          <router-link to="/wagonpark" class="router-links"> Вагонный парк</router-link>
-        </b-nav-item>
+          <b-nav-item>
+            <router-link to="/wagonpark" class="router-links"> Вагонный парк</router-link>
+          </b-nav-item>
 
-        <b-nav-item >
-          <router-link to="/lk"  class="router-links">Личный кабинет</router-link>
-        </b-nav-item>
+          <b-nav-item>
+            <router-link to="/lk" class="router-links">Личный кабинет</router-link>
+          </b-nav-item>
 
-        <b-nav-item>
-          <router-link to="/report"  class="router-links">Отчеты</router-link>
-        </b-nav-item>
+          <b-nav-item>
+            <router-link to="/report" class="router-links">Отчеты</router-link>
+          </b-nav-item>
 
-        <b-nav-item >
-          <router-link to="/personnel-service" class="router-links">Кадровая служба</router-link>
-        </b-nav-item>
+          <b-nav-item>
+            <router-link to="/personnel-service" class="router-links">Кадровая служба</router-link>
+          </b-nav-item>
 
-        <b-nav-item >
-          <router-link to="/key-facts" class="router-links">Ключевые факты</router-link>
-        </b-nav-item>
+          <b-nav-item>
+            <router-link to="/key-facts" class="router-links">Ключевые факты</router-link>
+          </b-nav-item>
 
-        <b-nav-item >
-          <router-link to="/management-reporting" class="router-links">Управ. отчетность</router-link>
-        </b-nav-item>
+          <b-nav-item>
+            <router-link to="/management-reporting" class="router-links">Управ. отчетность</router-link>
+          </b-nav-item>
 
-        <li class="nav-item" style="padding-top: 1px">
-          <a class="nav-link" href="/" @click="logout" style="color: black; text-decoration: none; font-size: 15px;" >Выход</a>
-        </li>
-      </b-navbar-nav>
+          <li class="nav-item" style="padding-top: 1px">
+            <a class="nav-link" href="/" @click="logout"
+              style="color: black; text-decoration: none; font-size: 15px;">Выход</a>
+          </li>
+
+          <li class="nav-item" style="padding-top: 1px; margin-left: auto;" @click="Notif()">
+            <i class=" block nav-link"><img src="@/assets/bell.png" alt="">
+              <div class="circle" v-if="notifications_queue">
+                <span class="circle_notif">12</span>
+              </div>
+            </i>
+
+          </li>
+        </b-navbar-nav>
 
 
-    </b-collapse>
-  </b-navbar>
+      </b-collapse>
+    </b-navbar>
 
   </div>
 </template>
 <script>
-import {actionTypes} from '@/store/modules/auth'
+import { actionTypes } from '@/store/modules/auth'
+import Modal_Notification from '@/components/ui/Modal_Notification.vue';
+import api from '@/api/report'
+
 export default {
   name: 'UpNavbar',
+  components: { Modal_Notification },
+  data() {
+    return {
+      notifications_queue: false,
+      modal_notifications: false,
+      data: [],
+    }
+  },
+ 
+  mounted(){
+    this.getTasks()
+    
+  },
   methods: {
+    getTasks(){
+      const preid = JSON.parse(localStorage.getItem("vuex"));
+        const id = preid.auth.uid;
+      setInterval(() => {
+       
+        api.personalTasks(id)
+        .then(response => {
+          this.data = response.data.data
+          console.log(response.data.data, '!!!!!!!!!!!')
+        }).catch(error => {
+          console.log(error)
+        })
+      }, 10000)
+     
+    },
     logout() {
       //this.$store.commit('setUser', {})
       // storage.clear();
       localStorage.clear();
       this.$store.dispatch(actionTypes.logout)
-      
+
+    },
+    Notif() {
+      this.modal_notifications = true
+
+      console.log('Сообщение')
+    },
+    close_modal(){
+      this.modal_notifications = false
     }
   }
 }
@@ -64,22 +114,60 @@ export default {
 
 
 <style scoped>
-.router-links{
-  color: black; text-decoration: none; font-size: 15px;
+.block {
+  position: relative;
+  cursor: pointer;
 }
-.disabled{
+
+.circle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10% 5% 0 0;
+  border: 1px solid black;
+  background: #EC2332;
+  width: 17px;
+  height: 17px;
+  border-radius: 100%;
+
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.circle_notif {
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  width: 100%;
+  /* position: relative;
+  left: 0%;
+  bottom: 50%;
+  transform: translate(-0%, 0); */
+}
+
+.router-links {
+  color: black;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.disabled {
   pointer-events: none;
   color: #E4E4E4;
   background: #F8F9FA !important;
 }
-a:hover{
+
+a:hover {
   color: rgb(73, 73, 73) !important;
 }
-a.router-link-active, li.router-link-active {
-border-bottom: 2px solid #EC2332;
+
+a.router-link-active,
+li.router-link-active {
+  border-bottom: 2px solid #EC2332;
 }
-a.router-link{
+
+a.router-link {
   text-decoration: none;
   border-bottom: none;
-}
-</style>
+}</style>
