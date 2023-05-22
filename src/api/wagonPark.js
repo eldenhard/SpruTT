@@ -138,8 +138,8 @@ const postShipmentList = (data) =>{
 const postViewFile = (view, data) =>{
     return api.post(`${resource}/shipments/${view}/load-file/`, data)
 }
-const createReportTerritory = (data) => {
-    return api.post(`${resource}/shipments/export/`, {'wagons': data})
+const createReportTerritory = (data, start, end) => {
+    return api.post(`${resource}/shipments/export/?date_begin=${start}&date_end=${end}`, {'wagons': data})
 }
 const getAmountShipments = (source, date) => {
     return api.get(`${resource}/shipments/?shipment_source=${source}&act_date=${date}`)

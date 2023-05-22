@@ -1,15 +1,25 @@
 <template>
   <div v-if="modal_notifications" class="modal_notifications">
     <div class="header">
-      <h5>Уведомления {{ data.length }}</h5>
+      <h5>Уведомления {{ currentData.length }}</h5>
+      <select name="" id="" style="width: 30%; height: auto;" v-model="filtered_notif">
+        <option value= "all" >Все</option>
+        <option value="success" >Успешно</option>
+        <option value="in_work" >В работе</option>
+        <option value="in_queue" >В очереди</option>
+        <option value="error" >Ошибка</option>
+
+      </select>
+      <input type="text" style="border: 1px solid #cfcfcf !important;" v-model="search" placeholder="поиск">
       <i style="float: right" @click="$emit('close')">
         <img src="@/assets/cross.png" alt="" />
       </i>
     </div>
+    <br>
     <hr />
  
     <div >
-      <div v-for="item in data" :key="item.id">
+      <div v-for="item in currentData" :key="item.id">
         <div class="content" >
             <hr>
         <p>{{ item.id }}</p>
@@ -54,8 +64,21 @@ export default {
         in_queue: false,
       },
       dop_inform: true,
+      filtered_notif: 'all',
+      search: '',
 
     };
+  },
+
+  computed: {
+    currentData(){
+      if(this.filtered_notif == 'all'){
+        if(this.search == ''){
+          return this.data 
+        } return this.data.filter(item => item.info.includes(this.search))
+      }  return this.data.filter(item => item.status == this.filtered_notif && item.info.includes(this.search))
+
+    }
   },
   methods: {
     has_Status_Computed(value) {

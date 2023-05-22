@@ -87,9 +87,18 @@
           <hr />
         </div>
         <div>
-          <p class="explanation">* Введите номера вагонов через пробел <br>
+          <p class="explanation">* Введите номера вагонов через пробел и укажите даты <br>
           * Номер вагон должен содержать 8 цифр <br>
           * При копировании столбца вагонов из MS Excel оставить как есть </p>
+          <div style="display:flex; justify-content: space-between;">
+            <label for="">Начало периода<br>
+              <input type="date" class="textarea" style="background: white;" v-model="start_date">
+            </label>
+            <label for="">Конец периода<br>
+              <input type="date" class="textarea" style="background: white;" v-model="end_date">
+            </label>
+          </div>
+  
           <p class="explanation">Вагонов загружено: {{ amount_wagon }}</p>
           <div class="air_block_content__textarea">
             <textarea
@@ -190,6 +199,8 @@ export default {
       shipment_source: '',
       act_date: "",
       total_shipments: '0',
+      start_date: '',
+      end_date: '',
     };
   },
   components: { Loader, Notifications, TerritoryModal },
@@ -246,21 +257,27 @@ export default {
     getCurrentWagon() {
       let regExps = /\s/g;
       //   this.loader = true;
-      if (this.SearchRepairWagon.length == 0) {
+      if (this.start_date == '' || this.end_date == '') {
         this.showNotify = true;
         this.notifyHead = "Ошибка";
-        this.notifyMessage = "Не введен номер вагона";
+        this.notifyMessage = "Не выбран диапозон дат";
         this.notifyClass = "wrapper-error";
         this.loader = false;
         setTimeout(() => (this.showNotify = false), 2000);
       } else {
         this.allData = false;
         this.searchData = true;
-        let trim_data = this.SearchRepairWagon.trim();
-        let data = trim_data.replace(regExps, ",");
+        let data
+        if(this.SearchRepairWagon == ''){
+           data = []
+        } else {
+          let trim_data = this.SearchRepairWagon.trim();
+           data = trim_data.replace(regExps, ",");
+        }
+    
         this.loader = true;
         api
-          .createReportTerritory(data)
+          .createReportTerritory(data,this.start_date, this.end_date)
           .then((response) => {
             this.showNotify = true;
             this.notifyHead = "Успешно";
