@@ -108,82 +108,7 @@
         </div>
       </div>
     </div>
-    <!-- <div class="grid_net">
-
-      <div class="air_block" style="height: 35vh; float: right;">
-          <div class="air_block_header">
-          <h5>Ручной ввод исправлений в отчет</h5>
-          <hr>
-        </div>
-          <p class="explanation">* Для ввода строк отчета которые были помечены ошибкой, выберите тип отчета и  <br>
-          * Номер вагон должен содержать 8 цифр <br>
-          * При копировании столбца вагонов из MS Excel оставить как есть </p>
-          <div class="air_block_content">
-            
-            <b-button variant="success" class="btn_create"  @click="$bvModal.show('territoryModal')">Отправка в ручную</b-button>
-          </div>
-        </div>
-
-
-
-      <div class="air_block" >
-        <div class="air_block_header">
-          <h5>Экспорт отправок по вагонам</h5>
-          <hr>
-        </div>
-        <p class="explanation">* Введите номера вагонов через пробел <br>
-          * Номер вагон должен содержать 8 цифр <br>
-          * При копировании столбца вагонов из MS Excel оставить как есть </p>
-
-        <div class="air_block_content">
-          <p class="explanation">Вагонов загружено: {{ amount_wagon }}</p>
-          <b-button variant="success" class="btn_create" @click="getCurrentWagon()">Создать отчет</b-button>
-        </div>
-        <textarea rows="4" class="air_block_content_textarea" v-model="SearchRepairWagon"
-          placeholder="Номера вагонов через 1 пробел"></textarea>
-
-      </div>
-
-
-
-<div class="air_block" style="height: 40vh;">
-  <div class="air_block_header">
-          <h5>Тарифы по сопредельным территориям</h5>
-          <hr>
-        </div>
-        <p class="explanation">* Для добавления файла перетащите его в поле или нажмите на него, &nbsp;&nbsp;и выберите необходимый файл <br>
-          * Загрузка файлов осуществляется строго <b>по одному файлу</b> <br>
-       </p>
-
-        <div class="air_block_content">
-          <select class="textareas" v-model="btlc" :class="{ 'errorSelect': isError }">
-              <option value="" disabled>Выберите вид файла</option>
-              <option value="arktur">Арктур</option>
-              <option value="bmp">БМП</option>
-              <option value="btlc">БТЛЦ</option>
-              <option value="glp">GLP</option>
-              <option value="doom">ДУМ</option>
-            </select>
-          <b-button variant="success" class="btn_create" @click="SendFile()">Отправить файл</b-button>
-        </div>
-        <label :for="fileField" class="attachment">
-            <div class="btn-file__actions">
-              <div class="btn-file__actions__item text-center">
-                <div class="btn-file__actions__item--shadow">
-                  <b-icon-cloud-plus />
-                  <div class="visible-xs-block"></div>
-                  {{ changeText }}
-                </div>
-              </div>
-            </div>
-            <input type="file" ref="file" @change="readFile()" :id="fileField" />
-          </label>
-
-      </div> 
-  
-       
-      
-    </div>-->
+   
 
     <Notifications
       :show="showNotify"
@@ -310,9 +235,11 @@ export default {
         setTimeout(() => (this.showNotify = false), 1500);
         this.loader = false;
       } else {
+        event.preventDefault()
         api
           .postViewFile(this.btlc, formData)
           .then((response) => {
+            event.preventDefault()
             this.loader = false;
             this.notifyHead = "Успешно";
             this.notifyMessage = "Задача передана в обработку";
@@ -320,8 +247,8 @@ export default {
             this.showNotify = true;
             setTimeout(() => (this.showNotify = false), 1500);
             this.loader = false;
-            let a = response.data;
-            window.location.href = a;
+            // let a = response.data;
+            // window.location.href = a;
           })
           .catch((error) => {
             this.notifyHead = "Ошибка";

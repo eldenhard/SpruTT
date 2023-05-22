@@ -25,7 +25,7 @@ const getStaffGroup = () => {
 }
 
 const createStuff = (form) => {
-    return api.post(`${resource}/users/create/`, form, {
+    return api.post(`${resource}/users/`, form, {
         headers: {
             //'Content-Type': 'application/json;charset=utf-8',
             'Content-Type': 'multipart/form-data',

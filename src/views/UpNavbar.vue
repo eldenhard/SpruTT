@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Modal_Notification :modal_notifications="modal_notifications" @close="close_modal"/>
+    <Modal_Notification :modal_notifications="modal_notifications" @close="close_modal" :data="data"/>
 
     <b-navbar toggleable="lg" type="light" style="background: #F8F9FA !important;">
 
@@ -60,16 +60,39 @@
 <script>
 import { actionTypes } from '@/store/modules/auth'
 import Modal_Notification from '@/components/ui/Modal_Notification.vue';
+import api from '@/api/report'
+
 export default {
   name: 'UpNavbar',
   components: { Modal_Notification },
   data() {
     return {
       notifications_queue: false,
-      modal_notifications: false
+      modal_notifications: false,
+      data: [],
     }
   },
+ 
+  mounted(){
+    this.getTasks()
+    
+  },
   methods: {
+    getTasks(){
+      const preid = JSON.parse(localStorage.getItem("vuex"));
+        const id = preid.auth.uid;
+      setInterval(() => {
+       
+        api.personalTasks(id)
+        .then(response => {
+          this.data = response.data.data
+          console.log(response.data.data, '!!!!!!!!!!!')
+        }).catch(error => {
+          console.log(error)
+        })
+      }, 10000)
+     
+    },
     logout() {
       //this.$store.commit('setUser', {})
       // storage.clear();
