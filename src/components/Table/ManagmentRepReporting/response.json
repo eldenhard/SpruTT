@@ -1,66 +1,45 @@
-[{
-    data: [
-    {
-      road: "Дорога_1",
-      attr1: [
-        {
-          attr2: "Клиент_1",
-          attr3: [{ road: "Дорога_2", cargo: "нефть1", amount: "1", wo_nds: "1" },
-                  { road: "Дорога_3", cargo: "нефть2", amount: "12", wo_nds: "12"},
-                  { road: "Дорога_4",cargo: "нефть3",amount: "3",wo_nds: "31" },
-                  { road: "Итого", cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"},
-          ],
-          attr4: [{total : 'TOTAL CL_1'}]
-        },
-        {
-          attr2: "Клиент_2",
-          attr3: [{ road: "Дорога_5", cargo: "рис1", amount: "14", wo_nds: "41" },
-                  { road: "Дорога_6", cargo: "рис2", amount: "15", wo_nds: "61" },
-                  { road: "Итого", cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"},
-          ],
-        },
-      ],
-      TOTAL : {
-        cargo: 'TOTAL',
-        amount: 'TOTALA',
-        wo_nds: 'TOTALWO'
-      }
-    },
-    {
-      road: "Дорога_2",
-      attr1: [
-        {
-          attr2: "Клиент_3",
-          total: "Итого Клиент_3",
-          attr3: [
-            { road: "Дорога_7", cargo: "лом1", amount: "16", wo_nds: "19" },
-            { road: "Дорога_8", cargo: "лом2", amount: "17", wo_nds: "10" },
-            { road: "Дорога_9", cargo: "лом3", amount: "18", wo_nds: "12" },
-            { road: "Итого", cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА",},
-          ],
-        },
-        {
-          attr2: "Клиент_4",
-          total: "Итого Клиент_4",
-          attr3: [
-            { road: "Дорога_10", cargo: "рыба1", amount: "19", wo_nds: "145",},
-            { road: "Дорога_11", cargo: "рыба2", amount: "20", wo_nds: "15",},
-            { road: "Итого", cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА",},
-          ],
-        },
-      ],
-      TOTAL : {
-        cargo: 'TOTAL',
-        amount: 'TOTALA',
-        wo_nds: 'TOTALWO'
+[
+  {
+  data: [
+      {
+    road: "Дорога_1",
+    attr1: [
+          {
+        client: "Клиент_1",
+        attr3: [
+              { road: "Дорога_2", cargo: "нефть1", amount: "1", wo_nds: "1"
+              },
+              { road: "Дорога_3", cargo: "нефть2", amount: "12", wo_nds: "12"
+              },
+              { road: "Дорога_4",cargo: "нефть3",amount: "3",wo_nds: "31"
+              },
+            ],
+        total: {cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"
+            }
+          },
+          {
+        client: "Клиент_2",
+        attr3: [
+              { road: "Дорога_5", cargo: "рис1", amount: "14", wo_nds: "41"
+              },
+              { road: "Дорога_6", cargo: "рис2", amount: "15", wo_nds: "61"
+              },
+            ],
+        total: {cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"
+            }
+          }
+        ],
+    TOTAL_ROAD : {
+      cargo: 'TOTAL',
+      amount: 'TOTALA',
+      wo_nds: 'TOTALWO'
+        }
       },
-    },
     ],
-    ALL_TOTAL: {
-        cargo: 'ALL_TOTAL',
-        amount: 'ALL_TOTALA',
-        wo_nds: 'ALL_TOTALWO'
-      }
+  ALL_TOTAL: {
+      cargo: 'ALL_TOTAL',
+      amount: 'ALL_TOTALA',
+      wo_nds: 'ALL_TOTALWO'
+    }
   }
- 
 ]

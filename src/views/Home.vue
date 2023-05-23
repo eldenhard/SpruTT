@@ -13,6 +13,11 @@
                 <contractTable/>
               </b-card-text>
             </b-tab>
+            <b-tab title="Справочник станции">
+              <b-card-text>
+                <StationsDirectory/>
+              </b-card-text>
+            </b-tab>
             <b-tab title="Данные по аренде" active>
                 <b-card-text>
                     <rentalrateTable/>
@@ -60,9 +65,10 @@ li.nav-item {
 import partnerTable from '@/components/Table/PartnerTable.vue'
 import contractTable from '@/components/Table/ContractTable.vue'
 import rentalrateTable from '@/components/Table/RentalRateTable.vue'
+import StationsDirectory from '@/components/Table/StationsDirectory.vue'
 export default{
     name: 'Directory',
-    components: {partnerTable, contractTable , rentalrateTable},
+    components: {partnerTable, contractTable , rentalrateTable, StationsDirectory},
     mounted(){
       document.title = 'Справочники'
 

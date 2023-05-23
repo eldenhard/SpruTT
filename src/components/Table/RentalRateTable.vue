@@ -87,32 +87,14 @@
         Отправить данные
       </button>
     </div>
-    <!-- <div class="rent_person_answer" style="height: auto">
-      <div class="textarea m0p0" style="height: auto" >
-        <ul id="root_tenant">
-          <li v-for="item in filter_tenant" :key="item.id" @click="checkTenant(item.work_name)">
-            <span>{{ item.work_name }}</span>
-            <hr />
-          </li>
-        </ul>
-      </div>
-      <div class="textarea m0p0" style="height: auto" v-show="land_visible">
-        <ul id="root_landlord">
-          <li v-for="item in filter_landlord" :key="item.id" @click="checkLanlord(item.work_name)">
-            <span>{{ item.work_name }}</span>
-            <hr />
-          </li>
-        </ul>
-      </div>
-      <div class="textarea" style="background: transparent; border: none"></div>
-    </div> -->
+ 
 
     <div class="rent_information_lenght">
       <p class="amount"></p>
       <p class="amount">Всего: {{ wagon_len }}</p>
       <p class="amount">Всего: {{ start_date_len }}</p>
       <p class="amount">Всего: {{ end_date_len }}</p>
-      <p class="amount">Всего: {{ days_amount_len }}</p>
+      <!-- <p class="amount">Всего: {{ days_amount_len }}</p> -->
       <p class="amount">Всего: {{ stavka_len }}</p>
     </div>
     <table border="1">
@@ -168,7 +150,7 @@
             </div>
           </th>
 
-          <th>
+          <!-- <th>
             <div class="inputWithIcon">
               <input
                 type="text"
@@ -182,7 +164,7 @@
                 v-if="days_amount.length > 0"
               ></i>
             </div>
-          </th>
+          </th> -->
 
           <th>
             <div class="inputWithIcon">
@@ -205,7 +187,7 @@
           <th>№ вагона</th>
           <th>Дата начала аренды</th>
           <th>Дата окончания аренды</th>
-          <th>Кол-во дней</th>
+          <!-- <th>Кол-во дней</th> -->
           <th>Ставка</th>
         </tr>
       </thead>
@@ -300,7 +282,7 @@
           </tr>
         </td>
 
-        <td>
+        <!-- <td>
           <tr v-for="(amount, index) in days_amount_arr" :key="amount.id">
             <td>
               <div class="inputWithIcon">
@@ -320,7 +302,7 @@
               </div>
             </td>
           </tr>
-        </td>
+        </td> -->
 
         <td>
           <tr v-for="(stavka, index) in stavka_arr" :key="stavka.id">
@@ -361,6 +343,7 @@ import api from "@/api/directory";
 import { mapState } from "vuex";
 import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from "../loader/loader.vue";
+import { indexOf } from '@amcharts/amcharts5/.internal/core/util/Array';
 export default {
   name: "rental-rate",
   components: { Notifications, Loader },
@@ -372,7 +355,7 @@ export default {
       stavka: "",
       start_date: "",
       end_date: "",
-      days_amount: "",
+      // days_amount: "",
       landlord: "",
       tenant: "",
 
@@ -380,7 +363,7 @@ export default {
       stavka_arr: [],
       start_date_arr: [],
       end_date_arr: [],
-      days_amount_arr: [],
+      // days_amount_arr: [],
       all_length: [],
 
       wagon_len: "0",
@@ -414,7 +397,7 @@ export default {
         this.stavka_arr.length,
         this.start_date_arr.length,
         this.end_date_arr.length,
-        this.days_amount_arr.length
+        // this.days_amount_arr.length
       );
       return Math.max.apply(null, sort_Array);
     },
@@ -456,13 +439,13 @@ export default {
       this.wagon_arr.splice(index, 1);
       this.start_date_arr.splice(index, 1);
       this.end_date_arr.splice(index, 1);
-      this.days_amount_arr.splice(index, 1);
+      // this.days_amount_arr.splice(index, 1);
       this.stavka_arr.splice(index, 1);
       this.wagon_len = this.wagon_arr.length;
       this.stavka_len = this.stavka_arr.length;
       this.start_date_len = this.start_date_arr.length;
       this.end_date_len = this.end_date_arr.length;
-      this.days_amount_len = this.days_amount_arr.length;
+      // this.days_amount_len = this.days_amount_arr.length;
     },
     CreateTable() {
       let wagon_array = this.wagon.split(" ");
@@ -516,28 +499,37 @@ export default {
         wagon_DOM.classList.remove("success");
       }, 1000);
     },
-    CreateTableDaysAmount() {
-      let date_amount = this.days_amount.split(" ");
-      this.days_amount_arr = [...date_amount];
-      this.days_amount_arr = this.days_amount_arr.filter((item) => item !== "");
-      this.days_amount_len = this.days_amount_arr.length;
-      this.days_amount = "";
-    },
-    deleteAmount(data_value, index) {
-      let data = document.getElementById(`amount${index}`).value;
-      this.days_amount_arr.splice(index, 1, data);
-      let wagon_DOM = document.getElementById(`amount${index}`);
-      wagon_DOM.classList.add("success");
-      setTimeout(() => {
-        wagon_DOM.classList.remove("success");
-      }, 1000);
-    },
+    // CreateTableDaysAmount() {
+    //   let date_amount = this.days_amount.split(" ");
+    //   this.days_amount_arr = [...date_amount];
+    //   this.days_amount_arr = this.days_amount_arr.filter((item) => item !== "");
+    //   this.days_amount_len = this.days_amount_arr.length;
+    //   this.days_amount = "";
+    // },
+    // deleteAmount(data_value, index) {
+    //   let data = document.getElementById(`amount${index}`).value;
+    //   this.days_amount_arr.splice(index, 1, data);
+    //   let wagon_DOM = document.getElementById(`amount${index}`);
+    //   wagon_DOM.classList.add("success");
+    //   setTimeout(() => {
+    //     wagon_DOM.classList.remove("success");
+    //   }, 1000);
+    // },
     CreateTableStavka() {
-      let stavka = this.stavka.split(" ");
-      this.stavka_arr = [...stavka];
-      this.stavka_arr = this.stavka_arr.filter((item) => item !== "");
-      this.stavka_len = this.stavka_arr.length;
-      this.stavka = "";
+      let handler = this.stavka.replaceAll(' ', '<tt>')
+      let stavka =  handler.replace(/^<t|t>$/g, '').split(/<t|t>(?:<t)?/)
+      const counter = true
+      for (let item in stavka){
+        if(stavka[item] == ''){
+            stavka[item].splice(item, 1)
+        }
+       
+      }
+      console.log(stavka)
+      // this.stavka_arr = [...stavka];
+      // this.stavka_arr = this.stavka_arr.filter((item) => item !== "");
+      // this.stavka_len = this.stavka_arr.length;
+      // this.stavka = "";
     },
     deleteStavka(data_value, index) {
       let data = document.getElementById(`stavka${index}`).value;
@@ -585,7 +577,7 @@ export default {
           start_date: item.replace(/\./g, "-").split("-").reverse("").join("-"),
         });
       });
-      console.log(start_date);
+      // console.log(start_date);
 
       let end_date = [];
       this.end_date_arr.forEach((item) => {
@@ -594,19 +586,19 @@ export default {
         });
       });
 
-      let days_amount = [];
-      this.days_amount_arr.forEach((item) => {
-        days_amount.push({
-          days_amount: item,
-        });
-      });
+      // let days_amount = [];
+      // this.days_amount_arr.forEach((item) => {
+      //   days_amount.push({
+      //     days_amount: item,
+      //   });
+      // });
 
       this.all_length.push(
         this.wagon_len,
         this.stavka_len,
         this.start_date_len,
         this.end_date_len,
-        this.days_amount_len
+        // this.days_amount_len
       );
 
       if (this.helper(this.all_length) == true) {
@@ -617,61 +609,65 @@ export default {
           ...stavka[index],
           ...start_date[index],
           ...end_date[index],
-          ...days_amount[index],
+          days_amount: null,
+
+          // ...days_amount[index],
         }));
-        // console.log(all_array)
-        if (this.landlord == "" || this.tenant == "") {
-          this.loader = false;
-          if (this.landlord == "") {
-            this.ErrorPersonLand = true;
-          }
-          if (this.tenant == "") {
-            this.ErrorPerson = true;
-          }
-          this.notifyHead = "Ошибка";
-          this.notifyMessage =
-            "Необходимо указать данные по Арендатору/Арендодателю";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2500);
-        } else {
-          api
-            .postSaveMany(all_array)
-            .then((response) => {
-              this.loader = false;
-              this.notifyHead = "Успешно";
-              this.notifyMessage = "Данные отправлены";
-              this.notifyClass = "wrapper-success";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 2500);
-              (this.wagon_arr = []),
-                (this.stavka_arr = []),
-                (this.start_date_arr = []),
-                (this.end_date_arr = []),
-                (this.days_amount_arr = []);
-              this.wagon_len = "0";
-              this.stavka_len = "0";
-              this.start_date_len = "0";
-              this.end_date_len = "0";
-              this.days_amount_len = "0";
+        // all_array.push({
+        //   days_amount: 'null'
+        // })
+        console.log(all_array)
+        // if (this.landlord == "" || this.tenant == "") {
+        //   this.loader = false;
+        //   if (this.landlord == "") {
+        //     this.ErrorPersonLand = true;
+        //   }
+        //   if (this.tenant == "") {
+        //     this.ErrorPerson = true;
+        //   }
+        //   this.notifyHead = "Ошибка";
+        //   this.notifyMessage =
+        //     "Необходимо указать данные по Арендатору/Арендодателю";
+        //   this.notifyClass = "wrapper-error";
+        //   this.showNotify = true;
+        //   setTimeout(() => {
+        //     this.showNotify = false;
+        //   }, 2500);
+        // } else {
+        //   api
+        //     .postSaveMany(all_array)
+        //     .then((response) => {
+        //       this.loader = false;
+        //       this.notifyHead = "Успешно";
+        //       this.notifyMessage = "Данные отправлены";
+        //       this.notifyClass = "wrapper-success";
+        //       this.showNotify = true;
+        //       setTimeout(() => {
+        //         this.showNotify = false;
+        //       }, 2500);
+        //       (this.wagon_arr = []),
+        //         (this.stavka_arr = []),
+        //         (this.start_date_arr = []),
+        //         (this.end_date_arr = []),
+        //         // (this.days_amount_arr = []);
+        //       this.wagon_len = "0";
+        //       this.stavka_len = "0";
+        //       this.start_date_len = "0";
+        //       this.end_date_len = "0";
              
-            })
-            .catch((error) => {
-              this.loader = false;
-              this.notifyHead = "Ошибка";
-              this.notifyMessage = error.response.data[0];
-              this.notifyClass = "wrapper-error";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 3500);
-            });
-        }
-      } else {
+        //     })
+        //     .catch((error) => {
+        //       this.loader = false;
+        //       this.notifyHead = "Ошибка";
+        //       this.notifyMessage = error.response.data[0];
+        //       this.notifyClass = "wrapper-error";
+        //       this.showNotify = true;
+        //       setTimeout(() => {
+        //         this.showNotify = false;
+        //       }, 3500);
+        //     });
+        // }
+      // } else {
         this.loader = false;
         this.notifyHead = "Ошибка";
         this.notifyMessage =
@@ -800,7 +796,7 @@ li:hover {
 .rent_information_lenght {
   display: grid;
   gap: 2%;
-  grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr;
 }
 
 .rent_information_placeholder {
