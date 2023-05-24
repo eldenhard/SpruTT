@@ -4,62 +4,79 @@
     <Periods @Action="Actioned" @data="getCurrentData" />
     <br />
   
-    <!-- <pre>
-      {{ normalized }}
-    </pre> -->
+   
     <p>Форма 4.5. "Справка о выполнении перевозок полувагонами"</p>
-
-    <table class="tbl_search">
+<div style="overflow: auto;">
+    <table class="tbl_search" >
       <thead>
         <th>Дорога погрузки</th>
         <th>Клиент</th>
         <th>Дорога выгрузки</th>
-        <th>Груз</th>
-        <th>Кол-во погрузок</th>
-        <th>Выручка руб, без НДС</th>
+        <th style="width: 250px;">Груз</th>
+        <th style="width: 200px;">Вес</th>
+        <th style="width: 200px;">Кол-во погрузок</th>
+        <th style="width: 200px;">Выручка руб, без НДС</th>
       </thead>
 
       <template v-for="obj in normalized">
         <template v-for="{ road, attr1, TOTAL_ROAD } in obj.data">
           <template v-for="({ client, attr3, total }, iAttr1) in attr1">
-            <tr v-for="(attr3Item, iAttr3) in attr3">
+              <tr v-for="(attr3Item, iAttr3) in attr3">
               <td :rowspan="rowspan(attr1)" v-if="!iAttr1 && !iAttr3">{{ road }}</td>
               <td :rowspan="attr3.length" v-if="!iAttr3">{{ client }}</td>
-              <td>{{ attr3Item?.road }}</td>
-              
-              <td>
-                <tr v-for="(cargo, index) in attr3Item?.cargo" :key="cargo.id">
-                  <td>{{ cargo.name }}</td>
-                  <td>{{ cargo.loads }}</td>
+              <td :rowspan="attr3.length" v-if="!iAttr3">{{ attr3Item.road }}</td>
+              <table >
+                <tr v-for="item in  attr3Item.cargo" :key="item.id">
+                  <td style="width: 250px;">{{ item.name }}</td>
+                  <td style="width: 200px;">{{ item?.cargo?.toFixed(2) }}</td>
+                  <td style="width: 200px;">{{ item.loads?.toFixed(2) | format}}</td>
+                  <td style="width: 200px;">{{ item?.revenue?.toFixed(2) | format}}</td>
                 </tr>
+              </table>
+
+
+              <!-- <td>{{ attr3Item.cargo.length }}</td> -->
+              <!-- <td>
+                <tr v-for="cargo in attr3Item.cargo" :key="cargo.id">
+                 <td>{{ cargo.name }}</td>
+              </tr>
               </td>
-           
-              <td v-for="cargo in attr3Item?.cargo" :key="cargo.id">{{ cargo?.loads }}</td>
-              <td v-for="cargo in attr3Item?.cargo" :key="cargo.id">{{ acargo?.revenue }}</td>
-           
+              <td>
+                <tr v-for="cargo in attr3Item.cargo" :key="cargo.id">
+                 <td>{{ cargo.loads }}</td>
+              </tr>
+              </td> -->
+   
+              <!-- <td>{{ item.road }}</td>
+              <td>{{item.loads}}</td>
+              <td>{{item.revenue}}</td>
+              <td>{{item.cargo}}</td> -->
             </tr>
             <tr class="total">
               <td colspan="2">Итого {{ client }}:</td>
-              <td>{{ total?.cargo }}</td>
-              <td>{{ total?.amount }}</td>
-              <td>{{ total?.revenue }}</td>
+              <td></td>
+              <td>{{ total?.cargo.toFixed(2) | format}}</td>
+              <td>{{ total?.amount.toFixed(2) | format}}</td>
+              <td>{{ total?.revenue.toFixed(2) | format}}</td>
             </tr>
           </template>
           <tr class="total_2">
             <td colspan="3">Итого {{ road }}:</td>
-            <td>{{ TOTAL_ROAD?.cargo }}</td>
-            <td>{{ TOTAL_ROAD?.amount }}</td>
-            <td>{{ TOTAL_ROAD?.revenue }}</td>
+            <td></td>
+            <td>{{ TOTAL_ROAD?.cargo.toFixed(2) | format}}</td>
+            <td>{{ TOTAL_ROAD?.amount.toFixed(2) | format}}</td>
+            <td>{{ TOTAL_ROAD?.revenue.toFixed(2) | format}}</td>
           </tr>
         </template>
       </template>
       <tr v-for="obj in normalized" :key="obj.id" style="border: 1px solid black" class="all_total">
         <td colspan="3">Всего погрузки</td>
-        <td>{{ obj.total?.cargo }}</td>
-        <td>{{ obj.total?.amount }}</td>
-        <td>{{ obj.total?.revenue }}</td>
+        <td>{{ obj.total?.cargo.toFixed(2) | format}}</td>
+        <td>{{ obj.total?.amount.toFixed(2) | format}}</td>
+        <td>{{ obj.total?.revenue.toFixed(2) | format}}</td>
       </tr>
     </table>
+  </div>
   </div>
 </template>
 
@@ -76,42 +93,72 @@ export default {
       loader: false,
       date_begin: '',
       date_end: '',
-    //   objects: [
-    //     {
-    //       data: [
-    //         {
-    //           road: "Дорога_1",
-    //           attr1: [
-    //             {
-    //               client: "Клиент_1",
-    //               attr3: [{ road: "Дорога_2", cargo: "нефть1", amount: "1", wo_nds: "1" },
-    //               { road: "Дорога_3", cargo: "нефть2", amount: "12", wo_nds: "12" },
-    //               { road: "Дорога_4", cargo: "нефть3", amount: "3", wo_nds: "31" },
-    //               ],
-    //               total: { cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА" }
-    //             },
-    //             {
-    //               client: "Клиент_2",
-    //               attr3: [{ road: "Дорога_5", cargo: "рис1", amount: "14", wo_nds: "41" },
-    //               { road: "Дорога_6", cargo: "рис2", amount: "15", wo_nds: "61" },
-    //               ],
-    //               total: { cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА" }
-
-    //             },
-    //           ],
-    //           TOTAL_ROAD: {
-    //             cargo: 'TOTAL',
-    //             amount: 'TOTALA',
-    //             wo_nds: 'TOTALWO'
-    //           }
-    //         },
-    //       ],
-    //       ALL_TOTAL: {
-    //         cargo: 'ALL_TOTAL',
-    //         amount: 'ALL_TOTALA',
-    //         wo_nds: 'ALL_TOTALWO'
-    //       }
-    //     }],
+      
+  //     objects:
+  //   [
+  // {
+  //   "data": [
+  //     {
+  //       "road": "Белорусская ж. д.",
+  //       "attr1": [
+  //         {
+  //           "client": "РУСНЕРУДТРЕЙД, ООО",
+  //           "attr3": [
+  //             {
+  //               "road": "Московская ж. д.",
+  //               "cargo": [
+  //                 {
+  //                   "name": "Щебень гранитный не поименованный в 123",
+  //                   "loads": 26,
+  //                   "revenue": 76214000,
+  //                   "cargo:": 1783
+  //                 },
+  //                 {
+  //                   "name": "Щебень гранитный фракции 5х20",
+  //                   "loads": 5,
+  //                   "revenue": 3604000,
+  //                   "cargo": 341
+  //                 }
+  //               ]
+  //             },
+  //             {
+  //               "road": "Московская ж. д.",
+  //               "cargo": [
+  //                 {
+  //                   "name": "Щебень гранитный не поименованный в ал;.y.,mfhgndfdzahsфавите",
+  //                   "loads": 26,
+  //                   "revenue": 76214000,
+  //                   "cargo:": 1783
+  //                 },
+  //                 {
+  //                   "name": "Щебень гранитный фракции 12321 24gх20",
+  //                   "loads": 5,
+  //                   "revenue": 3604000,
+  //                   "cargo:": 341
+  //                 }
+  //               ]
+  //             }
+  //           ],
+  //           "total": {
+  //             "amount": 31,
+  //             "revenue": 79818000,
+  //             "cargo": 2124
+  //           }
+  //         }
+  //       ],
+  //       "TOTAL_ROAD": {
+  //         "amount": 31,
+  //         "revenue": 79818000,
+  //         "cargo": 2124
+  //       }
+  //     },
+  //         ],
+  //         ALL_TOTAL: {
+  //           cargo: 'ALL_TOTAL',
+  //           amount: 'ALL_TOTALA',
+  //           wo_nds: 'ALL_TOTALWO'
+  //         }
+  //       }],
     objects2: ''
   //   objects2: {
   //     "data": {
@@ -216,12 +263,27 @@ export default {
   mounted() {
     // this.normalizeObject()
   },
+  filters: {
+    format(value){
+      return  String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+    }
+  }
 }
  
 </script>
-
-
+<!-- 
+<style lang="scss" scoped>
+tr{
+    background : red;
+    &:hover {
+      background: green;
+    } 
+  }
+</style> -->
 <style scoped>
+.table_search{
+  width: 100%;
+}
 .total {
   background: #fdffd9;
 }
@@ -292,10 +354,4 @@ thead > th {
   background: greenyellow;
 }
 
-/* .road:nth-last-child(n){
-  background: red;
-}
-.road2:last-child{
-  background: green;
-} */
 </style>
