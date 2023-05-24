@@ -285,5 +285,6 @@ th {
 .headers{
     text-align: left !important;
     padding-left: 1%;
+    font-weight: bold !important;
 }
 </style>

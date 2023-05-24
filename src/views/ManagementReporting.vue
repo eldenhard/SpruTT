@@ -47,12 +47,12 @@
               <b-card-text v-if="i.name === 'Размещение парка'">
                 <Table2 />
               </b-card-text>
-              <!-- <b-card-text v-if="i.name === 'Формирование парка'">
-                <FormationPark />
-              </b-card-text> -->
               <b-card-text v-if="i.name === 'Формирование парка'">
-                <Table1 />
+                <FormationPark />
               </b-card-text>
+              <!-- <b-card-text v-if="i.name === 'Формирование парка'">
+                <Table1 />
+              </b-card-text> -->
 
               <b-card-text v-if="i.name === 'Арендованный парк'">
                 <Table3 />
