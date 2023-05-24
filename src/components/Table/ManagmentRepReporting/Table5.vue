@@ -22,31 +22,31 @@
             <tr v-for="(attr3Item, iAttr3) in attr3">
               <td :rowspan="rowspan(attr1)" v-if="!iAttr1 && !iAttr3">{{ road }}</td>
               <td :rowspan="attr3.length" v-if="!iAttr3">{{ client }}</td>
-              <td>{{ attr3Item?.road | format}}</td>
-              <td>{{ attr3Item?.cargo.toFixed(2) | format}}</td>
-              <td>{{ attr3Item?.loads.toFixed(2) | format}}</td>
-              <td>{{ attr3Item?.revenue.toFixed(2) | format}}</td>
+              <td>{{ attr3Item?.road }}</td>
+              <td>{{ attr3Item?.cargo }}</td>
+              <td>{{ attr3Item?.loads }}</td>
+              <td>{{ attr3Item?.revenue }}</td>
             </tr>
             <tr class="total">
               <td colspan="2">Итого {{ client }}:</td>
-              <td>{{ total?.cargo.toFixed(2) | format}}</td>
-              <td>{{ total?.amount.toFixed(2) | format}}</td>
-              <td>{{ total?.revenue.toFixed(2) | format}}</td>
+              <td>{{ total?.cargo }}</td>
+              <td>{{ total?.amount }}</td>
+              <td>{{ total?.revenue }}</td>
             </tr>
           </template>
           <tr class="total_2">
             <td colspan="3">Итого {{ road }}:</td>
-            <td>{{ TOTAL_ROAD?.cargo.toFixed(2) | format}}</td>
-            <td>{{ TOTAL_ROAD?.amount.toFixed(2) | format}}</td>
-            <td>{{ TOTAL_ROAD?.revenue.toFixed(2) | format}}</td>
+            <td>{{ TOTAL_ROAD?.cargo }}</td>
+            <td>{{ TOTAL_ROAD?.amount }}</td>
+            <td>{{ TOTAL_ROAD?.revenue }}</td>
           </tr>
         </template>
       </template>
       <tr v-for="obj in normalized" :key="obj.id" style="border: 1px solid black" class="all_total">
         <td colspan="3">Всего погрузки</td>
-        <td>{{ obj.total?.cargo.toFixed(2) | format}}</td>
-        <td>{{ obj.total?.amount.toFixed(2) | format}}</td>
-        <td>{{ obj.total?.revenue.toFixed(2) | format}}</td>
+        <td>{{ obj.total?.cargo }}</td>
+        <td>{{ obj.total?.amount }}</td>
+        <td>{{ obj.total?.revenue }}</td>
       </tr>
 
 
@@ -881,11 +881,7 @@ export default {
 
     
   },
- filters: {
-    format(value){
-         return  String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-        }
- },
+ 
   methods: {
     rowspan: attr2 => attr2.reduce((acc, n) => acc + n.attr3.length + 1, 0),
 
@@ -933,9 +929,9 @@ export default {
       this.date_end = data.date_end
     }
   },
-//   mounted() {
+  mounted() {
    
-//   },
+  },
 };
 </script>
 
