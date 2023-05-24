@@ -82,11 +82,9 @@ export default {
       const preid = JSON.parse(localStorage.getItem("vuex"));
         const id = preid.auth.uid;
       setInterval(() => {
-       
         api.personalTasks(id)
         .then(response => {
           this.data = response.data.data
-          console.log(response.data.data, '!!!!!!!!!!!')
         }).catch(error => {
           console.log(error)
         })

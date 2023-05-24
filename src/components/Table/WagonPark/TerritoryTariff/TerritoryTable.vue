@@ -87,9 +87,18 @@
           <hr />
         </div>
         <div>
-          <p class="explanation">* Введите номера вагонов через пробел <br>
+          <p class="explanation">* Введите номера вагонов через пробел и укажите даты <br>
           * Номер вагон должен содержать 8 цифр <br>
           * При копировании столбца вагонов из MS Excel оставить как есть </p>
+          <div style="display:flex; justify-content: space-between;">
+            <label for="">Начало периода<br>
+              <input type="date" class="textarea" style="background: white;" v-model="start_date">
+            </label>
+            <label for="">Конец периода<br>
+              <input type="date" class="textarea" style="background: white;" v-model="end_date">
+            </label>
+          </div>
+  
           <p class="explanation">Вагонов загружено: {{ amount_wagon }}</p>
           <div class="air_block_content__textarea">
             <textarea
@@ -105,7 +114,53 @@
               >Создать отчет</b-button
             >
           </div>
+
+
         </div>
+
+        <div class="air_block_header">
+          <h5>
+            Узнать количество отправок
+          </h5>
+          <hr />
+        </div>
+        <p class="explanation"> </p>
+        <div class="air_block_content__textarea">
+          <div>
+            <select
+              class="textareas"
+              v-model="shipment_source"
+              :class="{ errorSelect: isError }"
+            >
+              <option value="" disabled>Выберите вид файла</option>
+              <option value="arktur">Арктур</option>
+              <option value="bmp">БМП</option>
+              <option value="btlc">БТЛЦ</option>
+              <option value="glp">GLP</option>
+              <option value="doom">ДУМ</option>
+            </select>
+              <br>
+              <br>
+            <label for="">Дата акта<br>
+              <input type="date" class="textarea" style="background: white;" v-model="act_date">
+            </label>
+          </div>
+
+          <div style="width: 100%; margin-top: 1%;" class="btn_create">
+            <b-button variant="success"
+                        @click="getAmountShipment()"
+                        class="btn_create"
+                        style="width: 36%; float: right;"
+                        >Получить количество</b-button>
+                        <br><br><br>
+            <h4 style="float: right; color: grey;">Итого:  {{ total_shipments + ' шт'}}</h4>
+
+          </div>
+         
+           
+         
+        </div>
+<br>
       </div>
     </div>
    
@@ -141,6 +196,11 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+      shipment_source: '',
+      act_date: "",
+      total_shipments: '0',
+      start_date: '',
+      end_date: '',
     };
   },
   components: { Loader, Notifications, TerritoryModal },
@@ -176,6 +236,17 @@ export default {
     },
   },
   methods: {
+    getAmountShipment(){
+      this.loader = true;
+      api.getAmountShipments(this.shipment_source, this.act_date)
+      .then(response => {
+        this.loader = false
+        this.total_shipments = response.data.total_objects
+      }).catch(error => {
+        console.log(error)
+        this.loader = false
+      })
+    },
     showModalTerritory() {
       // this.$refs(['territoryModal']).show()
       this.$bvModal.show("territoryModal");
@@ -186,21 +257,27 @@ export default {
     getCurrentWagon() {
       let regExps = /\s/g;
       //   this.loader = true;
-      if (this.SearchRepairWagon.length == 0) {
+      if (this.start_date == '' || this.end_date == '') {
         this.showNotify = true;
         this.notifyHead = "Ошибка";
-        this.notifyMessage = "Не введен номер вагона";
+        this.notifyMessage = "Не выбран диапозон дат";
         this.notifyClass = "wrapper-error";
         this.loader = false;
         setTimeout(() => (this.showNotify = false), 2000);
       } else {
         this.allData = false;
         this.searchData = true;
-        let trim_data = this.SearchRepairWagon.trim();
-        let data = trim_data.replace(regExps, ",");
+        let data
+        if(this.SearchRepairWagon == ''){
+           data = []
+        } else {
+          let trim_data = this.SearchRepairWagon.trim();
+           data = trim_data.replace(regExps, ",");
+        }
+    
         this.loader = true;
         api
-          .createReportTerritory(data)
+          .createReportTerritory(data,this.start_date, this.end_date)
           .then((response) => {
             this.showNotify = true;
             this.notifyHead = "Успешно";
@@ -267,6 +344,9 @@ export default {
 </script>
 
 <style scoped>
+.third{
+  border: 1px solid black;
+}
 .air_block {
   width: 70%;
   height: auto;

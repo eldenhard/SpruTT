@@ -11,25 +11,14 @@
                 <th>Ст. отправления</th>
                 <th>Ст. назначения</th>
                 <th>Груз</th>
-                <th>Предыдущий груз</th>
-                <th>Вес</th>
-                <th>Вагон</th>
-                <th>Дата отправ.</th>
-                <th>Валюта</th>
-                <th>Без НДС в вал.</th>
-                <th>НДС в вал.</th>
-                <th>НДС</th>
-                <th>Дата акта</th>
-                <th>Накладная</th>
-                <th>Сумма РТ</th>
-                <th>Тариф по РФ</th>
+
               </tr>
             </thead>
             <tbody>
               <tr>
                 <!-- Источник файла -->
-                <td>
-                  <select v-model="shipment_source">
+                <td style="width: 25%">
+                  <select v-model="shipment_source" style="width: 100%">
                     <option value="" disabled>Источник файла</option>
                     <option value="arktur">Арктур</option>
                     <option value="bmp">БМП</option>
@@ -39,13 +28,14 @@
                   </select>
                 </td>
                 <!-- Отравка -->
-                <td>
+                <td style="width: 25%">
                   <div class="inputcontainer" style="height: 100% !important">
                     <input
                       class="changeRow"
                       v-model="departure_station"
                       :type="'станция'"
                       @keyup="debounceHandlers()"
+                      style="width: 100%"
                     />
                     <div class="icon-container" v-if="loaderInputDep">
                       <i class="loader"></i>
@@ -67,12 +57,13 @@
                   </div>
                 </td>
                 <!-- Назначение станция -->
-                <td>
+                <td style="width: 30%">
                   <div class="inputcontainer" style="height: 100% !important">
                     <input
                       class="changeRow"
                       v-model="destination_station"
                       :type="'станция'"
+                      style="width: 100%"
                     />
                     <div class="icon-container" v-if="loaderInputDest">
                       <i class="loader"></i>
@@ -97,14 +88,14 @@
                   </div>
                 </td>
                 <!-- Груз -->
-                <td>
+                <td style="width: 25%">
                   <div class="inputcontainer">
                     <input
                       type="text"
                       class="textarea"
                       placeholder="введите наименование груза"
                       v-model="cargo"
-                      style="background: white"
+                      style="background: white; "
                     />
                     <div class="icon-container" v-if="loaderInputCargo">
                       <i class="loader"></i>
@@ -126,15 +117,31 @@
                     </ul>
                   </div>
                 </td>
-                <!-- Предыдущий груз -->
-                <td>
+
+
+              </tr>
+            </tbody>
+          </table>
+<br><br><br><br>
+          <table border="1">
+              <thead>
+                <tr>
+                  <th>Предыдущий груз</th>
+                  <th>Вес</th>
+                  <th>Вагон</th>
+                  <th>Дата отправ.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 25%">
                   <div class="inputcontainer">
                     <input
                       type="text"
                       class="textarea"
                       placeholder="введите наименование груза"
                       v-model="prev_cargo"
-                      style="background: white"
+                      style="background: white; width: 100%"
                     />
                     <div class="icon-container" v-if="loaderInputPrevCargo">
                       <i class="loader"></i>
@@ -157,22 +164,38 @@
                   </div>
                 </td>
 
-                <td>
-                  <input class="changeRow" type="number" v-model="weight" />
+                <td style="width: 25%">
+                  <input class="changeRow" type="number" v-model="weight"  style="width: 100%" />
                 </td>
-                <td>
-                  <input class="changeRow" type="number" v-model="wagon" />
+                <td style="width: 30%">
+                  <input class="changeRow" type="number" v-model="wagon"  style="width: 100%"/>
                 </td>
 
-                <td>
+                <td style="width: 100%">
                   <input
                     class="changeRow"
                     type="date"
                     v-model="shipment_date"
+                    style="width: 100%"
                   />
                 </td>
-                <td>
-                  <select v-model="currency">
+                </tr>
+              </tbody>
+          </table>
+<br><br><br><br>
+          <table border="1">
+            <thead>
+              <tr>
+                <th>Валюта</th>
+                <th>Без НДС в вал.</th>
+                <th>НДС в вал.</th>
+                <th>НДС</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                 <td style="width: 25%">
+                  <select v-model="currency"  style="width: 100%">
                     <option value="" disabled>Выберите вид валюты</option>
                     <option value="KZT">KZT</option>
                     <option value="BYN">BYN</option>
@@ -180,28 +203,45 @@
                     <option value="USD">USD</option>
                   </select>
                 </td>
-                <td>
+                <td style="width: 25%">
                   <input
                     class="changeRow"
                     type="number"
                     v-model="sum_wo_nds_currency"
+                    style="width: 100%"
                   />
                 </td>
-                <td>
-                  <input class="changeRow" type="number" v-model="sum_wo_nds" />
+                <td style="width: 30%">
+                  <input class="changeRow" type="number" v-model="sum_wo_nds"  style="width: 100%"/>
                 </td>
-                <td><input class="changeRow" type="number" v-model="nds" /></td>
-                <td>
-                  <input class="changeRow" type="date" v-model="act_date" />
+                <td style="width: 30%"><input class="changeRow" type="number" v-model="nds"  style="width: 100%"/></td>
+              </tr>
+            </tbody>
+          </table>
+<br><br><br><br>
+          <table border="1">
+            <thead>
+              <tr>
+                
+                <th>Дата акта</th>
+                <th>Накладная</th>
+                <th>Сумма РТ</th>
+                <th>Тариф по РФ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 25%">
+                  <input class="changeRow" type="date" v-model="act_date"  style="width: 100%"/>
                 </td>
-                <td>
-                  <input class="changeRow" type="number" v-model="invoice" />
+                <td style="width: 25%">
+                  <input class="changeRow" type="number" v-model="invoice"  style="width: 100%"/>
                 </td>
-                <td>
-                  <input class="changeRow" type="number" v-model="rt_sum" />
+                <td style="width: 30%">
+                  <input class="changeRow" type="number" v-model="rt_sum" style="width: 100%" />
                 </td>
-                <td>
-                  <input class="changeRow" type="number" v-model="tariff_rf" />
+                <td style="width: 30%">
+                  <input class="changeRow" type="number" v-model="tariff_rf"  style="width: 100%"/>
                 </td>
               </tr>
             </tbody>
@@ -434,13 +474,13 @@ export default {
 <style scoped>
 .dataDeparture {
   height: auto;
-  max-height: 150px;
+  max-height: 130px;
   overflow: auto;
   width: 100%;
   margin-top: 21%;
   position: absolute;
   top: 21%;
-  z-index: 15 !important;
+  /* z-index: 1500000 !important; */
   border: 1px solid grey;
   border-top: none;
   background: white;
@@ -487,12 +527,12 @@ th {
 }
 
 .modal-block {
-  height: 30vh;
+  height: 70vh;
   position: relative;
 }
 .modal-block__table {
   overflow: auto;
-  height: 25vh;
+  height: 60vh;
 }
 .modal-block__buttons {
   width: 100%;

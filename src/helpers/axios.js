@@ -34,7 +34,6 @@ _axios.interceptors.response.use(
                 let tokenParse = JSON.parse(tokenVuex)
                 let token = tokenParse.auth.user.token
                 localStorage.setItem('accessToken', token)
-
             }
             return Promise.reject(error);
         }

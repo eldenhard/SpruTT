@@ -1,6 +1,10 @@
 <template>
   <div>
+    <Loader :loader="loader" />
+    <Periods @Action="Actioned" @data="getCurrentData" />
+<br>
     <p>Форма 4.5. "Справка о выполнении перевозок полувагонами"</p>
+
     <table class="tbl_search">
       <thead>
         <th>Дорога погрузки</th>
@@ -9,41 +13,42 @@
         <th>Груз</th>
         <th>Кол-во погрузок</th>
         <th>Выручка руб, без НДС</th>
-        <!-- <th>Всего</th> -->
       </thead>
 
-      <template v-for="obj in objects">
-  <template v-for="{ road, attr1, TOTAL_CLIENT } in obj.data">
-    <template v-for="({ client, attr3, total }, iAttr1) in attr1">
-      <tr v-for="(attr3Item, iAttr3) in attr3">
-        <td :rowspan="rowspan(attr1)" v-if="!iAttr1 && !iAttr3">{{ road }}</td>
-        <td :rowspan="attr3.length" v-if="!iAttr3">{{ client }}</td>
-        <td>{{ attr3Item.road }}</td>
-        <td>{{ attr3Item.cargo }}</td>
-        <td>{{ attr3Item.amount }}</td>
-        <td>{{ attr3Item.wo_nds }}</td>
+
+      <template v-for="obj in normalized">
+        <template v-for="{ road, attr1, TOTAL_ROAD } in obj.data">
+          <template v-for="({ client, attr3, total }, iAttr1) in attr1">
+            <tr v-for="(attr3Item, iAttr3) in attr3">
+              <td :rowspan="rowspan(attr1)" v-if="!iAttr1 && !iAttr3">{{ road }}</td>
+              <td :rowspan="attr3.length" v-if="!iAttr3">{{ client }}</td>
+              <td>{{ attr3Item?.road | format}}</td>
+              <td>{{ attr3Item?.cargo.toFixed(2) | format}}</td>
+              <td>{{ attr3Item?.loads.toFixed(2) | format}}</td>
+              <td>{{ attr3Item?.revenue.toFixed(2) | format}}</td>
+            </tr>
+            <tr class="total">
+              <td colspan="2">Итого {{ client }}:</td>
+              <td>{{ total?.cargo.toFixed(2) | format}}</td>
+              <td>{{ total?.amount.toFixed(2) | format}}</td>
+              <td>{{ total?.revenue.toFixed(2) | format}}</td>
+            </tr>
+          </template>
+          <tr class="total_2">
+            <td colspan="3">Итого {{ road }}:</td>
+            <td>{{ TOTAL_ROAD?.cargo.toFixed(2) | format}}</td>
+            <td>{{ TOTAL_ROAD?.amount.toFixed(2) | format}}</td>
+            <td>{{ TOTAL_ROAD?.revenue.toFixed(2) | format}}</td>
+          </tr>
+        </template>
+      </template>
+      <tr v-for="obj in normalized" :key="obj.id" style="border: 1px solid black" class="all_total">
+        <td colspan="3">Всего погрузки</td>
+        <td>{{ obj.total?.cargo.toFixed(2) | format}}</td>
+        <td>{{ obj.total?.amount.toFixed(2) | format}}</td>
+        <td>{{ obj.total?.revenue.toFixed(2) | format}}</td>
       </tr>
-      <tr class="total">
-        <td colspan="2">Итого {{ client }}:</td>
-        <td>{{ total.cargo }}</td>
-        <td>{{ total.amount }}</td>
-        <td>{{ total.wo_nds }}</td>
-      </tr>
-    </template>
-    <tr class="total_2">
-      <td colspan="3">Итого {{ road }}:</td>
-      <td>{{ TOTAL_CLIENT.cargo }}</td>
-      <td>{{ TOTAL_CLIENT.amount }}</td>
-      <td>{{ TOTAL_CLIENT.wo_nds }}</td>
-    </tr>
-  </template>
-</template>
-<tr v-for="obj in objects" :key="obj.id" style="border: 1px solid black" class="all_total">
-  <td colspan="3">Всего погрузки</td>
-      <td>{{ obj.ALL_TOTAL.cargo }}</td>
-      <td>{{ obj.ALL_TOTAL.amount }}</td>
-      <td>{{ obj.ALL_TOTAL.wo_nds }}</td>
-  </tr>
+
 
     </table>
   </div>
@@ -51,151 +56,964 @@
 
 
 <script>
+import api from '@/api/reportUO'
+import Periods from "./Periods.vue";
+import Loader from '@/components/loader/loader.vue';
 export default {
+    components: { Periods, Loader },
   data() {
     return {
-      objects: [{
-        data: [
-        {
-          road: "Дорога_1",
-          attr1: [
-            {
-              client: "Клиент_1",
-              attr3: [{ road: "Дорога_2", cargo: "нефть1", amount: "1", wo_nds: "1" },
-                      { road: "Дорога_3", cargo: "нефть2", amount: "12", wo_nds: "12"},
-                      { road: "Дорога_4",cargo: "нефть3",amount: "3",wo_nds: "31" },
-              ],
-              total: {cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"}
-            },
-            {
-              client: "Клиент_2",
-              attr3: [{ road: "Дорога_5", cargo: "рис1", amount: "14", wo_nds: "41" },
-                      { road: "Дорога_6", cargo: "рис2", amount: "15", wo_nds: "61" },
-              ],
-              total: {cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"}
+      normalized : [],
+      loader: false,
+      date_begin: '',
+      date_end: '',
+    //   objects: [
+    //     {
+    //       data: [
+    //         {
+    //           road: "Дорога_1",
+    //           attr1: [
+    //             {
+    //               client: "Клиент_1",
+    //               attr3: [{ road: "Дорога_2", cargo: "нефть1", amount: "1", wo_nds: "1" },
+    //               { road: "Дорога_3", cargo: "нефть2", amount: "12", wo_nds: "12" },
+    //               { road: "Дорога_4", cargo: "нефть3", amount: "3", wo_nds: "31" },
+    //               ],
+    //               total: { cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА" }
+    //             },
+    //             {
+    //               client: "Клиент_2",
+    //               attr3: [{ road: "Дорога_5", cargo: "рис1", amount: "14", wo_nds: "41" },
+    //               { road: "Дорога_6", cargo: "рис2", amount: "15", wo_nds: "61" },
+    //               ],
+    //               total: { cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА" }
 
-            },
-          ],
-          TOTAL_CLIENT : {
-            cargo: 'TOTAL',
-            amount: 'TOTALA',
-            wo_nds: 'TOTALWO'
-          }
-        },
-        {
-          road: "Дорога_1",
-          attr1: [
-            {
-              client: "Клиент_1",
-              attr3: [{ road: "Дорога_2", cargo: "нефть1", amount: "1", wo_nds: "1" },
-                      { road: "Дорога_3", cargo: "нефть2", amount: "12", wo_nds: "12"},
-                      { road: "Дорога_4",cargo: "нефть3",amount: "3",wo_nds: "31" },
-              ],
-              total: {cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"}
-            },
-            {
-              client: "Клиент_2",
-              attr3: [{ road: "Дорога_5", cargo: "рис1", amount: "14", wo_nds: "41" },
-                      { road: "Дорога_6", cargo: "рис2", amount: "15", wo_nds: "61" },
-              ],
-              total: {cargo: "СУММА", amount: "СУММА", wo_nds: "СУММА"}
+    //             },
+    //           ],
+    //           TOTAL_ROAD: {
+    //             cargo: 'TOTAL',
+    //             amount: 'TOTALA',
+    //             wo_nds: 'TOTALWO'
+    //           }
+    //         },
+    //       ],
+    //       ALL_TOTAL: {
+    //         cargo: 'ALL_TOTAL',
+    //         amount: 'ALL_TOTALA',
+    //         wo_nds: 'ALL_TOTALWO'
+    //       }
+    //     }],
 
-            },
-          ],
-          TOTAL_CLIENT : {
-            cargo: 'TOTAL',
-            amount: 'TOTALA',
-            wo_nds: 'TOTALWO'
-          }
-        },
-],
-        ALL_TOTAL: {
-            cargo: 'ALL_TOTAL',
-            amount: 'ALL_TOTALA',
-            wo_nds: 'ALL_TOTALWO'
-          }
+    objects2: '',
+//         objects2 : {
+          
+//     "data": {
+//         "Белорусская ж. д.": {
+//             "data": {
+//                 "ТК РУТ Логистик": {
+//                     "data": {
+//                         "Горьковская ж. д.": {
+//                             "loads": 27,
+//                             "revenue": 121242000.0,
+//                             "cargo": 1837.0000000000002
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 27,
+//                         "revenue": 121242000.0,
+//                         "cargo": 1837.0000000000002
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 27,
+//                 "revenue": 121242000.0,
+//                 "cargo": 1837.0000000000002
+//             }
+//         },
+//         "Восточно-Сибирская ж. д.": {
+//             "data": {
+//                 "Мечел-Транс": {
+//                     "data": {
+//                         "Южно-Уральская ж. д.": {
+//                             "loads": 1,
+//                             "revenue": 3345600.0,
+//                             "cargo": 69.7
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 1,
+//                         "revenue": 3345600.0,
+//                         "cargo": 69.7
+//                     }
+//                 },
+//                 "ЧЭМК, АО": {
+//                     "data": {
+//                         "Южно-Уральская ж. д.": {
+//                             "loads": 1,
+//                             "revenue": 3876000.0,
+//                             "cargo": 68.0
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 1,
+//                         "revenue": 3876000.0,
+//                         "cargo": 68.0
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 2,
+//                 "revenue": 7221600.0,
+//                 "cargo": 137.7
+//             }
+//         },
+//         "Дальневосточная ж. д.": {
+//             "data": {
+//                 "ППО": {
+//                     "data": {
+//                         "Красноярская ж. д.": {
+//                             "loads": 78,
+//                             "revenue": 615042080.0,
+//                             "cargo": 5348.192000000001
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 78,
+//                         "revenue": 615042080.0,
+//                         "cargo": 5348.192000000001
+//                     }
+//                 },
+//                 "ФЛК, ООО": {
+//                     "data": {
+//                         "Куйбышевская ж. д.": {
+//                             "loads": 1,
+//                             "revenue": 4017155.0000000005,
+//                             "cargo": 65.855
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 1,
+//                         "revenue": 4017155.0000000005,
+//                         "cargo": 65.855
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 79,
+//                 "revenue": 619059235.0,
+//                 "cargo": 5414.0470000000005
+//             }
+//         },
+//         "Западно-Сибирская ж. д.": {
+//             "data": {
+//                 "Газпром Нефть, ПАО": {
+//                     "data": {
+//                         "Западно-Сибирская ж. д.": {
+//                             "loads": 35,
+//                             "revenue": 200478227.88,
+//                             "cargo": 2340.52
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 35,
+//                         "revenue": 200478227.88,
+//                         "cargo": 2340.52
+//                     }
+//                 },
+//                 "КАРБОН УГОЛЬ, ООО": {
+//                     "data": {
+//                         "Южно-Уральская ж. д.": {
+//                             "loads": 155,
+//                             "revenue": 905384063.2,
+//                             "cargo": 10795.749999999995
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 155,
+//                         "revenue": 905384063.2,
+//                         "cargo": 10795.749999999995
+//                     }
+//                 },
+//                 "КОКС": {
+//                     "data": {
+//                         "Западно-Сибирская ж. д.": {
+//                             "loads": 2,
+//                             "revenue": 2180499.75,
+//                             "cargo": 138.05
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 2,
+//                         "revenue": 2180499.75,
+//                         "cargo": 138.05
+//                     }
+//                 },
+//                 "Мечел-Транс": {
+//                     "data": {
+//                         "Западно-Сибирская ж. д.": {
+//                             "loads": 6,
+//                             "revenue": 6686400.0,
+//                             "cargo": 417.90000000000003
+//                         },
+//                         "Южно-Уральская ж. д.": {
+//                             "loads": 132,
+//                             "revenue": 739763376.0,
+//                             "cargo": 9190.349999999999
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 138,
+//                         "revenue": 746449776.0,
+//                         "cargo": 9608.249999999998
+//                     }
+//                 },
+//                 "НАЦИОНАЛЬНАЯ ТРАНСПОРТНАЯ КОМПАНИЯ, АО": {
+//                     "data": {
+//                         "Дальневосточная ж. д.": {
+//                             "loads": 20,
+//                             "revenue": 194850708.0,
+//                             "cargo": 1390.25
+//                         },
+//                         "Западно-Сибирская ж. д.": {
+//                             "loads": 22,
+//                             "revenue": 1913.1875,
+//                             "cargo": 1530.5500000000002
+//                         },
+//                         "Красноярская ж. д.": {
+//                             "loads": 1,
+//                             "revenue": 1614450.0,
+//                             "cargo": 68.7
+//                         },
+//                         "Одесская ж. д.": {
+//                             "loads": 29,
+//                             "revenue": 210876750.0,
+//                             "cargo": 2008.35
+//                         },
+//                         "Северо-Кавказская ж. д.": {
+//                             "loads": 3,
+//                             "revenue": 21472500.0,
+//                             "cargo": 204.5
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 75,
+//                         "revenue": 428816321.1875,
+//                         "cargo": 5202.35
+//                     }
+//                 },
+//                 "НОВАЯ ГОРНАЯ УК, ООО": {
+//                     "data": {
+//                         "Южно-Уральская ж. д.": {
+//                             "loads": 283,
+//                             "revenue": 1867254145.1,
+//                             "cargo": 19629.549999999996
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 283,
+//                         "revenue": 1867254145.1,
+//                         "cargo": 19629.549999999996
+//                     }
+//                 },
+//                 "ПРОМУГОЛЬСЕРВИС, ООО": {
+//                     "data": {
+//                         "Казахстанская ж. д.": {
+//                             "loads": 196,
+//                             "revenue": 1503065100.0,
+//                             "cargo": 13608.150000000001
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 196,
+//                         "revenue": 1503065100.0,
+//                         "cargo": 13608.150000000001
+//                     }
+//                 },
+//                 "СДС-Уголь": {
+//                     "data": {
+//                         "Северо-Кавказская ж. д.": {
+//                             "loads": 6,
+//                             "revenue": 50088000.0,
+//                             "cargo": 417.4
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 6,
+//                         "revenue": 50088000.0,
+//                         "cargo": 417.4
+//                     }
+//                 },
+//                 "СКС, ООО": {
+//                     "data": {
+//                         "Дальневосточная ж. д.": {
+//                             "loads": 119,
+//                             "revenue": 1128126600.0,
+//                             "cargo": 8282.899999999996
+//                         },
+//                         "Западно-Сибирская ж. д.": {
+//                             "loads": 9,
+//                             "revenue": 870.52,
+//                             "cargo": 621.8
+//                         },
+//                         "Северо-Кавказская ж. д.": {
+//                             "loads": 54,
+//                             "revenue": 414434500.0,
+//                             "cargo": 3757.400000000001
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 182,
+//                         "revenue": 1542561970.52,
+//                         "cargo": 12662.099999999997
+//                     }
+//                 },
+//                 "Трансметкокс": {
+//                     "data": {
+//                         "Казахстанская ж. д.": {
+//                             "loads": 20,
+//                             "revenue": 151063100.0,
+//                             "cargo": 1385.8999999999999
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 20,
+//                         "revenue": 151063100.0,
+//                         "cargo": 1385.8999999999999
+//                     }
+//                 },
+//                 "Уголь-Транс": {
+//                     "data": {
+//                         "Дальневосточная ж. д.": {
+//                             "loads": 30,
+//                             "revenue": 291471950.0,
+//                             "cargo": 2090.5
+//                         },
+//                         "Западно-Сибирская ж. д.": {
+//                             "loads": 24,
+//                             "revenue": 2331.0739999999996,
+//                             "cargo": 1658.6499999999999
+//                         },
+//                         "Казахстанская ж. д.": {
+//                             "loads": 399,
+//                             "revenue": 3019158020.0,
+//                             "cargo": 27704.6
+//                         },
+//                         "Северо-Кавказская ж. д.": {
+//                             "loads": 13,
+//                             "revenue": 103902500.0,
+//                             "cargo": 903.5
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 466,
+//                         "revenue": 3414534801.074,
+//                         "cargo": 32357.25
+//                     }
+//                 },
+//                 "ЦОФ Березовская": {
+//                     "data": {
+//                         "Западно-Сибирская ж. д.": {
+//                             "loads": 35,
+//                             "revenue": 45474368.0,
+//                             "cargo": 2408.6
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 35,
+//                         "revenue": 45474368.0,
+//                         "cargo": 2408.6
+//                     }
+//                 },
+//                 "ЭЛСИ ЛОГИСТИКА СИБИРЬ, ООО": {
+//                     "data": {
+//                         "Казахстанская ж. д.": {
+//                             "loads": 116,
+//                             "revenue": 862481961.95,
+//                             "cargo": 8012.200000000001
+//                         },
+//                         "Северо-Кавказская ж. д.": {
+//                             "loads": 268,
+//                             "revenue": 2095088149.6,
+//                             "cargo": 18507.100000000002
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 384,
+//                         "revenue": 2957570111.55,
+//                         "cargo": 26519.300000000003
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 1977,
+//                 "revenue": 13814920484.261503,
+//                 "cargo": 137073.16999999995
+//             }
+//         },
+//         "Казахстанская ж. д.": {
+//             "data": {
+//                 "Майкубен-Вест ООО": {
+//                     "data": {
+//                         "Львовская ж. д.": {
+//                             "loads": 2,
+//                             "revenue": 19460000.0,
+//                             "cargo": 139.0
+//                         },
+//                         "Московская ж. д.": {
+//                             "loads": 2,
+//                             "revenue": 18480000.0,
+//                             "cargo": 132.0
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 4,
+//                         "revenue": 37940000.0,
+//                         "cargo": 271.0
+//                     }
+//                 },
+//                 "РЭУ, ООО": {
+//                     "data": {
+//                         "Восточно-Сибирская ж. д.": {
+//                             "loads": 63,
+//                             "revenue": 724845000.0,
+//                             "cargo": 4393.0
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 63,
+//                         "revenue": 724845000.0,
+//                         "cargo": 4393.0
+//                     }
+//                 },
+//                 "ТОО «GLP Operator»": {
+//                     "data": {
+//                         "Южно-Уральская ж. д.": {
+//                             "loads": 2,
+//                             "revenue": 10403200.0,
+//                             "cargo": 130.04000000000002
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 2,
+//                         "revenue": 10403200.0,
+//                         "cargo": 130.04000000000002
+//                     }
+//                 },
+//                 "ТрансКом ТОО": {
+//                     "data": {
+//                         "Казахстанская ж. д.": {
+//                             "loads": 206,
+//                             "revenue": 935067325.0,
+//                             "cargo": 14331.5
+//                         },
+//                         "Южно-Уральская ж. д.": {
+//                             "loads": 271,
+//                             "revenue": 642591600.0,
+//                             "cargo": 18872.0
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 477,
+//                         "revenue": 1577658925.0,
+//                         "cargo": 33203.5
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 546,
+//                 "revenue": 2350847125.0,
+//                 "cargo": 37997.54
+//             }
+//         },
+//         "Красноярская ж. д.": {
+//             "data": {
+//                 "НАЦИОНАЛЬНАЯ ТРАНСПОРТНАЯ КОМПАНИЯ, АО": {
+//                     "data": {
+//                         "Дальневосточная ж. д.": {
+//                             "loads": 1,
+//                             "revenue": 9591000.0,
+//                             "cargo": 69.5
+//                         },
+//                         "Западно-Сибирская ж. д.": {
+//                             "loads": 34,
+//                             "revenue": 2043030.26,
+//                             "cargo": 2369.9500000000003
+//                         },
+//                         "Одесская ж. д.": {
+//                             "loads": 2,
+//                             "revenue": 14595000.0,
+//                             "cargo": 139.0
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 37,
+//                         "revenue": 26229030.259999998,
+//                         "cargo": 2578.4500000000003
+//                     }
+//                 },
+//                 "РУССКИЙ УГОЛЬ, АО": {
+//                     "data": {
+//                         "Дальневосточная ж. д.": {
+//                             "loads": 8,
+//                             "revenue": 76465800.0,
+//                             "cargo": 554.1
+//                         },
+//                         "Северо-Кавказская ж. д.": {
+//                             "loads": 15,
+//                             "revenue": 120497000.0,
+//                             "cargo": 1047.8
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 23,
+//                         "revenue": 196962800.0,
+//                         "cargo": 1601.9
+//                     }
+//                 },
+//                 "ТОО «GLP Operator»": {
+//                     "data": {
+//                         "Казахстанская ж. д.": {
+//                             "loads": 20,
+//                             "revenue": 170821000.0,
+//                             "cargo": 1220.15
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 20,
+//                         "revenue": 170821000.0,
+//                         "cargo": 1220.15
+//                     }
+//                 },
+//                 "УК Разрез Степной": {
+//                     "data": {
+//                         "Западно-Сибирская ж. д.": {
+//                             "loads": 4,
+//                             "revenue": 8104365.0,
+//                             "cargo": 270.0
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 4,
+//                         "revenue": 8104365.0,
+//                         "cargo": 270.0
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 84,
+//                 "revenue": 402117195.26,
+//                 "cargo": 5670.5
+//             }
+//         },
+//         "Куйбышевская ж. д.": {
+//             "data": {
+//                 "ООО \"Татнефть-Транс\"": {
+//                     "data": {
+//                         "Забайкальская ж. д.": {
+//                             "loads": 695,
+//                             "revenue": 6917361610.686996,
+//                             "cargo": 46769.806
+//                         },
+//                         "Западно-Сибирская ж. д.": {
+//                             "loads": 1,
+//                             "revenue": 0.0,
+//                             "cargo": 68.22
+//                         },
+//                         "Одесская ж. д.": {
+//                             "loads": 417,
+//                             "revenue": 2598896079.9999995,
+//                             "cargo": 27968.049999999996
+//                         },
+//                         "Приволжская ж. д.": {
+//                             "loads": 62,
+//                             "revenue": 118255102.62500001,
+//                             "cargo": 4185.003000000001
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 1175,
+//                         "revenue": 9634512793.311996,
+//                         "cargo": 78991.079
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 1175,
+//                 "revenue": 9634512793.311996,
+//                 "cargo": 78991.079
+//             }
+//         },
+//         "Московская ж. д.": {
+//             "data": {
+//                 "Мечел-Транс": {
+//                     "data": {
+//                         "Московская ж. д.": {
+//                             "loads": 14,
+//                             "revenue": 29229853.25,
+//                             "cargo": 707.9499999999998
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 14,
+//                         "revenue": 29229853.25,
+//                         "cargo": 707.9499999999998
+//                     }
+//                 },
+//                 "ПГК, АО": {
+//                     "data": {
+//                         "Северная ж. д.": {
+//                             "loads": 2,
+//                             "revenue": 2946800.0,
+//                             "cargo": 139.0
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 2,
+//                         "revenue": 2946800.0,
+//                         "cargo": 139.0
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 16,
+//                 "revenue": 32176653.25,
+//                 "cargo": 846.9499999999998
+//             }
+//         },
+//         "Октябрьская ж. д.": {
+//             "data": {
+//                 "ЧЭМК, АО": {
+//                     "data": {
+//                         "Южно-Уральская ж. д.": {
+//                             "loads": 11,
+//                             "revenue": 42878250.0,
+//                             "cargo": 752.25
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 11,
+//                         "revenue": 42878250.0,
+//                         "cargo": 752.25
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 11,
+//                 "revenue": 42878250.0,
+//                 "cargo": 752.25
+//             }
+//         },
+//         "Северо-Кавказская ж. д.": {
+//             "data": {
+//                 "ДНК": {
+//                     "data": {
+//                         "Куйбышевская ж. д.": {
+//                             "loads": 21,
+//                             "revenue": 68313472.22,
+//                             "cargo": 1448.2999999999997
+//                         },
+//                         "Московская ж. д.": {
+//                             "loads": 13,
+//                             "revenue": 44050292.985,
+//                             "cargo": 897.4
+//                         },
+//                         "Приволжская ж. д.": {
+//                             "loads": 7,
+//                             "revenue": 24390000.000000004,
+//                             "cargo": 487.8
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 41,
+//                         "revenue": 136753765.205,
+//                         "cargo": 2833.5
+//                     }
+//                 },
+//                 "ЧЭМК, АО": {
+//                     "data": {
+//                         "Южно-Уральская ж. д.": {
+//                             "loads": 146,
+//                             "revenue": 569055000.0,
+//                             "cargo": 10013.0
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 146,
+//                         "revenue": 569055000.0,
+//                         "cargo": 10013.0
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 187,
+//                 "revenue": 705808765.205,
+//                 "cargo": 12846.5
+//             }
+//         },
+//         "Узбекские ж. д.": {
+//             "data": {
+//                 "TRANSPORT TECHNOLOGIES GP": {
+//                     "data": {
+//                         "Казахстанская ж. д.": {
+//                             "loads": 4,
+//                             "revenue": 5731584.0,
+//                             "cargo": 272.0
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 4,
+//                         "revenue": 5731584.0,
+//                         "cargo": 272.0
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 4,
+//                 "revenue": 5731584.0,
+//                 "cargo": 272.0
+//             }
+//         },
+//         "Южно-Уральская ж. д.": {
+//             "data": {
+//                 "Грифон": {
+//                     "data": {
+//                         "Куйбышевская ж. д.": {
+//                             "loads": 1,
+//                             "revenue": 111644.0,
+//                             "cargo": 52.0
+//                         },
+//                         "Приволжская ж. д.": {
+//                             "loads": 1,
+//                             "revenue": 121181.884,
+//                             "cargo": 52.642
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 2,
+//                         "revenue": 232825.88400000002,
+//                         "cargo": 104.642
+//                     }
+//                 },
+//                 "Мечел-Транс": {
+//                     "data": {
+//                         "Горьковская ж. д.": {
+//                             "loads": 1,
+//                             "revenue": 73.02400000000002,
+//                             "cargo": 65.2
+//                         },
+//                         "Казахстанская ж. д.": {
+//                             "loads": 4,
+//                             "revenue": 21913600.0,
+//                             "cargo": 273.92
+//                         },
+//                         "Кыргызская ж. д.": {
+//                             "loads": 5,
+//                             "revenue": 36709200.0,
+//                             "cargo": 339.90000000000003
+//                         },
+//                         "Узбекские ж. д.": {
+//                             "loads": 6,
+//                             "revenue": 48845047.9,
+//                             "cargo": 394.867
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 16,
+//                         "revenue": 107467920.924,
+//                         "cargo": 1073.887
+//                     }
+//                 },
+//                 "РВК, ООО": {
+//                     "data": {
+//                         "Куйбышевская ж. д.": {
+//                             "loads": 64,
+//                             "revenue": 226739417.25,
+//                             "cargo": 4406.55
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 64,
+//                         "revenue": 226739417.25,
+//                         "cargo": 4406.55
+//                     }
+//                 },
+//                 "УК Южный Альянс": {
+//                     "data": {
+//                         "Горьковская ж. д.": {
+//                             "loads": 2,
+//                             "revenue": 8659875.7,
+//                             "cargo": 140.35
+//                         },
+//                         "Куйбышевская ж. д.": {
+//                             "loads": 87,
+//                             "revenue": 259328035.052,
+//                             "cargo": 5975.9
+//                         },
+//                         "Свердловская ж. д.": {
+//                             "loads": 25,
+//                             "revenue": 136715910.752,
+//                             "cargo": 1715.0
+//                         }
+//                     },
+//                     "total": {
+//                         "amount": 114,
+//                         "revenue": 404703821.50399995,
+//                         "cargo": 7831.25
+//                     }
+//                 }
+//             },
+//             "total": {
+//                 "amount": 196,
+//                 "revenue": 739143985.5619999,
+//                 "cargo": 13416.329
+//             }
+//         }
+//     },
+//     "total": {
+//         "amount": 4304,
+//         "revenue": 28475659670.8505,
+//         "cargo": 295255.06500000006
+//     }
+// }
       }
-     
-   ],
-    };
+    
+
+    
   },
-mounted(){
-  
-},
+ filters: {
+    format(value){
+         return  String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
+        }
+ },
   methods: {
-    rowspan: attr1 => attr1.reduce((acc, n) => acc + n.attr3.length + 1, 0),
-    // getRowCount(obj) {
-    //   let total = 0;
-    //   let last_item = '';
-    //   obj.attr1.forEach((item) => {
-    //     total += item.attr3.length;
-    //   });
-    //   return total;
-    // },
+    rowspan: attr2 => attr2.reduce((acc, n) => acc + n.attr3.length + 1, 0),
+
+    normalizeObject(){
+    const test= Object.keys(this.objects2.data).map(key => 
+    {
+      const obj = {
+        road: key,
+        attr1: Object.keys(this.objects2.data[key].data).map(client => {
+          return {
+            client,
+            attr3: Object.keys(this.objects2.data[key].data[client].data).map(road => {
+              return {
+                road,
+                ...this.objects2.data[key].data[client].data[road]
+              }
+            }),
+            total: this.objects2.data[key].data[client].total
+          }
+        }),
+        TOTAL_ROAD:  this.objects2.data[key].total
+      }
+      return obj
+    })
+
+      this.normalized = [{
+        data: test,
+        total : this.objects2.total,
+      }]
+    },
+    Actioned() {
+      this.loader = true
+      api.getUO45(this.date_begin , this.date_end)
+      .then(response => {
+        this.loader = false
+        this.objects2 = response.data
+        this.normalizeObject()
+      }).catch(error => {
+        console.log(error)
+        this.loader = false
+      })
+    },
+    getCurrentData(data) {
+      this.date_begin = data.date_begin
+      this.date_end = data.date_end
+    }
   },
+//   mounted() {
+   
+//   },
 };
 </script>
 
 
 <style scoped>
-.total{
+.total {
   background: #FDFFD9;
 }
-.total_2{
+
+.total_2 {
   background: #DDFACE;
 }
-tr:hover{
+
+tr:hover {
   background: rgb(236, 236, 236);
 }
+
 td {
   border: 1px solid black !important;
   color: black !important;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
 }
-table > tbody > tr > td,
-table > tbody > tr > td.inner > div {
+
+table>tbody>tr>td,
+table>tbody>tr>td.inner>div {
   vertical-align: top;
   border: 1px solid #ddd;
 }
-table > tbody > tr > td.inner {
+
+table>tbody>tr>td.inner {
   padding: 0;
   border-right: 0;
 }
-table > tbody > tr > td.inner > div {
+
+table>tbody>tr>td.inner>div {
   padding: 5px;
   border-width: 0 0 1px 0;
 }
-table > tbody > tr > td.inner > div:last-child {
+
+table>tbody>tr>td.inner>div:last-child {
   border: 0;
 }
-table > tbody > tr > td.inner > table {
+
+table>tbody>tr>td.inner>table {
   margin-bottom: 0;
 }
-table > tbody > tr > td.inner > table td {
+
+table>tbody>tr>td.inner>table td {
   border-width: 0 1px 1px 0;
 }
-table > tbody > tr > td.inner > table tr:last-child td {
+
+table>tbody>tr>td.inner>table tr:last-child td {
   border-bottom: 0;
 }
-table > tbody > tr > td.inner > div {
+
+table>tbody>tr>td.inner>div {
   border-right: 0;
 }
-thead > th {
+
+thead>th {
   border: 1px solid black;
 }
+
 .total_row {
   background: #DDFACE;
 }
-.total_road{
+
+.total_road {
   background: greenyellow;
 }
+
 /* .road:nth-last-child(n){
   background: red;
 }
 .road2:last-child{
   background: green;
-} */
-</style>
+} */</style>
