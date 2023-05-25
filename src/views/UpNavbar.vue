@@ -44,7 +44,7 @@
           <li class="nav-item" style="padding-top: 1px; margin-left: auto;" @click="Notif()">
             <i class=" block nav-link"><img src="@/assets/bell.png" alt="">
               <div class="circle" v-if="notifications_queue">
-                <span class="circle_notif">12</span>
+                <span class="circle_notif">{{ count }}</span>
               </div>
             </i>
 
@@ -67,7 +67,8 @@ export default {
   components: { Modal_Notification },
   data() {
     return {
-      notifications_queue: false,
+      notifications_queue: true,
+      count: 0,
       modal_notifications: false,
       data: [],
     }
@@ -85,10 +86,20 @@ export default {
         api.personalTasks(id)
         .then(response => {
           this.data = response.data.data
+          // console.log(this.data)
+          for(let i in this.data){
+            if(this.data[i].status == 'in_work' || this.data[i].status == 'success'){
+              this.notifications_queue = true
+              let array = []
+              array.push(this.data[i].status.includes('in_work'))
+              this.count = array.length
+            }
+          }
+          // this.notifications_queue = true
         }).catch(error => {
           console.log(error)
         })
-      }, 10000)
+      }, 5000)
      
     },
     logout() {
@@ -121,9 +132,7 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  margin: 10% 5% 0 0;
-  border: 1px solid black;
-  background: #EC2332;
+  /* margin: 10% 0 150% 0; */
   width: 17px;
   height: 17px;
   border-radius: 100%;
@@ -134,9 +143,10 @@ export default {
 }
 
 .circle_notif {
-  color: white;
+  color: orange;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 14px;
+  margin-left: 30%;
   width: 100%;
   /* position: relative;
   left: 0%;
