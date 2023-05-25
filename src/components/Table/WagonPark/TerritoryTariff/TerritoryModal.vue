@@ -28,7 +28,7 @@
                   </select>
                 </td>
                 <!-- Отравка -->
-                <td style="width: 25%">
+                <td style="width: 40%">
                   <div class="inputcontainer" style="height: 100% !important">
                     <input
                       class="changeRow"
@@ -57,7 +57,7 @@
                   </div>
                 </td>
                 <!-- Назначение станция -->
-                <td style="width: 30%">
+                <td style="width: 45% !important">
                   <div class="inputcontainer" style="height: 100% !important">
                     <input
                       class="changeRow"
@@ -88,7 +88,7 @@
                   </div>
                 </td>
                 <!-- Груз -->
-                <td style="width: 25%">
+                <td style="width: 20% !important">
                   <div class="inputcontainer">
                     <input
                       type="text"
@@ -218,7 +218,7 @@
               </tr>
             </tbody>
           </table>
-<br><br><br><br>
+<br><br>
           <table border="1">
             <thead>
               <tr>
@@ -246,6 +246,48 @@
               </tr>
             </tbody>
           </table>
+<br><br>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Дорога</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="width: 5%">
+                  <div class="inputcontainer">
+                    <input
+                      type="text"
+                      class="textarea"
+                      placeholder="введите наименование дороги"
+                      v-model="road"
+                      style="background: white; width: 100%;"
+                    />
+                    <div class="icon-container" v-if="loaderInputRoad">
+                      <i class="loader"></i>
+                    </div>
+                  </div>
+                  <div
+                    class="dataDeparture"
+                    v-if="warningRoad"
+                    style="margin-top: 13%"
+                  >
+                    <ul>
+                      <li
+                        v-for="information in this.road_search"
+                        :key="information.id"
+                      >
+                        {{ information.road.name }}
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+    </tr>
+   
+  </tbody>
+</table>
+
         </div>
         <div class="modal-block__buttons">
           <button class="button Accept" @click="postNewRowInReport()">
@@ -293,17 +335,20 @@ export default {
 
       departure_station_object: "",
       destionation_station_object: "",
+      road_search: "",
 
       // появление- сокрытие элементов выпадающего списка подходящих значений
       warning: false,
       warningDest: false,
       warningCargo: false,
       warningPrevCargo: false,
+      warningRoad: false,
 
       station_departure_search: [],
       station_destination_search: [],
       elementZ: "",
       elementO: "",
+      elementT: "",
 
       // loaders
       loaderInputDep: false,
@@ -311,6 +356,7 @@ export default {
       loaderInputCargo: false,
       loaderInputPrevCargo: false,
       loaderInputWagon: false,
+      loaderInputRoad: false,
 
       showNotify: false,
       notifyHead: "",
@@ -335,6 +381,9 @@ export default {
     },
     cargo(...args) {
       this.debouncedWatchV(...args);
+    },
+    road(...args) {
+      this.elementT(...args);
     },
     prev_cargo(...args) {
       this.debouncedWatchO(...args);
@@ -385,11 +434,29 @@ export default {
             });
         }
       }, 300));
+
+      (this.elementT = debounce((newValue, oldValue) => {
+        if (this.road.length > 1 && newValue !== oldValue) {
+          this.loaderInputDest = true;
+          api
+            .getCurrentStation(this.road)
+            .then((response) => {
+              this.road_search = response.data.data;
+              this.loaderInputRoad = false;
+              this.warningRoad = true;
+            })
+            .catch((error) => {
+              this.loaderInputRoad = false;
+              console.log(error.response);
+            });
+        }
+      }, 300));
   },
   beforeUnmount() {
     this.debouncedWatch.cancel();
     this.elementZ.cancel();
     this.elementO.cancel();
+    this.elementT.cancel();
   },
 
   mounted() {
@@ -527,12 +594,12 @@ th {
 }
 
 .modal-block {
-  height: 70vh;
+  height: 80vh;
   position: relative;
 }
 .modal-block__table {
   overflow: auto;
-  height: 60vh;
+  height: 70vh;
 }
 .modal-block__buttons {
   width: 100%;
