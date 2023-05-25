@@ -13,7 +13,7 @@
         <input type="date" id="dateEnd" v-model="date_end" min="2022-01-01"/>
       </label>
     </div>
-
+<slot></slot>
     <button class="button Request" @click="getData()">Загрузить данные</button>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default {
   color: rgb(247, 0, 0);
 }
 .Request {
-  width: 21.5%;
+  width: 23.5%;
   float: right;
   margin-top: 1%;
 }

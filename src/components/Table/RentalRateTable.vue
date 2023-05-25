@@ -20,7 +20,8 @@
       <br />
       <br>
       * Для того чтобы выравнить количество строк таблицы по длине, <br>
-      &nbsp;&nbsp;в столбце где не хватает значений поставьте пробел, таблица автоматически дозапишет значения в таблицу
+      &nbsp;&nbsp;в столбце где не хватает значений поставьте пробел, таблица автоматически дозапишет значения в таблицу <br>
+      &nbsp;&nbsp;<b>после этого в этом же поле нажимать галочку не нужно</b>
       <br />
     </p>
     <div class="rent_person">
@@ -93,14 +94,13 @@
     </div>
  
 
-    <!-- <div class="rent_information_lenght">
+    <div class="rent_information_lenght">
       <p class="amount"></p>
-      <p class="amount">Всего: {{ wagon_len }}</p>
-      <p class="amount">Всего: {{ start_date_len }}</p>
-      <p class="amount">Всего: {{ end_date_len }}</p>
-      <p class="amount">Всего: {{ days_amount_len }}</p>
-      <p class="amount">Всего: {{ stavka_len }}</p>
-    </div> -->
+      <p class="amount">Всего: {{ wagon_arr.length }}</p>
+      <p class="amount">Всего: {{ start_date_arr.length }}</p>
+      <p class="amount">Всего: {{ end_date_arr.length }}</p>
+      <p class="amount">Всего: {{ stavka_arr.length }}</p>
+    </div>
     <table border="1">
       <thead>
         <tr>
@@ -448,10 +448,8 @@ export default {
         this.end_date_arr.length,
       );
       let a = Math.max.apply(null, sort_Array)
-      console.log(this.wagon_arr)
       if( this.wagon_arr.length < a){
       let c = a - this.wagon_arr.length
-      console.log(c)
         for(let i = 1; i <= c; i++ ){
             this.wagon_arr.push("null")
         }
@@ -470,7 +468,6 @@ export default {
  
       if( this.stavka_arr.length < a){
       let c = a - this.stavka_arr.length
-      console.log(c)
         for(let i = 1; i <= c; i++ ){
             this.stavka_arr.push("null")
         }
@@ -488,7 +485,6 @@ export default {
  
       if( this.start_date_arr.length < a){
       let c = a - this.start_date_arr.length
-      console.log(c)
         for(let i = 1; i <= c; i++ ){
             this.start_date_arr.push("null")
         }
@@ -512,9 +508,7 @@ export default {
         }
       } 
     },
-    stavka_len(){
-       console.log(this.stavka_arr)
-    }
+
    
 
   },
@@ -535,14 +529,9 @@ export default {
       // this.days_amount_len = this.days_amount_arr.length;
     },
     CreateTable() {
-      let handler = this.wagon.replaceAll(' ', '<tt>')
-      let wagon_array =  handler.replace(/^<t|t>$/g, '').split(/<t|t>(?:<t)?/)
-    
-      wagon_array.forEach((e, i) => {
-        wagon_array[i] = (e === '' && wagon_array[i - 1] === '') ? 'null' : e;
-      });
-      this.wagon_arr = [...wagon_array];
-      this.wagon_arr = this.wagon_arr.filter((item) => item !== "");
+      let handler = this.wagon.split(" ")
+     
+      this.wagon_arr = [...handler];
       this.wagon_len = this.wagon_arr.length;
       this.wagon = "";
       // this.wagonSaveData = true
@@ -557,20 +546,12 @@ export default {
       }, 1000);
     },
     CreateTableStartDate() {
-      let handler = this.start_date.replaceAll(' ', '<tt>')
-      let start_date_array =  handler.replace(/^<t|t>$/g, '').split(/<t|t>(?:<t)?/)
-    
-      start_date_array.forEach((e, i) => {
-        start_date_array[i] = (e === '' && start_date_array[i - 1] === '') ? 'null' : e;
-      });
-      this.start_date_arr = [...start_date_array];
-      this.start_date_arr = this.start_date_arr.filter((item) => item !== "");
-      this.start_date_len = this.start_date_arr.length;
+      let handler = this.start_date.split(" ")
+      this.start_date_arr = [...handler];
       this.start_date = "";
     },
     deleteStart(data_value, index) {
       let data = document.getElementById(`start${index}`).value;
-      console.log(data);
       this.start_date_arr.splice(index, 1, data);
       // console.log(this.wagon_arr)
       let wagon_DOM = document.getElementById(`start${index}`);
@@ -580,15 +561,9 @@ export default {
       }, 1000);
     },
     CreateTableEndDate() {
-      let handler = this.end_date.replaceAll(' ', '<tt>')
-      let end_date_array =  handler.replace(/^<t|t>$/g, '').split(/<t|t>(?:<t)?/)
+      let handler = this.end_date.split(" ")
     
-      end_date_array.forEach((e, i) => {
-        end_date_array[i] = (e === '' && end_date_array[i - 1] === '') ? 'null' : e;
-      });
-      this.end_date_arr = [...end_date_array];
-      this.end_date_arr = this.end_date_arr.filter((item) => item !== "");
-      this.end_date_len = this.end_date_arr.length;
+      this.end_date_arr = [...handler];
       this.end_date = "";
     },
     deleteEnd(data_value, index) {
@@ -601,40 +576,16 @@ export default {
       }, 1000);
     },
 
-    // CreateTableDaysAmount() {
-    //   let date_amount = this.days_amount.split(" ");
-    //   this.days_amount_arr = [...date_amount];
-    //   this.days_amount_arr = this.days_amount_arr.filter((item) => item !== "");
-    //   this.days_amount_len = this.days_amount_arr.length;
-    //   this.days_amount = "";
-    // },
-    // deleteAmount(data_value, index) {
-    //   let data = document.getElementById(`amount${index}`).value;
-    //   this.days_amount_arr.splice(index, 1, data);
-    //   let wagon_DOM = document.getElementById(`amount${index}`);
-    //   wagon_DOM.classList.add("success");
-    //   setTimeout(() => {
-    //     wagon_DOM.classList.remove("success");
-    //   }, 1000);
-    // },
 
     CreateTableStavka() {
-      let handler = this.stavka.replaceAll(' ', '<tt>')
-      let stavka =  handler.replace(/^<t|t>$/g, '').split(/<t|t>(?:<t)?/)
-    
-      stavka.forEach((e, i) => {
-        stavka[i] = (e === '' && stavka[i - 1] === '') ? 'null' : e;
-      });
-
+      let stavka = this.stavka.split(" ")
       this.stavka_arr = [...stavka];
-      this.stavka_arr = this.stavka_arr.filter((item) => item !== "");
       this.stavka = "";
     },
     deleteStavka(data_value, index) {
       let data = document.getElementById(`stavka${index}`).value;
       this.stavka_arr.splice(index, 1, data);
       let wagon_DOM = document.getElementById(`stavka${index}`);
-      console.log(wagon_DOM);
       wagon_DOM.classList.add("success");
       setTimeout(() => {
         wagon_DOM.classList.remove("success");
@@ -691,7 +642,9 @@ export default {
         this.end_date.length,
         // this.days_amount_len
       );
-      if (this.helper(this.all_length) == true) {
+
+      // console.log(this.all_length)
+      // if (this.helper(this.all_length) == true) {
         let all_array = wagon.map((item, index) => ({
           landlord: this.landlord,
           tenant: this.tenant,
@@ -702,8 +655,36 @@ export default {
           days_amount: null,
 
         }));
-      
+
+        all_array.forEach((item) => {
+          if(item.end_date == "null" || item.end_date == ""){
+            return  item.end_date = null
+          }
+        })
+        all_array.forEach((item) => {
+          if(item.start_date == "null" || item.start_date == ""){
+            return  item.start_date = null
+          }
+        })
+        all_array.forEach((item) => {
+          if(item.wagon == "null" || item.wagon == ""){
+            return  item.wagon = 0
+          }
+        })
+        all_array.forEach((item) => {
+          if(item.stavka == "null" || item.stavka == ""){
+            return  item.stavka = 0
+          }
+        })
+        all_array.forEach((item) => {
+            return item.stavka = Number(item.stavka)
+        })
         console.log(all_array)
+        // console.log(postArray)
+        // console.log(postArray)
+        // console.log( this.wagon_arr, this.start_date_arr)
+      
+        // console.log(all_array)
         if (this.landlord == "" || this.tenant == "") {
           this.loader = false;
           if (this.landlord == "") {
@@ -732,16 +713,11 @@ export default {
               setTimeout(() => {
                 this.showNotify = false;
               }, 2500);
-              (this.wagon_arr = []),
-                (this.stavka_arr = []),
-                (this.start_date_arr = []),
-                (this.end_date_arr = []),
-                // (this.days_amount_arr = []);
-              this.wagon_len = "0";
-              this.stavka_len = "0";
-              this.start_date_len = "0";
-              this.end_date_len = "0";
-             
+              this.wagon_arr = []
+              this.stavka_arr = []
+              this.start_date_arr = []
+              this.end_date_arr = []
+          
             })
             .catch((error) => {
               this.loader = false;
@@ -754,22 +730,23 @@ export default {
               }, 3500);
             });
         }
-      } else {
-        this.loader = false;
-        this.notifyHead = "Ошибка";
-        this.notifyMessage =
-          "Данные по вагонам, датам, дням и ставкам должны быть одной длины";
-        this.notifyClass = "wrapper-error";
-        this.showNotify = true;
-        setTimeout(() => {
-          this.showNotify = false;
-        }, 3500);
-      }
-      this.all_length = [];
+        this.all_length = [];
+      } 
+      // else {
+      //   this.loader = false;
+      //   this.notifyHead = "Ошибка";
+      //   this.notifyMessage = "Данные по вагонам, датам, дням и ставкам должны быть одной длины";
+      //   this.notifyClass = "wrapper-error";
+      //   this.showNotify = true;
+      //   setTimeout(() => {
+      //     this.showNotify = false;
+      //   }, 3500);
+      // }
+     
        
         }
       } 
-    }
+    
   
 
 </script>
