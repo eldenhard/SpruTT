@@ -144,6 +144,9 @@ const createReportTerritory = (data, start, end) => {
 const getAmountShipments = (source, date) => {
     return api.get(`${resource}/shipments/?shipment_source=${source}&act_date=${date}`)
 }
+const getCountries = (data) => {
+    return api.get(`${resource}/countries/?search=${data}`)
+}
 export default {
     getWagons,
     getWagon,
@@ -169,6 +172,7 @@ export default {
     createReportTerritory,
     postNewRowInReport,
     getAmountShipments,
+    getCountries,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

@@ -18,6 +18,21 @@
                 <StationsDirectory/>
               </b-card-text>
             </b-tab>
+            <b-tab title="Справочник страны">
+              <b-card-text>
+                <countries-directory/>
+              </b-card-text>
+            </b-tab>
+            <b-tab title="Справочник грузы">
+              <b-card-text>
+                <cargo-directory/>
+              </b-card-text>
+            </b-tab>
+            <b-tab title="Справочник вагоны">
+              <b-card-text>
+                <wagon-directory/>
+              </b-card-text>
+            </b-tab>
             <b-tab title="Данные по аренде" active>
                 <b-card-text>
                     <rentalrateTable/>
@@ -65,10 +80,13 @@ li.nav-item {
 import partnerTable from '@/components/Table/PartnerTable.vue'
 import contractTable from '@/components/Table/ContractTable.vue'
 import rentalrateTable from '@/components/Table/RentalRateTable.vue'
-import StationsDirectory from '@/components/Table/StationsDirectory.vue'
+import StationsDirectory from '@/components/Table/Directory/StationsDirectory.vue'
+import CargoDirectory from '../components/Table/Directory/CargoDirectory.vue'
+import CountriesDirectory from '../components/Table/Directory/CountriesDirectory.vue'
+import WagonDirectory from '../components/Table/Directory/WagonDirectory.vue'
 export default{
     name: 'Directory',
-    components: {partnerTable, contractTable , rentalrateTable, StationsDirectory},
+    components: {partnerTable, contractTable , rentalrateTable, StationsDirectory, CargoDirectory, CountriesDirectory, WagonDirectory},
     mounted(){
       document.title = 'Справочники'
 
