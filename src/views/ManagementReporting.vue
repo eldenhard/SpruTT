@@ -66,6 +66,10 @@
                 <Table5 />
               </b-card-text>
 
+              <b-card-text v-if="i.name === 'Справка о выполнении перевозок вагоно-цистернами'">
+                <Table6 />
+              </b-card-text>
+
               <b-card-text v-if="i.name === 'Анализ перевозки и выручки по сегменту полувагонов'">
                 <Table7 />
               </b-card-text>
@@ -113,6 +117,7 @@ import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
 import Table3 from "@/components/Table/ManagmentRepReporting/Table3.vue";
 import Table4 from "@/components/Table/ManagmentRepReporting/Table4.vue";
 import Table5 from "@/components/Table/ManagmentRepReporting/Table5.vue";
+import Table6 from "@/components/Table/ManagmentRepReporting/Table6.vue";
 import Table7 from "@/components/Table/ManagmentRepReporting/Table7.vue";
 import Table8 from "@/components/Table/ManagmentRepReporting/Table8.vue";
 import Table9 from "@/components/Table/ManagmentRepReporting/Table9.vue";
@@ -139,6 +144,7 @@ import Table9 from "@/components/Table/ManagmentRepReporting/Table9.vue";
       Table3,
       Table4,
       Table5,
+      Table6,
       Table7,
       Table8,
       Table9
