@@ -26,7 +26,7 @@
                     </div>
                 </div>
                     <div class="dataDeparture" v-if="warning">
-                        <table border="1">
+                        <table border="1" style="width: 100% !important">
                             <thead>
                                 <tr>
                                     <th>Номер</th>
