@@ -42,7 +42,7 @@
           </li>
 
           <li class="nav-item" style="padding-top: 1px; margin-left: auto;" @click="Notif()">
-            <i class=" block nav-link"><img src="@/assets/bell.png" alt="">
+            <i class=" block nav-link"><img src="@/assets/bell.png" alt="" >
               <div class="circle" v-if="notifications_queue">
                 <span class="circle_notif">{{ count }}</span>
               </div>
@@ -78,6 +78,13 @@ export default {
     this.getTasks()
     
   },
+  computed: {
+    notification(){
+      if(this.count == 0){
+        return '@/assets/bell.png'
+      } return '@/assets/bell-color.png'
+    }
+  },
   methods: {
     getTasks(){
       const preid = JSON.parse(localStorage.getItem("vuex"));
@@ -87,15 +94,15 @@ export default {
         .then(response => {
           this.data = response.data.data
           // console.log(this.data)
-          for(let i in this.data){
-            if(this.data[i].status == 'in_work' || this.data[i].status == 'success'){
-              this.notifications_queue = true
-              let array = []
-              array.push(this.data[i].status.includes('in_work'))
-              this.count = array.length
+         let a = [...this.data]
+        let b = a.reduce((acc, item) => {
+            if(item.status == 'in_work'){
+             return  [...acc, item]
+            } else {
+              return acc
             }
-          }
-          // this.notifications_queue = true
+         }, [])
+         this.count = b.length
         }).catch(error => {
           console.log(error)
         })

@@ -15,8 +15,8 @@
 
     <!-- <pre>{{ normalized }}</pre> -->
     <p>Форма 4.5. "Справка о выполнении перевозок полувагонами"</p>
-    <div style="overflow: auto">
-      <table class="tbl_search">
+    <div style="overflow: auto;">
+      <table class="tbl_search" >
         <thead>
           <th>Дорога погрузки</th>
           <th>Клиент</th>

@@ -100,6 +100,9 @@
       <p class="amount">Всего: {{ start_date_arr.length }}</p>
       <p class="amount">Всего: {{ end_date_arr.length }}</p>
       <p class="amount">Всего: {{ stavka_arr.length }}</p>
+      <p class="amount">Всего: {{ stavka_start_date_arr.length }}</p>
+      <p class="amount">Всего: {{ stavka_end_date_arr.length }}</p>
+
     </div>
     <table border="1">
       <thead>
@@ -156,21 +159,6 @@
             </div>
           </th>
 
-          <!-- <th>
-            <div class="inputWithIcon">
-              <input
-                type="text"
-                v-model="days_amount"
-                placeholder="введите число "
-              />
-              <i
-                class="fa"
-                aria-hidden="true"
-                @click="CreateTableDaysAmount()"
-                v-if="days_amount.length > 0"
-              ></i>
-            </div>
-          </th> -->
 
           <th>
             <div class="inputWithIcon">
@@ -188,14 +176,54 @@
               ></i>
             </div>
           </th>
+
+          
+          <th>
+            <div class="inputWithIcon">
+              <input
+                type="text"
+                v-model="stavka_start_date"
+                placeholder="введите дату "
+              />
+              <i
+                class="fa"
+                aria-hidden="true"
+                @click="CreateStartStavka()"
+                v-if="stavka_start_date.length > 0"
+
+              ></i>
+            </div>
+          </th>
+
+          
+          <th>
+            <div class="inputWithIcon">
+              <input
+                type="text"
+                v-model="stavka_end_date"
+                placeholder="введите дату "
+              />
+              <i
+                class="fa"
+                aria-hidden="true"
+                @click="CreateEndStavka()"
+                v-if="stavka_end_date.length > 0"
+
+              ></i>
+            </div>
+          </th>
+
+
         </tr>
         <tr>
           <th>#</th>
           <th>№ вагона</th>
           <th>Дата начала аренды</th>
-          <th>Дата окончания аренды</th>
+          <th>Дата конца аренды</th>
           <!-- <th>Кол-во дней</th> -->
           <th>Ставка</th>
+          <th>Дата начала акта</th>
+          <th>Дата конца акта</th>
         </tr>
       </thead>
       <tbody>
@@ -289,27 +317,6 @@
           </tr>
         </td>
 
-        <!-- <td>
-          <tr v-for="(amount, index) in days_amount_arr" :key="amount.id">
-            <td>
-              <div class="inputWithIcon">
-                <input
-                  type="text"
-                  name="сheck_in"
-                  :id="`amount` + index"
-                  :value="amount"
-                  style="text-align: center"
-                />
-                <i
-                  class="fa"
-                  aria-hidden="true"
-                  @click="deleteAmount(amount, index)"
-                  v-if="wagonSaveData"
-                ></i>
-              </div>
-            </td>
-          </tr>
-        </td> -->
 
         <td>
           <tr v-for="(stavka, index) in stavka_arr" :key="stavka.id">
@@ -332,6 +339,74 @@
             </td>
           </tr>
         </td>
+
+
+        <td>
+          <tr v-for="(start, index) in stavka_start_date_arr" :key="start.id">
+            <td>
+              <div class="inputWithIcon">
+                <input
+                  type="text"
+                  name="сheck_in"
+                  :id="`startStavka` + index"
+                  :value="Transform(start)"
+                  style="text-align: center"
+                />
+                <i
+                  class="fa"
+                  aria-hidden="true"
+                  @click="deleteStartStavka(start, index)"
+                  v-if="wagonSaveData"
+                ></i>
+              </div>
+            </td>
+          </tr>
+        </td>
+
+        <td>
+          <tr v-for="(end, index) in stavka_end_date_arr" :key="end.id">
+            <td>
+              <div class="inputWithIcon">
+                <input
+                  type="text"
+                  name="сheck_in"
+                  :id="`endStavka` + index"
+                  :value="Transform(end)"
+                  style="text-align: center"
+                />
+                <i
+                  class="fa"
+                  aria-hidden="true"
+                  @click="deleteEndStavka(end, index)"
+                  v-if="wagonSaveData"
+                ></i>
+              </div>
+            </td>
+          </tr>
+        </td>
+        <!-- <td>
+          <tr v-for="(amount, index) in days_amount_arr" :key="amount.id">
+            <td>
+              <div class="inputWithIcon">
+                <input
+                  type="text"
+                  name="сheck_in"
+                  :id="`amount` + index"
+                  :value="amount"
+                  style="text-align: center"
+                />
+                <i
+                  class="fa"
+                  aria-hidden="true"
+                  @click="deleteAmount(amount, index)"
+                  v-if="wagonSaveData"
+                ></i>
+              </div>
+            </td>
+          </tr>
+        </td> -->
+
+       
       </tbody>
     </table>
 
@@ -364,11 +439,15 @@ export default {
       // days_amount: "",
       landlord: "",
       tenant: "",
+      stavka_start_date: "",
+      stavka_end_date: "",
 
       wagon_arr: [],
       stavka_arr: [],
       start_date_arr: [],
       end_date_arr: [],
+      stavka_end_date_arr: [],
+      stavka_start_date_arr: [],
       // days_amount_arr: [],
       all_length: [],
 
@@ -441,11 +520,13 @@ export default {
     },
     wagon(){
         let sort_Array = [];
-      sort_Array.push(
+        sort_Array.push(
         this.wagon_arr.length,
         this.stavka_arr.length,
         this.start_date_arr.length,
         this.end_date_arr.length,
+        this.stavka_start_date_arr.length,
+        this.stavka_end_date_arr.length
       );
       let a = Math.max.apply(null, sort_Array)
       if( this.wagon_arr.length < a){
@@ -463,6 +544,8 @@ export default {
         this.stavka_arr.length,
         this.start_date_arr.length,
         this.end_date_arr.length,
+        this.stavka_start_date_arr.length,
+        this.stavka_end_date_arr.length
       );
       let a = Math.max.apply(null, sort_Array)
  
@@ -480,6 +563,8 @@ export default {
         this.stavka_arr.length,
         this.start_date_arr.length,
         this.end_date_arr.length,
+        this.stavka_start_date_arr.length,
+        this.stavka_end_date_arr.length
       );
       let a = Math.max.apply(null, sort_Array)
  
@@ -497,6 +582,8 @@ export default {
         this.stavka_arr.length,
         this.start_date_arr.length,
         this.end_date_arr.length,
+        this.stavka_start_date_arr.length,
+        this.stavka_end_date_arr.length
       );
       let a = Math.max.apply(null, sort_Array)
  
@@ -505,6 +592,46 @@ export default {
       console.log(c)
         for(let i = 1; i <= c; i++ ){
             this.end_date_arr.push("null")
+        }
+      } 
+    },
+    stavka_start_date(){
+      let sort_Array = [];
+      sort_Array.push(
+        this.wagon_arr.length,
+        this.stavka_arr.length,
+        this.start_date_arr.length,
+        this.end_date_arr.length,
+        this.stavka_start_date_arr.length,
+        this.stavka_end_date_arr.length
+      );
+      let a = Math.max.apply(null, sort_Array)
+ 
+      if( this.stavka_start_date_arr.length < a){
+      let c = a - this.stavka_start_date_arr.length
+      console.log(c)
+        for(let i = 1; i <= c; i++ ){
+            this.stavka_start_date_arr.push("null")
+        }
+      } 
+    },
+    stavka_end_date(){
+      let sort_Array = [];
+      sort_Array.push(
+        this.wagon_arr.length,
+        this.stavka_arr.length,
+        this.start_date_arr.length,
+        this.end_date_arr.length,
+        this.stavka_start_date_arr.length,
+        this.stavka_end_date_arr.length
+      );
+      let a = Math.max.apply(null, sort_Array)
+ 
+      if( this.stavka_end_date_arr.length < a){
+      let c = a - this.stavka_end_date_arr.length
+      console.log(c)
+        for(let i = 1; i <= c; i++ ){
+            this.stavka_end_date_arr.push("null")
         }
       } 
     },
@@ -520,21 +647,17 @@ export default {
       this.wagon_arr.splice(index, 1);
       this.start_date_arr.splice(index, 1);
       this.end_date_arr.splice(index, 1);
-      // this.days_amount_arr.splice(index, 1);
+      this.stavka_end_date_arr.splice(index, 1);
+      this.stavka_start_date_arr.splice(index, 1);
       this.stavka_arr.splice(index, 1);
-      this.wagon_len = this.wagon_arr.length;
-      this.stavka_len = this.stavka_arr.length;
-      this.start_date_len = this.start_date_arr.length;
-      this.end_date_len = this.end_date_arr.length;
-      // this.days_amount_len = this.days_amount_arr.length;
+
     },
+// ВАГОН
     CreateTable() {
       let handler = this.wagon.split(" ")
-     
       this.wagon_arr = [...handler];
       this.wagon_len = this.wagon_arr.length;
       this.wagon = "";
-      // this.wagonSaveData = true
     },
     deleteArr(data_value, index) {
       let data = document.getElementById(`wagon${index}`).value;
@@ -545,6 +668,8 @@ export default {
         wagon_DOM.classList.remove("success");
       }, 1000);
     },
+
+// ДАТА НАЧАЛЫ АРЕНДЫ
     CreateTableStartDate() {
       let handler = this.start_date.split(" ")
       this.start_date_arr = [...handler];
@@ -560,6 +685,8 @@ export default {
         wagon_DOM.classList.remove("success");
       }, 1000);
     },
+
+  // ДАТА КОНЦА АРЕНДЫ
     CreateTableEndDate() {
       let handler = this.end_date.split(" ")
     
@@ -576,7 +703,7 @@ export default {
       }, 1000);
     },
 
-
+// СТАВКА
     CreateTableStavka() {
       let stavka = this.stavka.split(" ")
       this.stavka_arr = [...stavka];
@@ -591,6 +718,40 @@ export default {
         wagon_DOM.classList.remove("success");
       }, 1000);
     },
+
+// ДАТА НАЧАЛА СТАВКИ
+
+CreateStartStavka(){
+      let start_stavka = this.stavka_start_date.split(" ")
+      this.stavka_start_date_arr = [...start_stavka];
+      this.stavka_start_date = "";
+},
+deleteStartStavka(data_value, index){
+  let data = document.getElementById(`startStavka${index}`).value;
+      this.stavka_start_date_arr.splice(index, 1, data);
+      let wagon_DOM = document.getElementById(`startStavka${index}`);
+      wagon_DOM.classList.add("success");
+      setTimeout(() => {
+        wagon_DOM.classList.remove("success");
+      }, 1000);
+},
+
+// ДАТА КОНЦА СТАВКИ
+CreateEndStavka(){
+    let end_stavka = this.stavka_end_date.split(" ")
+      this.stavka_end_date_arr = [...end_stavka];
+      this.stavka_end_date = "";
+},
+deleteEndStavka(data_value, index){
+  let data = document.getElementById(`endStavka${index}`).value;
+      this.stavka_end_date_arr.splice(index, 1, data);
+      let wagon_DOM = document.getElementById(`endStavka${index}`);
+      wagon_DOM.classList.add("success");
+      setTimeout(() => {
+        wagon_DOM.classList.remove("success");
+      }, 1000);
+},
+
     checkTenant(value) {
       this.ten_visible = false;
       this.tenant = value;
@@ -635,11 +796,27 @@ export default {
         });
       });
 
+      let stavka_start_date = []
+      this.stavka_start_date_arr.forEach((item) => {
+        stavka_start_date.push({
+          stavka_start_date: item.replace(/\./g, "-").split("-").reverse("").join("-"),
+        });
+      });
+      
+      let stavka_end_date = []
+      this.stavka_end_date_arr.forEach((item) => {
+        stavka_end_date.push({
+          stavka_end_date: item.replace(/\./g, "-").split("-").reverse("").join("-"),
+        });
+      });
+
       this.all_length.push(
         this.wagon_arr.length,
         this.stavka.length,
         this.start_date.length,
         this.end_date.length,
+        this.stavka_start_date_arr.length,
+        this.stavka_end_date_arr.length
         // this.days_amount_len
       );
 
@@ -652,6 +829,8 @@ export default {
           ...stavka[index],
           ...start_date[index],
           ...end_date[index],
+          ...stavka_start_date[index],
+          ...stavka_end_date[index],
           days_amount: null,
 
         }));
@@ -664,6 +843,16 @@ export default {
         all_array.forEach((item) => {
           if(item.start_date == "null" || item.start_date == ""){
             return  item.start_date = null
+          }
+        })
+        all_array.forEach((item) => {
+          if(item.stavka_start_date == "null" || item.stavka_start_date == ""){
+            return  item.stavka_start_date = null
+          }
+        })
+        all_array.forEach((item) => {
+          if(item.stavka_end_date == "null" || item.stavka_end_date == ""){
+            return  item.stavka_end_date = null
           }
         })
         all_array.forEach((item) => {
@@ -717,6 +906,8 @@ export default {
               this.stavka_arr = []
               this.start_date_arr = []
               this.end_date_arr = []
+              this.stavka_end_date_arr = []
+              this.stavka_start_date_arr = []
           
             })
             .catch((error) => {
@@ -732,16 +923,16 @@ export default {
         }
         this.all_length = [];
       } 
-      // else {
-      //   this.loader = false;
-      //   this.notifyHead = "Ошибка";
-      //   this.notifyMessage = "Данные по вагонам, датам, дням и ставкам должны быть одной длины";
-      //   this.notifyClass = "wrapper-error";
-      //   this.showNotify = true;
-      //   setTimeout(() => {
-      //     this.showNotify = false;
-      //   }, 3500);
-      // }
+    // }else {
+    //     this.loader = false;
+    //     this.notifyHead = "Ошибка";
+    //     this.notifyMessage = "Данные по вагонам, датам, дням и ставкам должны быть одной длины";
+    //     this.notifyClass = "wrapper-error";
+    //     this.showNotify = true;
+    //     setTimeout(() => {
+    //       this.showNotify = false;
+    //     }, 3500);
+    //   }
      
        
         }
@@ -863,7 +1054,7 @@ li:hover {
 .rent_information_lenght {
   display: grid;
   gap: 2%;
-  grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
 .rent_information_placeholder {

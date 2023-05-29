@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loader :loader="loader" />
     <b-modal id="territoryModal" ref="territoryModal" hide-footer size="md">
       <template #modal-title> Добавление строки отчета в ручную </template>
       <div class="modal-block">
@@ -28,7 +29,7 @@
                   </select>
                 </td>
                 <!-- Отравка -->
-                <td style="width: 25%">
+                <td style="width: 40%">
                   <div class="inputcontainer" style="height: 100% !important">
                     <input
                       class="changeRow"
@@ -47,17 +48,17 @@
                           v-for="departure in station_departure_search"
                           :key="departure.id"
                           @click="
-                            checkThisDeparture(departure.name, departure.code6)
+                            checkThisDeparture(departure.name, departure.code)
                           "
                         >
-                          {{ departure.name }} ({{ departure.code6 }})
+                          {{ departure.name }} ({{ departure.code }})
                         </li>
                       </ul>
                     </div>
                   </div>
                 </td>
                 <!-- Назначение станция -->
-                <td style="width: 30%">
+                <td style="width: 45% !important">
                   <div class="inputcontainer" style="height: 100% !important">
                     <input
                       class="changeRow"
@@ -77,18 +78,18 @@
                           @click="
                             checkThisDestination(
                               destination.name,
-                              destination.code6
+                              destination.code
                             )
                           "
                         >
-                          {{ destination.name }} ({{ destination.code6 }})
+                          {{ destination.name }} ({{ destination.code }})
                         </li>
                       </ul>
                     </div>
                   </div>
                 </td>
                 <!-- Груз -->
-                <td style="width: 25%">
+                <td style="width: 20% !important">
                   <div class="inputcontainer">
                     <input
                       type="text"
@@ -110,7 +111,7 @@
                       <li
                         v-for="information in this.SearchData"
                         :key="information.id"
-                        @click="checkThisCargo(information.name)"
+                        @click="checkThisCargo(information.name, information.code6)"
                       >
                         {{ information.name }}
                       </li>
@@ -156,7 +157,7 @@
                       <li
                         v-for="information in this.SearchDataPrevCargo"
                         :key="information.id"
-                        @click="checkPrevCargo(information.name)"
+                        @click="checkPrevCargo(information.name, information.code6)"
                       >
                         {{ information.name }}
                       </li>
@@ -188,7 +189,7 @@
               <tr>
                 <th>Валюта</th>
                 <th>Без НДС в вал.</th>
-                <th>НДС в вал.</th>
+                <th>Без НДС в руб.</th>
                 <th>НДС</th>
               </tr>
             </thead>
@@ -218,7 +219,7 @@
               </tr>
             </tbody>
           </table>
-<br><br><br><br>
+<br><br>
           <table border="1">
             <thead>
               <tr>
@@ -226,7 +227,7 @@
                 <th>Дата акта</th>
                 <th>Накладная</th>
                 <th>Сумма РТ</th>
-                <th>Тариф по РФ</th>
+                <th>НДС в валюте</th>
               </tr>
             </thead>
             <tbody>
@@ -241,11 +242,60 @@
                   <input class="changeRow" type="number" v-model="rt_sum" style="width: 100%" />
                 </td>
                 <td style="width: 30%">
-                  <input class="changeRow" type="number" v-model="tariff_rf"  style="width: 100%"/>
+                  <input class="changeRow" type="number" v-model="nds_currency"  style="width: 100%"/>
                 </td>
               </tr>
             </tbody>
           </table>
+<br><br>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Страна</th>
+      <th>Тариф по РФ</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <!-- Страна -->
+      <td style="width: 50%">
+                  <div class="inputcontainer">
+                    <input
+                      type="text"
+                      class="textarea"
+                      placeholder="введите наименование страны"
+                      v-model="road"
+                      style="background: white; width: 100%;"
+                    />
+                    <div class="icon-container" v-if="loaderInputRoad">
+                      <i class="loader"></i>
+                    </div>
+                  </div>
+                  <div
+                    class="dataDeparture"
+                    v-if="warningRoad"
+                    style="margin-top: 4%"
+                  >
+                    <ul>
+                      <li
+                        v-for="information in this.road_search"
+                        :key="information.id"
+                        @click="checkRoad(information.name, information.code)"
+                      >
+                        {{ information.name }}
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+                <!-- Тариф по РФ -->
+                <td style="width: 12.5%">
+                  <input class="changeRow" type="number" v-model="tariff_rf"  style="width: 100%"/>
+                </td>
+    </tr>
+   
+  </tbody>
+</table>
+
         </div>
         <div class="modal-block__buttons">
           <button class="button Accept" @click="postNewRowInReport()">
@@ -256,6 +306,12 @@
       </div>
       <!-- <b-button class="mt-3" variant="outline-danger" block @click="hideModal">Закрыть</b-button> -->
     </b-modal>
+    <Notifications
+      :show="showNotify"
+      :header="notifyHead"
+      :message="notifyMessage"
+      :block-class="notifyClass"
+    />
   </div>
 </template>
 
@@ -264,10 +320,12 @@
 import Notifications from "@/components/notifications/Notifications.vue";
 import api from "@/api/wagonPark";
 import debounce from "lodash.debounce";
+import Loader from '@/components/loader/loader.vue';
 export default {
   props: ["id"],
   data() {
     return {
+      loader: false,
       shipment_source: "",
       weight: "",
       shipment_date: "",
@@ -287,23 +345,32 @@ export default {
       wagon: "",
       invoice: "",
 
+      departure_station_code: "",
+      destination_station_code: "",
+      cargo_code6: "",
+      prev_cargo_code6: "",
+      road_code: "",
+
       cargo: "",
       SearchData: "",
       SearchDataPrevCargo: "",
 
       departure_station_object: "",
       destionation_station_object: "",
+      road_search: "",
 
       // появление- сокрытие элементов выпадающего списка подходящих значений
       warning: false,
       warningDest: false,
       warningCargo: false,
       warningPrevCargo: false,
+      warningRoad: false,
 
       station_departure_search: [],
       station_destination_search: [],
       elementZ: "",
       elementO: "",
+      elementT: "",
 
       // loaders
       loaderInputDep: false,
@@ -311,6 +378,7 @@ export default {
       loaderInputCargo: false,
       loaderInputPrevCargo: false,
       loaderInputWagon: false,
+      loaderInputRoad: false,
 
       showNotify: false,
       notifyHead: "",
@@ -319,7 +387,7 @@ export default {
       lengthRoute: "",
     };
   },
-  components: { Notifications },
+  components: { Notifications, Loader },
   watch: {
     departure_station(...args) {
       this.debouncedWatch(...args);
@@ -335,6 +403,9 @@ export default {
     },
     cargo(...args) {
       this.debouncedWatchV(...args);
+    },
+    road(...args) {
+      this.elementT(...args);
     },
     prev_cargo(...args) {
       this.debouncedWatchO(...args);
@@ -385,11 +456,29 @@ export default {
             });
         }
       }, 300));
+
+      (this.elementT = debounce((newValue, oldValue) => {
+        if (this.road.length > 1 && newValue !== oldValue) {
+          this.loaderInputRoad = true;
+          api
+            .getCountries(this.road)
+            .then((response) => {
+              this.road_search = response.data.data;
+              this.loaderInputRoad = false;
+              this.warningRoad = true;
+            })
+            .catch((error) => {
+              this.loaderInputRoad = false;
+              console.log(error.response);
+            });
+        }
+      }, 300));
   },
   beforeUnmount() {
     this.debouncedWatch.cancel();
     this.elementZ.cancel();
     this.elementO.cancel();
+    this.elementT.cancel();
   },
 
   mounted() {
@@ -424,8 +513,11 @@ export default {
       this.warningDest = false;
       this.warningCargo = false;
       this.warningPrevCargo = false;
+      this.warningRoad = false;
+
     },
     postNewRowInReport() {
+      this.loader = true
       let data = {
         shipment_source: this.shipment_source,
         weight: this.weight,
@@ -436,38 +528,71 @@ export default {
         sum_wo_nds: this.sum_wo_nds,
         nds: this.nds,
         act_date: this.act_date,
-        rt_sum: this.act_date,
+        rt_sum: this.rt_sum,
         tariff_rf: this.tariff_rf,
-        departure_station: this.departure_station,
-        destination_station: this.destination_station,
-        cargo: this.cargo,
-        prev_cargo: this.prev_cargo,
-        road: this.road,
+        departure_station: this.departure_station_code,
+        destination_station: this.destination_station_code,
+        cargo: this.cargo_code6,
+        prev_cargo: this.prev_cargo_code6,
+        road: this.road_code,
         wagon: this.wagon,
         invoice: this.invoice,
       };
-      console.log(data);
-      api.postNewRowInReport(data)
-      .then(response => {
-          console.log(response)
-      })
+      if(Object.values(data).includes('')){
+            this.loader = false
+            this.showNotify = true;
+            this.notifyHead = "Ошибка";
+            this.notifyMessage = "Не заполнены все поля";
+            this.notifyClass = "wrapper-error";
+            setTimeout(() => (this.showNotify = false), 2000);
+      } else {
+             api.postNewRowInReport(data)
+            .then(response => {
+              this.loader = false
+              this.showNotify = true;
+              this.notifyHead = "Успешно";
+              this.notifyMessage = "Данные отправлены";
+              this.notifyClass = "wrapper-success";
+              this.loader = false;
+              setTimeout(() => (this.showNotify = false), 2000);
+              this.hideModal()
+            }).catch(error => {
+                    this.loader = false
+                    this.showNotify = true;
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = error.response.data;
+                    this.notifyClass = "wrapper-error";
+                    this.loader = false;
+                    setTimeout(() => (this.showNotify = false), 2000);
+            })
+      }
+ 
     },
     hideModal() {
       this.$refs["territoryModal"].hide();
     },
     checkThisDeparture(name, code) {
       this.departure_station = name;
+      this.departure_station_code = code
     },
     checkThisDestination(name, code) {
       this.destination_station = name;
+      this.destination_station_code = code
+
     },
     checkThisCargo(name, code) {
       this.cargo = name;
+      this.cargo_code6 = code
     },
     checkPrevCargo(name, code) {
       this.prev_cargo = name;
+      this.prev_cargo_code6 = code;
+
     },
-    
+    checkRoad(name, code) {
+      this.road = name;
+      this.road_code = code
+    },
   },
 };
 </script>
@@ -527,12 +652,12 @@ th {
 }
 
 .modal-block {
-  height: 70vh;
+  height: 80vh;
   position: relative;
 }
 .modal-block__table {
   overflow: auto;
-  height: 60vh;
+  height: 70vh;
 }
 .modal-block__buttons {
   width: 100%;
