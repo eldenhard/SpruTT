@@ -18,9 +18,10 @@
       * Для выбора значения арендатора и арендодателя, дважды нажмите на
       подходящее значение
       <br />
-      <br>
-      * Для того чтобы выравнить количество строк таблицы по длине, <br>
-      &nbsp;&nbsp;в столбце где не хватает значений поставьте пробел, таблица автоматически дозапишет значения в таблицу <br>
+      <br />
+      * Для того чтобы выравнить количество строк таблицы по длине, <br />
+      &nbsp;&nbsp;в столбце где не хватает значений поставьте пробел, таблица
+      автоматически дозапишет значения в таблицу <br />
       &nbsp;&nbsp;<b>после этого в этом же поле нажимать галочку не нужно</b>
       <br />
     </p>
@@ -92,7 +93,6 @@
         Отправить данные
       </button>
     </div>
- 
 
     <div class="rent_information_lenght">
       <p class="amount"></p>
@@ -102,7 +102,6 @@
       <p class="amount">Всего: {{ stavka_arr.length }}</p>
       <p class="amount">Всего: {{ stavka_start_date_arr.length }}</p>
       <p class="amount">Всего: {{ stavka_end_date_arr.length }}</p>
-
     </div>
     <table border="1">
       <thead>
@@ -115,7 +114,6 @@
                 v-model="wagon"
                 autocomplete="off"
                 placeholder="введите номера "
-               
               />
               <i
                 class="fa"
@@ -154,11 +152,9 @@
                 aria-hidden="true"
                 @click="CreateTableEndDate()"
                 v-if="end_date.length > 0"
-
               ></i>
             </div>
           </th>
-
 
           <th>
             <div class="inputWithIcon">
@@ -172,12 +168,10 @@
                 aria-hidden="true"
                 @click="CreateTableStavka()"
                 v-if="stavka.length > 0"
-
               ></i>
             </div>
           </th>
 
-          
           <th>
             <div class="inputWithIcon">
               <input
@@ -190,12 +184,10 @@
                 aria-hidden="true"
                 @click="CreateStartStavka()"
                 v-if="stavka_start_date.length > 0"
-
               ></i>
             </div>
           </th>
 
-          
           <th>
             <div class="inputWithIcon">
               <input
@@ -208,12 +200,9 @@
                 aria-hidden="true"
                 @click="CreateEndStavka()"
                 v-if="stavka_end_date.length > 0"
-
               ></i>
             </div>
           </th>
-
-
         </tr>
         <tr>
           <th>#</th>
@@ -227,22 +216,27 @@
         </tr>
       </thead>
       <tbody>
+
+      
         <td style="width: 30px !important">
-          <tr
-            v-for="(wag, index) in sort_data"
-            :key="wag.id"
+          <!-- Цикл по числу (длина столбца) -->
+          <tr v-for="(wag, index) in sort_data" :key="wag"
             style="width: 30px !important"
-          >
-            <td>
-              <div class="inputWithIcon">
+          >  
+            <td  >
+            
+              <div class="inputWithIcon" >
                 <input
                   type="text"
+                 
                   :id="`indexRow`"
                   name="сheck_in"
-                  :value="index + 1"
+                  :value="index+1"
                   readonly
                   style="width: 100% !important; text-align: center"
                   @click="test(index)"
+                  v-b-tooltip.hover
+                  :title="error_color[index]"
                 />
 
                 <i class="delete_row"></i>
@@ -256,6 +250,7 @@
             <td>
               <div class="inputWithIcon">
                 <input
+                :class="{ red123: (error_mess.length != 0 & error_mess[index] == 'red')}"
                   type="text"
                   name="сheck_in"
                   :id="`wagon` + index"
@@ -317,7 +312,6 @@
           </tr>
         </td>
 
-
         <td>
           <tr v-for="(stavka, index) in stavka_arr" :key="stavka.id">
             <td>
@@ -339,7 +333,6 @@
             </td>
           </tr>
         </td>
-
 
         <td>
           <tr v-for="(start, index) in stavka_start_date_arr" :key="start.id">
@@ -384,32 +377,9 @@
             </td>
           </tr>
         </td>
-        <!-- <td>
-          <tr v-for="(amount, index) in days_amount_arr" :key="amount.id">
-            <td>
-              <div class="inputWithIcon">
-                <input
-                  type="text"
-                  name="сheck_in"
-                  :id="`amount` + index"
-                  :value="amount"
-                  style="text-align: center"
-                />
-                <i
-                  class="fa"
-                  aria-hidden="true"
-                  @click="deleteAmount(amount, index)"
-                  v-if="wagonSaveData"
-                ></i>
-              </div>
-            </td>
-          </tr>
-        </td> -->
-
-       
       </tbody>
     </table>
-
+    <ArendaDataTable />
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -425,13 +395,15 @@ import api from "@/api/directory";
 import { mapState } from "vuex";
 import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from "../loader/loader.vue";
+import ArendaDataTable from "./ArendaDataTable.vue";
 export default {
   name: "rental-rate",
-  components: { Notifications, Loader },
+  components: { Notifications, Loader, ArendaDataTable },
   data() {
     return {
       loader: false,
-
+      ARRAYERROR: [],
+      sort_data_and_error: "",
       wagon: "",
       stavka: "",
       start_date: "",
@@ -448,16 +420,12 @@ export default {
       end_date_arr: [],
       stavka_end_date_arr: [],
       stavka_start_date_arr: [],
+      error_mess: [],
+      error_color: [],
       // days_amount_arr: [],
       all_length: [],
 
-      wagon_len: "0",
-      stavka_len: "0",
-      start_date_len: "0",
-      end_date_len: "0",
-      days_amount_len: "0",
 
-      ten_ans: [],
       success: false,
       ten_visible: true,
       land_visible: true,
@@ -470,21 +438,72 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+
+      Error: "",
+
+
+      all_aray: [],
     };
   },
   // 52458502 52568300 52577715
 
   computed: {
-
-    sort_data() {
+    ...mapState({
+      id: (state) => state.auth.uid,
+    }),
+    notification(){
       let sort_Array = [];
+
       sort_Array.push(
         this.wagon_arr.length,
         this.stavka_arr.length,
         this.start_date_arr.length,
         this.end_date_arr.length,
+        this.stavka_start_date_arr.length,
+        this.stavka_end_date_arr.length
       );
-      return Math.max.apply(null, sort_Array);
+
+      let obj = [];
+      sort_Array.forEach((item) => {
+        return obj.push({
+          number: item,
+        });
+      });
+
+      for (let el in obj) {
+        obj[el]["error"] = this.Error[el];
+       
+      }
+      return obj
+    },
+    sort_data() {
+      let sort_Array = [];
+
+      sort_Array.push(
+        this.wagon_arr.length,
+        this.stavka_arr.length,
+        this.start_date_arr.length,
+        this.end_date_arr.length,
+        this.stavka_start_date_arr.length,
+        this.stavka_end_date_arr.length
+      );
+
+      // let obj = [];
+      // sort_Array.forEach((item) => {
+      //   return obj.push({
+      //     number: item,
+      //   });
+      // });
+
+      // for (let el in obj) {
+      //   obj[el]["error"] = this.Error[el];
+      // }
+      // let max = obj.reduce((acc, curr) =>
+      //   acc.number > curr.number ? acc : curr
+      // );
+      // // console.log(obj);
+      // return max;
+       return Math.max.apply(null, sort_Array);
     },
     filter_tenant() {
       if (this.tenant.length > 1) {
@@ -518,26 +537,46 @@ export default {
         ? (this.ErrorPersonLand = true)
         : (this.ErrorPersonLand = false);
     },
-    wagon(){
-        let sort_Array = [];
-        sort_Array.push(
+    wagon() {
+      let sort_Array = [];
+      sort_Array.push(
         this.wagon_arr.length,
         this.stavka_arr.length,
         this.start_date_arr.length,
         this.end_date_arr.length,
         this.stavka_start_date_arr.length,
-        this.stavka_end_date_arr.length
+        this.stavka_end_date_arr.length,
+        this.error_color.length,
+        this.error_mess.length,
       );
-      let a = Math.max.apply(null, sort_Array)
-      if( this.wagon_arr.length < a){
-      let c = a - this.wagon_arr.length
-        for(let i = 1; i <= c; i++ ){
-            this.wagon_arr.push("null")
+      let a = Math.max.apply(null, sort_Array);
+      if (this.wagon_arr.length < a ) {
+        let c = a - this.wagon_arr.length;
+        for (let i = 1; i <= c; i++) {
+          this.wagon_arr.push("null");
+         
         }
       }
-  
+
+    
+      if (this.error_color.length < a ) {
+        let f = a - this.error_color.length;
+        for (let i = 1; i <= f; i++) {
+          this.error_color.push("null");
+         
+        }
+      }
+
+      if (this.error_mess.length < a ) {
+        let x = a - this.error_mess.length;
+        for (let i = 1; i <= x; i++) {
+          this.error_mess.push("null");
+         
+        }
+      }
+
     },
-    stavka(){
+    stavka() {
       let sort_Array = [];
       sort_Array.push(
         this.wagon_arr.length,
@@ -545,18 +584,36 @@ export default {
         this.start_date_arr.length,
         this.end_date_arr.length,
         this.stavka_start_date_arr.length,
-        this.stavka_end_date_arr.length
+        this.stavka_end_date_arr.length,
+        this.error_color.length,
+        this.error_mess.length,
       );
-      let a = Math.max.apply(null, sort_Array)
- 
-      if( this.stavka_arr.length < a){
-      let c = a - this.stavka_arr.length
-        for(let i = 1; i <= c; i++ ){
-            this.stavka_arr.push("null")
+      let a = Math.max.apply(null, sort_Array);
+
+      if (this.stavka_arr.length < a) {
+        let c = a - this.stavka_arr.length;
+        for (let i = 1; i <= c; i++) {
+          this.stavka_arr.push("null");
         }
-      } 
+      }
+      if (this.error_color.length < a ) {
+        let f = a - this.error_color.length;
+        for (let i = 1; i <= f; i++) {
+          this.error_color.push("null");
+         
+        }
+      }
+
+      if (this.error_mess.length < a ) {
+        let x = a - this.error_mess.length;
+        for (let i = 1; i <= x; i++) {
+          this.error_mess.push("null");
+         
+        }
+      }
+
     },
-    start_date(){
+    start_date() {
       let sort_Array = [];
       sort_Array.push(
         this.wagon_arr.length,
@@ -564,18 +621,36 @@ export default {
         this.start_date_arr.length,
         this.end_date_arr.length,
         this.stavka_start_date_arr.length,
-        this.stavka_end_date_arr.length
+        this.stavka_end_date_arr.length,
+        this.error_color.length,
+        this.error_mess.length,
       );
-      let a = Math.max.apply(null, sort_Array)
- 
-      if( this.start_date_arr.length < a){
-      let c = a - this.start_date_arr.length
-        for(let i = 1; i <= c; i++ ){
-            this.start_date_arr.push("null")
+      let a = Math.max.apply(null, sort_Array);
+
+      if (this.start_date_arr.length < a) {
+        let c = a - this.start_date_arr.length;
+        for (let i = 1; i <= c; i++) {
+          this.start_date_arr.push("null");
         }
-      } 
+      }
+      if (this.error_color.length < a ) {
+        let f = a - this.error_color.length;
+        for (let i = 1; i <= f; i++) {
+          this.error_color.push("null");
+         
+        }
+      }
+
+      if (this.error_mess.length < a ) {
+        let x = a - this.error_mess.length;
+        for (let i = 1; i <= x; i++) {
+          this.error_mess.push("null");
+         
+        }
+      }
+
     },
-    end_date(){
+    end_date() {
       let sort_Array = [];
       sort_Array.push(
         this.wagon_arr.length,
@@ -583,19 +658,37 @@ export default {
         this.start_date_arr.length,
         this.end_date_arr.length,
         this.stavka_start_date_arr.length,
-        this.stavka_end_date_arr.length
+        this.stavka_end_date_arr.length,
+        this.error_color.length,
+        this.error_mess.length,
       );
-      let a = Math.max.apply(null, sort_Array)
- 
-      if( this.end_date_arr.length < a){
-      let c = a - this.end_date_arr.length
-      console.log(c)
-        for(let i = 1; i <= c; i++ ){
-            this.end_date_arr.push("null")
+      let a = Math.max.apply(null, sort_Array);
+
+      if (this.end_date_arr.length < a) {
+        let c = a - this.end_date_arr.length;
+        console.log(c);
+        for (let i = 1; i <= c; i++) {
+          this.end_date_arr.push("null");
         }
-      } 
+      }
+      if (this.error_color.length < a ) {
+        let f = a - this.error_color.length;
+        for (let i = 1; i <= f; i++) {
+          this.error_color.push("null");
+         
+        }
+      }
+
+      if (this.error_mess.length < a ) {
+        let x = a - this.error_mess.length;
+        for (let i = 1; i <= x; i++) {
+          this.error_mess.push("null");
+         
+        }
+      }
+
     },
-    stavka_start_date(){
+    stavka_start_date() {
       let sort_Array = [];
       sort_Array.push(
         this.wagon_arr.length,
@@ -603,19 +696,37 @@ export default {
         this.start_date_arr.length,
         this.end_date_arr.length,
         this.stavka_start_date_arr.length,
-        this.stavka_end_date_arr.length
+        this.stavka_end_date_arr.length,
+        this.error_color.length,
+        this.error_mess.length,
       );
-      let a = Math.max.apply(null, sort_Array)
- 
-      if( this.stavka_start_date_arr.length < a){
-      let c = a - this.stavka_start_date_arr.length
-      console.log(c)
-        for(let i = 1; i <= c; i++ ){
-            this.stavka_start_date_arr.push("null")
+      let a = Math.max.apply(null, sort_Array);
+
+      if (this.stavka_start_date_arr.length < a) {
+        let c = a - this.stavka_start_date_arr.length;
+        console.log(c);
+        for (let i = 1; i <= c; i++) {
+          this.stavka_start_date_arr.push("null");
         }
-      } 
+      }
+      if (this.error_color.length < a ) {
+        let f = a - this.error_color.length;
+        for (let i = 1; i <= f; i++) {
+          this.error_color.push("null");
+         
+        }
+      }
+
+      if (this.error_mess.length < a ) {
+        let x = a - this.error_mess.length;
+        for (let i = 1; i <= x; i++) {
+          this.error_mess.push("null");
+         
+        }
+      }
+
     },
-    stavka_end_date(){
+    stavka_end_date() {
       let sort_Array = [];
       sort_Array.push(
         this.wagon_arr.length,
@@ -623,38 +734,133 @@ export default {
         this.start_date_arr.length,
         this.end_date_arr.length,
         this.stavka_start_date_arr.length,
-        this.stavka_end_date_arr.length
+        this.stavka_end_date_arr.length,
+        this.error_color.length,
+        this.error_mess.length,
       );
-      let a = Math.max.apply(null, sort_Array)
- 
-      if( this.stavka_end_date_arr.length < a){
-      let c = a - this.stavka_end_date_arr.length
-      console.log(c)
-        for(let i = 1; i <= c; i++ ){
-            this.stavka_end_date_arr.push("null")
+      let a = Math.max.apply(null, sort_Array);
+
+      if (this.stavka_end_date_arr.length < a) {
+        let c = a - this.stavka_end_date_arr.length;
+        console.log(c);
+        for (let i = 1; i <= c; i++) {
+          this.stavka_end_date_arr.push("null");
         }
-      } 
+      }
+      if (this.error_color.length < a ) {
+        let f = a - this.error_color.length;
+        for (let i = 1; i <= f; i++) {
+          this.error_color.push("null");
+         
+        }
+      }
+
+      if (this.error_mess.length < a ) {
+        let x = a - this.error_mess.length;
+        for (let i = 1; i <= x; i++) {
+          this.error_mess.push("null");
+         
+        }
+      }
+
     },
 
-   
+    Error() {
+      // colors
+      let new_erros_color = Object.assign(this.error_mess);
 
+      // messages
+      let new_error_mes = Object.assign(this.error_color);
+      /*
+      Error = [
+        (1, 1)
+        (2, 1)
+      ]
+      */
+      for (let i = 0; i < this.Error.length; i++){
+        let row_index = this.Error[i][0] - 1;
+        let row_message = this.Error[i][1]
+        new_error_mes[row_index] = row_message;
+        new_erros_color[row_index] = 'red';
+      }
+      this.error_color = new_error_mes;
+      
+      // deleting
+      let new_wagons = Object.assign(this.wagon_arr)
+      let new_start_date = Object.assign(this.start_date_arr)
+      let new_end_date = Object.assign(this.end_date_arr)
+      let new_stavka = Object.assign(this.stavka_arr)
+      let new_stavka_end_date = Object.assign(this.stavka_end_date_arr)
+      let new_stavka_start_date = Object.assign(this.stavka_start_date_arr)
+      let new_errors_messages = Object.assign(this.error_mess)
+      let new_error_colors = Object.assign(this.error_color)
+
+      
+      for (let i = 0; i < new_error_mes.length; i++){
+        if (new_error_mes[i] == 'null'){
+          delete new_wagons[i];
+          delete new_start_date[i];
+          delete new_end_date[i];
+          delete new_stavka[i];
+          delete new_stavka_end_date[i];
+          delete new_stavka_start_date[i];
+          delete new_error_colors[i];
+          delete new_errors_messages[i];
+        }
+      }
+
+      new_wagons = new_wagons.filter(item => item != undefined)
+      new_start_date = new_start_date.filter(item => item != undefined)
+      new_end_date = new_end_date.filter(item => item != undefined)
+      new_stavka = new_stavka.filter(item => item != undefined)
+      new_stavka_end_date = new_stavka_end_date.filter(item => item != undefined)
+      new_stavka_start_date = new_stavka_start_date.filter(item => item != undefined)
+      new_error_colors = new_error_colors.filter(item => item != undefined)
+      new_errors_messages = new_errors_messages.filter(item => item != undefined)
+
+      this.wagon_arr = new_wagons;
+      this.start_date_arr = new_start_date;
+      this.end_date_arr = new_end_date;
+      this.stavka_arr = new_stavka;
+      this.stavka_end_date_arr = new_stavka_end_date;
+      this.stavka_start_date_arr = new_stavka_start_date;
+      this.error_color = new_error_colors;
+      this.error_mess = new_errors_messages;
+
+    },
   },
   methods: {
-    Transform(value){
-      return value.replace('null', '-')
+    Transform(value) {
+      return value.replace("null", "-");
+    },
+    ErrorResp(index) {
+      document.getElementById("wagon" + index).style =
+        "background: #FF6C37; color: white";
+      document.getElementById("start" + index).style =
+        "background: #FF6C37; color: white";
+      document.getElementById("end" + index).style =
+        "background: #FF6C37; color: white";
+      document.getElementById("stavka" + index).style =
+        "background: #FF6C37; color: white";
+      document.getElementById("startStavka" + index).style =
+        "background: #FF6C37; color: white";
+      document.getElementById("endStavka" + index).style =
+        "background: #FF6C37; color: white";
     },
     test(index) {
+      console.log(`Я удалил ${index}`)
       this.wagon_arr.splice(index, 1);
       this.start_date_arr.splice(index, 1);
       this.end_date_arr.splice(index, 1);
       this.stavka_end_date_arr.splice(index, 1);
       this.stavka_start_date_arr.splice(index, 1);
       this.stavka_arr.splice(index, 1);
-
+      this.error_color.splice(index, 1);
+      this.error_mess.splice(index, 1)
     },
-// ВАГОН
+    // ВАГОН
     CreateTable() {
-      let handler = this.wagon.split(" ")
+      let handler = this.wagon.split(" ");
       this.wagon_arr = [...handler];
       this.wagon_len = this.wagon_arr.length;
       this.wagon = "";
@@ -669,9 +875,9 @@ export default {
       }, 1000);
     },
 
-// ДАТА НАЧАЛЫ АРЕНДЫ
+    // ДАТА НАЧАЛЫ АРЕНДЫ
     CreateTableStartDate() {
-      let handler = this.start_date.split(" ")
+      let handler = this.start_date.split(" ");
       this.start_date_arr = [...handler];
       this.start_date = "";
     },
@@ -686,10 +892,10 @@ export default {
       }, 1000);
     },
 
-  // ДАТА КОНЦА АРЕНДЫ
+    // ДАТА КОНЦА АРЕНДЫ
     CreateTableEndDate() {
-      let handler = this.end_date.split(" ")
-    
+      let handler = this.end_date.split(" ");
+
       this.end_date_arr = [...handler];
       this.end_date = "";
     },
@@ -703,9 +909,9 @@ export default {
       }, 1000);
     },
 
-// СТАВКА
+    // СТАВКА
     CreateTableStavka() {
-      let stavka = this.stavka.split(" ")
+      let stavka = this.stavka.split(" ");
       this.stavka_arr = [...stavka];
       this.stavka = "";
     },
@@ -719,38 +925,38 @@ export default {
       }, 1000);
     },
 
-// ДАТА НАЧАЛА СТАВКИ
+    // ДАТА НАЧАЛА СТАВКИ
 
-CreateStartStavka(){
-      let start_stavka = this.stavka_start_date.split(" ")
+    CreateStartStavka() {
+      let start_stavka = this.stavka_start_date.split(" ");
       this.stavka_start_date_arr = [...start_stavka];
       this.stavka_start_date = "";
-},
-deleteStartStavka(data_value, index){
-  let data = document.getElementById(`startStavka${index}`).value;
+    },
+    deleteStartStavka(data_value, index) {
+      let data = document.getElementById(`startStavka${index}`).value;
       this.stavka_start_date_arr.splice(index, 1, data);
       let wagon_DOM = document.getElementById(`startStavka${index}`);
       wagon_DOM.classList.add("success");
       setTimeout(() => {
         wagon_DOM.classList.remove("success");
       }, 1000);
-},
+    },
 
-// ДАТА КОНЦА СТАВКИ
-CreateEndStavka(){
-    let end_stavka = this.stavka_end_date.split(" ")
+    // ДАТА КОНЦА СТАВКИ
+    CreateEndStavka() {
+      let end_stavka = this.stavka_end_date.split(" ");
       this.stavka_end_date_arr = [...end_stavka];
       this.stavka_end_date = "";
-},
-deleteEndStavka(data_value, index){
-  let data = document.getElementById(`endStavka${index}`).value;
+    },
+    deleteEndStavka(data_value, index) {
+      let data = document.getElementById(`endStavka${index}`).value;
       this.stavka_end_date_arr.splice(index, 1, data);
       let wagon_DOM = document.getElementById(`endStavka${index}`);
       wagon_DOM.classList.add("success");
       setTimeout(() => {
         wagon_DOM.classList.remove("success");
       }, 1000);
-},
+    },
 
     checkTenant(value) {
       this.ten_visible = false;
@@ -773,6 +979,8 @@ deleteEndStavka(data_value, index){
         wagon.push({
           wagon: item,
         });
+        // this.error_mess.push(null);
+        // this.error_color.push("white")
       });
 
       let stavka = [];
@@ -796,17 +1004,25 @@ deleteEndStavka(data_value, index){
         });
       });
 
-      let stavka_start_date = []
+      let stavka_start_date = [];
       this.stavka_start_date_arr.forEach((item) => {
         stavka_start_date.push({
-          stavka_start_date: item.replace(/\./g, "-").split("-").reverse("").join("-"),
+          stavka_start_date: item
+            .replace(/\./g, "-")
+            .split("-")
+            .reverse("")
+            .join("-"),
         });
       });
-      
-      let stavka_end_date = []
+
+      let stavka_end_date = [];
       this.stavka_end_date_arr.forEach((item) => {
         stavka_end_date.push({
-          stavka_end_date: item.replace(/\./g, "-").split("-").reverse("").join("-"),
+          stavka_end_date: item
+            .replace(/\./g, "-")
+            .split("-")
+            .reverse("")
+            .join("-"),
         });
       });
 
@@ -822,107 +1038,97 @@ deleteEndStavka(data_value, index){
 
       // console.log(this.all_length)
       // if (this.helper(this.all_length) == true) {
-        let all_array = wagon.map((item, index) => ({
-          landlord: this.landlord,
-          tenant: this.tenant,
-          ...item,
-          ...stavka[index],
-          ...start_date[index],
-          ...end_date[index],
-          ...stavka_start_date[index],
-          ...stavka_end_date[index],
-          days_amount: null,
+      let all_array = wagon.map((item, index) => ({
+        landlord: this.landlord,
+        tenant: this.tenant,
+        ...item,
+        ...stavka[index],
+        ...start_date[index],
+        ...end_date[index],
+        ...stavka_start_date[index],
+        ...stavka_end_date[index],
+        days_amount: null,
+        responsible_user: this.id,
+      }));
 
-        }));
+    
 
-        all_array.forEach((item) => {
-          if(item.end_date == "null" || item.end_date == ""){
-            return  item.end_date = null
-          }
-        })
-        all_array.forEach((item) => {
-          if(item.start_date == "null" || item.start_date == ""){
-            return  item.start_date = null
-          }
-        })
-        all_array.forEach((item) => {
-          if(item.stavka_start_date == "null" || item.stavka_start_date == ""){
-            return  item.stavka_start_date = null
-          }
-        })
-        all_array.forEach((item) => {
-          if(item.stavka_end_date == "null" || item.stavka_end_date == ""){
-            return  item.stavka_end_date = null
-          }
-        })
-        all_array.forEach((item) => {
-          if(item.wagon == "null" || item.wagon == ""){
-            return  item.wagon = 0
-          }
-        })
-        all_array.forEach((item) => {
-          if(item.stavka == "null" || item.stavka == ""){
-            return  item.stavka = 0
-          }
-        })
-        all_array.forEach((item) => {
-            return item.stavka = Number(item.stavka)
-        })
-        console.log(all_array)
-        // console.log(postArray)
-        // console.log(postArray)
-        // console.log( this.wagon_arr, this.start_date_arr)
-      
-        // console.log(all_array)
-        if (this.landlord == "" || this.tenant == "") {
-          this.loader = false;
-          if (this.landlord == "") {
-            this.ErrorPersonLand = true;
-          }
+
+
+      all_array.forEach((item) => {
+        if (item.end_date == "null" || item.end_date == "") {
+           (item.end_date = null);
+        }
+        if (item.start_date == "null" || item.start_date == "") {
+           (item.start_date = null);
+        }
+        if (item.stavka_start_date == "null" || item.stavka_start_date == "") {
+           (item.stavka_start_date = null);
+        }
+        if (item.stavka_end_date == "null" || item.stavka_end_date == "") {
+           (item.stavka_end_date = null);
+        }
+        if (item.wagon == "null" || item.wagon == "") {
+           (item.wagon = 0);
+        }
+        if (item.stavka == "null" || item.stavka == "") {
+           (item.stavka = 0);
+        }
+         (item.stavka = Number(item.stavka));
+      });
+
+
+      this.ARRAYERROR = all_array;
+      if (this.landlord == "" || this.tenant == "") {
+        this.loader = false;
+        if (this.landlord == "") {
+          this.ErrorPersonLand = true;
+        }
           if (this.tenant == "") {
             this.ErrorPerson = true;
           }
-          this.notifyHead = "Ошибка";
-          this.notifyMessage =
-            "Необходимо указать данные по Арендатору/Арендодателю";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2500);
-        } else {
-          api
-            .postSaveMany(all_array)
-            .then((response) => {
-              this.loader = false;
-              this.notifyHead = "Успешно";
-              this.notifyMessage = "Данные отправлены";
-              this.notifyClass = "wrapper-success";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 2500);
-              this.wagon_arr = []
-              this.stavka_arr = []
-              this.start_date_arr = []
-              this.end_date_arr = []
-              this.stavka_end_date_arr = []
-              this.stavka_start_date_arr = []
-          
-            })
-            .catch((error) => {
-              this.loader = false;
               this.notifyHead = "Ошибка";
-              this.notifyMessage = error.response.data[0];
+              this.notifyMessage =
+                "Необходимо указать данные по Арендатору/Арендодателю";
               this.notifyClass = "wrapper-error";
               this.showNotify = true;
               setTimeout(() => {
                 this.showNotify = false;
-              }, 3500);
-            });
-        }
-        this.all_length = [];
-      } 
+              }, 2500);
+      } else {
+        api
+          .postSaveMany(all_array)
+          .then((response) => {
+            this.loader = false;
+            this.notifyHead = "Успешно";
+            this.notifyMessage = "Данные отправлены";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
+            this.wagon_arr = [];
+            this.stavka_arr = [];
+            this.start_date_arr = [];
+            this.end_date_arr = [];
+            this.stavka_end_date_arr = [];
+            this.stavka_start_date_arr = [];
+          })
+          .catch((error) => {
+            this.loader = false;
+            this.notifyHead = "Ошибка";
+            this.Error = error.response.data;
+            this.notifyMessage = error.response.data;
+            
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 5500);
+          });
+      }
+      this.all_length = [];
+    },
     // }else {
     //     this.loader = false;
     //     this.notifyHead = "Ошибка";
@@ -933,16 +1139,17 @@ deleteEndStavka(data_value, index){
     //       this.showNotify = false;
     //     }, 3500);
     //   }
-     
-       
-        }
-      } 
-    
-  
-
+  },
+};
 </script>
 
 <style scoped>
+.grey{
+  background: grey;
+}
+.red123{
+  background-color: red !important;
+}
 #indexRow:hover {
   background: rgb(255, 0, 0, 0.2);
 }
@@ -986,8 +1193,10 @@ input {
 /* input[type='text']:nth-child(7n) {
   width: 100%;
 } */
-tr,th,th{
-  border: 1px solid black
+tr,
+th,
+th {
+  border: 1px solid black;
 }
 td {
   vertical-align: top !important;
