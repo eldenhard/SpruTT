@@ -54,8 +54,12 @@ const getCurrentContract= (id) => {
 
 
 // Ставки по аренде
-const postSaveMany = (data) => {
-    return api.post(`${finance}/stavki-arenda/save-many/` , data)
+const postSaveMany = ( data) => {
+    return api.post(`${finance}/stavki-arenda/save-many/` ,data)
+}
+
+const getAllArendaDataStavka = (filter_arendaData) => {
+    return api.get(`${finance}/stavki-arenda/?`,  {params: filter_arendaData})
 }
 export default {
     getAllcounterparties,
@@ -75,5 +79,6 @@ export default {
 
     // Ставки по аренде
     postSaveMany,
+    getAllArendaDataStavka,
 }
 

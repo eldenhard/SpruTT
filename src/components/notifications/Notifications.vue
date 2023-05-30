@@ -24,7 +24,7 @@ export default{
         required: false
       },
       message: {
-        type: String,
+        // type: String,
         default: 'Вы успешно авторизированы',
         required: false
       },
