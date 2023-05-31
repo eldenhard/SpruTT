@@ -64,11 +64,11 @@ const getAllArendaDataStavka = (filter_arendaData) => {
 const getAllArendaDataStavkaPage = (page_size, page_number) => {
     return api.get(`${finance}/stavki-arenda/?page_size=${page_size}&page=${page_number}`,  )
 }
-const patchStavkiArenda = (id,type, data) => {
-    return api.patch(`${finance}/stavki-arenda/${id}/?${type}=${data}`)
+const patchStavkiArenda = (id, data) => {
+    return api.patch(`${finance}/stavki-arenda/${id}/`, {params: data})
 }
 const deleteStavkiArenda = (id) => {
-    return api.patch(`${finance}/stavki-arenda/${id}/`)
+    return api.delete(`${finance}/stavki-arenda/${id}/`)
 }
 export default {
     getAllcounterparties,

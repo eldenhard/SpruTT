@@ -155,8 +155,6 @@ export default {
 
   methods: {
     deleteStavkiArenda(id) {
-      let row = document.getElementById(id);
-      row.parentNode.removeChild(row);
       api
         .deleteStavkiArenda(id)
         .then((response) => {
@@ -165,9 +163,12 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+      let row = document.getElementById(id);
+      row.parentNode.removeChild(row);
     },
     submitWagon(element, id) {
-      api.patchStavkiArenda(id, "wagon", element).then((response) => {
+      let data = { wagon: element };
+      api.patchStavkiArenda(id, data).then((response) => {
         console.log(response);
         let wagon_DOM = document.getElementById(`wag${id}`);
         wagon_DOM.classList.add("success");
@@ -177,42 +178,81 @@ export default {
       });
     },
     submitStartArenda(element, id) {
-      let wagon_DOM = document.getElementById(`start_date${id}`);
-      wagon_DOM.classList.add("success");
-      setTimeout(() => {
-        wagon_DOM.classList.remove("success");
-      }, 1000);
+      let data = { start_date: element };
+      api
+        .patchStavkiArenda(id, data)
+        .then((response) => {
+          let wagon_DOM = document.getElementById(`start_date${id}`);
+          wagon_DOM.classList.add("success");
+          setTimeout(() => {
+            wagon_DOM.classList.remove("success");
+          }, 1000);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     submitEndArenda(element, id) {
-      let wagon_DOM = document.getElementById(`end_date${id}`);
-      wagon_DOM.classList.add("success");
-      setTimeout(() => {
-        wagon_DOM.classList.remove("success");
-      }, 1000);
+      let data = { end_date: element };
+      api
+        .patchStavkiArenda(id, data)
+        .then((response) => {
+          let wagon_DOM = document.getElementById(`end_date${id}`);
+          wagon_DOM.classList.add("success");
+          setTimeout(() => {
+            wagon_DOM.classList.remove("success");
+          }, 1000);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     submitStavka(element, id) {
-      let wagon_DOM = document.getElementById(`stavka${id}`);
-      wagon_DOM.classList.add("success");
-      setTimeout(() => {
-        wagon_DOM.classList.remove("success");
-      }, 1000);
+      let data = { stavka: element };
+      api
+        .patchStavkiArenda(id, data)
+        .then((response) => {
+          let wagon_DOM = document.getElementById(`stavka${id}`);
+          wagon_DOM.classList.add("success");
+          setTimeout(() => {
+            wagon_DOM.classList.remove("success");
+          }, 1000);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     submitStartStavka(element, id) {
-      let wagon_DOM = document.getElementById(`stavka_start_date${id}`);
-      wagon_DOM.classList.add("success");
-      setTimeout(() => {
-        wagon_DOM.classList.remove("success");
-      }, 1000);
+      let data = { stavka_start_date: element };
+      api
+        .patchStavkiArenda(id, data)
+        .then((response) => {
+          let wagon_DOM = document.getElementById(`stavka_start_date${id}`);
+          wagon_DOM.classList.add("success");
+          setTimeout(() => {
+            wagon_DOM.classList.remove("success");
+          }, 1000);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     submitEndStavka(element, id) {
-      let wagon_DOM = document.getElementById(`stavka_end_date${id}`);
-      wagon_DOM.classList.add("success");
-      setTimeout(() => {
-        wagon_DOM.classList.remove("success");
-      }, 1000);
+      let data = { stavka_start_date: element };
+      api
+        .patchStavkiArenda(id, data)
+        .then((response) => {
+          let wagon_DOM = document.getElementById(`stavka_end_date${id}`);
+          wagon_DOM.classList.add("success");
+          setTimeout(() => {
+            wagon_DOM.classList.remove("success");
+          }, 1000);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
-   
     Truefalse(btn) {
       if (btn == this.pageNumber) {
         return true;
