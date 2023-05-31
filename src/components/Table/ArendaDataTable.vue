@@ -308,6 +308,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+tr,td,th{
+  border: 1px solid grey;
+}
 .success {
   transition: 0.5s ease-in-out;
   background: rgba(42, 190, 67, 0.4);
