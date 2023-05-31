@@ -1148,7 +1148,8 @@ export default {
   background: grey;
 }
 .red123{
-  background-color: red !important;
+  background-color: rgb(172, 1, 1) !important;
+  color: white !important;
 }
 #indexRow:hover {
   background: rgb(255, 0, 0, 0.2);
