@@ -476,7 +476,7 @@ export default {
       }
       return this.tenant.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.includes(this.tenant)
+            i.work_name.toLowerCase().includes((this.tenant).toLowerCase())
           )
         : "";
     },
@@ -486,7 +486,7 @@ export default {
       }
       return this.landlord.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.includes(this.landlord)
+            i.work_name.toLowerCase().includes((this.landlord).toLowerCase())
           )
         : "";
     },
