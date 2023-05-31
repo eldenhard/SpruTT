@@ -38,6 +38,12 @@
                     <rentalrateTable/>
               </b-card-text>
               </b-tab>
+
+              <b-tab title="Данные по нормативам">
+                <b-card-text>
+                    <StandartData/>
+              </b-card-text>
+              </b-tab>
           </b-container>
 
     </b-tabs>
@@ -84,9 +90,10 @@ import StationsDirectory from '@/components/Table/Directory/StationsDirectory.vu
 import CargoDirectory from '../components/Table/Directory/CargoDirectory.vue'
 import CountriesDirectory from '../components/Table/Directory/CountriesDirectory.vue'
 import WagonDirectory from '../components/Table/Directory/WagonDirectory.vue'
+import StandartData from '../components/Table/Directory/StandartData.vue'
 export default{
     name: 'Directory',
-    components: {partnerTable, contractTable , rentalrateTable, StationsDirectory, CargoDirectory, CountriesDirectory, WagonDirectory},
+    components: {partnerTable, contractTable , rentalrateTable, StationsDirectory, CargoDirectory, CountriesDirectory, WagonDirectory, StandartData},
     mounted(){
       document.title = 'Справочники'
 

@@ -402,7 +402,6 @@ export default {
   data() {
     return {
       loader: false,
-      ARRAYERROR: [],
       sort_data_and_error: "",
       wagon: "",
       stavka: "",
@@ -438,11 +437,8 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
-
+      // все ошибки
       Error: "",
-
-
-      all_aray: [],
     };
   },
   // 52458502 52568300 52577715
@@ -451,34 +447,8 @@ export default {
     ...mapState({
       id: (state) => state.auth.uid,
     }),
-    notification(){
-      let sort_Array = [];
-
-      sort_Array.push(
-        this.wagon_arr.length,
-        this.stavka_arr.length,
-        this.start_date_arr.length,
-        this.end_date_arr.length,
-        this.stavka_start_date_arr.length,
-        this.stavka_end_date_arr.length
-      );
-
-      let obj = [];
-      sort_Array.forEach((item) => {
-        return obj.push({
-          number: item,
-        });
-      });
-
-      for (let el in obj) {
-        obj[el]["error"] = this.Error[el];
-       
-      }
-      return obj
-    },
     sort_data() {
       let sort_Array = [];
-
       sort_Array.push(
         this.wagon_arr.length,
         this.stavka_arr.length,
@@ -487,22 +457,6 @@ export default {
         this.stavka_start_date_arr.length,
         this.stavka_end_date_arr.length
       );
-
-      // let obj = [];
-      // sort_Array.forEach((item) => {
-      //   return obj.push({
-      //     number: item,
-      //   });
-      // });
-
-      // for (let el in obj) {
-      //   obj[el]["error"] = this.Error[el];
-      // }
-      // let max = obj.reduce((acc, curr) =>
-      //   acc.number > curr.number ? acc : curr
-      // );
-      // // console.log(obj);
-      // return max;
        return Math.max.apply(null, sort_Array);
     },
     filter_tenant() {
@@ -973,7 +927,7 @@ export default {
       return [...new Set(a)].length == 1;
     },
     dataCollection() {
-      // this.loader = true;
+      this.loader = true;
       let wagon = [];
       this.wagon_arr.forEach((item) => {
         wagon.push({
@@ -1051,9 +1005,6 @@ export default {
         responsible_user: this.id,
       }));
 
-    
-
-
 
       all_array.forEach((item) => {
         if (item.end_date == "null" || item.end_date == "") {
@@ -1077,8 +1028,6 @@ export default {
          (item.stavka = Number(item.stavka));
       });
 
-
-      this.ARRAYERROR = all_array;
       if (this.landlord == "" || this.tenant == "") {
         this.loader = false;
         if (this.landlord == "") {
