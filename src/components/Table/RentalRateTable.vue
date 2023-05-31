@@ -93,7 +93,7 @@
         Отправить данные
       </button>
     </div>
-
+    <button class="button" style="background:#1B872D; width: 30%; margin-left: auto; height: 40px;  " @click="deleteTable()">Очистить таблицу</button> <br><br><br>
     <div class="rent_information_lenght">
       <p class="amount"></p>
       <p class="amount">Всего: {{ wagon_arr.length }}</p>
@@ -103,6 +103,7 @@
       <p class="amount">Всего: {{ stavka_start_date_arr.length }}</p>
       <p class="amount">Всего: {{ stavka_end_date_arr.length }}</p>
     </div>
+    
     <table border="1">
       <thead>
         <tr>
@@ -784,6 +785,16 @@ export default {
     },
   },
   methods: {
+    deleteTable(){
+      this.wagon_arr = [];
+      this.stavka_arr = [];
+      this.start_date_arr = [];
+      this.end_date_arr = [];
+      this.stavka_end_date_arr = [];
+      this.stavka_start_date_arr = [];
+      this.error_mess = [],
+      this.error_color = []
+    },
     Transform(value) {
       return value.replace("null", "-");
     },
