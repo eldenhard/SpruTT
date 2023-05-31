@@ -1018,26 +1018,28 @@ export default {
 
 
       all_array.forEach((item) => {
-        if (item.end_date == "null" || item.end_date == "") {
+        if (item.end_date == "null" || item.end_date == ""|| item.end_date == "-") {
            (item.end_date = null);
         }
-        if (item.start_date == "null" || item.start_date == "") {
+        if (item.start_date == "null" || item.start_date == "" || item.start_date == "-") {
            (item.start_date = null);
         }
-        if (item.stavka_start_date == "null" || item.stavka_start_date == "") {
+        if (item.stavka_start_date == "null" || item.stavka_start_date == "" || item.stavka_start_date == "-") {
            (item.stavka_start_date = null);
         }
-        if (item.stavka_end_date == "null" || item.stavka_end_date == "") {
+        if (item.stavka_end_date == "null" || item.stavka_end_date == "" || item.stavka_end_date == "-") {
            (item.stavka_end_date = null);
         }
-        if (item.wagon == "null" || item.wagon == "") {
+        if (item.wagon == "null" || item.wagon == ""|| item.wagon == "-") {
            (item.wagon = 0);
         }
-        if (item.stavka == "null" || item.stavka == "") {
+        if (item.stavka == "null" || item.stavka == ""|| item.stavka == "-") {
            (item.stavka = 0);
         }
          (item.stavka = Number(item.stavka));
       });
+
+
 
       if (this.landlord == "" || this.tenant == "") {
         this.loader = false;
