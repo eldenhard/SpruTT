@@ -70,6 +70,9 @@ const patchStavkiArenda = (id, data) => {
 const deleteStavkiArenda = (id) => {
     return api.delete(`${finance}/stavki-arenda/${id}/`)
 }
+const postPenaltyStandards = (data) => {
+    return api.post(`${finance}/penalty-standards/`, data)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -92,5 +95,6 @@ export default {
     getAllArendaDataStavkaPage,
     patchStavkiArenda,
     deleteStavkiArenda,
+    postPenaltyStandards,
 }
 
