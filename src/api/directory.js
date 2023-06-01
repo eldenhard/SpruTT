@@ -65,7 +65,7 @@ const getAllArendaDataStavkaPage = (page_size, page_number) => {
     return api.get(`${finance}/stavki-arenda/?page_size=${page_size}&page=${page_number}`,  )
 }
 const patchStavkiArenda = (id, data) => {
-    return api.patch(`${finance}/stavki-arenda/${id}/`, {params: data})
+    return api.patch(`${finance}/stavki-arenda/${id}/`, data)
 }
 const deleteStavkiArenda = (id) => {
     return api.delete(`${finance}/stavki-arenda/${id}/`)

@@ -79,7 +79,7 @@ const changeBDRreport = (data) => {
 }
 // справочник контрагенты
 const createCounterparties = (data) => {
-    return api.post(`${resource}/counterparties/create/`, data)
+    return api.post(`${resource}/counterparties/`, data)
 }
 
 // Для ключевых фактов

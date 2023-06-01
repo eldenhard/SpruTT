@@ -1136,13 +1136,12 @@ export default {
 <style scoped>
 .delete_col {
   height: 15px;
-  font-size: 12px;
-  background: rgb(84, 129, 84);
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
+  font-size: 14px;
+  background: transparent;
+  color: black;
 }
 .delete_col:hover{
-  background: rgb(52, 88, 52);
+  background: rgb(226, 226, 226);
 }
 .grey{
   background: grey;
