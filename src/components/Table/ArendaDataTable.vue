@@ -22,7 +22,7 @@
       <button class="button Accept" @click="getArenda()">Запросить</button>
     </div>
 
-    Номер страницы {{ pageNumber }}
+    <p class="amount" style="padding-top: 2%;"> Всего записей: {{ total_objects }}</p>
     <div class="">
       <table border="1" v-show="visible">
         <thead>
@@ -32,8 +32,10 @@
             <th class="col2">Дата начала аренды</th>
             <th class="col2">Дата конца аренды</th>
             <th class="col2">Ставка</th>
-            <th class="col2">Дата начала акта</th>
-            <th class="col2">Дата конца акта</th>
+            <th class="col2">Дата начала ставки</th>
+            <th class="col2">Дата конца ставки</th>
+            <th class="col2">Арендатор</th>
+            <th class="col2">Арендодатель</th>
           </tr>
         </thead>
         <tbody>
@@ -97,6 +99,20 @@
                 v-on:keyup.enter="
                   submitEndStavka(item.stavka_end_date, item.id)
                 "
+              />
+            </td>
+            <td class="col2">
+              <input
+                style="width: 100%"
+                :id="`tenant` + item.id"
+                v-model="item.tenant"
+              />
+            </td>
+            <td class="col2">
+              <input
+                style="width: 100%"
+                :id="`landlord` + item.id"
+                v-model="item.landlord"
               />
             </td>
           </tr>
@@ -273,21 +289,22 @@ export default {
       return false;
     },
     getPagination(pg_size, pg_number) {
+      this.loader = true
       api
         .getAllArendaDataStavkaPage(pg_size, pg_number)
         .then((response) => {
-          console.log(pg_number);
+          this.loader = false
           this.data = response.data.data;
           this.pageNumber = response.data.page_number;
-          console.log(this.data);
-          console.log(this.pageNumber);
         })
+        
         .catch((error) => {
+          this.loader = false
           console.log(error);
         });
     },
     getArenda() {
-      // this.loader = true
+      this.loader = true
       api
         .getAllArendaDataStavka(this.filter_arendaData)
         .then((response) => {
@@ -341,6 +358,7 @@ tr,td,th{
 // }
 input {
   border: none;
+  text-align: center;
 }
 
 #wrapper {
