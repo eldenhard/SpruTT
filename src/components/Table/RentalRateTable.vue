@@ -93,7 +93,7 @@
         Отправить данные
       </button>
     </div>
-    <button class="button" style="background:#1B872D; width: 30%; margin-left: auto; height: 40px;  " @click="deleteTable()">Очистить таблицу</button> <br><br><br>
+    <button class="button textarea" @click="deleteTable()">Очистить таблицу</button> <br><br><br>
     <div class="rent_information_lenght">
       <p class="amount"></p>
       <p class="amount">Всего: {{ wagon_arr.length }}</p>
@@ -104,7 +104,17 @@
       <p class="amount">Всего: {{ stavka_end_date_arr.length }}</p>
     </div>
     
-    <table border="1">
+
+    <div class="rent_information_button">
+      <p class="amount"></p>
+      <button class="delete_col" @click="delete_col(wagon_arr)">Очистить столб.</button>
+      <button class="delete_col" @click="delete_col2(start_date_arr)">Очистить столб.</button>
+      <button  class="delete_col" @click="delete_col3(end_date_arr)">Очистить столб.</button>
+      <button class="delete_col" @click="delete_col4(stavka_arr)">Очистить столб.</button>
+      <button class="delete_col" @click="delete_col5(stavka_start_date_arr)">Очистить столб.</button>
+      <button class="delete_col" @click="delete_col6(stavka_end_date_arr)">Очистить столб.</button>
+    </div>
+    <table border="1" style="margin-top: 1%;">
       <thead>
         <tr>
           <th></th>
@@ -212,8 +222,8 @@
           <th>Дата конца аренды</th>
           <!-- <th>Кол-во дней</th> -->
           <th>Ставка</th>
-          <th>Дата начала акта</th>
-          <th>Дата конца акта</th>
+          <th>Дата начала ставки</th>
+          <th>Дата конца ставки</th>
         </tr>
       </thead>
       <tbody>
@@ -466,7 +476,7 @@ export default {
       }
       return this.tenant.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.includes(this.tenant)
+            i.work_name.toLowerCase().includes((this.tenant).toLowerCase())
           )
         : "";
     },
@@ -476,7 +486,7 @@ export default {
       }
       return this.landlord.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.includes(this.landlord)
+            i.work_name.toLowerCase().includes((this.landlord).toLowerCase())
           )
         : "";
     },
@@ -785,6 +795,24 @@ export default {
     },
   },
   methods: {
+    delete_col(col){
+      this.wagon_arr = [];
+    },
+    delete_col2(col){
+      this.start_date_arr = [];
+    },
+    delete_col3(col){
+      this.end_date_arr = [];
+    },
+    delete_col4(col){
+      this.stavka_arr = [];
+    },
+    delete_col5(col){
+      this.stavka_start_date_arr = [];
+    },
+    delete_col6(col){
+      this.stavka_end_date_arr = [];
+    },
     deleteTable(){
       this.wagon_arr = [];
       this.stavka_arr = [];
@@ -1106,6 +1134,15 @@ export default {
 </script>
 
 <style scoped>
+.delete_col {
+  height: 15px;
+  font-size: 14px;
+  background: transparent;
+  color: black;
+}
+.delete_col:hover{
+  background: rgb(226, 226, 226);
+}
 .grey{
   background: grey;
 }
@@ -1227,7 +1264,11 @@ li:hover {
   gap: 2%;
   grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
-
+.rent_information_button {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
 .rent_information_placeholder {
   margin-top: 7%;
   display: grid;
