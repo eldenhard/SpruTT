@@ -125,6 +125,9 @@ export default {
   max-width: 70px;
   /* border: lightgray; */
 }
+tr,td,th{
+  border: 1px solid black;
+}
 .col2 {
   min-width: 120px;
   max-width: 120px;
