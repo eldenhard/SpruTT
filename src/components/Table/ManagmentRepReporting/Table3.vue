@@ -157,6 +157,9 @@ th {
 td{
   color: black !important;
 }
+tr,td,th{
+  border: 1px solid black;
+}
 .widthFirst {
   /* width: calc(v-bind("index_font_size") * 8); */
 }
