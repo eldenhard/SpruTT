@@ -17,56 +17,52 @@
           </tr>
         </thead>
         <tbody>
-          
-          <template  v-for="item in data">
-            <tr :key="item.id" class="blue_line">
-              <td class="blue_line">Полувагон</td>
-              <td>{{ item.margins.pv.on_begin | format}}</td>
-              <td>{{ item.margins.pv.on_end | format}}</td>
-              <td>{{ item.margins.pv.days | format}}</td>
-              <td>{{ item.margins.pv.stavka | format}}</td>
-            </tr>
-         </template>
+          <tr>
+          <tr v-for="item in data" :key="item.id" class="blue_line">
+            <td class="blue_line">Полувагон</td>
+            <td>{{ item.margins.pv.on_begin | format }}</td>
+            <td>{{ item.margins.pv.on_end | format }}</td>
+            <td>{{ item.margins.pv.days | format }}</td>
+            <td>{{ item.margins.pv.stavka | format }}</td>
+          </tr>
 
-          <template  v-for="item in data">
-            <tr v-for="pv in item.cs" :key="pv.id">
-              <td>{{ pv.landlord__work_name | format}}</td>
-              <td>{{ pv.on_begin | format}}</td>
-              <td>{{ pv.on_end | format}}</td>
-              <td>{{ pv.days | format}}</td>
-              <td>{{ pv.stavka | format}}</td>
+          <template v-for="item in data">
+            <tr v-for="pv in item.pv" :key="pv.id">
+              <td class="col1">{{ pv.landlord__work_name | format }}</td>
+              <td>{{ pv.on_begin | format }}</td>
+              <td>{{ pv.on_end | format }}</td>
+              <td>{{ pv.days | format }}</td>
+              <td>{{ pv.stavka | format }}</td>
             </tr>
-         </template>
+          </template>
 
-         <template  v-for="itemCs in data">
-            <tr :key="itemCs.id" class="blue_line">
-              <td class="blue_line">Цистерна</td>
-              <td>{{ itemCs.margins.cs.on_begin | format}}</td>
-              <td>{{ itemCs.margins.cs.on_end | format}}</td>
-              <td>{{ itemCs.margins.cs.days | format}}</td>
-              <td>{{ itemCs.margins.cs.stavka | format}}</td>
-            </tr>
-         </template>
+          <tr v-for="itemCs in data" :key="itemCs.id" class="blue_line">
+            <td class="blue_line">Цистерна</td>
+            <td>{{ itemCs.margins.cs.on_begin | format }}</td>
+            <td>{{ itemCs.margins.cs.on_end | format }}</td>
+            <td>{{ itemCs.margins.cs.days | format }}</td>
+            <td>{{ itemCs.margins.cs.stavka | format }}</td>
+          </tr>
 
-         <template  v-for="item in data">
+          <template v-for="item in data">
             <tr v-for="cs in item.cs" :key="cs.id">
-              <td>{{ cs.landlord__work_name | format}}</td>
-              <td>{{ cs.on_begin | format}}</td>
-              <td>{{ cs.on_end | format}}</td>
-              <td>{{ cs.days | format}}</td>
-              <td>{{ cs.stavka | format}}</td>
+              <td  class="col1">{{ cs.landlord__work_name | format }}</td>
+              <td>{{ cs.on_begin | format }}</td>
+              <td>{{ cs.on_end | format }}</td>
+              <td>{{ cs.days | format }}</td>
+              <td>{{ cs.stavka | format }}</td>
             </tr>
-         </template>
+          </template>
 
-         <template  v-for="itemCs in data">
+          <template v-for="itemCs in data">
             <tr :key="itemCs.id" class="blue_line">
               <td class="blue_line">ИТОГО</td>
-              <td>{{ itemCs.margins.total?.on_begin | format}}</td>
-              <td>{{ itemCs.margins.total?.on_end | format}}</td>
-              <td>{{ itemCs.margins.total?.days | format}}</td>
-              <td>{{ itemCs.margins.total?.stavka | format}}</td>
+              <td>{{ itemCs.margins.total?.on_begin | format }}</td>
+              <td>{{ itemCs.margins.total?.on_end | format }}</td>
+              <td>{{ itemCs.margins.total?.days | format }}</td>
+              <td>{{ itemCs.margins.total?.stavka | format }}</td>
             </tr>
-         </template>
+          </template>
         </tbody>
       </table>
     </div>
@@ -76,7 +72,7 @@
 <script>
 import Periods from "./Periods.vue";
 import api from "@/api/reportUO";
-import Loader from '@/components/loader/loader.vue';
+import Loader from "@/components/loader/loader.vue";
 
 export default {
   components: { Periods, Loader },
@@ -89,18 +85,18 @@ export default {
     };
   },
   filters: {
-    format(value){
-         return  String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ')
-        },
+    format(value) {
+      return String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+    },
   },
   methods: {
     Actioned() {
-      this.data = []
-      this.loader = true
+      this.data = [];
+      this.loader = true;
       api
         .getUO43(this.date_begin, this.date_end)
         .then((response) => {
-          this.loader = false
+          this.loader = false;
           this.data.push(response.data);
           console.log(response.data);
         })
@@ -121,8 +117,9 @@ export default {
 
 <style scoped>
 .col1 {
-  min-width: 70px;
-  max-width: 70px;
+  text-align: left !important;
+  padding-left: 2% !important;
+
   /* border: lightgray; */
 }
 .col2 {
@@ -141,7 +138,7 @@ export default {
   text-align: left !important;
   font-weight: bold;
   color: black !important;
-  padding-left: 1%  !important;
+  padding-left: 1% !important;
 }
 tr:hover {
   background: #dddddd !important;
@@ -154,12 +151,15 @@ th {
   font-weight: 400 !important;
   border: 1px solid grey;
 }
-td{
+td {
   color: black !important;
 }
-tr,td,th{
+tr,
+td,
+th {
   border: 1px solid black;
 }
+
 .widthFirst {
   /* width: calc(v-bind("index_font_size") * 8); */
 }
