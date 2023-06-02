@@ -317,7 +317,6 @@ computed: {
       this.ten_visible = false;
       this.tenant = value;
 
-      // document.getElementById('root_tenant').innerHTML = ''
     },
     checkLandlord(value){
       this.ten_visible2 = false;
