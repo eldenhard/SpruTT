@@ -7,131 +7,117 @@
         <hr />
       </div>
       <br />
-      <div class="row-column">
-        <div class="label-col">
-          <span>Договор</span>
-          <span :class="{ errorNote: isError }"> Дата договоренности</span>
-          <span> Актуальность</span>
-          <span> ДС </span>
-          <span> Примечание </span>
-          <span :class="{ errorNote: isError }"> Норматив по выгрузке, дн</span>
-          <span :class="{ errorNote: isError3 }">
-            Норматив на погрузке, дн
-          </span>
-          <span :class="{ errorNote: isError2 }"> Штраф по выгрузке, руб </span>
-          <span :class="{ errorNote: isError1 }"> Штраф на погрузке, руб </span>
-          <span> Примечание по расчету </span>
-          <span> Тип вагона </span>
-          <span> Клиент </span>
-        </div>
-        <div class="label-col2">
-          <input type="text" class="textarea" v-model="Standard.agreement" placeholder="№ договора"/>
-          <input type="date"  class="textarea" v-model="Standard.agreement_date"/>
-          <input type="checkbox" name="" class="textarea" id="" v-model="Standard.is_actual">
-          <input type="text" class="textarea" v-model="Standard.agreement_addictions"  placeholder="№ ДС"/>
-          <input type="text" class="textarea" v-model="Standard.note"  placeholder="Примечание"/>
-          <input type="number" class="textarea" v-model="Standard.standard_unloading"  placeholder="Норматив в днях"/>
-          <input type="number" class="textarea" v-model="Standard.standard_loading" placeholder="Норматив в днях"/>
-          <input type="number" class="textarea" v-model="Standard.penalty_unloading" placeholder="Штраф в руб"/>
-          <input type="number" class="textarea" v-model="Standard.penalty_loading" placeholder="Штраф в руб"/>
-          <input type="text" class="textarea" v-model="Standard.note_calc" placeholder="Примечание"/>
-          <select v-model="Standard.wagon_type" class="textarea" :placeholder="'выберите тип вагона'">
-            <option :value="'Полувагон'">ПВ</option>
-            <option :value="'Цистерна'">ЦС</option>
-          </select>
-          <input type="text" class="textarea" v-model="Standard.client" placeholder="Введите наименование клиента" />
-          <br>
-        <br>
-        </div>
-      
-        <!-- <label for="" >
-            <span>Договор</span> 
-            <input type="text" class="textarea" v-model="Standard.agreement" />
-          </label>
 
-          <label for="">
-            <span :class="{errorNote: isError}"> Дата договоренности</span> 
-            <input
-              type="date"
-              class="textarea"
-              v-model="Standard.agreement_date"
-            />
-          </label>
-
-          <label for="">
-            <span> Актуальность</span> 
-            <input type="checkbox" name="" id="" v-model="Standard.is_actual">
-   
-          </label>
-
-          <label for="">
-            <span> ДС </span>
+      <table>
+        <tr>
+          <td>Договор</td>
+          <td>
             <input
               type="text"
+              id="n"
+              class="textarea"
+            
+              v-model="Standard.agreement"
+              placeholder="№ договора"
+            />
+          </td>
+        </tr>
+        <br>
+
+        <tr>
+          <td  class="col1">Дата договоренности</td>
+          <td>
+            <input
+              type="date"
+              id="ln"
+              class="textarea"
+             :class="{errorNote : isError}"
+              v-model="Standard.agreement_date"
+            />
+          </td>
+        </tr>
+        <br>
+
+        <tr>
+          <td  class="col1">Актуальность</td>
+          <td>
+            <input
+              type="checkbox"
+              id="a"
+              class="textarea"
+              v-model="Standard.is_actual"
+            />
+          </td>
+        </tr>
+        <br>
+
+        <tr>
+          <td  class="col1">ДС</td>
+          <td>
+            <input
+              type="text"
+              id="a"
               class="textarea"
               v-model="Standard.agreement_addictions"
+              placeholder="№ ДС"
             />
-          </label>
+          </td>
+        </tr>
+        <br>
 
-          <label for="">
-            <span> Примечание </span>
-            <input type="text" class="textarea" v-model="Standard.note" />
-          </label>
+        <tr>
+          <td class="col1">Примечание</td>
+          <td><input type="text" id="a"  class="textarea" v-model="Standard.note"  placeholder="Примечание"/></td>
+        </tr>
+        <br>
 
-          <label for="">
-            <span :class="{errorNote: isError}">  Норматив по выгрузке, дн</span> 
-            <input
-              type="number"
-              class="textarea"
-              v-model="Standard.standard_unloading"
-            />
-          </label>
-          <label for="">
-            <span :class="{errorNote: isError1}">  Штраф на погрузке, руб </span>
-            <input
-              type="number"
-              class="textarea"
-              v-model="Standard.penalty_loading"
-            />
-          </label>
-          <label for="">
-            <span :class="{errorNote: isError2}">  Штраф по выгрузке, руб </span>
-            <input
-              type="number"
-              class="textarea"
-              v-model="Standard.penalty_unloading"
-            />
-          </label>
+        <tr>
+          <td  class="col1">Норматив по выгрузке, дн</td>
+          <td><input type="text" id="a"  class="textarea"  v-model="Standard.standard_unloading"  placeholder="Норматив в днях" :class="{errorNote : isError4}"/></td>
+        </tr>
+        <br>
 
-          <label for="">
-            <span :class="{errorNote: isError3}">  Норматив на погрузке, дн </span>
-            <input
-              type="number"
-              class="textarea"
-              v-model="Standard.standard_loading"
-            />
-          </label>
-          <label for="">
-            <span>  Примечание по расчету </span>
-            <input type="text" class="textarea" v-model="Standard.note_calc" />
-          </label>
-     
-          <label for="">
-            <span>  Клиент </span>
-            <input type="text" class="textarea" v-model="Standard.client" />
-          </label>
-          <label for="">
-            <span> Тип вагона </span>
-            <select v-model="Standard.wagon_type" class="textarea" style="width: 80%">
-              <option :value="'Полувагон'">ПВ</option>
-              <option :value="'Цистерна'">ЦС</option>
-            </select>
-          </label> -->
-      </div>
+        <tr>
+          <td  class="col1">Норматив по погрузке, дн</td>
+          <td><input type="text" id="a"  class="textarea" v-model="Standard.standard_loading" placeholder="Норматив в днях" :class="{errorNote : isError5}"/></td>
+        </tr>
+        <br>
 
-      <!-- <div
+        <tr>
+          <td class="col1">Штраф по выгрузке, руб</td>
+          <td><input type="text" id="a"   class="textarea" v-model="Standard.penalty_unloading" placeholder="Штраф в руб" :class="{errorNote : isError2}"/></td>
+        </tr>
+        <br>
+
+        <tr>
+          <td class="col1">Штраф на погрузке, руб</td>
+          <td><input type="text" id="a"  class="textarea" v-model="Standard.penalty_loading" placeholder="Штраф в руб" :class="{errorNote : isError3}"/></td>
+        </tr>
+        <br>
+
+        <tr>
+          <td class="col1">Примечание по расчету</td>
+          <td><input type="text" id="a"  class="textarea" v-model="Standard.note_calc" placeholder="Примечание"/></td>
+        </tr>
+        <br>
+
+        <tr>
+          <td class="col1">Тип вагона</td>
+          <td> <select v-model="Standard.wagon_type" :placeholder="'выберите тип вагона'"  class="textarea">
+            <option :value="'Полувагон'">ПВ</option>
+            <option :value="'Цистерна'">ЦС</option>
+          </select></td>
+        </tr>
+        <br>
+        <tr>
+          <td class="col1">Клиент</td>
+          <td> <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Введите наименование клиента"/></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><div
             class="textarea"
-            style="height: auto; width: 100%; min-height: 1px;"
+            style="height: auto; width: 100%; margin-top: 2%;"
             v-show="ten_visible"
           >
             <ul id="root_tenant">
@@ -144,12 +130,14 @@
                 <hr />
               </li>
             </ul>
-          </div>
-         
-    
-        <button class="button Accept" @click="postData(Standard)">
+          </div></td>
+        </tr>
+      </table>
+      
+      <button class="button Accept" @click="postData(Standard)">
             Отправить данные
-          </button> -->
+          </button>
+          <br>
     </div>
     <Notifications
       :show="showNotify"
@@ -178,6 +166,10 @@ export default {
       notifyClass: "",
       ten_visible: false,
       isError: false,
+      isError2: false,
+      isError3: false,
+      isError4: false,
+      isError5: false,
 
       Standard: {
         agreement: "",
@@ -215,24 +207,61 @@ export default {
       this.ten_visible = false;
     },
     postData(arr) {
+      this.loader = true
       if (this.Standard.agreement_date == "") {
+        this.loader = false
         this.isError = true;
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Заполните поля формы";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 3000);
       }
       if (this.Standard.penalty_loading == "") {
-        this.isError = true;
+        this.loader = false
+        this.isError2 = true;
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Заполните поля формы";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 3000);
       }
       if (this.Standard.penalty_unloading == "") {
-        this.isError = true;
+        this.loader = false
+        this.isError3 = true;
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Заполните поля формы";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 3000);
       }
       if (this.Standard.standard_loading == "") {
-        this.isError = true;
+        this.loader = false
+        this.isError4 = true;
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Заполните поля формы";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 3000);
       }
       if (this.Standard.standard_unloading == "") {
-        this.isError = true;
+        this.loader = false
+        this.isError5 = true;
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Заполните поля формы";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 3000);
       } else {
         api
           .postPenaltyStandards(arr)
           .then((response) => {
+            this.loader = false
+            this.isError = false
+            this.isError2 = false
+            this.isError3 = false
+            this.isError4 = false
+            this.isError5 = false
             this.notifyHead = "Успешно";
             this.notifyMessage = "Данные отправлены";
             this.notifyClass = "wrapper-success";
@@ -240,6 +269,7 @@ export default {
             setTimeout(() => (this.showNotify = false), 2000);
           })
           .catch((error) => {
+            this.loader = false
             this.notifyHead = "Ошибка";
             this.notifyMessage = error.response.data;
             this.notifyClass = "wrapper-error";
@@ -253,63 +283,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.row-column {
-  display: flex;
-  justify-content: flex-start;
-  position: relative;
-  left: -5%;
-  // background: #cfcfcf;
-  // width: 80%;
-  // left: 5%;
-  // transform: translate(5%, 0);
+input, select{
+  height: 25px !important;
 }
-.label-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  // border: 1px solid black;
-  padding-left: 10%;
-  span{
-    margin-top: 11%;
-    font-family: 'Montserrat', sans-serif;
-    color: rgb(61, 61, 61);
-    font-weight: 500;
-  }
-}
-.label-col2 {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  // border: 1px solid black;
-  margin: 0;
-  margin-right: auto !important;
-  justify-content: flex-start !important;
-  padding-right: 55%;
-  input{
-    margin-top: 5%;
-  
-  }
-  select{
-    margin-top: 5%;
-  }
-}
-input[type=checkbox]{
-  width: 25px;
-  height: 25px
+
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
 }
 .errorNote {
-  color: red;
+  border: 1px solid red !important;
 }
-select {
-  border: none;
-}
+
 .Accept {
   margin-left: auto;
   width: 25%;
+  margin-right: 2%;
+  margin-bottom: 2% !important;
 }
 
 .air_block {
-  width: 100%;
+  width: 60%;
   height: auto;
   border-radius: 15px;
   background: #ffffff;
@@ -323,17 +318,8 @@ select {
   color: rgb(202, 202, 202);
 }
 
-input,
-select {
-  margin-left: 25%;
-}
-
 li {
   cursor: pointer;
 }
-input, select {
-  height: 30px;
-  width: 100%;
-  border: none;
-}
+
 </style>

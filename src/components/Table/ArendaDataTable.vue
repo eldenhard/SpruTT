@@ -12,6 +12,7 @@
           id="amount"
           v-model="filter_arendaData.page_size"
           style="width: 100%"
+          class="mini"
         >
           <option value="" disabled>кол-во строк на странице</option>
           <option value="15">15</option>
@@ -24,23 +25,44 @@
       <label for="tenant"
         >Арендатор
         <br />
-        <input type="text" id="tenant" class="textarea" v-model="tenant" />
+        <input type="text" id="tenant" class="textarea mini" v-model="tenant" />
       </label>
 
       <label for="tenant"
         >Арендодатель
         <br />
-        <input type="text" id="tenant" class="textarea" v-model="landlord" />
+        <input type="text" id="tenant" class="textarea mini" v-model="landlord" />
       </label>
+      <label for="tenant"
+        >Начало аренды
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin"/>
+      </label>
+      <label for="tenant"
+        >Конец аренды
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end"
+      /></label>
 
-      <button class="button Accept" @click="getArenda()">Запросить</button>
+      <label for="tenant"
+        >Начало ставки
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_begin"/>
+      </label>
+      <label for="tenant" style="margin-left: 5px;"
+        >Конец ставки
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end"
+      /></label>
+
+      <button class="button Accept mini" @click="getArenda()">Запросить</button>
     </div>
-<div class="block_answer">
-<div></div>
-    <label for="">
+    <div class="block_answer">
+      <div></div>
+      <label for="">
         <div
           class="textarea"
-          style="height: auto; width: 100%;min-height: 2px"
+          style="height: auto; width: 100%; min-height: 2px"
           v-show="ten_visible"
         >
           <ul id="root_tenant">
@@ -56,7 +78,7 @@
         </div>
       </label>
 
-   <label for="">
+      <label for="">
         <div
           class="textarea"
           style="height: auto; width: 100%; min-height: 2px"
@@ -74,6 +96,8 @@
           </ul>
         </div>
       </label>
+      <div></div>
+      <div></div>
       <div></div>
     </div>
     <p class="amount" style="padding-top: 2%" v-show="visible">
@@ -114,47 +138,62 @@
                   v-model="item.wagon"
                   v-on:keyup.enter="submitWagon(item.wagon, item.id)"
                 />
-                <div class="icon-container" :id="`wagload` + item.id" style="display: none;">
+                <div
+                  class="icon-container"
+                  :id="`wagload` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
               </div>
-        
             </td>
             <!-- Дата начала аренды -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`start_date` + item.id"
-                v-model="item.start_date"
-                v-on:keyup.enter="submitStartArenda(item.start_date, item.id)"
+                  :id="`start_date` + item.id"
+                  v-model="item.start_date"
+                  v-on:keyup.enter="submitStartArenda(item.start_date, item.id)"
                 />
-                <div class="icon-container" :id="`wagstart` + item.id" style="display: none;">
+                <div
+                  class="icon-container"
+                  :id="`wagstart` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
               </div>
-    
             </td>
             <!-- Дата конца аренды -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`end_date` + item.id"
-                v-model="item.end_date"
-                v-on:keyup.enter="submitEndArenda(item.end_date, item.id)"                />
-                <div class="icon-container" :id="`wagend` + item.id" style="display: none;">
+                  :id="`end_date` + item.id"
+                  v-model="item.end_date"
+                  v-on:keyup.enter="submitEndArenda(item.end_date, item.id)"
+                />
+                <div
+                  class="icon-container"
+                  :id="`wagend` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
               </div>
-    
             </td>
             <!-- Ставка -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`stavka` + item.id"
-                v-model="item.stavka"
-                v-on:keyup.enter="submitStavka(item.stavka, item.id)"    />
-                <div class="icon-container" :id="`stavka` + item.id" style="display: none;">
+                  :id="`stavka` + item.id"
+                  v-model="item.stavka"
+                  v-on:keyup.enter="submitStavka(item.stavka, item.id)"
+                />
+                <div
+                  class="icon-container"
+                  :id="`stavka` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
               </div>
@@ -163,56 +202,73 @@
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`stavka_start_date` + item.id"
-                v-model="item.stavka_start_date"
-                v-on:keyup.enter="
-                  submitStartStavka(item.stavka_start_date, item.id)"    />
-                <div class="icon-container" :id="`stavkaStart` + item.id" style="display: none;">
+                  :id="`stavka_start_date` + item.id"
+                  v-model="item.stavka_start_date"
+                  v-on:keyup.enter="
+                    submitStartStavka(item.stavka_start_date, item.id)
+                  "
+                />
+                <div
+                  class="icon-container"
+                  :id="`stavkaStart` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
-            </div>
+              </div>
             </td>
             <!-- Конец ставки -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`stavka_end_date` + item.id"
-                v-model="item.stavka_end_date"
-                v-on:keyup.enter="
-                  submitEndStavka(item.stavka_end_date, item.id)"   />
-                <div class="icon-container" :id="`stavkaEnd` + item.id" style="display: none;">
+                  :id="`stavka_end_date` + item.id"
+                  v-model="item.stavka_end_date"
+                  v-on:keyup.enter="
+                    submitEndStavka(item.stavka_end_date, item.id)
+                  "
+                />
+                <div
+                  class="icon-container"
+                  :id="`stavkaEnd` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
-            </div>
-       
+              </div>
             </td>
             <!-- Арендатор -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`tenant` + item.id"
-                v-model="item.tenant"
-                v-on:keyup.enter="
-                  submitTenant(item.tenant, item.id)"   />
-                <div class="icon-container" :id="`tenantload` + item.id" style="display: none;">
+                  :id="`tenant` + item.id"
+                  v-model="item.tenant"
+                  v-on:keyup.enter="submitTenant(item.tenant, item.id)"
+                />
+                <div
+                  class="icon-container"
+                  :id="`tenantload` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
-            </div>
-      
+              </div>
             </td>
             <!-- Арендодатель -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`landlord` + item.id"
-                v-model="item.landlord"
-                v-on:keyup.enter="
-                  submitLanlord(item.landlord, item.id)"   />
-                <div class="icon-container" :id="`landlordload` + item.id" style="display: none;">
+                  :id="`landlord` + item.id"
+                  v-model="item.landlord"
+                  v-on:keyup.enter="submitLanlord(item.landlord, item.id)"
+                />
+                <div
+                  class="icon-container"
+                  :id="`landlordload` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
-            </div>
-
+              </div>
             </td>
           </tr>
         </tbody>
@@ -266,6 +322,7 @@ export default {
       nextLink: null,
       prevLink: null,
       pageNumber: 1,
+      
 
       showNotify: false,
       notifyHead: "",
@@ -275,7 +332,10 @@ export default {
         page_size: "",
         tenant: "",
         landlord: "",
-
+        arenda_begin: "",
+        arenda_end: "",
+        stavka_begin: "",
+        stavka_end: "",
       },
 
       tenant: "",
@@ -285,19 +345,19 @@ export default {
     };
   },
 
-filters: {
-  filter(value){
-    return new Date(value)
-  }
-},
-computed: {
-  filter_tenant() {
+  filters: {
+    filter(value) {
+      return new Date(value);
+    },
+  },
+  computed: {
+    filter_tenant() {
       if (this.tenant.length > 1) {
         this.ten_visible = true;
       }
       return this.tenant.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.toLowerCase().includes((this.tenant).toLowerCase())
+            i.work_name.toLowerCase().includes(this.tenant.toLowerCase())
           )
         : "";
     },
@@ -307,21 +367,19 @@ computed: {
       }
       return this.landlord.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.toLowerCase().includes((this.landlord).toLowerCase())
+            i.work_name.toLowerCase().includes(this.landlord.toLowerCase())
           )
         : "";
-    }
-},
+    },
+  },
   methods: {
     checkTenant(value) {
       this.ten_visible = false;
       this.tenant = value;
-
     },
-    checkLandlord(value){
+    checkLandlord(value) {
       this.ten_visible2 = false;
       this.landlord = value;
-
     },
     deleteStavkiArenda(id) {
       api
@@ -366,7 +424,11 @@ computed: {
     },
 
     submitStartArenda(element, id) {
-      let new_string =  element.replace(/\./g, "-").split("-").reverse("").join("-");
+      let new_string = element
+        .replace(/\./g, "-")
+        .split("-")
+        .reverse("")
+        .join("-");
       let data = { start_date: new_string };
       document.getElementById(`wagstart${id}`).style.display = "block";
 
@@ -398,7 +460,11 @@ computed: {
         });
     },
     submitEndArenda(element, id) {
-      let new_string =  element.replace(/\./g, "-").split("-").reverse("").join("-");
+      let new_string = element
+        .replace(/\./g, "-")
+        .split("-")
+        .reverse("")
+        .join("-");
 
       let data = { end_date: new_string };
       document.getElementById(`wagend${id}`).style.display = "block";
@@ -459,7 +525,11 @@ computed: {
         });
     },
     submitStartStavka(element, id) {
-      let new_string =  element.replace(/\./g, "-").split("-").reverse("").join("-");
+      let new_string = element
+        .replace(/\./g, "-")
+        .split("-")
+        .reverse("")
+        .join("-");
 
       let data = { stavka_start_date: new_string };
       document.getElementById(`stavkaStart${id}`).style.display = "block";
@@ -491,7 +561,11 @@ computed: {
         });
     },
     submitEndStavka(element, id) {
-      let new_string =  element.replace(/\./g, "-").split("-").reverse("").join("-");
+      let new_string = element
+        .replace(/\./g, "-")
+        .split("-")
+        .reverse("")
+        .join("-");
 
       let data = { stavka_end_date: new_string };
       document.getElementById(`stavkaEnd${id}`).style.display = "block";
@@ -610,7 +684,7 @@ computed: {
         .then((response) => {
           this.loader = false;
           this.data = response.data.data;
-          console.log(this.data)
+          console.log(this.data);
           this.pageNumber = response.data.page_number;
         })
 
@@ -621,47 +695,54 @@ computed: {
     },
     getArenda() {
       this.loader = true;
-      this.filter_arendaData.tenant = this.tenant
-      this.filter_arendaData.landlord = this.landlord
+      this.filter_arendaData.tenant = this.tenant;
+      this.filter_arendaData.landlord = this.landlord;
 
       api
         .getAllArendaDataStavka(this.filter_arendaData)
         .then((response) => {
           this.loader = false;
-          let arr = response.data.data
+          let arr = response.data.data;
           this.data = response.data.data;
-          console.log(this.data)
-          this.data = JSON.parse(JSON.stringify(arr))
-          
-          this.data.forEach(item => {
-            if(item.end_date == null){
-                item.end_date = null
-            } 
-            if(item.end_date != null){
-               item.end_date = new Date(item.end_date).toLocaleString().split(",")[0]
-            }
-            if(item.start_date == null){
-                item.start_date = null
-            } 
-            if(item.start_date != null){
-               item.start_date = new Date(item.start_date).toLocaleString().split(",")[0]
-            }
-            if(item.stavka_start_date == null){
-                item.stavka_start_date = null
-            } 
-            if(item.stavka_start_date != null){
-               item.stavka_start_date = new Date(item.stavka_start_date).toLocaleString().split(",")[0]
-            }
-            if(item.stavka_end_date == null){
-                item.stavka_end_date = null
-            } 
-            if(item.stavka_end_date != null){
-               item.stavka_end_date = new Date(item.stavka_end_date).toLocaleString().split(",")[0]
-            }
-     
-          })
+          console.log(this.data);
+          this.data = JSON.parse(JSON.stringify(arr));
 
-          console.log(arr)
+          this.data.forEach((item) => {
+            if (item.end_date == null) {
+              item.end_date = null;
+            }
+            if (item.end_date != null) {
+              item.end_date = new Date(item.end_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+            if (item.start_date == null) {
+              item.start_date = null;
+            }
+            if (item.start_date != null) {
+              item.start_date = new Date(item.start_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+            if (item.stavka_start_date == null) {
+              item.stavka_start_date = null;
+            }
+            if (item.stavka_start_date != null) {
+              item.stavka_start_date = new Date(item.stavka_start_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+            if (item.stavka_end_date == null) {
+              item.stavka_end_date = null;
+            }
+            if (item.stavka_end_date != null) {
+              item.stavka_end_date = new Date(item.stavka_end_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+          });
+
+          console.log(arr);
 
           this.pageNumber = response.data.page_number;
           this.pagination = response.data.links;
@@ -677,18 +758,17 @@ computed: {
 };
 </script>
 <style lang="scss" scoped>
-
 .block_answer {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 2%;
   width: 100%;
   margin: 0;
 }
-li{
+li {
   list-style-type: none;
 }
-li:hover{
+li:hover {
   background: white;
 }
 .inputcontainer {
@@ -700,7 +780,9 @@ input {
   // font-size: 20px;
   box-sizing: border-box;
 }
-
+.mini {
+  height: 40px;
+}
 .icon-container {
   position: absolute;
   right: 10px;
@@ -877,6 +959,7 @@ input {
   margin-top: 4%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   border: 1px solid lightgrey;
   padding: 1%;
   label {
@@ -885,7 +968,9 @@ input {
   button {
     height: 40px;
     width: 30%;
-    margin-top: 3%;
+    margin-top: 2.5%;
+    float: right !important;
+    margin-left: auto;
   }
 }
 
