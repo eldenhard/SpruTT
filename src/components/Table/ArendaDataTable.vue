@@ -13,10 +13,10 @@
     <b-button variant="danger" @click="deleteStavkiArenda(selected_record)">Да, я уверен</b-button>
     <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Нет, отменить</b-button>
   </b-modal>
-
-    <h4 class="WatchAllArenda" v-on:click="visible = !visible">
+<br><br>
+    <a class="WatchAllArenda" v-on:click="visible = !visible">
       {{ visible ? "Скрыть данные по аренде" : "Отобразить данные по аренде" }}
-    </h4>
+    </a>
     <div class="table-content" v-show="visible">
       <label for="amount"
         >Количество строк <br />
@@ -124,7 +124,7 @@
       <div></div>
       <div></div>
     </div>
-<div style="display: flex; justify-content: space-between;">
+<div style="display: flex; justify-content: space-between;" v-show="visible">
     <p class="amount" style="padding-top: 2%" v-show="visible">
       Всего записей: {{ total_objects }}
     </p>
@@ -1074,7 +1074,8 @@ input {
 
 .WatchAllArenda {
   color: rgb(146, 146, 146);
-  margin-top: 5%;
+  margin-top: 15%;
+  font-size: 25px;
   cursor: pointer;
 }
 </style>

@@ -71,6 +71,8 @@
           class="all_total"
         >
           <td colspan="3">Всего погрузки</td>
+          <td></td>
+
           <td>{{ obj.total?.cargo.toFixed(2) | format }}</td>
           <td>{{ obj.total?.amount | format }}</td>
           <td>{{ obj.total?.revenue.toFixed(2) | format }}</td>
