@@ -2,7 +2,7 @@
     <div>
       <pre>
 
-      <!-- <pre>{{ normalized }}</pre>  -->
+      <pre>{{ normalized }}</pre> 
       <!-- {{ object }} -->
       </pre>
       <Loader :loader="loader" />
@@ -38,17 +38,17 @@
         <template v-for="{ park, attr1 } in obj.data">
           <template v-for="({ client, attr3, TOTAL_ROAD }, iAtrr1) in attr1">
           
-              <template v-for="({ road, cargo, total }, iAttr2) in attr3">
+              <template v-for="({ road, station, total }, iAttr2) in attr3">
                 <tr v-for="(attr3Item, iAttr3) in attr3">
                   <td>{{ park }}</td>
-                  <td :rowspan="attr3.length +1 "  v-if="!iAttr3">{{ road }}</td>
-                  <td :rowspan="attr3.length"  v-if="!iAttr3">{{ client }}</td>
-                  <td>{{ attr3Item.road }}</td>
+                  <td :rowspan="attr3.length +1 "  v-if="!iAttr3">{{ client }}</td>
+                  <td :rowspan="attr3.length"  v-if="!iAttr3">{{ road }}</td>
                   <table>
                     <tr v-for="item in attr3Item.cargo" :key="item.id">
+                      <td>{{ item.name }}</td>
+                      <td style="width: 200px">{{ item.data }}</td>
+                      <td style="width: 200px">{{ item.data.amount }}</td>
                       <td style="width: 200px">{{ item }}</td>
-                      <td style="width: 200px">{{ item?.cargo?.toFixed(2) }}</td>
-                      <td style="width: 200px">{{ item.loads | format }}</td>
                       <td style="width: 200px">
                         {{ item?.revenue?.toFixed(2) | format }}
                       </td>
@@ -693,14 +693,20 @@
                   (road) => {
                     return {
                       road,
-                      cargo: Object.keys(
+                      station: Object.keys(
                         this.objects2.data[key].data[client].data[road].data
-                      ).map((cargo) => {
+                      ).map((station) => {
                         return {
-                          name: cargo,
-                          ...this.objects2.data[key].data[client].data[road].data[
-                            cargo
-                          ],
+                          name_station: station,
+                          cargo: Object.keys(
+                            this.objects2.data[key].data[client].data[road].data[station].data
+                          ).map((cargo) => {
+                            return{
+                              cargo_name: cargo,
+                              ...this.objects2.data[key].data[client].data[road].data[station].data[cargo]
+                            }
+                          })
+                          // ...this.objects2.data[key].data[client].data[road].data[station].data,
                           // cargo:  this.objects2.data[key].data[client].data[road].data[cargo]
                         };
                       }),
