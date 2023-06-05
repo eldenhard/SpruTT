@@ -1,6 +1,19 @@
 <template>
   <div>
     <Loader :loader="loader" />
+
+    <b-modal id="bv-modal-example" hide-footer>
+    <template #modal-title>
+      Подтверждение действия 
+    </template>
+    <div class="d-block text-center">
+      <h4>Вы уверены, что хотите удалить данные?</h4>
+      <p>В случае удаления, данные будут потеряны безвозвратно </p>
+    </div>
+    <b-button variant="danger" @click="deleteStavkiArenda(selected_record)">Да, я уверен</b-button>
+    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Нет, отменить</b-button>
+  </b-modal>
+
     <h4 class="WatchAllArenda" v-on:click="visible = !visible">
       {{ visible ? "Скрыть данные по аренде" : "Отобразить данные по аренде" }}
     </h4>
@@ -12,6 +25,7 @@
           id="amount"
           v-model="filter_arendaData.page_size"
           style="width: 100%"
+          class="mini"
         >
           <option value="" disabled>кол-во строк на странице</option>
           <option value="15">15</option>
@@ -24,23 +38,54 @@
       <label for="tenant"
         >Арендатор
         <br />
-        <input type="text" id="tenant" class="textarea" v-model="tenant" />
+        <input type="text" id="tenant" class="textarea mini" v-model="tenant" />
       </label>
 
       <label for="tenant"
         >Арендодатель
         <br />
-        <input type="text" id="tenant" class="textarea" v-model="landlord" />
+        <input type="text" id="tenant" class="textarea mini" v-model="landlord" />
       </label>
+      <label for="tenant"
+        >Начало аренды
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin"/>
+      </label>
+      <label for="tenant"
+        >Конец аренды
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end"
+      /></label>
 
-      <button class="button Accept" @click="getArenda()">Запросить</button>
+      <label for="tenant"
+        >Начало ставки
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_begin"/>
+      </label>
+      <label for="tenant" style="margin-left: 5px;"
+        >Конец ставки
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end"
+      /></label>
+
+      <label for="tenant" style="margin-left: 5px;"
+        >Тип вагона
+        <br />
+        <select name="" id="" class="mini" style="width: 100%"  v-model="filter_arendaData.wagon__wagon_type">
+          <option value="Полувагон">ПВ</option>
+          <option value="Цистерна">ЦС</option>
+
+        </select>
+    </label>
+
+      <button class="button Accept mini" @click="getArenda()">Запросить</button>
     </div>
-<div class="block_answer">
-<div></div>
-    <label for="">
+    <div class="block_answer">
+      <div></div>
+      <label for="">
         <div
           class="textarea"
-          style="height: auto; width: 100%;min-height: 2px"
+          style="height: auto; width: 100%;"
           v-show="ten_visible"
         >
           <ul id="root_tenant">
@@ -56,10 +101,10 @@
         </div>
       </label>
 
-   <label for="">
+      <label for="">
         <div
           class="textarea"
-          style="height: auto; width: 100%; min-height: 2px"
+          style="height: auto; width: 100%;"
           v-show="ten_visible2"
         >
           <ul id="root_tenant">
@@ -75,10 +120,37 @@
         </div>
       </label>
       <div></div>
+      <div></div>
+      <div></div>
     </div>
+<div style="display: flex; justify-content: space-between;">
     <p class="amount" style="padding-top: 2%" v-show="visible">
       Всего записей: {{ total_objects }}
     </p>
+ 
+      <div>
+        <button id="tooltip-target-1" style="background: transparent; border: none" v-b-tooltip.hover.lefttop="'Информация по арендатору/арендателю!'"  @click="info_block = !info_block">
+              <img :src="info_btn" alt="" style="width: 25px; height:25px; margin-top: 1%;">
+            </button>
+      </div>
+
+  </div>
+  <transition name="fade">
+  <div style="display: flex; justify-content: flex-end;" v-show="info_block">
+    <table>
+      <tr>
+        <th>Старое наименование</th>
+        <th>Новое наименование</th>
+      </tr>
+      <tr v-for="item, index in data_hard.cp_work_names" :key="item.id">
+        <td>{{index }}</td>
+        <td>{{ item }}</td>
+      </tr>
+    </table>
+  </div>
+</transition>
+
+
     <div class="" v-show="visible">
       <table border="1" v-show="visible">
         <thead>
@@ -103,7 +175,7 @@
                 style="width: 100%"
                 :value="index + 1"
                 readonly
-                @click="deleteStavkiArenda(item.id)"
+               @click="open_modal(item.id)"
               />
             </td>
             <!-- ВАГОН -->
@@ -114,47 +186,62 @@
                   v-model="item.wagon"
                   v-on:keyup.enter="submitWagon(item.wagon, item.id)"
                 />
-                <div class="icon-container" :id="`wagload` + item.id" style="display: none;">
+                <div
+                  class="icon-container"
+                  :id="`wagload` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
               </div>
-        
             </td>
             <!-- Дата начала аренды -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`start_date` + item.id"
-                v-model="item.start_date"
-                v-on:keyup.enter="submitStartArenda(item.start_date, item.id)"
+                  :id="`start_date` + item.id"
+                  v-model="item.start_date"
+                  v-on:keyup.enter="submitStartArenda(item.start_date, item.id)"
                 />
-                <div class="icon-container" :id="`wagstart` + item.id" style="display: none;">
+                <div
+                  class="icon-container"
+                  :id="`wagstart` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
               </div>
-    
             </td>
             <!-- Дата конца аренды -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`end_date` + item.id"
-                v-model="item.end_date"
-                v-on:keyup.enter="submitEndArenda(item.end_date, item.id)"                />
-                <div class="icon-container" :id="`wagend` + item.id" style="display: none;">
+                  :id="`end_date` + item.id"
+                  v-model="item.end_date"
+                  v-on:keyup.enter="submitEndArenda(item.end_date, item.id)"
+                />
+                <div
+                  class="icon-container"
+                  :id="`wagend` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
               </div>
-    
             </td>
             <!-- Ставка -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`stavka` + item.id"
-                v-model="item.stavka"
-                v-on:keyup.enter="submitStavka(item.stavka, item.id)"    />
-                <div class="icon-container" :id="`stavka` + item.id" style="display: none;">
+                  :id="`stavka` + item.id"
+                  v-model="item.stavka"
+                  v-on:keyup.enter="submitStavka(item.stavka, item.id)"
+                />
+                <div
+                  class="icon-container"
+                  :id="`stavka` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
               </div>
@@ -163,56 +250,73 @@
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`stavka_start_date` + item.id"
-                v-model="item.stavka_start_date"
-                v-on:keyup.enter="
-                  submitStartStavka(item.stavka_start_date, item.id)"    />
-                <div class="icon-container" :id="`stavkaStart` + item.id" style="display: none;">
+                  :id="`stavka_start_date` + item.id"
+                  v-model="item.stavka_start_date"
+                  v-on:keyup.enter="
+                    submitStartStavka(item.stavka_start_date, item.id)
+                  "
+                />
+                <div
+                  class="icon-container"
+                  :id="`stavkaStart` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
-            </div>
+              </div>
             </td>
             <!-- Конец ставки -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`stavka_end_date` + item.id"
-                v-model="item.stavka_end_date"
-                v-on:keyup.enter="
-                  submitEndStavka(item.stavka_end_date, item.id)"   />
-                <div class="icon-container" :id="`stavkaEnd` + item.id" style="display: none;">
+                  :id="`stavka_end_date` + item.id"
+                  v-model="item.stavka_end_date"
+                  v-on:keyup.enter="
+                    submitEndStavka(item.stavka_end_date, item.id)
+                  "
+                />
+                <div
+                  class="icon-container"
+                  :id="`stavkaEnd` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
-            </div>
-       
+              </div>
             </td>
             <!-- Арендатор -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`tenant` + item.id"
-                v-model="item.tenant"
-                v-on:keyup.enter="
-                  submitTenant(item.tenant, item.id)"   />
-                <div class="icon-container" :id="`tenantload` + item.id" style="display: none;">
+                  :id="`tenant` + item.id"
+                  v-model="item.tenant"
+                  v-on:keyup.enter="submitTenant(item.tenant, item.id)"
+                />
+                <div
+                  class="icon-container"
+                  :id="`tenantload` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
-            </div>
-      
+              </div>
             </td>
             <!-- Арендодатель -->
             <td class="col2">
               <div class="inputcontainer">
                 <input
-                :id="`landlord` + item.id"
-                v-model="item.landlord"
-                v-on:keyup.enter="
-                  submitLanlord(item.landlord, item.id)"   />
-                <div class="icon-container" :id="`landlordload` + item.id" style="display: none;">
+                  :id="`landlord` + item.id"
+                  v-model="item.landlord"
+                  v-on:keyup.enter="submitLanlord(item.landlord, item.id)"
+                />
+                <div
+                  class="icon-container"
+                  :id="`landlordload` + item.id"
+                  style="display: none"
+                >
                   <i class="loader"></i>
                 </div>
-            </div>
-
+              </div>
             </td>
           </tr>
         </tbody>
@@ -244,6 +348,7 @@
 </template>
 
 <script>
+import cp_work_names from "@/helpers/cp_work_names"
 import Notifications from "@/components/notifications/Notifications.vue";
 import api from "@/api/directory.js";
 import Loader from "../loader/loader.vue";
@@ -252,11 +357,12 @@ export default {
   components: { Loader, Notifications },
   data() {
     return {
+      selected_record: 0,
       mini_loader: false,
       success: false,
       length_pagination: "",
       interval: 2,
-
+      id_row: "",
       loader: false,
       visible: true,
       data: "",
@@ -267,6 +373,10 @@ export default {
       prevLink: null,
       pageNumber: 1,
 
+      info_block: false,
+
+      data_hard: cp_work_names,
+
       showNotify: false,
       notifyHead: "",
       notifyMessage: "",
@@ -275,7 +385,11 @@ export default {
         page_size: "",
         tenant: "",
         landlord: "",
-
+        arenda_begin: "",
+        arenda_end: "",
+        stavka_begin: "",
+        stavka_end: "",
+        wagon__wagon_type: "",
       },
 
       tenant: "",
@@ -284,20 +398,27 @@ export default {
       ten_visible2: false,
     };
   },
-
-filters: {
-  filter(value){
-    return new Date(value)
-  }
+mounted(){
+  document.body.addEventListener('click', this.onClick);
 },
-computed: {
-  filter_tenant() {
+  filters: {
+    filter(value) {
+      return new Date(value);
+    },
+  },
+  computed: {
+    info_btn(){
+      if(this.info_block == false){
+        return require(`@/assets/info.png`)
+      } return require(`@/assets/cross.png`)
+    },
+    filter_tenant() {
       if (this.tenant.length > 1) {
         this.ten_visible = true;
       }
       return this.tenant.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.toLowerCase().includes((this.tenant).toLowerCase())
+            i.work_name.toLowerCase().includes(this.tenant.toLowerCase())
           )
         : "";
     },
@@ -307,29 +428,57 @@ computed: {
       }
       return this.landlord.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.toLowerCase().includes((this.landlord).toLowerCase())
+            i.work_name.toLowerCase().includes(this.landlord.toLowerCase())
           )
         : "";
-    }
-},
+    },
+  },
   methods: {
+    open_modal(id){
+      this.selected_record = id
+     this.$bvModal.show('bv-modal-example')
+    },
+    inf_block(){
+      this.info_block = true
+    },
+    onClick() {
+      this.ten_visible = false;
+      this.ten_visible2 = false;    
+    },
     checkTenant(value) {
       this.ten_visible = false;
       this.tenant = value;
-
     },
-    checkLandlord(value){
+    checkLandlord(value) {
       this.ten_visible2 = false;
       this.landlord = value;
-
+    },
+    openModalDelete(data){
+      console.log(data)
     },
     deleteStavkiArenda(id) {
+      this.loader = true
       api
         .deleteStavkiArenda(id)
         .then((response) => {
-          console.log(response);
+               this.loader = false;
+            this.notifyHead = "Успешно";
+            this.notifyMessage = "Данные удалены";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
         })
         .catch((error) => {
+              this.loader = false;
+            this.notifyHead = "Ошибка";
+            this.notifyMessage = "Данные не удалены";
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
           console.log(error);
         });
       let row = document.getElementById(id);
@@ -366,7 +515,11 @@ computed: {
     },
 
     submitStartArenda(element, id) {
-      let new_string =  element.replace(/\./g, "-").split("-").reverse("").join("-");
+      let new_string = element
+        .replace(/\./g, "-")
+        .split("-")
+        .reverse("")
+        .join("-");
       let data = { start_date: new_string };
       document.getElementById(`wagstart${id}`).style.display = "block";
 
@@ -398,7 +551,11 @@ computed: {
         });
     },
     submitEndArenda(element, id) {
-      let new_string =  element.replace(/\./g, "-").split("-").reverse("").join("-");
+      let new_string = element
+        .replace(/\./g, "-")
+        .split("-")
+        .reverse("")
+        .join("-");
 
       let data = { end_date: new_string };
       document.getElementById(`wagend${id}`).style.display = "block";
@@ -459,7 +616,11 @@ computed: {
         });
     },
     submitStartStavka(element, id) {
-      let new_string =  element.replace(/\./g, "-").split("-").reverse("").join("-");
+      let new_string = element
+        .replace(/\./g, "-")
+        .split("-")
+        .reverse("")
+        .join("-");
 
       let data = { stavka_start_date: new_string };
       document.getElementById(`stavkaStart${id}`).style.display = "block";
@@ -491,7 +652,11 @@ computed: {
         });
     },
     submitEndStavka(element, id) {
-      let new_string =  element.replace(/\./g, "-").split("-").reverse("").join("-");
+      let new_string = element
+        .replace(/\./g, "-")
+        .split("-")
+        .reverse("")
+        .join("-");
 
       let data = { stavka_end_date: new_string };
       document.getElementById(`stavkaEnd${id}`).style.display = "block";
@@ -610,7 +775,7 @@ computed: {
         .then((response) => {
           this.loader = false;
           this.data = response.data.data;
-          console.log(this.data)
+          console.log(this.data);
           this.pageNumber = response.data.page_number;
         })
 
@@ -621,47 +786,54 @@ computed: {
     },
     getArenda() {
       this.loader = true;
-      this.filter_arendaData.tenant = this.tenant
-      this.filter_arendaData.landlord = this.landlord
+      this.filter_arendaData.tenant = this.tenant;
+      this.filter_arendaData.landlord = this.landlord;
 
       api
         .getAllArendaDataStavka(this.filter_arendaData)
         .then((response) => {
           this.loader = false;
-          let arr = response.data.data
+          let arr = response.data.data;
           this.data = response.data.data;
-          console.log(this.data)
-          this.data = JSON.parse(JSON.stringify(arr))
-          
-          this.data.forEach(item => {
-            if(item.end_date == null){
-                item.end_date = null
-            } 
-            if(item.end_date != null){
-               item.end_date = new Date(item.end_date).toLocaleString().split(",")[0]
-            }
-            if(item.start_date == null){
-                item.start_date = null
-            } 
-            if(item.start_date != null){
-               item.start_date = new Date(item.start_date).toLocaleString().split(",")[0]
-            }
-            if(item.stavka_start_date == null){
-                item.stavka_start_date = null
-            } 
-            if(item.stavka_start_date != null){
-               item.stavka_start_date = new Date(item.stavka_start_date).toLocaleString().split(",")[0]
-            }
-            if(item.stavka_end_date == null){
-                item.stavka_end_date = null
-            } 
-            if(item.stavka_end_date != null){
-               item.stavka_end_date = new Date(item.stavka_end_date).toLocaleString().split(",")[0]
-            }
-     
-          })
+          console.log(this.data);
+          this.data = JSON.parse(JSON.stringify(arr));
 
-          console.log(arr)
+          this.data.forEach((item) => {
+            if (item.end_date == null) {
+              item.end_date = null;
+            }
+            if (item.end_date != null) {
+              item.end_date = new Date(item.end_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+            if (item.start_date == null) {
+              item.start_date = null;
+            }
+            if (item.start_date != null) {
+              item.start_date = new Date(item.start_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+            if (item.stavka_start_date == null) {
+              item.stavka_start_date = null;
+            }
+            if (item.stavka_start_date != null) {
+              item.stavka_start_date = new Date(item.stavka_start_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+            if (item.stavka_end_date == null) {
+              item.stavka_end_date = null;
+            }
+            if (item.stavka_end_date != null) {
+              item.stavka_end_date = new Date(item.stavka_end_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+          });
+
+          console.log(arr);
 
           this.pageNumber = response.data.page_number;
           this.pagination = response.data.links;
@@ -677,18 +849,23 @@ computed: {
 };
 </script>
 <style lang="scss" scoped>
-
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
 .block_answer {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 2%;
   width: 100%;
   margin: 0;
 }
-li{
+li {
   list-style-type: none;
 }
-li:hover{
+li:hover {
   background: white;
 }
 .inputcontainer {
@@ -700,7 +877,9 @@ input {
   // font-size: 20px;
   box-sizing: border-box;
 }
-
+.mini {
+  height: 40px;
+}
 .icon-container {
   position: absolute;
   right: 10px;
@@ -877,6 +1056,7 @@ input {
   margin-top: 4%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   border: 1px solid lightgrey;
   padding: 1%;
   label {
@@ -885,7 +1065,9 @@ input {
   button {
     height: 40px;
     width: 30%;
-    margin-top: 3%;
+    margin-top: 2.5%;
+    float: right !important;
+    margin-left: auto;
   }
 }
 
