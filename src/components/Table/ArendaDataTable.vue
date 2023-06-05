@@ -771,8 +771,10 @@ mounted(){
     },
     getPagination(pg_size, pg_number) {
       this.loader = true;
+      this.filter_arendaData.tenant = this.tenant;
+      this.filter_arendaData.landlord = this.landlord;
       api
-        .getAllArendaDataStavkaPage(pg_size, pg_number)
+        .getAllArendaDataStavkaPage(this.filter_arendaData, pg_size, pg_number)
         .then((response) => {
           this.loader = false;
           this.data = response.data.data;
