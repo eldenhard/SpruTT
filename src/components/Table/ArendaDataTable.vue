@@ -1,6 +1,19 @@
 <template>
   <div>
     <Loader :loader="loader" />
+
+    <b-modal id="bv-modal-example" hide-footer>
+    <template #modal-title>
+      Подтверждение действия 
+    </template>
+    <div class="d-block text-center">
+      <h4>Вы уверены, что хотите удалить данные?</h4>
+      <p>В случае удаления, данные будут потеряны безвозвратно </p>
+    </div>
+    <b-button variant="danger" @click="deleteStavkiArenda(selected_record)">Да, я уверен</b-button>
+    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Нет, отменить</b-button>
+  </b-modal>
+
     <h4 class="WatchAllArenda" v-on:click="visible = !visible">
       {{ visible ? "Скрыть данные по аренде" : "Отобразить данные по аренде" }}
     </h4>
@@ -55,6 +68,16 @@
         <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end"
       /></label>
 
+      <label for="tenant" style="margin-left: 5px;"
+        >Тип вагона
+        <br />
+        <select name="" id="" class="mini" style="width: 100%"  v-model="filter_arendaData.wagon__wagon_type">
+          <option value="Полувагон">ПВ</option>
+          <option value="Цистерна">ЦС</option>
+
+        </select>
+    </label>
+
       <button class="button Accept mini" @click="getArenda()">Запросить</button>
     </div>
     <div class="block_answer">
@@ -62,7 +85,7 @@
       <label for="">
         <div
           class="textarea"
-          style="height: auto; width: 100%; min-height: 2px"
+          style="height: auto; width: 100%;"
           v-show="ten_visible"
         >
           <ul id="root_tenant">
@@ -81,7 +104,7 @@
       <label for="">
         <div
           class="textarea"
-          style="height: auto; width: 100%; min-height: 2px"
+          style="height: auto; width: 100%;"
           v-show="ten_visible2"
         >
           <ul id="root_tenant">
@@ -100,9 +123,34 @@
       <div></div>
       <div></div>
     </div>
+<div style="display: flex; justify-content: space-between;">
     <p class="amount" style="padding-top: 2%" v-show="visible">
       Всего записей: {{ total_objects }}
     </p>
+ 
+      <div>
+        <button id="tooltip-target-1" style="background: transparent; border: none" v-b-tooltip.hover.lefttop="'Информация по арендатору/арендателю!'"  @click="info_block = !info_block">
+              <img :src="info_btn" alt="" style="width: 25px; height:25px; margin-top: 1%;">
+            </button>
+      </div>
+
+  </div>
+  <transition name="fade">
+  <div style="display: flex; justify-content: flex-end;" v-show="info_block">
+    <table>
+      <tr>
+        <th>Старое наименование</th>
+        <th>Новое наименование</th>
+      </tr>
+      <tr v-for="item, index in data_hard.cp_work_names" :key="item.id">
+        <td>{{index }}</td>
+        <td>{{ item }}</td>
+      </tr>
+    </table>
+  </div>
+</transition>
+
+
     <div class="" v-show="visible">
       <table border="1" v-show="visible">
         <thead>
@@ -127,7 +175,7 @@
                 style="width: 100%"
                 :value="index + 1"
                 readonly
-                @click="deleteStavkiArenda(item.id)"
+               @click="open_modal(item.id)"
               />
             </td>
             <!-- ВАГОН -->
@@ -300,6 +348,7 @@
 </template>
 
 <script>
+import cp_work_names from "@/helpers/cp_work_names"
 import Notifications from "@/components/notifications/Notifications.vue";
 import api from "@/api/directory.js";
 import Loader from "../loader/loader.vue";
@@ -308,11 +357,12 @@ export default {
   components: { Loader, Notifications },
   data() {
     return {
+      selected_record: 0,
       mini_loader: false,
       success: false,
       length_pagination: "",
       interval: 2,
-
+      id_row: "",
       loader: false,
       visible: true,
       data: "",
@@ -322,7 +372,10 @@ export default {
       nextLink: null,
       prevLink: null,
       pageNumber: 1,
-      
+
+      info_block: false,
+
+      data_hard: cp_work_names,
 
       showNotify: false,
       notifyHead: "",
@@ -336,6 +389,7 @@ export default {
         arenda_end: "",
         stavka_begin: "",
         stavka_end: "",
+        wagon__wagon_type: "",
       },
 
       tenant: "",
@@ -344,13 +398,20 @@ export default {
       ten_visible2: false,
     };
   },
-
+mounted(){
+  document.body.addEventListener('click', this.onClick);
+},
   filters: {
     filter(value) {
       return new Date(value);
     },
   },
   computed: {
+    info_btn(){
+      if(this.info_block == false){
+        return require(`@/assets/info.png`)
+      } return require(`@/assets/cross.png`)
+    },
     filter_tenant() {
       if (this.tenant.length > 1) {
         this.ten_visible = true;
@@ -373,6 +434,17 @@ export default {
     },
   },
   methods: {
+    open_modal(id){
+      this.selected_record = id
+     this.$bvModal.show('bv-modal-example')
+    },
+    inf_block(){
+      this.info_block = true
+    },
+    onClick() {
+      this.ten_visible = false;
+      this.ten_visible2 = false;    
+    },
     checkTenant(value) {
       this.ten_visible = false;
       this.tenant = value;
@@ -381,13 +453,32 @@ export default {
       this.ten_visible2 = false;
       this.landlord = value;
     },
+    openModalDelete(data){
+      console.log(data)
+    },
     deleteStavkiArenda(id) {
+      this.loader = true
       api
         .deleteStavkiArenda(id)
         .then((response) => {
-          console.log(response);
+               this.loader = false;
+            this.notifyHead = "Успешно";
+            this.notifyMessage = "Данные удалены";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
         })
         .catch((error) => {
+              this.loader = false;
+            this.notifyHead = "Ошибка";
+            this.notifyMessage = "Данные не удалены";
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
           console.log(error);
         });
       let row = document.getElementById(id);
@@ -758,6 +849,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
 .block_answer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
