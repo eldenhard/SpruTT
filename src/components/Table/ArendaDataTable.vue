@@ -72,6 +72,7 @@
         >Тип вагона
         <br />
         <select name="" id="" class="mini" style="width: 100%"  v-model="filter_arendaData.wagon__wagon_type">
+          <option  value="">Все</option>
           <option value="Полувагон">ПВ</option>
           <option value="Цистерна">ЦС</option>
 
