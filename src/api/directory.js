@@ -73,6 +73,18 @@ const deleteStavkiArenda = (id) => {
 const postPenaltyStandards = (data) => {
     return api.post(`${finance}/penalty-standards/`, data)
 }
+const getStandard = (data) => {
+    return api.get(`${finance}/penalty-standards/`,  {params: data})
+}
+const patchStandard = (id, data) => {
+    return api.patch(`${finance}/penalty-standards/${id}/`, data)
+}
+const deleteStandard = (id) => {
+    return api.delete(`${finance}/penalty-standards/${id}/`)
+}
+const getAllArendaDataStandard = (filter_arendaData, page_size, page_number) => {
+    return api.get(`${finance}/penalty-standards/?page_size=${page_size}&page=${page_number}`,   {params: filter_arendaData})
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -96,5 +108,11 @@ export default {
     patchStavkiArenda,
     deleteStavkiArenda,
     postPenaltyStandards,
+
+    // Нормативы
+    getStandard,
+    patchStandard,
+    deleteStandard,
+    getAllArendaDataStandard,
 }
 

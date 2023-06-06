@@ -2,13 +2,16 @@
   <div style="margin-top: 5% !important">
     <Loader :loader="loader" />
     <div class="air_block">
-      <div class="air_block_header">
+      <div class="air_block_header" style="display: flex !important;
+  justify-content: space-between !important; width: 100%;">
         <h5>Данные по нормативам</h5>
-        <hr />
+        <h6 v-on:click="visible = !visible" style="padding-right: 4%; cursor: pointer;">{{ visible ? "Свернуть " : "Развернуть" }}</h6>
+      
       </div>
+      <hr />
       <br />
 
-      <table>
+      <table v-show="visible">
 
         <tr>
           <td>Договор</td>
@@ -39,18 +42,7 @@
         </tr>
         <br>
 
-        <tr>
-          <td  class="col1">Актуальность</td>
-          <td>
-            <input
-              type="checkbox"
-              id="a"
-              class="textarea"
-              v-model="Standard.is_actual"
-            />
-          </td>
-        </tr>
-        <br>
+   
 
         <tr>
           <td  class="col1">ДС</td>
@@ -135,11 +127,13 @@
         </tr>
       </table>
       
-      <button class="button Accept" @click="postData(Standard)">
+      <button class="button Accept" @click="postData(Standard)" v-show="visible">
             Отправить данные
           </button>
           <br>
     </div>
+
+    <StandartTableCreated style="margin-top: 5%"/>
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -153,10 +147,10 @@
 import api from "@/api/directory";
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
-
+import StandartTableCreated from "./StandartTableCreated";
 export default {
   name: "StandartData",
-  components: { Loader, Notifications },
+  components: { Loader, Notifications, StandartTableCreated },
   data() {
     return {
       rows: 1,
@@ -171,6 +165,7 @@ export default {
       isError3: false,
       isError4: false,
       isError5: false,
+      visible: true,
 
       Standard: {
         agreement: "",
@@ -314,7 +309,8 @@ input[type="checkbox"] {
   left: 50%;
   transform: translate(-50%, 0);
 }
-.air_block_header > h5 {
+.air_block_header  {
+  
   padding: 1% 0 0 2%;
   color: rgb(202, 202, 202);
 }
