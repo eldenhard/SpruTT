@@ -2,7 +2,7 @@
     <div>
       <pre>
 
-      <pre>{{ normalized }}</pre> 
+      <!-- <pre>{{ normalized }}</pre>  -->
       <!-- {{ object }} -->
       </pre>
       <Loader :loader="loader" />
