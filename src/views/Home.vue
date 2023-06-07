@@ -37,12 +37,13 @@
             <rentalrateTable />
           </b-card-text>
         </b-tab>
-        <b-tab title="Данные по актам" active>
+        
+      </b-container>
+      <b-tab title="Данные по актам" active>
           <b-card-text>
             <Act />
           </b-card-text>
         </b-tab>
-      </b-container>
       <b-tab title="Данные по нормативам" >
         <b-card-text>
           <StandartData />

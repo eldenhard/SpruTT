@@ -111,7 +111,7 @@ export default {
 };
 </script>
   
-  <style scoped>
+<style scoped>
 .error {
   color: red;
 }
@@ -132,7 +132,8 @@ export default {
 .air_block_content {
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
+  align-items: flex-end;
   margin: 4% 4% 0;
   gap: 20px;
   /* align-items: baseline; */

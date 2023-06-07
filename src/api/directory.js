@@ -85,6 +85,9 @@ const deleteStandard = (id) => {
 const getAllArendaDataStandard = (filter_arendaData, page_size, page_number) => {
     return api.get(`${finance}/penalty-standards/?page_size=${page_size}&page=${page_number}`,   {params: filter_arendaData})
 }
+const postpps = (data) => {
+    return api.post(`${finance}/pps/save-many/`, data)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -114,5 +117,7 @@ export default {
     patchStandard,
     deleteStandard,
     getAllArendaDataStandard,
+
+    postpps,
 }
 

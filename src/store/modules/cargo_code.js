@@ -52,8 +52,16 @@ const actions = {
             context.commit(mutationTypes.getCargoCodeStart)
             api.getCargoCode(url)
             .then(response => {
-                
-                context.commit(mutationTypes.getCargoCodeSuccess, response.data.data)
+                  let arr = []
+                for(let i of response.data.data){
+                   arr.push({
+                    code: i.code,
+                    code6: i.code6,
+                    name: i.name
+                   })
+                }
+       
+                context.commit(mutationTypes.getCargoCodeSuccess, arr)
                 if (response.data.links.next != null) {
                     resolve(context.dispatch(actionTypes.getCargoCode, { url: response.data.links.next, clear: false }))
                 } else {
