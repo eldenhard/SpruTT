@@ -19,7 +19,7 @@
       </label>
       <label for="">
         <br />
-        <button class="button Accept" @click="sendData()">Отправить</button>
+        <button class="button Accept" style="height: 3rem" @click="sendData()">Отправить</button>
       </label>
     </div>
 
@@ -93,7 +93,7 @@
     </div>
     <table border="1">
       <thead>
-        <tr>
+  <tr>
     <th></th>
     <th><button class="delete_col" @click="delete_col('wagon')">Удалить столб.</button></th>
     <th><button class="delete_col" @click="delete_col('date_pp_in')">Удалить столб.</button></th>
@@ -358,6 +358,7 @@ export default {
           this.data[i][type.target.id] = data_in[i];
         }
       }
+      type.target.value = ''
       console.log(this.data);
     },
     sendData() {
@@ -379,8 +380,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 .rent_information_button {
   display: grid;
   gap: 2px;
@@ -419,5 +418,8 @@ input {
   display: flex;
   justify-content: space-around;
   align-items: baseline;
+}
+.col3{
+  border: none;
 }
 </style>
