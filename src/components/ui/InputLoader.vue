@@ -2,11 +2,12 @@
   <div>
     <div class="inputcontainer">
       <input
-        :id="idItem"
+        :name="nameInp"
         v-model="data"
         :type="typeInp"
-        @keyup.enter="$emit('changeData', {[idItem]: $event.target.value})"
-        @change="$emit('changeDate', {[idItem]: $event.target.value})"
+        :id="idRow"
+        @keyup.enter="$emit('changeData', {[nameInp]: $event.target.value, 'id': idRow})"
+        @change="$emit('changeDate', {[nameInp]: $event.target.value}, {'id': idRow})"
       />
       <div class="icon-container" :id="idLoader" v-show="Visible">
         <i class="loader"></i>
@@ -22,13 +23,16 @@ export default {
     }
    },
   props: {
-    idItem: {
+    nameInp: {
         type: String,
         default: "",
     },
     idLoader: {
         type: String,
         default: "",
+    },
+    idRow: {
+        type:  Number
     },
     Visible: {
         type: Boolean,

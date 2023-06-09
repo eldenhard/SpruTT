@@ -44,45 +44,45 @@
       </thead>
       <tbody>
         <tr v-for="item, index in data" :key="item.id">
-          <td>{{ index+1 }}</td>
+          <td>{{ index+1}}</td>
           <td>
-             <InputLoader :idItem="`wagon`" :idLoader="`wagload`" :Visible="false" :valueDataInp="item.wagon" :typeInp="'number'" @changeData='DataChange'/>
+             <InputLoader :nameInp="`wagon`" :idRow="item.id" :idLoader="`wagload`" :Visible="VisibleLoader" :valueDataInp="item.wagon" :typeInp="'number'" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`date_pp_in`" :idLoader="`date_pp_inload`" :Visible="false" :valueDataInp="item.date_pp_in" :typeInp="'date'" @changeDate='DateChange'/>
+             <InputLoader :nameInp="`date_pp_in`" :idRow="item.id" :idLoader="`date_pp_inload`" :Visible="VisibleLoader" :valueDataInp="item.date_pp_in" :typeInp="'date'" @changeDate='DateChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`date_work`" :idLoader="`date_workload`" :Visible="false" :valueDataInp="item.date_work" :typeInp="'date'" @changeDate='DateChange'/>
+             <InputLoader :nameInp="`date_work`" :idRow="item.id"  :idLoader="`date_workload`" :Visible="VisibleLoader" :valueDataInp="item.date_work" :typeInp="'date'" @changeDate='DateChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`date_pp_out`" :idLoader="`date_pp_outload`" :Visible="false" :valueDataInp="item.date_pp_out" :typeInp="'date'" @changeDate='DateChange'/>
+             <InputLoader :nameInp="`date_pp_out`" :idRow="item.id"  :idLoader="`date_pp_outload`" :Visible="VisibleLoader" :valueDataInp="item.date_pp_out" :typeInp="'date'" @changeDate='DateChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`days`" :idLoader="`daysload`" :Visible="false" :valueDataInp="item.days" @changeData='DataChange'/>
+             <InputLoader :nameInp="`days`" :idRow="item.id"  :idLoader="`daysload`" :Visible="VisibleLoader" :valueDataInp="item.days" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`date_processing`" :idLoader="`date_processingload`" :Visible="false" :valueDataInp="item.date_processing" :typeInp="'date'" @changeDate='DateChange'/>
+             <InputLoader :nameInp="`date_processing`" :idRow="item.id"  :idLoader="`date_processingload`" :Visible="VisibleLoader" :valueDataInp="item.date_processing" :typeInp="'date'" @changeDate='DateChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`application_number`" :idLoader="`application_numberload`" :Visible="false" :valueDataInp="item.application_number" @changeData='DataChange'/>
+             <InputLoader :nameInp="`application_number`"  :idRow="item.id" :idLoader="`application_numberload`" :Visible="VisibleLoader" :valueDataInp="item.application_number" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`operation`" :idLoader="`operationload`" :Visible="false" :valueDataInp="item.operation" @changeData='DataChange'/>
+             <InputLoader :nameInp="`operation`" :idRow="item.id"  :idLoader="`operationload`" :Visible="VisibleLoader" :valueDataInp="item.operation" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`price_wo_nds`" :idLoader="`price_wo_ndsload`" :Visible="false" :valueDataInp="item.price_wo_nds" @changeData='DataChange'/>
+             <InputLoader :nameInp="`price_wo_nds`" :idRow="item.id"  :idLoader="`price_wo_ndsload`" :Visible="VisibleLoader" :valueDataInp="item.price_wo_nds" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`counterparty`" :idLoader="`counterpartyload`" :Visible="false" :valueDataInp="item.counterparty" @changeData='DataChange'/>
+             <InputLoader :nameInp="`counterparty`" :idRow="item.id"  :idLoader="`counterpartyload`" :Visible="VisibleLoader" :valueDataInp="item.counterparty" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`act_date`" :idLoader="`act_dateload`" :Visible="false" :valueDataInp="item.act_date" :typeInp="'date'" @changeDate='DateChange'/>
+             <InputLoader :nameInp="`act_date`"  :idRow="item.id" :idLoader="`act_dateload`" :Visible="VisibleLoader" :valueDataInp="item.act_date" :typeInp="'date'" @changeDate='DateChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`for_cargo`" :idLoader="`for_cargoload`" :Visible="false" :valueDataInp="item.for_cargo" @changeData='DataChange'/>
+             <InputLoader :nameInp="`for_cargo`" :idRow="item.id"  :idLoader="`for_cargoload`" :Visible="VisibleLoader" :valueDataInp="item.for_cargo" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`from_cargo`" :idLoader="`from_cargoload`" :Visible="false" :valueDataInp="item.from_cargo" @changeData='DataChange'/>
+             <InputLoader :nameInp="`from_cargo`" :idRow="item.id"  :idLoader="`from_cargoload`" :Visible="VisibleLoader" :valueDataInp="item.from_cargo" @changeData='DataChange'/>
             </td>
         </tr>
       </tbody>
@@ -109,6 +109,7 @@ import api from '@/api/directory'
 import InputLoader from '../../../ui/InputLoader.vue';
 class BaseReader{
   constructor() {
+    this.id = 0
     this.date_pp_in = null;
     this.date_work = null;
     this.date_pp_out = null;
@@ -141,6 +142,11 @@ export default {
         }
     };
   },
+  computed: {
+    VisibleLoader(){
+      return false
+    }
+  },  
   methods: {
     DataChange (data) {
         console.log('child component said login', data)
@@ -172,12 +178,15 @@ export default {
     },
     getPagination(pg_size, pg_number) {
       this.loader = true;
+      this.data = []
+
       api
         .getAllArendaDataStavkaPage(this.filter, pg_size, pg_number)
         .then((response) => {
           this.loader = false;
           for(let i in response.data.data){
-            console.log(response.data.data[i])
+            let newClass = new BaseReader()
+              newClass.id = response.data.data[i].id;
               newClass.date_pp_in = response.data.data[i].date_pp_in;
               newClass.date_work = response.data.data[i].date_work;
               newClass.date_pp_out = response.data.data[i].date_pp_out;
@@ -191,8 +200,9 @@ export default {
               newClass.for_cargo = response.data.data[i].for_cargo;
               newClass.from_cargo = response.data.data[i].from_cargo;
               newClass.act_date = response.data.data[i].act_date;
-          this.data.push(newClass)
+          // this.data.push(newClass)
           }
+          // console.log(this.data)
           this.pageNumber = response.data.page_number;
         })
 
@@ -209,9 +219,10 @@ export default {
         .then((response) => {
           this.loader = false;
         
-          console.log(response.data)
+          // console.log(response.data)
           for(let i in response.data.data){
             let newClass = new BaseReader()
+              newClass.id = response.data.data[i].id;
               newClass.date_pp_in = response.data.data[i].date_pp_in;
               newClass.date_work = response.data.data[i].date_work;
               newClass.date_pp_out = response.data.data[i].date_pp_out;
@@ -229,7 +240,7 @@ export default {
           }
          
           // this.data = response.data.data;
-          console.log(this.data)
+          // console.log(this.data)
           this.pageNumber = response.data.page_number;
           this.pagination = response.data.links;
           this.total_pages = response.data.total_pages;
