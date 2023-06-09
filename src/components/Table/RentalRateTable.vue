@@ -109,7 +109,7 @@
       <p class="amount"></p>
       <button class="delete_col" @click="delete_col(wagon_arr)">Очистить столб.</button>
       <button class="delete_col" @click="delete_col2(start_date_arr)">Очистить столб.</button>
-      <button  class="delete_col" @click="delete_col3(end_date_arr)">Очистить столб.</button>
+      <button class="delete_col" @click="delete_col3(end_date_arr)">Очистить столб.</button>
       <button class="delete_col" @click="delete_col4(stavka_arr)">Очистить столб.</button>
       <button class="delete_col" @click="delete_col5(stavka_start_date_arr)">Очистить столб.</button>
       <button class="delete_col" @click="delete_col6(stavka_end_date_arr)">Очистить столб.</button>

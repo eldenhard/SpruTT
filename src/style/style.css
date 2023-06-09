@@ -332,3 +332,9 @@ color: white
   color:#909092;
   line-height: 10px;
 }
+  .explanation {
+    font-size: 13px;
+    color: grey;
+    text-align: left;
+    padding: 0 0 2% 0%;
+  }

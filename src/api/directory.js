@@ -88,6 +88,9 @@ const getAllArendaDataStandard = (filter_arendaData, page_size, page_number) => 
 const postpps = (data) => {
     return api.post(`${finance}/pps/save-many/`, data)
 }
+const getpps = (data) => {
+    return api.get(`${finance}/pps/`, data)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -119,5 +122,6 @@ export default {
     getAllArendaDataStandard,
 
     postpps,
+    getpps,
 }
 

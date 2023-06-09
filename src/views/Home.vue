@@ -39,7 +39,7 @@
         </b-tab>
         
       </b-container>
-      <b-tab title="Данные по актам" active>
+      <b-tab title="Данные по актам ППС" active>
           <b-card-text>
             <Act />
           </b-card-text>
@@ -93,7 +93,7 @@ import CargoDirectory from "../components/Table/Directory/CargoDirectory.vue";
 import CountriesDirectory from "../components/Table/Directory/CountriesDirectory.vue";
 import WagonDirectory from "../components/Table/Directory/WagonDirectory.vue";
 import StandartData from "../components/Table/Directory/StandartData.vue";
-import Act from "@/components/Table/Directory/Act.vue";
+import Act from "@/components/Table/Directory/ActPPS/Act.vue";
 export default {
   name: "Directory",
   components: {

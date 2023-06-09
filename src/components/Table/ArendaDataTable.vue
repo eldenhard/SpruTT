@@ -14,6 +14,7 @@
     <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Нет, отменить</b-button>
   </b-modal>
 <br><br>
+
     <a class="WatchAllArenda" v-on:click="visible = !visible">
       {{ visible ? "Скрыть данные по аренде" : "Отобразить данные по аренде" }}
     </a>

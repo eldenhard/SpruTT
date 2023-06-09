@@ -1,6 +1,33 @@
 <template>
   <div>
-    <div class="filter">
+    <Loader :loader="loader" />
+    <p class="explanation">
+      * Ввод данных осуществлять через пробел
+      <br />&nbsp;&nbsp;(при копировании из MS Excel, оставить введенные данные
+      неизменными)
+      <br />
+      * Ввод дат осуществлять только в строгом формате <b>12.01.2023</b> <br />
+      &nbsp;&nbsp;<u>Другой формат ввода даты не допускается. </u>
+      <br />
+      * Для удаления строки кликните на порядковый номер строки(левый столбец)
+      <br />
+      * Для сохранения изменненого поля ничего делать не нужно, сохранение таблицы произойдет автоматически (таблица 1)
+      <br />
+      * Для выбора значения Контрагента и груза, введите наименование и выберите его из списка
+      <br />
+      <br />
+      * После отправки формы данных, если все данные были приняты, значения таблицы будут стерты. <br>
+      &nbsp;&nbsp;Если какое-то поле не прошло проверку, то оно останется в таблице и номер этой строки подсвтетится красным. <br>
+      &nbsp;&nbsp;Чтобы посмотреть какая ошибка в этой строке, наведите на номер строки, но не нажимайте на номер мышкой <br>
+      &nbsp;&nbsp;( нажатие приведет к удалению строки)
+      <br />
+    </p>
+    <a class="WatchAllArenda" v-on:click="visible = !visible">
+      {{ visible ? "Свернуть таблицу ввода" : "Отобразить таблицу ввода" }}
+    </a>
+    <div v-show="visible" style="margin-top: 2%;">
+  
+      <div class="filter">
       <label for="">
         Контрагент<br />
         <input type="text" class="textarea" v-model="counterparties" />
@@ -61,7 +88,7 @@
         <li
           v-for="item in filter_forcargo"
           :key="item.id"
-          @click="checkForCargo(item.name)"
+          @click="checkForCargo(item.name,  item.code6)"
         >
           <span>{{ item.name }}</span>
           <hr />
@@ -84,7 +111,7 @@
         <li
           v-for="item in filter_fromcargo"
           :key="item.id"
-          @click="checkFromCargo(item.name)"
+          @click="checkFromCargo(item.name, item.code6)"
         >
           <span>{{ item.name }}</span>
           <hr />
@@ -202,28 +229,33 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="item.id">
-          <td @click="deleteRow(index)">{{ index + 1 }}</td>
-          <td><input type="number" :value="item.wagon" /></td>
-          <td><input type="date" v-model="item._date_pp_in" /></td>
-          <td><input type="date" v-model="item._date_work" /></td>
-          <td><input type="date" v-model="item._date_pp_out" /></td>
-          <!-- <td>{{ item.act_date }}</td> -->
-          <td><input type="number" :value="item.days" /></td>
-          <td><input type="date" v-model="item._date_processing" /></td>
-          <td><input type="text" :value="item.application_number" /></td>
-          <td><input type="text" :value="item.operation" /></td>
-          <td><input type="number" :value="item.price_wo_nds" /></td>
+          <td @click="deleteRow(index)" v-b-tooltip.hover :title="item.error" class="delete" :class="{error: item.error != null}">{{ index + 1 }}</td>
+          <td><input type="number" v-model="item.wagon"/></td>
+          <td><input type="date" v-model="item.date_pp_in" /></td>
+          <td><input type="date" v-model="item.date_work" /></td>
+          <td><input type="date" v-model="item.date_pp_out" /></td>
+          <td><input type="number" v-model="item.days" /></td>
+          <td><input type="date" v-model="item.date_processing" /></td>
+          <td><input type="text" v-model="item.application_number" /></td>
+          <td><input type="text" v-model="item.operation" /></td>
+          <td><input type="number" v-model="item.price_wo_nds" /></td>
 
         </tr>
       </tbody>
     </table>
+    </div>
+    
+<ActBaseReader />
   </div>
 </template>
 
 <!-- 12.01.1998 -->
 <script>
 import api from '@/api/directory'
+import ActBaseReader from './ActBaseReader.vue';
+import Loader from '@/components/loader/loader.vue';
 class MyClass {
+  // #date_pp_in = null
   constructor() {
     this.date_pp_in = null;
     this.date_work = null;
@@ -238,6 +270,7 @@ class MyClass {
     this.for_cargo = null;
     this.from_cargo = null;
     this.act_date = null;
+    this.error = null;
   }
   set date_pp_in(value) {
     let date;
@@ -245,11 +278,18 @@ class MyClass {
     let reverse = date?.split(".")?.reverse()?.join("-");
     this._date_pp_in = reverse;
   }
+  get date_pp_in(){
+    return this.date_pp_in = this._date_pp_in
+  }
+
   set date_work(value) {
     let date;
     date = value;
     let reverse = date?.split(".")?.reverse()?.join("-");
     this._date_work = reverse;
+  }
+  get date_work(){
+    return this.date_work = this._date_work
   }
   set date_pp_out(value) {
     let date;
@@ -257,14 +297,38 @@ class MyClass {
     let reverse = date?.split(".")?.reverse()?.join("-");
     this._date_pp_out = reverse;
   }
+  get date_pp_out(){
+    return this.date_pp_out = this._date_pp_out
+  }
   set date_processing(value) {
     let date;
     date = value;
     let reverse = date?.split(".")?.reverse()?.join("-");
     this._date_processing = reverse;
   }
+  get date_processing(){
+    return this.date_processing = this._date_processing
+  }
+  JSON(){
+    return {
+      date_pp_in: this._date_pp_in || null,
+      date_work: this._date_work || null,
+      date_pp_out:  this._date_pp_out || null,
+      date_processing: this._date_processing || null,
+      days: this.days,
+      application_number:   this.application_number,
+      operation:this.operation,
+      price_wo_nds: this.price_wo_nds ,
+      counterparty: this.counterparty,
+      wagon: this.wagon ,
+      for_cargo: this.for_cargo,
+      from_cargo: this.from_cargo,
+      act_date: this.act_date,
+    }
+  }
 }
 export default {
+  components: { ActBaseReader, Loader },
   data() {
     return {
       data: [],
@@ -275,9 +339,29 @@ export default {
       ten_visible: false,
       ten_visible2: false,
       ten_visible3: false,
+      for_code6: "",
+      from_code6: "",
+      visible: true,
+      loader: false,
+      
     };
   },
   mounted() {
+    // let first_row = new MyClass();
+    // first_row.date_pp_in = '2022-01-01';
+    // first_row.date_work = '2022-01-01';
+    // first_row.date_pp_out = '2022-01-01';
+    // first_row.days = 5;
+    // first_row.date_processing = '2022-01-01';
+    // first_row.application_number = 123;
+    // first_row.operation = 123;
+    // first_row.price_wo_nds = 0;
+    // first_row.counterparty = '11 ААС';
+    // first_row.wagon = 50664085;
+    // first_row.for_cargo = 11;
+    // first_row.from_cargo = 11;
+    // first_row.act_date = '2022-01-01';
+    // this.data.push(first_row)
     document.body.addEventListener("click", () => {
       this.ten_visible = false;
       this.ten_visible2 = false;
@@ -303,9 +387,7 @@ export default {
       }
       return this.for_cargo.length > 1
         ? this.$store.state.cargo_code.cargo_code.filter((item) =>
-            item.name
-              .toLowerCase()
-              .includes(this.for_cargo.toLowerCase())
+            item.name.toLowerCase().includes(this.for_cargo.toLowerCase())
           )
         : "";
     },
@@ -330,12 +412,16 @@ export default {
     },
     checkCounterpartie(value) {
       this.counterparties = value;
+      
     },
-    checkForCargo(value) {
+    checkForCargo(value, code6) {
       this.for_cargo = value;
+      this.for_code6 = code6
     },
-    checkFromCargo(value) {
+    checkFromCargo(value, code6) {
       this.from_cargo = value;
+      this.from_code6 = code6
+      console.log(this.from_code6)
     },
     deleteRow(index) {
       this.data.splice(index, 1);
@@ -359,32 +445,54 @@ export default {
         }
       }
       type.target.value = ''
-      console.log(this.data);
+      // console.log(this.data);
     },
     sendData() {
       for (let i in this.data) {
         this.data[i].act_date = this.act_date;
         this.data[i].counterparty = this.counterparties;
-        this.data[i].from_cargo = this.from_cargo;
-        this.data[i].for_cargo = this.for_cargo;
+        this.data[i].from_cargo = this.from_code6;
+        this.data[i].for_cargo = this.for_code6;
       }
-      api.postpps(this.data)
-      .then(response => {
-        console.log(response)
-      }).catch(error => {
-        console.log(error)
+      console.log(this.data)
+      let arr = this.data.map(item => {
+        return item.JSON()
       })
+      api.postpps(arr)
+      .then(response => {
+        this.data = []
+      })
+      .catch(error => {
+        for(let i in error.response.data){
+          this.data[error.response.data[i][0]].error = error.response.data[i][1]
+        }
+       let filter_arr = [...this.data]
+       this.data = filter_arr.filter(item => {
+        return item.error != null
+       })
+
+    })
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.rent_information_button {
-  display: grid;
-  gap: 2px;
-  grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+.WatchAllArenda {
+  color: rgb(146, 146, 146);
+  margin-top: 15%;
+  font-size: 25px;
+  cursor: pointer;
+  margin-left: auto;
 }
+.delete:hover{
+  background: lightcoral;
+  color: white;
+}
+.error{
+  background: lightcoral;
+}
+
 .delete_col {
   height: auto;
   font-size: 12px;
@@ -396,10 +504,11 @@ export default {
 }
 li {
   cursor: pointer;
+    &:hover{
+      font-weight: 600;
+    }
 }
-li:hover {
-  font-weight: 600;
-}
+
 th {
   position: relative;
 }
