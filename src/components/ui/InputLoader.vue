@@ -1,26 +1,49 @@
 <template>
-    <div>
-        <div class="inputcontainer">
-                <input
-                  :id="idItem"
-                  :value="value"
-                  v-on:keyup.enter="submitWagon(item.wagon, item.id)"
-                  :type="typeInp"
-                />
-                <div
-                  class="icon-container"
-                  :id="idLoader"
-                  v-show="Visible"
-                >
-                  <i class="loader"></i>
-                </div>
-              </div>
+  <div>
+    <div class="inputcontainer">
+      <input
+        :id="idItem"
+        v-model="data"
+        :type="typeInp"
+        @keyup.enter="$emit('changeData', {[idItem]: $event.target.value})"
+        @change="$emit('changeDate', {[idItem]: $event.target.value})"
+      />
+      <div class="icon-container" :id="idLoader" v-show="Visible">
+        <i class="loader"></i>
+      </div>
     </div>
+  </div>
 </template>
 <script>
-export default{
-    props: ['idItem', 'idLoader', 'Visible', 'value', 'typeInp']
-}
+export default {
+   data(){
+    return{
+        data: this.valueDataInp
+    }
+   },
+  props: {
+    idItem: {
+        type: String,
+        default: "",
+    },
+    idLoader: {
+        type: String,
+        default: "",
+    },
+    Visible: {
+        type: Boolean,
+        default: false,
+    },
+    valueDataInp: {
+        default: ''
+    },
+    typeInp: {
+        type: String,
+        default: "",
+    },
+  },
+
+};
 </script>
 
 <style lang="scss" scoped>

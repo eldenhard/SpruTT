@@ -46,43 +46,43 @@
         <tr v-for="item, index in data" :key="item.id">
           <td>{{ index+1 }}</td>
           <td>
-             <InputLoader :idItem="`wagon`+item.id" :idLoader="`wagload`+item.id" :Visible="false" :value="item.wagon" :typeInp="'number'"/>
+             <InputLoader :idItem="`wagon`" :idLoader="`wagload`" :Visible="false" :valueDataInp="item.wagon" :typeInp="'number'" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`date_pp_in`+item.id" :idLoader="`date_pp_inload`+item.id" :Visible="false" :value="item.date_pp_in" :typeInp="'date'"/>
+             <InputLoader :idItem="`date_pp_in`" :idLoader="`date_pp_inload`" :Visible="false" :valueDataInp="item.date_pp_in" :typeInp="'date'" @changeDate='DateChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`date_work`+item.id" :idLoader="`date_workload`+item.id" :Visible="false" :value="item.date_work" :typeInp="'date'"/>
+             <InputLoader :idItem="`date_work`" :idLoader="`date_workload`" :Visible="false" :valueDataInp="item.date_work" :typeInp="'date'" @changeDate='DateChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`date_pp_out`+item.id" :idLoader="`date_pp_outload`+item.id" :Visible="false" :value="item.date_pp_out" :typeInp="'date'"/>
+             <InputLoader :idItem="`date_pp_out`" :idLoader="`date_pp_outload`" :Visible="false" :valueDataInp="item.date_pp_out" :typeInp="'date'" @changeDate='DateChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`days`+item.id" :idLoader="`daysload`+item.id" :Visible="false" :value="item.days"/>
+             <InputLoader :idItem="`days`" :idLoader="`daysload`" :Visible="false" :valueDataInp="item.days" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`date_processing`+item.id" :idLoader="`date_processingload`+item.id" :Visible="false" :value="item.date_processing" :typeInp="'date'"/>
+             <InputLoader :idItem="`date_processing`" :idLoader="`date_processingload`" :Visible="false" :valueDataInp="item.date_processing" :typeInp="'date'" @changeDate='DateChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`application_number`+item.id" :idLoader="`application_numberload`+item.id" :Visible="false" :value="item.application_number"/>
+             <InputLoader :idItem="`application_number`" :idLoader="`application_numberload`" :Visible="false" :valueDataInp="item.application_number" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`operation`+item.id" :idLoader="`operationload`+item.id" :Visible="false" :value="item.operation"/>
+             <InputLoader :idItem="`operation`" :idLoader="`operationload`" :Visible="false" :valueDataInp="item.operation" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`price_wo_nds`+item.id" :idLoader="`price_wo_ndsload`+item.id" :Visible="false" :value="item.price_wo_nds"/>
+             <InputLoader :idItem="`price_wo_nds`" :idLoader="`price_wo_ndsload`" :Visible="false" :valueDataInp="item.price_wo_nds" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`counterparty`+item.id" :idLoader="`counterpartyload`+item.id" :Visible="false" :value="item.counterparty"/>
+             <InputLoader :idItem="`counterparty`" :idLoader="`counterpartyload`" :Visible="false" :valueDataInp="item.counterparty" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`act_date`+item.id" :idLoader="`act_dateload`+item.id" :Visible="false" :value="item.act_date" :typeInp="'date'"/>
+             <InputLoader :idItem="`act_date`" :idLoader="`act_dateload`" :Visible="false" :valueDataInp="item.act_date" :typeInp="'date'" @changeDate='DateChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`for_cargo`+item.id" :idLoader="`for_cargoload`+item.id" :Visible="false" :value="item.for_cargo"/>
+             <InputLoader :idItem="`for_cargo`" :idLoader="`for_cargoload`" :Visible="false" :valueDataInp="item.for_cargo" @changeData='DataChange'/>
             </td>
             <td>
-             <InputLoader :idItem="`from_cargo`+item.id" :idLoader="`from_cargoload`+item.id" :Visible="false" :value="item.from_cargo"/>
+             <InputLoader :idItem="`from_cargo`" :idLoader="`from_cargoload`" :Visible="false" :valueDataInp="item.from_cargo" @changeData='DataChange'/>
             </td>
         </tr>
       </tbody>
@@ -107,6 +107,23 @@
 <script>
 import api from '@/api/directory'
 import InputLoader from '../../../ui/InputLoader.vue';
+class BaseReader{
+  constructor() {
+    this.date_pp_in = null;
+    this.date_work = null;
+    this.date_pp_out = null;
+    this.days = 0;
+    this.date_processing = null;
+    this.application_number = null;
+    this.operation = null;
+    this.price_wo_nds = 0;
+    this.counterparty = null;
+    this.wagon = 0;
+    this.for_cargo = null;
+    this.from_cargo = null;
+    this.act_date = null;
+  }
+}
 export default {
   name: "acrBaseReader",
   components: { InputLoader },
@@ -117,7 +134,7 @@ export default {
       pagination: "",
       total_pages: "",
       total_objects: "",
-      data: "",
+      data: [],
       pageNumber: 1,
         filter: {
             page_size: "",
@@ -125,7 +142,15 @@ export default {
     };
   },
   methods: {
- 
+    DataChange (data) {
+        console.log('child component said login', data)
+    },
+    DateChange(data){
+      console.log('child component said login', data)
+    },
+    getData(value){
+      console.log(value)
+    },
     Truefalse(btn) {
       if (btn == this.pageNumber) {
         return true;
@@ -151,26 +176,58 @@ export default {
         .getAllArendaDataStavkaPage(this.filter, pg_size, pg_number)
         .then((response) => {
           this.loader = false;
-          this.data = response.data.data;
-          console.log(this.data);
+          for(let i in response.data.data){
+            console.log(response.data.data[i])
+              newClass.date_pp_in = response.data.data[i].date_pp_in;
+              newClass.date_work = response.data.data[i].date_work;
+              newClass.date_pp_out = response.data.data[i].date_pp_out;
+              newClass.days = response.data.data[i].days;
+              newClass.date_processing = response.data.data[i].date_processing;
+              newClass.application_number = response.data.data[i].application_number;
+              newClass.operation = response.data.data[i].operation;
+              newClass.price_wo_nds = response.data.data[i].price_wo_nds;
+              newClass.counterparty = response.data.data[i].counterparty;
+              newClass.wagon = response.data.data[i].for_cargo.wagon;
+              newClass.for_cargo = response.data.data[i].for_cargo;
+              newClass.from_cargo = response.data.data[i].from_cargo;
+              newClass.act_date = response.data.data[i].act_date;
+          this.data.push(newClass)
+          }
           this.pageNumber = response.data.page_number;
         })
 
         .catch((error) => {
           this.loader = false;
-          console.log(error);
         });
     },
     getPPS() {
       this.loader = true;
-    
+      this.data = []
+      console.log('1')
       api
         .getpps(this.filter)
         .then((response) => {
           this.loader = false;
-          this.data = response.data.data;
-          console.log(this.data);
-          
+          let newClass = new BaseReader()
+          for(let i in response.data.data){
+              newClass.date_pp_in = response.data.data[i].date_pp_in;
+              newClass.date_work = response.data.data[i].date_work;
+              newClass.date_pp_out = response.data.data[i].date_pp_out;
+              newClass.days = response.data.data[i].days;
+              newClass.date_processing = response.data.data[i].date_processing;
+              newClass.application_number = response.data.data[i].application_number;
+              newClass.operation = response.data.data[i].operation;
+              newClass.price_wo_nds = response.data.data[i].price_wo_nds;
+              newClass.counterparty = response.data.data[i].counterparty;
+              newClass.wagon = response.data.data[i].wagon;
+              newClass.for_cargo = response.data.data[i].for_cargo;
+              newClass.from_cargo = response.data.data[i].from_cargo;
+              newClass.act_date = response.data.data[i].act_date;
+              this.data.push(newClass)
+          }
+         
+          // this.data = response.data.data;
+          console.log(this.data)
           this.pageNumber = response.data.page_number;
           this.pagination = response.data.links;
           this.total_pages = response.data.total_pages;
@@ -178,7 +235,6 @@ export default {
         })
         .catch((error) => {
           this.loader = false;
-          console.log(error.response);
         });
     },
   }
