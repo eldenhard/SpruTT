@@ -208,8 +208,10 @@ export default {
         .getpps(this.filter)
         .then((response) => {
           this.loader = false;
-          let newClass = new BaseReader()
+        
+          console.log(response.data)
           for(let i in response.data.data){
+            let newClass = new BaseReader()
               newClass.date_pp_in = response.data.data[i].date_pp_in;
               newClass.date_work = response.data.data[i].date_work;
               newClass.date_pp_out = response.data.data[i].date_pp_out;
