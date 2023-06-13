@@ -113,7 +113,7 @@
         >
           <td colspan="3">Всего погрузки</td>
           <td></td>
-
+          <td></td>
           <td>{{ obj.total?.amount.toFixed(2) | format }}</td>
           <td>{{ obj.total?.stavka.toFixed(2) | format }}</td>
           <td>{{ obj.total?.revenue.toFixed(2) | format }}</td>
