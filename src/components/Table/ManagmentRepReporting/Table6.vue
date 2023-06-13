@@ -4,7 +4,7 @@
   <pre>{{ obj }}</pre>
   <pre>{{ norm }}</pre>
 </div> -->
-   
+   <!-- <pre>{{ normalized }}</pre> -->
   <!-- {{ object }} -->
 
     <Loader :loader="loader" />
@@ -28,7 +28,8 @@
           <th>Станция погрузки</th>
           <th style="width: 200px">Клиент</th>
           <th style="width: 200px">Станция выгрузки</th>
-          <th style="width: 200px">Продукт</th>
+
+          <th style="width: 200px">Груз</th>
           <th style="width: 200px">Погрузка, тн</th>
           <th style="width: 200px">Ставка, руб/тн без НДС</th>
 
@@ -36,130 +37,89 @@
 
         </thead>
         <tbody>
-          <template v-for="item,park in obj.data">
-            <template v-for="cl in park.data">
-              {{ cl }}
-            </template>
-          </template>
-        </tbody>
-        <!-- <template v-for="obj in objects211">
-          <template v-for="park in  Object.keys(obj)">
-            <template v-for="road1 in Object.values(obj)">
-              <template v-for="road2 in Object.values(road1)">
-              <tr>
-                <td>{{ park }}</td>
-                <td>{{ Object.keys(road2) }}</td>
-              </tr>
-            </template>
-            </template>
-          </template>
-        </template> -->
-        <!-- <template v-for="park in Object.keys(obj)">
-              <template v-for="road in   Object.values(park)">
-              <tr>
-                <td>{{ park }}</td>
-                <td>{{ road }}</td>
-              </tr>
-            </template>
-            </template> -->
-
-        <!-- <template v-for="obj in norm">
-              <template v-for="{park, attr1, TOTAL_ROAD} in obj.data">
-                <template v-for="({ road_start, attr3, total }, iAttr1) in attr1">
-                  <template v-for="{ road, station } in attr3">
-                    <template v-for="{ road_end, cargo } in station">
-                        <template v-for="item in cargo">
-                           <tr>
-                              <td>{{ park }}</td>
-                              <td>{{ road_start }}</td>
-                              <td>{{ road }}</td>
-                              <td>{{ road_end }}</td>
-                              <td>{{ item.cargo_name }}</td>
-                              <td>{{ item.amount }}</td>
-                              <td>{{ item.stavka }}</td>
-                              <td>{{ item.revenue }}</td>
-                           </tr>
-                           <tr>
-                            <td colspan="2">Итого {{ road }}</td>
-                            <td>{{ total.amount }}</td>
-                            <td>{{ total.stavka }}</td>
-                            <td>{{ total.revenue }}</td>
-                           </tr>
-                           <tr>
-                            <tr>
-                            <td colspan="2">Итого {{ road_start }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                           </tr>
-                           <tr>
-                            <td colspan="2">Итого {{ park }}</td>
-                            <td>{{ TOTAL_ROAD.amount }}</td>
-                            <td>{{ TOTAL_ROAD.stavka }}</td>
-                            <td>{{ TOTAL_ROAD.revenue }}</td>
-                           </tr>
-                     
-                        </template>
-                    </template>
-                  </template>
-                </template>
-              </template>
-              <tr>
-                <td colspan="2">Итого {{ park }}</td>
-                <td>{{ obj.total.amount }}</td>
-                <td>{{ obj.total.stavka }}</td>
-                <td>{{ obj.total.revenue }}</td>
-                </tr>
-          </template> -->
-
-
-        <!-- <template  v-for="obj in normalized">
-        <template v-for="{ park, attr1 } in obj.data">
-          <template v-for="({ road_start, attr3, TOTAL_ROAD }, iAtrr1) in attr1">
-              <template v-for="({ road, station, total }, iAttr2) in attr3">
-                <tr v-for="(attr3Item, iAttr3) in attr3">
-                  <td>{{ park }}</td>
-                  <td :rowspan="attr3.length +1 "  v-if="!iAttr3">{{ road_start }}</td>
-                  <td :rowspan="attr3.length"  v-if="!iAttr3">{{ road }}</td>
-                  <table>
-                    <tr v-for="item in attr3Item.station" :key="item.id">
-                     <td style="width: 200px">{{ item.road_end }}</td> 
-                     <template  v-for="cargo in item.cargo" >
-                      
-                        <td style="width: 200px">{{ cargo.cargo_name }}</td> 
-                        <td style="width: 200px">{{ cargo.amount.toFixed(2) | format }}</td> 
-                        <td style="width: 200px">{{ cargo.stavka.toFixed(2) | format }}</td> 
-                        <td style="width: 200px">{{ cargo.revenue.toFixed(2) | format }}</td> 
-                      
-                     
-
-                      </template>
-              
-                    </tr>
-                  </table>
-                  <tr class="total">
-                  <td></td>
-                  <td colspan="2">Итого {{ road }}:</td>
-                  <td></td>
-                  <td>{{ TOTAL_ROAD }}</td>
-                  <td>{{ total?.cargo.toFixed(2) | format }}</td>
-                  <td>{{ total?.amount | format }}</td>
-                  <td>{{ total?.revenue.toFixed(2) | format }}</td>
-                </tr>
+          <template v-for="obj in normalized">
+          <template v-for="{ road, attr1, TOTAL_ROAD } in obj.data">
+            <template v-for="({ client, attr3, total }, iAttr1) in attr1">
+              <tr v-for="(attr3Item, iAttr3) in attr3">
+                <td :rowspan="rowspan(attr1)" v-if="!iAttr1 && !iAttr3">
+                  {{ road | ifNull}}
+                </td>
+                <td :rowspan="attr3.length" v-if="!iAttr3">{{ client }}</td>
+                <td >{{ attr3Item.road }}</td>
+          
+                <td>
+                  <tr v-for="item in attr3Item.cargo" :key="item.id">
+                    <td style="border: none !important">{{ item.name }}</td>
                   </tr>
-                </template>
-                <tr class="total_2">
-                <td></td>
-                <td colspan="3">Итого {{ road_start }}:</td>
-                <td></td>
-                <td>{{ TOTAL_ROAD?.cargo.toFixed(2) | format }}</td>
-                <td>{{ TOTAL_ROAD?.amount | format }}</td>
-                <td>{{ TOTAL_ROAD?.revenue.toFixed(2) | format }}</td>
-              </tr>
-              </template>
+                </td>
+          
+                <td>
+                  <template v-for="item in attr3Item.cargo" >
+                    <tr v-for="i in item.name_weight" :key="i.id">
+                      <td style="border: none !important">{{ i }}</td>
+                    </tr>
+                    <!-- <td style="width: 250px">{{ item.name_weight[0] }}</td> -->
+                  </template>
+                </td>
+                <td>
+                  <template v-for="item in attr3Item.cargo" >
+                    <tr v-for="i in item.name_cargo" :key="i.id">
+                     <td style="border: none !important">{{ i?.amount.toFixed(2) | format}}</td>
+                    </tr>
+                  </template>
+                </td>
+                <td>
+                  <template v-for="item in attr3Item.cargo" >
+                    <tr v-for="i in item.name_cargo" :key="i.id">
+                     <td style="border: none !important">{{ i?.stavka.toFixed(2) | format}}</td>
+                    </tr>
+                  </template>
+                </td>
+                <td>
+                  <template v-for="item in attr3Item.cargo" >
+                    <tr v-for="i in item.name_cargo" :key="i.id">
+                     <td style="border: none !important">{{ i?.revenue.toFixed(2) | format}}</td>
+                    </tr>
+                  </template>
+                </td>
+              <td>
            
+              </td>
+              </tr>
+              <tr class="total">
+                <td colspan="2">Итого {{ client }}:</td>
+                <td></td>
+                <td></td>
+                <td>{{ total?.amount.toFixed(2) | format }}</td>
+                <td>{{ total?.stavka.toFixed(2) | format }}</td>
+                <td>{{ total?.revenue.toFixed(2) | format }}</td>
+              </tr>
+            </template>
+            <tr class="total_2">
+              <td colspan="3">Итого {{ road }}:</td>
+              <td></td>
+              <td></td>
+              <td>{{ TOTAL_ROAD?.amount.toFixed(2) | format }}</td>
+              <td>{{ TOTAL_ROAD?.stavka.toFixed(2) | format }}</td>
+              <td>{{ TOTAL_ROAD?.revenue.toFixed(2) | format }}</td>
+            </tr>
+          </template>
         </template>
-     </template> -->
+        <tr
+          v-for="obj in normalized"
+          :key="obj.id"
+          style="border: 1px solid black"
+          class="all_total"
+        >
+          <td colspan="3">Всего погрузки</td>
+          <td></td>
+
+          <td>{{ obj.total?.amount.toFixed(2) | format }}</td>
+          <td>{{ obj.total?.stavka.toFixed(2) | format }}</td>
+          <td>{{ obj.total?.revenue.toFixed(2) | format }}</td>
+        </tr>
+        </tbody>
+
 
 
       </table>
@@ -185,131 +145,44 @@ export default {
       date_end: "",
       wag_type: "Полувагон",
 
-    obj: {
-  "data": {
-    "Слежение": {
-      "data": {
-        "Донецкая ж. д.": {
-          "data": {
-            "ФЕРРУМ ТРЕЙД": {
-              "data": {
-                "Московская ж. д.": {
-                  "data": {
-                    "Щебень гранитный не поименованный в алфавите": {
-                      "amount": 68.8,
-                      "stavka": 872.093023255814,
-                      "revenue": 60000
-                    }
-                  },
-                  "total": {
-                    "amount": 1,
-                    "stavka": 872.093023255814,
-                    "revenue": 60000
-                  }
-                }
-              },
-              "total": {
-                "amount": 2,
-                "stavka": 872.093023255814,
-                "revenue": 60000
-              }
-            }
-          },
-          "total": {
-            "amount": 3,
-            "stavka": 872.093023255814,
-            "revenue": 60000
-          }
-        },
-        "Забайкальская ж. д.": {
-          "data": {
-            "ТК РУТ Логистик": {
-              "data": {
-                "Юго-Восточная ж. д.": {
-                  "data": {
-                    "Щебень, не поименованный в алфавите": {
-                      "amount": 67.8,
-                      "stavka": 0,
-                      "revenue": 0
-                    }
-                  },
-                  "total": {
-                    "amount": 67.8,
-                    "stavka": 0,
-                    "revenue": 0
-                  }
-                }
-              },
-              "total": {
-                "amount": 67.8,
-                "stavka": 0,
-                "revenue": 0
-              }
-            }
-          },
-          "total": {
-            "amount": 67.8,
-            "stavka": 0,
-            "revenue": 0
-          }
-        },
-      },
-      "total": {
-        "amount": 4,
-        "stavka": 7371.291788131439,
-        "revenue": 510300
-      }
-    },
-  },
-  "total": {
-    "amount": 5,
-    "stavka": 313430.76072340476,
-    "revenue": 21803996.889999997
-  }
-}
+
 
     
 
     };
   },
   methods: {
-    rowspan(attr) {
-      attr.reduce((acc, item) =>
-        acc += item.attr1.length + 1, 0)
-    },
-    // rowspan: (attr0) => attr0.reduce((acc, n) => acc + n.attr1.length + 1, 0),
+    rowspan: (attr2) => attr2.reduce((acc, n) => acc + n.attr3.length + 1, 0),
 
     normalizeObject() {
       const test = Object.keys(this.objects2.data).map((key) => {
         const obj = {
-          park: key,
-          attr1: Object.keys(this.objects2.data[key].data).map((road_start) => {
+          road: key,
+          attr1: Object.keys(this.objects2.data[key].data).map((client) => {
             return {
-              road_start,
-              attr3: Object.keys(this.objects2.data[key].data[road_start].data).map(
-                (client) => {
+              client,
+              attr3: Object.keys(this.objects2.data[key].data[client].data).map(
+                (road) => {
                   return {
-                    client,
-                    station: Object.keys(
-                      this.objects2.data[key].data[road_start].data[client].data).map((station) => {
+                    road,
+                    cargo: Object.keys(
+                      this.objects2.data[key].data[client].data[road].data
+                    ).map((cargo) => {
                       return {
-                        road_end: station,
-                     
-                        cargo: Object.keys(
-                          this.objects2.data[key].data[road_start].data[client].data[station].data).map((cargo) => {
-                          return {
-                            cargo_name: cargo,
-                            ...this.objects2.data[key].data[road_start].data[client].data[station].data[cargo],
+                        name: cargo,
+                        name_weight: Object.keys(this.objects2.data[key].data[client].data[road].data[cargo].data),
+                        name_cargo: Object.keys(this.objects2.data[key].data[client].data[road].data[cargo].data).map(item => {
+                          return{
+                           ...this.objects2.data[key].data[client].data[road].data[cargo].data[item]
                           }
                         })
-
+                        // cargo:  this.objects2.data[key].data[client].data[road].data[cargo]
                       };
                     }),
-                    
                   };
                 }
               ),
-              total: this.objects2.data[key].data[road_start].total,
+              total: this.objects2.data[key].data[client].total,
             };
           }),
           TOTAL_ROAD: this.objects2.data[key].total,
@@ -343,46 +216,17 @@ export default {
       this.date_end = data.date_end;
     },
   },
-  mounted() {
-    this.norm = Object.keys(this.obj.data).map((key) => {
-      const obj = {
-        park: key,
-        attr1: Object.keys(this.obj.data[key].data).map((road_start) => {
-          return {
-            road_start: road_start,
-            client: Object.keys(this.obj.data[key].data[road_start].data).map((client) => {
-              return {
-                client_name: client,
-                road_end: Object.keys(this.obj.data[key].data[road_start].data[client].data).map((road_end) => {
-                  return{
-                      road_end: road_end,
-                      cargo:  Object.keys(this.obj.data[key].data[road_start].data[client].data[road_end].data).map((cargo) => {
-                        return{
-                          cargo_name: cargo,
-                          ...this.obj.data[key].data[road_start].data[client].data[road_end].data[cargo]
-                        }
-                      }),
-                      total_client: this.obj.data[key].data[road_start].data[client].total
 
-                  }
-                }),
-                total_road_end: this.obj.data[key].data[road_start].total
-              }
-            }),
-            total_park: this.obj.data[key].total,
-
-          }
-        }),
-       
-        all_total: this.obj.total
-      }
-  return obj
-    })
-  },
   filters: {
     format(value) {
       return String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
     },
+    ifNull(value){
+      if(value == null){
+        return '-'
+      }
+        return value
+    }
   },
 };
 </script>
