@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pre>{{normalized}}</pre>
+    <!-- <pre>{{normalized}}</pre> -->
     <Loader :loader="loader" />
     <Periods @Action="Actioned" @data="getCurrentData">
       <label for="">
