@@ -5,11 +5,11 @@
         :name="nameInp"
         v-model="data"
         :type="typeInp"
-        :id="idRow"
-        @keyup.enter="$emit('changeData', {[nameInp]: $event.target.value, 'id': idRow})"
-        @change="$emit('changeDate', {[nameInp]: $event.target.value}, {'id': idRow})"
+        :id="idElement"
+        @keyup.enter="$emit('changeData', {[nameInp]: $event.target.value, 'id': idRow, 'loader': idLoader, 'idElement' : idElement})"
+        @change="$emit('changeDate', {[nameInp]: $event.target.value, 'id': idRow, 'loader': idLoader, 'idElement' : idElement})"
       />
-      <div class="icon-container" :id="idLoader" v-show="Visible">
+      <div class="icon-container" :id="idLoader" v-show="Visible" >
         <i class="loader"></i>
       </div>
     </div>
@@ -45,6 +45,10 @@ export default {
         type: String,
         default: "",
     },
+
+    idElement: {
+      type: String
+    }
   },
 
 };
@@ -106,5 +110,13 @@ input {
 .loader::after {
   animation: around 0.7s ease-in-out 0.1s infinite;
   background: transparent;
+}
+.successStatus {
+  background: rgba(42, 190, 67, 0.4);
+  color: black;
+}
+.errorStatus {
+  background: lightcoral;
+  color: black;
 }
 </style>

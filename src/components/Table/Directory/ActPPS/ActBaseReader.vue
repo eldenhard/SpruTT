@@ -1,15 +1,9 @@
 <template>
   <div style="margin-top: 5%;">
+    <Loader :loader="loader" />
     <div class="filter">
-        <label for="amount"
-        >Количество строк <br />
-        <select
-          name="amount_row"
-          id="amount"
-          v-model="filter.page_size"
-          style="width: 100%"
-          class="mini"
-        >
+      <label for="amount">Количество строк <br />
+        <select name="amount_row" id="amount" v-model="filter.page_size" style="width: 100%" class="mini">
           <option value="" disabled>кол-во строк на странице</option>
           <option value="1">1</option>
           <option value="50">50</option>
@@ -21,16 +15,19 @@
         <br>
         <button class="button Accept mini" @click="getPPS()">Запросить</button>
       </label>
-        
+
     </div>
+    <p class="amount" style="padding-top: 2%">
+      Всего записей: {{ total_objects }}
+    </p>
     <table border="1">
       <thead>
         <tr>
           <th>№</th>
           <th>Вагон</th>
-          <th>Дата передачи вагона на подъездной путь</th>
+          <th>Дата передачи на подъез. путь</th>
           <th>Дата проведения работ</th>
-          <th>Дата вывода вагона с подъездного пути</th>
+          <th>Дата вывода с подъез. пути</th>
           <th>Расчетное время в сутках</th>
           <th>Дата обработки</th>
           <th>Номер заявки</th>
@@ -44,70 +41,89 @@
       </thead>
       <tbody>
         <tr v-for="item, index in data" :key="item.id">
-          <td>{{ index+1}}</td>
+          <td>{{ index + 1 }}</td>
           <td>
-             <InputLoader :nameInp="`wagon`" :idRow="item.id" :idLoader="`wagload`" :Visible="VisibleLoader" :valueDataInp="item.wagon" :typeInp="'number'" @changeData='DataChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`date_pp_in`" :idRow="item.id" :idLoader="`date_pp_inload`" :Visible="VisibleLoader" :valueDataInp="item.date_pp_in" :typeInp="'date'" @changeDate='DateChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`date_work`" :idRow="item.id"  :idLoader="`date_workload`" :Visible="VisibleLoader" :valueDataInp="item.date_work" :typeInp="'date'" @changeDate='DateChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`date_pp_out`" :idRow="item.id"  :idLoader="`date_pp_outload`" :Visible="VisibleLoader" :valueDataInp="item.date_pp_out" :typeInp="'date'" @changeDate='DateChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`days`" :idRow="item.id"  :idLoader="`daysload`" :Visible="VisibleLoader" :valueDataInp="item.days" @changeData='DataChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`date_processing`" :idRow="item.id"  :idLoader="`date_processingload`" :Visible="VisibleLoader" :valueDataInp="item.date_processing" :typeInp="'date'" @changeDate='DateChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`application_number`"  :idRow="item.id" :idLoader="`application_numberload`" :Visible="VisibleLoader" :valueDataInp="item.application_number" @changeData='DataChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`operation`" :idRow="item.id"  :idLoader="`operationload`" :Visible="VisibleLoader" :valueDataInp="item.operation" @changeData='DataChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`price_wo_nds`" :idRow="item.id"  :idLoader="`price_wo_ndsload`" :Visible="VisibleLoader" :valueDataInp="item.price_wo_nds" @changeData='DataChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`counterparty`" :idRow="item.id"  :idLoader="`counterpartyload`" :Visible="VisibleLoader" :valueDataInp="item.counterparty" @changeData='DataChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`act_date`"  :idRow="item.id" :idLoader="`act_dateload`" :Visible="VisibleLoader" :valueDataInp="item.act_date" :typeInp="'date'" @changeDate='DateChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`for_cargo`" :idRow="item.id"  :idLoader="`for_cargoload`" :Visible="VisibleLoader" :valueDataInp="item.for_cargo" @changeData='DataChange'/>
-            </td>
-            <td>
-             <InputLoader :nameInp="`from_cargo`" :idRow="item.id"  :idLoader="`from_cargoload`" :Visible="VisibleLoader" :valueDataInp="item.from_cargo" @changeData='DataChange'/>
-            </td>
+            <InputLoader :nameInp="`wagon`" :idRow="item.id" :idLoader="`wagload ${item.id}`"
+              :idElement="`wagon ${item.id}`" :valueDataInp="item.wagon" :typeInp="'number'" @changeData='DataChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`date_pp_in`" :idRow="item.id" :idLoader="`date_pp_inload ${item.id}`"
+              :idElement="`date_pp_in ${item.id}`" :valueDataInp="item.date_pp_in" :typeInp="'date'"
+              @changeDate='DateChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`date_work`" :idRow="item.id" :idLoader="`date_workload ${item.id}`"
+              :idElement="`date_work ${item.id}`" :valueDataInp="item.date_work" :typeInp="'date'"
+              @changeDate='DateChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`date_pp_out`" :idRow="item.id" :idLoader="`date_pp_outload ${item.id}`"
+              :idElement="`date_pp_out ${item.id}`" :valueDataInp="item.date_pp_out" :typeInp="'date'"
+              @changeDate='DateChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`days`" :idRow="item.id" :idLoader="`daysload ${item.id}`"
+              :idElement="`days ${item.id}`" :valueDataInp="item.days" @changeData='DataChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`date_processing`" :idRow="item.id" :idLoader="`date_processingload ${item.id}`"
+              :idElement="`date_processing ${item.id}`" :valueDataInp="item.date_processing" :typeInp="'date'"
+              @changeDate='DateChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`application_number`" :idRow="item.id" :idLoader="`application_numberload ${item.id}`"
+              :idElement="`application_number ${item.id}`" :valueDataInp="item.application_number"
+              @changeData='DataChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`operation`" :idRow="item.id" :idLoader="`operationload ${item.id}`"
+              :idElement="`operation ${item.id}`" :valueDataInp="item.operation" @changeData='DataChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`price_wo_nds`" :idRow="item.id" :idLoader="`price_wo_ndsload ${item.id}`"
+              :idElement="`price_wo_nds ${item.id}`" :valueDataInp="item.price_wo_nds" @changeData='DataChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`counterparty`" :idRow="item.id" :idLoader="`counterpartyload ${item.id}`"
+              :idElement="`counterparty ${item.id}`" :valueDataInp="item.counterparty" @changeData='DataChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`act_date`" :idRow="item.id" :idLoader="`act_dateload ${item.id}`"
+              :idElement="`act_date ${item.id}`" :valueDataInp="item.act_date" :typeInp="'date'"
+              @changeDate='DateChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`for_cargo`" :idRow="item.id" :idLoader="`for_cargoload ${item.id}`"
+              :idElement="`for_cargo ${item.id}`" :valueDataInp="item.for_cargo" @changeData='DataChange' />
+          </td>
+          <td>
+            <InputLoader :nameInp="`from_cargo`" :idRow="item.id" :idLoader="`from_cargoload ${item.id}`"
+              :idElement="`from_cargo ${item.id}`" :valueDataInp="item.from_cargo" @changeData='DataChange' />
+          </td>
         </tr>
       </tbody>
     </table>
     <div id="wrapper">
       <ul id="pagination">
         <li v-for="btn in total_pages" :key="btn.id">
-          <a
-            @click="getPagination(filter.page_size, btn)"
-            :class="{
-              active123: Truefalse(btn),
-              active_new: pageNumber == btn,
-            }"
-            >{{ btn }}</a
-          >
+          <a @click="getPagination(filter.page_size, btn)" :class="{
+            active123: Truefalse(btn),
+            active_new: pageNumber == btn,
+          }">{{ btn }}</a>
         </li>
       </ul>
     </div>
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
   </div>
 </template>
 
 <script>
 import api from '@/api/directory'
 import InputLoader from '../../../ui/InputLoader.vue';
-class BaseReader{
+import Loader from '@/components/loader/loader.vue';
+import Notifications from "@/components/notifications/Notifications.vue";
+
+class BaseReader {
   constructor() {
     this.id = 0
     this.date_pp_in = null;
@@ -127,34 +143,135 @@ class BaseReader{
 }
 export default {
   name: "acrBaseReader",
-  components: { InputLoader },
+  components: { InputLoader, Loader, Notifications },
   data() {
     return {
       interval: 2,
+      VisibleLoader: false,
       loader: false,
       pagination: "",
       total_pages: "",
-      total_objects: "",
+      total_objects: 0,
       data: [],
+      Status: "",
       pageNumber: 1,
-        filter: {
-            page_size: "",
-        }
+      loader: false,
+      filter: {
+        page_size: "",
+      },
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
     };
   },
-  computed: {
-    VisibleLoader(){
-      return false
-    }
-  },  
+
   methods: {
-    DataChange (data) {
-        console.log('child component said login', data)
+    DataChange(data) {
+      let elementLoader = document.getElementById(data.loader)
+      let element = document.getElementById(data.idElement)
+      elementLoader.style.display = 'block'
+
+      const result = Object.entries(data)
+        .map(item => ({ [item[0]]: item[1] }));
+
+      api.patchpps(result[1].id, result[0])
+        .then(response => {
+          console.log(response)
+          elementLoader.style.display = 'none'
+          element.classList.add('successStatus')
+          setTimeout(() => {
+            element.classList.remove('successStatus')
+          }, 1000)
+        }).catch(error => {
+          elementLoader.style.display = 'none'
+          element.classList.add('errorStatus')
+          setTimeout(() => {
+            element.classList.remove('errorStatus')
+          }, 1000)
+          let errorAnnswerKey = Object.keys(error.response.data)[0]
+          let errorAnnswerValue = Object.values(error.response.data)[0][0]
+
+          switch(errorAnnswerKey){
+            case 'wagon':
+               errorAnnswerKey = 'Вагон';
+            break;
+            case 'date_pp_in':
+               errorAnnswerKey = 'Дата передачи вагона на подъездной путь';
+            break;
+            case 'date_work':
+               errorAnnswerKey = 'Дата проведения работ';
+            break;
+            case 'date_pp_out':
+               errorAnnswerKey = 'Дата вывода вагона с подъездного пути';
+            break;
+            case 'days':
+               errorAnnswerKey = 'Расчетное время в сутках';
+            break;
+            case 'date_processing':
+               errorAnnswerKey = 'Дата обработки';
+            break;
+            case 'application_number':
+               errorAnnswerKey = 'Номер заявки';
+            break;
+            case 'operation':
+               errorAnnswerKey = 'Операция';
+            break;
+            case 'price_wo_nds':
+               errorAnnswerKey = 'Цена без НДС';
+            break;
+            case 'counterparty':
+               errorAnnswerKey = 'Контрагент';
+            break;
+            case 'for_cargo':
+               errorAnnswerKey = 'Подготовлено под груз';
+            break;
+            case 'from_cargo':
+               errorAnnswerKey = 'Из под груза';
+            break;
+          }
+        
+          this.notifyHead = "Ошибка";
+            this.notifyMessage = `${errorAnnswerKey} : ${errorAnnswerValue}`
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 3500);
+        })
     },
-    DateChange(data){
-      console.log('child component said login', data)
+    DateChange(data) {
+      let elementLoader = document.getElementById(data.loader)
+      let element = document.getElementById(data.idElement)
+      elementLoader.style.display = 'block'
+
+      const result = Object.entries(data)
+        .map(item => ({ [item[0]]: item[1] }));
+
+      api.patchpps(result[1].id, result[0])
+        .then(response => {
+          elementLoader.style.display = 'none'
+          element.classList.add('successStatus')
+          setTimeout(() => {
+            element.classList.remove('successStatus')
+          }, 1000)
+        }).catch(error => {
+          elementLoader.style.display = 'none'
+          element.classList.add('errorStatus')
+          setTimeout(() => {
+            element.classList.remove('errorStatus')
+          }, 1000)
+          
+          this.notifyHead = "Ошибка";
+            this.notifyMessage = error.response.data;
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 3500);
+        })
     },
-    getData(value){
+    getData(value) {
       console.log(value)
     },
     Truefalse(btn) {
@@ -181,26 +298,27 @@ export default {
       this.data = []
 
       api
-        .getAllArendaDataStavkaPage(this.filter, pg_size, pg_number)
+        .getPaginationPPS(this.filter, pg_size, pg_number)
         .then((response) => {
           this.loader = false;
-          for(let i in response.data.data){
+          this.total_objects = response.data.total_objects
+          for (let i in response.data.data) {
             let newClass = new BaseReader()
-              newClass.id = response.data.data[i].id;
-              newClass.date_pp_in = response.data.data[i].date_pp_in;
-              newClass.date_work = response.data.data[i].date_work;
-              newClass.date_pp_out = response.data.data[i].date_pp_out;
-              newClass.days = response.data.data[i].days;
-              newClass.date_processing = response.data.data[i].date_processing;
-              newClass.application_number = response.data.data[i].application_number;
-              newClass.operation = response.data.data[i].operation;
-              newClass.price_wo_nds = response.data.data[i].price_wo_nds;
-              newClass.counterparty = response.data.data[i].counterparty;
-              newClass.wagon = response.data.data[i].for_cargo.wagon;
-              newClass.for_cargo = response.data.data[i].for_cargo;
-              newClass.from_cargo = response.data.data[i].from_cargo;
-              newClass.act_date = response.data.data[i].act_date;
-          // this.data.push(newClass)
+            newClass.id = response.data.data[i].id;
+            newClass.date_pp_in = response.data.data[i].date_pp_in;
+            newClass.date_work = response.data.data[i].date_work;
+            newClass.date_pp_out = response.data.data[i].date_pp_out;
+            newClass.days = response.data.data[i].days;
+            newClass.date_processing = response.data.data[i].date_processing;
+            newClass.application_number = response.data.data[i].application_number;
+            newClass.operation = response.data.data[i].operation;
+            newClass.price_wo_nds = response.data.data[i].price_wo_nds;
+            newClass.counterparty = response.data.data[i].counterparty;
+            newClass.wagon = response.data.data[i].wagon;
+            newClass.for_cargo = response.data.data[i].for_cargo;
+            newClass.from_cargo = response.data.data[i].from_cargo;
+            newClass.act_date = response.data.data[i].act_date;
+            this.data.push(newClass)
           }
           // console.log(this.data)
           this.pageNumber = response.data.page_number;
@@ -213,32 +331,32 @@ export default {
     getPPS() {
       this.loader = true;
       this.data = []
-      console.log('1')
+      console.log(this.filter)
       api
         .getpps(this.filter)
         .then((response) => {
           this.loader = false;
-        
+
           // console.log(response.data)
-          for(let i in response.data.data){
+          for (let i in response.data.data) {
             let newClass = new BaseReader()
-              newClass.id = response.data.data[i].id;
-              newClass.date_pp_in = response.data.data[i].date_pp_in;
-              newClass.date_work = response.data.data[i].date_work;
-              newClass.date_pp_out = response.data.data[i].date_pp_out;
-              newClass.days = response.data.data[i].days;
-              newClass.date_processing = response.data.data[i].date_processing;
-              newClass.application_number = response.data.data[i].application_number;
-              newClass.operation = response.data.data[i].operation;
-              newClass.price_wo_nds = response.data.data[i].price_wo_nds;
-              newClass.counterparty = response.data.data[i].counterparty;
-              newClass.wagon = response.data.data[i].wagon;
-              newClass.for_cargo = response.data.data[i].for_cargo;
-              newClass.from_cargo = response.data.data[i].from_cargo;
-              newClass.act_date = response.data.data[i].act_date;
-              this.data.push(newClass)
+            newClass.id = response.data.data[i].id;
+            newClass.date_pp_in = response.data.data[i].date_pp_in;
+            newClass.date_work = response.data.data[i].date_work;
+            newClass.date_pp_out = response.data.data[i].date_pp_out;
+            newClass.days = response.data.data[i].days;
+            newClass.date_processing = response.data.data[i].date_processing;
+            newClass.application_number = response.data.data[i].application_number;
+            newClass.operation = response.data.data[i].operation;
+            newClass.price_wo_nds = response.data.data[i].price_wo_nds;
+            newClass.counterparty = response.data.data[i].counterparty;
+            newClass.wagon = response.data.data[i].wagon;
+            newClass.for_cargo = response.data.data[i].for_cargo;
+            newClass.from_cargo = response.data.data[i].from_cargo;
+            newClass.act_date = response.data.data[i].act_date;
+            this.data.push(newClass)
           }
-         
+
           // this.data = response.data.data;
           // console.log(this.data)
           this.pageNumber = response.data.page_number;
@@ -255,14 +373,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.successStatus {
+  transition: 0.5s ease-in-out;
+  background: rgba(42, 190, 67, 0.4);
+  color: black;
+}
+
+.errorStatus {
+  transition: 0.5 ease-in-out;
+  background: lightcoral;
+  color: black;
+}
+
 .mini {
   height: 40px;
 }
-.filter{
-    display: flex;
-    justify-content: space-between;
-    // grid-template-columns: 1fr 1fr 1fr
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  // grid-template-columns: 1fr 1fr 1fr
 }
+
 .filter {
   margin-top: 4%;
   display: flex;
@@ -270,10 +402,12 @@ export default {
   flex-wrap: wrap;
   border: 1px solid lightgrey;
   padding: 1%;
+
   label {
     color: rgb(146, 146, 146);
   }
 }
+
 #wrapper {
   margin: 0 auto;
   display: block;
@@ -281,14 +415,17 @@ export default {
   max-width: 80%;
   width: 80%;
 }
+
 #pagination {
   margin: 0;
   padding: 0;
   text-align: center;
 }
+
 #pagination li {
   display: inline;
 }
+
 #pagination li a {
   display: inline-block;
   text-decoration: none;
@@ -303,16 +440,20 @@ export default {
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
+
 #pagination li a.active_new {
   background-color: #18842a;
   color: #fff;
 }
+
 #pagination li a:hover:not(.active_new) {
   background-color: #ddd;
 }
+
 #pagination li a:not(.active123) {
   display: none;
 }
+
 /* border-pagination */
 .b-pagination-outer {
   width: 100%;
@@ -321,14 +462,17 @@ export default {
   overflow: hidden;
   display: flex;
 }
+
 #border-pagination {
   margin: 0 auto;
   padding: 0;
   text-align: center;
 }
+
 #border-pagination li {
   display: inline;
 }
+
 #border-pagination li a {
   display: block;
   text-decoration: none;
@@ -337,15 +481,17 @@ export default {
   border: 1px solid #ddd;
   float: left;
 }
+
 #border-pagination li a {
   -webkit-transition: background-color 0.4s;
   transition: background-color 0.4s;
 }
+
 #border-pagination li a.active_new {
   background-color: #18842a;
   color: #fff;
 }
+
 #border-pagination li a:hover:not(.active_new) {
   background: #ddd;
-}
-</style>
+}</style>

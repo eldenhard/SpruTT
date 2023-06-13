@@ -24,8 +24,8 @@
                       <i class="loader"></i>
                     </div>
                 </div>
-                    <div class="dataDeparture" v-if="warning">
-                        <table border="1" style="width: 100% !important">
+                    <div class="dataDeparture" v-if="warning" style="width: 100% !important">
+                        <table border="1" >
                             <thead>
                                 <tr>
                                     <th>Имя</th>

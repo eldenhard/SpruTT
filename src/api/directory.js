@@ -89,7 +89,13 @@ const postpps = (data) => {
     return api.post(`${finance}/pps/save-many/`, data)
 }
 const getpps = (data) => {
-    return api.get(`${finance}/pps/`, data)
+    return api.get(`${finance}/pps/?page_size=${data.page_size}&page=1`)
+}
+const getPaginationPPS = (filter_arendaData, page_size, page_number) => {
+    return api.get(`${finance}/pps/?page_size=${page_size}&page=${page_number}`)
+}
+const patchpps = (id,data) => {
+    return api.patch(`${finance}/pps/${id}`, data)
 }
 export default {
     getAllcounterparties,
@@ -123,5 +129,7 @@ export default {
 
     postpps,
     getpps,
+    patchpps,
+    getPaginationPPS,
 }
 
