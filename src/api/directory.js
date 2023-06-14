@@ -97,6 +97,9 @@ const getPaginationPPS = (filter_arendaData, page_size, page_number) => {
 const patchpps = (id,data) => {
     return api.patch(`${finance}/pps/${id}`, data)
 }
+const deletePPS = (id) => {
+    return api.delete(`${finance}/pps/${id}`)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -131,5 +134,6 @@ export default {
     getpps,
     patchpps,
     getPaginationPPS,
+    deletePPS,
 }
 

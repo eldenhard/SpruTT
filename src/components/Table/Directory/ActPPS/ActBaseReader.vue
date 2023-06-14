@@ -1,6 +1,19 @@
 <template>
   <div style="margin-top: 5%;">
     <Loader :loader="loader" />
+
+    <b-modal id="AcTDelete" hide-footer>
+    <template #modal-title>
+      Подтверждение действия 
+    </template>
+    <div class="d-block text-center">
+      <h4>Вы уверены, что хотите удалить данные?</h4>
+      <p>В случае удаления, данные будут потеряны безвозвратно </p>
+    </div>
+    <b-button variant="danger" @click="deletePPS(selected_record)">Да, я уверен</b-button>
+    <b-button class="mt-3" block @click="$bvModal.hide('AcTDelete')">Нет, отменить</b-button>
+  </b-modal>
+
     <div class="filter">
       <label for="amount">Количество строк <br />
         <select name="amount_row" id="amount" v-model="filter.page_size" style="width: 100%" class="mini">
@@ -40,8 +53,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item, index in data" :key="item.id">
-          <td>{{ index + 1 }}</td>
+        <tr v-for="item, index in data" :key="item.id" :id="item.id">
+          <td>
+            <input
+                class="deleteRow"
+                style="width: 100%"
+                :value="index + 1"
+                readonly
+               @click="open_modal(item.id)"
+              /></td>
           <td>
             <InputLoader :nameInp="`wagon`" :idRow="item.id" :idLoader="`wagload ${item.id}`"
               :idElement="`wagon ${item.id}`" :valueDataInp="item.wagon" :typeInp="'number'" @changeData='DataChange' />
@@ -156,6 +176,7 @@ export default {
       Status: "",
       pageNumber: 1,
       loader: false,
+      selected_record: "",
       filter: {
         page_size: "",
       },
@@ -167,6 +188,10 @@ export default {
   },
 
   methods: {
+    open_modal(id){
+      this.selected_record = id
+     this.$bvModal.show('AcTDelete')
+    },
     DataChange(data) {
       let elementLoader = document.getElementById(data.loader)
       let element = document.getElementById(data.idElement)
@@ -368,6 +393,36 @@ export default {
           this.loader = false;
         });
     },
+    deletePPS(id) {
+      this.loader = true
+      api
+        .deletePPS(id)
+        .then((response) => {
+            this.loader = false;
+            this.notifyHead = "Успешно";
+            this.notifyMessage = "Данные удалены";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
+            this.$bvModal.hide('AcTDelete')
+        })
+        .catch((error) => {
+              this.loader = false;
+            this.notifyHead = "Ошибка";
+            this.notifyMessage = "Данные не удалены";
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
+          console.log(error);
+          this.$bvModal.hide('AcTDelete')
+        });
+      let row = document.getElementById(id);
+      row.parentNode.removeChild(row);
+    },
   }
 };
 </script>
@@ -388,7 +443,9 @@ export default {
 .mini {
   height: 40px;
 }
-
+.deleteRow:hover{
+  background: lightcoral;
+}
 .filter {
   display: flex;
   justify-content: space-between;

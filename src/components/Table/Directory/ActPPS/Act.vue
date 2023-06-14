@@ -41,23 +41,23 @@
       <div class="filter">
       <label for="">
         Контрагент<br />
-        <input type="text" class="textarea" v-model="counterparties" />
+        <input type="text" class="textarea mini" v-model="counterparties" />
       </label>
       <label for="">
         Дата акта<br />
-        <input type="date" v-model="act_date" id="act_date" class="textarea" />
+        <input type="date" v-model="act_date" id="act_date" class="textarea mini" />
       </label>
       <label for="">
         Подготовлено под груз<br />
-        <input type="text" v-model="for_cargo" class="textarea" />
+        <input type="text" v-model="for_cargo" class="textarea mini" />
       </label>
       <label for="">
         Из под груза<br />
-        <input type="text" v-model="from_cargo" class="textarea" />
+        <input type="text" v-model="from_cargo" class="textarea mini" />
       </label>
       <label for="">
         <br />
-        <button class="button Accept" style="height: 3rem" @click="sendData()">Отправить</button>
+        <button class="button Accept mini"  @click="sendData()">Отправить</button>
       </label>
     </div>
 
@@ -129,19 +129,19 @@
         </li>
       </ul>
     </div>
-    <table border="1">
-      <thead>
-  <tr>
-    <th></th>
-    <th><button class="delete_col" @click="delete_col('wagon')">Удалить столб.</button></th>
-    <th><button class="delete_col" @click="delete_col('date_pp_in')">Удалить столб.</button></th>
-    <th><button class="delete_col" @click="delete_col('date_work')">Удалить столб.</button></th>
-    <th><button class="delete_col" @click="delete_col('date_pp_out')">Удалить столб.</button></th>
-    <th><button class="delete_col" @click="delete_col('days')">Удалить столб.</button></th>
-    <th><button class="delete_col" @click="delete_col('date_processing')">Удалить столб.</button></th>
-    <th><button class="delete_col" @click="delete_col('application_number')">Удалить столб.</button></th>
-    <th><button class="delete_col" @click="delete_col('operation')">Удалить столб.</button></th>
-    <th><button class="delete_col" @click="delete_col('price_wo_nds')">Удалить столб.</button></th>
+    <table style="margin-top: 2%;">
+      <thead style="border-top: none !important;">
+  <tr style="border: none !important">
+    <th style="border: none !important"></th>
+    <th style="border: none !important"><button class="delete_col" @click="delete_col('wagon')">Удалить столб.</button></th>
+    <th style="border: none !important"><button class="delete_col" @click="delete_col('date_pp_in')">Удалить столб.</button></th>
+    <th style="border: none !important"><button class="delete_col" @click="delete_col('date_work')">Удалить столб.</button></th>
+    <th style="border: none !important"><button class="delete_col" @click="delete_col('date_pp_out')">Удалить столб.</button></th>
+    <th style="border: none !important"><button class="delete_col" @click="delete_col('days')">Удалить столб.</button></th>
+    <th style="border: none !important"><button class="delete_col" @click="delete_col('date_processing')">Удалить столб.</button></th>
+    <th style="border: none !important"><button class="delete_col" @click="delete_col('application_number')">Удалить столб.</button></th>
+    <th style="border: none !important"><button class="delete_col" @click="delete_col('operation')">Удалить столб.</button></th>
+    <th style="border: none !important"><button class="delete_col" @click="delete_col('price_wo_nds')">Удалить столб.</button></th>
   </tr>
         <tr>
         <th>№</th>
@@ -149,6 +149,7 @@
           <input
             type="text"
             @keyup.enter="save($event)"
+            placeholder="введите № вагона"
             id="wagon"
             class="in_data"
             style="border: 1px solid black !important"
@@ -160,6 +161,8 @@
           <input
             type="text"
              @keyup.enter="save($event)"
+             placeholder="введите дату"
+
             id="date_pp_in"
             class="in_data"
             style="border: 1px solid black !important"
@@ -170,6 +173,7 @@
           <input
             type="text"
              @keyup.enter="save($event)"
+             placeholder="введите дату"
             id="date_work"
             class="in_data"
             style="border: 1px solid black !important"
@@ -180,6 +184,7 @@
           <input
             type="text"
              @keyup.enter="save($event)"
+             placeholder="введите дату"
             id="date_pp_out"
             class="in_data"
             style="border: 1px solid black !important"
@@ -190,6 +195,7 @@
           <input
             type="text"
              @keyup.enter="save($event)"
+             placeholder="введите кол-во дней"
             id="days"
             class="in_data"
             style="border: 1px solid black !important"
@@ -201,6 +207,7 @@
             type="text"
              @keyup.enter="save($event)"
             id="date_processing"
+            placeholder="введите дату"
             class="in_data"
             style="border: 1px solid black !important"
           />
@@ -211,6 +218,7 @@
             type="text"
              @keyup.enter="save($event)"
             id="application_number"
+            placeholder="введите №"
             class="in_data"
             style="border: 1px solid black !important"
           />
@@ -220,6 +228,7 @@
           <input
             type="text"
              @keyup.enter="save($event)"
+             placeholder="введите операцию"
             id="operation"
             class="in_data"
             style="border: 1px solid black !important"
@@ -230,6 +239,7 @@
           <input
             type="text"
              @keyup.enter="save($event)"
+             placeholder="введите цену"
             id="price_wo_nds"
             class="in_data"
             style="border: 1px solid black !important"
@@ -257,6 +267,8 @@
     </div>
     
 <ActBaseReader />
+<Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
+
   </div>
 </template>
 
@@ -265,6 +277,8 @@
 import api from '@/api/directory'
 import ActBaseReader from './ActBaseReader.vue';
 import Loader from '@/components/loader/loader.vue';
+import Notifications from "@/components/notifications/Notifications.vue";
+
 class MyClass {
   // #date_pp_in = null
   constructor() {
@@ -339,7 +353,7 @@ class MyClass {
   }
 }
 export default {
-  components: { ActBaseReader, Loader },
+  components: { ActBaseReader, Loader, Notifications },
   data() {
     return {
       data: [],
@@ -354,6 +368,10 @@ export default {
       from_code6: "",
       visible: true,
       loader: false,
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
       
     };
   },
@@ -456,24 +474,54 @@ export default {
         }
       }
       type.target.value = ''
-      // console.log(this.data);
+     
     },
     sendData() {
+      if(this.counterparties == "" || this.act_date == "" || this.for_cargo == "" || this.from_cargo == ""){
+        this.notifyHead = "Ошибка";
+            this.notifyMessage = "Поля Контрагент, Дата акта, Подготовлено под груз и из под груза обязательны к заполнению!";
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 4500);
+      } else {
+
+     
+      this.loader = true
       for (let i in this.data) {
         this.data[i].act_date = this.act_date;
         this.data[i].counterparty = this.counterparties;
         this.data[i].from_cargo = this.from_code6;
         this.data[i].for_cargo = this.for_code6;
       }
-      console.log(this.data)
+
       let arr = this.data.map(item => {
         return item.JSON()
       })
       api.postpps(arr)
       .then(response => {
+        this.loader = false
+
         this.data = []
+        this.notifyHead = "Успешно";
+        this.notifyMessage = "Данные отправлены";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => {
+          this.showNotify = false;
+        }, 2500);
       })
       .catch(error => {
+        this.loader = false
+
+        this.notifyHead = "Ошибка";
+            this.notifyMessage = "Данные загружены с ошибками";
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
         for(let i in error.response.data){
           this.data[error.response.data[i][0]].error = error.response.data[i][1]
         }
@@ -483,7 +531,9 @@ export default {
        })
 
     })
-    },
+  }  
+  },
+    
   },
 };
 </script>
@@ -503,14 +553,20 @@ export default {
 .error{
   background: lightcoral;
 }
-
+td, th{
+  border: 1px solid black
+}
+.mini {
+  height: 40px;
+}
 .delete_col {
   height: auto;
   font-size: 12px;
   background: transparent;
   color: black;
 }
-.delete_col:hover {
+.delete_col:hover{
+  background: rgb(226, 226, 226);
   font-weight: 500;
 }
 li {
@@ -519,7 +575,9 @@ li {
       font-weight: 600;
     }
 }
-
+.delete_col:hover{
+  background: rgb(226, 226, 226);
+}
 th {
   position: relative;
 }
@@ -536,7 +594,7 @@ input {
 }
 .filter {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: baseline;
 }
 .col3{
