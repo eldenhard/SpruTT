@@ -147,6 +147,9 @@ const getAmountShipments = (source, date) => {
 const getCountries = (data) => {
     return api.get(`${resource}/countries/?search=${data}`)
 }
+const getClient = () => {
+    return api.get(`${resource}/flights/clients/`)
+}
 export default {
     getWagons,
     getWagon,
@@ -196,5 +199,6 @@ getAllTelegrams,
 getAllDataTelegram,
 getCargoCode,
 
-
+// Клиенты
+    getClient,
 }

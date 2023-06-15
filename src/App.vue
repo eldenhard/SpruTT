@@ -18,7 +18,7 @@ import { mapState } from 'vuex';
 // import { actionTypes as stActionTypes } from './store/modules/stations';
 // import { actionTypes as dnActionTypes } from './store/modules/dog_number';
 import { actionTypes as ccActionTypes } from './store/modules/cargo_code';
-
+import {  actionTypes as clietTypes } from './store/modules/client';
 import Loader from '@/components/loader/loader.vue';
 
 export default {
@@ -49,6 +49,7 @@ watch: {
     this.loader = true
     this.$store.dispatch(actionTypes.getStaffGroups)
     this.$store.dispatch(actionTypes.staffGlobal)
+    this.$store.dispatch(clietTypes.getClient)
     this.$store.dispatch(cpActionTypes.getCounterparties, { url: 'personal/counterparties/?page_size=500', clear: true })
     this.$store.dispatch(userActionTypes.getUsers, { url: 'personal/users/?page_size=500', clear: true })
     this.$store.dispatch(ccActionTypes.getCargoCode, { url: 'wagon-park/cargo/?page_size=500', clear: true })
