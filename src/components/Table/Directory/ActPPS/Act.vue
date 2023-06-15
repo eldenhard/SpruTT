@@ -57,7 +57,7 @@
       </label>
       <label for="">
         <br />
-        <button class="button Accept mini"  @click="sendData()">Отправить</button>
+        <button class="button Accept mini" style="width: 350px"  @click="sendData()">Отправить</button>
       </label>
     </div>
 

@@ -26,7 +26,7 @@
       </label>
       <label>
         <br>
-        <button class="button Accept mini" @click="getPPS()">Запросить</button>
+        <button class="button Accept mini" style="width: 330px; margin-left: 2%"  @click="getPPS()">Запросить</button>
       </label>
 
     </div>

@@ -112,11 +112,8 @@ export default {
 </script>
   
 <style scoped>
-.error {
-  color: red;
-}
 .air_block {
-  width: 80%;
+  width: 85%;
   height: auto;
   border-radius: 15px;
   background: #ffffff;
@@ -132,8 +129,7 @@ export default {
 .air_block_content {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-end;
+  justify-content: end;
   margin: 4% 4% 0;
   gap: 20px;
   /* align-items: baseline; */
@@ -161,7 +157,7 @@ label {
   margin-bottom: 4%;
 }
 /* input[type='date']{
-      width: 100%;
-  
-  } */
+    width: 100%;
+
+} */
 </style>
