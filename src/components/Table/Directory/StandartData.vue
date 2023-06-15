@@ -1,5 +1,8 @@
 <template>
   <div style="margin-top: 5% !important">
+    <p class="explanation">
+      * Для сохранения данных в таблице данных по нормативам, при изменении ячейки нажмите Enter
+      </p>
     <Loader :loader="loader" />
     <div class="air_block">
       <div class="air_block_header" style="display: flex !important;

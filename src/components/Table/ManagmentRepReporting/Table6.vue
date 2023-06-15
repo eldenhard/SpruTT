@@ -223,7 +223,7 @@ export default {
     },
     ifNull(value){
       if(value == null || value == 'null'){
-        return '-'
+        return 'Неопределенно'
       }
         return value
     }

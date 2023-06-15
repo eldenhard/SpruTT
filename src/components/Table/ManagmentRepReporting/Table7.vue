@@ -1,101 +1,175 @@
 <template>
-    <div>
-        <p>Форма 4.7 "Анализ перевозки и выручки по сегменту полувагонов"</p>
-        <table border="1">
-            <thead>
-
-                <tr>
-                    <!-- <th></th> -->
-                    <th>Парк (собств. / привлеченный)</th>
-                    <th>Полигон</th>
-                    <th>Кол-во погрузок</th>
-                    <th>Выручка, руб. без НДС</th>
-                </tr>
-            </thead>
-            <tbody >
-                <template v-for="obj in objects[0].data">
-                <tr v-for="subobj, index in obj.attr2" :key="subobj.id">
-                    <!-- <td></td> -->
-                    <td v-if="index == 0" :rowspan="obj.attr2.length" style="text-align: left !important; padding-left: 1% !important;">{{ obj.attr1 }}</td>
-                    <td>{{ subobj.polygon }}</td>
-                    <td>{{ subobj.amount }}</td>
-                    <td>{{ subobj.wo_nds }}</td>
-
-                </tr>
-                <tr class="total_row" :key="obj.id">
-                    <!-- <td style="background: white !important ;"></td> -->
-                    <td style="text-align: left !important; padding-left: 1% !important;">Итого {{ obj.attr1 }}</td>
-                    <td></td>
-                    <td>{{ obj.total.amount }}</td>
-                    <td>{{ obj.total.wo_nds }}</td>
-                </tr>
-                </template>
-                <tr v-for="obj in objects" :key="obj.id" class="all_total">
-                    <!-- <td></td> -->
-                    <td style="font-weight: bold; text-align: left !important; padding-left: 1% !important;">Всего погрузки</td>
-                    <td></td>
-                    <td>{{ obj.ALL_TOTAL.amount }}</td>
-                    <td>{{ obj.ALL_TOTAL.wo_nds }}</td>
-
-                </tr>
-            </tbody>
-        </table>
+  <div>
+    <!-- <div style="display: flex; justify-content: space-between;">
+      <pre>{{object2}}</pre>
+      <pre>{{ normalized }}</pre>
+      <pre>{{objects}}</pre>
+    </div> -->
+   
+    <Loader :loader="loader" />
+    <Periods @Action="get47" @data="getCurrentData" />
+    <label for="">
+        Тип вагона
+        <br />
+        <select name="" id="" v-model="wag_type">
+          <option value="Полувагон">Полувагон</option>
+          <option value="Цистерна">Цистерна</option>
+        </select>
+      </label>
+    <div style="margin-top: 3%;">
+      <p>Форма 4.7 "Анализ перевозки и выручки по сегменту полувагонов"</p>
+      <table border="1">
+        <thead>
+          <tr>
+            <!-- <th></th> -->
+            <th>Парк (собств. / привлеченный)</th>
+            <th>Полигон</th>
+            <th>Кол-во погрузок</th>
+            <th>Выручка, руб. без НДС</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="object in normalized">
+            <template v-for="obj in object.data">
+            <tr v-for="(subobj, index) in obj.attr2" :key="subobj.id">
+              <td v-if="index == 0" :rowspan="obj.attr2.length">
+                {{ obj.attr1 | ifNull}}
+              </td>
+              <td>{{ subobj?.polygon }}</td>
+              <td>{{ subobj?.amount.toFixed(2) | format}}</td>
+              <td>{{ subobj?.revenue.toFixed(2) | format}}</td>
+            </tr>
+            <tr class="total_row" :key="obj.id">
+              <td
+                style="text-align: left !important; padding-left: 1% !important"
+              >
+                Итого {{ obj.attr1 | ifNull}}
+              </td>
+              <td></td>
+              <td>{{ obj?.total?.amount.toFixed(2)| format }}</td>
+              <td>{{ obj?.total?.revenue.toFixed(2) | format}}</td>
+            </tr>
+            </template>
+          </template>
+          <tr v-for="obj in normalized" :key="obj.id" class="all_total">
+            <td
+              style="
+                font-weight: bold;
+                text-align: left !important;
+                padding-left: 1% !important;
+              "
+            >
+              Всего погрузки
+            </td>
+            <td></td>
+            <td>{{ obj?.ALL_TOTAL?.amount.toFixed(2) | format}}</td>
+            <td>{{ obj?.ALL_TOTAL?.revenue.toFixed(2) | format}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </template>
 
 
 <script>
+import api from "@/api/reportUO";
+import Periods from "./Periods.vue";
+import Loader from "@/components/loader/loader.vue";
 export default {
-    data() {
-        return {
-            objects: [{
-                data: [{
-                    attr1: 'Собственный парк',
-                    attr2: [{ polygon: 'Якорная площадка 1', amount: '1', wo_nds: '2' },
-                    { polygon: 'Якорная площадка 2', amount: '1', wo_nds: '2' },
-                    ],
-                    total: { amount: '3', wo_nds: '4' }
-                },
-                {
-                    attr1: 'Привлеченный парк',
-                    attr2: [{ polygon: 'Якорная площадка 1', amount: '1', wo_nds: '2' },
-                    { polygon: 'Якорная площадка 2', amount: '1', wo_nds: '2' }
-                    ],
-                    total: { amount: '5', wo_nds: '6' }
-                }],
-                ALL_TOTAL: {
-                    amount: 'ALL_TOTALA',
-                    wo_nds: 'ALL_TOTALWO'
-                }
-
-            }]
-        }
+  components: { Periods, Loader },
+  data() {
+    return {
+      loader: false,
+      date_begin: "",
+      date_end: "",
+      wag_type: "Полувагон",
+      normalized: "",
+      objects2: "",
+    };
+  },
+  filters: {
+    format(value) {
+      return String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
     },
- 
-    methods: {
-        getRowCount(obj) {
-            let total = 0;
-            let last_item = '';
-            obj.attr1.forEach((item) => {
-                total += item.attr3.length;
-            });
-            return total;
-        }
+    ifNull(value){
+      if(value == null || value == 'null'){
+        return 'Неопределенно'
+      }
+        return value
     }
-}
+  },
+  methods: {
+    normalizeObject(){
+      const test = Object.keys(this.objects2.data).map((key) => {
+        const obj = {
+          attr1: key,
+          attr2: (Object.keys(this.objects2.data[key].data)).map((polygon) => {
+            return {
+              polygon: polygon,
+              ...this.objects2.data[key].data[polygon],
+            }
+          }),
+          total: this.objects2.data[key].total
+        
+        };
+        return obj;
+      });
+
+      this.normalized = [
+        {
+          data: test,
+          ALL_TOTAL: this.objects2.total,
+        },
+      ];
+    },
+    getRowCount(obj) {
+      let total = 0;
+      let last_item = "";
+      obj.attr1.forEach((item) => {
+        total += item.attr3.length;
+      });
+      return total;
+    },
+    getCurrentData(data) {
+      this.date_begin = data.date_begin;
+      this.date_end = data.date_end;
+    },
+    get47() {
+      this.loader = true;
+      api
+        .getUO47(this.date_begin, this.date_end, this.wag_type)
+        .then((response) => {
+          this.loader = false;
+          this.objects2 = response.data;
+          this.normalizeObject();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.loader = false;
+        });
+    },
+  },
+};
 </script>
 
 
 <style scoped>
+td,th,tr{
+  border: 1px solid black
+}
+tr:hover{
+  background: lightgray;
+}
 .total_row {
-    background: #DAEEF3;
+  background: #daeef3;
 }
 td {
   border: 1px solid black !important;
   color: black !important;
 }
 .all_total {
-    background: #EAF1DD;
+  background: #eaf1dd;
 }
 table {
   width: 100%;
@@ -125,7 +199,7 @@ table > tbody > tr > td.inner > table td {
 }
 table > tbody > tr > td.inner > table tr:last-child td {
   border-bottom: 0;
-} 
+}
 
 table > tbody > tr > td.inner > div {
   border-right: 0;

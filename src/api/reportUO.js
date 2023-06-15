@@ -21,6 +21,9 @@ const getUO44 = (data1, data2, wag_type) => {
  const getUO46 = (data1, data2, wag_type) => {
    return api.get(`${resource}/uo/46/transportations?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}`, {timeout: 600000})
 }
+const getUO47 = (data1, data2, wag_type) => {
+   return api.get(`${resource}/uo/47/transportations?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}`, {timeout: 600000})
+}
 export default{
     getUO41,
     getUO42,
@@ -28,4 +31,5 @@ export default{
     getUO44,
     getUO45,
     getUO46,
+    getUO47,
 }
