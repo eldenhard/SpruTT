@@ -1,7 +1,7 @@
 import api from '@/api/wagonPark'
 
 const state = {
-    client: ''
+    client: []
 }
 
 
@@ -11,13 +11,17 @@ const mutations = {
         state.client = data
     }
 }
-
+const getters = {
+    getCLIENTOS(state) {
+        return state.client;
+    }
+}
 
 const actions = {
-   getClient(){
+    getClient({commit}){
         api.getClient()
         .then(response => {
-            context.commit(response.data)
+            commit('Change_client', response.data)
         }).catch(error => {
             console.log(error)
         })
@@ -30,5 +34,6 @@ export default
     {
         state,
         mutations,
-        actions
+        actions,
+        getters,
     }
