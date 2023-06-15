@@ -35,7 +35,7 @@
               <td v-if="index == 0" :rowspan="obj.attr2.length">
                 {{ obj.attr1 | ifNull}}
               </td>
-              <td>{{ subobj?.polygon }}</td>
+              <td>{{ subobj?.polygon | ifNull}}</td>
               <td>{{ subobj?.amount.toFixed(2) | format}}</td>
               <td>{{ subobj?.revenue.toFixed(2) | format}}</td>
             </tr>
@@ -111,7 +111,6 @@ export default {
             }
           }),
           total: this.objects2.data[key].total
-        
         };
         return obj;
       });
