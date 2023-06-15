@@ -222,7 +222,7 @@ export default {
       return String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
     },
     ifNull(value){
-      if(value == null){
+      if(value == null || value == 'null'){
         return '-'
       }
         return value

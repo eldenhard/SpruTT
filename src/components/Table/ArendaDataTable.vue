@@ -47,16 +47,12 @@
         <br />
         <input type="text" id="tenant" class="textarea mini" v-model="landlord" />
       </label>
-      <label for="tenant"
-        >Начало аренды
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin"/>
-      </label>
-      <label for="tenant"
+   
+      <!-- <label for="tenant"
         >Конец аренды
         <br />
         <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end"
-      /></label>
+      /></label> -->
 
       <label for="tenant"
         >Начало ставки
@@ -69,6 +65,12 @@
         <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end"
       /></label>
 
+      <label for="tenant"
+        >Месяц аренды
+        <br />
+        <input type="month" class="textarea mini" v-model="arenda_month"/>
+      </label>
+
       <label for="tenant" style="margin-left: 5px;"
         >Тип вагона
         <br />
@@ -78,6 +80,12 @@
           <option value="Цистерна">ЦС</option>
 
         </select>
+    </label>
+
+    <label for="wagon" style="margin-left: 5px;"
+        >Номера вагонов
+        <br />
+        <input type="text" v-model="wagons" class="textarea mini" placeholder="ввод через пробел">
     </label>
 
       <button class="button Accept mini" @click="getArenda()">Запросить</button>
@@ -374,11 +382,10 @@ export default {
       nextLink: null,
       prevLink: null,
       pageNumber: 1,
-
       info_block: false,
-
+      wagons: "",
       data_hard: cp_work_names,
-
+      arenda_month: "",
       showNotify: false,
       notifyHead: "",
       notifyMessage: "",
@@ -392,6 +399,7 @@ export default {
         stavka_begin: "",
         stavka_end: "",
         wagon__wagon_type: "",
+        wagons_in: ""
       },
 
       tenant: "",
@@ -407,6 +415,7 @@ mounted(){
     filter(value) {
       return new Date(value);
     },
+ 
   },
   computed: {
     info_btn(){
@@ -436,6 +445,7 @@ mounted(){
     },
   },
   methods: {
+
     open_modal(id){
       this.selected_record = id
      this.$bvModal.show('bv-modal-example')
@@ -789,10 +799,20 @@ mounted(){
         });
     },
     getArenda() {
-      this.loader = true;
+      // this.loader = true;
       this.filter_arendaData.tenant = this.tenant;
       this.filter_arendaData.landlord = this.landlord;
+      let data = (this.wagons).replaceAll(' ', ',')
+      this.filter_arendaData.wagons_in = data
+     
+      let month = this.arenda_month.split('-')
+      let date_end = new Date(month[0], month[1], 0);
+      let date_start = new Date(month[0], month[1], 1);
+      this.filter_arendaData.arenda_begin =  this.arenda_month + '-' + '01'
+      this.filter_arendaData.arenda_end = this.arenda_month + '-' +  date_end.getDate()
 
+
+    
       api
         .getAllArendaDataStavka(this.filter_arendaData)
         .then((response) => {

@@ -53,7 +53,19 @@ const actions = {
             api.getAllcounterparties(url)
             .then(response => {
 
-                context.commit(mutationTypes.getCounterpartiesSuccess, response.data.data)
+                let arr = []
+                for(let i of response.data.data){
+                   arr.push({
+                    full_name: i.full_name,
+                    group: i.group,
+                    id: i.id,
+                    short_name: i.short_name,
+                    work_name: i.work_name
+                   })
+                }
+
+
+                context.commit(mutationTypes.getCounterpartiesSuccess, arr)
                 if (response.data.links.next != null) {
                     resolve(context.dispatch(actionTypes.getCounterparties, { url: response.data.links.next, clear: false }))
                 } else {

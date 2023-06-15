@@ -32,14 +32,14 @@
             <wagon-directory />
           </b-card-text>
         </b-tab>
-        <b-tab title="Данные по аренде" >
+        <b-tab title="Данные по аренде" active>
           <b-card-text>
             <rentalrateTable />
           </b-card-text>
         </b-tab>
         
       </b-container>
-      <b-tab title="Данные по актам ППС" active>
+      <b-tab title="Данные по актам ППС">
           <b-card-text>
             <Act />
           </b-card-text>
