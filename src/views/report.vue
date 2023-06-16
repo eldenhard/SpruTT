@@ -949,7 +949,7 @@ export default {
     showModal() {
       const preid = JSON.parse(localStorage.getItem("vuex"));
       const id = preid.auth.uid;
-      if (id == 104 || id == 102 || id == 1) {
+      if (id == 104 || id == 102 || id == 1 || id == 36) {
         this.$refs["my-modal"].show();
       } else {
         this.notifyHead = "Ошибка";
