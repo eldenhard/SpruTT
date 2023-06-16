@@ -73,9 +73,9 @@
             <li
               v-for="item in filter_client"
               :key="item.id"
-              @click="chechClient(item.work_name)"
+              @click="chechClient(item.client)"
             >
-              <span>{{ item.work_name }}</span>
+              <span>{{ item.client }}</span>
               <hr />
             </li>
           </ul>
@@ -400,8 +400,8 @@ export default {
         this.ten_visible = true;
       }
       return this.filter_arendaData.client.length > 1
-        ? this.$store.state.counterparties.counterparties.filter((item) =>
-            item.work_name
+        ? this.$store.state.client.name_client.filter((item) =>
+            item.client
               .toLowerCase()
               .includes(this.filter_arendaData.client.toLowerCase())
           )

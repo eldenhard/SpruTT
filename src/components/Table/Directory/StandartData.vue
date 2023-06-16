@@ -207,7 +207,7 @@
 
       <button
         class="button Accept"
-        @click="postData(Standard)"
+        @click="postData()"
         v-show="visible"
       >
         Отправить данные
@@ -251,17 +251,17 @@ export default {
       visible: true,
 
       Standard: {
-        agreement: "",
-        agreement_date: "",
+        agreement: null,
+        agreement_date: null,
         is_actual: true,
-        note: "",
+        note: null,
         standard_loading: null,
         standard_unloading: null,
         penalty_loading: null,
         penalty_unloading: null,
-        note_calc: "",
+        note_calc: null,
         client: "",
-        wagon_type: "",
+        wagon_type: null,
       },
     };
   },
@@ -269,17 +269,6 @@ export default {
     ...mapState({
       name_client: (state) => state.client.name_client
     }),
-    // filter_client(){
-    //  let data = [...this.$store.state.client.client]
-    //      if (this.Standard.client.length > 1) {
-    //     this.ten_visible = true;
-    //   }
-    //   return this.Standard.client.length > 1
-    //     ? data.filter((item) =>
-    //         item?.client.toLowerCase().includes(this.Standard.client.toLowerCase())
-    //       )
-    //     : "";
-    // },
 
         filter_client() {
 
@@ -294,49 +283,31 @@ export default {
         : "";
     },
     },
-    // filter_client() {
-    //   if (this.Standard.client.length > 1) {
-    //     this.ten_visible = true;
-    //   }
-    //   return this.Standard.client.length > 1
-    //     ? this.$store.state.counterparties.counterparties.filter((item) =>
-    //         item.client
-    //           .toLowerCase()
-    //           .includes(this.Standard.client.toLowerCase())
-    //       )
-    //     : "";
-    // },
-    // filter_client() {
-    //   if (this.Standard.client.length > 1) {
-    //     this.ten_visible = true;
-    //   }
-    //   return this.Standard.client.length > 1
-    //     ? this.$store.state.client.client.filter((item) =>
-    //         item?.client
-    //           .toLowerCase()
-    //           .includes(this.Standard.client.toLowerCase())
-    //       )
-    //     : "";
-    // },
-  // },
+
   methods: {
+
     chechClient(item) {
       this.Standard.client = item;
       this.ten_visible = false;
     },
-    postData(arr) {
+    postData() {
       this.loader = true
-      
- 
+      if(this.Standard.standard_loading == ""){
+        this.Standard.standard_loading = null
+      }
+      if(this.Standard.standard_unloading == ""){
+        this.Standard.standard_unloading = null
+      }
+      if(this.Standard.penalty_loading == ""){
+        this.Standard.penalty_loading = null
+      }
+      if(this.Standard.penalty_unloading == ""){
+        this.Standard.penalty_unloading = null
+      }
         api
-          .postPenaltyStandards(arr)
+          .postPenaltyStandards(this.Standard)
           .then((response) => {
             this.loader = false
-            this.isError = false
-            this.isError2 = false
-            this.isError3 = false
-            this.isError4 = false
-            this.isError5 = false
             this.notifyHead = "Успешно";
             this.notifyMessage = "Данные отправлены";
             this.notifyClass = "wrapper-success";
