@@ -4,8 +4,6 @@ const state = {
     client: []
 }
 
-
-
 const mutations = {
     Change_client(state, data){
         state.client = data
