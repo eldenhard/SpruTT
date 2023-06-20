@@ -18,7 +18,8 @@
       </label>
     <div style="margin-top: 3%;">
       <p>Форма 4.7 "Анализ перевозки и выручки по сегменту полувагонов"</p>
-      <table border="1">
+      <button id="button" @click="fnExcelReport()">Export HTML Table to EXCEL</button>
+      <table border="1" id="theTable">
         <thead>
           <tr>
             <!-- <th></th> -->
@@ -100,6 +101,22 @@ export default {
     }
   },
   methods: {
+    fnExcelReport() {
+  var table = document.getElementById('theTable'); // id of table
+  var tableHTML = table.outerHTML;
+  var fileName = 'Таблица_7_!.xlsx';
+
+  var msie = window.navigator.userAgent.indexOf("MSIE ");
+
+    var a = document.createElement('a');
+    tableHTML = tableHTML.replace(/  /g, '').replace(/ /g, '%20'); // replaces spaces
+    a.href = 'data:application/vnd.ms-excel,' + tableHTML;
+    a.setAttribute('download', fileName);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+},
     normalizeObject(){
       const test = Object.keys(this.objects2.data).map((key) => {
         const obj = {

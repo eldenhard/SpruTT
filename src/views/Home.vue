@@ -39,12 +39,12 @@
         </b-tab>
         
       </b-container>
-      <b-tab title="Данные по актам ППС">
+      <b-tab title="Данные по актам ППС" active>
           <b-card-text>
             <Act />
           </b-card-text>
         </b-tab>
-      <b-tab title="Данные по нормативам" active>
+      <b-tab title="Данные по нормативам" >
         <b-card-text>
           <StandartData />
         </b-card-text>

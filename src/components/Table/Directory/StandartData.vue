@@ -33,7 +33,7 @@
               type="text"
               id="n"
               class="textarea"
-              v-model="Standard.agreement"
+              v-model.trim="Standard.agreement"
               placeholder="№ договора"
             />
           </td>
@@ -47,7 +47,6 @@
               type="date"
               id="ln"
               class="textarea"
-              :class="{ errorNote: isError }"
               v-model="Standard.agreement_date"
             />
           </td>
@@ -91,7 +90,6 @@
               class="textarea"
               v-model="Standard.standard_unloading"
               placeholder="Норматив в днях"
-              :class="{ errorNote: isError4 }"
             />
           </td>
         </tr>
@@ -106,7 +104,6 @@
               class="textarea"
               v-model="Standard.standard_loading"
               placeholder="Норматив в днях"
-              :class="{ errorNote: isError5 }"
             />
           </td>
         </tr>
@@ -121,7 +118,6 @@
               class="textarea"
               v-model="Standard.penalty_unloading"
               placeholder="Штраф в руб"
-              :class="{ errorNote: isError2 }"
             />
           </td>
         </tr>
@@ -136,7 +132,6 @@
               class="textarea"
               v-model="Standard.penalty_loading"
               placeholder="Штраф в руб"
-              :class="{ errorNote: isError3 }"
             />
           </td>
         </tr>
@@ -243,11 +238,6 @@ export default {
       notifyMessage: "",
       notifyClass: "",
       ten_visible: false,
-      isError: false,
-      isError2: false,
-      isError3: false,
-      isError4: false,
-      isError5: false,
       visible: true,
 
       Standard: {
@@ -283,9 +273,13 @@ export default {
         : "";
     },
     },
-
+mounted(){
+  document.body.addEventListener('click', this.closeWindow)
+},
   methods: {
-
+    closeWindow(){
+      this.ten_visible = false
+    },
     chechClient(item) {
       this.Standard.client = item;
       this.ten_visible = false;

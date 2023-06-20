@@ -170,6 +170,25 @@
                   </div>
                 </div>
               </td>
+              <!-- Дата окончания акта -->
+              <td>
+                <div class="inputcontainer">
+                  <input
+                    :id="`agreement_addictions` + item.id"
+                    v-model="item.agreement_addictions"
+                    v-on:keyup.enter="
+                      submitData(item.agreement_addictions, item.id, 'agreement_addictions', 'agreement_addictions_load')
+                    "
+                  />
+                  <div
+                    class="icon-container"
+                    :id="`agreement_addictions_load` + item.id"
+                    style="display: none"
+                  >
+                    <i class="loader"></i>
+                  </div>
+                </div>
+              </td>
 <!-- ПРИМЕЧАНИЕ -->
               <td>
                 <div class="inputcontainer">
@@ -533,6 +552,7 @@ export default {
         api.deleteStandard(id)
         .then((response) => {
             this.loader = false;
+            this.getStandardData()
             this.$bvModal.hide('standard_delete')
             this.notifyHead = "Успешно";
             this.notifyMessage = "Данные удалены";

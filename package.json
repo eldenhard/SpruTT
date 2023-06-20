@@ -16,6 +16,7 @@
     "file-saver": "^2.0.5",
     "lodash": "^4.17.21",
     "postcss": "^8",
+    "sheetjs": "^2.0.0",
     "tailwindcss": "^3.2.4",
     "vue": "^2.6.14",
     "vue-good-table": "^2.21.11",
