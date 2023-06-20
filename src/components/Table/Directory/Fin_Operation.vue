@@ -25,13 +25,14 @@
       </thead>
       <tbody>
         <template v-for="item in data">
-          <tr v-for="keyed in Object.keys(item)" :key="keyed.id">
-            <td class="col1">{{ keyed.toLowerCase() }}</td>
+          <tr v-for="header in Object.keys(item)" :key="header.id">
+            <td class="col1">{{ header }}</td>
+          </tr>
+
+          <tr v-for="val in Object.values(item)" :key="val.id">
+            <td>{{ val }}</td>
           </tr>
         </template>
-        <tr  v-for="val in Object.values(item)" :key="val.id">
-            <td>{{ val }}</td>
-        </tr>
       </tbody>
 
     </table>
@@ -117,4 +118,5 @@ th {
 
 .weekend {
   color: #F18A46;
-}</style>
+}
+</style>
