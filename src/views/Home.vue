@@ -44,9 +44,14 @@
             <Act />
           </b-card-text>
         </b-tab>
-      <b-tab title="Данные по нормативам" active>
+      <b-tab title="Данные по нормативам" >
         <b-card-text>
           <StandartData />
+        </b-card-text>
+      </b-tab>
+      <b-tab title="Данные по поступлениям" active>
+        <b-card-text>
+          <Fin_Operation />
         </b-card-text>
       </b-tab>
     </b-tabs>
@@ -94,6 +99,7 @@ import CountriesDirectory from "../components/Table/Directory/CountriesDirectory
 import WagonDirectory from "../components/Table/Directory/WagonDirectory.vue";
 import StandartData from "../components/Table/Directory/StandartData.vue";
 import Act from "@/components/Table/Directory/ActPPS/Act.vue";
+import Fin_Operation from '@/components/Table/Directory/Fin_Operation'
 export default {
   name: "Directory",
   components: {
@@ -106,6 +112,7 @@ export default {
     WagonDirectory,
     StandartData,
     Act,
+    Fin_Operation,
   },
   mounted() {
     document.title = "Справочники";

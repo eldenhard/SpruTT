@@ -227,7 +227,7 @@
         <th>
           <input
             type="text"
-             @keyup.enter="save($event)"
+             @keyup.enter="saveOperation($event)"
              placeholder="введите операцию"
             id="operation"
             class="in_data"
@@ -274,9 +274,9 @@
 
 <!-- 12.01.1998 -->
 <script>
-import api from '@/api/directory'
-import ActBaseReader from './ActBaseReader.vue';
-import Loader from '@/components/loader/loader.vue';
+import api from "@/api/directory";
+import ActBaseReader from "./ActBaseReader.vue";
+import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 
 class MyClass {
@@ -303,8 +303,8 @@ class MyClass {
     let reverse = date?.split(".")?.reverse()?.join("-");
     this._date_pp_in = reverse;
   }
-  get date_pp_in(){
-    return this.date_pp_in = this._date_pp_in
+  get date_pp_in() {
+    return (this.date_pp_in = this._date_pp_in);
   }
 
   set date_work(value) {
@@ -313,8 +313,8 @@ class MyClass {
     let reverse = date?.split(".")?.reverse()?.join("-");
     this._date_work = reverse;
   }
-  get date_work(){
-    return this.date_work = this._date_work
+  get date_work() {
+    return (this.date_work = this._date_work);
   }
   set date_pp_out(value) {
     let date;
@@ -322,8 +322,9 @@ class MyClass {
     let reverse = date?.split(".")?.reverse()?.join("-");
     this._date_pp_out = reverse;
   }
-  get date_pp_out(){
-    return this.date_pp_out = this._date_pp_out
+
+  get date_pp_out() {
+    return (this.date_pp_out = this._date_pp_out);
   }
   set date_processing(value) {
     let date;
@@ -331,25 +332,25 @@ class MyClass {
     let reverse = date?.split(".")?.reverse()?.join("-");
     this._date_processing = reverse;
   }
-  get date_processing(){
-    return this.date_processing = this._date_processing
+  get date_processing() {
+    return (this.date_processing = this._date_processing);
   }
-  JSON(){
+  JSON() {
     return {
       date_pp_in: this._date_pp_in || null,
       date_work: this._date_work || null,
-      date_pp_out:  this._date_pp_out || null,
+      date_pp_out: this._date_pp_out || null,
       date_processing: this._date_processing || null,
       days: this.days,
-      application_number:   this.application_number,
-      operation:this.operation,
-      price_wo_nds: this.price_wo_nds ,
+      application_number: this.application_number,
+      operation: this.operation,
+      price_wo_nds: this.price_wo_nds,
       counterparty: this.counterparty,
-      wagon: this.wagon ,
+      wagon: this.wagon,
       for_cargo: this.for_cargo,
       from_cargo: this.from_cargo,
-      act_date: this.act_date,
-    }
+      act_date: this.act_date || null,
+    };
   }
 }
 export default {
@@ -372,7 +373,6 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
-      
     };
   },
   mounted() {
@@ -420,45 +420,63 @@ export default {
           )
         : "";
     },
-    filter_fromcargo(){
+    filter_fromcargo() {
       if (this.from_cargo.length > 1) {
         this.ten_visible3 = true;
       }
       return this.from_cargo.length > 1
         ? this.$store.state.cargo_code.cargo_code.filter((item) =>
-            item.name
-              .toLowerCase()
-              .includes(this.from_cargo.toLowerCase())
+            item.name.toLowerCase().includes(this.from_cargo.toLowerCase())
           )
         : "";
-    }
+    },
   },
   methods: {
-    delete_col(value){
-      for(let i in this.data){
-       this.data[i][value] = null
+    delete_col(value) {
+      for (let i in this.data) {
+        this.data[i][value] = null;
       }
     },
     checkCounterpartie(value) {
       this.counterparties = value;
-      
     },
     checkForCargo(value, code6) {
       this.for_cargo = value;
-      this.for_code6 = code6
+      this.for_code6 = code6;
     },
     checkFromCargo(value, code6) {
       this.from_cargo = value;
-      this.from_code6 = code6
-      console.log(this.from_code6)
+      this.from_code6 = code6;
     },
     deleteRow(index) {
       this.data.splice(index, 1);
-      console.log(this.data);
     },
     saveActDate(caller) {
       this.act_date = caller;
     },
+    saveOperation(type) {
+      let operationBuffer = [];
+      navigator.clipboard.readText().then((response) => {
+        operationBuffer = response.split("\n")
+        if(operationBuffer.at(-1) == ""){
+            operationBuffer.pop()
+        }
+        if (operationBuffer[0] == "") {
+          return;
+        }
+        for (let i in operationBuffer) {
+          if (this.data[i] == undefined) {
+            let newObj = new MyClass();
+            newObj[type.target.id] = operationBuffer[i];
+            this.data.push(newObj);
+          } else {
+            this.data[i][type.target.id] = operationBuffer[i];
+          }
+        }
+        type.target.value = "";
+      });
+    },
+
     save(type) {
       let data_in = type.target.value.split(" ");
       if (data_in[0] == "") {
@@ -473,67 +491,64 @@ export default {
           this.data[i][type.target.id] = data_in[i];
         }
       }
-      type.target.value = ''
-     
+      type.target.value = "";
     },
     sendData() {
-      if(this.counterparties == "" || this.act_date == "" || this.for_cargo == "" || this.from_cargo == ""){
+      if (this.counterparties == "") {
         this.notifyHead = "Ошибка";
-            this.notifyMessage = "Поля Контрагент, Дата акта, Подготовлено под груз и из под груза обязательны к заполнению!";
-            this.notifyClass = "wrapper-error";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 4500);
-      } else {
-
-     
-      this.loader = true
-      for (let i in this.data) {
-        this.data[i].act_date = this.act_date;
-        this.data[i].counterparty = this.counterparties;
-        this.data[i].from_cargo = this.from_code6;
-        this.data[i].for_cargo = this.for_code6;
-      }
-
-      let arr = this.data.map(item => {
-        return item.JSON()
-      })
-      api.postpps(arr)
-      .then(response => {
-        this.loader = false
-
-        this.data = []
-        this.notifyHead = "Успешно";
-        this.notifyMessage = "Данные отправлены";
-        this.notifyClass = "wrapper-success";
+        this.notifyMessage = "Поле Контрагент обязательно к заполнению!";
+        this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => {
           this.showNotify = false;
-        }, 2500);
-      })
-      .catch(error => {
-        this.loader = false
+        }, 4500);
+      } else {
+        this.loader = true;
+        for (let i in this.data) {
+          this.data[i].act_date = this.act_date;
+          this.data[i].counterparty = this.counterparties;
+          this.data[i].from_cargo = this.from_code6;
+          this.data[i].for_cargo = this.for_code6;
+        }
 
-        this.notifyHead = "Ошибка";
+        let arr = this.data.map((item) => {
+          return item.JSON();
+        });
+        api
+          .postpps(arr)
+          .then((response) => {
+            this.loader = false;
+
+            this.data = [];
+            this.notifyHead = "Успешно";
+            this.notifyMessage = "Данные отправлены";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
+          })
+          .catch((error) => {
+            this.loader = false;
+
+            this.notifyHead = "Ошибка";
             this.notifyMessage = "Данные загружены с ошибками";
             this.notifyClass = "wrapper-error";
             this.showNotify = true;
             setTimeout(() => {
               this.showNotify = false;
             }, 2500);
-        for(let i in error.response.data){
-          this.data[error.response.data[i][0]].error = error.response.data[i][1]
-        }
-       let filter_arr = [...this.data]
-       this.data = filter_arr.filter(item => {
-        return item.error != null
-       })
-
-    })
-  }  
-  },
-    
+            for (let i in error.response.data) {
+              this.data[error.response.data[i][0]].error =
+                error.response.data[i][1];
+            }
+            let filter_arr = [...this.data];
+            this.data = filter_arr.filter((item) => {
+              return item.error != null;
+            });
+          });
+      }
+    },
   },
 };
 </script>
@@ -546,15 +561,16 @@ export default {
   cursor: pointer;
   margin-left: auto;
 }
-.delete:hover{
+.delete:hover {
   background: lightcoral;
   color: white;
 }
-.error{
+.error {
   background: lightcoral;
 }
-td, th{
-  border: 1px solid black
+td,
+th {
+  border: 1px solid black;
 }
 .mini {
   height: 40px;
@@ -565,17 +581,17 @@ td, th{
   background: transparent;
   color: black;
 }
-.delete_col:hover{
+.delete_col:hover {
   background: rgb(226, 226, 226);
   font-weight: 500;
 }
 li {
   cursor: pointer;
-    &:hover{
-      font-weight: 600;
-    }
+  &:hover {
+    font-weight: 600;
+  }
 }
-.delete_col:hover{
+.delete_col:hover {
   background: rgb(226, 226, 226);
 }
 th {
@@ -597,7 +613,7 @@ input {
   justify-content: space-between;
   align-items: baseline;
 }
-.col3{
+.col3 {
   border: none;
 }
 </style>

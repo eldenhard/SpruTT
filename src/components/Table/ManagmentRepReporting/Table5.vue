@@ -16,16 +16,16 @@
 
     <!-- <pre>{{ normalized }}</pre> -->
     <p>Форма 4.5. "Справка о выполнении перевозок полувагонами"</p>
-    <div style="overflow: auto;">
-      <table class="tbl_search" >
+    <div  class="block-table">
+      <table class="table_search" >
         <thead>
           <th>Дорога погрузки</th>
           <th>Клиент</th>
           <th>Дорога выгрузки</th>
-          <th style="width: 250px">Груз</th>
-          <th style="width: 200px">Вес</th>
-          <th style="width: 200px">Кол-во погрузок</th>
-          <th style="width: 200px">Выручка руб, без НДС</th>
+          <th style="width:220px">Груз</th>
+          <th style="width: 180px">Вес</th>
+          <th style="width: 180px">Кол-во погрузок</th>
+          <th style="width: 180px">Выручка руб, без НДС</th>
         </thead>
 
         <template v-for="obj in normalized">
@@ -39,10 +39,10 @@
                 <td>{{ attr3Item.road }}</td>
                 <table>
                   <tr v-for="item in attr3Item.cargo" :key="item.id">
-                    <td style="width: 250px">{{ item.name }}</td>
-                    <td style="width: 200px">{{ item?.cargo?.toFixed(2) }}</td>
-                    <td style="width: 200px">{{ item.loads | format }}</td>
-                    <td style="width: 200px">
+                    <td style="width:220px">{{ item.name }}</td>
+                    <td style="width: 180px">{{ item?.cargo?.toFixed(2) }}</td>
+                    <td style="width: 180px">{{ item.loads | format }}</td>
+                    <td style="width: 180px">
                       {{ item?.revenue?.toFixed(2) | format }}
                     </td>
                   </tr>
@@ -185,8 +185,19 @@ tr{
   }
 </style> -->
 <style scoped>
-.table_search {
+.block-table{
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
   width: 100%;
+  overflow:auto;
+}
+.table_search {
+  width: 50%;
+  max-width: 50% !important;
+}
+th{
+  font-size: 12px !important;
 }
 .total {
   background: #fdffd9;
@@ -203,10 +214,12 @@ tr:hover {
 td {
   border: 1px solid black !important;
   color: black !important;
+  font-size: 13px;
 }
 
 table {
-  width: 100%;
+  width: 50%;
+  max-width: 50% !important;
   border-collapse: collapse;
 }
 
@@ -222,7 +235,7 @@ table > tbody > tr > td.inner {
 }
 
 table > tbody > tr > td.inner > div {
-  padding: 5px;
+  padding: 3px;
   border-width: 0 0 1px 0;
 }
 

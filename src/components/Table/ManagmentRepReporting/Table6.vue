@@ -21,8 +21,8 @@
     <br />
 
     <p>Форма 4.6. "Справка о выполнении перевозок вагоно-цистернами"</p>
-    <div style="overflow: auto;">
-      <table class="tbl_search">
+    <div class="block-table">
+      <table class="table_search">
         <thead>
           <th>Парк</th>
           <th>Станция погрузки</th>
@@ -239,78 +239,90 @@ export default {
       } 
     }
   </style> -->
-<style scoped>
-.table_search {
-  width: 100%;
-}
-
-.total {
-  background: #fdffd9;
-}
-
-.total_2 {
-  background: #ddface;
-}
-
-tr:hover {
-  background: rgb(236, 236, 236);
-}
-
-td {
-  border: 1px solid black !important;
-  color: black !important;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table>tbody>tr>td,
-table>tbody>tr>td.inner>div {
-  vertical-align: top;
-  border: 1px solid #ddd;
-}
-
-table>tbody>tr>td.inner {
-  padding: 0;
-  border-right: 0;
-}
-
-table>tbody>tr>td.inner>div {
-  padding: 5px;
-  border-width: 0 0 1px 0;
-}
-
-table>tbody>tr>td.inner>div:last-child {
-  border: 0;
-}
-
-table>tbody>tr>td.inner>table {
-  margin-bottom: 0;
-}
-
-table>tbody>tr>td.inner>table td {
-  border-width: 0 1px 1px 0;
-}
-
-table>tbody>tr>td.inner>table tr:last-child td {
-  border-bottom: 0;
-}
-
-table>tbody>tr>td.inner>div {
-  border-right: 0;
-}
-
-thead>th {
-  border: 1px solid black;
-}
-
-.total_row {
-  background: #ddface;
-}
-
-.total_road {
-  background: greenyellow;
-}
-</style>
+  <style scoped>
+  .block-table{
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 100%;
+    overflow:auto;
+  }
+  .table_search {
+    width: 50%;
+    max-width: 50% !important;
+  }
+  th{
+    font-size: 12px !important;
+  }
+  .total {
+    background: #fdffd9;
+  }
+  
+  .total_2 {
+    background: #ddface;
+  }
+  
+  tr:hover {
+    background: rgb(236, 236, 236);
+  }
+  
+  td {
+    border: 1px solid black !important;
+    color: black !important;
+    font-size: 13px;
+  }
+  
+  table {
+    width: 50%;
+    max-width: 50% !important;
+    border-collapse: collapse;
+  }
+  
+  table > tbody > tr > td,
+  table > tbody > tr > td.inner > div {
+    vertical-align: top;
+    border: 1px solid #ddd;
+  }
+  
+  table > tbody > tr > td.inner {
+    padding: 0;
+    border-right: 0;
+  }
+  
+  table > tbody > tr > td.inner > div {
+    padding: 3px;
+    border-width: 0 0 1px 0;
+  }
+  
+  table > tbody > tr > td.inner > div:last-child {
+    border: 0;
+  }
+  
+  table > tbody > tr > td.inner > table {
+    margin-bottom: 0;
+  }
+  
+  table > tbody > tr > td.inner > table td {
+    border-width: 0 1px 1px 0;
+  }
+  
+  table > tbody > tr > td.inner > table tr:last-child td {
+    border-bottom: 0;
+  }
+  
+  table > tbody > tr > td.inner > div {
+    border-right: 0;
+  }
+  
+  thead > th {
+    border: 1px solid black;
+  }
+  
+  .total_row {
+    background: #ddface;
+  }
+  
+  .total_road {
+    background: greenyellow;
+  }
+  </style>
