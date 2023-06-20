@@ -60,7 +60,7 @@
       </label>
       <label for="">
         № вагонов <br />
-        <input type="text" class="textarea mini" />
+        <input type="text" class="textarea mini" v-model="filter.wagon" placeholder="№ вагонов через пробел"/>
       </label>
 
       <button
@@ -331,6 +331,7 @@ export default {
       filter: {
         page_size: "",
         for_cargo: "",
+        wagon: "",
       },
       showNotify: false,
       notifyHead: "",
@@ -339,14 +340,15 @@ export default {
     };
   },
   mounted(){
-    document.body.addEventListener('click', this.closeWindowo)
+    document.body.addEventListener('click', this.closeWindow)
+  
   },
   watch:{
     ten_visible(){
       if(this.filter.cargo_code.length < 1){
         this.ten_visible = false
       }
-    }
+    },
   },
   computed: {
     ...mapState({
@@ -568,7 +570,7 @@ export default {
     getPPS() {
       this.loader = true;
       this.data = [];
-      console.log(this.filter);
+      this.filter.wagon = this.filter.wagon.replaceAll(" ", ",")
       api
         .getpps(this.filter)
         .then((response) => {
