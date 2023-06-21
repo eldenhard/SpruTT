@@ -51,7 +51,7 @@
       </b-tab>
       <b-tab title="Данные по поступлениям" active>
         <b-card-text>
-          <Fin_Operation />
+          <Fin_headerVue />
         </b-card-text>
       </b-tab>
     </b-tabs>
@@ -100,6 +100,7 @@ import WagonDirectory from "../components/Table/Directory/WagonDirectory.vue";
 import StandartData from "../components/Table/Directory/StandartData.vue";
 import Act from "@/components/Table/Directory/ActPPS/Act.vue";
 import Fin_Operation from '@/components/Table/Directory/Fin_Operation'
+import Fin_headerVue from '../components/Table/Directory/Fin_header.vue';
 export default {
   name: "Directory",
   components: {
@@ -113,6 +114,7 @@ export default {
     StandartData,
     Act,
     Fin_Operation,
+    Fin_headerVue,
   },
   mounted() {
     document.title = "Справочники";

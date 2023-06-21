@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div class="month_block">
+    <!-- <div class=" current_date_block">
       <label for="">
         Месяц <br />
-        <input type="month" class="textarea" v-model="month" />
+        <input type=" current_date" class="textarea" v-model=" current_date" />
       </label>
-      <button class="Accept button" @click="getDayOnMonth()">Загрузить</button>
-    </div>
-
-
-    <table border="1" style="margin-top: 3%;">
+      <button class="Accept button" @click="getDayOn current_date()">Загрузить</button>
+    </div> -->
+    <p>{{ current_date }}</p>
+<div style="overflow: auto">
+    <table border="1" style="margin-top: 3%">
       <thead>
         <tr>
           <th rowspan="2">Наименование статьи</th>
@@ -21,102 +21,168 @@
         <template v-for="i in send_data">
           <th :key="i.id" :class="{ weekend: isWeekend(i) }">{{ i }}</th>
         </template>
-
       </thead>
       <tbody>
-        <template v-for="item in data">
-          <tr v-for="header in Object.keys(item)" :key="header.id">
-            <td class="col1">{{ header }}</td>
+        <template v-for="(v, k) in data">
+          <tr :key="v.id">
+            <td class="col1">{{ k }}</td>
+            <td>сумма</td>
           </tr>
 
-          <tr v-for="val in Object.values(item)" :key="val.id">
-            <td>{{ val }}</td>
+          <tr v-for="item in v" :key="item.id" style="border: 1px solid black">
+            <!-- контрагент -->
+            <td>{{ item?.name }}</td>
+            <!-- план -->
+            <td><input type="text" /></td>
+
+            <template v-for="(i, index2) in Object.values(item?.date_week)">
+            <!-- поля по датам -->
+                <td><input type="text" :value="i" @keydown.enter="save_data(item?.name, index2+1, $event, k)"></td>
+            </template>
           </tr>
+          
         </template>
       </tbody>
-
     </table>
-
+</div>
   </div>
 </template>
 
 
 <script>
-import fin_counterpartie from '@/helpers/fin_counterpartie';
+import fin_counterpartie from "@/helpers/fin_counterpartie";
+import InputLoader from "../../ui/InputLoader.vue";
+import { mapState } from 'vuex';
 export default {
+  components: { InputLoader },
   data() {
     return {
-      month: "",
       num: "",
       send_data: "",
       data: fin_counterpartie,
-
+      current_date: ""
     };
   },
+  computed:{
+    ...mapState({
+    uid: (state) => state.auth.uid
+    })
+  },
+  mounted() {
+    document.title = `Фин операции `;
+    const a = window.location.href;
+    this.current_date = a.substring(a.length - 7)
 
-  methods: {
-    isWeekend(data) {
-      if (data == 'ВС' || data == 'СБ') {
-        return true
-      } return false
-    },
-    getDayOnMonth() {
-      let arr = this.month.split('-')
-      let lastday = new Date(arr[0], arr[1], 0)
-      this.num = lastday.getDate()
+    let predata;
+    for (let i in this.data) {
+        predata = this.data[i];
+    }
+    for (let i in predata) {
+      Object.values(predata[i]).forEach((item) => {
+        item.plan = "",
+        item.date_week = {};
+      });
+    }
+    this.data = predata;
 
-      let num = lastday.getDate()
-      let array = []
+    let arr = this.current_date.split("-");
+      let lastday = new Date(arr[0], arr[1], 0);
+      this.num = lastday.getDate();
+
+      let num = lastday.getDate();
+      let array = [];
       for (let i = 1; i <= num; i++) {
         if (i <= 9) {
-          array.push(`${this.month}-0${i}`)
+          array.push(`${this.current_date}-0${i}`);
         } else {
-          array.push(`${this.month}-${i}`)
+          array.push(`${this.current_date}-${i}`);
         }
-
       }
-      let days = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
-      let data = array.map(item => {
-        return new Date(item)
-      })
-      let send_data = data.map(item => {
-        return days[item.getDay()]
-      })
-      this.send_data = send_data
-    }
+      let days = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+
+
+      let data = array.map((item) => {
+        return new Date(item);
+      });
+      let send_data = data.map((item) => {
+        return days[item.getDay()];
+      });
+      
+      this.send_data = send_data;
+      let ArrDate = {};
+      for (let i = 1; i <= this.num; i++) {
+        ArrDate[i] = "";
+      }
+
+      for (let i in this.data) {
+        Object.values(this.data[i]).forEach((item) => {
+          return item.date_week = ArrDate;
+        });
+      }
   },
+  methods: {
+    save_data(name, ind, event, group){
+        const arr = JSON.parse(JSON.stringify(this.data))
+
+        let cp = name;
+        let col_idx = Number(ind);
+        let value = event.target.value;
+        
+        arr[group][cp]['date_week'][col_idx] = value;
+        // arr[group][cp]['date_week'].last_user = this.uid
+       
+        this.data = arr
+       
+        for(let i in arr){
+            for(let j in arr[i]){
+             Object.entries(arr[i][j].date_week).map(entry => ({[entry[0]]: entry[1]}))
+            }
+        }
+        // const result = Object.entries(op).map(entry => ({[entry[0]]: entry[1]}));
+            
+            console.log(arr)
 
 
+    },
+    all(name, i) {
+      console.log(this.data)
+    },
+    DataChange() {},
+    isWeekend(data) {
+      if (data == "ВС" || data == "СБ") {
+        return true;
+      }
+      return false;
+    },
 
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.col1 {
-  background: rgb(243, 243, 243);
-  font-family: 'Montserrat', sans-serif;
-  color: black;
-  font-weight: 400;
+// .col1 {
+//   background: rgb(243, 243, 243);
+//   font-family: "Montserrat", sans-serif;
+//   color: black;
+//   font-weight: bold;
+//   text-align: left !important;
+//   padding-left: 2% !important;
+// }
+
+input{
+    width: 100% !important;
+     height: 100% !important;
+      border: none !important;
 }
-
-.month_block {
-  margin-left: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-
-
-  button {
-    width: 25%
-  }
+table{
+    content-visibility: auto;
 }
-
 th {
   font-weight: 400 !important;
   font-size: 13px !important;
 }
 
 .weekend {
-  color: #F18A46;
+  color: #f18a46;
 }
 </style>

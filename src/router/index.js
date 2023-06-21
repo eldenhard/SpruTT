@@ -10,7 +10,7 @@ import Staff from '../views/Staff';
 import editBDR from '../views/editBDR';
 import keyFact from '../views/KeyFacts';
 import managementReporting from '../views/ManagementReporting'
-
+import Fin_Operation from '../components/Table/Directory/Fin_Operation'
 Vue.use(Router)
 
 export default new Router({
@@ -40,6 +40,10 @@ export default new Router({
     {
       path: '/edit-bdr/:id',
       component: editBDR
+    },
+    {
+      path: '/fin_operation/:id',
+      component: Fin_Operation
     },
     {
       path: '/personnel-service',
