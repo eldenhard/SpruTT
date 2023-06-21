@@ -23,24 +23,22 @@
         </template>
       </thead>
       <tbody>
-        <template v-for="(v, k) in data">
-          <tr :key="v.id">
-            <td class="col1">{{ k }}</td>
-            <td>сумма</td>
-          </tr>
+ 
+        <template v-for="(v, group) in data">
+            {{ group }}
+          <!-- <tr :key="v.id">
+            <td class="col1">{{ group }}</td>
+            <td><input type="text" ></td>
 
-          <tr v-for="item in v" :key="item.id" style="border: 1px solid black">
-            <!-- контрагент -->
+          </tr> -->
+
+          <!-- <tr v-for="item in v" :key="item.id" style="border: 1px solid black">
             <td>{{ item?.name }}</td>
-            <!-- план -->
             <td><input type="text" /></td>
-
             <template v-for="(i, index2) in Object.values(item?.date_week)">
-            <!-- поля по датам -->
-                <td><input type="text" :value="i" @keydown.enter="save_data(item?.name, index2+1, $event, k)"></td>
+              <td><input type="text" :value="i.value" @keydown.enter="save_data(item?.name, index2+1, $event, k)"></td>
             </template>
-          </tr>
-          
+          </tr> -->
         </template>
       </tbody>
     </table>
@@ -73,52 +71,59 @@ export default {
     const a = window.location.href;
     this.current_date = a.substring(a.length - 7)
 
-    let predata;
-    for (let i in this.data) {
-        predata = this.data[i];
-    }
-    for (let i in predata) {
-      Object.values(predata[i]).forEach((item) => {
-        item.plan = "",
-        item.date_week = {};
-      });
-    }
-    this.data = predata;
+ 
+    let predata = this.data['fin_counerpartie']
 
-    let arr = this.current_date.split("-");
-      let lastday = new Date(arr[0], arr[1], 0);
-      this.num = lastday.getDate();
-
-      let num = lastday.getDate();
-      let array = [];
-      for (let i = 1; i <= num; i++) {
-        if (i <= 9) {
-          array.push(`${this.current_date}-0${i}`);
-        } else {
-          array.push(`${this.current_date}-${i}`);
+    // перебор групп типа ПОСТУПЛЕНИЯ, Доходы ЦС
+    for (let group in predata) {
+        predata[group].plan = ""
+        predata[group].date_week = {}
+        // Перебор всех компаний внетри Доходы ЦС
+        for (let company in predata[group]?.companies){
+            predata[group].companies[company].week_days = {};
+            predata[group].companies[company].name = company;
         }
-      }
-      let days = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+    }
+    console.log(predata)
+    // this.data = predata;
+
+    // let arr = this.current_date.split("-");
+    //   let lastday = new Date(arr[0], arr[1], 0);
+    //   this.num = lastday.getDate();
+
+    //   let num = lastday.getDate();
+    //   let array = [];
+    //   for (let i = 1; i <= num; i++) {
+    //     if (i <= 9) {
+    //       array.push(`${this.current_date}-0${i}`);
+    //     } else {
+    //       array.push(`${this.current_date}-${i}`);
+    //     }
+    //   }
+    //   let days = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
 
 
-      let data = array.map((item) => {
-        return new Date(item);
-      });
-      let send_data = data.map((item) => {
-        return days[item.getDay()];
-      });
+    //   let data = array.map((item) => {
+    //     return new Date(item);
+    //   });
+    //   let send_data = data.map((item) => {
+    //     return days[item.getDay()];
+    //   });
       
-      this.send_data = send_data;
-      let ArrDate = {};
-      for (let i = 1; i <= this.num; i++) {
-        ArrDate[i] = "";
-      }
+    //   this.send_data = send_data;
+    //   let ArrDate = {};
+    //   for (let i = 1; i <= this.num; i++) {
+    //     ArrDate[i] = {
+    //         'value': "",
+    //         "user_id": ""
+    //       };
+    //   }
 
-      for (let i in this.data) {
-        Object.values(this.data[i]).forEach((item) => {
-          return item.date_week = ArrDate;
-        });
-      }
+    //   for (let i in this.data) {
+    //     Object.values(this.data[i]).forEach((item) => {
+    //       return item.date_week = ArrDate;
+    //     });
+    //   }
   },
   methods: {
     save_data(name, ind, event, group){
@@ -128,19 +133,16 @@ export default {
         let col_idx = Number(ind);
         let value = event.target.value;
         
-        arr[group][cp]['date_week'][col_idx] = value;
+        arr[group][cp]['date_week'][col_idx]['value'] = value;
+        arr[group][cp]['date_week'][col_idx]['user_id'] = this.uid;
         // arr[group][cp]['date_week'].last_user = this.uid
        
         this.data = arr
        
-        for(let i in arr){
-            for(let j in arr[i]){
-             Object.entries(arr[i][j].date_week).map(entry => ({[entry[0]]: entry[1]}))
-            }
-        }
+    
         // const result = Object.entries(op).map(entry => ({[entry[0]]: entry[1]}));
             
-            console.log(arr)
+            console.log(this.data)
 
 
     },
