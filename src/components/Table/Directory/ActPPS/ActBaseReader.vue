@@ -33,7 +33,7 @@
           <option value="500">500</option>
         </select>
       </label>
-      <label for="">
+      <!-- <label for="">
         <div class="select_btn">
           <div>
             <input type="radio" id="one" value="code6" v-model="picked" />
@@ -53,7 +53,7 @@
           :placeholder="InpPlaceholder"
           v-model="filter.for_cargo"
         />
-      </label>
+      </label> -->
       <label for="">
         Контрагент <br />
         <input type="text" class="textarea mini" />
@@ -101,13 +101,13 @@
           <th>Дата вывода с подъез. пути</th>
           <th>Расчетное время в сутках</th>
           <th>Дата обработки</th>
-          <th>Номер заявки</th>
-          <th>Операция</th>
+          <!-- <th>Номер заявки</th>
+          <th>Операция</th> -->
           <th>Цена без НДС</th>
           <th>Контрагент</th>
           <th>Дата акта</th>
-          <th>Подготовлено под груз (код 6)</th>
-          <th>Из под груза (код 6)</th>
+          <!-- <th>Подготовлено под груз (код 6)</th>
+          <th>Из под груза (код 6)</th> -->
         </tr>
       </thead>
       <tbody>
@@ -175,7 +175,7 @@
               @changeData="DataChange"
             />
           </td>
-          <td>
+          <!-- <td>
             <InputLoader
               :nameInp="`date_processing`"
               :idRow="item.id"
@@ -185,8 +185,8 @@
               :typeInp="'date'"
               @changeDate="DateChange"
             />
-          </td>
-          <td>
+          </td> -->
+          <!-- <td>
             <InputLoader
               :nameInp="`application_number`"
               :idRow="item.id"
@@ -195,7 +195,7 @@
               :valueDataInp="item.application_number"
               @changeData="DataChange"
             />
-          </td>
+          </td> -->
           <td>
             <InputLoader
               :nameInp="`operation`"
@@ -237,7 +237,7 @@
               @changeDate="DateChange"
             />
           </td>
-          <td>
+          <!-- <td>
             <InputLoader
               :nameInp="`for_cargo`"
               :idRow="item.id"
@@ -246,8 +246,8 @@
               :valueDataInp="item.for_cargo"
               @changeData="DataChange"
             />
-          </td>
-          <td>
+          </td> -->
+          <!-- <td>
             <InputLoader
               :nameInp="`from_cargo`"
               :idRow="item.id"
@@ -256,7 +256,7 @@
               :valueDataInp="item.from_cargo"
               @changeData="DataChange"
             />
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>

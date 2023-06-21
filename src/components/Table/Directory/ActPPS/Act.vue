@@ -47,14 +47,14 @@
         Дата акта<br />
         <input type="date" v-model="act_date" id="act_date" class="textarea mini" />
       </label>
-      <label for="">
+      <!-- <label for="">
         Подготовлено под груз<br />
         <input type="text" v-model="for_cargo" class="textarea mini" />
       </label>
       <label for="">
         Из под груза<br />
         <input type="text" v-model="from_cargo" class="textarea mini" />
-      </label>
+      </label> -->
       <label for="">
         <br />
         <button class="button Accept mini" style="width: 350px"  @click="sendData()">Отправить</button>
@@ -137,8 +137,8 @@
     <th style="border: none !important"><button class="delete_col" @click="delete_col('date_pp_in')">Удалить столб.</button></th>
     <th style="border: none !important"><button class="delete_col" @click="delete_col('date_work')">Удалить столб.</button></th>
     <th style="border: none !important"><button class="delete_col" @click="delete_col('date_pp_out')">Удалить столб.</button></th>
-    <th style="border: none !important"><button class="delete_col" @click="delete_col('days')">Удалить столб.</button></th>
-    <th style="border: none !important"><button class="delete_col" @click="delete_col('date_processing')">Удалить столб.</button></th>
+    <!-- <th style="border: none !important"><button class="delete_col" @click="delete_col('days')">Удалить столб.</button></th>
+    <th style="border: none !important"><button class="delete_col" @click="delete_col('date_processing')">Удалить столб.</button></th> -->
     <th style="border: none !important"><button class="delete_col" @click="delete_col('application_number')">Удалить столб.</button></th>
     <th style="border: none !important"><button class="delete_col" @click="delete_col('operation')">Удалить столб.</button></th>
     <th style="border: none !important"><button class="delete_col" @click="delete_col('price_wo_nds')">Удалить столб.</button></th>
@@ -202,7 +202,7 @@
           />
           <br />Расчетное время в сутках
         </th>
-        <th>
+        <!-- <th>
           <input
             type="text"
              @keyup.enter="save($event)"
@@ -223,7 +223,7 @@
             style="border: 1px solid black !important"
           />
           <br />Номер заявки
-        </th>
+        </th> -->
         <th>
           <input
             type="text"
@@ -256,8 +256,8 @@
           <td><input type="date" v-model="item.date_work" /></td>
           <td><input type="date" v-model="item.date_pp_out" /></td>
           <td><input type="number" v-model="item.days" /></td>
-          <td><input type="date" v-model="item.date_processing" /></td>
-          <td><input type="text" v-model="item.application_number" /></td>
+          <!-- <td><input type="date" v-model="item.date_processing" /></td>
+          <td><input type="text" v-model="item.application_number" /></td> -->
           <td><input type="text" v-model="item.operation" /></td>
           <td><input type="number" v-model="item.price_wo_nds" /></td>
 
@@ -340,15 +340,15 @@ class MyClass {
       date_pp_in: this._date_pp_in || null,
       date_work: this._date_work || null,
       date_pp_out: this._date_pp_out || null,
-      date_processing: this._date_processing || null,
+      date_processing:  null,
       days: this.days,
-      application_number: this.application_number,
+      application_number: null,
       operation: this.operation,
       price_wo_nds: this.price_wo_nds,
       counterparty: this.counterparty,
       wagon: this.wagon,
-      for_cargo: this.for_cargo,
-      from_cargo: this.from_cargo,
+      for_cargo: null,
+      from_cargo: null,
       act_date: this.act_date || null,
     };
   }
@@ -507,13 +507,14 @@ export default {
         for (let i in this.data) {
           this.data[i].act_date = this.act_date;
           this.data[i].counterparty = this.counterparties;
-          this.data[i].from_cargo = this.from_code6;
-          this.data[i].for_cargo = this.for_code6;
+          this.data[i].from_cargo = null;
+          this.data[i].for_cargo = null;
         }
 
         let arr = this.data.map((item) => {
           return item.JSON();
         });
+        console.log(arr)
         api
           .postpps(arr)
           .then((response) => {
