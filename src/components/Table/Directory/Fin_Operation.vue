@@ -1,85 +1,39 @@
 <template>
   <div>
-    <button @click="getData()">DOWNLOAD</button>
-    <!-- <pre>{{ data }}</pre> -->
-    <!-- <div class=" current_date_block">
-      <label for="">
-        Месяц <br />
-        <input type=" current_date" class="textarea" v-model=" current_date" />
-      </label>
-      <button class="Accept button" @click="getDayOn current_date()">Загрузить</button>
-    </div> -->
-    <p>{{ current_date }}</p>
-    <div style="overflow: auto">
-      <table border="1" style="margin-top: 3%">
-        <thead>
-          <tr>
-            <th rowspan="2">Наименование статьи</th>
-            <th rowspan="2">План утв.</th>
-            <template v-for="item in num">
-              <th :key="item.id">{{ item }}</th>
-            </template>
-          </tr>
-          <template v-for="day_of_week in send_data">
-            <th
-              :key="day_of_week.id"
-              :class="{ weekend: isWeekend(day_of_week) }"
-            >
-              {{ day_of_week }}
-            </th>
-          </template>
-        </thead>
 
-        <tbody>
-          <template v-for="(item_group, group) in data">
-            <tr :key="item_group.id">
-              <td class="col1">{{ group }}</td>
-              <td class="col1">{{ item_group.plan }}</td>
-              <template v-for="date_week in item_group.date_week">
-                <td :key="date_week.id" class="col2">{{ date_week.value }}</td>
-              </template>
-            </tr>
-
-            <tr
-              v-for="name_companie in item_group.companies"
-              :key="name_companie.id"
-            >
-              <td>{{ name_companie.name }}</td>
-              <td>
-                <input
-                  type="text"
-                  :value="name_companie.plan"
-                  :readonly="WhoUser"
-                  @keydown.enter="
-                    save_plan(name_companie.name, $event.target.value, group)
-                  "
-                />
-              </td>
-              <template
-                v-for="(date_week, num_day_week) in name_companie.week_days"
-              >
-                <td :key="date_week.id">
-                  <input
-                    type="text"
-                    :value="date_week.value"
-                    v-b-tooltip.hover :title="date_week.user_id"
-                    @keydown.enter="
-                      save_data(
-                        name_companie.name,
-                        num_day_week,
-                        $event.target.value,
-                        group
-                      )
-                    "
-                  />
-                </td>
-              </template>
-            </tr>
-          </template>
-      
-        </tbody>
-      </table>
-    </div>
+    <h4 class="month">{{ mounth_report }}</h4>
+<table border="1">
+  <thead>
+    <tr>
+      <th rowspan="2">Контрагент</th>
+      <th rowspan="2">План</th>
+      <template v-for="day in days">
+        <th>{{day}}</th>
+      </template>
+    </tr>
+  </thead>
+  <tbody>
+    <!---10 groups-->
+    <template v-for="(group, group_name) in data">
+      <tr>
+        <td >{{ group_name }}</td>
+        <td >{{ group.plan }}</td>
+        <template v-for="day in group.week_days">
+          <td >{{ day.val }}</td> 
+        </template>
+      </tr>
+      <!--companies names-->
+      <tr v-for="(company, company_name) in group.companies" :key="company_name.id">
+        <td>{{ company_name }}</td>
+        <td>{{ company.plan }}</td>
+        <template v-for="(day, index) in company.week_days">
+          <td :key="day.id" :id="group_name +'_'+'companies' +'_' + company_name+'_'+index" @click="TdToInp(group_name +'_'+'companies' +'_' + company_name+'_'+index, day.val)">{{ day.val }}</td> 
+        </template>
+      </tr>
+  </template>
+  </tbody>
+</table>
+  
   </div>
 </template>
 
@@ -93,10 +47,13 @@ export default {
   components: { InputLoader },
   data() {
     return {
-      num: "",
+      days: "",
       send_data: "",
-      data: fin_counterpartie,
+      data: fin_counterpartie.fin_counerpartie,
       current_date: "",
+      visible: false,
+      mounth_report: "",
+      last_clicked_id: "",
     };
   },
   computed: {
@@ -111,62 +68,70 @@ export default {
       return true;
     },
   },
-  mounted() {
-
-
-    document.title = `Фин операции `;
-    const a = window.location.href;
-    this.current_date = a.substring(a.length - 7);
-    let predata = this.data["fin_counerpartie"];
-
-    let arr = this.current_date.split("-");
-    let lastday = new Date(arr[0], arr[1], 0);
-    this.num = lastday.getDate();
-
-    let num = lastday.getDate();
-    let array = [];
-    for (let i = 1; i <= num; i++) {
-      if (i <= 9) {
-        array.push(`${this.current_date}-0${i}`);
-      } else {
-        array.push(`${this.current_date}-${i}`);
-      }
-    }
-    let days = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
-
-    let data = array.map((item) => {
-      return new Date(item);
-    });
-    let send_data = data.map((item) => {
-      return days[item.getDay()];
-    });
-
-    this.send_data = send_data;
-
+  mounted(){
     let week_days = {};
-    for (let i = 1; i <= num; i++) {
-      week_days[i] = {
-        value: "",
-        user_id: "",
-      };
-    }
-    // перебор групп типа ПОСТУПЛЕНИЯ, Доходы ЦС
-    for (let group in predata) {
-      predata[group].plan = "";
-      predata[group].date_week = week_days;
+    
+    // получаем количество дней в выбранном месяце
+    let page_date = window.location.href.substring(window.location.href.length - 7);
+    let split_date = page_date.split("-");
+    let lastday = new Date(split_date[0], split_date[1], 0);
+    let days = lastday.getDate();
 
-      // Перебор всех компаний внетри Доходы ЦС
-      for (let company in predata[group]?.companies) {
-        predata[group].companies[company].week_days = week_days;
-        predata[group].companies[company].name = company;
-        predata[group].companies[company].plan = "";
-      }
+    for (let i = 1; i <= days; i++ ){
+        week_days[i] = {
+          "user": this.last_name,
+          "val": 0
+        }
     }
-    this.data = predata;
-    console.log(this.data)
+
+    for (let group in this.data){
+        this.data[group]['week_days'] = week_days;
+        for (let company in this.data[group]?.companies){
+          this.data[group]['companies'][company]['week_days'] = week_days;
+        }
+    }
+
+    this.days = days;
   },
   methods: {
+    TdToInp(elem_id, val){
 
+      let input_elements = document.getElementsByTagName('input');
+      if (input_elements.length >= 1){
+        return
+      }
+
+      // получаем текущий элемент, он уже, можно сказать, предыдущий
+      let prev_el = document.getElementById(elem_id);
+
+      console.log({
+        'id': elem_id,
+        'value': val
+      })
+      // создаем инпут, которым подменим контент старого элемент
+      let input = document.createElement('input')
+      input.id = elem_id + "_input";
+      input.value = val;
+      input.addEventListener('keyup', function(event) {
+        if(event.key === "Enter"){
+          console.log(elem_id);
+
+          // td-шка старая
+          let new_el = document.getElementById(elem_id); 
+          new_el.innerHTML = event.target.value;
+        }
+      })
+
+      prev_el.innerHTML = ""; //`<input value="${val}" id=${elem_id} onkeyup.enter=>`;
+      prev_el.insertAdjacentElement('beforeend', input);
+      
+      this.last_clicked_id = elem_id;
+
+    },
+    Collapse(){
+        console.log(111)
+        this.visible = !this.visible
+    },
     getData(){
         let data = {file_name : this.current_date}
         api.getIncomes(data)
@@ -280,13 +245,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.button {
+    width: 10%;
+    background: rgb(168, 168, 168);
+    color: white;
+    
+}
+.month{
+    padding-left: 2%;
+    font-size: 18px;
+}
 .col1 {
   background: rgb(243, 243, 243);
   font-family: "Montserrat", sans-serif;
   color: black;
   font-weight: bold;
   text-align: left !important;
-  padding-left: 2% !important;
 }
 .col2 {
   background: rgb(243, 243, 243);
@@ -301,6 +275,7 @@ input {
 }
 table {
   content-visibility: auto;
+  margin-top: 1%;
 }
 th {
   font-weight: 400 !important;

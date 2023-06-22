@@ -1,7 +1,8 @@
 <template>
   <div>
     <Loader :loader="loader"></Loader>
-    <UpNavbar />
+    
+    <UpNavbar/>
     <router-view />
     <Authorization style="z-index: 999999999999999999999999999999999999999 !important" />
   </div>
@@ -27,13 +28,18 @@ export default {
   data() {
     return {
       loader: false,
-      accessToken: localStorage.getItem('accessToken')
+      accessToken: localStorage.getItem('accessToken'),
     }
   },
   computed: {
     ...mapState({
       token: (state) => state.auth.user.token,
     }),
+    // YUI(){
+    //   if(!window.location.href.includes('fin_operation')){
+    //     return false
+    //   } return true
+    // }
 
 
   },
@@ -48,6 +54,7 @@ export default {
   mounted() {
     // console.log(this.token)
     localStorage.setItem('accessToken', JSON.stringify(this.token))
+    if (!window.location.href.includes('fin_operation')){
     // this.loader = true
     this.$store.dispatch(actionTypes.getStaffGroups)
     this.$store.dispatch('getClient');
@@ -55,7 +62,7 @@ export default {
     this.$store.dispatch(cpActionTypes.getCounterparties, { url: 'personal/counterparties/?page_size=500', clear: true })
     this.$store.dispatch(userActionTypes.getUsers, { url: 'personal/users/?page_size=500', clear: true })
     this.$store.dispatch(ccActionTypes.getCargoCode, { url: 'wagon-park/cargo/?page_size=500', clear: true })
-
+    }
     this.loader = false
 
   }
