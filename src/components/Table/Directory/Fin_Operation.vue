@@ -123,7 +123,8 @@ export default {
       })
 
       prev_el.innerHTML = ""; //`<input value="${val}" id=${elem_id} onkeyup.enter=>`;
-      prev_el.insertAdjacentElement('beforeend', input);
+      // появление фокуса при выборе клетки
+      prev_el.insertAdjacentElement('beforeend', input).focus();
       
       this.last_clicked_id = elem_id;
 

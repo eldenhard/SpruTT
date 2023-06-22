@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="visibleElement">
     <Modal_Notification :modal_notifications="modal_notifications" @close="close_modal" :data="data"/>
 
     <b-navbar toggleable="lg" type="light" style="background: #F8F9FA !important;">
@@ -80,6 +80,13 @@ export default {
     }
   },
   computed: {
+    visibleElement(){
+     if(!window.location.href.includes('fin_operation')){
+        return true
+     } else {
+      return false
+     }
+    },
     notification(){
       if(this.count == 0){
         return '@/assets/bell.png'
