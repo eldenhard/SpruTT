@@ -100,6 +100,13 @@ const patchpps = (id,data) => {
 const deletePPS = (id) => {
     return api.delete(`${finance}/pps/${id}`)
 }
+
+const saveIncomes = (data) => {
+    return api.post(`${documents}/incomes/tables/`, data)
+}
+const getIncomes = (data) => {
+    return api.get(`${documents}/incomes/tables/`, {params : data})
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -135,5 +142,8 @@ export default {
     patchpps,
     getPaginationPPS,
     deletePPS,
+    // ФИн служба
+    saveIncomes,
+    getIncomes,
 }
 
