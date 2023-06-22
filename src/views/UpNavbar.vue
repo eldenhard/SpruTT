@@ -75,8 +75,9 @@ export default {
   },
  
   mounted(){
-    this.getTasks()
-    
+    if (!window.location.href.includes('fin_operation')){
+      this.getTasks();
+    }
   },
   computed: {
     notification(){
