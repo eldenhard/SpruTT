@@ -11,6 +11,9 @@
         <th>{{day}}</th>
       </template>
     </tr>
+    <template v-for="day_of_week in send_data">
+        <th :key="day_of_week.id" :class="{ weekend: isWeekend(day_of_week) }">{{ day_of_week }}</th>
+    </template>
   </thead>
   <tbody>
     <!---10 groups-->
@@ -27,7 +30,10 @@
         <td>{{ company_name }}</td>
         <td>{{ company.plan }}</td>
         <template v-for="(day, index) in company.week_days">
-          <td :key="day.id" :id="group_name +'_'+'companies' +'_' + company_name+'_'+index" @click="TdToInp(group_name +'_'+'companies' +'_' + company_name+'_'+index, day.val)">{{ day.val }}</td> 
+          <td :key="day.id"
+           :id="group_name +'_'+'companies' +'_' + company_name+'_'+index"
+            @click="TdToInp(group_name +'_'+'companies' +'_' + company_name+'_'+index, day.val)"
+            >{{ day.val }}</td> 
         </template>
       </tr>
   </template>
@@ -91,7 +97,30 @@ export default {
         }
     }
 
+
+// Создание дней недели по каждому дню месяца
+      let array = [];
+      for (let i = 1; i <= days; i++) {
+        if (i <= 9) {
+          array.push(`${page_date}-0${i}`);
+        } else {
+          array.push(`${page_date}-${i}`);
+        }
+      }
+      let day_week = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+
+
+      let data = array.map((item) => {
+        return new Date(item);
+      });
+      let send_data = data.map((item) => {
+        return day_week[item.getDay()];
+      });
+      
+    this.send_data = send_data;
     this.days = days;
+
+
   },
   methods: {
     TdToInp(elem_id, val){
@@ -110,6 +139,7 @@ export default {
       })
       // создаем инпут, которым подменим контент старого элемент
       let input = document.createElement('input')
+      input.setAttribute('class', 'inp_block')
       input.id = elem_id + "_input";
       input.value = val;
       input.addEventListener('keyup', function(event) {
@@ -246,6 +276,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
 .button {
     width: 10%;
     background: rgb(168, 168, 168);
