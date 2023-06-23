@@ -1,6 +1,10 @@
 <template>
   <div>
-
+<p class="explanation"> * Для редактирования ячейки - кликните на ячейку <br>
+* Для сохранения ячейки - нажмите Enter <br>
+* Выбранный месяц - <b>{{ new Date(current_date + '-01').toLocaleString('default', { month: 'long' }) }}</b> <br>
+* Для того чтобы узнать кто последний редактировал ячейку - кликните правой кнопкой мыши на эту ячейку
+</p>
     <h4 class="month">{{ mounth_report }}</h4>
 <table border="1">
   <thead>
@@ -19,20 +23,25 @@
     <!---10 groups-->
     <template v-for="(group, group_name) in data">
       <tr>
-        <td >{{ group_name }}</td>
-        <td >{{ group.plan }}</td>
+        <td class="col1">{{ group_name }}</td>
+        <!-- сумма плана -->
+        <td class="col2">{{ group.plan | format}}</td>
         <template v-for="day in group.week_days">
-          <td >{{ day.val }}</td> 
+          <td class="col2">{{ day.val | format}}</td> 
         </template>
       </tr>
       <!--companies names-->
       <tr v-for="(company, company_name) in group.companies" :key="company_name.id">
-        <td>{{ company_name }}</td>
-        <td>{{ company.plan }}</td>
+        <td >{{ company_name }}</td>
+        <td 
+          :id="group_name +'_'+'companies' +'_' + company_name+'_'+'plan'"
+          @click="PlanToInp(group_name +'_'+'companies' +'_' + company_name+'_'+'plan', company.plan )"
+        >{{ company.plan | format}}</td>
         <template v-for="(day, index) in company.week_days">
-          <td :key="day.id"
+          <td :key="day.id" 
+          @contextmenu="WhoCreated(day.user, group_name +'_'+'companies' +'_' + company_name+'_'+index)"
            :id="group_name +'_'+'companies' +'_' + company_name+'_'+index"
-            @click="TdToInp(group_name +'_'+'companies' +'_' + company_name+'_'+index, day.val)"
+            @click="TdToInp(group_name +'_'+'companies' +'_' + company_name+'_'+index, day.val, day.user)"
             >{{ day.val }}</td> 
         </template>
       </tr>
@@ -65,13 +74,15 @@ export default {
   computed: {
     ...mapState({
       uid: (state) => state.auth.uid,
-      last_name: (state) => state.auth.user.user.last_name
+      last_name: (state) => state.auth.user.user.last_name,
+      first_name: (state) => state.auth.user.user.first_name
+
     }),
-    WhoUser() {
-      if (this.uid == 202 || this.uid == 1 || this.uid == 102) {
-        return false;
-      }
-      return true;
+ 
+  },
+  filters: {
+    format(value) {
+      return String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
     },
   },
   mounted(){
@@ -82,10 +93,10 @@ export default {
     let split_date = page_date.split("-");
     let lastday = new Date(split_date[0], split_date[1], 0);
     let days = lastday.getDate();
-
+    this.current_date = page_date
     for (let i = 1; i <= days; i++ ){
         week_days[i] = {
-          "user": this.last_name,
+          "user": "",
           "val": 0
         }
     }
@@ -123,7 +134,87 @@ export default {
 
   },
   methods: {
-    TdToInp(elem_id, val){
+    WhoCreated(user, id){
+      event.preventDefault()
+      document.getElementById(id).style.background = '#D0ECFC'
+      setTimeout(() => {
+        document.getElementById(id).style.background = 'none'
+      }, 2500)
+      setTimeout(() => {
+        alert(user)
+      }, 1000)
+     
+      console.log(this.data)
+    },
+    PlanToInp(elem_id, val, user){
+      console.log( this.uid == 102)
+      if(this.uid == 202 ||  this.uid == 102 ||this.uid ==1 || this.uid == 30){
+        let data = JSON.parse(JSON.stringify(this.data))
+  
+     
+  let input_elements = document.getElementsByTagName('input');
+  if (input_elements.length >= 1){
+    return
+  }
+  
+    // получаем текущий элемент, он уже, можно сказать, предыдущий
+  let prev_el = document.getElementById(elem_id);
+
+  // создаем инпут, которым подменим контент старого элемент
+  let input = document.createElement('input')
+  input.id = elem_id + "_input";
+  input.value = val;
+//  Вносить план может только Орлов id: 202
+
+
+  
+
+  input.addEventListener('keyup', function(event) {
+    if(event.key === "Enter"){
+    let path_arr = elem_id.split("_")
+    let group = path_arr[0]
+    let companies = path_arr[1]
+    let name_companie = path_arr[2]
+
+
+    let income_group = data[group].plan
+    let prev_value = data[group][companies][name_companie]['plan']
+    let new_value = Number(input.value)
+    // Сохранение значения плана по группе
+    data[group].plan = income_group - prev_value + new_value
+    // сохранение значения в план по дню месяца
+    data[group][companies][name_companie].plan = input.value
+
+    let prev_val_operation = data['ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ']['plan'];
+    data['ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ']['plan'] = prev_val_operation - prev_value + new_value; 
+
+    // Сохранение итого по группе
+      // td-шка старая
+      let new_el = document.getElementById(elem_id); 
+      new_el.innerHTML = event.target.value;
+
+      document.getElementById(elem_id).style.background = "#DCFCC6"
+      setTimeout(() => {
+        document.getElementById(elem_id).style.background = "none"
+      }, 2500)
+    }
+
+  })
+
+  prev_el.innerHTML = ""; 
+  // появление фокуса при выборе клетки
+  prev_el.insertAdjacentElement('beforeend', input).focus();
+  
+  this.last_clicked_id = elem_id;
+  this.data = data
+      }
+     
+      
+    },
+
+    TdToInp(elem_id, val, user){
+      let data = JSON.parse(JSON.stringify(this.data))
+      let last_name = this.last_name + " " + this.first_name
 
       let input_elements = document.getElementsByTagName('input');
       if (input_elements.length >= 1){
@@ -133,36 +224,53 @@ export default {
       // получаем текущий элемент, он уже, можно сказать, предыдущий
       let prev_el = document.getElementById(elem_id);
 
-      console.log({
-        'id': elem_id,
-        'value': val
-      })
       // создаем инпут, которым подменим контент старого элемент
       let input = document.createElement('input')
       input.setAttribute('class', 'inp_block')
       input.id = elem_id + "_input";
       input.value = val;
+
+    console.log(last_name)
       input.addEventListener('keyup', function(event) {
         if(event.key === "Enter"){
-          console.log(elem_id);
+          // console.log(data[group]['week_days'][col_idx] - data[group][companies][name_companie]['week_days'][col_idx].val + input.value)  
+          console.log(elem_id)
+          let pathArr = elem_id.split('_')
+          let group = pathArr[0]
+          let companies = pathArr[1]
+          let name_companie = pathArr[2]
+          let col_idx = pathArr[3]
+          let income_cs = data[group]['week_days'][col_idx].val
+          let prev_value = data[group][companies][name_companie]['week_days'][col_idx].val
+          let new_value = Number(input.value)
+          // console.log(income_cs, prev_value, new_value)
+          // ДОход группы по дням
+          data[group]['week_days'][col_idx].val = income_cs - prev_value + new_value
+          // console.log(income_cs)
+          data[group][companies][name_companie]['week_days'][col_idx].val = input.value
+          data[group][companies][name_companie]['week_days'][col_idx].user = last_name
 
+          let prev_val_operation = data['ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ']['week_days'][col_idx].val;
+          data['ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ']['week_days'][col_idx].val = prev_val_operation - prev_value + new_value; 
+          
           // td-шка старая
           let new_el = document.getElementById(elem_id); 
           new_el.innerHTML = event.target.value;
+          document.getElementById(elem_id).style.background = "#DCFCC6"
+          setTimeout(() => {
+            document.getElementById(elem_id).style.background = "none"
+          }, 2500)
         }
       })
 
-      prev_el.innerHTML = ""; //`<input value="${val}" id=${elem_id} onkeyup.enter=>`;
+      prev_el.innerHTML = ""; 
       // появление фокуса при выборе клетки
       prev_el.insertAdjacentElement('beforeend', input).focus();
       
       this.last_clicked_id = elem_id;
+      this.data = data
+    },
 
-    },
-    Collapse(){
-        console.log(111)
-        this.visible = !this.visible
-    },
     getData(){
         let data = {file_name : this.current_date}
         api.getIncomes(data)
@@ -172,99 +280,7 @@ export default {
             console.log(error)
         })
     },
-    save_data(cp, col_idx, value, group) {
-        console.log(this.last_name)
-      const arr = JSON.parse(JSON.stringify(this.data));
-      console.log(cp, col_idx, value, group);
-      arr[group]["companies"][cp]["week_days"][col_idx]["value"] = value;
-      arr[group]["companies"][cp]["week_days"][col_idx]["user_id"] = this.last_name;
 
-      this.data = arr;
-      let arr1 = [];
-      // Получение итого доходы по дню
-      for (let i in this.data[group]["companies"]) {
-        arr1.push(
-          Number(this.data[group]["companies"][i]["week_days"][col_idx].value)
-        );
-      }
-      let result = arr1.reduce((acc, item) => {
-        return acc + item;
-      });
-    //   Итог по группе
-      this.data[group]["date_week"][col_idx].value = result;
-      let date_week_total = []
-
-      for(let i in this.data){
-        if(i == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ'){
-            continue
-        }
-        date_week_total.push(Number(this.data[i]['date_week'][col_idx].value))
-      }
-      this.data['ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ']['date_week'][col_idx].value = date_week_total.reduce((acc,item) => {return acc += item})
-      let data = {
-        'file_name' : this.current_date,
-        'content' : this.data
-      }
-     
-      api.saveIncomes(data)
-      .then(response => {
-        console.log(response)
-      }).catch(error => {
-        console.log(error)
-      })
-    //   for(let i in this.data){
-    //     if(i == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ'){
-    //         continue
-    //     }
-    //    console.log(this.data[i]['companies']['cp'])
-    //   }
-    },
-
-
-    save_plan(cp, value, group) {
-      let arr = JSON.parse(JSON.stringify(this.data));
-      arr[group]["companies"][cp]["plan"] = value;
-      this.data = arr;
-      let arr1 = [];
-
-      for (let i in this.data[group]["companies"]) {
-        arr1.push(Number(this.data[group]["companies"][i]["plan"]));
-      }
-      let result = arr1.reduce((acc, item) => {
-        return acc + item;
-      });
-
-      this.data[group]['plan'] = result
-    //   Итоговый план
-    let arr_total = []
-      for(let i in this.data){
-        if(i == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ'){
-            continue
-        }
-        arr_total.push(Number(this.data[i].plan))
-      }
-      this.data['ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ']['plan'] = arr_total.reduce((acc,item) => {return acc += item})
-
-    //   api.saveIncomes(this.current_date, this.data)
-    //   .then(response => {
-    //     console.log(response)
-    //   }).catch(error => {
-    //     console.log(error)
-    //   })
-
-      // Получение итого доходы по дню
-    //   for (let i in this.data[group]["companies"]) {
-    //     arr1.push(
-    //       Number(this.data[group]["companies"][i]["week_days"][col_idx].value)
-    //     );
-    //   }
-    //   let result_day_week = arr1.reduce((acc, item) => {
-    //     return acc + item;
-    //   });
-    //   this.data[group]["date_week"][col_idx].value = result;
-    },
-
-    DataChange() {},
     isWeekend(data) {
       if (data == "ВС" || data == "СБ") {
         return true;
@@ -277,12 +293,8 @@ export default {
 
 <style lang="scss" scoped>
 
-
-.button {
-    width: 10%;
-    background: rgb(168, 168, 168);
-    color: white;
-    
+.explanation{
+  padding: 2% 0 0 2%;
 }
 .month{
     padding-left: 2%;
