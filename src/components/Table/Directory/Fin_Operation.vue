@@ -392,16 +392,16 @@ export default {
           };
           console.log(weight)
           console.log(data)
-          // api.patchIncomes(weight).then((response) => {
-          //   api
-          //     .getIncomes(current_date + ".json")
-          //     .then((response) => {
-          //       data = response.data;
-          //     })
-          //     .catch((error) => {
-          //       console.log(error);
-          //     });
-          // });
+          api.patchIncomes(weight).then((response) => {
+            api
+              .getIncomes(current_date + ".json")
+              .then((response) => {
+                data = response.data;
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          });
           // console.log(weight)
         }
 
