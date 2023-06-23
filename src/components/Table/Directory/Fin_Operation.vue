@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loader :loader="loader" />
     <div class="content_header">
       <p class="explanation">
         * Для редактирования ячейки - кликните на ячейку <br />
@@ -133,11 +134,13 @@ import fin_counterpartie from "@/helpers/fin_counterpartie";
 import InputLoader from "../../ui/InputLoader.vue";
 import api from "@/api/directory.js";
 import { mapState } from "vuex";
+import Loader from "@/components/loader/loader.vue";
 export default {
-  components: { InputLoader },
+  components: { InputLoader,Loader },
   data() {
     return {
       days: "",
+      loader: false,
       send_data: "",
       data: fin_counterpartie.fin_counerpartie,
       current_date: "",
@@ -208,6 +211,7 @@ export default {
 
     this.send_data = send_data;
     this.days = days;
+
   },
   methods: {
     collapse(val){
@@ -222,9 +226,11 @@ export default {
     }
   },
     check_data() {
+      this.loader = true
       api
         .getIncomes(this.current_date + ".json")
         .then((response) => {
+          this.loader = false
           this.data = response.data;
         })
         .catch((error) => {
@@ -233,6 +239,7 @@ export default {
         });
     },
     create_table() {
+      this.loader = true
       let data = {
         file_name: this.current_date + ".json",
         content: this.data,
@@ -240,9 +247,13 @@ export default {
       api
         .saveIncomes(data)
         .then((response) => {
+          this.loader = false
+
           console.log(response);
         })
         .catch((error) => {
+          this.loader = false
+
           console.log(error);
         });
     },
