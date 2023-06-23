@@ -15,23 +15,14 @@
         Загрузить
       </button>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Название файла</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in table_Data" :key="item.id">
-          <td @click="OpenTable(item)">{{ item }}</td>
-        </tr>
-      </tbody>
-    </table>
+    
   </div>
 </template>
 <script>
 import api from "@/api/directory";
 import Loader from "@/components/loader/loader.vue";
+import fin_counterpartie from "@/helpers/fin_counterpartie";
+
 export default {
   components: { Loader },
   data() {
@@ -39,26 +30,15 @@ export default {
       month: "",
       table_Data: "",
       loader: false,
+      data: fin_counterpartie,
+
     };
   },
-  mounted() {
-    this.loader = true
-    api
-      .getIncomes()
-      .then((response) => {
-        this.loader = false
-        this.table_Data = response.data;
-      })
-      .catch((error) => {
-        this.loader = false
-        console.log(error);
-      });
-  },
+ 
   methods: {
-    OpenTable(data){
-        window.open("/fin_operation/" + `${data}`, "_blank");
-    },
+  
     getDayOnMonth() {
+    
       let id = this.month;
       window.open("/fin_operation/" + `${id}`, "_blank");
     },

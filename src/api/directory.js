@@ -105,7 +105,10 @@ const saveIncomes = (data) => {
     return api.post(`${documents}/incomes/tables/`, data)
 }
 const getIncomes = (data) => {
-    return api.get(`${documents}/incomes/tables/`, {params : data})
+    return api.get(`${documents}/incomes/tables/?file_name=${data}` )
+}
+const patchIncomes = (data) => {
+    return api.patch(`${documents}/incomes/tables/` ,data)
 }
 export default {
     getAllcounterparties,
@@ -145,5 +148,6 @@ export default {
     // ФИн служба
     saveIncomes,
     getIncomes,
+    patchIncomes,
 }
 
