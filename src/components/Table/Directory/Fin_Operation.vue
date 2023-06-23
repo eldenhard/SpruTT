@@ -292,7 +292,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+td,th{
+  border: 1px solid black
+}
 .explanation{
   padding: 2% 0 0 2%;
 }

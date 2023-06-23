@@ -72,6 +72,7 @@ export default {
   margin-right: auto;
   button {
     background: green;
+    margin-top: 1%;
   }
 }
 table{
