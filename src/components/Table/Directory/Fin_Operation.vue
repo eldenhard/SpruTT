@@ -41,7 +41,7 @@
         <!---10 groups-->
         <template v-for="(group, group_name) in data">
           <tr>
-            <td class="col1">{{ group_name }}</td>
+            <td class="col1" @click="visibleGroup(group_name)">{{ group_name }}{{ collapse(group_name) }}</td>
             <!-- сумма плана -->
             <td class="col2">{{ group.plan | format }}</td>
             <template v-for="day in group.week_days">
@@ -51,7 +51,7 @@
           <!--companies names-->
           <tr
             v-for="(company, company_name) in group.companies"
-            :key="company_name.id"
+            :key="company_name.id" v-show="visible_row"
           >
             <td>{{ company_name }}</td>
             <td
@@ -144,6 +144,7 @@ export default {
       visible: false,
       mounth_report: "",
       last_clicked_id: "",
+      visible_row: true,
     };
   },
   computed: {
@@ -152,6 +153,7 @@ export default {
       last_name: (state) => state.auth.user.user.last_name,
       first_name: (state) => state.auth.user.user.first_name,
     }),
+
   },
   filters: {
     format(value) {
@@ -208,6 +210,17 @@ export default {
     this.days = days;
   },
   methods: {
+    collapse(val){
+      // let symbol = &#9660;
+      if(val == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ' && this.visible_row){
+        return '  🔻'
+      } if(val == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ' && !this.visible_row){return '  🔺'}
+    },
+  visibleGroup(name){
+    if(name == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ'){
+        this.visible_row = !this.visible_row
+    }
+  },
     check_data() {
       api
         .getIncomes(this.current_date + ".json")
