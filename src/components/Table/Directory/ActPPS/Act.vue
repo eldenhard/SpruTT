@@ -1,7 +1,7 @@
 <template>
   <div>
     <Loader :loader="loader" />
-    <h3 class="explanation" style="font-size: 17px;">
+    <h3 class="explanation" style="font-size: 17px; margin-top: -1%;">
        Перед использованием этого раздела обязательно выполнить <a @click="instruction = !instruction">следующие действия с браузером</a><br>
     </h3>
     <!-- <h3 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть инструкцию по браузеру' : 'Смотреть инструкцию  по браузеру' }}</h3> -->

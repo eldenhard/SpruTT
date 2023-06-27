@@ -26,14 +26,14 @@
           <th rowspan="2">Контрагент</th>
           <th rowspan="2">План</th>
           <template v-for="day in days">
-            <th :key="day.id" v-show="rrr == thrd(day)" style="position: relative;">
+            <th :key="day.id" v-show=" thrd(day)" style="position: relative;">
               {{ day }} 
-              <button class="collapsed" @click="rrr = !rrr" >+</button></th>
+              <button class="collapsed" @click="CollapseTable()" >+</button></th>
           </template>
         </tr>
         <template v-for="day_of_week in send_data">
           <th
-            v-show="rrr == thrd(day_of_week)"
+            v-show=" thrd(day_of_week)"
             :key="day_of_week.id"
             :class="{ weekend: isWeekend(day_of_week) }"
             
@@ -51,7 +51,7 @@
             <!-- сумма плана -->
             <td class="col2">{{ group.plan | format }} </td>
             <template v-for="day, day_index in group.week_days">
-              <td class="col2" v-show="rrr == thrd(day_index)">{{ day.val | format }}</td>
+              <td class="col2" v-show=" thrd(day_index)">{{ day.val | format }}</td>
             </template>
           </tr>
           <!--companies names-->
@@ -88,7 +88,7 @@
             </td>
             <template v-for="(day, index) in company.week_days">
               <td
-              v-show="rrr == thrd(index)"
+              v-show=" thrd(index)"
                 :key="day.id"
                 @contextmenu="WhoCreated(day.user,group_name +'_' +
                       'companies' +
@@ -223,15 +223,16 @@ export default {
   },
   methods: { 
   thrd(index){
-
-      return index == this.today 
+     return index == this.today 
+     
     
   },
    
   CollapseTable(){
-    // this.rrr = this.data
-// this.rrr = !this.rrr
-  // this.rrr = !this.rrr
+  let all_th = document.querySelectorAll('th')
+all_th.forEach(item => {
+  console.log(item.style.display = 'block')
+})
 
   },
     collapse(val){
@@ -511,10 +512,11 @@ export default {
 <style lang="scss" scoped>
 .collapsed{
   position: absolute;
+  z-index: 1 !important;
   width: 10px !important;
   height: 10px !important;
   background: rgb(50, 50, 50);
-  top: 0;
+  top:0;
   right: 0;
   padding: 5px 10px 10px 12px;
   text-align: center;
