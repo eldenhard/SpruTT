@@ -20,116 +20,104 @@
       </button>
     </div>
     <h4 class="month">{{ mounth_report }}</h4>
-    <table border="1" id="theTable">
-      <thead>
-        <tr>
-          <th rowspan="2">Контрагент</th>
-          <th rowspan="2">План</th>
-          <template v-for="day in days">
-            <th :key="day.id" v-show=" thrd(day)" style="position: relative;">
-              {{ day }} 
-              <button class="collapsed" @click="CollapseTable()" >+</button></th>
-          </template>
-        </tr>
-        <template v-for="day_of_week in send_data">
-          <th
-            v-show=" thrd(day_of_week)"
-            :key="day_of_week.id"
-            :class="{ weekend: isWeekend(day_of_week) }"
-            
-          >
-            {{ day_of_week }}
-            
-          </th>
-        </template>
-      </thead>
-      <tbody>
-        <!---10 groups-->
-        <template v-for="(group, group_name) in data">
+    <div>
+      <table border="1" id="theTable">
+        <thead>
           <tr>
-            <td class="col1" @click="visibleGroup(group_name)">{{ group_name }}{{ collapse(group_name) }}</td>
-            <!-- сумма плана -->
-            <td class="col2">{{ group.plan | format }} </td>
-            <template v-for="day, day_index in group.week_days">
-              <td class="col2" v-show=" thrd(day_index)">{{ day.val | format }}</td>
+            <th rowspan="2">Контрагент</th>
+            <th rowspan="2">План</th>
+            <template v-for="day in days">
+              <!-- v-show=" thrd(day)" -->
+              <th :key="day.id" v-show="tyu == true ? tyu : thrd(day)" style="position: relative;">
+                {{ day }}
+                <button class="collapsed" @click="tyu = !tyu" v-show="day == today">{{ tyu ? '-' : '+' }}</button>
+              </th>
             </template>
           </tr>
-          <!--companies names-->
-          <tr
-            v-for="(company, company_name) in group.companies"
-            :key="company_name.id" v-show="visible_row"
-          >
-            <td>{{ company_name }}</td>
-            <td
-          
-              :id="
-                group_name +
+          <template v-for="day_of_week in send_data">
+            <!--   v-show=" thrd(day_of_week)" -->
+            <th v-show="tyu == true ? tyu : thrd(day_of_week)" :key="day_of_week.id"
+              :class="{ weekend: isWeekend(day_of_week) }">
+              {{ day_of_week }}
+
+            </th>
+          </template>
+        </thead>
+        <tbody>
+          <!---10 groups-->
+          <template v-for="(group, group_name) in data">
+            <tr>
+              <td class="col1" @click="visibleGroup(group_name)">{{ group_name }}{{ collapse(group_name) }}</td>
+              <!-- сумма плана -->
+              <td class="col2">{{ group.plan | format }} </td>
+              <template v-for="day, day_index in group.week_days">
+                <!--  v-show=" thrd(day_index)" -->
+                <td class="col2" v-show="tyu == true ? tyu : thrd(day_index)">{{ day.val | format }}</td>
+              </template>
+            </tr>
+            <!--companies names-->
+            <tr v-for="(company, company_name) in group.companies" :key="company_name.id" v-show="visible_row">
+              <td>{{ company_name }}</td>
+              <td :id="group_name +
                 '_' +
                 'companies' +
                 '_' +
                 company_name +
                 '_' +
                 'plan'
-              "
-              @click="
-                PlanToInp(
-                  group_name +
-                    '_' +
-                    'companies' +
-                    '_' +
-                    company_name +
-                    '_' +
-                    'plan',
-                  company.plan
-                )
-              "
-            >
-              {{ company.plan | format }}
-            </td>
-            <template v-for="(day, index) in company.week_days">
-              <td
-              v-show=" thrd(index)"
-                :key="day.id"
-                @contextmenu="WhoCreated(day.user,group_name +'_' +
-                      'companies' +
-                      '_' +
-                      company_name +
-                      '_' +
-                      index
-                  )
-                "
-                :id="
-                  group_name +
-                  '_' +
+                " @click="
+    PlanToInp(
+      group_name +
+      '_' +
+      'companies' +
+      '_' +
+      company_name +
+      '_' +
+      'plan',
+      company.plan
+    )
+    ">
+                {{ company.plan | format }}
+              </td>
+              <template v-for="(day, index) in company.week_days">
+                <!--  v-show=" thrd(index)" -->
+                <td v-show="tyu == true ? tyu : thrd(index)" :key="day.id" @contextmenu="WhoCreated(day.user, group_name + '_' +
                   'companies' +
                   '_' +
                   company_name +
                   '_' +
                   index
-                "
-                @click="
-                  TdToInp(
-                    group_name +
-                      '_' +
-                      'companies' +
-                      '_' +
-                      company_name +
-                      '_' +
-                      index,
-                    day.val,
-                    day.user
-                  )
-                "
-              >
-              
-                {{ day.val }}
-                <!-- {{ Object.values(company.week_days) }} -->
-              </td>
-            </template>
-          </tr>
-        </template>
-      </tbody>
-    </table>
+                )
+                  " :id="group_name +
+    '_' +
+    'companies' +
+    '_' +
+    company_name +
+    '_' +
+    index
+    " @click="
+    TdToInp(
+      group_name +
+      '_' +
+      'companies' +
+      '_' +
+      company_name +
+      '_' +
+      index,
+      day.val,
+      day.user
+    )
+    ">
+
+                  {{ day.val }}
+                  <!-- {{ Object.values(company.week_days) }} -->
+                </td>
+              </template>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -141,7 +129,7 @@ import api from "@/api/directory.js";
 import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
 export default {
-  components: { InputLoader,Loader },
+  components: { InputLoader, Loader },
   data() {
     return {
       days: "",
@@ -155,6 +143,7 @@ export default {
       visible_row: true,
       today: "",
       rrr: "",
+      tyu: true,
     };
   },
   computed: {
@@ -163,7 +152,6 @@ export default {
       last_name: (state) => state.auth.user.user.last_name,
       first_name: (state) => state.auth.user.user.first_name,
     }),
-  
 
   },
   filters: {
@@ -221,31 +209,43 @@ export default {
     this.days = days;
     this.today = new Date().getDate()
   },
-  methods: { 
-  thrd(index){
-     return index == this.today 
-     
-    
-  },
-   
-  CollapseTable(){
-  let all_th = document.querySelectorAll('th')
-all_th.forEach(item => {
-  console.log(item.style.display = 'block')
-})
+  methods: {
+    thrd(index) {
+      return index == this.today
 
-  },
-    collapse(val){
-      // let symbol = &#9660;
-      if(val == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ' && this.visible_row){
-        return '  🔻'
-      } if(val == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ' && !this.visible_row){return '  🔺'}
+
     },
-  visibleGroup(name){
-    if(name == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ'){
+
+    CollapseTable(day) {
+      console.log(this.tyu)
+      //   let all_td = document.querySelectorAll('*[id]')
+      //  all_td.forEach(item => {
+      //    if(item['id'] == item['id'].includes(!this.today)){
+
+      //     item['id'].style.display = 'none'
+      //    }
+      //   })
+      // if(all_td.includes('none')){
+      //   console.log(all_td)
+      // }else {
+      //   console.log('Ошибка')
+      // }
+      // if(day == this.today){
+      //   console.log(this.data)
+      // }
+
+    },
+    collapse(val) {
+      // let symbol = &#9660;
+      if (val == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ' && this.visible_row) {
+        return '  🔻'
+      } if (val == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ' && !this.visible_row) { return '  🔺' }
+    },
+    visibleGroup(name) {
+      if (name == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ') {
         this.visible_row = !this.visible_row
-    }
-  },
+      }
+    },
     check_data() {
       this.loader = true
       api
@@ -405,7 +405,7 @@ all_th.forEach(item => {
       if (input_elements.length >= 1) {
         return;
       }
-    
+
 
       // получаем текущий элемент, он уже, можно сказать, предыдущий
       let prev_el = document.getElementById(elem_id);
@@ -457,7 +457,7 @@ all_th.forEach(item => {
           let weight = {
             file_name: `${current_date}.json`,
             path: [`${group}@companies@${name_companie}@week_days@${col_idx}`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`],
-            value: [{'val' : Number(input.value), 'user' : last_name}, data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val],
+            value: [{ 'val': Number(input.value), 'user': last_name }, data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val],
           };
           // console.log(weight)
           // console.log(data)
@@ -510,37 +510,43 @@ all_th.forEach(item => {
 </script>
 
 <style lang="scss" scoped>
-.collapsed{
-  position: absolute;
-  z-index: 1 !important;
-  width: 10px !important;
-  height: 10px !important;
+.collapsed {
+  position: absolute ;
   background: rgb(50, 50, 50);
-  top:0;
+  top: 0;
   right: 0;
+  height: 100%;
+  width: 12%;
+  // margin-top: -25% !important;
   padding: 5px 10px 10px 12px;
-  text-align: center;
+  // text-align: center;
 }
+
 td,
 th {
   border: 1px solid black;
 }
+
 .explanation {
   padding: 2% 0 0 2%;
 }
+
 .month {
   padding-left: 2%;
   font-size: 18px;
 }
+
 .content_header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+
   button {
     width: 15%;
     margin-right: 2%;
   }
 }
+
 .col1 {
   background: rgb(243, 243, 243);
   font-family: "Montserrat", sans-serif;
@@ -548,20 +554,24 @@ th {
   font-weight: bold;
   text-align: left !important;
 }
+
 .col2 {
   background: rgb(243, 243, 243);
   font-family: "Montserrat", sans-serif;
   color: black;
 }
+
 input {
   width: 100% !important;
   height: 100% !important;
   border: none !important;
 }
+
 table {
   content-visibility: auto;
   margin-top: 1%;
 }
+
 th {
   font-weight: 400 !important;
   font-size: 13px !important;
