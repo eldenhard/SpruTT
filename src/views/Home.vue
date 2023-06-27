@@ -39,7 +39,7 @@
         </b-tab>
         
       </b-container>
-      <b-tab title="Данные по актам ППС" >
+      <b-tab title="Данные по актам ППС" active>
           <b-card-text>
             <Act />
           </b-card-text>
@@ -49,7 +49,7 @@
           <StandartData />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по поступлениям" active>
+      <b-tab title="Данные по поступлениям" >
         <b-card-text>
           <Fin_headerVue />
         </b-card-text>
