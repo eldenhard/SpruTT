@@ -18,7 +18,7 @@ const currentUser = (id) => {
     return api.get(`${resource}/users/` + `${id}`)
 }
 const changeUserData = (id, data) => {
-    return api.put(`${resource}/users/` + `${id}/`, data)
+    return api.patch(`${resource}/users/` + `${id}/`, data)
 }
 const getStaffGroup = () => {
     return api.get(`${resource}/groups`)

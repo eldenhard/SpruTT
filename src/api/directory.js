@@ -8,7 +8,7 @@ const getAllcounterparties = (filter_directory) => {
     return api.get(`${resource}/counterparties`, {params: filter_directory})
 }
 const putCounterparties = (id, data) => {
-    return api.put(`${resource}/counterparties/update/` + `${id}`, data)
+    return api.patch(`${resource}/counterparties/update/` + `${id}`, data)
 }
 
 
@@ -46,7 +46,7 @@ const CreateCurrentAnnex = (data) => {
     return api.post(`${documents}/contract-annex/`, data)
 }
 const ChangeCurrentAnnex = (id,data) => {
-    return api.put(`${documents}/contract-annex/${id}/`, data)
+    return api.patch(`${documents}/contract-annex/${id}/`, data)
 }
 const getCurrentContract= (id) => {
     return api.get(`${documents}/contract/${id}/`)

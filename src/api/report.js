@@ -18,7 +18,7 @@ const getReportByIdCreator = (id) => {
     return api.get(`${reports}/kpi?` + `creator=${id}`)
 }
 const saveReport = (id, data) => {
-    return api.put(`${reports}/kpi/${id}/update-report-file/`, data)
+    return api.patch(`${reports}/kpi/${id}/update-report-file/`, data)
 }
 const getLastDataReports = (id) => {
     return api.get(`${reports}/kpi/${id}/get-last-on-employee/`)
@@ -69,7 +69,7 @@ const getBDRreportByID = (id) => {
     return api.get(`${reports}/bdr/` + `${id}`)
 }
 const putBDRreportsave = (id, data) => {
-    return api.put(`${reports}/bdr-row/update/` + `${id}`, data)
+    return api.patch(`${reports}/bdr-row/update/` + `${id}`, data)
 }
 const saveBDRreport = (id, data) => {
     return api.get(`${reports}/bdr/${id}/save-file/`, data)
@@ -104,7 +104,7 @@ const getContractAnnex= (id) => {
     return api.get(`${documents}/contract-annex/${id}`)
 }
 const putContract= (id, data) => {
-    return api.put(`${documents}/contract/${id}/`, data)
+    return api.patch(`${documents}/contract/${id}/`, data)
 }
 // Финансовые отчеты
 const getFinRep1= (date_begin, date_end) => {

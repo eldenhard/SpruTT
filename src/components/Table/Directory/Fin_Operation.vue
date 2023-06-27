@@ -26,15 +26,20 @@
           <th rowspan="2">Контрагент</th>
           <th rowspan="2">План</th>
           <template v-for="day in days">
-            <th>{{ day }}</th>
+            <th :key="day.id" v-show="rrr == thrd(day)" style="position: relative;">
+              {{ day }} 
+              <button class="collapsed" @click="CollapseTable()" v-show="day === today">+</button></th>
           </template>
         </tr>
         <template v-for="day_of_week in send_data">
           <th
+            v-show="rrr == thrd(day_of_week)"
             :key="day_of_week.id"
             :class="{ weekend: isWeekend(day_of_week) }"
+            
           >
             {{ day_of_week }}
+            
           </th>
         </template>
       </thead>
@@ -44,9 +49,9 @@
           <tr>
             <td class="col1" @click="visibleGroup(group_name)">{{ group_name }}{{ collapse(group_name) }}</td>
             <!-- сумма плана -->
-            <td class="col2">{{ group.plan | format }}</td>
-            <template v-for="day in group.week_days">
-              <td class="col2">{{ day.val | format }}</td>
+            <td class="col2">{{ group.plan | format }} </td>
+            <template v-for="day, day_index in group.week_days">
+              <td class="col2" v-show="rrr == thrd(day_index)">{{ day.val | format }}</td>
             </template>
           </tr>
           <!--companies names-->
@@ -56,6 +61,7 @@
           >
             <td>{{ company_name }}</td>
             <td
+          
               :id="
                 group_name +
                 '_' +
@@ -82,6 +88,7 @@
             </td>
             <template v-for="(day, index) in company.week_days">
               <td
+              v-show="rrr == thrd(index)"
                 :key="day.id"
                 @contextmenu="
                   WhoCreated(
@@ -118,7 +125,9 @@
                   )
                 "
               >
+
                 {{ day.val }}
+                <!-- {{ Object.values(company.week_days) }} -->
               </td>
             </template>
           </tr>
@@ -148,6 +157,8 @@ export default {
       mounth_report: "",
       last_clicked_id: "",
       visible_row: true,
+      today: "",
+      rrr: "",
     };
   },
   computed: {
@@ -156,6 +167,7 @@ export default {
       last_name: (state) => state.auth.user.user.last_name,
       first_name: (state) => state.auth.user.user.first_name,
     }),
+  
 
   },
   filters: {
@@ -211,9 +223,21 @@ export default {
 
     this.send_data = send_data;
     this.days = days;
+    this.today = new Date().getDate()
+  },
+  methods: { 
+  thrd(index){
+
+      return index == this.today 
+    
+  },
+   
+  CollapseTable(){
+    // this.rrr = this.data
+// this.rrr = !this.rrr
+  // this.rrr = !this.rrr
 
   },
-  methods: {
     collapse(val){
       // let symbol = &#9660;
       if(val == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ' && this.visible_row){
@@ -232,9 +256,11 @@ export default {
         .then((response) => {
           this.loader = false
           this.data = response.data;
+          console.log('я все')
         })
         .catch((error) => {
           console.log(error);
+          this.loader = false
           this.create_table();
         });
     },
@@ -464,6 +490,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.collapsed{
+  position: absolute;
+  width: 10px !important;
+  height: 10px !important;
+  background: rgb(50, 50, 50);
+  top: 0;
+  right: 0;
+  padding: 5px 10px 10px 12px;
+  text-align: center;
+}
 td,
 th {
   border: 1px solid black;
