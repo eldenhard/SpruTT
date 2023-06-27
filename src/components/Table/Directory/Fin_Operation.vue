@@ -28,7 +28,7 @@
           <template v-for="day in days">
             <th :key="day.id" v-show="rrr == thrd(day)" style="position: relative;">
               {{ day }} 
-              <button class="collapsed" @click="CollapseTable()" v-show="day === today">+</button></th>
+              <button class="collapsed" @click="rrr = !rrr" >+</button></th>
           </template>
         </tr>
         <template v-for="day_of_week in send_data">
@@ -90,11 +90,7 @@
               <td
               v-show="rrr == thrd(index)"
                 :key="day.id"
-                @contextmenu="
-                  WhoCreated(
-                    day.user,
-                    group_name +
-                      '_' +
+                @contextmenu="WhoCreated(day.user,group_name +'_' +
                       'companies' +
                       '_' +
                       company_name +
@@ -125,7 +121,7 @@
                   )
                 "
               >
-
+              
                 {{ day.val }}
                 <!-- {{ Object.values(company.week_days) }} -->
               </td>
@@ -301,6 +297,7 @@ export default {
     },
 
     WhoCreated(user, id) {
+      console.log(user)
       event.preventDefault();
       document.getElementById(id).style.background = "#D0ECFC";
       setTimeout(() => {
@@ -312,7 +309,7 @@ export default {
 
       console.log(this.data);
     },
-    PlanToInp(elem_id, val, user) {
+    PlanToInp(elem_id, val) {
       console.log(this.uid == 102);
       if (
         this.uid == 202 ||
@@ -368,6 +365,26 @@ export default {
               document.getElementById(elem_id).style.background = "none";
             }, 2500);
           }
+          // 1 передаю значение для каждой строки
+          // 2 значение для каждой группы
+          // Общий итог
+          let weight = {
+            file_name: `${current_date}.json`,
+            path: [`${group}@companies@${name_companie}@week_days@${col_idx}@val`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`],
+            value: [Number(input.value), data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val],
+          };
+          // api.patchIncomes(weight).then((response) => {
+          //   api
+          //     .getIncomes(current_date + ".json")
+          //     .then((response) => {
+          //       data = response.data;
+          //     })
+          //     .catch((error) => {
+          //       console.log(error);
+          //     });
+          // });
+
+
         });
 
         prev_el.innerHTML = "";
@@ -379,7 +396,7 @@ export default {
       }
     },
 
-    TdToInp(elem_id, val, user) {
+    TdToInp(elem_id, val) {
       let data = JSON.parse(JSON.stringify(this.data));
       let last_name = this.last_name + " " + this.first_name;
       let current_date = this.current_date;
@@ -387,6 +404,7 @@ export default {
       if (input_elements.length >= 1) {
         return;
       }
+    
 
       // получаем текущий элемент, он уже, можно сказать, предыдущий
       let prev_el = document.getElementById(elem_id);
@@ -437,11 +455,12 @@ export default {
 
           let weight = {
             file_name: `${current_date}.json`,
-            path: [`${group}@companies@${name_companie}@week_days@${col_idx}@val`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`],
-            value: [Number(input.value), data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val],
+            path: [`${group}@companies@${name_companie}@week_days@${col_idx}`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`],
+            value: [{'val' : Number(input.value), 'user' : last_name}, data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val],
           };
-          console.log(weight)
-          console.log(data)
+          // console.log(weight)
+          // console.log(data)
+          console.log(last_name)
           api.patchIncomes(weight).then((response) => {
             api
               .getIncomes(current_date + ".json")
@@ -452,7 +471,7 @@ export default {
                 console.log(error);
               });
           });
-          // console.log(weight)
+          console.log(weight)
         }
 
         // api.patchIncomes()
