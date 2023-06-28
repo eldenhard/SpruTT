@@ -33,30 +33,10 @@
           <option value="500">500</option>
         </select>
       </label>
-      <!-- <label for="">
-        <div class="select_btn">
-          <div>
-            <input type="radio" id="one" value="code6" v-model="picked" />
-            <label for="one">&nbsp;Код 6 груза</label>
-          </div>
-          <div>
-            <input type="radio" id="two" value="name" v-model="picked" /><label
-              for="two"
-              >&nbsp;Наимен. груза</label
-            >
-          </div>
-        </div>
-        <input
-          class="textarea mini"
-          style="margin-top: -2%"
-          :type="InpType"
-          :placeholder="InpPlaceholder"
-          v-model="filter.for_cargo"
-        />
-      </label> -->
+
       <label for="">
         Контрагент <br />
-        <input type="text" class="textarea mini" />
+        <input type="text" class="textarea mini" v-model="filter.counterparty"/>
       </label>
       <label for="">
         № вагонов <br />
@@ -65,7 +45,7 @@
 
       <button
         class="button Accept mini"
-        style="width: 320px; margin-left: auto !important; float: right"
+        style="width: 320px;"
         @click="getPPS()"
       >
         Запросить
@@ -332,6 +312,7 @@ export default {
         page_size: "",
         for_cargo: "",
         wagon: "",
+        counterparty: "",
       },
       showNotify: false,
       notifyHead: "",
@@ -354,6 +335,18 @@ export default {
     ...mapState({
       cargo_code: (state) => state.cargo_code.cargo_code,
     }),
+    filter_client() {
+      if (this.counterparties.length > 1) {
+        this.ten_visible = true;
+      }
+      return this.counterparties.length > 1
+        ? this.$store.state.counterparties.counterparties.filter((item) =>
+          item.work_name
+            .toLowerCase()
+            .includes(this.counterparties.toLowerCase())
+        )
+        : "";
+    },
     filter_cargo() {
       if (this.filter.for_cargo.length > 1) {
         this.ten_visible = true;
@@ -673,11 +666,6 @@ th {
 .deleteRow:hover {
   background: lightcoral;
 }
-.filter {
-  display: flex;
-  justify-content: space-between;
-  // grid-template-columns: 1fr 1fr 1fr
-}
 
 .filter {
   margin-top: 4%;
@@ -686,15 +674,16 @@ th {
   flex-wrap: wrap;
   border: 1px solid lightgrey;
   padding: 1%;
+  gap: 2%
   label {
     color: rgb(146, 146, 146);
   }
   button {
     height: 40px;
     width: 30%;
-    margin-top: 2.5%;
+    margin-top: 1.5%;
 
-    margin-left: auto !important;
+    // margin-left: auto !important;
   }
 }
 

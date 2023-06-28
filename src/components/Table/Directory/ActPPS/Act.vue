@@ -596,7 +596,6 @@ th {
 
 input {
   border: none;
-  width: 100%;
 }
 
 .in_data {
@@ -610,7 +609,7 @@ input {
 .filter {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  // align-items: baseline;
 }
 
 .col3 {
