@@ -1,6 +1,24 @@
 <template>
   <div>
     <Loader :loader="loader" />
+    <b-modal ref="my-modal" hide-footer title="Добавление контрагента">
+      <div class="content-counter">
+
+        <label for="">Раздел <br>
+          <select  class="textarea"  v-model="group_create_counterpar">
+            <option  v-for="groups, index in data" :key="groups.id" v-show="index != 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ'">{{ index }}</option>
+          </select>
+        </label>
+        <label for="">
+          Название контрагента <br>
+          <input type="text" v-model="counterpartie" class="textarea">
+        </label>
+      </div>
+      <b-button class="mt-3" variant="danger" block @click="hideModal">Закрыть</b-button>
+      <b-button class="mt-2" variant="success" block @click="createCounterpstie()">Сохранить</b-button>
+    </b-modal>
+
+
     <div class="content_header">
       <p class="explanation">
         * Для редактирования ячейки - кликните на ячейку <br />
@@ -15,6 +33,9 @@
         * Для того чтобы узнать кто последний редактировал ячейку - кликните
         правой кнопкой мыши на эту ячейку
       </p>
+      <button class="button Accept" @click="openModal()">
+        Добавить контрагента
+      </button>
       <button class="button Accept" @click="fnExcelReport()">
         Скачать в Excel
       </button>
@@ -24,7 +45,10 @@
       <table border="1" id="theTable">
         <thead>
           <tr>
-            <th rowspan="2">Контрагент</th>
+            <th rowspan="2">Контрагент
+              <!-- <input type="text" v-model="search" style="height: 50px !important;" class="textarea"> -->
+
+            </th>
             <th rowspan="2">План</th>
             <template v-for="day in days">
               <!-- v-show=" thrd(day)" -->
@@ -45,7 +69,7 @@
         </thead>
         <tbody>
           <!---10 groups-->
-          <template v-for="(group, group_name) in data">
+          <template v-for="(group, group_name) in dataComputed">
             <tr>
               <td class="col1" @click="visibleGroup(group_name)">{{ group_name }}{{ collapse(group_name) }}</td>
               <!-- сумма плана -->
@@ -118,6 +142,13 @@
         </tbody>
       </table>
     </div>
+    <Notifications
+      :show="showNotify"
+      :header="notifyHead"
+      :message="notifyMessage"
+      :block-class="notifyClass"
+      id="notif"
+    />
   </div>
 </template>
 
@@ -128,22 +159,32 @@ import InputLoader from "../../ui/InputLoader.vue";
 import api from "@/api/directory.js";
 import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
+import Notifications from "@/components/notifications/Notifications.vue";
+import counterparties from "@/api/counterparties";
+
 export default {
-  components: { InputLoader, Loader },
+  components: { InputLoader, Loader, Notifications },
   data() {
     return {
+      group_create_counterpar: "",
+      counterpartie: "",
+      search: "",
       days: "",
       loader: false,
       send_data: "",
       data: fin_counterpartie.fin_counerpartie,
       current_date: "",
-      visible: false,
       mounth_report: "",
       last_clicked_id: "",
       visible_row: true,
       today: "",
-      rrr: "",
       tyu: true,
+
+
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
     };
   },
   computed: {
@@ -152,7 +193,23 @@ export default {
       last_name: (state) => state.auth.user.user.last_name,
       first_name: (state) => state.auth.user.user.first_name,
     }),
+dataComputed(){
+     if(this.search.length < 2){
+      return this.data
+     }
+let arr = []
+ for(let i in this.data){
+    for(let j in this.data[i]?.companies){
+      arr.push({
+        'companie_name' : j,
+        ...this.data[i]?.companies[j]
+      })
+    }
+ }
 
+return arr.filter(item => item.companie_name.includes(this.search))
+
+    }
   },
   filters: {
     format(value) {
@@ -160,6 +217,7 @@ export default {
     },
   },
   mounted() {
+   
     let week_days = {};
 
     // получаем количество дней в выбранном месяце
@@ -210,31 +268,65 @@ export default {
     this.today = new Date().getDate()
   },
   methods: {
+    createCounterpstie(){
+      let data = JSON.parse(JSON.stringify(this.data))
+      data[this.group_create_counterpar]['companies'][this.counterpartie] = {'week_days': {},'plan': 0}
+
+      let week_days = {};
+
+// получаем количество дней в выбранном месяце
+      let page_date = window.location.href.substring(window.location.href.length - 7);
+      let split_date = page_date.split("-");
+      let lastday = new Date(split_date[0], split_date[1], 0);
+      let days = lastday.getDate();
+      
+      for (let i = 1; i <= days; i++) {
+      week_days[i] = {
+        user: "",
+        val: 0,
+      };
+    }
+
+    for (let group in data) {
+      data[group]["week_days"] = week_days;
+      for (let company in data[group]?.companies) {
+        data[group]["companies"][company]["week_days"] = week_days;
+      }
+    }
+
+      this.loader = true
+      let information = {
+        file_name: this.current_date + ".json",
+        content: data,
+      };
+      // console.log(data)
+      api
+        .saveIncomes(information)
+        .then((response) => {
+          this.loader = false;
+          api.getIncomes(this.current_date + ".json")
+            .then((response) => {
+              this.loader = false
+              this.data = response.data;
+            })
+        })
+        .catch((error) => {
+          this.loader = false
+          console.log(error);
+        });
+      this.hideModal()
+    },
+
+    openModal() {
+        this.$refs['my-modal'].show()
+      },
+      hideModal() {
+        this.$refs['my-modal'].hide()
+      },
     thrd(index) {
       return index == this.today
-
-
     },
 
-    CollapseTable(day) {
-      console.log(this.tyu)
-      //   let all_td = document.querySelectorAll('*[id]')
-      //  all_td.forEach(item => {
-      //    if(item['id'] == item['id'].includes(!this.today)){
-
-      //     item['id'].style.display = 'none'
-      //    }
-      //   })
-      // if(all_td.includes('none')){
-      //   console.log(all_td)
-      // }else {
-      //   console.log('Ошибка')
-      // }
-      // if(day == this.today){
-      //   console.log(this.data)
-      // }
-
-    },
     collapse(val) {
       // let symbol = &#9660;
       if (val == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ' && this.visible_row) {
@@ -253,12 +345,36 @@ export default {
         .then((response) => {
           this.loader = false
           this.data = response.data;
-          console.log('я все')
         })
         .catch((error) => {
-          console.log(error);
           this.loader = false
-          this.create_table();
+           if(error.response.data.includes('[Errno 2] No such file or directory')){
+            console.log('я создаю таблицу')
+             this.create_table();
+          }  
+         
+            // setTimeout(() => {
+            //   this.showNotify = false;
+            // }, 2000);
+          
+          // if(error.includes('TypeError: Cannot read properties of undefined')){
+          //   console.log('я создаю таблицу')
+            //  this.create_table();
+          // } else {
+          //   this.loader = false;
+          //   return console.log('я выкидываю ошибку создания')
+          // }
+          // }
+            // this.notifyHead = "Ошибка";
+            // this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
+            // this.notifyClass = "wrapper-error";
+            // this.showNotify = true;
+            // setTimeout(() => {
+            //   this.showNotify = false;
+            // }, 2000);
+          
+          
+         
         });
     },
     create_table() {
@@ -319,6 +435,7 @@ export default {
         this.uid == 30
       ) {
         let data = JSON.parse(JSON.stringify(this.data));
+      let current_date = this.current_date;
 
         let input_elements = document.getElementsByTagName("input");
         if (input_elements.length >= 1) {
@@ -365,25 +482,34 @@ export default {
             setTimeout(() => {
               document.getElementById(elem_id).style.background = "none";
             }, 2500);
-          }
-          // 1 передаю значение для каждой строки
+
+                   // 1 передаю значение для каждой строки
           // 2 значение для каждой группы
           // Общий итог
           let weight = {
             file_name: `${current_date}.json`,
-            path: [`${group}@companies@${name_companie}@week_days@${col_idx}@val`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`],
-            value: [Number(input.value), data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val],
+            path: [`${group}@companies@${name_companie}@plan`, `${group}@plan`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@plan`],
+            value: [Number(input.value), data[group]['plan'], data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["plan"]],
           };
-          // api.patchIncomes(weight).then((response) => {
-          //   api
-          //     .getIncomes(current_date + ".json")
-          //     .then((response) => {
-          //       data = response.data;
-          //     })
-          //     .catch((error) => {
-          //       console.log(error);
-          //     });
-          // });
+           api.patchIncomes(weight).then((response) => {
+            api
+              .getIncomes(current_date + ".json")
+              .then((response) => {
+                data = response.data;
+              })
+              .catch((error) => {
+                this.notifyHead = "Ошибка";
+                  this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
+                  this.notifyClass = "wrapper-error";
+                  this.showNotify = true;
+                  setTimeout(() => {
+                    this.showNotify = false;
+                  }, 2000);
+              });
+          });
+          }
+   
+         
 
 
         });
@@ -470,6 +596,13 @@ export default {
               })
               .catch((error) => {
                 console.log(error);
+                this.notifyHead = "Ошибка";
+                  this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
+                  this.notifyClass = "wrapper-error";
+                  this.showNotify = true;
+                  setTimeout(() => {
+                    this.showNotify = false;
+                  }, 2000);
               });
           });
           console.log(weight)
@@ -510,6 +643,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.content-counter{
+  display: flex;
+  justify-content: space-between;
+    label{
+      text-align: left;
+      color: gray
+    }
+    input{
+      
+    border: #bdc3c7 0.1rem solid !important; 
+    width: 20rem !important; 
+    height: 3rem !important; 
+
+
+
+    }
+}
 .collapsed {
   position: absolute ;
   background: rgb(50, 50, 50);
