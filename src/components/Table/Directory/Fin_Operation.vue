@@ -751,6 +751,9 @@ return arr.filter(item => item.companie_name.includes(this.search))
 </script>
 
 <style lang="scss" scoped>
+tr:hover{
+  background: lightcyan;
+}
 .content-counter{
   display: flex;
   justify-content: space-between;
