@@ -98,7 +98,7 @@
 
       <div class="textarea" style="
         height: auto;
-        width: 80%;
+        width: 100%;
         position: relative;
         left: 50%;
         transform: translate(-50%, 0);

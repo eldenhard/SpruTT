@@ -68,6 +68,22 @@
         </ul>
       </div>
     </div>
+
+    <div class="textarea" style="
+        height: auto;
+        width: 100%;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0);
+      " v-show="ten_visible_client">
+        <ul id="root_tenant">
+          <li v-for="item in filter_client" :key="item.id" @click="checkCounterpartie(item.work_name)">
+            <span>{{ item.work_name }}</span>
+            <hr />
+          </li>
+        </ul>
+      </div>
+
     <p class="amount" style="padding-top: 2%">
       Всего записей: {{ total_objects }}
     </p>
@@ -293,7 +309,7 @@ export default {
   data() {
     return {
       cargo: "",
-
+      ten_visible_client: "",
       interval: 2,
       InpType: "",
       picked: "code6",
@@ -336,14 +352,12 @@ export default {
       cargo_code: (state) => state.cargo_code.cargo_code,
     }),
     filter_client() {
-      if (this.counterparties.length > 1) {
-        this.ten_visible = true;
+      if (this.filter.counterparty.length > 1) {
+        this.ten_visible_client = true;
       }
-      return this.counterparties.length > 1
+      return this.filter.counterparty.length > 1
         ? this.$store.state.counterparties.counterparties.filter((item) =>
-          item.work_name
-            .toLowerCase()
-            .includes(this.counterparties.toLowerCase())
+          item.work_name.toLowerCase().includes(this.filter.counterparty.toLowerCase())
         )
         : "";
     },
@@ -381,12 +395,16 @@ export default {
     },
   },
   methods: {
+    checkCounterpartie(value) {
+      this.filter.counterparty = value;
+    },
     checkCargo(value){
       this.filter.for_cargo = value
       this.ten_visible = false
     },
     closeWindow(){
       this.ten_visible = false
+      this.ten_visible_client = false
     },
     open_modal(id) {
       this.selected_record = id;

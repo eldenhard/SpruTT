@@ -50,6 +50,7 @@
 
             </th>
             <th rowspan="2">План</th>
+            <th rowspan="2">Прогноз</th>
             <template v-for="day in days">
               <!-- v-show=" thrd(day)" -->
               <th :key="day.id" v-show="tyu == true ? tyu : thrd(day)" style="position: relative;">
@@ -74,6 +75,7 @@
               <td class="col1" @click="visibleGroup(group_name)">{{ group_name }}{{ collapse(group_name) }}</td>
               <!-- сумма плана -->
               <td class="col2">{{ group.plan | format }} </td>
+              <td class="col2">{{ group.prognoz | format }} </td>
               <template v-for="day, day_index in group.week_days">
                 <!--  v-show=" thrd(day_index)" -->
                 <td class="col2" v-show="tyu == true ? tyu : thrd(day_index)">{{ day.val | format }}</td>
@@ -82,6 +84,7 @@
             <!--companies names-->
             <tr v-for="(company, company_name) in group.companies" :key="company_name.id" v-show="visible_row">
               <td>{{ company_name }}</td>
+              <!-- план -->
               <td :id="group_name +
                 '_' +
                 'companies' +
@@ -103,8 +106,15 @@
     ">
                 {{ company.plan | format }}
               </td>
+              <td :id="group_name +'_' +'companies' +'_' +company_name +'_' +'prognoz'"
+              @click="PlanToPrognoz(group_name +'_' +'companies' +'_' +company_name +'_' +'prognoz',company.prognoz)"
+              >
+                {{ company.prognoz }} 
+              </td>
+              <!-- week_days -->
               <template v-for="(day, index) in company.week_days">
                 <!--  v-show=" thrd(index)" -->
+               
                 <td v-show="tyu == true ? tyu : thrd(index)" :key="day.id" @contextmenu="WhoCreated(day.user, group_name + '_' +
                   'companies' +
                   '_' +
@@ -160,7 +170,7 @@ import api from "@/api/directory.js";
 import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
-import counterparties from "@/api/counterparties";
+// import counterparties from "@/api/counterparties";
 
 export default {
   components: { InputLoader, Loader, Notifications },
@@ -268,6 +278,7 @@ return arr.filter(item => item.companie_name.includes(this.search))
     this.today = new Date().getDate()
   },
   methods: {
+
     createCounterpstie(){
       let data = JSON.parse(JSON.stringify(this.data))
       data[this.group_create_counterpar]['companies'][this.counterpartie] = {'week_days': {},'plan': 0}
@@ -618,6 +629,103 @@ return arr.filter(item => item.companie_name.includes(this.search))
       this.last_clicked_id = elem_id;
       this.data = data;
       console.log(this.data);
+    },
+
+    PlanToPrognoz(elem_id, val){
+      console.log(this.uid == 102);
+      if (
+        this.uid == 202 ||
+        this.uid == 102 ||
+        this.uid == 1 ||
+        this.uid == 30
+      ) {
+        let data = JSON.parse(JSON.stringify(this.data));
+      let current_date = this.current_date;
+
+        let input_elements = document.getElementsByTagName("input");
+        if (input_elements.length >= 1) {
+          return;
+        }
+
+        // получаем текущий элемент, он уже, можно сказать, предыдущий
+        let prev_el = document.getElementById(elem_id);
+
+        // создаем инпут, которым подменим контент старого элемент
+        let input = document.createElement("input");
+        input.setAttribute("type", "number");
+
+        input.id = elem_id + "_input";
+        input.value = val;
+        //  Вносить план может только Орлов id: 202
+
+        input.addEventListener("keyup", function (event) {
+          if (event.key === "Enter") {
+            let path_arr = elem_id.split("_");
+            let group = path_arr[0];
+            let companies = path_arr[1];
+            let name_companie = path_arr[2];
+
+            let income_group = data[group].prognoz;
+            let prev_value = data[group][companies][name_companie]["prognoz"];
+            let new_value = Number(input.value);
+            // Сохранение значения плана по группе
+            data[group].prognoz = income_group - prev_value + new_value;
+            // сохранение значения в план по дню месяца
+            data[group][companies][name_companie].prognoz = input.value;
+
+            let prev_val_operation =
+              data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"];
+            data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"] =
+              prev_val_operation - prev_value + new_value;
+
+            // Сохранение итого по группе
+            // td-шка старая
+            let new_el = document.getElementById(elem_id);
+            new_el.innerHTML = event.target.value;
+
+            document.getElementById(elem_id).style.background = "#DCFCC6";
+            setTimeout(() => {
+              document.getElementById(elem_id).style.background = "none";
+            }, 2500);
+
+                   // 1 передаю значение для каждой строки
+          // 2 значение для каждой группы
+          // Общий итог
+          let weight = {
+            file_name: `${current_date}.json`,
+            path: [`${group}@companies@${name_companie}@prognoz`, `${group}@prognoz`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@prognoz`],
+            value: [Number(input.value), data[group]['prognoz'], data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"]],
+          };
+           api.patchIncomes(weight).then((response) => {
+            api
+              .getIncomes(current_date + ".json")
+              .then((response) => {
+                data = response.data;
+              })
+              .catch((error) => {
+                this.notifyHead = "Ошибка";
+                  this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
+                  this.notifyClass = "wrapper-error";
+                  this.showNotify = true;
+                  setTimeout(() => {
+                    this.showNotify = false;
+                  }, 2000);
+              });
+          });
+          }
+   
+         
+
+
+        });
+
+        prev_el.innerHTML = "";
+        // появление фокуса при выборе клетки
+        prev_el.insertAdjacentElement("beforeend", input).focus();
+
+        this.last_clicked_id = elem_id;
+        this.data = data;
+      }
     },
 
     getData() {
