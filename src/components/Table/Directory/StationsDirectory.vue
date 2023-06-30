@@ -3,8 +3,16 @@
       <Loader :loader="loader" />
 
 
-<pre>{{ scheme }}</pre>
-{{  }}
+<!-- <pre>{{ data }}</pre> -->
+<table ref="table">
+  <template v-for="(item) in data1" >
+    <tr :key="item.id" >
+      <td v-for="len in data1[0].length" :key="len.id">
+        {{ item[len-1] != null && item[len] === null && item.length != 0  ? "Итого " + item[len-1] :  item[len-1]}}
+      </td>
+    </tr>
+  </template>
+</table>
 
       <div class="air_block" style="margin-top: 15%;">
         <div class="air_block_content">
@@ -74,13 +82,24 @@ import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import debounce from "lodash.debounce";
 import api from "@/api/wagonPark";
-import scheme from '@/helpers/scheme.js'
 export default {
   components: { Loader, Notifications },
 
   data() {
     return {
-      scheme: scheme.data,
+      data1: 
+[['A', 'C1', 'st1', 10, 1],
+['A', 'C1', 'st2', 90, 1],
+['A', 'C1', null, 105, 2],
+['A', null, null, 4, 205],
+['B', 'C2', 'st1', 10, 1],
+['B', 'C2', 'st2', 90, 1],
+['B', 'C2', null, 105, 2],
+['B', null, null, 4, 205],
+[null, null, null, 4, 205]],
+
+
+      // scheme: scheme.data,
       loader: false,
       showNotify: false,
       notifyHead: "",
@@ -92,17 +111,13 @@ export default {
       station_search_data: ''
     };
   },
-  mounted(){
-    let obj = this.scheme
-    const getKeys = obj => {
-  const res = []
-  for (const key in obj) {
-    res.push(key)
-    obj[key] && Object.getPrototypeOf(obj[key]) === Object.prototype && res.push(...getKeys(obj[key]))
-  }
-  return res
-}
-console.log(getKeys(obj))  
+mounted(){
+ let table = this.$refs.table
+ let tr = table.rows[ table.rows.length - 1 ];
+ console.log(tr)
+ let f_td = tr.cells[0].innerHTML = 'ИТОГО ТАБЛИЦА'
+ console.log(f_td)
+  tr.style.background = 'lightgrey'
 },
   watch: {
     station_search(...args) {
@@ -131,12 +146,25 @@ console.log(getKeys(obj))
             });
         }
       }, 300);
+},
+filters: {
+  searchNull(value){
+    // console.log(value)
+    return value
+    // if(value?.includes('null')){
+    //   return ""
+    // }
+  }
 }
 }
 </script>
 
 
 <style scoped>
+.isRed{
+  background: rgb(255, 81, 81);
+  color: white
+}
 .dataDeparture {
     margin-top: 1%;
 }
