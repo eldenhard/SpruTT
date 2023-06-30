@@ -4,13 +4,13 @@
     <b-modal ref="my-modal" hide-footer title="Добавление контрагента">
       <div class="content-counter">
 
-        <label for="">Раздел <br>
+        <label for=""><span :class="{'isError' : ErrorCreateDivision}">Раздел</span> <br>
           <select  class="textarea"  v-model="group_create_counterpar">
             <option  v-for="groups, index in data" :key="groups.id" v-show="index != 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ'">{{ index }}</option>
           </select>
         </label>
         <label for="">
-          Название контрагента <br>
+          <span :class="{'isError' : ErrorCreateCounterpartie}">Название контрагента </span><br>
           <input type="text" v-model="counterpartie" class="textarea">
         </label>
       </div>
@@ -195,6 +195,9 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+
+      ErrorCreateCounterpartie: false,
+      ErrorCreateDivision: false
     };
   },
   computed: {
@@ -277,10 +280,30 @@ return arr.filter(item => item.companie_name.includes(this.search))
     this.days = days;
     this.today = new Date().getDate()
   },
+  watch: {
+    group_create_counterpar(){
+      if(this.group_create_counterpar != ""){
+        this.ErrorCreateDivision = false
+      }
+    },
+    counterpartie(){
+      if(this.counterpartie != ""){
+        this.ErrorCreateCounterpartie = false
+      }
+    }
+  },
   methods: {
 
     createCounterpstie(){
-      let data = JSON.parse(JSON.stringify(this.data))
+      if(this.group_create_counterpar == ""){
+        this.ErrorCreateDivision = true
+      }
+      if(this.counterpartie == ""){
+        this.ErrorCreateCounterpartie = true
+      } 
+      else{
+        console.log('z nen')
+        let data = JSON.parse(JSON.stringify(this.data))
       data[this.group_create_counterpar]['companies'][this.counterpartie] = {'week_days': {},'plan': 0}
 
       let week_days = {};
@@ -302,6 +325,8 @@ return arr.filter(item => item.companie_name.includes(this.search))
       data[group]["week_days"] = week_days;
       for (let company in data[group]?.companies) {
         data[group]["companies"][company]["week_days"] = week_days;
+        data[group]["companies"][company]["prognoz"] = 0
+
       }
     }
 
@@ -310,7 +335,7 @@ return arr.filter(item => item.companie_name.includes(this.search))
         file_name: this.current_date + ".json",
         content: data,
       };
-      // console.log(data)
+      console.log(information)
       api
         .saveIncomes(information)
         .then((response) => {
@@ -323,9 +348,17 @@ return arr.filter(item => item.companie_name.includes(this.search))
         })
         .catch((error) => {
           this.loader = false
-          console.log(error);
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = 'Ошибка создания контрагента, повторите запрос позже';
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 2000);
         });
       this.hideModal()
+      }
+     
     },
 
     openModal() {
@@ -751,6 +784,9 @@ return arr.filter(item => item.companie_name.includes(this.search))
 </script>
 
 <style lang="scss" scoped>
+.isError{
+  color: red
+}
 tr:hover{
   background: lightcyan;
 }
@@ -779,7 +815,7 @@ tr:hover{
   height: 100%;
   width: 12%;
   // margin-top: -25% !important;
-  padding: 5px 10px 10px 12px;
+  padding: 5px 10px;
   // text-align: center;
 }
 

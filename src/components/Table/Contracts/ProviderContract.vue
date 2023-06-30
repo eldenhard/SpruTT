@@ -220,6 +220,8 @@
         вперед
       </button>
     </div>
+
+
   </div>
 </template>
     

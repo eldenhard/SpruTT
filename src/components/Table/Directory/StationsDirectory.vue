@@ -1,7 +1,12 @@
 <template>
     <div>
       <Loader :loader="loader" />
-      <div class="air_block">
+
+
+<pre>{{ scheme }}</pre>
+{{  }}
+
+      <div class="air_block" style="margin-top: 15%;">
         <div class="air_block_content">
           <div class="air_block_header">
             <h5>Справочник по станциям</h5>
@@ -69,11 +74,13 @@ import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import debounce from "lodash.debounce";
 import api from "@/api/wagonPark";
+import scheme from '@/helpers/scheme.js'
 export default {
   components: { Loader, Notifications },
 
   data() {
     return {
+      scheme: scheme.data,
       loader: false,
       showNotify: false,
       notifyHead: "",
@@ -85,6 +92,18 @@ export default {
       station_search_data: ''
     };
   },
+  mounted(){
+    let obj = this.scheme
+    const getKeys = obj => {
+  const res = []
+  for (const key in obj) {
+    res.push(key)
+    obj[key] && Object.getPrototypeOf(obj[key]) === Object.prototype && res.push(...getKeys(obj[key]))
+  }
+  return res
+}
+console.log(getKeys(obj))  
+},
   watch: {
     station_search(...args) {
       this.debouncedWatch(...args);
