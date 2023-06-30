@@ -88,15 +88,16 @@ export default {
   data() {
     return {
       data1: 
-[['A', 'C1', 'st1', 10, 1],
-['A', 'C1', 'st2', 90, 1],
-['A', 'C1', null, 105, 2],
-['A', null, null, 4, 205],
-['B', 'C2', 'st1', 10, 1],
-['B', 'C2', 'st2', 90, 1],
-['B', 'C2', null, 105, 2],
-['B', null, null, 4, 205],
-[null, null, null, 4, 205]],
+  [['A', 'C1', 'st1', 10, 1],
+  ['A', 'C1', 'st2', 90, 1],
+  ['A', 'C1', null, 105, 2],
+  ['A', null, null, 4, 205],
+  ['B', 'C2', 'st1', 10, 1],
+  ['B', 'C2', 'st2', 90, 1],
+  ['B', 'C2', null, 105, 2],
+  ['B', null, null, 4, 205],
+  [null, null, null, 4, 205]
+],
 
 
       // scheme: scheme.data,
