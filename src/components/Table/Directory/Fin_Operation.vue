@@ -241,7 +241,7 @@ return arr.filter(item => item.companie_name.includes(this.search))
     let lastday = new Date(split_date[0], split_date[1], 0);
     let days = lastday.getDate();
     this.current_date = page_date;
-
+    // this.create_table()
     this.check_data();
 
     for (let i = 1; i <= days; i++) {

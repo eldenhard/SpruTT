@@ -3,7 +3,7 @@
     <Loader :loader="loader"></Loader>
     <div class="whoCurrentUser">
       <p class="currentUser">
-        {{ PersonalData.last_name }} {{ PersonalData.first_name }}
+        {{ user.user.last_name }} {{ user.user.first_name }}
       </p>
     </div>
     <hr />
@@ -18,100 +18,58 @@
               <hr style="width: 100% !important; margin: 0; padding: 0" />
               <div class="row">
                 <div class="col-md-3">
-                  <img
-                    :src="current_photo.photo"
-                    alt="фотография не загружена"
-                    width="100%"
-                    height="100%"
-                  />
+
+
+                  <button class="Accept" @click="DownloadUserPhoto()"><span v-show="LoaderToTextVisible">{{ openPhoto }}</span>
+                    <div class="sp sp-circle" v-show="LoaderButton"></div>
+                  </button>
+                  <img :src="current_photo" alt="фотография не загружена" width="100%" height="100%" v-show="photoUser"
+                    style="margin-top: 1%;" />
                 </div>
                 <div class="col-md-9">
                   <div class="bg">
-                    <input
-                      class="textarea"
-                      id="input-filter-staff1"
-                      name="Pwd"
-                      :value="PersonalData.email"
-                      style="width: 100%; background: white"
-                      readonly
-                    />
+                    <input class="textarea" id="input-filter-staff1" name="Pwd" :value="user.user.email"
+                      style="width: 100%; background: white" readonly />
                     <br />
-                    <label
-                      for="input-filter-staff1"
-                      class="label"
-                      style="margin-left: 10% !important; background: white"
-                      >Логин (E-mail)</label
-                    >
+                    <label for="input-filter-staff1" class="label"
+                      style="margin-left: 10% !important; background: white">Логин (E-mail)</label>
                   </div>
                   <div class="row">
                     <div class="col-md-4">
                       <div class="bg">
-                        <input
-                          class="textarea"
-                          id="input-filter-staff1"
-                          name="Pwd"
-                          :value="PersonalData.last_name"
-                          style="width: 100%; background: white"
-                          readonly
-                        />
+                        <input class="textarea" id="input-filter-staff1" name="Pwd" :value="user.user.last_name"
+                          style="width: 100%; background: white" readonly />
                         <br />
-                        <label
-                          for="input-filter-staff1"
-                          class="label"
-                          style="margin-left: 5% !important; background: white"
-                          >Фамилия</label
-                        >
+                        <label for="input-filter-staff1" class="label"
+                          style="margin-left: 5% !important; background: white">Фамилия</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="bg">
-                        <input
-                          class="textarea"
-                          id="input-filter-staff1"
-                          name="Pwd"
-                          :value="PersonalData.first_name"
-                          style="width: 100%; background: white"
-                          readonly
-                        />
+                        <input class="textarea" id="input-filter-staff1" name="Pwd" :value="user.user.first_name"
+                          style="width: 100%; background: white" readonly />
                         <br />
-                        <label
-                          for="input-filter-staff1"
-                          class="label"
-                          style="margin-left: 5% !important; background: white"
-                          >Имя</label
-                        >
+                        <label for="input-filter-staff1" class="label"
+                          style="margin-left: 5% !important; background: white">Имя</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="bg">
-                        <input
-                          class="textarea"
-                          id="input-filter-staff1"
-                          name="Pwd"
-                          :value="PersonalData.middle_name"
-                          style="width: 100%; background: white"
-                          readonly
-                        />
+                        <input class="textarea" id="input-filter-staff1" name="Pwd" :value="user.user.middle_name"
+                          style="width: 100%; background: white" readonly />
                         <br />
-                        <label
-                          for="input-filter-staff1"
-                          class="label"
-                          style="margin-left: 5% !important; background: white"
-                          >Отчество</label
-                        >
+                        <label for="input-filter-staff1" class="label"
+                          style="margin-left: 5% !important; background: white">Отчество</label>
                       </div>
                     </div>
                   </div>
                   <div>
-                    <div
-                      class="bg"
-                      style="background: white !important; float: left"
-                    >
-                      <input
+                    <div class="bg" style="background: white !important; float: left">
+                      <!-- <input
                         class="textarea"
                         id="input-filter-staff2"
                         name="Pwd"
-                        :value="getGroupName(personal)" 
+                        :value="getGroupName(user.user.group)" 
                         style="background: white"
                         readonly
                         v-for="personal in PersonalData.groups"
@@ -123,23 +81,12 @@
                         class="label"
                         style="background: white"
                         >Отдел</label
-                      >
-                      <br /><br />
-                      <input
-                        class="textarea"
-                        id="input-filter-staff3"
-                        name="Pwd"
-                        :value="PersonalData.post"
-                        style="background: white"
-                        readonly
-                      />
+                      > -->
+                      <!-- <br /><br /> -->
+                      <input class="textarea" id="input-filter-staff3" name="Pwd" :value="user.user.post"
+                        style="background: white" readonly />
                       <br />
-                      <label
-                        for="input-filter-staff3"
-                        class="label"
-                        style="background: white"
-                        >Должность</label
-                      >
+                      <label for="input-filter-staff3" class="label" style="background: white">Должность</label>
                     </div>
                   </div>
                 </div>
@@ -153,8 +100,7 @@
               </div>
               <hr style="width: 100% !important; margin: 0; padding: 0" />
               <br />
-              <div
-                style="
+              <div style="
                   width: 100%;
                   overflow-x: auto;
                   overflow-y: auto;
@@ -162,12 +108,8 @@
                   left: 50%;
                   transform: translate(-50%, 0);
                   margin-bottom: 3%;
-                "
-              >
-                <table
-                  class="table table-sm table-bordered table-hover"
-                  style="table-layout: fixed"
-                >
+                ">
+                <table class="table table-sm table-bordered table-hover" style="table-layout: fixed">
                   <thead class="thead-light">
                     <tr>
                       <th>ФИО</th>
@@ -222,7 +164,7 @@ import LkReport from "@/components/Table/lk/lk-report.vue";
 import lkTelegram from '@/components/Table/lk/lk-telegram.vue';
 export default {
   name: "lk",
-  components: { Loader, LkReport, lkTelegram},
+  components: { Loader, LkReport, lkTelegram },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
@@ -236,29 +178,36 @@ export default {
       emp: "",
       loader: false,
       current_photo: "",
+      photoUser: false,
+      LoaderToTextVisible: true,
+      LoaderButton: false,
+      openPhoto: 'Открыть фото',
+
     };
   },
   mounted() {
-    console.log(this.uid)
-    this.loader = true;
-    apiStaff.currentUser(this.uid).then((response) => {
-      this.current_photo = response.data;
-    });
-    api.getUsersLK(this.uid)
-    .then((response) => {
-      console.log('!!!!!!!!!!!!!!!')
-      this.PersonalData = response.data;
-      console.log( this.PersonalData)
-    });
-
     api.getManagerLK(this.uid)
-    .then((response) => {
-      this.emp = response.data.data;
-      this.loader = false;
-    });
+      .then((response) => {
+        this.emp = response.data.data;
+        this.loader = false;
+      });
     document.title = "Личный кабинет";
   },
   methods: {
+
+    DownloadUserPhoto() {
+      this.LoaderButton = true
+      this.LoaderToTextVisible = false
+      apiStaff.currentUser(this.uid).then((response) => {
+        this.LoaderButton = false
+        this.current_photo = response.data.photo;
+        this.photoUser = true
+        this.LoaderToTextVisible = true
+      }).catch(error => {
+        this.LoaderButton = false
+        this.LoaderToTextVisible = true
+      })
+    },
     Notif() {
       document.getElementById("notifications-2").style.display = "none";
     },
@@ -272,6 +221,31 @@ export default {
 
 
 <style>
+.sp-circle {
+  border: 15px rgba(255, 255, 255, 0.25) solid;
+  border-top: 15px rgb(255, 255, 255) solid;
+  border-radius: 50%;
+  -webkit-animation: spCircRot 0.6s infinite linear;
+  animation: spCircRot 0.6s infinite linear;
+}
+
+@-webkit-keyframes spCircRot {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+  }
+}
+@keyframes spCircRot {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
 .card-header {
   background: white !important;
 }
