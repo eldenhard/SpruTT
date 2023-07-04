@@ -4,13 +4,14 @@
     <b-modal ref="my-modal" hide-footer title="Добавление контрагента">
       <div class="content-counter">
 
-        <label for=""><span :class="{'isError' : ErrorCreateDivision}">Раздел</span> <br>
-          <select  class="textarea"  v-model="group_create_counterpar">
-            <option  v-for="groups, index in data" :key="groups.id" v-show="index != 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ'">{{ index }}</option>
+        <label for=""><span :class="{ 'isError': ErrorCreateDivision }">Раздел</span> <br>
+          <select class="textarea" v-model="group_create_counterpar">
+            <option v-for="groups, index in my_data" :key="groups.id"
+              v-show="index != 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ'">{{ index }}</option>
           </select>
         </label>
         <label for="">
-          <span :class="{'isError' : ErrorCreateCounterpartie}">Название контрагента </span><br>
+          <span :class="{ 'isError': ErrorCreateCounterpartie }">Название контрагента </span><br>
           <input type="text" v-model="counterpartie" class="textarea">
         </label>
       </div>
@@ -19,20 +20,49 @@
     </b-modal>
 
 
+
+    <p class="explanation">
+      * Для редактирования ячейки - кликните на ячейку <br />
+      * Для сохранения ячейки - нажмите Enter <br />
+      * Выбранный месяц -
+      <b>{{
+        new Date(current_date + "-01").toLocaleString("default", {
+          month: "long",
+        })
+      }}</b>
+      <br />
+      * Для того чтобы узнать кто последний редактировал ячейку - кликните
+      правой кнопкой мыши на эту ячейку <br>
+      * Для загрузки данных из EXCEL необходимо: <br>
+      -> нажать на выбор файла <br>
+      -> выбрать лист (соответсвующий этому отчету) <br>
+      -> нажать сохранить в таблицу
+    </p>
     <div class="content_header">
-      <p class="explanation">
-        * Для редактирования ячейки - кликните на ячейку <br />
-        * Для сохранения ячейки - нажмите Enter <br />
-        * Выбранный месяц -
-        <b>{{
-          new Date(current_date + "-01").toLocaleString("default", {
-            month: "long",
-          })
-        }}</b>
-        <br />
-        * Для того чтобы узнать кто последний редактировал ячейку - кликните
-        правой кнопкой мыши на эту ячейку
-      </p>
+
+
+      <section style="margin-left: 2%;">
+        <input type="file" @change="onChange" />
+        <xlsx-read :file="file">
+          <xlsx-sheets>
+            <template #default="{ sheets }">
+              <label for="">Выберите лист <br>
+                <select v-model="selectedSheet" style="border: 1px solid black;">
+                  <option v-for="sheet in sheets" :key="sheet" :value="sheet">
+                    {{ sheet }}
+                  </option>
+                </select>
+              </label>
+            </template>
+          </xlsx-sheets>
+          <xlsx-table :sheet="selectedSheet" v-show="false" />
+        </xlsx-read>
+
+      </section>
+
+      <button @click="saveData()" class="button Accept">Сохранить значения в таблицу</button>
+
+
       <button class="button Accept" @click="openModal()">
         Добавить контрагента
       </button>
@@ -85,7 +115,7 @@
             <tr v-for="(company, company_name) in group.companies" :key="company_name.id" v-show="visible_row">
               <td>{{ company_name }}</td>
               <!-- план -->
-              <td :id="group_name +
+              <td class="col2" :id="group_name +
                 '_' +
                 'companies' +
                 '_' +
@@ -106,15 +136,14 @@
     ">
                 {{ company.plan | format }}
               </td>
-              <td :id="group_name +'_' +'companies' +'_' +company_name +'_' +'prognoz'"
-              @click="PlanToPrognoz(group_name +'_' +'companies' +'_' +company_name +'_' +'prognoz',company.prognoz)"
-              >
-                {{ company.prognoz }} 
+              <td class="col2" :id="group_name + '_' + 'companies' + '_' + company_name + '_' + 'prognoz'"
+                @click="PlanToPrognoz(group_name + '_' + 'companies' + '_' + company_name + '_' + 'prognoz', company.prognoz)">
+                {{ company.prognoz }}
               </td>
               <!-- week_days -->
               <template v-for="(day, index) in company.week_days">
                 <!--  v-show=" thrd(index)" -->
-               
+
                 <td v-show="tyu == true ? tyu : thrd(index)" :key="day.id" @contextmenu="WhoCreated(day.user, group_name + '_' +
                   'companies' +
                   '_' +
@@ -152,13 +181,8 @@
         </tbody>
       </table>
     </div>
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-      id="notif"
-    />
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+      id="notif" />
   </div>
 </template>
 
@@ -171,9 +195,19 @@ import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 // import counterparties from "@/api/counterparties";
+import { XlsxRead, XlsxTable, XlsxSheets, XlsxJson, XlsxWorkbook, XlsxSheet, XlsxDownload } from "../../../../node_modules/vue-xlsx/dist/vue-xlsx.es"
+import fin_counterpartie_copy from "@/helpers/fin_counterpartie_copy";
 
 export default {
-  components: { InputLoader, Loader, Notifications },
+  components: {
+    InputLoader, Loader, Notifications, XlsxRead,
+    XlsxTable,
+    XlsxSheets,
+    XlsxJson,
+    XlsxWorkbook,
+    XlsxSheet,
+    XlsxDownload
+  },
   data() {
     return {
       group_create_counterpar: "",
@@ -182,7 +216,17 @@ export default {
       days: "",
       loader: false,
       send_data: "",
-      data: fin_counterpartie.fin_counerpartie,
+      my_data: fin_counterpartie_copy.fin_counerpartie,
+      standard_collection: fin_counterpartie_copy.fin_counerpartie,
+      file: null,
+      selectedSheet: null,
+      sheetName: null,
+      sheets: [{
+        name: "SheetOne",
+        data: [{ c: 2 }]
+      }],
+      collection: [{ a: 1, b: 2 }],
+      // data: fin_counterpartie_copy.fin_counerpartie,
       current_date: "",
       mounth_report: "",
       last_clicked_id: "",
@@ -197,7 +241,9 @@ export default {
       notifyClass: "",
 
       ErrorCreateCounterpartie: false,
-      ErrorCreateDivision: false
+      ErrorCreateDivision: false,
+
+      DB_STRUCTIRE: "",
     };
   },
   computed: {
@@ -206,21 +252,21 @@ export default {
       last_name: (state) => state.auth.user.user.last_name,
       first_name: (state) => state.auth.user.user.first_name,
     }),
-dataComputed(){
-     if(this.search.length < 2){
-      return this.data
-     }
-let arr = []
- for(let i in this.data){
-    for(let j in this.data[i]?.companies){
-      arr.push({
-        'companie_name' : j,
-        ...this.data[i]?.companies[j]
-      })
-    }
- }
+    dataComputed() {
+      if (this.search.length < 2) {
+        return this.my_data
+      }
+      let arr = []
+      for (let i in this.my_data) {
+        for (let j in this.my_data[i]?.companies) {
+          arr.push({
+            'companie_name': j,
+            ...this.my_data[i]?.companies[j]
+          })
+        }
+      }
 
-return arr.filter(item => item.companie_name.includes(this.search))
+      return arr.filter(item => item.companie_name.includes(this.search))
 
     }
   },
@@ -230,7 +276,7 @@ return arr.filter(item => item.companie_name.includes(this.search))
     },
   },
   mounted() {
-   
+
     let week_days = {};
 
     // получаем количество дней в выбранном месяце
@@ -241,8 +287,8 @@ return arr.filter(item => item.companie_name.includes(this.search))
     let lastday = new Date(split_date[0], split_date[1], 0);
     let days = lastday.getDate();
     this.current_date = page_date;
-    // this.create_table()
-    this.check_data();
+
+    // this.check_data();
 
     for (let i = 1; i <= days; i++) {
       week_days[i] = {
@@ -251,10 +297,10 @@ return arr.filter(item => item.companie_name.includes(this.search))
       };
     }
 
-    for (let group in this.data) {
-      this.data[group]["week_days"] = week_days;
-      for (let company in this.data[group]?.companies) {
-        this.data[group]["companies"][company]["week_days"] = week_days;
+    for (let group in this.my_data) {
+      this.my_data[group]["week_days"] = week_days;
+      for (let company in this.my_data[group]?.companies) {
+        this.my_data[group]["companies"][company]["week_days"] = week_days;
       }
     }
 
@@ -269,104 +315,284 @@ return arr.filter(item => item.companie_name.includes(this.search))
     }
     let day_week = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
 
-    let data = array.map((item) => {
+    let data1 = array.map((item) => {
       return new Date(item);
     });
-    let send_data = data.map((item) => {
+    let send_data = data1.map((item) => {
       return day_week[item.getDay()];
     });
 
     this.send_data = send_data;
     this.days = days;
     this.today = new Date().getDate()
+
+    this.check_data()
   },
   watch: {
-    group_create_counterpar(){
-      if(this.group_create_counterpar != ""){
+    group_create_counterpar() {
+      if (this.group_create_counterpar != "") {
         this.ErrorCreateDivision = false
       }
     },
-    counterpartie(){
-      if(this.counterpartie != ""){
+    counterpartie() {
+      if (this.counterpartie != "") {
         this.ErrorCreateCounterpartie = false
       }
     }
   },
   methods: {
+    saveData() {
+      if(this.selectedSheet == null){
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Необходимо выбрать лист из файла Excel";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => {
+          this.showNotify = false;
+        }, 3500);
+        return
+      } 
+        this.loader = true
+      // Проверка на наличие в БД такой структуры
+      api
+        .getIncomes(this.current_date + ".json")
+        .then((response) => {
+          // this.loader = false
+          this.DB_STRUCTIRE = response.data;
+          // console.log(this.DB_STRUCTIRE)
+          // console.log(this.my_data)
+          if (JSON.stringify(this.DB_STRUCTIRE) == JSON.stringify(this.standard_collection)) {
+            console.log(this.DB_STRUCTIRE, 'Я из БД')
+            console.log(this.standard_collection)
+            let rows = window.document.querySelectorAll("table tbody tr");
+            let data = []
+            let data_name = []
+            let all_plan = []
+            let all_counterpartie = []
+            for (let i in rows) {
+              try {
+                for (let j of rows[i].cells) {
+                  if (j?.id.includes('sjs-F')) {
+                    data.push(j)
+                  }
+                }
+              }
+              catch { }
 
-    createCounterpstie(){
-      if(this.group_create_counterpar == ""){
+            }
+            for (let i of data) {
+              all_plan.push(i.innerHTML)
+            }
+            // console.log(all_plan)
+
+
+            // Получение имен контрагентов
+            for (let i in rows) {
+              try {
+                for (let j of rows[i].cells) {
+                  if (j?.id.includes('sjs-B6') ||
+                    j?.id.includes('sjs-B7') ||
+                    j?.id.includes('sjs-B8') ||
+                    j?.id.includes('sjs-B9') ||
+                    j?.id.includes('sjs-B1') ||
+                    j?.id.includes('sjs-B2') ||
+                    j?.id.includes('sjs-B3') ||
+                    j?.id.includes('sjs-B4') ||
+                    j?.id.includes('sjs-B5')) {
+                    data_name.push(j)
+                  }
+                }
+              }
+              catch { }
+
+            }
+            for (let i of data_name) {
+              if (i.innerHTML == 'ВЫПЛАТЫ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ') break
+              else {
+                all_counterpartie.push(i.innerHTML?.replace(/["']/g, ""))
+              }
+            }
+            let counterparties = all_counterpartie.slice(3, all_counterpartie.length - 1)
+            let plan = all_plan.slice(3, all_plan.length - 1)
+            let amount_plan = plan.slice(0, counterparties.length)
+            console.log(counterparties)
+            console.log(amount_plan)
+
+            let last_key = null
+            for (let i in counterparties) {
+              if (counterparties[i] in this.my_data) {
+                last_key = counterparties[i]
+                // TODO prognoz
+                try {
+                  this.my_data[counterparties[i]]['plan'] = amount_plan[i]
+                } catch {
+                  console.log(new Error('Ошибка длины массивов'))
+                }
+              } else {
+                if (last_key != null) {
+                  if ('companies' in this.my_data[last_key]) {
+                    // TODO prognoz
+                    this.my_data[last_key]['companies'][counterparties[i]] = {
+                      'week_days': {},
+                      'plan': amount_plan[i],
+                      'prognoz': 0
+                    }
+                  }
+                }
+              }
+            }
+
+            let week_days = {};
+
+            // получаем количество дней в выбранном месяце
+            let page_date = window.location.href.substring(
+              window.location.href.length - 7
+            );
+            let split_date = page_date.split("-");
+            let lastday = new Date(split_date[0], split_date[1], 0);
+            let days = lastday.getDate();
+            this.current_date = page_date;
+
+            // this.check_data();
+
+
+            for (let i = 1; i <= days; i++) {
+              week_days[i] = {
+                user: "",
+                val: 0,
+              };
+            }
+
+            for (let group in this.my_data) {
+              this.my_data[group]["week_days"] = week_days;
+              for (let company in this.my_data[group]?.companies) {
+                this.my_data[group]["companies"][company]["week_days"] = week_days;
+              }
+            }
+
+            // Создание дней недели по каждому дню месяца
+            let array = [];
+            for (let i = 1; i <= days; i++) {
+              if (i <= 9) {
+                array.push(`${page_date}-0${i}`);
+              } else {
+                array.push(`${page_date}-${i}`);
+              }
+            }
+            let day_week = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+
+            let data1 = array.map((item) => {
+              return new Date(item);
+            });
+            let send_data = data1.map((item) => {
+              return day_week[item.getDay()];
+            });
+
+            this.send_data = send_data;
+            this.days = days;
+            this.today = new Date().getDate()
+            this.loader = false
+            this.create_table()
+
+          } else {
+            console.log('Уже создана')
+            this.loader = false
+            this.notifyHead = "Ошибка";
+            this.notifyMessage = "Данные из файла уже были ранее загружены";
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 3500);
+          }
+        })
+
+
+      
+    
+
+    },
+    onChange(event) {
+      this.file = event.target.files ? event.target.files[0] : null;
+    },
+    addSheet() {
+      this.sheets.push({ name: this.sheetName, data: [...this.collection] });
+      this.sheetName = null;
+
+    },
+    createCounterpstie() {
+      if (this.group_create_counterpar == "") {
         this.ErrorCreateDivision = true
       }
-      if(this.counterpartie == ""){
+      if (this.counterpartie == "") {
         this.ErrorCreateCounterpartie = true
-      } 
-      else{
+      }
+      else {
         console.log('z nen')
-        let data = JSON.parse(JSON.stringify(this.data))
-      data[this.group_create_counterpar]['companies'][this.counterpartie] = {'week_days': {},'plan': 0}
+        let data = JSON.parse(JSON.stringify(this.my_data))
+        data[this.group_create_counterpar]['companies'][this.counterpartie] = { 'week_days': {}, 'plan': 0 }
 
-      let week_days = {};
+        let week_days = {};
 
-// получаем количество дней в выбранном месяце
-      let page_date = window.location.href.substring(window.location.href.length - 7);
-      let split_date = page_date.split("-");
-      let lastday = new Date(split_date[0], split_date[1], 0);
-      let days = lastday.getDate();
-      
-      for (let i = 1; i <= days; i++) {
-      week_days[i] = {
-        user: "",
-        val: 0,
-      };
-    }
+        // получаем количество дней в выбранном месяце
+        let page_date = window.location.href.substring(window.location.href.length - 7);
+        let split_date = page_date.split("-");
+        let lastday = new Date(split_date[0], split_date[1], 0);
+        let days = lastday.getDate();
 
-    for (let group in data) {
-      data[group]["week_days"] = week_days;
-      for (let company in data[group]?.companies) {
-        data[group]["companies"][company]["week_days"] = week_days;
-        data[group]["companies"][company]["prognoz"] = 0
+        for (let i = 1; i <= days; i++) {
+          week_days[i] = {
+            user: "",
+            val: 0,
+          };
+        }
 
+        for (let group in data) {
+          data[group]["week_days"] = week_days;
+          for (let company in data[group]?.companies) {
+            data[group]["companies"][company]["week_days"] = week_days;
+            data[group]["companies"][company]["prognoz"] = 0
+
+          }
+        }
+
+        this.loader = true
+        let information = {
+          file_name: this.current_date + ".json",
+          content: data,
+        };
+        console.log(information)
+        api
+          .saveIncomes(information)
+          .then((response) => {
+            this.loader = false;
+            api.getIncomes(this.current_date + ".json")
+              .then((response) => {
+                this.loader = false
+                this.my_data = response.data;
+              })
+          })
+          .catch((error) => {
+            this.loader = false
+            this.notifyHead = "Ошибка";
+            this.notifyMessage = 'Ошибка создания контрагента, повторите запрос позже';
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2000);
+          });
+        this.hideModal()
       }
-    }
 
-      this.loader = true
-      let information = {
-        file_name: this.current_date + ".json",
-        content: data,
-      };
-      console.log(information)
-      api
-        .saveIncomes(information)
-        .then((response) => {
-          this.loader = false;
-          api.getIncomes(this.current_date + ".json")
-            .then((response) => {
-              this.loader = false
-              this.data = response.data;
-            })
-        })
-        .catch((error) => {
-          this.loader = false
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = 'Ошибка создания контрагента, повторите запрос позже';
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2000);
-        });
-      this.hideModal()
-      }
-     
     },
 
     openModal() {
-        this.$refs['my-modal'].show()
-      },
-      hideModal() {
-        this.$refs['my-modal'].hide()
-      },
+      this.$refs['my-modal'].show()
+    },
+    hideModal() {
+      this.$refs['my-modal'].hide()
+    },
     thrd(index) {
       return index == this.today
     },
@@ -384,48 +610,53 @@ return arr.filter(item => item.companie_name.includes(this.search))
     },
     check_data() {
       this.loader = true
+      let page_date = window.location.href.substring(
+        window.location.href.length - 7
+      );
+
+      this.current_date = page_date;
       api
         .getIncomes(this.current_date + ".json")
         .then((response) => {
           this.loader = false
-          this.data = response.data;
+          this.my_data = response.data;
         })
         .catch((error) => {
           this.loader = false
-           if(error.response.data.includes('[Errno 2] No such file or directory')){
+          if (error.response.data.includes('[Errno 2] No such file or directory')) {
             console.log('я создаю таблицу')
-             this.create_table();
-          }  
-         
-            // setTimeout(() => {
-            //   this.showNotify = false;
-            // }, 2000);
-          
+            this.create_table();
+          }
+
+          // setTimeout(() => {
+          //   this.showNotify = false;
+          // }, 2000);
+
           // if(error.includes('TypeError: Cannot read properties of undefined')){
           //   console.log('я создаю таблицу')
-            //  this.create_table();
+          //  this.create_table();
           // } else {
           //   this.loader = false;
           //   return console.log('я выкидываю ошибку создания')
           // }
           // }
-            // this.notifyHead = "Ошибка";
-            // this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
-            // this.notifyClass = "wrapper-error";
-            // this.showNotify = true;
-            // setTimeout(() => {
-            //   this.showNotify = false;
-            // }, 2000);
-          
-          
-         
+          // this.notifyHead = "Ошибка";
+          // this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
+          // this.notifyClass = "wrapper-error";
+          // this.showNotify = true;
+          // setTimeout(() => {
+          //   this.showNotify = false;
+          // }, 2000);
+
+
+
         });
     },
     create_table() {
       this.loader = true
       let data = {
         file_name: this.current_date + ".json",
-        content: this.data,
+        content: this.my_data,
       };
       api
         .saveIncomes(data)
@@ -468,9 +699,10 @@ return arr.filter(item => item.companie_name.includes(this.search))
         alert(user);
       }, 1000);
 
-      console.log(this.data);
+      console.log(this.my_data);
     },
     PlanToInp(elem_id, val) {
+
       console.log(this.uid == 102);
       if (
         this.uid == 202 ||
@@ -478,11 +710,13 @@ return arr.filter(item => item.companie_name.includes(this.search))
         this.uid == 1 ||
         this.uid == 30
       ) {
-        let data = JSON.parse(JSON.stringify(this.data));
-      let current_date = this.current_date;
+        let data = JSON.parse(JSON.stringify(this.my_data));
+        let current_date = this.current_date;
 
         let input_elements = document.getElementsByTagName("input");
-        if (input_elements.length >= 1) {
+        if (input_elements.length >= 2) {
+          console.log('123')
+
           return;
         }
 
@@ -496,7 +730,6 @@ return arr.filter(item => item.companie_name.includes(this.search))
         input.id = elem_id + "_input";
         input.value = val;
         //  Вносить план может только Орлов id: 202
-
         input.addEventListener("keyup", function (event) {
           if (event.key === "Enter") {
             let path_arr = elem_id.split("_");
@@ -527,33 +760,33 @@ return arr.filter(item => item.companie_name.includes(this.search))
               document.getElementById(elem_id).style.background = "none";
             }, 2500);
 
-                   // 1 передаю значение для каждой строки
-          // 2 значение для каждой группы
-          // Общий итог
-          let weight = {
-            file_name: `${current_date}.json`,
-            path: [`${group}@companies@${name_companie}@plan`, `${group}@plan`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@plan`],
-            value: [Number(input.value), data[group]['plan'], data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["plan"]],
-          };
-           api.patchIncomes(weight).then((response) => {
-            api
-              .getIncomes(current_date + ".json")
-              .then((response) => {
-                data = response.data;
-              })
-              .catch((error) => {
-                this.notifyHead = "Ошибка";
+            // 1 передаю значение для каждой строки
+            // 2 значение для каждой группы
+            // Общий итог
+            let weight = {
+              file_name: `${current_date}.json`,
+              path: [`${group}@companies@${name_companie}@plan`, `${group}@plan`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@plan`],
+              value: [Number(input.value), data[group]['plan'], data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["plan"]],
+            };
+            api.patchIncomes(weight).then((response) => {
+              api
+                .getIncomes(current_date + ".json")
+                .then((response) => {
+                  data = response.data;
+                })
+                .catch((error) => {
+                  this.notifyHead = "Ошибка";
                   this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
                   this.notifyClass = "wrapper-error";
                   this.showNotify = true;
                   setTimeout(() => {
                     this.showNotify = false;
                   }, 2000);
-              });
-          });
+                });
+            });
           }
-   
-         
+
+
 
 
         });
@@ -563,16 +796,16 @@ return arr.filter(item => item.companie_name.includes(this.search))
         prev_el.insertAdjacentElement("beforeend", input).focus();
 
         this.last_clicked_id = elem_id;
-        this.data = data;
+        this.my_data = data;
       }
     },
 
     TdToInp(elem_id, val) {
-      let data = JSON.parse(JSON.stringify(this.data));
+      let data = JSON.parse(JSON.stringify(this.my_data));
       let last_name = this.last_name + " " + this.first_name;
       let current_date = this.current_date;
       let input_elements = document.getElementsByTagName("input");
-      if (input_elements.length >= 1) {
+      if (input_elements.length >= 2) {
         return;
       }
 
@@ -641,12 +874,12 @@ return arr.filter(item => item.companie_name.includes(this.search))
               .catch((error) => {
                 console.log(error);
                 this.notifyHead = "Ошибка";
-                  this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
-                  this.notifyClass = "wrapper-error";
-                  this.showNotify = true;
-                  setTimeout(() => {
-                    this.showNotify = false;
-                  }, 2000);
+                this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => {
+                  this.showNotify = false;
+                }, 2000);
               });
           });
           console.log(weight)
@@ -660,11 +893,11 @@ return arr.filter(item => item.companie_name.includes(this.search))
       prev_el.insertAdjacentElement("beforeend", input).focus();
 
       this.last_clicked_id = elem_id;
-      this.data = data;
-      console.log(this.data);
+      this.my_data = data;
+      console.log(this.my_data);
     },
 
-    PlanToPrognoz(elem_id, val){
+    PlanToPrognoz(elem_id, val) {
       console.log(this.uid == 102);
       if (
         this.uid == 202 ||
@@ -672,11 +905,11 @@ return arr.filter(item => item.companie_name.includes(this.search))
         this.uid == 1 ||
         this.uid == 30
       ) {
-        let data = JSON.parse(JSON.stringify(this.data));
-      let current_date = this.current_date;
+        let data = JSON.parse(JSON.stringify(this.my_data));
+        let current_date = this.current_date;
 
         let input_elements = document.getElementsByTagName("input");
-        if (input_elements.length >= 1) {
+        if (input_elements.length >= 2) {
           return;
         }
 
@@ -721,33 +954,33 @@ return arr.filter(item => item.companie_name.includes(this.search))
               document.getElementById(elem_id).style.background = "none";
             }, 2500);
 
-                   // 1 передаю значение для каждой строки
-          // 2 значение для каждой группы
-          // Общий итог
-          let weight = {
-            file_name: `${current_date}.json`,
-            path: [`${group}@companies@${name_companie}@prognoz`, `${group}@prognoz`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@prognoz`],
-            value: [Number(input.value), data[group]['prognoz'], data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"]],
-          };
-           api.patchIncomes(weight).then((response) => {
-            api
-              .getIncomes(current_date + ".json")
-              .then((response) => {
-                data = response.data;
-              })
-              .catch((error) => {
-                this.notifyHead = "Ошибка";
+            // 1 передаю значение для каждой строки
+            // 2 значение для каждой группы
+            // Общий итог
+            let weight = {
+              file_name: `${current_date}.json`,
+              path: [`${group}@companies@${name_companie}@prognoz`, `${group}@prognoz`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@prognoz`],
+              value: [Number(input.value), data[group]['prognoz'], data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"]],
+            };
+            api.patchIncomes(weight).then((response) => {
+              api
+                .getIncomes(current_date + ".json")
+                .then((response) => {
+                  data = response.data;
+                })
+                .catch((error) => {
+                  this.notifyHead = "Ошибка";
                   this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
                   this.notifyClass = "wrapper-error";
                   this.showNotify = true;
                   setTimeout(() => {
                     this.showNotify = false;
                   }, 2000);
-              });
-          });
+                });
+            });
           }
-   
-         
+
+
 
 
         });
@@ -757,7 +990,7 @@ return arr.filter(item => item.companie_name.includes(this.search))
         prev_el.insertAdjacentElement("beforeend", input).focus();
 
         this.last_clicked_id = elem_id;
-        this.data = data;
+        this.my_data = data;
       }
     },
 
@@ -784,31 +1017,36 @@ return arr.filter(item => item.companie_name.includes(this.search))
 </script>
 
 <style lang="scss" scoped>
-.isError{
+.isError {
   color: red
 }
-tr:hover{
+
+tr:hover {
   background: lightcyan;
 }
-.content-counter{
+
+.content-counter {
   display: flex;
   justify-content: space-between;
-    label{
-      text-align: left;
-      color: gray
-    }
-    input{
-      
-    border: #bdc3c7 0.1rem solid !important; 
-    width: 20rem !important; 
-    height: 3rem !important; 
+
+  label {
+    text-align: left;
+    color: gray
+  }
+
+  input {
+
+    border: #bdc3c7 0.1rem solid !important;
+    width: 20rem !important;
+    height: 3rem !important;
 
 
 
-    }
+  }
 }
+
 .collapsed {
-  position: absolute ;
+  position: absolute;
   background: rgb(50, 50, 50);
   top: 0;
   right: 0;
@@ -856,6 +1094,10 @@ th {
   background: rgb(243, 243, 243);
   font-family: "Montserrat", sans-serif;
   color: black;
+  &:hover{
+    background: lightcyan;
+
+  }
 }
 
 input {

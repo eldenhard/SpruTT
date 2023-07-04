@@ -14,6 +14,7 @@
     "core-js": "^3.8.3",
     "debounce": "^1.2.1",
     "file-saver": "^2.0.5",
+    "jquery": "^1.9.1",
     "lodash": "^4.17.21",
     "postcss": "^8",
     "sheetjs": "^2.0.0",
@@ -23,6 +24,7 @@
     "vue-imask": "^6.6.1",
     "vue-json-excel": "^0.3.0",
     "vue-router": "^3.5.1",
+    "vue-xlsx": "^0.2.1",
     "vuex": "^3.6.2",
     "vuex-localstorage": "^1.0.0",
     "vuex-persistedstate": "^4.1.0"
