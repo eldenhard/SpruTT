@@ -72,7 +72,7 @@
     </div>
     <h4 class="month">{{ mounth_report }}</h4>
     <div>
-      <table border="1" id="theTable">
+      <table border="1" ref="theTable">
         <thead>
           <tr>
             <th rowspan="2">Контрагент
@@ -342,6 +342,7 @@ export default {
   },
   methods: {
     saveData() {
+      // console.log(this.my_data)
       if(this.selectedSheet == null){
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Необходимо выбрать лист из файла Excel";
@@ -381,9 +382,21 @@ export default {
 
             }
             for (let i of data) {
-              all_plan.push(i.innerHTML)
+              all_plan.push(i.innerHTML.replaceAll(",", ""))
             }
-            // console.log(all_plan)
+            let rrr = all_plan.map(item => {
+              if(item.includes('-')){
+               return item = '0'
+              } else {
+                return item
+              }
+            //  return item.includes('-')
+            })
+            all_plan = rrr
+            console.log(all_plan)
+
+            
+           
 
 
             // Получение имен контрагентов
@@ -415,8 +428,8 @@ export default {
             let counterparties = all_counterpartie.slice(3, all_counterpartie.length - 1)
             let plan = all_plan.slice(3, all_plan.length - 1)
             let amount_plan = plan.slice(0, counterparties.length)
-            console.log(counterparties)
-            console.log(amount_plan)
+            // console.log(counterparties)
+            // console.log(amount_plan)
 
             let last_key = null
             for (let i in counterparties) {
@@ -628,27 +641,6 @@ export default {
             this.create_table();
           }
 
-          // setTimeout(() => {
-          //   this.showNotify = false;
-          // }, 2000);
-
-          // if(error.includes('TypeError: Cannot read properties of undefined')){
-          //   console.log('я создаю таблицу')
-          //  this.create_table();
-          // } else {
-          //   this.loader = false;
-          //   return console.log('я выкидываю ошибку создания')
-          // }
-          // }
-          // this.notifyHead = "Ошибка";
-          // this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
-          // this.notifyClass = "wrapper-error";
-          // this.showNotify = true;
-          // setTimeout(() => {
-          //   this.showNotify = false;
-          // }, 2000);
-
-
 
         });
     },
@@ -673,11 +665,11 @@ export default {
     },
 
     fnExcelReport() {
-      var table = document.getElementById("theTable");
+      var table = this.$refs.theTable;
       var tableHTML = table.outerHTML;
-      var fileName = "Таблица.xls";
+      var fileName = "Таблица " + this.current_date + '.xls';
 
-      var msie = window.navigator.userAgent.indexOf("MSIE ");
+      // var msie = window.navigator.userAgent.indexOf("MSIE ");
 
       var a = document.createElement("a");
       tableHTML = tableHTML.replace(/  /g, "").replace(/ /g, "%20");

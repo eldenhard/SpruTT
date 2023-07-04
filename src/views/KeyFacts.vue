@@ -169,115 +169,13 @@ export default {
             })
          
 
-//             api.getKeyFactsSpeed()
-//             .then(response => {
-//                 let keyfacts;
-//                 keyfacts = response.data
-//                 console.log(keyfacts)
-// // console.log(keyfacts)
 
-//                 let data = []
-//                 for (let key in keyfacts) {
-//                     if (key == 'Всего') {
-//                         continue
-//                     } if (keyfacts[key] == 0) {
-//                         continue
-//                     } else {
-//                         let amount = keyfacts[key].slice(-1)
-//                         data.push({
-//                             'wagon_type': key,
-//                             'amount': Math.floor(amount[0].speed),
-//                         })
-  
-                      
-//                     }
-
-
-//                 }
-                
-//                 keyfacts = data
-//                 keyfacts.push({
-//                     'wagon_type': '',
-//                     'amount': 0
-//                 })
-//                 // console.log(keyfacts)
-            
-
-
-//                 let root = am5.Root.new(this.$refs.chartdiv2);
-
-//                 root.setThemes([
-//                     am5themes_Animated.new(root)
-//                 ]);
-
-//                 let chart = root.container.children.push(am5xy.XYChart.new(root, {
-//                     panX: true,
-//                     panY: true,
-//                     wheelX: "panX",
-//                     wheelY: "zoomX",
-//                     pinchZoomX: true,
-//                 }));
-
-//                 let cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-//                 cursor.lineY.set("visible", false);
-
-
-//                 let xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
-//                 xRenderer.labels.template.setAll({
-//                     rotation: -50,
-//                     centerY: am5.p50,
-//                     centerX: am5.p100,
-//                     paddingRight: 10
-                    
-//                 });
-
-//                 let xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-//                     maxDeviation: 0.3,
-//                     categoryField: "wagon_type",
-//                     renderer: xRenderer,
-//                     tooltip: am5.Tooltip.new(root, {})
-//                 }));
-
-//                 let yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-//                     maxDeviation: 0.3,
-//                     renderer: am5xy.AxisRendererY.new(root, {})
-//                 }));
-
-//                 let series = chart.series.push(am5xy.ColumnSeries.new(root, {
-//                     name: "Series 1",
-//                     xAxis: xAxis,
-//                     yAxis: yAxis,
-//                     valueYField: "amount",
-//                     sequencedInterpolation: true,
-//                     categoryXField: "wagon_type",
-//                     tooltip: am5.Tooltip.new(root, {
-//                         labelText: "{amount} км/день"
-//                     })
-//                 }));
-
-//                 series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5 });
-//                 series.columns.template.adapters.add("fill", function (fill, target) {
-//                     return chart.get("colors").getIndex(series.columns.indexOf(target));
-//                 });
-
-//                 series.columns.template.adapters.add("stroke", function (stroke, target) {
-//                     return chart.get("colors").getIndex(series.columns.indexOf(target));
-//                 });
-
-//                 xAxis.data.setAll(keyfacts);
-//                 series.data.setAll(keyfacts);
-
-//                 series.appear(1000);
-//                 chart.appear(1000, 100);
-//             })
-//         },
     }
 
 }
 
 
-// let value = 1000;
-// let volume = 100000;
+
 
 
 

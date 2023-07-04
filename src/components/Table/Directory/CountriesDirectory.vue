@@ -1,7 +1,7 @@
 <template>
     <div>
       <Loader :loader="loader" />
-      <div class="air_block">
+      <div class="air_block" style="margin-top: 15%;">
         <div class="air_block_content">
           <div class="air_block_header">
             <h5>Справочник по странам</h5>
@@ -12,7 +12,7 @@
 
           </p>
           <div >
-            <div class="inputcontainer" style="height: 100% !important">
+            <div class="inputcontainer" style="height: 100% !important; margin-top: ;">
                     <input
                       class="changeRow textarea"
                       v-model="countries_search"
