@@ -110,6 +110,19 @@ const getIncomes = (data) => {
 const patchIncomes = (data) => {
     return api.patch(`${documents}/incomes/tables/` ,data)
 }
+
+const postTarifData = (data) => {
+    return api.post(`${finance}/stavki-revenue/`, data)
+}
+const getTarifData = (data) => {
+    return api.get(`${finance}/stavki-revenue/`, {params: data})
+}
+const deleteTarifData = (id) => {
+    return api.delete(`${finance}/stavki-revenue/${id}`)
+}
+const patchTarifData = (id, data) => {
+    return api.patch(`${finance}/stavki-revenue/${id}/`, data)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -149,5 +162,11 @@ export default {
     saveIncomes,
     getIncomes,
     patchIncomes,
+
+    // Данные по тарифам
+    postTarifData,
+    getTarifData,
+    deleteTarifData,
+    patchTarifData,
 }
 
