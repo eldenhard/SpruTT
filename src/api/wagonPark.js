@@ -31,7 +31,9 @@ const getAllStation = (url) => {
 const getCurrentStation = (data) => {
     return api.get(`${resource}/stations/?search=`+ data)
 }
-
+const getCurrentStationByCode = (data) => {
+    return api.get(`${resource}/stations/?code=`+ data)
+}
 // получить вагоны для селекта в фильтре 
 const getWagonType = () => {
     return api.get(`${resource}/wagon-types/`)
@@ -176,6 +178,7 @@ export default {
     postNewRowInReport,
     getAmountShipments,
     getCountries,
+    getCurrentStationByCode,
 // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

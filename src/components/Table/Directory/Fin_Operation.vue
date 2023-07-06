@@ -632,7 +632,11 @@ export default {
         .getIncomes(this.current_date + ".json")
         .then((response) => {
           this.loader = false
-          this.my_data = response.data;
+          this.my_data = response.data
+          // let a = JSON.parse(JSON.stringify(response?.data))
+          // console.log(typeof a)
+          // this.my_data = (JSON.stringify(response))
+          // this.my_data = response.data;
         })
         .catch((error) => {
           this.loader = false

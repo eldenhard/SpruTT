@@ -3,7 +3,7 @@
   <div class="notifications-main">
       <div class="subject">
       <h5>{{header}}</h5>
-      <p>{{message}}</p>
+      <p>{{ message }}</p>
       </div>
   </div>
 </div>

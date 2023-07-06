@@ -47,6 +47,14 @@
                 <br />
 
                 <tr>
+                    <td class="col1">Дата окончания</td>
+                    <td>
+                        <input type="date" id="a" class="textarea" v-model="Standard.end_date" placeholder="Дата" />
+                    </td>
+                </tr>
+                <br />
+
+                <tr>
                     <td class="col1">Расстояние от</td>
                     <td>
                         <input type="number" id="a" class="textarea" v-model.number="Standard.distance_min"
@@ -181,6 +189,7 @@ export default {
                 agreement_number: null ,
                 annex_number: null,
                 on_date: null,
+                end_date: null,
                 client: "",
                 distance_min: null ,
                 distance_max: null ,

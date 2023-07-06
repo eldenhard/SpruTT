@@ -9,11 +9,6 @@ const mutations = {
         state.name_client = data
     }
 }
-// const getters = {
-//     getCLIENTOS(state) {
-//         return state.client;
-//     }
-// }
 
 const actions = {
     getClient({commit}){
