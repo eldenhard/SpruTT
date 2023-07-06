@@ -2,12 +2,14 @@
   <div>
     <Loader :loader="loader" />
 
-    <template v-for="item, index in data1">
-      <div @click="OpenChildren($event, item)" ref="FuckingData" :key="item.id" style="cursor: pointer; ">
-        {{ index == 'amount' || index == 'cost' ? `${index} ${item}` : index }}
+    <!-- <template v-for="item, index in data1">
+      <div @click="OpenChildren($event, item)" ref="FuckingData" :key="item.id"
+        style="cursor: pointer; font-weight: bold;">
+        {{ index == 'amount' || index == 'cost' ? `${index} ${item}` : index }} {{ index.childNodes }}
       </div>
       <hr>
-    </template>
+    </template> -->
+
 
 
     <div class="air_block" style="margin-top: 15%;">
@@ -115,33 +117,69 @@ export default {
       station_search_data: '',
       childer_show: false,
       children: "",
-
+      arrow: "▼",
 
     };
   },
+
   methods: {
 
     OpenChildren(eventDiv = null, val) {
-      for (let i in val) {
-        let div = document.createElement('div')
-        div.innerHTML = i
-        div.style = 'margin-left: 8% !important'
-        div.addEventListener('click', () => {
-          event.stopPropagation()
-          this.OpenChildren(div, val[i])
-          console.log(val[i], i , val)
-        })
-        try {
-          eventDiv.target.append(div)
-        } catch {
-          eventDiv.append(div)
+      this.arrow = '▲'
+      let children = []
+      try {
+        children = eventDiv.target.childNodes
+      }
+      catch (error) {
+        children = eventDiv.childNodes
+      }
+      if (children.length > 1) {
+        while (children.length != 1) {
+          try {
+            eventDiv.target.removeChild(children[1])
+          }
+          catch {
+
+            eventDiv.removeChild(children[1])
+          }
+        }
+      }
+      else {
+        for (let i in val) {
+          let div = document.createElement('div')
+          if (i == 'amount' || i == 'cost') {
+            div.innerHTML = `${i}: ${val[i].toFixed(2)}`
+            div.style = 'margin-left: 8% !important; font-weight: 500; color: grey; '
+          } else {
+            div.innerHTML = `${i}`
+            div.style = 'margin-left: 8% !important; font-weight: 500; color: darkblue'
+
+          }
+          div.addEventListener('click', () => {
+
+            event.stopPropagation()
+            this.OpenChildren(div, val[i])
+          })
+          try {
+            eventDiv.target.append(div)
+            let hr = document.createElement('hr')
+            eventDiv.target.append(hr)
+          } catch {
+            eventDiv.append(div)
+            let hr = document.createElement('hr')
+            eventDiv.append(hr)
+          }
         }
       }
     },
 
   },
   mounted() {
-
+    let arr = []
+    // let sort = this.data1.sort()
+    var list = { "you": 100, "me": 75, "foo": 116, "bar": 15 };
+    var keysSorted = Object.keys(list).sort(function (a, b) { return list[a] - list[b] })
+    console.log(keysSorted);
     // let table = this.$refs.table
     // let tr = table.rows[table.rows.length - 1];
     // let f_td = tr.cells[0].innerHTML = 'ИТОГО ТАБЛИЦА'

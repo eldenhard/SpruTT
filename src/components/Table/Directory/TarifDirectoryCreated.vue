@@ -419,7 +419,6 @@ export default {
                 });
         },
 
-
         //   Получение данных в таблицу
         getStandardData() {
             this.loader = true;
@@ -451,7 +450,6 @@ export default {
                     }, 2000);
                 });
         },
-
 
 
         chechClient(item) {

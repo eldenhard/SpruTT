@@ -12,7 +12,7 @@
             <contractTable />
           </b-card-text>
         </b-tab>
-        <b-tab title="Справочник станции" active>
+        <b-tab title="Справочник станции" >
           <b-card-text>
             <StationsDirectory />
           </b-card-text>
@@ -54,7 +54,7 @@
           <Fin_headerVue />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по тарифам"  >
+      <b-tab title="Данные по тарифам" active >
         <b-card-text>
           <TarifDirectory />
         </b-card-text>
