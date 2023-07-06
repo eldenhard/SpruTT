@@ -2,12 +2,12 @@
   <div>
     <Loader :loader="loader" />
 
-    <!-- <template v-for="item, index in data1">
+    <template v-for="item, index in data1">
       <div @click="OpenChildren($event, item)" ref="FuckingData" :key="item.id" style="cursor: pointer; ">
         {{ index == 'amount' || index == 'cost' ? `${index} ${item}` : index }}
       </div>
       <hr>
-    </template> -->
+    </template>
 
 
     <div class="air_block" style="margin-top: 15%;">
@@ -129,6 +129,7 @@ export default {
         div.addEventListener('click', () => {
           event.stopPropagation()
           this.OpenChildren(div, val[i])
+          console.log(val[i], i , val)
         })
         try {
           eventDiv.target.append(div)

@@ -372,7 +372,7 @@ export default {
         },
         IdToName(val) {
             let value = this.user.filter(item => item.id == val)
-            return value[0]['last_name']
+            return value[0]?.last_name
 
         },
         Truefalse(btn) {
@@ -395,19 +395,19 @@ export default {
             return false;
         },
         getPagination(pg_size, pg_number) {
-            this.loader = true;
+            // this.loader = true;
 
             api
-                .getAllArendaDataStandard(this.filter_arendaData, pg_size, pg_number)
+                .getAllTarifDataPagination(this.filter_arendaData, pg_size, pg_number)
                 .then((response) => {
-                    this.loader = false;
+                    // this.loader = false;
                     this.data = response.data.data;
                     console.log(this.data);
                     this.pageNumber = response.data.page_number;
                 })
 
                 .catch((error) => {
-                    this.loader = false;
+                    // this.loader = false;
                     this.notifyHead = "Ошибка";
                     this.notifyMessage = error.response.data;
                     this.notifyClass = "wrapper-error";
