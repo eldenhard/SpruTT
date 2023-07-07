@@ -2,10 +2,19 @@
     <div>
         <Loader :loader="loader" />
         <p class="explanation">
-            * Для поиска необходимого <b>код</b> станции зайдите в раздел <b>"Справочник станции"</b> <br>
+            * Для поиска необходимого <b>кода</b> станции зайдите в раздел <b>"Справочник станции"</b> <br>
+            * Копирование и ввод данных в таблицу 1 должен осуществляться из <b>WORD</b>, после вставки значения в ячейку
+            нажмите Enter чтобы значения были занесены в таблицу<br>
+            * После ввода данных в таблицу, Вы можете отредактировать в ней любое поле, нажатие Enter Не требуется <br>
             &nbsp;Таблица 2. <br>
             * Чтобы узнать название груза, стации отправления/назначения нажмите правой кнопкой мыши на интересующее поле, и
             подождите несколько секунд
+            <br>
+            * Для сохранения отредатированных данных нажмите на Enter после того как окончили ввод <br>
+            &nbsp;(если индикация зеленая - все хорошо, в противном случае ознакомьтесь с ошибкой)
+            <br>
+            * Для сохранения отредатированных данных нажмите на Enter после того как окончили ввод <br>
+
 
         </p>
         <div class="air_block">
@@ -156,36 +165,44 @@
 
 
 
-            <table border="1">
+            <table border="1" class="table_stavka" v-show="visible">
                 <tr>
-                    <td><input type="text" name="" id="destination_station" @keyup.enter="saveTarif($event)"
-                            placeholder="скопируйте и вставьте данные"></td>
-                    <td><input type="text" name="" id="departure_station" @keyup.enter="saveTarif($event)"
-                            placeholder="скопируйте и вставьте данные"></td>
-                    <td><input type="text" name="" id="stavka" @keyup.enter="saveTarif($event)"
-                            placeholder="скопируйте и вставьте данные"></td>
-                    <td><input type="text" name="" id="stavka_pre" @keyup.enter="saveTarif($event)"
-                            placeholder="скопируйте и вставьте данные"></td>
+                    <td style="border: 1px solid black;"><input type="text" name="" id="destination_station"
+                            @keyup.enter="saveTarif($event)" placeholder="скопируйте и вставьте данные"></td>
+                    <td style="border: 1px solid black;"><input type="text" name="" id="departure_station"
+                            @keyup.enter="saveTarif($event)" placeholder="скопируйте и вставьте данные"></td>
+                    <td style="border: 1px solid black;"><input type="text" name="" id="stavka"
+                            @keyup.enter="saveTarif($event)" placeholder="скопируйте и вставьте данные"></td>
+                    <td style="border: 1px solid black;"><input type="text" name="" id="stavka_pre"
+                            @keyup.enter="saveTarif($event)" placeholder="скопируйте и вставьте данные"></td>
                 </tr>
                 <tr>
-                    <th>Станция отпр.</th>
-                    <th>Станция назн.</th>
-                    <th>Ставка</th>
-                    <th>Ставка предв.</th>
+                    <th style="border: 1px solid black;">Станция отпр.</th>
+                    <th style="border: 1px solid black;">Станция назн.</th>
+                    <th style="border: 1px solid black;">Ставка</th>
+                    <th style="border: 1px solid black;">Ставка предв.</th>
                 </tr>
                 <tr v-for="(item, index) in data" :key="index">
-                    <td><input type="text" v-model="item.destination_station"></td>
-                    <td><input type="text" v-model="item.departure_station"></td>
-                    <td><input type="text" v-model="item.stavka"></td>
-                    <td><input type="text" v-model="item.stavka_pre"></td>
+                    <td style="border: 1px solid black;"><input type="number" v-model="item.destination_station"></td>
+                    <td style="border: 1px solid black;"><input type="number" v-model="item.departure_station"></td>
+                    <td style="border: 1px solid black;"><input type="number" v-model="item.stavka"></td>
+                    <td style="border: 1px solid black;"><input type="number" v-model="item.stavka_pre"></td>
                 </tr>
             </table>
             <br>
-            <button class="button Accept" @click="postData()" v-show="visible">
-                Отправить данные
-            </button>
-            <br />
 
+
+
+            <br />
+            <div class="btn-group_tarif" v-show="visible">
+                <button class="button Accept" @click="data = []" v-show="visible">
+                    Очистить таблицу
+                </button>
+                <button class="button Accept" @click="postData()" v-show="visible">
+                    Отправить данные
+                </button>
+            </div>
+            <br>
         </div>
 
         <TarifDirectoryCreated style="margin-top: 5%;" />
@@ -207,6 +224,7 @@ class Stavki {
         this.stavka = null
         this.stavka_pre = null
     }
+
 }
 export default {
     components: { Loader, Notifications, TarifDirectoryCreated },
@@ -278,6 +296,33 @@ export default {
     },
     methods: {
         saveTarif(event) {
+            if (event.target.id == 'destination_station' || event.target.id == 'departure_station') {
+                let operationBuffer = [];
+                operationBuffer = event.target.value.split(' ')
+                let clear_buffer = []
+                for (let i of operationBuffer) {
+                    clear_buffer.push(i.trim().replace(/ /g, ''))
+                }
+                if (clear_buffer.at(-1) == "") {
+                    clear_buffer.pop()
+                }
+                if (clear_buffer[0] == "") {
+                    return;
+                }
+
+                for (let i in clear_buffer) {
+                    if (this.data[i] == undefined) {
+                        let newObj = new Stavki()
+                        newObj[event.target.id] = clear_buffer[i]
+                        this.data.push(newObj)
+                    } else {
+                        this.data[i][event.target.id] = clear_buffer[i]
+                    }
+                    // this.data = table_data
+                }
+                event.target.value = ""
+                return
+            }
             let operationBuffer = [];
             operationBuffer = event.target.value.split(',00')
             let clear_buffer = []
@@ -314,13 +359,13 @@ export default {
             this.Standard.cargo = code6
             this.cargo_user = value
         },
-        postData() {
-            // this.loader = true
+         postData() {
+            this.loader = true
             this.Standard.responsible = this.uid
-            console.log(this.Standard)
             for (let i in this.data) {
                 Object.assign(this.data[i], this.Standard)
             }
+
             api.postTarifData(this.data)
                 .then(response => {
                     this.loader = false
@@ -331,11 +376,12 @@ export default {
                     setTimeout(() => {
                         this.showNotify = false;
                     }, 2000);
+                    this.data = []
                 }).catch(error => {
                     this.loader = false
                     this.notifyHead = "Ошибка";
-                    this.notifyMessage = error.data;
-                    this.notifyClass = "wrapper-success";
+                    this.notifyMessage = error.response.data;
+                    this.notifyClass = "wrapper-error";
                     this.showNotify = true;
                     setTimeout(() => {
                         this.showNotify = false;
@@ -347,6 +393,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.table_stavka {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
 input,
 select {
     height: 25px !important;
@@ -369,7 +421,7 @@ input[type="checkbox"] {
 }
 
 .air_block {
-    width: 60%;
+    width: 70%;
     height: auto;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
@@ -383,6 +435,12 @@ input[type="checkbox"] {
 .air_block_header {
     padding: 1% 0 0 2%;
     color: rgb(202, 202, 202);
+}
+
+.btn-group_tarif {
+    // display: flex;
+    margin-left: -10% !important;
+    // justify-content: space-around !important;
 }
 
 li {

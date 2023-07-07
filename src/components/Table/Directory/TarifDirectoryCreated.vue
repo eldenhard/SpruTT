@@ -34,7 +34,12 @@
 
                 <label for="tenant">Клиент
                     <br />
-                    <input type="text" id="tenant" class="textarea mini" v-model="filter_arendaData.client" />
+                    <input type="text" class="textarea mini" v-model="filter_arendaData.client" />
+                </label>
+
+                <label for="tenant">Груз
+                    <br />
+                    <input type="text" class="textarea mini" v-model="cargo" />
                 </label>
 
 
@@ -46,6 +51,16 @@
                         </li>
                     </ul>
                 </div>
+
+                <div class="textarea" style="height: auto; width: 100%; margin-top: 2%" v-show="cargo_search_visible">
+                    <ul id="root_tenant">
+                        <li v-for="item in filter_cargo" :key="item.id" @click="checkCargo(item.name, item.code6)">
+                            <span>{{ item.name }}</span>
+                            <hr />
+                        </li>
+                    </ul>
+                </div>
+
                 <button class="button Accept mini" @click="getStandardData()">
                     Запросить
                 </button>
@@ -76,14 +91,15 @@
                             <td @click="open_modal(item.id)" class="delete">{{ index + 1 }}</td>
                             <td>
                                 <div class="inputcontainer">
-                                    <input :id="`agreement_number` + item.id" v-model="item.agreement_number" v-on:keyup.enter="
-                                        submitData(
-                                            item.agreement_number,
-                                            item.id,
-                                            'agreement_number',
-                                            'agreementload'
-                                        )
-                                        " />
+                                    <input :id="`agreement_number` + item.id" v-model="item.agreement_number"
+                                        v-on:keyup.enter="
+                                            submitData(
+                                                item.agreement_number,
+                                                item.id,
+                                                'agreement_number',
+                                                'agreementload'
+                                            )
+                                            " />
                                     <div class="icon-container" :id="`agreementload` + item.id" style="display: none">
                                         <i class="loader"></i>
                                     </div>
@@ -104,12 +120,10 @@
                             <!-- ДАТА -->
                             <td>
                                 <div class="inputcontainer">
-                                    <input type="date" :id="`on_date` + item.id" v-model="item.on_date"
-                                        v-on:keyup.enter="
-                                            submitData(item.on_date, item.id, 'on_date', 'on_date_load')
-                                            " />
-                                    <div class="icon-container" :id="`on_date_load` + item.id"
-                                        style="display: none">
+                                    <input type="date" :id="`on_date` + item.id" v-model="item.on_date" v-on:keyup.enter="
+                                        submitData(item.on_date, item.id, 'on_date', 'on_date_load')
+                                        " />
+                                    <div class="icon-container" :id="`on_date_load` + item.id" style="display: none">
                                         <i class="loader"></i>
                                     </div>
                                 </div>
@@ -117,10 +131,9 @@
                             <!-- ДАТА ОКОНЧАНИЯ -->
                             <td>
                                 <div class="inputcontainer">
-                                    <input type="date" :id="`end_date` + item.id" v-model="item.end_date"
-                                        v-on:keyup.enter="
-                                            submitData(item.end_date, item.id, 'end_date', 'end_date_load')
-                                            " />
+                                    <input type="date" :id="`end_date` + item.id" v-model="item.end_date" v-on:keyup.enter="
+                                        submitData(item.end_date, item.id, 'end_date', 'end_date_load')
+                                        " />
                                     <div class="icon-container" :id="`end_date_load` + item.id" style="display: none">
                                         <i class="loader"></i>
                                     </div>
@@ -132,8 +145,7 @@
                                     <input :id="`client` + item.id" v-model="item.client" v-on:keyup.enter="
                                         submitData(item.client, item.id, 'client', 'client_load')
                                         " />
-                                    <div class="icon-container" :id="`client_load` + item.id"
-                                        style="display: none">
+                                    <div class="icon-container" :id="`client_load` + item.id" style="display: none">
                                         <i class="loader"></i>
                                     </div>
                                 </div>
@@ -153,8 +165,7 @@
                                 <div class="inputcontainer">
                                     <input :id="`distance_max` + item.id" type="number" v-model="item.distance_max"
                                         v-on:keyup.enter="submitData(item.distance_max, item.id, 'distance_max', 'distance_max_load')" />
-                                    <div class="icon-container" :id="`distance_max_load` + item.id"
-                                        style="display: none">
+                                    <div class="icon-container" :id="`distance_max_load` + item.id" style="display: none">
                                         <i class="loader"></i>
                                     </div>
                                 </div>
@@ -164,8 +175,7 @@
                                 <div class="inputcontainer">
                                     <input :id="`stavka` + item.id" v-model="item.stavka" type="number"
                                         v-on:keyup.enter="submitData(item.stavka, item.id, 'stavka', 'stavka_load')" />
-                                    <div class="icon-container" :id="`stavka_load` + item.id"
-                                        style="display: none">
+                                    <div class="icon-container" :id="`stavka_load` + item.id" style="display: none">
                                         <i class="loader"></i>
                                     </div>
                                 </div>
@@ -175,8 +185,7 @@
                                 <div class="inputcontainer">
                                     <input :id="`stavka_pre` + item.id" v-model="item.stavka_pre" type="number"
                                         v-on:keyup.enter="submitData(item.stavka_pre, item.id, 'stavka_pre', 'stavka_pre_load')" />
-                                    <div class="icon-container" :id="`stavka_pre_load` + item.id"
-                                        style="display: none">
+                                    <div class="icon-container" :id="`stavka_pre_load` + item.id" style="display: none">
                                         <i class="loader"></i>
                                     </div>
                                 </div>
@@ -188,8 +197,7 @@
                                     <input :id="`cargo` + item.id" v-model="item.cargo" type="number"
                                         v-on:keyup.enter="submitData(item.cargo, item.id, 'cargo', 'cargo_load')"
                                         @contextmenu="WatchInformationData(item.cargo, 'cargo')" />
-                                    <div class="icon-container" :id="`cargo_load` + item.id"
-                                        style="display: none">
+                                    <div class="icon-container" :id="`cargo_load` + item.id" style="display: none">
                                         <i class="loader"></i>
                                     </div>
                                 </div>
@@ -201,7 +209,8 @@
                                     <input :id="`departure_station` + item.id" v-model="item.departure_station"
                                         v-on:keyup.enter="submitData(item.departure_station, item.id, 'departure_station', 'departure_station_load')"
                                         @contextmenu="WatchInformationData(item.departure_station, 'departure_station')" />
-                                    <div class="icon-container" :id="`departure_station_load` + item.id" style="display: none">
+                                    <div class="icon-container" :id="`departure_station_load` + item.id"
+                                        style="display: none">
                                         <i class="loader"></i>
                                     </div>
                                 </div>
@@ -213,7 +222,8 @@
                                     <input :id="`destination_station` + item.id" v-model="item.destination_station"
                                         v-on:keyup.enter="submitData(item.destination_station, item.id, 'destination_station', 'destination_station_load')"
                                         @contextmenu="WatchInformationData(item.destination_station, 'destination_station')" />
-                                    <div class="icon-container" :id="`destination_station_load` + item.id" style="display: none">
+                                    <div class="icon-container" :id="`destination_station_load` + item.id"
+                                        style="display: none">
                                         <i class="loader"></i>
                                     </div>
 
@@ -261,7 +271,8 @@ export default {
     components: { Loader, Notifications },
     data() {
         return {
-
+            cargo_search_visible: false,
+            cargo: "",
             visible: true,
             loader: false,
             selected_record: '',
@@ -277,6 +288,7 @@ export default {
             ten_visible: false,
             filter_arendaData: {
                 client: "",
+                cargo: "",
             },
             showNotify: false,
             notifyHead: "",
@@ -302,6 +314,18 @@ export default {
                     item.client
                         .toLowerCase()
                         .includes(this.filter_arendaData.client.toLowerCase())
+                )
+                : "";
+        },
+        filter_cargo() {
+            if (this.cargo.length > 1) {
+                this.cargo_search_visible = true;
+            }
+            return this.cargo.length > 1
+                ? this.cargo_code.filter((item) =>
+                    item.name
+                        .toLowerCase()
+                        .includes(this.cargo.toLowerCase())
                 )
                 : "";
         },
@@ -344,7 +368,7 @@ export default {
                         })
                     break
                 case 'destination_station':
-                apiStations.getCurrentStationByCode(value)
+                    apiStations.getCurrentStationByCode(value)
                         .then(response => {
                             console.log(response.data.data)
                             this.notifyHead = "Данные о станции назначения";
@@ -456,8 +480,14 @@ export default {
             this.filter_arendaData.client = item;
             this.ten_visible = false;
         },
+        checkCargo(item, code6) {
+            this.filter_arendaData.cargo = code6
+            this.cargo = item;
+            this.cargo_search_visible = false
+        },
         CloseWindow() {
             this.ten_visible = false;
+            this.cargo_search_visible = false;
         },
         submitData(element, id, frst, lst) {
             let name = frst;
