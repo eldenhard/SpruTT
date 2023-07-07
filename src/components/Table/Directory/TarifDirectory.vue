@@ -6,6 +6,7 @@
             * Копирование и ввод данных в таблицу 1 должен осуществляться из <b>WORD</b>, после вставки значения в ячейку
             нажмите Enter чтобы значения были занесены в таблицу<br>
             * После ввода данных в таблицу, Вы можете отредактировать в ней любое поле, нажатие Enter Не требуется <br>
+            * Для удаления строки таблицы нажмите на порядковый номер строки
             &nbsp;Таблица 2. <br>
             * Чтобы узнать название груза, стации отправления/назначения нажмите правой кнопкой мыши на интересующее поле, и
             подождите несколько секунд
@@ -168,7 +169,7 @@
 
             <table border="1" class="table_stavka" v-show="visible">
                 <tr>
-                    <td></td>
+                    <td style="border: 1px solid white !"></td>
                     <td style="border: 1px solid black;"><input type="text" name="" id="destination_station"
                             @keyup.enter="saveTarif($event)" placeholder="скопируйте и вставьте данные"></td>
                     <td style="border: 1px solid black;"><input type="text" name="" id="departure_station"
@@ -179,14 +180,14 @@
                             @keyup.enter="saveTarif($event)" placeholder="скопируйте и вставьте данные"></td>
                 </tr>
                 <tr>
-                    <th></th>
+                    <th>№</th>
                     <th style="border: 1px solid black;">Станция отпр.</th>
                     <th style="border: 1px solid black;">Станция назн.</th>
                     <th style="border: 1px solid black;">Ставка</th>
                     <th style="border: 1px solid black;">Ставка предв.</th>
                 </tr>
                 <tr v-for="(item, index) in data" :key="index">
-                    <td @click="data.splice(index, 1);" class="delete"
+                    <td style="border: 1px solid black;" @click="data.splice(index, 1);" class="delete"
                         :class="{ error: item.error != null }">{{ item.error !=null ? item?.error : index+1}}</td>
 
                     <td style="border: 1px solid black;"><input style="width: 100%;" type="number"
@@ -423,7 +424,10 @@ export default {
     left: 50%;
     transform: translate(-50%, 0);
 }
+.delete:hover{
+    background: lightcoral;
 
+}
 input,
 select {
     height: 25px !important;

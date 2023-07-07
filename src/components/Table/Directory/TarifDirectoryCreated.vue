@@ -423,19 +423,19 @@ export default {
             return false;
         },
         getPagination(pg_size, pg_number) {
-            // this.loader = true;
+            this.loader = true;
 
             api
                 .getAllTarifDataPagination(this.filter_arendaData, pg_size, pg_number)
                 .then((response) => {
-                    // this.loader = false;
+                    this.loader = false;
                     this.data = response.data.data;
                     console.log(this.data);
                     this.pageNumber = response.data.page_number;
                 })
 
                 .catch((error) => {
-                    // this.loader = false;
+                    this.loader = false;
                     this.notifyHead = "Ошибка";
                     this.notifyMessage = error.response.data;
                     this.notifyClass = "wrapper-error";
