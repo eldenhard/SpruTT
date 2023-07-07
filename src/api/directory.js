@@ -112,7 +112,7 @@ const patchIncomes = (data) => {
 }
 
 const postTarifData = (data) => {
-    return api.post(`${finance}/stavki-revenue/`, data)
+    return api.post(`${finance}/stavki-revenue/save-many/`, data)
 }
 const getTarifData = (data) => {
     return api.get(`${finance}/stavki-revenue/`, {params: data})

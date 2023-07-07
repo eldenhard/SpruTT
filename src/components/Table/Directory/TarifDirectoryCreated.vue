@@ -88,6 +88,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="(item, index) in data" :key="item.id" :id="item.id">
+
                             <td @click="open_modal(item.id)" class="delete">{{ index + 1 }}</td>
                             <td>
                                 <div class="inputcontainer">
@@ -394,6 +395,9 @@ export default {
 
             }
         },
+        deleteRow(index) {
+      this.data.splice(index, 1);
+    },
         IdToName(val) {
             let value = this.user.filter(item => item.id == val)
             return value[0]?.last_name

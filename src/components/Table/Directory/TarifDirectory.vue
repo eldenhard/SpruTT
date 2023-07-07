@@ -32,6 +32,7 @@
             <br />
 
             <table v-show="visible">
+
                 <tr>
                     <td>№ договора</td>
                     <td>
@@ -167,6 +168,7 @@
 
             <table border="1" class="table_stavka" v-show="visible">
                 <tr>
+                    <td></td>
                     <td style="border: 1px solid black;"><input type="text" name="" id="destination_station"
                             @keyup.enter="saveTarif($event)" placeholder="скопируйте и вставьте данные"></td>
                     <td style="border: 1px solid black;"><input type="text" name="" id="departure_station"
@@ -177,16 +179,24 @@
                             @keyup.enter="saveTarif($event)" placeholder="скопируйте и вставьте данные"></td>
                 </tr>
                 <tr>
+                    <th></th>
                     <th style="border: 1px solid black;">Станция отпр.</th>
                     <th style="border: 1px solid black;">Станция назн.</th>
                     <th style="border: 1px solid black;">Ставка</th>
                     <th style="border: 1px solid black;">Ставка предв.</th>
                 </tr>
                 <tr v-for="(item, index) in data" :key="index">
-                    <td style="border: 1px solid black;"><input type="number" v-model="item.destination_station"></td>
-                    <td style="border: 1px solid black;"><input type="number" v-model="item.departure_station"></td>
-                    <td style="border: 1px solid black;"><input type="number" v-model="item.stavka"></td>
-                    <td style="border: 1px solid black;"><input type="number" v-model="item.stavka_pre"></td>
+                    <td @click="data.splice(index, 1);" class="delete"
+                        :class="{ error: item.error != null }">{{ item.error !=null ? item?.error : index+1}}</td>
+
+                    <td style="border: 1px solid black;"><input style="width: 100%;" type="number"
+                            v-model="item.destination_station"></td>
+                    <td style="border: 1px solid black;"><input style="width: 100%;" type="number"
+                            v-model="item.departure_station"></td>
+                    <td style="border: 1px solid black;"><input style="width: 100%;" type="number" v-model="item.stavka">
+                    </td>
+                    <td style="border: 1px solid black;"><input style="width: 100%;" type="number"
+                            v-model="item.stavka_pre"></td>
                 </tr>
             </table>
             <br>
@@ -219,10 +229,11 @@ import TarifDirectoryCreated from './TarifDirectoryCreated.vue';
 
 class Stavki {
     constructor() {
-        this.destination_station = null
-        this.departure_station = null
-        this.stavka = null
-        this.stavka_pre = null
+        this.destination_station = null;
+        this.departure_station = null;
+        this.stavka = null;
+        this.stavka_pre = null;
+        this.error = null;
     }
 
 }
@@ -359,7 +370,7 @@ export default {
             this.Standard.cargo = code6
             this.cargo_user = value
         },
-         postData() {
+        postData() {
             this.loader = true
             this.Standard.responsible = this.uid
             for (let i in this.data) {
@@ -380,12 +391,26 @@ export default {
                 }).catch(error => {
                     this.loader = false
                     this.notifyHead = "Ошибка";
-                    this.notifyMessage = error.response.data;
+                    this.notifyMessage = 'Проверьте поле с ошибками';
                     this.notifyClass = "wrapper-error";
                     this.showNotify = true;
                     setTimeout(() => {
                         this.showNotify = false;
                     }, 3000);
+
+                    for (let i in this.data) {
+                        this.data[i]['error'] = null
+
+                    }
+                    for (let i in error.response.data) {
+                        this.data[error.response.data[i][0]-1].error =
+                            error.response.data[i][1];
+                    }
+
+                    let filter_arr = [...this.data];
+                    this.data = filter_arr.filter((item) => {
+                        return item.error != null;
+                    });
                 })
         },
     }
@@ -411,6 +436,10 @@ input[type="checkbox"] {
 
 .errorNote {
     border: 1px solid red !important;
+}
+
+.error {
+    background: lightcoral;
 }
 
 .Accept {
@@ -445,4 +474,5 @@ input[type="checkbox"] {
 
 li {
     cursor: pointer;
-}</style>
+}
+</style>

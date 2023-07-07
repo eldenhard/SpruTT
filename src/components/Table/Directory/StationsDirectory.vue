@@ -2,13 +2,13 @@
   <div>
     <Loader :loader="loader" />
 
-    <!-- <template v-for="item, index in data1">
+    <template v-for="item, index in data1">
       <div @click="OpenChildren($event, item)" ref="FuckingData" :key="item.id"
         style="cursor: pointer; font-weight: bold;">
         {{ index == 'amount' || index == 'cost' ? `${index} ${item}` : index }} {{ index.childNodes }}
       </div>
       <hr>
-    </template> -->
+    </template>
 
 
 

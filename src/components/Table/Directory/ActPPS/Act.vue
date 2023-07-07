@@ -505,6 +505,7 @@ export default {
             setTimeout(() => {
               this.showNotify = false;
             }, 2500);
+            
             for (let i in error.response.data) {
               this.data[error.response.data[i][0]].error =
                 error.response.data[i][1];

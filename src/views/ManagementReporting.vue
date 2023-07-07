@@ -80,6 +80,12 @@
               <b-card-text v-if="i.name === 'Производство по универсальным перевозкам (привлеченный парк)'">
                 <Table9 />
               </b-card-text>
+              <b-card-text v-if="i.name === 'Сводные расходы на ремонт ПС'">
+                <Table22 />
+              </b-card-text>
+              <b-card-text v-if="i.name === 'Простои в ремонте'">
+                <Table24 />
+              </b-card-text>
 
 
               
@@ -121,6 +127,9 @@ import Table6 from "@/components/Table/ManagmentRepReporting/Table6.vue";
 import Table7 from "@/components/Table/ManagmentRepReporting/Table7.vue";
 import Table8 from "@/components/Table/ManagmentRepReporting/Table8.vue";
 import Table9 from "@/components/Table/ManagmentRepReporting/Table9.vue";
+import Table22 from "@/components/Table/ManagmentRepReporting/Table22.vue";
+import Table24 from "@/components/Table/ManagmentRepReporting/Table24.vue";
+
   export default {
     name: "managmentReporting",
     components: { 
@@ -147,7 +156,9 @@ import Table9 from "@/components/Table/ManagmentRepReporting/Table9.vue";
       Table6,
       Table7,
       Table8,
-      Table9
+      Table9,
+      Table22,
+      Table24,
 
     },
     data() {
