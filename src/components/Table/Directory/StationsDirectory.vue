@@ -2,13 +2,13 @@
   <div>
     <Loader :loader="loader" />
 
-    <template v-for="item, index in data1">
-      <div @click="OpenChildren($event, item)" ref="FuckingData" :key="item.id"
-        style="cursor: pointer; font-weight: bold;">
-        {{ index == 'amount' || index == 'cost' ? `${index} ${item}` : index }} {{ index.childNodes }}
+    <!-- <template v-for="item, index in data1">
+      <div @click="OpenChildren($event, item, index)" ref="FuckingData" :key="item.id"
+        style="cursor: pointer; font-weight: bold;" :id="index">
+        {{ index == 'amount' || index == 'cost' ? `${index} ${item}` : index }} 
       </div>
       <hr>
-    </template>
+    </template> -->
 
 
 
@@ -117,15 +117,21 @@ export default {
       station_search_data: '',
       childer_show: false,
       children: "",
-      arrow: "▼",
+      arrow: "▼"
 
     };
+  },
+  mounted() {
+    this.data1 = JSON.parse(JSON.stringify(this.data1).replaceAll('""', '"----"'))
+
+    // if(i == "") i.replace("", "----")
+
   },
 
   methods: {
 
-    OpenChildren(eventDiv = null, val) {
-      this.arrow = '▲'
+    OpenChildren(eventDiv = null, val, index) {
+
       let children = []
       try {
         children = eventDiv.target.childNodes
@@ -139,8 +145,8 @@ export default {
             eventDiv.target.removeChild(children[1])
           }
           catch {
-
             eventDiv.removeChild(children[1])
+
           }
         }
       }
@@ -149,15 +155,15 @@ export default {
           let div = document.createElement('div')
           if (i == 'amount' || i == 'cost') {
             div.innerHTML = `${i}: ${val[i].toFixed(2)}`
-            div.style = 'margin-left: 8% !important; font-weight: 500; color: grey; '
+            div.style = 'margin-left: 8% !important; font-weight: 500; color: grey; display: flex'
           } else {
             div.innerHTML = `${i}`
             div.style = 'margin-left: 8% !important; font-weight: 500; color: darkblue'
-
           }
           div.addEventListener('click', () => {
 
             event.stopPropagation()
+            // console.log(div)
             this.OpenChildren(div, val[i])
           })
           try {
@@ -174,26 +180,7 @@ export default {
     },
 
   },
-  mounted() {
-    let arr = []
-    // let sort = this.data1.sort()
-    var list = { "you": 100, "me": 75, "foo": 116, "bar": 15 };
-    var keysSorted = Object.keys(list).sort(function (a, b) { return list[a] - list[b] })
-    console.log(keysSorted);
-    // let table = this.$refs.table
-    // let tr = table.rows[table.rows.length - 1];
-    // let f_td = tr.cells[0].innerHTML = 'ИТОГО ТАБЛИЦА'
-    // tr.style.background = 'lightgrey'
 
-    // let allTRIncludesItogo = table.rows
-    // for (let i of allTRIncludesItogo) {
-    //   for (let j of i.cells) {
-    //     if (j.innerHTML.includes('Итого')) {
-    //       i.style.background = '#cdcdff'
-    //     }
-    //   }
-    // }
-  },
   watch: {
     station_search(...args) {
       this.debouncedWatch(...args);
@@ -228,9 +215,10 @@ export default {
 </script>
 
 
-<style scoped>
+<style lang="scss" scoped>
 div {
   cursor: pointer;
+
 }
 
 .isRed {

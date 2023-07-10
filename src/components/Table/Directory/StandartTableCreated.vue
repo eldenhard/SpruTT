@@ -93,7 +93,8 @@
             <th>№</th>
             <th>Договор</th>
             <th>Дата договоренности</th>
-            <th>ДС</th>
+            <!-- <th>ДС</th>
+            <th>хз</th> -->
             <th>Примечание</th>
             <th>Норматив по выгрузке, дн</th>
             <th>Норматив по погрузке, дн</th>
@@ -152,7 +153,7 @@
               </td>
 
               <!-- ДС -->
-              <td>
+              <!-- <td>
                 <div class="inputcontainer">
                   <input
                     :id="`agreement_addictions` + item.id"
@@ -169,9 +170,9 @@
                     <i class="loader"></i>
                   </div>
                 </div>
-              </td>
+              </td> -->
               <!-- Дата окончания акта -->
-              <td>
+              <!-- <td>
                 <div class="inputcontainer">
                   <input
                     :id="`agreement_addictions` + item.id"
@@ -188,7 +189,7 @@
                     <i class="loader"></i>
                   </div>
                 </div>
-              </td>
+              </td> -->
 <!-- ПРИМЕЧАНИЕ -->
               <td>
                 <div class="inputcontainer">
