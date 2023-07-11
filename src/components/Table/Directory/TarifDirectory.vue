@@ -35,19 +35,42 @@
             <table v-show="visible">
 
                 <tr>
-                    <td>№ договора</td>
+                    <td>№ документа</td>
                     <td>
+                        <div style="display: flex; justify-content: space-between;">
+                            <input type="radio" id="one" value="agreement_number" v-model="picked">
+                            <label for="one">Договор</label>
+                            <br>
+                            <input type="radio" id="two" value="annex_number" v-model="picked">
+                            <label for="two">Приложение</label>
+                            <br>
+                        </div>
+
                         <input type="text" class="textarea" v-model.trim="Standard.agreement_number"
-                            placeholder="№ договора" />
+                            :placeholder="placeholderAgreement" v-show="visible_inp_ag" />
+                        <input type="text" class="textarea" v-model.trim="Standard.annex_number"
+                            :placeholder="placeholderAgreement" v-show="visible_inp_an" />
                     </td>
                 </tr>
                 <br />
 
-                <tr>
+                <!-- <tr>
                     <td class="col1">№ приложения</td>
                     <td>
                         <input type="text" id="ln" class="textarea" v-model.trim="Standard.annex_number"
                             placeholder="№ приложения" />
+                    </td>
+                </tr>
+                <br /> -->
+
+                <tr v-show="visible_agreement">
+                    <td class="col1">Все договора</td>
+                    <td>
+                        <select name="" id="" v-model="agreement_number_test" @change="test()">
+                            <option :value="[item.agreement_number, item.client, item.id]"
+                                v-for="item in all_agreement_number" :key="item.id">{{ item.agreement_number }} {{
+                                    item.client }} {{ item.on_date }} </option>
+                        </select>
                     </td>
                 </tr>
                 <br />
@@ -68,39 +91,6 @@
                 </tr>
                 <br />
 
-                <tr>
-                    <td class="col1">Расстояние от</td>
-                    <td>
-                        <input type="number" id="a" class="textarea" v-model.number="Standard.distance_min"
-                            placeholder="Расстояние от" />
-                    </td>
-                </tr>
-                <br />
-
-                <tr>
-                    <td class="col1">Расстояние до</td>
-                    <td>
-                        <input type="number" id="a" class="textarea" v-model.number="Standard.distance_max"
-                            placeholder="Расстояние до" />
-                    </td>
-                </tr>
-                <br />
-
-                <!-- <tr>
-                    <td class="col1">Ставка</td>
-                    <td>
-                        <input type="number" id="a" class="textarea" v-model.number="Standard.stavka" placeholder="Ставка" />
-                    </td>
-                </tr>
-                <br />
-
-                <tr>
-                    <td class="col1">Ставка предварительная</td>
-                    <td>
-                        <input type="number" id="a" class="textarea" v-model.number="Standard.stavka_pre"
-                            placeholder="Ставка предварительная" />
-                    </td>
-                </tr> -->
                 <br />
 
                 <tr>
@@ -144,21 +134,7 @@
                     </td>
                 </tr>
 
-                <!-- <tr>
-                    <td class="col1">Станция отправления</td>
-                    <td>
-                        <input type="number" id="a" class="textarea" v-model="Standard.departure_station" 
-                            placeholder="Станция отправления код" />
-                    </td>
-                </tr>
-                <br>
-                <tr>
-                    <td class="col1">Станция назначения</td>
-                    <td>
-                        <input type="number" id="a" class="textarea" v-model="Standard.destination_station"
-                            placeholder="Станция назначения код" />
-                    </td>
-                </tr> -->
+
 
 
 
@@ -178,6 +154,10 @@
                             @keyup.enter="saveTarif($event)" placeholder="скопируйте и вставьте данные"></td>
                     <td style="border: 1px solid black;"><input type="text" name="" id="stavka_pre"
                             @keyup.enter="saveTarif($event)" placeholder="скопируйте и вставьте данные"></td>
+                    <td style="border: 1px solid black;" colspan="2">
+                        <input type="text" id="distance" @keyup.enter="saveDistance($event)"
+                            placeholder="скопируйте и вставьте данные">
+                    </td>
                 </tr>
                 <tr>
                     <th>№</th>
@@ -185,10 +165,14 @@
                     <th style="border: 1px solid black;">Станция назн.</th>
                     <th style="border: 1px solid black;">Ставка</th>
                     <th style="border: 1px solid black;">Ставка предв.</th>
+                    <th style="border: 1px solid black;">Дистанция от</th>
+                    <th style="border: 1px solid black;">Дистанция до</th>
                 </tr>
                 <tr v-for="(item, index) in data" :key="index">
                     <td style="border: 1px solid black;" @click="data.splice(index, 1);" class="delete"
-                        :class="{ error: item.error != null }">{{ item.error !=null ? item?.error : index+1}}</td>
+                        :class="{ error: item.error != null }">{{ item.error != null ? item?.error : index + 1
+                        }}
+                    </td>
 
                     <td style="border: 1px solid black;"><input style="width: 100%;" type="number"
                             v-model="item.destination_station"></td>
@@ -197,7 +181,16 @@
                     <td style="border: 1px solid black;"><input style="width: 100%;" type="number" v-model="item.stavka">
                     </td>
                     <td style="border: 1px solid black;"><input style="width: 100%;" type="number"
-                            v-model="item.stavka_pre"></td>
+                            v-model="item.stavka_pre">
+                    </td>
+
+                    <td style="border: 1px solid black;"><input style="width: 100%;" type="number"
+                            v-model="item.distance_min">
+                    </td>
+
+                    <td style="border: 1px solid black;"><input style="width: 100%;" type="number"
+                            v-model="item.distance_max">
+                    </td>
                 </tr>
             </table>
             <br>
@@ -234,6 +227,8 @@ class Stavki {
         this.departure_station = null;
         this.stavka = null;
         this.stavka_pre = null;
+        this.distance_min = null;
+        this.distance_max = null;
         this.error = null;
     }
 
@@ -243,6 +238,9 @@ export default {
     data() {
         return {
             loader: false,
+            visible_agreement: false,
+            visible_inp_an: false,
+            visible_inp_ag: true,
             data: [],
             rows: 1,
             loader: false,
@@ -256,14 +254,20 @@ export default {
             departure_station_list: false,
             destination_station_list: false,
             cargo_user: "",
+            picked: "agreement_number",
+            placeholderAgreement: "введите номер договора",
+            distance: [],
+            all_agreement_number: "",
+            agreement_number_test: "",
             Standard: {
                 agreement_number: null,
                 annex_number: null,
                 on_date: null,
                 end_date: null,
                 client: "",
-                distance_min: null,
-                distance_max: null,
+                base: null,
+                // distance_min: null,
+                // distance_max: null,
                 // stavka: null,
                 // stavka_pre: null,
                 cargo: "",
@@ -305,8 +309,125 @@ export default {
     },
     mounted() {
         document.body.addEventListener('click', this.closeWindow)
+        // this.loader = true
+        api.getAllDocuments()
+            .then(response => {
+                let data = response.data.data
+                let arr = []
+                for (let i in data) {
+
+                    arr.push({
+                        'agreement_number': data[i].agreement_number,
+                        'client': data[i].client,
+                        'on_date': data[i].on_date,
+                        'id': data[i].id,
+                    })
+                }
+
+                let new_data = []
+               this.all_agreement_number = arr.reduce((acc, item) => {
+                    if (!acc.find(value => value.agreement_number == item.agreement_number)) {
+                        acc.push(item);
+                    }
+                    return acc;
+                }, []);
+                
+
+                // for(let i in arr){
+                //     console.log(arr[i])
+                // }
+                // arr.reduce((acc, item) => {
+                //     if(acc.includes(item.agreement_number)){
+                //         return acc
+                //     }
+                //     [acc, ...item]
+                // }, [])
+                // console.log( arr)
+                this.loader = false
+
+            }).catch(error => {
+                this.loader = false
+                console.log(error)
+            })
+    },
+    watch: {
+        picked() {
+            if (this.picked == 'agreement_number') {
+                this.placeholderAgreement = 'введите номер договора'
+                this.visible_agreement = false
+                this.visible_inp_ag = true
+                this.visible_inp_an = false
+                this.Standard.annex_number = ""
+                this.agreement_number_test = ""
+            } else {
+                this.placeholderAgreement = 'введите номер приложения'
+                this.visible_agreement = true
+                this.visible_inp_ag = false
+                this.visible_inp_an = true
+                this.Standard.agreement_number = ""
+            }
+        }
     },
     methods: {
+        test() {
+            this.Standard.agreement_number = this.agreement_number_test[0]
+            this.Standard.client = this.agreement_number_test[1]
+            this.Standard.base = this.agreement_number_test[2]
+            // console.log(this.agreement_number_test)
+        },
+        saveDistance(event) {
+            navigator.clipboard.readText()
+                .then(response => {
+                    this.distance = response.split('\r\n')
+                    if (this.distance.at(-1) == "") {
+                        this.distance.pop()
+                    }
+                    console.log(this.distance)
+                    for (let i in this.distance) {
+                        this.distance[i].replaceAll(" ", "")
+                    }
+                    let data = []
+                    this.distance.forEach((value, index) => {
+                        data.push(this.distance.slice(index, index + 1));
+                    });
+                    let arr = []
+                    for (let i in data) {
+                        arr.push(data[i][0].split(" - "))
+                    }
+                    if (arr[0] == "") {
+                        return
+                    }
+                    let distance_min = []
+                    let distance_max = []
+                    for (let i of arr) {
+                        distance_min.push(i[0])
+                        distance_max.push(i[1])
+                    }
+                    for (let i in distance_min) {
+                        if (this.data[i] == undefined) {
+                            let newObj = new Stavki()
+                            newObj[event.target.id + '_min'] = +distance_min[i]
+                            this.data.push(newObj)
+                        } else {
+                            this.data[i][event.target.id + '_min'] = +distance_min[i]
+                        }
+                    }
+                    for (let i in distance_max) {
+                        if (this.data[i] == undefined) {
+                            let newObj = new Stavki()
+                            newObj[event.target.id + '_max'] = +distance_max[i]
+                            this.data.push(newObj)
+                        } else {
+                            this.data[i][event.target.id + '_max'] = +distance_max[i]
+                        }
+                    }
+                    event.target.value = ""
+                    return
+                })
+
+
+
+        },
         saveTarif(event) {
             if (event.target.id == 'destination_station' || event.target.id == 'departure_station') {
                 let operationBuffer = [];
@@ -372,47 +493,71 @@ export default {
             this.cargo_user = value
         },
         postData() {
-            this.loader = true
-            this.Standard.responsible = this.uid
-            for (let i in this.data) {
-                Object.assign(this.data[i], this.Standard)
+            if (this.picked == 'annex_number' && this.agreement_number_test == "") {
+                console.log('123')
+                this.notifyHead = "Ошибка";
+                this.notifyMessage = 'Заполните поле с выбором договора для вашего приложения';
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 3000);
+                return
+            }
+            else if (this.picked == 'annex_number' && this.Standard.annex_number == null) {
+                console.log('123')
+                this.notifyHead = "Ошибка";
+                this.notifyMessage = 'Заполните номер приложения';
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 3000);
+                return
+            } else {
+                this.Standard.responsible = this.uid
+                for (let i in this.data) {
+                    Object.assign(this.data[i], this.Standard)
+                }
+                this.loader = true
+
+                api.postTarifData(this.data)
+                    .then(response => {
+                        this.loader = false
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = 'Данные загружены';
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 2000);
+                        this.data = []
+                    }).catch(error => {
+                        this.loader = false
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = 'Проверьте поле с ошибками';
+                        this.notifyClass = "wrapper-error";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 3000);
+
+                        for (let i in this.data) {
+                            this.data[i]['error'] = null
+
+                        }
+                        for (let i in error.response.data) {
+                            this.data[error.response.data[i][0] - 1].error =
+                                error.response.data[i][1];
+                        }
+
+                        let filter_arr = [...this.data];
+                        this.data = filter_arr.filter((item) => {
+                            return item.error != null;
+                        });
+                    })
             }
 
-            api.postTarifData(this.data)
-                .then(response => {
-                    this.loader = false
-                    this.notifyHead = "Успешно";
-                    this.notifyMessage = 'Данные загружены';
-                    this.notifyClass = "wrapper-success";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 2000);
-                    this.data = []
-                }).catch(error => {
-                    this.loader = false
-                    this.notifyHead = "Ошибка";
-                    this.notifyMessage = 'Проверьте поле с ошибками';
-                    this.notifyClass = "wrapper-error";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 3000);
-
-                    for (let i in this.data) {
-                        this.data[i]['error'] = null
-
-                    }
-                    for (let i in error.response.data) {
-                        this.data[error.response.data[i][0]-1].error =
-                            error.response.data[i][1];
-                    }
-
-                    let filter_arr = [...this.data];
-                    this.data = filter_arr.filter((item) => {
-                        return item.error != null;
-                    });
-                })
         },
     }
 }
@@ -424,10 +569,12 @@ export default {
     left: 50%;
     transform: translate(-50%, 0);
 }
-.delete:hover{
+
+.delete:hover {
     background: lightcoral;
 
 }
+
 input,
 select {
     height: 25px !important;

@@ -126,6 +126,9 @@ const patchTarifData = (id, data) => {
 const getAllTarifDataPagination = (filter_arendaData, page_size, page_number) => {
     return api.get(`${finance}/stavki-revenue/?page_size=${page_size}&page=${page_number}`,   {params: filter_arendaData})
 }
+const getAllDocuments = () => {
+    return api.get(`${finance}/stavki-revenue/?page_size=1_000_000`, )
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -172,5 +175,6 @@ export default {
     deleteTarifData,
     patchTarifData,
     getAllTarifDataPagination,
+    getAllDocuments,
 }
 

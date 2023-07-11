@@ -2,15 +2,29 @@
   <div>
     <Loader :loader="loader" />
 
-    <!-- <template v-for="item, index in data1">
+    <template v-for="item, index in data1">
       <div @click="OpenChildren($event, item, index)" ref="FuckingData" :key="item.id"
-        style="cursor: pointer; font-weight: bold;" :id="index">
-        {{ index == 'amount' || index == 'cost' ? `${index} ${item}` : index }} 
+        style="cursor: pointer; font-weight: bold;" v-if="index != 'amount'">
+        {{ index == 'amount' || index == 'cost' ? item + index : index }}
       </div>
       <hr>
+    </template>
+
+
+<template v-for="item, index in TOTAL">
+  <div style="cursor: pointer; font-weight: bold;" :key="index">
+        {{ index + " " + item   }}
+      </div>
+</template>
+    <!-- <template v-for="total, indx in TOTAL" >
+ 
+        <td>{{ total }}</td>
+        <td>{{ total }}</td>
+  
     </template> -->
 
 
+    <div id="container"></div>
 
     <div class="air_block" style="margin-top: 15%;">
       <div class="air_block_content">
@@ -101,9 +115,8 @@ export default {
               { "amount": 3, "cost": 7235.400000000001 }
           }, "amount": 175, "cost": 744001.0600000004, "ТР-2": { "3. Текущий ремонт колесной пары": { "amount": 15, "cost": 98635.39 }, "amount": 15, "cost": 98635.39 }
         }, "amount": 325, "cost": 10783369.08, "Деповской": { "3. ДР": { "1. Работа по ремонту вагона": { "amount": 42, "cost": 3480112.17 }, "amount": 129, "cost": 7872245.079999996, "Подготовка вагона (пропарка/промывка/дегазация)": { "amount": 39, "cost": 377302.86000000004 }, "2. Подача-уборка вагона": { "amount": 14, "cost": 63340.20000000002 }, "Замена з/ч": { "amount": 5, "cost": 8379.48 }, "Капитальный ремонт колесной пары": { "amount": 15, "cost": 2520000.0 }, "Стоимость АС": { "amount": 3, "cost": 45256.0 }, "Стоимость КП": { "amount": 7, "cost": 1237752.63 }, "Привод стояночного тормоза (новый)": { "amount": 1, "cost": 9457.6 }, "Запасной резервуар": { "amount": 1, "cost": 6044.14 }, "Стоимость ПА": { "amount": 2, "cost": 124600.0 } }, "amount": 139, "cost": 9665495.079999996, "ДР": { "Стоимость КП": { "amount": 8, "cost": 1720000.0 }, "amount": 10, "cost": 1793250.0, "Стоимость ТХ": { "amount": 1, "cost": 7700.0 }, "Стоимость ПА": { "amount": 1, "cost": 65550.0 } } }, "Капитальный": { "4. КР": { "1. Работа по ремонту вагона": { "amount": 2, "cost": 296000.0 }, "amount": 8, "cost": 363694.30000000005, "2. Подача-уборка вагона": { "amount": 2, "cost": 9048.6 }, "Подготовка вагона (пропарка/промывка/дегазация)": { "amount": 2, "cost": 16753.68 }, "Полная окраска вагона": { "amount": 2, "cost": 41892.02 } }, "amount": 8, "cost": 363694.30000000005 }, "": { "amount": 2, "cost": 10000.0, "Осмотр вагона": { "": { "amount": 1, "cost": 5000.0 }, "amount": 1, "cost": 5000.0 } }, "Текущий 1": { "1. ТР-1": { "1. Работа по ремонту вагона": { "amount": 1, "cost": 2709.06 }, "amount": 2, "cost": 5178.639999999999, "2. Подача-уборка вагона": { "amount": 1, "cost": 2469.58 } }, "amount": 2, "cost": 5178.639999999999 }
-      }
-      ,
-
+      },
+      TOTAL: "",
       file: null,
       // scheme: scheme.data,
       loader: false,
@@ -117,21 +130,30 @@ export default {
       station_search_data: '',
       childer_show: false,
       children: "",
-      arrow: "▼"
+      arrow: "▼",
 
     };
   },
   mounted() {
     this.data1 = JSON.parse(JSON.stringify(this.data1).replaceAll('""', '"----"'))
+    let new_val = JSON.parse(JSON.stringify(this.data1))
+    let amount = new_val.amount
+    let cost = new_val.cost
+    delete new_val.amount
+    delete new_val.cost
+    this.data1 = new_val
 
-    // if(i == "") i.replace("", "----")
+
+    this.TOTAL = {
+      'amount': amount,
+      'cost': cost
+    }
 
   },
 
   methods: {
 
     OpenChildren(eventDiv = null, val, index) {
-
       let children = []
       try {
         children = eventDiv.target.childNodes
