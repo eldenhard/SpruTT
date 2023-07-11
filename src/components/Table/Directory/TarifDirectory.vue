@@ -609,6 +609,7 @@ input[type="checkbox"] {
     box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
     position: relative;
     left: 50%;
+    padding: 1%;
     transform: translate(-50%, 0);
 }
 
