@@ -44,7 +44,7 @@
             <Act />
           </b-card-text>
         </b-tab>
-      <b-tab title="Данные по нормативам" >
+      <b-tab title="Данные по нормативам" active>
         <b-card-text>
           <StandartData />
         </b-card-text>
@@ -54,7 +54,7 @@
           <Fin_headerVue />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по тарифам" active>
+      <b-tab title="Данные по тарифам" >
         <b-card-text>
           <TarifDirectory />
         </b-card-text>

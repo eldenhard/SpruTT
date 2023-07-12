@@ -129,6 +129,10 @@ const getAllTarifDataPagination = (filter_arendaData, page_size, page_number) =>
 const getAllDocuments = () => {
     return api.get(`${finance}/stavki-revenue/?page_size=1_000_000`, )
 }
+
+const getAllStandardDog = () => {
+    return api.get(`${finance}/penalty-standards/?page_size=1_000_000`, )
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -176,5 +180,6 @@ export default {
     patchTarifData,
     getAllTarifDataPagination,
     getAllDocuments,
+    getAllStandardDog,
 }
 

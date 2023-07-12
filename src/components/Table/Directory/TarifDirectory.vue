@@ -323,26 +323,13 @@ export default {
                         'id': data[i].id,
                     })
                 }
-
-                let new_data = []
                this.all_agreement_number = arr.reduce((acc, item) => {
                     if (!acc.find(value => value.agreement_number == item.agreement_number)) {
                         acc.push(item);
                     }
                     return acc;
                 }, []);
-                
 
-                // for(let i in arr){
-                //     console.log(arr[i])
-                // }
-                // arr.reduce((acc, item) => {
-                //     if(acc.includes(item.agreement_number)){
-                //         return acc
-                //     }
-                //     [acc, ...item]
-                // }, [])
-                // console.log( arr)
                 this.loader = false
 
             }).catch(error => {
