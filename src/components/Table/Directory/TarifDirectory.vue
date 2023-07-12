@@ -42,11 +42,11 @@
                     <td>№ документа</td>
                     <td>
                         <div style="display: flex; justify-content: space-between;">
-                            <input type="radio" id="one" value="agreement_number" v-model="picked">
-                            <label for="one">Договор</label>
+                            <input type="radio" id="one1" value="agreement_number" v-model="picked">
+                            <label for="one1">Договор</label>
                             <br>
-                            <input type="radio" id="two" value="annex_number" v-model="picked">
-                            <label for="two">Приложение</label>
+                            <input type="radio" id="two2" value="annex_number" v-model="picked">
+                            <label for="two2">Приложение</label>
                             <br>
                         </div>
 
@@ -555,6 +555,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+tr,
+td,
+th {
+  border: none;
+}
 .table_stavka {
     position: relative;
     left: 50%;

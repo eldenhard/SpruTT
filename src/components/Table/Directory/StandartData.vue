@@ -338,6 +338,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+tr,
+td,
+th {
+  border: none;
+}
 input,
 select {
   height: 25px !important;
