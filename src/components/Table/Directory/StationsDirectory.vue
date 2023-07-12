@@ -2,20 +2,20 @@
   <div>
     <Loader :loader="loader" />
 
-    <template v-for="item, index in data1">
+    <!-- <template v-for="item, index in data1">
       <div @click="OpenChildren($event, item, index)" ref="FuckingData" :key="item.id"
         style="cursor: pointer; font-weight: bold;" v-if="index != 'amount'">
         {{ index == 'amount' || index == 'cost' ? item + index : index }}
       </div>
       <hr>
-    </template>
+    </template> -->
 
 
-<template v-for="item, index in TOTAL">
+<!-- <template v-for="item, index in TOTAL">
   <div style="cursor: pointer; font-weight: bold;" :key="index">
         {{ index + " " + item   }}
       </div>
-</template>
+</template> -->
     <!-- <template v-for="total, indx in TOTAL" >
  
         <td>{{ total }}</td>

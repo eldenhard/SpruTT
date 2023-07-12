@@ -16,14 +16,15 @@
             </label>
 
         </div>
-
+        <div id="FuckingData"></div>
+        <!-- 
         <template v-for="item, index in data1">
             <div @click="OpenChildren($event, item)" ref="FuckingData" :key="item.id"
                 style="cursor: pointer; font-weight: bold;">
-                {{ typeof item == 'number' ? Translate(index) + " " + FilterValue(item?.toFixed(2)) : Translate(index)}}
+                {{ typeof item == 'number' ? Translate(index) + " " + FilterValue(item?.toFixed(2)) : Translate(index) }}
             </div>
             <hr>
-        </template>
+        </template> -->
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
 
     </div>
@@ -39,6 +40,7 @@ export default {
     components: { Periods, Notifications, Loader },
     data() {
         return {
+
             data1: "",
             date_begin: "",
             date_end: "",
@@ -50,6 +52,13 @@ export default {
             notifyMessage: "",
             notifyClass: "",
         }
+    },
+    mounted() {
+
+
+
+
+
     },
     methods: {
         Translate(val) {
@@ -66,12 +75,45 @@ export default {
                 case val:
                     return val
                     break
+                case "":
+                    return 'Не определено'
+                    break
+       
             }
         },
         FilterValue(val) {
             return String(val).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
         },
+        TEST(obj) {
+            let arr = []
+            for (let i in obj) {
+                arr.push([i, obj[i]])
+            }
+
+            arr.sort(function (a, b) {
+                if (Array.isArray(a[1])) {
+                    return 1
+                }
+                if (Array.isArray(b[1])) {
+                    return -1
+                }
+                if (Array.isArray(a[1]) && Array.isArray(b[1])) {
+                    return 0
+                }
+                if (typeof a[1] < typeof b[1]) {
+                    return 1
+                }
+                if (typeof a[1] > typeof b[1]) {
+                    return -1
+                }
+                return 0;
+            });
+            return arr
+        },
         OpenChildren(eventDiv = null, val) {
+            let collapse = "+"
+            let val_copy = this.TEST(val)
+            let hr = null
             let children = []
             try {
                 children = eventDiv.target.childNodes
@@ -91,63 +133,53 @@ export default {
                 }
             }
             else {
-                if(Array.isArray(val)){
+                for (let i in val_copy) {
+                    let key = val_copy[i][0]
+                    let value = val_copy[i][1]
                     let div = document.createElement('div')
-                    let arr = []
-                    for(let i in val){
-                        arr.push(val[i])
+                    if (typeof value == 'number') {
+                        let name = this.Translate(key)
+                        let val123 = this.FilterValue(value.toFixed(2))
+                        div.innerHTML = `${name}: ${val123}`
+                        hr = null
+
+                        div.style = 'margin-left: 8% !important; font-weight: 500; color: black; padding: 0; background: #9FD5B7; '
                     }
-                    let sum = arr.reduce((acc , item) => acc + item, 0)
-                    let result = sum / arr.length
-                    div.innerHTML = `${result.toFixed(2)}`
-                    div.style = 'margin-left: 8% !important; font-weight: 500; color: grey; '
-                    try {
-                        eventDiv.target.append(div)
-                        let hr = document.createElement('hr')
-                        eventDiv.target.append(hr)
-                    } catch {
-                        eventDiv.append(div)
-                        let hr = document.createElement('hr')
-                        eventDiv.append(hr)
+                    else if (Array.isArray(value)) {
+                        let sum = value.reduce((acc, item) => acc + item, 0)
+                        let result = sum / value.length
+                        div.innerHTML = `${this.Translate(key)}: ${result.toFixed(2)}`
+                        div.style = 'margin-left: 8% !important; font-weight: 500; color: black; padding: 0; background: #9FD5B7;'
                     }
-                }
-                for (let i in val) {
-                    let div = document.createElement('div')
-                    if(Array.isArray(val)){
-                        this.Translate(i)
-                        continue
-                    }
-                    if (typeof val[i] == 'number') {
-                        // typeof item == 'number'
-                        let name = this.Translate(i)
-                        let value = this.FilterValue(val[i].toFixed(2))
-                        div.innerHTML = `${name}: ${value}`
-                        div.style = 'margin-left: 8% !important; font-weight: 500; color: grey; '
-                    }
+
                     else {
-                        div.innerHTML = `${this.Translate(i)}`
-                        div.style = 'margin-left: 8% !important; font-weight: 500; color: darkblue'
+                        hr = document.createElement('hr')
+                        div.innerHTML = `${this.Translate(key)} ${collapse}`
+                        div.style = 'margin-left: 8% !important; font-weight: 500; color: darkblue; border: 1px solid lightgrey; padding: 1%;'
 
                     }
                     div.addEventListener('click', () => {
 
                         event.stopPropagation()
-                        this.OpenChildren(div, val[i])
+                        this.OpenChildren(div, value)
                     })
                     try {
                         eventDiv.target.append(div)
-                        let hr = document.createElement('hr')
-                        eventDiv.target.append(hr)
+
                     } catch {
                         eventDiv.append(div)
-                        let hr = document.createElement('hr')
-                        eventDiv.append(hr)
+
                     }
                 }
             }
         },
+
+
+
+
         Actioned() {
-            if (this.wag_type == ""  || this.date_begin == "" || this.date_end == "") {
+            document.getElementById('FuckingData').innerHTML = ""
+            if (this.wag_type == "" || this.date_begin == "" || this.date_end == "") {
                 this.notifyHead = "Ошибка";
                 this.notifyMessage = 'Заполните все поля';
                 this.notifyClass = "wrapper-error";
@@ -157,12 +189,17 @@ export default {
                 }, 2000);
                 return
             } else {
+              
                 this.loader = true;
                 api
                     .getUO424(this.date_begin, this.date_end, this.wag_type)
                     .then((response) => {
                         this.loader = false;
                         this.data1 = response.data;
+
+                        this.OpenChildren(document.getElementById('FuckingData'), this.data1)
+
+                        // console.log(this.data1)
                     })
                     .catch((error) => {
                         console.log(error);
