@@ -9,9 +9,10 @@
             * Для удаления строки таблицы нажмите на порядковый номер строки
             <br>
             &nbsp;Таблица 2. <br>
-            * <b>Данные по ставкам должны загружаться из WORD, числа должны быть в строгом формате. Пример: 1 599,00 </b><br>
+            * <b>Данные по ставкам должны загружаться из WORD или Excel, числа должны быть в строгом формате. Пример: 1 599,00
+            </b><br>
             * <b>Данные по станциям должны быть указаны через пробел </b><br>
-            * <b>Данные по дистанциям должны быть скопированы и вставлены из WORD в формате 0 - 5 6 - 8</b><br>
+            * <b>Данные по дистанциям должны быть скопированы и вставлены из WORD или Excel в формате 0 - 5 6 - 8</b><br>
             * Чтобы узнать название груза, стации отправления/назначения нажмите правой кнопкой мыши на интересующее поле, и
             подождите несколько секунд
             <br>
@@ -28,7 +29,7 @@
           justify-content: space-between !important;
           width: 100%;
         ">
-                <h5>Данные по тарифам</h5>
+                <h5>Данные по ставкам</h5>
                 <h6 v-on:click="visible = !visible" style="padding-right: 4%; cursor: pointer">
                     {{ visible ? "Свернуть " : "Развернуть" }}
                 </h6>
@@ -313,33 +314,8 @@ export default {
     },
     mounted() {
         document.body.addEventListener('click', this.closeWindow)
-        // this.loader = true
-        api.getAllDocuments()
-            .then(response => {
-                let data = response.data.data
-                let arr = []
-                for (let i in data) {
+        this.getAllAgreement()
 
-                    arr.push({
-                        'agreement_number': data[i].agreement_number,
-                        'client': data[i].client,
-                        'on_date': data[i].on_date,
-                        'id': data[i].id,
-                    })
-                }
-               this.all_agreement_number = arr.reduce((acc, item) => {
-                    if (!acc.find(value => value.agreement_number == item.agreement_number)) {
-                        acc.push(item);
-                    }
-                    return acc;
-                }, []);
-
-                this.loader = false
-
-            }).catch(error => {
-                this.loader = false
-                console.log(error)
-            })
     },
     watch: {
         picked() {
@@ -360,6 +336,36 @@ export default {
         }
     },
     methods: {
+        getAllAgreement() {
+            api.getAllDocuments()
+                .then(response => {
+                    let data = response.data.data
+                    console.log(data)
+                    let arr = []
+                    for (let i in data) {
+
+                        arr.push({
+                            'agreement_number': data[i].agreement_number,
+                            'client': data[i].client,
+                            'on_date': data[i].on_date,
+                            'id': data[i].id,
+                        })
+                    }
+                    this.all_agreement_number = ""
+                    this.all_agreement_number = arr.reduce((acc, item) => {
+                        if (!acc.find(value => value.agreement_number == item.agreement_number)) {
+                            acc.push(item);
+                        }
+                        return acc;
+                    }, []);
+
+                    this.loader = false
+
+                }).catch(error => {
+                    this.loader = false
+                    console.log(error)
+                })
+        },
         test() {
             this.Standard.agreement_number = this.agreement_number_test[0]
             this.Standard.client = this.agreement_number_test[1]
@@ -511,9 +517,12 @@ export default {
                     Object.assign(this.data[i], this.Standard)
                 }
                 this.loader = true
-
+                console.log(this.data)
                 api.postTarifData(this.data)
                     .then(response => {
+
+                        this.getAllAgreement()
+
                         this.loader = false
                         this.notifyHead = "Успешно";
                         this.notifyMessage = 'Данные загружены';
@@ -555,12 +564,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 tr,
 td,
 th {
-  border: none;
+    border: none;
 }
+
 .table_stavka {
     position: relative;
     left: 50%;
@@ -598,7 +607,7 @@ input[type="checkbox"] {
 }
 
 .air_block {
-    width: 70%;
+    width: 90%;
     height: auto;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;

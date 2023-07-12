@@ -12,12 +12,12 @@
             <b-button variant="danger" @click="deleteTarifData(selected_record)">Да, я уверен</b-button>
             <b-button class="mt-3" block @click="$bvModal.hide('standard_directory_created')">Нет, отменить</b-button>
         </b-modal>
-        <b-container>
+        <!-- <b-container> -->
             <a class="WatchAllArenda" v-on:click="visible = !visible">
                 {{
                     visible
-                    ? "Скрыть данные по тарифам"
-                    : "Отобразить данные по тарифам"
+                    ? "Скрыть данные по ставкам"
+                    : "Отобразить данные по ставкам"
                 }}
             </a>
             <div class="table-content" v-show="visible">
@@ -405,7 +405,7 @@
                 </ul>
             </div>
 
-        </b-container>
+        <!-- </b-container> -->
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
     </div>
@@ -935,7 +935,7 @@ select {
     button {
         height: 40px;
         width: 20%;
-        margin-top: 2%;
+        margin-top: 1%;
         float: right !important;
         margin-left: auto;
     }

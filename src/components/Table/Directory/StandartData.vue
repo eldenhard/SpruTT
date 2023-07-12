@@ -240,7 +240,29 @@ export default {
   },
   mounted() {
     document.body.addEventListener('click', this.closeWindow)
-    api.getAllStandardDog()
+    this.getAllStandardDog()
+  },
+  watch: {
+    picked() {
+      if (this.picked == 'agreement') {
+        this.placeholderAgreement = 'введите номер договора'
+        this.visible_agreement = false
+        this.visible_inp_ag = true
+        this.visible_inp_an = false
+        this.Standard.agreement = ""
+        this.agreement_number_test = ""
+      } else {
+        this.placeholderAgreement = 'введите номер приложения'
+        this.visible_agreement = true
+        this.visible_inp_ag = false
+        this.visible_inp_an = true
+        this.Standard.agreement = ""
+      }
+    }
+  },
+  methods: {
+    getAllStandardDog(){
+      api.getAllStandardDog()
             .then(response => {
                 let data = response.data.data
                 let arr = []
@@ -265,26 +287,7 @@ export default {
                 this.loader = false
                 console.log(error)
             })
-  },
-  watch: {
-    picked() {
-      if (this.picked == 'agreement') {
-        this.placeholderAgreement = 'введите номер договора'
-        this.visible_agreement = false
-        this.visible_inp_ag = true
-        this.visible_inp_an = false
-        this.Standard.agreement = ""
-        this.agreement_number_test = ""
-      } else {
-        this.placeholderAgreement = 'введите номер приложения'
-        this.visible_agreement = true
-        this.visible_inp_ag = false
-        this.visible_inp_an = true
-        this.Standard.agreement = ""
-      }
-    }
-  },
-  methods: {
+    },
     test(){
       this.Standard.client = this.agreement_number_test[1]
       this.Standard.base = this.agreement_number_test[2]
@@ -299,7 +302,7 @@ export default {
       this.ten_visible = false;
     },
     postData() {
-      // this.loader = true
+      this.loader = true
       if (this.Standard.standard_loading == "") {
         this.Standard.standard_loading = null
       }
@@ -316,6 +319,7 @@ export default {
       api
         .postPenaltyStandards(this.Standard)
         .then((response) => {
+          this.getAllStandardDog()
           this.loader = false
           this.notifyHead = "Успешно";
           this.notifyMessage = "Данные отправлены";
