@@ -64,17 +64,19 @@
                             <th>Текущая станция</th>
                             <th>Дата последней операции</th>
                             <th>Операция</th>
-                            <th>Полигон</th>
+                            <th>Станция назначения</th>
+                            <th>Сутки от последней операции</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="item, index in InformationByWagon" :key="index">
-                            <td>{{ item.wagon }}</td>
-                            <td>{{ item.current_country }}</td>
-                            <td>{{ item.current_station__name }}</td>
-                            <td>{{ item.last_operation_datetime.slice(0, 10) }}</td>
-                            <td>{{ item.operation }}</td>
-                            <td>{{ item.polygon }}</td>
+                            <td>{{ item?.wagon }}</td>
+                            <td>{{ item?.current_country }}</td>
+                            <td>{{ item?.current_station__name }}</td>
+                            <td>{{ item?.last_operation_datetime.slice(0, 10) }}</td>
+                            <td>{{ item?.operation }}</td>
+                            <td>{{ item?.destination_station__name }}</td>
+                            <td>{{ DayByLastOperation(item?.last_operation_datetime.slice(0, 10)) | filtersValue }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -103,11 +105,17 @@ export default {
             watchInformation: false,
         }
     },
+
     watch: {
         wagons() {
             let str = this.wagons.replace(/[^0-9]/g, "")
             let arr = str.match(/.{1,8}/g)
             this.wagonsTable = arr
+        }
+    },
+    filters: {
+        filtersValue(val) {
+            return Math.abs(val)
         }
     },
     computed: {
@@ -127,6 +135,10 @@ export default {
     },
 
     methods: {
+        DayByLastOperation(date) {
+            return Math.ceil((new Date(date) - new Date()) / (1000 * 3600 * 24))
+            return differenceDate.slice(1)
+        },
         SendExtension() {
             this.loader = true
             let countries = []
