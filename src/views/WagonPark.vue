@@ -34,6 +34,11 @@
             <b-card-text v-if="i.name === 'Тариф по сопредельным территориям'">
               <TerritoryTable />
             </b-card-text>
+
+            <b-card-text v-if="i.name === 'Продление срока ввоза'">
+              <ExtensionPeriod />
+            </b-card-text>
+
             <div v-if="i.name === 'Сотрудники'">
                 <StaffTable />
               </div>
@@ -104,7 +109,7 @@
   import StaffTable from "@/components/Table/StaffTable.vue";
   import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
   import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
-
+  import ExtensionPeriod from '../components/Table/WagonPark/ExtensionPeriod.vue'
 
   import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
 import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
@@ -115,6 +120,7 @@ import Table6 from "@/components/Table/ManagmentRepReporting/Table6.vue";
 import Table7 from "@/components/Table/ManagmentRepReporting/Table7.vue";
 import Table8 from "@/components/Table/ManagmentRepReporting/Table8.vue";
 import Table9 from "@/components/Table/ManagmentRepReporting/Table9.vue";
+import ExtensionPeriodVue from '../components/Table/WagonPark/ExtensionPeriod.vue';
 export default {
   name: "WagonPark",
   components: {
@@ -130,14 +136,16 @@ export default {
     FormationPark,
     ManagemtRepNavbar,
     AccomodationPark,
+    ExtensionPeriod,
 
-
-
-    
-    Table1,
+      Table1,
       Table2,
       Table3,
       Table4,
+      Table5,
+      Table6,
+      Table7,
+      Table8,
   },
   data() {
     return {

@@ -206,7 +206,7 @@ export default {
             this.poligons.forEach((el, idx) => {
                 el && result.push({ id: idx, value: el.name })
             })
-
+            console.log(result)
             return result
         },
         // Получить необходимый полигон

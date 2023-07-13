@@ -17,7 +17,7 @@
         <p><img src="../../../../assets/Draw3.png" style="width: 80%; height: auto;" alt="Рисунок 2 - поиск данных"></p>
       </figure>
       <br>
-      <p>3. В поле ввода (над подчеркнутым желтым цветом поле) ввести <b>http://portal.tehtrans.com/</b>, <br> перевести правый селектор в положение Enabled и нажать Relaunch</p>
+      <p>3. В поле ввода (над подчеркнутым желтым цветом поле) ввести <b>http://portal.tehtrans.com</b>, <br> перевести правый селектор в положение Enabled и нажать Relaunch</p>
       <figure class="sign">
         <p><img src="../../../../assets/Draw4.png" style="width: 80%; height: auto;" alt="Рисунок 3 - сохранение данных"></p>
       </figure>

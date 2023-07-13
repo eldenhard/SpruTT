@@ -1,15 +1,15 @@
-import {api} from "@/helpers/axios"
+import { api } from "@/helpers/axios"
 
-export const resource = "wagon-park" 
+export const resource = "wagon-park"
 
 const getWagons = (filters) => {
-    return api.get(`${resource}/wagons`, {params: filters})
+    return api.get(`${resource}/wagons`, { params: filters })
 }
 const getWagon = (number) => {
     return api.get(`${resource}/wagons/${number}`)
 }
 const getPassport = (filter) => {
-    return api.get(`${resource}/wagon-passport/`, {params: filter})
+    return api.get(`${resource}/wagon-passport/`, { params: filter })
 }
 
 const getArenda = () => {
@@ -17,10 +17,10 @@ const getArenda = () => {
 }
 
 const getBelong = (filter) => {
-    return api.get(`${resource}/wagon-belong`, {params: filter})
+    return api.get(`${resource}/wagon-belong`, { params: filter })
 }
 const getCurrentWagon = (numberWagon) => {
-    return api.get(`${resource}/wagons`+ `?number=${numberWagon}`)
+    return api.get(`${resource}/wagons` + `?number=${numberWagon}`)
 }
 
 
@@ -29,10 +29,10 @@ const getAllStation = (url) => {
 }
 
 const getCurrentStation = (data) => {
-    return api.get(`${resource}/stations/?search=`+ data)
+    return api.get(`${resource}/stations/?search=` + data)
 }
 const getCurrentStationByCode = (data) => {
-    return api.get(`${resource}/stations/?code=`+ data)
+    return api.get(`${resource}/stations/?code=` + data)
 }
 // получить вагоны для селекта в фильтре 
 const getWagonType = () => {
@@ -44,7 +44,7 @@ const getWagonType = () => {
 //     return api.get(url, {params: filter_abadon})
 // }
 const getWagonsThrow = (url, filter) => {
-    return api.get(url, {params: filter})
+    return api.get(url, { params: filter })
 }
 
 const getWagonsThrowTypes = () => {
@@ -54,12 +54,12 @@ const getWagonsThrowTypes = () => {
 
 // Запросы для дислокации
 const getwagonDislocation = (filter_dislocation) => {
-    return api.get(`${resource}/dislocations`, {params: filter_dislocation})
+    return api.get(`${resource}/dislocations`, { params: filter_dislocation })
 }
 
 // Запросы для вагонов полигоны
 const getPolygon = (filter_wagonpolygon) => {
-    return api.get(`${resource}/dislocations`, {params: filter_wagonpolygon})
+    return api.get(`${resource}/dislocations`, { params: filter_wagonpolygon })
 }
 
 ///api/wagon-park/dislocations/get-filters/
@@ -79,7 +79,7 @@ const postTelegram = (data) => {
     // return api.post(`${resource}/telegrams/`, data={"wagons": data})
 }
 const getAllTelegrams = (id) => {
-    return api.get(`${resource}/telegrams?creator=`+ `${id}`)
+    return api.get(`${resource}/telegrams?creator=` + `${id}`)
 }
 
 const createTelegram = (data) => {
@@ -125,7 +125,7 @@ const getRepairWagon = (data) => {
     return api.get(`${resource}/repair-axis-wheels/?wagon__in=` + data)
 }
 
-const postNewRowInReport = (data) =>{
+const postNewRowInReport = (data) => {
     return api.post(`${resource}/shipments/`, data)
 }
 
@@ -134,14 +134,14 @@ const postRailTarif = (data) => {
     return api.post(`${resource}/rt/tariff/`, data)
 }
 // Преобразование файла БЧ
-const postShipmentList = (data) =>{
+const postShipmentList = (data) => {
     return api.post(`${resource}/shipments/convert-file/`, data)
 }
-const postViewFile = (view, data) =>{
+const postViewFile = (view, data) => {
     return api.post(`${resource}/shipments/${view}/load-file/`, data)
 }
 const createReportTerritory = (data, start, end) => {
-    return api.post(`${resource}/shipments/export/?date_begin=${start}&date_end=${end}`, {'wagons': data})
+    return api.post(`${resource}/shipments/export/?date_begin=${start}&date_end=${end}`, { 'wagons': data })
 }
 const getAmountShipments = (source, date) => {
     return api.get(`${resource}/shipments/?shipment_source=${source}&act_date=${date}`)
@@ -151,6 +151,13 @@ const getCountries = (data) => {
 }
 const getClient = () => {
     return api.get(`${resource}/flights/clients/`)
+}
+
+const getAllCountries = (data) => {
+    return api.get(`${resource}/dislocations/countries/`)
+}
+const getExtensionData = (data) => {
+    return api.get(`${resource}/dislocations/last-operations/`, {params: data})
 }
 export default {
     getWagons,
@@ -179,29 +186,34 @@ export default {
     getAmountShipments,
     getCountries,
     getCurrentStationByCode,
-// Брошенные вагоны
+    // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,
 
-// Дислокация вагонов
-getwagonDislocation,
+    // Дислокация вагонов
+    getwagonDislocation,
 
-// 60606670
+    // 60606670
 
-// полигоны вагонов
-getPolygon,
-getFilters,
+    // полигоны вагонов
+    getPolygon,
+    getFilters,
 
 
 
-// Телеграммы
-getTelegram,
-postTelegram,
-createTelegram,
-getAllTelegrams,
-getAllDataTelegram,
-getCargoCode,
+    // Телеграммы
+    getTelegram,
+    postTelegram,
+    createTelegram,
+    getAllTelegrams,
+    getAllDataTelegram,
+    getCargoCode,
 
-// Клиенты
+    // Клиенты
     getClient,
+
+
+    // Продление срока ввоза
+    getAllCountries,
+    getExtensionData,
 }

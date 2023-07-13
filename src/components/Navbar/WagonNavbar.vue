@@ -9,7 +9,7 @@
           <b-tab title="Расчет" @click="newTab('Расчет')" > </b-tab>
           <b-tab title="Отправки БЧ" @click="newTab('Отправки БЧ')" > </b-tab>
           <b-tab title="Тариф по сопр. терр." @click="newTab('Тариф по сопредельным территориям')" >  </b-tab>
-
+          <b-tab title="Продление срока ввоза" @click="newTab('Продление срока ввоза')" >  </b-tab>
         </b-container>
       </b-tabs>
     </b-card>

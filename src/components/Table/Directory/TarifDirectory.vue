@@ -1,9 +1,39 @@
 <template>
     <div>
         <Loader :loader="loader" />
+        <h3 class="explanation" style="font-size: 17px; margin-top: -1%;">
+       Перед использованием этого раздела обязательно выполнить <a @click="instruction = !instruction">следующие действия с браузером</a><br>
+    </h3>
+    <!-- <h3 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть инструкцию по браузеру' : 'Смотреть инструкцию  по браузеру' }}</h3> -->
+    <div v-show="instruction">
+      <p class="explanation">Пример приводится на основе браузера Google Chrome</p>
+      <p>1. В адресную строку браузера ввести <b>chrome://flags/</b> и нажать Enter</p>
+      <figure class="sign">
+        <p><img src="../../../assets/Draw2.png" style="width: 80%; height: auto;" alt="Рисунок 1 - адресная строка"></p>
+      </figure>
+      <br>
+      <p>2. В поисковую строку открывшейся страницы ввести <b>#unsafely-treat-insecure-origin-as-secure</b></p>
+      <figure class="sign">
+        <p><img src="../../../assets/Draw3.png" style="width: 80%; height: auto;" alt="Рисунок 2 - поиск данных"></p>
+      </figure>
+      <br>
+      <p>3. В поле ввода (над подчеркнутым желтым цветом поле) ввести <b>http://portal.tehtrans.com</b>, <br> перевести правый селектор в положение Enabled и нажать Relaunch</p>
+      <figure class="sign">
+        <p><img src="../../../assets/Draw4.png" style="width: 80%; height: auto;" alt="Рисунок 3 - сохранение данных"></p>
+      </figure>
+      <br>
+      <p>4. После нажатия на Relaunch Ваш браузер перезапустится, <br>
+         далее когда вы будете копировать данные из Excel и вставлять их в поле <b>Операция</b> браузер запросит у Вас разрешение на доступ <br>
+        <b>обязательно нажмите Разрешить</b>, после выполнения этих действий Вы можете пользоваться разделом в полной мере</p>
+         <figure class="sign">
+        <p><img src="../../../assets/Draw5.png" style="width: 80%; height: auto;" alt="Рисунок 3 - сохранение данных"></p>
+      </figure>
+      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть инструкцию' : 'Смотреть инструкцию' }}</h5>
+
+    </div>
         <p class="explanation">
             * Для поиска необходимого <b>кода</b> станции зайдите в раздел <b>"Справочник станции"</b> <br>
-            * Копирование и ввод данных в таблицу 1 должен осуществляться из <b>WORD</b>, после вставки значения в ячейку
+            * Копирование и ввод данных в таблицу 1 должен осуществляться из <b>WORD</b> или <b>Excel</b>, после вставки значения в ячейку
             нажмите Enter чтобы значения были занесены в таблицу<br>
             * После ввода данных в таблицу, Вы можете отредактировать в ней любое поле, нажатие Enter Не требуется <br>
             * Для удаления строки таблицы нажмите на порядковый номер строки
@@ -242,6 +272,7 @@ export default {
     components: { Loader, Notifications, TarifDirectoryCreated },
     data() {
         return {
+            instruction: false,
             loader: false,
             visible_agreement: false,
             visible_inp_an: false,
@@ -564,6 +595,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+a:nth-child(1){
+  color: #1D67AC !important;
+  cursor: pointer;
+  &:hover{
+    text-decoration: underline !important;
+  }
+}
+// h3:nth-child(n+2),h5{
+//   color: rgb(0, 0, 0);
+//   &:hover{
+//     text-decoration: underline
+//   }
+// }
+h3:nth-child(1){
+  background: #FCE4CC;
+  color: #8F5C49;
+  text-align: center;
+  padding-top: 2%
+}
 tr,
 td,
 th {

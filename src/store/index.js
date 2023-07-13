@@ -9,6 +9,7 @@ import dog_number from "./modules/dog_number";
 import cargo_code from "./modules/cargo_code";
 import users from "./modules/users"
 import client from "./modules/client"
+import countries from "./modules/countries";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -26,6 +27,7 @@ const store = new Vuex.Store({
     cargo_code,
     users,
     client,
+    countries,
   }
 })
 
