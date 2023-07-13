@@ -27,7 +27,7 @@ _axios.interceptors.response.use(
     function (error) {
         if (!error.response) {
             console.log("Network error")
-            alert('Ошибка загрузки данных, проверьте своё интернет-соединение!')
+            // alert('Ошибка загрузки данных, проверьте своё интернет-соединение!')
         } else {
             const originalRequest = error.config
             if (error.response.status === 401 && !originalRequest._retry) {
