@@ -136,8 +136,8 @@
     ">
                 {{ company.plan | format }}
               </td>
-              <td class="col2" :id="group_name + '_' + 'companies' + '_' + company_name + '_' + 'prognoz'"
-                @click="PlanToPrognoz(group_name + '_' + 'companies' + '_' + company_name + '_' + 'prognoz', company.prognoz)">
+              <td class="col2" :id="group_name + '_' + 'companies' + '_' + company_name + '_' + 'prognoz'">
+                <!--    @click="PlanToPrognoz(group_name + '_' + 'companies' + '_' + company_name + '_' + 'prognoz', company.prognoz)" -->
                 {{ company.prognoz }}
               </td>
               <!-- week_days -->
@@ -168,6 +168,7 @@
       '_' +
       index,
       day.val,
+      index,
       day.user
     )
     ">
@@ -343,7 +344,7 @@ export default {
   methods: {
     saveData() {
       // console.log(this.my_data)
-      if(this.selectedSheet == null){
+      if (this.selectedSheet == null) {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Необходимо выбрать лист из файла Excel";
         this.notifyClass = "wrapper-error";
@@ -352,16 +353,15 @@ export default {
           this.showNotify = false;
         }, 3500);
         return
-      } 
-        this.loader = true
+      }
+      this.loader = true
       // Проверка на наличие в БД такой структуры
       api
         .getIncomes(this.current_date + ".json")
         .then((response) => {
           // this.loader = false
           this.DB_STRUCTIRE = response.data;
-          // console.log(this.DB_STRUCTIRE)
-          // console.log(this.my_data)
+
           if (JSON.stringify(this.DB_STRUCTIRE) == JSON.stringify(this.standard_collection)) {
             console.log(this.DB_STRUCTIRE, 'Я из БД')
             console.log(this.standard_collection)
@@ -385,18 +385,18 @@ export default {
               all_plan.push(i.innerHTML.replaceAll(",", ""))
             }
             let rrr = all_plan.map(item => {
-              if(item.includes('-')){
-               return item = '0'
+              if (item.includes('-')) {
+                return item = '0'
               } else {
                 return item
               }
-            //  return item.includes('-')
+              //  return item.includes('-')
             })
             all_plan = rrr
             console.log(all_plan)
 
-            
-           
+
+
 
 
             // Получение имен контрагентов
@@ -521,8 +521,8 @@ export default {
         })
 
 
-      
-    
+
+
 
     },
     onChange(event) {
@@ -691,14 +691,14 @@ export default {
         alert(user);
       }, 1000);
 
-      console.log(this.my_data);
+      // console.log(this.my_data);
     },
     PlanToInp(elem_id, val) {
 
-      console.log(this.uid == 102);
       if (
         this.uid == 202 ||
-        this.uid == 102 ||
+        this.uid == 222 ||
+        // this.uid == 102 ||
         this.uid == 1 ||
         this.uid == 30
       ) {
@@ -707,7 +707,7 @@ export default {
 
         let input_elements = document.getElementsByTagName("input");
         if (input_elements.length >= 2) {
-          console.log('123')
+          // console.log('123')
 
           return;
         }
@@ -792,7 +792,12 @@ export default {
       }
     },
 
-    TdToInp(elem_id, val) {
+    TdToInp(elem_id, val, day) {
+      if (day < new Date().getDate()) {
+        console.log('нельзя')
+        return
+      }
+
       let data = JSON.parse(JSON.stringify(this.my_data));
       let last_name = this.last_name + " " + this.first_name;
       let current_date = this.current_date;
@@ -815,7 +820,7 @@ export default {
       input.addEventListener("keyup", function (event) {
         if (event.key === "Enter") {
           // console.log(data[group]['week_days'][col_idx] - data[group][companies][name_companie]['week_days'][col_idx].val + input.value)
-          console.log(elem_id);
+          // console.log(elem_id);
           let pathArr = elem_id.split("_");
           let group = pathArr[0];
           let companies = pathArr[1];
@@ -825,10 +830,11 @@ export default {
           let prev_value =
             data[group][companies][name_companie]["week_days"][col_idx].val;
           let new_value = Number(input.value);
-
+          //Доход по ПРОГНОЗУ
+          let prev_val_prognoz = data[group][companies][name_companie]["prognoz"]
+          data[group][companies][name_companie]["prognoz"] = prev_val_prognoz - prev_value + new_value
           // ДОход группы по дням
-          data[group]["week_days"][col_idx].val =
-            income_cs - prev_value + new_value;
+          data[group]["week_days"][col_idx].val = income_cs - prev_value + new_value;
 
           data[group][companies][name_companie]["week_days"][col_idx].val =
             input.value;
@@ -836,10 +842,8 @@ export default {
             last_name;
 
           let prev_val_operation =
-            data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val;
-          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][
-            col_idx
-          ].val = prev_val_operation - prev_value + new_value;
+          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val;
+          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val = prev_val_operation - prev_value + new_value;
 
           // td-шка старая
           let new_el = document.getElementById(elem_id);
@@ -890,14 +894,16 @@ export default {
     },
 
     PlanToPrognoz(elem_id, val) {
-      console.log(this.uid == 102);
+      // console.log(this.uid == 102);
       if (
-        this.uid == 202 ||
-        this.uid == 222 ||
-        this.uid == 102 ||
-        this.uid == 1 ||
-        this.uid == 30
+        // this.uid == 222
+        this.uid === 202 ||
+        this.uid === 222 ||
+        // this.uid == 102 ||
+        this.uid === 1 ||
+        this.uid === 30
       ) {
+        console.log('123')
         let data = JSON.parse(JSON.stringify(this.my_data));
         let current_date = this.current_date;
 
@@ -1087,7 +1093,8 @@ th {
   background: rgb(243, 243, 243);
   font-family: "Montserrat", sans-serif;
   color: black;
-  &:hover{
+
+  &:hover {
     background: lightcyan;
 
   }
