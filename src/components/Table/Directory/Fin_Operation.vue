@@ -855,8 +855,8 @@ export default {
 
           let weight = {
             file_name: `${current_date}.json`,
-            path: [`${group}@companies@${name_companie}@week_days@${col_idx}`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`],
-            value: [{ 'val': Number(input.value), 'user': last_name }, data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val],
+            path: [`${group}@companies@${name_companie}@week_days@${col_idx}`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`, `${group}@companies@${name_companie}@prognoz`],
+            value: [{ 'val': Number(input.value), 'user': last_name }, data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val, `${Number(data[group]['companies'][name_companie]['prognoz'])}`],
           };
           // console.log(weight)
           // console.log(data)
