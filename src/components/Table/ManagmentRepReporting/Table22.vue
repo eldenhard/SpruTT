@@ -145,7 +145,7 @@ export default {
         }
     },
     mounted() {
-        this.today = new Date().getMilliseconds()
+        this.today = new Date().getMilliseconds() + Math.random() * 150
 
 
 

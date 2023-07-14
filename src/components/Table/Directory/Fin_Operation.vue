@@ -893,6 +893,7 @@ export default {
       console.log(this.uid == 102);
       if (
         this.uid == 202 ||
+        this.uid == 222 ||
         this.uid == 102 ||
         this.uid == 1 ||
         this.uid == 30

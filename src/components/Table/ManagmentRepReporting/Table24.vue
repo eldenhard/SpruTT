@@ -10,11 +10,11 @@
                 <label for="" style="color: gray;">
                     Тип вагона
                     <br />
-                    <input type="checkbox" id="john" value="ПВ" v-model="wag_type">
-                    <label for="john" style="color: black;">&nbsp;Полувагон</label>
+                    <input type="checkbox" :id="'john' + today" value="ПВ" v-model="wag_type">
+                    <label :for="'john' + today" style="color: black;">&nbsp;Полувагон</label>
                     <br>
-                    <input type="checkbox" id="mike" value="ЦС" v-model="wag_type">
-                    <label for="mike" style="color: black;">&nbsp;Цистерна</label>
+                    <input type="checkbox" :id="'mike' + today" value="ЦС" v-model="wag_type">
+                    <label :for="'mike' + today" style="color: black;">&nbsp;Цистерна</label>
                 </label>
             </div>
             <Periods @Action="Actioned" @data="getCurrentData" />
@@ -22,7 +22,7 @@
 
 
         <h4 class="NoData" v-show="NoData">По заданным параметрам нет данных</h4>
-        <div :id="'FuckingData' + today"></div>
+        <div :id="'FuckingData' + today" style="margin-top: 2%;"></div>
         <!-- 
         <template v-for="item, index in data1">
             <div @click="OpenChildren($event, item)" ref="FuckingData" :key="item.id"
@@ -76,8 +76,7 @@ export default {
         }
     },
     mounted() {
-        this.today = new Date().getMilliseconds()
-
+        this.today = new Date().getMilliseconds() + Math.random() * 150
 
 
 
@@ -177,7 +176,7 @@ export default {
                     else {
                         hr = document.createElement('hr')
                         div.innerHTML = `${this.Translate(key)} ${collapse}`
-                        div.style = 'margin-left: 8% !important; font-weight: 500; color: darkblue; border: 1px solid lightgrey; padding: 1%;'
+                        div.style = ' font-weight: 500; color: darkblue; border: 1px solid lightgrey; padding: 1%;'
 
                     }
                     div.addEventListener('click', () => {
