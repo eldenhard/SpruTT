@@ -85,7 +85,7 @@
 
         <h4 class="NoData" v-show="NoData">По заданным параметрам нет данных</h4>
 
-        <div id="FuckingData1"></div>
+        <div :id="'FuckingData1' + today"></div>
 
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
 
@@ -141,7 +141,15 @@ export default {
             notifyMessage: "",
             notifyClass: "",
             TOTAL: "",
+            today: "",
         }
+    },
+    mounted() {
+        this.today = new Date().getMilliseconds()
+
+
+
+
     },
     methods: {
         Translate(val) {
@@ -250,7 +258,7 @@ export default {
         },
         Actioned() {
             this.NoData = false
-            document.getElementById('FuckingData1').innerHTML = ""
+            document.getElementById('FuckingData1' + this.today).innerHTML = ""
             if (this.wag_type.length == 0  || this.wagon_belong.length == 0 || this.date_begin == "" || this.date_end == "") {
                 this.notifyHead = "Ошибка";
                 this.notifyMessage = 'Заполните все поля';
@@ -267,7 +275,7 @@ export default {
                     .then((response) => {
                         this.loader = false;
                         this.data3123 = response.data;
-                        this.OpenChildren(document.getElementById('FuckingData1'), this.data3123)
+                        this.OpenChildren(document.getElementById('FuckingData1' + this.today), this.data3123)
                         if(Object.keys(this.data3123).length == 0){
                             this.NoData = true
                         }

@@ -22,7 +22,7 @@
 
 
         <h4 class="NoData" v-show="NoData">По заданным параметрам нет данных</h4>
-        <div id="FuckingData"></div>
+        <div :id="'FuckingData' + today"></div>
         <!-- 
         <template v-for="item, index in data1">
             <div @click="OpenChildren($event, item)" ref="FuckingData" :key="item.id"
@@ -61,6 +61,7 @@ export default {
     components: { Periods, Notifications, Loader },
     data() {
         return {
+            today: "",
             NoData: false,
             data1: "",
             date_begin: "",
@@ -75,7 +76,7 @@ export default {
         }
     },
     mounted() {
-
+        this.today = new Date().getMilliseconds()
 
 
 
@@ -200,7 +201,7 @@ export default {
 
         Actioned() {
             this.NoData = false
-            document.getElementById('FuckingData').innerHTML = ""
+            document.getElementById('FuckingData'+ this.today).innerHTML = ""
             if (this.wag_type.length == 0 || this.date_begin == "" || this.date_end == "") {
                 this.notifyHead = "Ошибка";
                 this.notifyMessage = 'Заполните все поля';
@@ -223,7 +224,8 @@ export default {
                         if(Object.keys(this.data1).length == 0){
                             this.NoData = true
                         }
-                        this.OpenChildren(document.getElementById('FuckingData'), this.data1)
+                        console.log('FuckingData' + this.today)
+                        this.OpenChildren(document.getElementById('FuckingData' + this.today), this.data1)
 
                         // console.log(this.data1)
                     })
