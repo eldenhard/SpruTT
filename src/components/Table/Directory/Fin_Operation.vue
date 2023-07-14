@@ -79,7 +79,7 @@
               <!-- <input type="text" v-model="search" style="height: 50px !important;" class="textarea"> -->
 
             </th>
-            <th rowspan="2">План</th>
+            <th rowspan="2" style="width: 750px !important">План</th>
             <th rowspan="2">Прогноз</th>
             <template v-for="day in days">
               <!-- v-show=" thrd(day)" -->
@@ -104,7 +104,7 @@
             <tr>
               <td class="col1" @click="visibleGroup(group_name)">{{ group_name }}{{ collapse(group_name) }}</td>
               <!-- сумма плана -->
-              <td class="col2">{{ group.plan | format }} </td>
+              <td class="col2" style="width: 250px">{{ group.plan | format }} </td>
               <td class="col2">{{ group.prognoz | format }} </td>
               <template v-for="day, day_index in group.week_days">
                 <!--  v-show=" thrd(day_index)" -->
