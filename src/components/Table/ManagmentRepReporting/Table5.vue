@@ -2,7 +2,7 @@
   <div>
     <!-- <pre>{{normalized}}</pre> -->
     <Loader :loader="loader" />
-    <Periods @Action="Actioned" @data="getCurrentData">
+    <Periods @Action="Actioned" @data="getCurrentData"  style="width: 15% !important;">
       <label for="">
         Тип вагона
         <br />

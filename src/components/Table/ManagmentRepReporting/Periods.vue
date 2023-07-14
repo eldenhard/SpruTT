@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div style="display: flex; flex-direction: column; ">
     <div class="btn-group">
       <label for="dateStart" :class="{ Error: is_error_start }"
         >Начало периода
         <br />
-        <input type="date" id="dateStart" v-model="date_begin" min="2022-01-01"/>
+        <input type="date" id="dateStart" v-model="date_begin" min="2022-01-01" />
       </label>
 
       <label for="dateEnd" :class="{ Error: is_error_end }"
@@ -63,19 +63,21 @@ export default {
 </script>
 
 <style scoped>
+input{
+  width: 100%
+}
 .Error {
   color: rgb(247, 0, 0);
 }
 .Request {
-  width: 23.5%;
-  float: right;
-  margin-top: 1%;
+  width: 108%;
+
 }
 .btn-group {
   /* width: 25%; */
-  display: flex;
-  gap: 5%;
-  justify-content: end;
+  /* display: flex; */
+  gap: 8%;
+  /* justify-content: end; */
 }
 label {
   color: grey;

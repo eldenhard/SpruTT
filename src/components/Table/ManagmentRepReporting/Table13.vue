@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>Форма 4.13. "Анализ доходности по сегменту вагоно-цистерн"</p>
-        <Periods @Action="Actioned" @data="getCurrentData" />
+        <Periods @Action="Actioned" @data="getCurrentData" style="width: 15% !important;">
         <div style="display: flex; flex-direction: column;">
 
             <label for="">
@@ -13,6 +13,7 @@
                 </select>
             </label>
         </div>
+    </Periods>
         <div id="FuckingData13"></div>
     </div>
 </template>

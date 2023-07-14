@@ -3,19 +3,25 @@
         <Loader :loader="loader" />
 
         <p>Форма 4.24. "Простои в ремонте"</p>
-        <Periods @Action="Actioned" @data="getCurrentData" />
-        <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between;" class="filter_block">
 
-            <label for="">
-                Тип вагона
-                <br />
-                <select name="" id="" v-model="wag_type">
-                    <option value="ПВ">Полувагон</option>
-                    <option value="ЦС">Цистерна</option>
-                </select>
-            </label>
+            <div style="display: flex; flex-direction: column;">
 
+                <label for="" style="color: gray;">
+                    Тип вагона
+                    <br />
+                    <input type="checkbox" id="john" value="ПВ" v-model="wag_type">
+                    <label for="john" style="color: black;">&nbsp;Полувагон</label>
+                    <br>
+                    <input type="checkbox" id="mike" value="ЦС" v-model="wag_type">
+                    <label for="mike" style="color: black;">&nbsp;Цистерна</label>
+                </label>
+            </div>
+            <Periods @Action="Actioned" @data="getCurrentData" />
         </div>
+
+
+        <h4 class="NoData" v-show="NoData">По заданным параметрам нет данных</h4>
         <div id="FuckingData"></div>
         <!-- 
         <template v-for="item, index in data1">
@@ -30,7 +36,22 @@
     </div>
 </template>
 
+<style lang="scss" scoped>
+.filter_block{
+    display: flex;
+    justify-content: space-between;
+    padding: 2%;
+    border: 1px solid lightgrey
+}
+.NoData{
+   text-align: center;
+    margin-top: 15%;
+}
+#FuckingData{
+ margin-top: 1%;
 
+}
+</style>
 <script>
 import Periods from "./Periods.vue";
 import api from "@/api/reportUO"
@@ -40,12 +61,12 @@ export default {
     components: { Periods, Notifications, Loader },
     data() {
         return {
-
+            NoData: false,
             data1: "",
             date_begin: "",
             date_end: "",
             loader: false,
-            wag_type: "",
+            wag_type: [],
             wagon_belong: "",
             showNotify: false,
             notifyHead: "",
@@ -78,7 +99,7 @@ export default {
                 case "":
                     return 'Не определено'
                     break
-       
+
             }
         },
         FilterValue(val) {
@@ -178,8 +199,9 @@ export default {
 
 
         Actioned() {
+            this.NoData = false
             document.getElementById('FuckingData').innerHTML = ""
-            if (this.wag_type == "" || this.date_begin == "" || this.date_end == "") {
+            if (this.wag_type.length == 0 || this.date_begin == "" || this.date_end == "") {
                 this.notifyHead = "Ошибка";
                 this.notifyMessage = 'Заполните все поля';
                 this.notifyClass = "wrapper-error";
@@ -189,14 +211,18 @@ export default {
                 }, 2000);
                 return
             } else {
-              
+
                 this.loader = true;
+
                 api
-                    .getUO424(this.date_begin, this.date_end, this.wag_type)
+                    .getUO424(this.date_begin, this.date_end, this.wag_type.join(','))
                     .then((response) => {
                         this.loader = false;
                         this.data1 = response.data;
-
+                        console.log(response.data)
+                        if(Object.keys(this.data1).length == 0){
+                            this.NoData = true
+                        }
                         this.OpenChildren(document.getElementById('FuckingData'), this.data1)
 
                         // console.log(this.data1)

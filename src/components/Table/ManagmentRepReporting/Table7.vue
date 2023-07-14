@@ -7,7 +7,7 @@
     </div> -->
    
     <Loader :loader="loader" />
-    <Periods @Action="get47" @data="getCurrentData" />
+    <Periods @Action="get47" @data="getCurrentData"  style="width: 15% !important;">
     <label for="">
         Тип вагона
         <br />
@@ -16,9 +16,10 @@
           <option value="Цистерна">Цистерна</option>
         </select>
       </label>
+    </Periods>
     <div style="margin-top: 3%;">
       <p>Форма 4.7 "Анализ перевозки и выручки по сегменту полувагонов"</p>
-      <button id="button" @click="fnExcelReport()">Export HTML Table to EXCEL</button>
+      <!-- <button id="button" @click="fnExcelReport()">Export HTML Table to EXCEL</button> -->
       <table border="1" id="theTable">
         <thead>
           <tr>
