@@ -98,7 +98,7 @@
             </th>
           </template>
         </thead>
-        <tbody>
+        <tbody ref="theTableBody">
           <!---10 groups-->
           <template v-for="(group, group_name) in dataComputed">
             <tr>
@@ -401,13 +401,6 @@ export default {
         // Все значения плана
         all_plan = rrr
 
-
-
-
-
-
-
-
         // Получение имен контрагентов
         for (let i in rows) {
           try {
@@ -439,7 +432,6 @@ export default {
 
 
 
-
         // выравнивание длин массивов для дальнейшего сведения в 1 таблицу
         let counterparties = all_counterpartie.slice(3, all_counterpartie.length - 1)
         let plan = all_plan.slice(3, all_plan.length - 1)
@@ -452,17 +444,15 @@ export default {
         let allDataOfDays = [];
         let table = document.querySelector('table')
         let date = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0);
-        console.log(date.getDate())
-        // console.log(table)
+
         for (let j = 1; j <= date.getDate(); j++) {
           let little = []
           for (let row of table.rows) {
             little.push(row.cells[6 + j].innerHTML);
           }
           // получаю все значения столбцов в отдельных массивах без шапки
-          allDataOfDays.push(little.slice(5, counterparties.length+5))
+          allDataOfDays.push(little.slice(5, counterparties.length + 5))
         }
-       console.log(counterparties, amount_plan, allDataOfDays)
 
 
 
@@ -471,10 +461,11 @@ export default {
         for (let i in counterparties) {
           if (counterparties[i] in this.my_data) {
             last_key = counterparties[i]
-            // TODO prognoz
             try {
+              // подгружаю данные для плана по группам и общему итогу
               this.my_data[counterparties[i]]['plan'] = amount_plan[i]
-
+    
+              // this.my_data[counterparties[i]]['prognoz'] = amount_plan[i] + 'я отсюда'
             } catch {
               console.log(new Error('Ошибка длины массивов'))
             }
@@ -482,6 +473,7 @@ export default {
             if (last_key != null) {
               if ('companies' in this.my_data[last_key]) {
                 // TODO prognoz
+                // console.log(this.my_data[last_key]['companies'][counterparties[i]])
                 this.my_data[last_key]['companies'][counterparties[i]] = {
                   'week_days': {},
                   'plan': amount_plan[i],
@@ -491,6 +483,12 @@ export default {
             }
           }
         }
+
+      // for(let i in counterparties){
+      //   if (counterparties[i] in this.my_data) {
+      //   console.log(this.my_data[counterparties[i]]['week_days'])
+      //   }
+      // }
 
         let week_days = {};
 
@@ -506,22 +504,56 @@ export default {
         // this.check_data();
 
 
-
-
-        // Получяение дней недели для таблицы
+        // создаю структуру таблицы относительно кол-ва дней
         for (let i = 1; i <= days; i++) {
           week_days[i] = {
             user: "",
             val: 0,
           };
         }
+        // console.log(week_days)
 
         for (let group in this.my_data) {
           this.my_data[group]["week_days"] = week_days;
           for (let company in this.my_data[group]?.companies) {
             this.my_data[group]["companies"][company]["week_days"] = week_days;
+            // for(let val in  this.my_data[group]["companies"][company]["week_days"]){
+            // //   for(let day = 0; day <= allDataOfDays[0].length; day++)
+            // //   this.my_data[group]["companies"][company]["week_days"][val]['val'] = allDataOfDays[0][day].replaceAll(',',"")
+            // }
           }
         }
+
+        let Table = this.$refs.theTable
+        let all_cells = []
+        for(let row of Table.rows){
+         for(let day = 1; day <= days.length; day++){
+          
+         }
+        }
+          // for(let j of allDataOfDays[0]){
+          //   console.log(j)
+          //   Table.rows.cells[3].innerHTML = j
+
+          // }
+       
+        // // console.log(Table)
+        // let data123 = []
+        // for (let row of Table.rows) {
+        //   for(let i of allDataOfDays[0]){
+        //     console.log(i)
+        //     // row.cells[3].innerHTML = i
+        //     // console.log(row.cells[3].innerHTML)
+        //   }
+        
+          
+        // }
+
+      // console.log(allDataOfDays[0])
+
+     
+
+
 
         // Создание дней недели по каждому дню месяца
         let array = [];
@@ -559,11 +591,6 @@ export default {
         }, 3500);
       }
       // })
-
-
-
-
-
     },
 
 
