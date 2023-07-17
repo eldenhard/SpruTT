@@ -354,14 +354,14 @@ export default {
         }, 3500);
         return
       }
-      this.loader = true
+      // this.loader = true
       // Проверка на наличие в БД такой структуры
       api
         .getIncomes(this.current_date + ".json")
         .then((response) => {
           // this.loader = false
           this.DB_STRUCTIRE = response.data;
-
+          // Проверяю 2 объекта на их идентивность
           if (JSON.stringify(this.DB_STRUCTIRE) == JSON.stringify(this.standard_collection)) {
             console.log(this.DB_STRUCTIRE, 'Я из БД')
             console.log(this.standard_collection)
@@ -379,8 +379,9 @@ export default {
                 }
               }
               catch { }
-
             }
+
+
             for (let i of data) {
               all_plan.push(i.innerHTML.replaceAll(",", ""))
             }
@@ -438,6 +439,7 @@ export default {
                 // TODO prognoz
                 try {
                   this.my_data[counterparties[i]]['plan'] = amount_plan[i]
+
                 } catch {
                   console.log(new Error('Ошибка длины массивов'))
                 }
@@ -698,7 +700,7 @@ export default {
       if (
         this.uid == 202 ||
         this.uid == 222 ||
-        // this.uid == 102 ||
+        this.uid == 102 ||
         this.uid == 1 ||
         this.uid == 30
       ) {
@@ -830,9 +832,41 @@ export default {
           let prev_value =
             data[group][companies][name_companie]["week_days"][col_idx].val;
           let new_value = Number(input.value);
-          //Доход по ПРОГНОЗУ
+
+          //Доход по ПРОГНОЗУ по агенту
           let prev_val_prognoz = data[group][companies][name_companie]["prognoz"]
           data[group][companies][name_companie]["prognoz"] = prev_val_prognoz - prev_value + new_value
+
+          // Прогноз по группе 
+          data[group]['prognoz'] = 0
+          let all_prognoz = []
+          for (let i in data[group]['companies']) {
+            all_prognoz.push(data[group]['companies'][i]['prognoz'])
+          }
+          let result = all_prognoz.map(function (item, index, arr) {
+            let number = parseInt(item);
+            return isNaN(number) ? item : number;
+          });
+       
+          data[group]['prognoz'] = result.reduce((acc, item) => { 
+            return acc += item})
+          // Прогноз общий 
+          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'] = 0
+          let oper_prognoz = []
+          for (let i in data) {
+            if(i == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ') continue
+            oper_prognoz.push(data[i]['prognoz'])
+          }
+          let resultPrognoz = oper_prognoz.map(function (item, index, arr) {
+            let number = parseInt(item);
+            return isNaN(number) ? item : number;
+          });
+       
+          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'] = resultPrognoz.reduce((acc, item) => { 
+          return acc += item})
+          console.log( data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'])
+
+
           // ДОход группы по дням
           data[group]["week_days"][col_idx].val = income_cs - prev_value + new_value;
 
@@ -842,7 +876,7 @@ export default {
             last_name;
 
           let prev_val_operation =
-          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val;
+            data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val;
           data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val = prev_val_operation - prev_value + new_value;
 
           // td-шка старая
@@ -855,12 +889,13 @@ export default {
 
           let weight = {
             file_name: `${current_date}.json`,
-            path: [`${group}@companies@${name_companie}@week_days@${col_idx}`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`, `${group}@companies@${name_companie}@prognoz`],
-            value: [{ 'val': Number(input.value), 'user': last_name }, data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val, `${Number(data[group]['companies'][name_companie]['prognoz'])}`],
+            path: [`${group}@companies@${name_companie}@week_days@${col_idx}`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`, `${group}@companies@${name_companie}@prognoz`, `${group}@prognoz`],
+            value: [{ 'val': Number(input.value), 'user': last_name }, data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val, `${(data[group]['companies'][name_companie]['prognoz'])}`, `${(data[group]['prognoz'])}`],
           };
+          console.log(weight)
           // console.log(weight)
           // console.log(data)
-          console.log(last_name)
+          // console.log(last_name)
           api.patchIncomes(weight).then((response) => {
             api
               .getIncomes(current_date + ".json")
@@ -878,7 +913,7 @@ export default {
                 }, 2000);
               });
           });
-          console.log(weight)
+          // console.log(weight)
         }
 
         // api.patchIncomes()
@@ -890,7 +925,7 @@ export default {
 
       this.last_clicked_id = elem_id;
       this.my_data = data;
-      console.log(this.my_data);
+      // console.log(this.my_data);
     },
 
     PlanToPrognoz(elem_id, val) {
@@ -923,72 +958,72 @@ export default {
         input.value = val;
         //  Вносить план может только Орлов id: 202
 
-        input.addEventListener("keyup", function (event) {
-          if (event.key === "Enter") {
-            let path_arr = elem_id.split("_");
-            let group = path_arr[0];
-            let companies = path_arr[1];
-            let name_companie = path_arr[2];
+        // input.addEventListener("keyup", function (event) {
+        //   if (event.key === "Enter") {
+        let path_arr = elem_id.split("_");
+        let group = path_arr[0];
+        let companies = path_arr[1];
+        let name_companie = path_arr[2];
 
-            let income_group = data[group].prognoz;
-            let prev_value = data[group][companies][name_companie]["prognoz"];
-            let new_value = Number(input.value);
-            // Сохранение значения плана по группе
-            data[group].prognoz = income_group - prev_value + new_value;
-            // сохранение значения в план по дню месяца
-            data[group][companies][name_companie].prognoz = input.value;
+        let income_group = data[group].prognoz;
+        let prev_value = data[group][companies][name_companie]["prognoz"];
+        let new_value = Number(input.value);
+        // Сохранение значения плана по группе
+        data[group].prognoz = income_group - prev_value + new_value;
+        // сохранение значения в план по дню месяца
+        data[group][companies][name_companie].prognoz = input.value;
 
-            let prev_val_operation =
-              data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"];
-            data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"] =
-              prev_val_operation - prev_value + new_value;
+        let prev_val_operation =
+          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"];
+        data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"] =
+          prev_val_operation - prev_value + new_value;
 
-            // Сохранение итого по группе
-            // td-шка старая
-            let new_el = document.getElementById(elem_id);
-            new_el.innerHTML = event.target.value;
+        // Сохранение итого по группе
+        // td-шка старая
+        // let new_el = document.getElementById(elem_id);
+        // new_el.innerHTML = event.target.value;
 
-            document.getElementById(elem_id).style.background = "#DCFCC6";
-            setTimeout(() => {
-              document.getElementById(elem_id).style.background = "none";
-            }, 2500);
+        // document.getElementById(elem_id).style.background = "#DCFCC6";
+        // setTimeout(() => {
+        //   document.getElementById(elem_id).style.background = "none";
+        // }, 2500);
 
-            // 1 передаю значение для каждой строки
-            // 2 значение для каждой группы
-            // Общий итог
-            let weight = {
-              file_name: `${current_date}.json`,
-              path: [`${group}@companies@${name_companie}@prognoz`, `${group}@prognoz`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@prognoz`],
-              value: [Number(input.value), data[group]['prognoz'], data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"]],
-            };
-            api.patchIncomes(weight).then((response) => {
-              api
-                .getIncomes(current_date + ".json")
-                .then((response) => {
-                  data = response.data;
-                })
-                .catch((error) => {
-                  this.notifyHead = "Ошибка";
-                  this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
-                  this.notifyClass = "wrapper-error";
-                  this.showNotify = true;
-                  setTimeout(() => {
-                    this.showNotify = false;
-                  }, 2000);
-                });
+        // 1 передаю значение для каждой строки
+        // 2 значение для каждой группы
+        // Общий итог
+        let weight = {
+          file_name: `${current_date}.json`,
+          path: [`${group}@companies@${name_companie}@prognoz`, `${group}@prognoz`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@prognoz`],
+          value: [Number(input.value), data[group]['prognoz'], data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"]],
+        };
+        api.patchIncomes(weight).then((response) => {
+          api
+            .getIncomes(current_date + ".json")
+            .then((response) => {
+              data = response.data;
+            })
+            .catch((error) => {
+              this.notifyHead = "Ошибка";
+              this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
+              this.notifyClass = "wrapper-error";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false;
+              }, 2000);
             });
-          }
-
-
-
-
         });
+        //   }
+
+
+
+
+        // });
 
         prev_el.innerHTML = "";
         // появление фокуса при выборе клетки
-        prev_el.insertAdjacentElement("beforeend", input).focus();
+        // prev_el.insertAdjacentElement("beforeend", input).focus();
 
-        this.last_clicked_id = elem_id;
+        // this.last_clicked_id = elem_id;
         this.my_data = data;
       }
     },
