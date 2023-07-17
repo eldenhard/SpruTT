@@ -55,7 +55,7 @@
               </label>
             </template>
           </xlsx-sheets>
-          <xlsx-table :sheet="selectedSheet" v-show="false" />
+          <xlsx-table :sheet="selectedSheet" v-show="false" ref="Table" />
         </xlsx-read>
 
       </section>
@@ -344,6 +344,7 @@ export default {
   methods: {
     saveData() {
       // console.log(this.my_data)
+      console.log(this.my_data)
       if (this.selectedSheet == null) {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Необходимо выбрать лист из файла Excel";
@@ -356,177 +357,229 @@ export default {
       }
       // this.loader = true
       // Проверка на наличие в БД такой структуры
-      api
-        .getIncomes(this.current_date + ".json")
-        .then((response) => {
-          // this.loader = false
-          this.DB_STRUCTIRE = response.data;
-          // Проверяю 2 объекта на их идентивность
-          if (JSON.stringify(this.DB_STRUCTIRE) == JSON.stringify(this.standard_collection)) {
-            console.log(this.DB_STRUCTIRE, 'Я из БД')
-            console.log(this.standard_collection)
-            let rows = window.document.querySelectorAll("table tbody tr");
-            let data = []
-            let data_name = []
-            let all_plan = []
-            let all_counterpartie = []
-            for (let i in rows) {
-              try {
-                for (let j of rows[i].cells) {
-                  if (j?.id.includes('sjs-F')) {
-                    data.push(j)
-                  }
-                }
-              }
-              catch { }
-            }
-
-
-            for (let i of data) {
-              all_plan.push(i.innerHTML.replaceAll(",", ""))
-            }
-            let rrr = all_plan.map(item => {
-              if (item.includes('-')) {
-                return item = '0'
-              } else {
-                return item
-              }
-              //  return item.includes('-')
-            })
-            all_plan = rrr
-            console.log(all_plan)
-
-
-
-
-
-            // Получение имен контрагентов
-            for (let i in rows) {
-              try {
-                for (let j of rows[i].cells) {
-                  if (j?.id.includes('sjs-B6') ||
-                    j?.id.includes('sjs-B7') ||
-                    j?.id.includes('sjs-B8') ||
-                    j?.id.includes('sjs-B9') ||
-                    j?.id.includes('sjs-B1') ||
-                    j?.id.includes('sjs-B2') ||
-                    j?.id.includes('sjs-B3') ||
-                    j?.id.includes('sjs-B4') ||
-                    j?.id.includes('sjs-B5')) {
-                    data_name.push(j)
-                  }
-                }
-              }
-              catch { }
-
-            }
-            for (let i of data_name) {
-              if (i.innerHTML == 'ВЫПЛАТЫ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ') break
-              else {
-                all_counterpartie.push(i.innerHTML?.replace(/["']/g, ""))
+      // api
+      //   .getIncomes(this.current_date + ".json")
+      //   .then((response) => {
+      // this.loader = false
+      // this.DB_STRUCTIRE = response.data;
+      // Проверяю 2 объекта на их идентивность
+      if (true === true) {
+        // if (JSON.stringify(this.DB_STRUCTIRE) == JSON.stringify(this.standard_collection)) {
+        // console.log(this.DB_STRUCTIRE, 'Я из БД')
+        // console.log(this.standard_collection)
+        let rows = window.document.querySelectorAll("table tbody tr");
+        // план
+        let data = []
+        let data_name = []
+        // массив со всеми значениями плана
+        let all_plan = []
+        let all_counterpartie = []
+        for (let i in rows) {
+          try {
+            for (let j of rows[i].cells) {
+              if (j?.id.includes('sjs-F')) {
+                data.push(j)
               }
             }
-            let counterparties = all_counterpartie.slice(3, all_counterpartie.length - 1)
-            let plan = all_plan.slice(3, all_plan.length - 1)
-            let amount_plan = plan.slice(0, counterparties.length)
-            // console.log(counterparties)
-            // console.log(amount_plan)
-
-            let last_key = null
-            for (let i in counterparties) {
-              if (counterparties[i] in this.my_data) {
-                last_key = counterparties[i]
-                // TODO prognoz
-                try {
-                  this.my_data[counterparties[i]]['plan'] = amount_plan[i]
-
-                } catch {
-                  console.log(new Error('Ошибка длины массивов'))
-                }
-              } else {
-                if (last_key != null) {
-                  if ('companies' in this.my_data[last_key]) {
-                    // TODO prognoz
-                    this.my_data[last_key]['companies'][counterparties[i]] = {
-                      'week_days': {},
-                      'plan': amount_plan[i],
-                      'prognoz': 0
-                    }
-                  }
-                }
-              }
-            }
-
-            let week_days = {};
-
-            // получаем количество дней в выбранном месяце
-            let page_date = window.location.href.substring(
-              window.location.href.length - 7
-            );
-            let split_date = page_date.split("-");
-            let lastday = new Date(split_date[0], split_date[1], 0);
-            let days = lastday.getDate();
-            this.current_date = page_date;
-
-            // this.check_data();
-
-
-            for (let i = 1; i <= days; i++) {
-              week_days[i] = {
-                user: "",
-                val: 0,
-              };
-            }
-
-            for (let group in this.my_data) {
-              this.my_data[group]["week_days"] = week_days;
-              for (let company in this.my_data[group]?.companies) {
-                this.my_data[group]["companies"][company]["week_days"] = week_days;
-              }
-            }
-
-            // Создание дней недели по каждому дню месяца
-            let array = [];
-            for (let i = 1; i <= days; i++) {
-              if (i <= 9) {
-                array.push(`${page_date}-0${i}`);
-              } else {
-                array.push(`${page_date}-${i}`);
-              }
-            }
-            let day_week = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
-
-            let data1 = array.map((item) => {
-              return new Date(item);
-            });
-            let send_data = data1.map((item) => {
-              return day_week[item.getDay()];
-            });
-
-            this.send_data = send_data;
-            this.days = days;
-            this.today = new Date().getDate()
-            this.loader = false
-            this.create_table()
-
-          } else {
-            console.log('Уже создана')
-            this.loader = false
-            this.notifyHead = "Ошибка";
-            this.notifyMessage = "Данные из файла уже были ранее загружены";
-            this.notifyClass = "wrapper-error";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 3500);
           }
+          catch { }
+        }
+
+
+        for (let i of data) {
+          all_plan.push(i.innerHTML.replaceAll(",", ""))
+        }
+        let rrr = all_plan.map(item => {
+          if (item.includes('-')) {
+            return item = '0'
+          } else {
+            return item
+          }
+          //  return item.includes('-')
         })
+
+        // Все значения плана
+        all_plan = rrr
+
+
+
+
+
+
+
+
+        // Получение имен контрагентов
+        for (let i in rows) {
+          try {
+            for (let j of rows[i].cells) {
+              if (j?.id.includes('sjs-B6') ||
+                j?.id.includes('sjs-B7') ||
+                j?.id.includes('sjs-B8') ||
+                j?.id.includes('sjs-B9') ||
+                j?.id.includes('sjs-B1') ||
+                j?.id.includes('sjs-B2') ||
+                j?.id.includes('sjs-B3') ||
+                j?.id.includes('sjs-B4') ||
+                j?.id.includes('sjs-B5')) {
+                data_name.push(j)
+              }
+            }
+          }
+          catch { }
+
+        }
+        for (let i of data_name) {
+          if (i.innerHTML == 'ВЫПЛАТЫ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ') break
+          else {
+            all_counterpartie.push(i.innerHTML?.replace(/["']/g, ""))
+          }
+        }
+
+
+
+
+
+
+        // выравнивание длин массивов для дальнейшего сведения в 1 таблицу
+        let counterparties = all_counterpartie.slice(3, all_counterpartie.length - 1)
+        let plan = all_plan.slice(3, all_plan.length - 1)
+        let amount_plan = plan.slice(0, counterparties.length)
+        // console.log(counterparties, amount_plan, allDataOfDays)
+
+
+
+        // получение данных по дням недели
+        let allDataOfDays = [];
+        let table = document.querySelector('table')
+        let date = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0);
+        console.log(date.getDate())
+        // console.log(table)
+        for (let j = 1; j <= date.getDate(); j++) {
+          let little = []
+          for (let row of table.rows) {
+            little.push(row.cells[6 + j].innerHTML);
+          }
+          // получаю все значения столбцов в отдельных массивах без шапки
+          allDataOfDays.push(little.slice(5, counterparties.length+5))
+        }
+       console.log(counterparties, amount_plan, allDataOfDays)
+
+
+
+
+        let last_key = null
+        for (let i in counterparties) {
+          if (counterparties[i] in this.my_data) {
+            last_key = counterparties[i]
+            // TODO prognoz
+            try {
+              this.my_data[counterparties[i]]['plan'] = amount_plan[i]
+
+            } catch {
+              console.log(new Error('Ошибка длины массивов'))
+            }
+          } else {
+            if (last_key != null) {
+              if ('companies' in this.my_data[last_key]) {
+                // TODO prognoz
+                this.my_data[last_key]['companies'][counterparties[i]] = {
+                  'week_days': {},
+                  'plan': amount_plan[i],
+                  'prognoz': 0
+                }
+              }
+            }
+          }
+        }
+
+        let week_days = {};
+
+        // получаем количество дней в выбранном месяце
+        let page_date = window.location.href.substring(
+          window.location.href.length - 7
+        );
+        let split_date = page_date.split("-");
+        let lastday = new Date(split_date[0], split_date[1], 0);
+        let days = lastday.getDate();
+        this.current_date = page_date;
+
+        // this.check_data();
+
+
+
+
+        // Получяение дней недели для таблицы
+        for (let i = 1; i <= days; i++) {
+          week_days[i] = {
+            user: "",
+            val: 0,
+          };
+        }
+
+        for (let group in this.my_data) {
+          this.my_data[group]["week_days"] = week_days;
+          for (let company in this.my_data[group]?.companies) {
+            this.my_data[group]["companies"][company]["week_days"] = week_days;
+          }
+        }
+
+        // Создание дней недели по каждому дню месяца
+        let array = [];
+        for (let i = 1; i <= days; i++) {
+          if (i <= 9) {
+            array.push(`${page_date}-0${i}`);
+          } else {
+            array.push(`${page_date}-${i}`);
+          }
+        }
+        let day_week = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+
+        let data1 = array.map((item) => {
+          return new Date(item);
+        });
+        let send_data = data1.map((item) => {
+          return day_week[item.getDay()];
+        });
+
+        this.send_data = send_data;
+        this.days = days;
+        this.today = new Date().getDate()
+        this.loader = false
+        this.create_table()
+
+      } else {
+        console.log('Уже создана')
+        this.loader = false
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Данные из файла уже были ранее загружены";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => {
+          this.showNotify = false;
+        }, 3500);
+      }
+      // })
 
 
 
 
 
     },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     onChange(event) {
       this.file = event.target.files ? event.target.files[0] : null;
     },
@@ -847,23 +900,25 @@ export default {
             let number = parseInt(item);
             return isNaN(number) ? item : number;
           });
-       
-          data[group]['prognoz'] = result.reduce((acc, item) => { 
-            return acc += item})
+
+          data[group]['prognoz'] = result.reduce((acc, item) => {
+            return acc += item
+          })
           // Прогноз общий 
           data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'] = 0
           let oper_prognoz = []
           for (let i in data) {
-            if(i == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ') continue
+            if (i == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ') continue
             oper_prognoz.push(data[i]['prognoz'])
           }
           let resultPrognoz = oper_prognoz.map(function (item, index, arr) {
             let number = parseInt(item);
             return isNaN(number) ? item : number;
           });
-       
-          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'] = resultPrognoz.reduce((acc, item) => { 
-          return acc += item})
+
+          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'] = resultPrognoz.reduce((acc, item) => {
+            return acc += item
+          })
           // console.log( data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'])
 
 
