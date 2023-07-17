@@ -864,7 +864,7 @@ export default {
        
           data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'] = resultPrognoz.reduce((acc, item) => { 
           return acc += item})
-          console.log( data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'])
+          // console.log( data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'])
 
 
           // ДОход группы по дням
@@ -889,8 +889,8 @@ export default {
 
           let weight = {
             file_name: `${current_date}.json`,
-            path: [`${group}@companies@${name_companie}@week_days@${col_idx}`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`, `${group}@companies@${name_companie}@prognoz`, `${group}@prognoz`],
-            value: [{ 'val': Number(input.value), 'user': last_name }, data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val, `${(data[group]['companies'][name_companie]['prognoz'])}`, `${(data[group]['prognoz'])}`],
+            path: [`${group}@companies@${name_companie}@week_days@${col_idx}`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`, `${group}@companies@${name_companie}@prognoz`, `${group}@prognoz`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@prognoz`],
+            value: [{ 'val': Number(input.value), 'user': last_name }, data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val, `${(data[group]['companies'][name_companie]['prognoz'])}`, `${(data[group]['prognoz'])}`, `${data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz']}`],
           };
           console.log(weight)
           // console.log(weight)
