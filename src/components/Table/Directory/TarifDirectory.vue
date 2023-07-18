@@ -735,19 +735,19 @@ export default {
       } else {
         this.Standard.responsible = this.uid;
 
-        let parametrs;
-        if (this.data.length == 0) {
-           parametrs = this.Standard;
-        } else {
+        // let parametrs;
+        // if (this.data.length == 0) {
+        //    parametrs = this.Standard;
+        // } else {
           for (let i in this.data) {
             Object.assign(this.data[i], this.Standard);
           }
-          parametrs = this.data;
-        }
+        //   parametrs = this.data;
+        // }
 
         this.loader = true;
 
-        api.postTarifData(parametrs)
+        api.postTarifData(this.data)
             .then(response => {
 
                 this.getAllAgreement()
