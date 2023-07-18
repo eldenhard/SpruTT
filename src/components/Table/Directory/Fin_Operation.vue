@@ -3,23 +3,36 @@
     <Loader :loader="loader" />
     <b-modal ref="my-modal" hide-footer title="Добавление контрагента">
       <div class="content-counter">
-
-        <label for=""><span :class="{ 'isError': ErrorCreateDivision }">Раздел</span> <br>
+        <label for=""
+          ><span :class="{ isError: ErrorCreateDivision }">Раздел</span> <br />
           <select class="textarea" v-model="group_create_counterpar">
-            <option v-for="groups, index in my_data" :key="groups.id"
-              v-show="index != 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ'">{{ index }}</option>
+            <option
+              v-for="(groups, index) in my_data"
+              :key="groups.id"
+              v-show="index != 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ'"
+            >
+              {{ index }}
+            </option>
           </select>
         </label>
         <label for="">
-          <span :class="{ 'isError': ErrorCreateCounterpartie }">Название контрагента </span><br>
-          <input type="text" v-model="counterpartie" class="textarea">
+          <span :class="{ isError: ErrorCreateCounterpartie }"
+            >Название контрагента </span
+          ><br />
+          <input type="text" v-model="counterpartie" class="textarea" />
         </label>
       </div>
-      <b-button class="mt-3" variant="danger" block @click="hideModal">Закрыть</b-button>
-      <b-button class="mt-2" variant="success" block @click="createCounterpstie()">Сохранить</b-button>
+      <b-button class="mt-3" variant="danger" block @click="hideModal"
+        >Закрыть</b-button
+      >
+      <b-button
+        class="mt-2"
+        variant="success"
+        block
+        @click="createCounterpstie()"
+        >Сохранить</b-button
+      >
     </b-modal>
-
-
 
     <p class="explanation">
       * Для редактирования ячейки - кликните на ячейку <br />
@@ -32,22 +45,21 @@
       }}</b>
       <br />
       * Для того чтобы узнать кто последний редактировал ячейку - кликните
-      правой кнопкой мыши на эту ячейку <br>
-      * Для загрузки данных из EXCEL необходимо: <br>
-      -> нажать на выбор файла <br>
-      -> выбрать лист (соответсвующий этому отчету) <br>
+      правой кнопкой мыши на эту ячейку <br />
+      * Для загрузки данных из EXCEL необходимо: <br />
+      -> нажать на выбор файла <br />
+      -> выбрать лист (соответсвующий этому отчету) <br />
       -> нажать сохранить в таблицу
     </p>
     <div class="content_header">
-
-
-      <section style="margin-left: 2%;">
+      <section style="margin-left: 2%">
         <input type="file" @change="onChange" />
         <xlsx-read :file="file">
           <xlsx-sheets>
             <template #default="{ sheets }">
-              <label for="">Выберите лист <br>
-                <select v-model="selectedSheet" style="border: 1px solid black;">
+              <label for=""
+                >Выберите лист <br />
+                <select v-model="selectedSheet" style="border: 1px solid black">
                   <option v-for="sheet in sheets" :key="sheet" :value="sheet">
                     {{ sheet }}
                   </option>
@@ -57,11 +69,11 @@
           </xlsx-sheets>
           <xlsx-table :sheet="selectedSheet" v-show="false" ref="Table" />
         </xlsx-read>
-
       </section>
 
-      <button @click="saveData()" class="button Accept">Сохранить значения в таблицу</button>
-
+      <button @click="saveData()" class="button Accept">
+        Сохранить значения в таблицу
+      </button>
 
       <button class="button Accept" @click="openModal()">
         Добавить контрагента
@@ -71,30 +83,49 @@
       </button>
     </div>
     <h4 class="month">{{ mounth_report }}</h4>
-    <div>
+
+
+
+    <div style="overflow: auto">
       <table border="1" ref="theTable">
         <thead>
           <tr>
-            <th rowspan="2">Контрагент
+            <th rowspan="2">
+              Контрагент
               <!-- <input type="text" v-model="search" style="height: 50px !important;" class="textarea"> -->
-
             </th>
-            <th rowspan="2" style="width: 750px !important">План</th>
-            <th rowspan="2">Прогноз</th>
+            <th rowspan="2" style="width: 750px !important" v-show="plan">
+              План
+            </th>
+            <th rowspan="2" v-show="show_today">План на сегодня</th>
+            <th rowspan="2">Факт</th>
             <template v-for="day in days">
               <!-- v-show=" thrd(day)" -->
-              <th :key="day.id" v-show="tyu == true ? tyu : thrd(day)" style="position: relative;">
+              <th
+                :key="day.id"
+                v-show="tyu == true ? tyu : thrd(day)"
+                :class="{isToday: isToday}"
+                style="position: relative"
+              >
                 {{ day }}
-                <button class="collapsed" @click="tyu = !tyu" v-show="day == today">{{ tyu ? '-' : '+' }}</button>
+                <button
+                  class="collapsed"
+                  @click="tyu = !tyu"
+                  v-show="day == today"
+                >
+                  {{ tyu ? "-" : "+" }}
+                </button>
               </th>
             </template>
           </tr>
           <template v-for="day_of_week in send_data">
             <!--   v-show=" thrd(day_of_week)" -->
-            <th v-show="tyu == true ? tyu : thrd(day_of_week)" :key="day_of_week.id"
-              :class="{ weekend: isWeekend(day_of_week) }">
+            <th
+              v-show="tyu == true ? tyu : thrd(day_of_week)"
+              :key="day_of_week.id"
+              :class="{ weekend: isWeekend(day_of_week) }"
+            >
               {{ day_of_week }}
-
             </th>
           </template>
         </thead>
@@ -102,41 +133,70 @@
           <!---10 groups-->
           <template v-for="(group, group_name) in dataComputed">
             <tr>
-              <td class="col1" @click="visibleGroup(group_name)">{{ group_name }}{{ collapse(group_name) }}</td>
+              <td class="col1" @click="visibleGroup(group_name)">
+                {{ group_name }}{{ collapse(group_name) }}
+              </td>
               <!-- сумма плана -->
-              <td class="col2" style="width: 250px">{{ group.plan | format }} </td>
-              <td class="col2">{{ group.prognoz | format }} </td>
-              <template v-for="day, day_index in group.week_days">
+              <td class="col2" style="width: 250px" v-show="plan">
+                {{ group.plan | format }}
+              </td>
+              <td class="col2" v-show="show_today">Сумма группы</td>
+              <td class="col2">{{ group.prognoz | format }}</td>
+              <template v-for="(day, day_index) in group.week_days">
                 <!--  v-show=" thrd(day_index)" -->
-                <td class="col2" v-show="tyu == true ? tyu : thrd(day_index)">{{ day.val | format }}</td>
+                <td class="col2" v-show="tyu == true ? tyu : thrd(day_index)">
+                  {{ day.val | format }}
+                </td>
               </template>
             </tr>
             <!--companies names-->
-            <tr v-for="(company, company_name) in group.companies" :key="company_name.id" v-show="visible_row">
+            <tr
+              v-for="(company, company_name) in group.companies"
+              :key="company_name.id"
+              v-show="visible_row"
+            >
               <td>{{ company_name }}</td>
               <!-- план -->
-              <td class="col2" :id="group_name +
-                '_' +
-                'companies' +
-                '_' +
-                company_name +
-                '_' +
-                'plan'
-                " @click="
-    PlanToInp(
-      group_name +
-      '_' +
-      'companies' +
-      '_' +
-      company_name +
-      '_' +
-      'plan',
-      company.plan
-    )
-    ">
+              <td
+                class="col2"
+                v-show="plan"
+                :id="
+                  group_name +
+                  '_' +
+                  'companies' +
+                  '_' +
+                  company_name +
+                  '_' +
+                  'plan'
+                "
+                @click="
+                  PlanToInp(
+                    group_name +
+                      '_' +
+                      'companies' +
+                      '_' +
+                      company_name +
+                      '_' +
+                      'plan',
+                    company.plan
+                  )
+                "
+              >
                 {{ company.plan | format }}
               </td>
-              <td class="col2" :id="group_name + '_' + 'companies' + '_' + company_name + '_' + 'prognoz'">
+              <td class="col2" v-show="show_today">План по дню</td>
+              <td
+                class="col2"
+                :id="
+                  group_name +
+                  '_' +
+                  'companies' +
+                  '_' +
+                  company_name +
+                  '_' +
+                  'prognoz'
+                "
+              >
                 <!--    @click="PlanToPrognoz(group_name + '_' + 'companies' + '_' + company_name + '_' + 'prognoz', company.prognoz)" -->
                 {{ company.prognoz }}
               </td>
@@ -144,35 +204,45 @@
               <template v-for="(day, index) in company.week_days">
                 <!--  v-show=" thrd(index)" -->
 
-                <td v-show="tyu == true ? tyu : thrd(index)" :key="day.id" @contextmenu="WhoCreated(day.user, group_name + '_' +
-                  'companies' +
-                  '_' +
-                  company_name +
-                  '_' +
-                  index
-                )
-                  " :id="group_name +
-    '_' +
-    'companies' +
-    '_' +
-    company_name +
-    '_' +
-    index
-    " @click="
-    TdToInp(
-      group_name +
-      '_' +
-      'companies' +
-      '_' +
-      company_name +
-      '_' +
-      index,
-      day.val,
-      index,
-      day.user
-    )
-    ">
-
+                <td
+                  v-show="tyu == true ? tyu : thrd(index)"
+                  :key="day.id"
+                  @contextmenu="
+                    WhoCreated(
+                      day.user,
+                      group_name +
+                        '_' +
+                        'companies' +
+                        '_' +
+                        company_name +
+                        '_' +
+                        index
+                    )
+                  "
+                  :id="
+                    group_name +
+                    '_' +
+                    'companies' +
+                    '_' +
+                    company_name +
+                    '_' +
+                    index
+                  "
+                  @click="
+                    TdToInp(
+                      group_name +
+                        '_' +
+                        'companies' +
+                        '_' +
+                        company_name +
+                        '_' +
+                        index,
+                      day.val,
+                      index,
+                      day.user
+                    )
+                  "
+                >
                   {{ day.val }}
                   <!-- {{ Object.values(company.week_days) }} -->
                 </td>
@@ -182,8 +252,13 @@
         </tbody>
       </table>
     </div>
-    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
-      id="notif" />
+    <Notifications
+      :show="showNotify"
+      :header="notifyHead"
+      :message="notifyMessage"
+      :block-class="notifyClass"
+      id="notif"
+    />
   </div>
 </template>
 
@@ -196,21 +271,35 @@ import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 // import counterparties from "@/api/counterparties";
-import { XlsxRead, XlsxTable, XlsxSheets, XlsxJson, XlsxWorkbook, XlsxSheet, XlsxDownload } from "../../../../node_modules/vue-xlsx/dist/vue-xlsx.es"
+import {
+  XlsxRead,
+  XlsxTable,
+  XlsxSheets,
+  XlsxJson,
+  XlsxWorkbook,
+  XlsxSheet,
+  XlsxDownload,
+} from "../../../../node_modules/vue-xlsx/dist/vue-xlsx.es";
 import fin_counterpartie_copy from "@/helpers/fin_counterpartie_copy";
 
 export default {
   components: {
-    InputLoader, Loader, Notifications, XlsxRead,
+    InputLoader,
+    Loader,
+    Notifications,
+    XlsxRead,
     XlsxTable,
     XlsxSheets,
     XlsxJson,
     XlsxWorkbook,
     XlsxSheet,
-    XlsxDownload
+    XlsxDownload,
   },
   data() {
     return {
+      // isToday: true,
+      show_today: false,
+      plan: true,
       group_create_counterpar: "",
       counterpartie: "",
       search: "",
@@ -222,10 +311,12 @@ export default {
       file: null,
       selectedSheet: null,
       sheetName: null,
-      sheets: [{
-        name: "SheetOne",
-        data: [{ c: 2 }]
-      }],
+      sheets: [
+        {
+          name: "SheetOne",
+          data: [{ c: 2 }],
+        },
+      ],
       collection: [{ a: 1, b: 2 }],
       // data: fin_counterpartie_copy.fin_counerpartie,
       current_date: "",
@@ -234,7 +325,6 @@ export default {
       visible_row: true,
       today: "",
       tyu: true,
-
 
       showNotify: false,
       notifyHead: "",
@@ -253,23 +343,25 @@ export default {
       last_name: (state) => state.auth.user.user.last_name,
       first_name: (state) => state.auth.user.user.first_name,
     }),
+    isToday(){
+      
+    },
     dataComputed() {
       if (this.search.length < 2) {
-        return this.my_data
+        return this.my_data;
       }
-      let arr = []
+      let arr = [];
       for (let i in this.my_data) {
         for (let j in this.my_data[i]?.companies) {
           arr.push({
-            'companie_name': j,
-            ...this.my_data[i]?.companies[j]
-          })
+            companie_name: j,
+            ...this.my_data[i]?.companies[j],
+          });
         }
       }
 
-      return arr.filter(item => item.companie_name.includes(this.search))
-
-    }
+      return arr.filter((item) => item.companie_name.includes(this.search));
+    },
   },
   filters: {
     format(value) {
@@ -277,7 +369,6 @@ export default {
     },
   },
   mounted() {
-
     let week_days = {};
 
     // получаем количество дней в выбранном месяце
@@ -325,26 +416,31 @@ export default {
 
     this.send_data = send_data;
     this.days = days;
-    this.today = new Date().getDate()
+    this.today = new Date().getDate();
 
-    this.check_data()
+    this.check_data();
   },
   watch: {
     group_create_counterpar() {
       if (this.group_create_counterpar != "") {
-        this.ErrorCreateDivision = false
+        this.ErrorCreateDivision = false;
       }
     },
     counterpartie() {
       if (this.counterpartie != "") {
-        this.ErrorCreateCounterpartie = false
+        this.ErrorCreateCounterpartie = false;
       }
-    }
+    },
+    tyu() {
+      console.log(this.tyu);
+      this.tyu == true ? (this.show_today = false) : (this.show_today = true);
+      this.tyu == true ? (this.plan = true) : (this.plan = false);
+    },
   },
   methods: {
     saveData() {
       // console.log(this.my_data)
-      console.log(this.my_data)
+      console.log(this.my_data);
       if (this.selectedSheet == null) {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Необходимо выбрать лист из файла Excel";
@@ -353,142 +449,152 @@ export default {
         setTimeout(() => {
           this.showNotify = false;
         }, 3500);
-        return
+        return;
       }
-      // this.loader = true
+      this.loader = true
       // Проверка на наличие в БД такой структуры
-      // api
-      //   .getIncomes(this.current_date + ".json")
-      //   .then((response) => {
-      // this.loader = false
-      // this.DB_STRUCTIRE = response.data;
+      api
+        .getIncomes(this.current_date + ".json")
+        .then((response) => {
+      this.loader = false
+      this.DB_STRUCTIRE = response.data;
       // Проверяю 2 объекта на их идентивность
-      if (true === true) {
-        // if (JSON.stringify(this.DB_STRUCTIRE) == JSON.stringify(this.standard_collection)) {
+      // if (true === true) {
+        if (JSON.stringify(this.DB_STRUCTIRE) == JSON.stringify(this.standard_collection)) {
         // console.log(this.DB_STRUCTIRE, 'Я из БД')
         // console.log(this.standard_collection)
         let rows = window.document.querySelectorAll("table tbody tr");
         // план
-        let data = []
-        let data_name = []
+        let data = [];
+        let data_name = [];
         // массив со всеми значениями плана
-        let all_plan = []
-        let all_counterpartie = []
+        let all_plan = [];
+        let all_counterpartie = [];
         for (let i in rows) {
           try {
             for (let j of rows[i].cells) {
-              if (j?.id.includes('sjs-F')) {
-                data.push(j)
+              if (j?.id.includes("sjs-F")) {
+                data.push(j);
               }
             }
-          }
-          catch { }
+          } catch {}
         }
-
 
         for (let i of data) {
-          all_plan.push(i.innerHTML.replaceAll(",", ""))
+          all_plan.push(i.innerHTML.replaceAll(",", ""));
         }
-        let rrr = all_plan.map(item => {
-          if (item.includes('-')) {
-            return item = '0'
+        let rrr = all_plan.map((item) => {
+          if (item.includes("-")) {
+            return (item = "0");
           } else {
-            return item
+            return item;
           }
           //  return item.includes('-')
-        })
+        });
 
         // Все значения плана
-        all_plan = rrr
+        all_plan = rrr;
 
         // Получение имен контрагентов
         for (let i in rows) {
           try {
             for (let j of rows[i].cells) {
-              if (j?.id.includes('sjs-B6') ||
-                j?.id.includes('sjs-B7') ||
-                j?.id.includes('sjs-B8') ||
-                j?.id.includes('sjs-B9') ||
-                j?.id.includes('sjs-B1') ||
-                j?.id.includes('sjs-B2') ||
-                j?.id.includes('sjs-B3') ||
-                j?.id.includes('sjs-B4') ||
-                j?.id.includes('sjs-B5')) {
-                data_name.push(j)
+              if (
+                j?.id.includes("sjs-B6") ||
+                j?.id.includes("sjs-B7") ||
+                j?.id.includes("sjs-B8") ||
+                j?.id.includes("sjs-B9") ||
+                j?.id.includes("sjs-B1") ||
+                j?.id.includes("sjs-B2") ||
+                j?.id.includes("sjs-B3") ||
+                j?.id.includes("sjs-B4") ||
+                j?.id.includes("sjs-B5")
+              ) {
+                data_name.push(j);
               }
             }
-          }
-          catch { }
-
+          } catch {}
         }
         for (let i of data_name) {
-          if (i.innerHTML == 'ВЫПЛАТЫ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ') break
+          if (i.innerHTML == "ВЫПЛАТЫ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ") break;
           else {
-            all_counterpartie.push(i.innerHTML?.replace(/["']/g, ""))
+            all_counterpartie.push(i.innerHTML?.replace(/["']/g, ""));
           }
         }
 
-
-
-
+        console.log(all_counterpartie)
 
         // выравнивание длин массивов для дальнейшего сведения в 1 таблицу
-        let counterparties = all_counterpartie.slice(3, all_counterpartie.length - 1)
-        let plan = all_plan.slice(3, all_plan.length - 1)
-        let amount_plan = plan.slice(0, counterparties.length)
+        let counterparties = all_counterpartie.slice(3, all_counterpartie.length - 1);
+        let plan = all_plan.slice(3, all_plan.length - 1);
+        let amount_plan = plan.slice(0, counterparties.length);
         // console.log(counterparties, amount_plan, allDataOfDays)
-
-
 
         // получение данных по дням недели
         let allDataOfDays = [];
-        let table = document.querySelector('table')
-        let date = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0);
+        let table = document.querySelector("table");
+        let date = new Date(
+          new Date().getFullYear(),
+          new Date().getMonth() + 1,
+          0
+        );
 
         for (let j = 1; j <= date.getDate(); j++) {
-          let little = []
+          let little = [];
           for (let row of table.rows) {
             little.push(row.cells[6 + j].innerHTML);
           }
           // получаю все значения столбцов в отдельных массивах без шапки
-          allDataOfDays.push(little.slice(5, counterparties.length + 5))
+          allDataOfDays.push(little.slice(5, counterparties.length + 5));
+        }
+
+        
+        // Привожу данные получаемые из Excel к числовому иду(подневно)
+        for (let arr of allDataOfDays) {
+          arr.forEach((element, index) => {
+            if (arr[index].includes("-")) {
+              arr[index] = 0;
+            } else if (arr[index].includes(",")) {
+              arr[index] =  parseInt(arr[index].replaceAll(",", ""));
+            }
+            else if(arr[index] == ''){
+              arr[index] = parseInt(arr[index].replaceAll("", 0));;
+            }
+            else {
+              arr[index] = element;
+            }
+
+          });
+
         }
 
 
-
-
-        let last_key = null
+// занесение данных в week_days
+        let last_key = null;
         for (let i in counterparties) {
           if (counterparties[i] in this.my_data) {
-            last_key = counterparties[i]
+            last_key = counterparties[i];
             try {
               // подгружаю данные для плана по группам и общему итогу
-              this.my_data[counterparties[i]]['plan'] = amount_plan[i]
-    
-              // this.my_data[counterparties[i]]['prognoz'] = amount_plan[i] + 'я отсюда'
+              this.my_data[counterparties[i]]["plan"] = amount_plan[i];
+
             } catch {
-              console.log(new Error('Ошибка длины массивов'))
+              console.log(new Error("Ошибка длины массивов"));
             }
           } else {
             if (last_key != null) {
-              if ('companies' in this.my_data[last_key]) {
+              if ("companies" in this.my_data[last_key]) {
                 // TODO prognoz
                 // console.log(this.my_data[last_key]['companies'][counterparties[i]])
-                this.my_data[last_key]['companies'][counterparties[i]] = {
-                  'week_days': {},
-                  'plan': amount_plan[i],
-                  'prognoz': 0
-                }
+                this.my_data[last_key]["companies"][counterparties[i]] = {
+                  week_days: {},
+                  plan: amount_plan[i],
+                  prognoz: 0,
+                };
               }
             }
           }
         }
-
-      // for(let i in counterparties){
-      //   if (counterparties[i] in this.my_data) {
-      //   console.log(this.my_data[counterparties[i]]['week_days'])
-      //   }
-      // }
 
         let week_days = {};
 
@@ -503,7 +609,6 @@ export default {
 
         // this.check_data();
 
-
         // создаю структуру таблицы относительно кол-ва дней
         for (let i = 1; i <= days; i++) {
           week_days[i] = {
@@ -513,47 +618,39 @@ export default {
         }
         // console.log(week_days)
 
+// Вношу пустую структуру week_days 
+// Сюда необходимо добавить данные из allDataOfDays
+
+
         for (let group in this.my_data) {
           this.my_data[group]["week_days"] = week_days;
+
           for (let company in this.my_data[group]?.companies) {
             this.my_data[group]["companies"][company]["week_days"] = week_days;
-            // for(let val in  this.my_data[group]["companies"][company]["week_days"]){
-            // //   for(let day = 0; day <= allDataOfDays[0].length; day++)
-            // //   this.my_data[group]["companies"][company]["week_days"][val]['val'] = allDataOfDays[0][day].replaceAll(',',"")
-            // }
           }
         }
+        let Table = this.$refs.theTable;
 
-        let Table = this.$refs.theTable
-        let all_cells = []
-        for(let row of Table.rows){
-         for(let day = 1; day <= days.length; day++){
-          
-         }
-        }
-          // for(let j of allDataOfDays[0]){
-          //   console.log(j)
-          //   Table.rows.cells[3].innerHTML = j
 
-          // }
-       
-        // // console.log(Table)
-        // let data123 = []
-        // for (let row of Table.rows) {
-        //   for(let i of allDataOfDays[0]){
-        //     console.log(i)
-        //     // row.cells[3].innerHTML = i
-        //     // console.log(row.cells[3].innerHTML)
-        //   }
-        
-          
+    console.log(this.standard_collection,this.my_data )
+
+
+      //  Вставка значений в таблицу( вариант не подошел, так как необходимо занести значения в week_days)
+        // строки
+        // for(let rowIndex = 0; rowIndex < Table.rows.length; rowIndex++) {
+        //     let row = Table.rows[rowIndex];
+
+        //     // столбцы
+        //     for(let cellIndex = 0; cellIndex < row.cells.length; cellIndex++) {
+        //       // console.log(cellIndex)
+        //         // is data?
+        //         if(allDataOfDays[cellIndex] && allDataOfDays[cellIndex][rowIndex]) {
+        //             row.cells[cellIndex].innerText = allDataOfDays[cellIndex][rowIndex];
+        //         }
+        //     }
         // }
 
-      // console.log(allDataOfDays[0])
-
-     
-
-
+        // console.log(allDataOfDays)
 
         // Создание дней недели по каждому дню месяца
         let array = [];
@@ -575,13 +672,12 @@ export default {
 
         this.send_data = send_data;
         this.days = days;
-        this.today = new Date().getDate()
-        this.loader = false
-        this.create_table()
-
+        this.today = new Date().getDate();
+        this.loader = false;
+        this.create_table();
       } else {
-        console.log('Уже создана')
-        this.loader = false
+        console.log("Уже создана");
+        this.loader = false;
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Данные из файла уже были ранее загружены";
         this.notifyClass = "wrapper-error";
@@ -590,22 +686,8 @@ export default {
           this.showNotify = false;
         }, 3500);
       }
-      // })
+      })
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     onChange(event) {
       this.file = event.target.files ? event.target.files[0] : null;
@@ -613,24 +695,27 @@ export default {
     addSheet() {
       this.sheets.push({ name: this.sheetName, data: [...this.collection] });
       this.sheetName = null;
-
     },
     createCounterpstie() {
       if (this.group_create_counterpar == "") {
-        this.ErrorCreateDivision = true
+        this.ErrorCreateDivision = true;
       }
       if (this.counterpartie == "") {
-        this.ErrorCreateCounterpartie = true
-      }
-      else {
-        console.log('z nen')
-        let data = JSON.parse(JSON.stringify(this.my_data))
-        data[this.group_create_counterpar]['companies'][this.counterpartie] = { 'week_days': {}, 'plan': 0 }
+        this.ErrorCreateCounterpartie = true;
+      } else {
+        console.log("z nen");
+        let data = JSON.parse(JSON.stringify(this.my_data));
+        data[this.group_create_counterpar]["companies"][this.counterpartie] = {
+          week_days: {},
+          plan: 0,
+        };
 
         let week_days = {};
 
         // получаем количество дней в выбранном месяце
-        let page_date = window.location.href.substring(window.location.href.length - 7);
+        let page_date = window.location.href.substring(
+          window.location.href.length - 7
+        );
         let split_date = page_date.split("-");
         let lastday = new Date(split_date[0], split_date[1], 0);
         let days = lastday.getDate();
@@ -646,65 +731,73 @@ export default {
           data[group]["week_days"] = week_days;
           for (let company in data[group]?.companies) {
             data[group]["companies"][company]["week_days"] = week_days;
-            data[group]["companies"][company]["prognoz"] = 0
-
+            data[group]["companies"][company]["prognoz"] = 0;
           }
         }
 
-        this.loader = true
+        this.loader = true;
         let information = {
           file_name: this.current_date + ".json",
           content: data,
         };
-        console.log(information)
+        console.log(information);
         api
           .saveIncomes(information)
           .then((response) => {
             this.loader = false;
-            api.getIncomes(this.current_date + ".json")
-              .then((response) => {
-                this.loader = false
-                this.my_data = response.data;
-              })
+            api.getIncomes(this.current_date + ".json").then((response) => {
+              this.loader = false;
+              this.my_data = response.data;
+            });
           })
           .catch((error) => {
-            this.loader = false
+            this.loader = false;
             this.notifyHead = "Ошибка";
-            this.notifyMessage = 'Ошибка создания контрагента, повторите запрос позже';
+            this.notifyMessage =
+              "Ошибка создания контрагента, повторите запрос позже";
             this.notifyClass = "wrapper-error";
             this.showNotify = true;
             setTimeout(() => {
               this.showNotify = false;
             }, 2000);
           });
-        this.hideModal()
+        this.hideModal();
       }
-
     },
 
     openModal() {
-      this.$refs['my-modal'].show()
+      this.$refs["my-modal"].show();
     },
     hideModal() {
-      this.$refs['my-modal'].hide()
+      this.$refs["my-modal"].hide();
     },
     thrd(index) {
-      return index == this.today
+      this.show_today = true;
+      return index == this.today;
     },
 
     collapse(val) {
       // let symbol = &#9660;
-      if (val == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ' && this.visible_row) {
-        return '  🔻'
-      } if (val == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ' && !this.visible_row) { return '  🔺' }
+      if (
+        val == "ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ" &&
+        this.visible_row
+      ) {
+        return "  🔻";
+      }
+      if (
+        val == "ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ" &&
+        !this.visible_row
+      ) {
+        return "  🔺";
+      }
     },
     visibleGroup(name) {
-      if (name == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ') {
-        this.visible_row = !this.visible_row
+      if (name == "ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ") {
+        this.visible_row = !this.visible_row;
       }
     },
     check_data() {
-      this.loader = true
+      this.loader = true;
       let page_date = window.location.href.substring(
         window.location.href.length - 7
       );
@@ -713,21 +806,21 @@ export default {
       api
         .getIncomes(this.current_date + ".json")
         .then((response) => {
-          this.loader = false
-          this.my_data = response.data
+          this.loader = false;
+          this.my_data = response.data;
         })
         .catch((error) => {
-          this.loader = false
-          if (error.response.data.includes('[Errno 2] No such file or directory')) {
-            console.log('я создаю таблицу')
+          this.loader = false;
+          if (
+            error.response.data.includes("[Errno 2] No such file or directory")
+          ) {
+            console.log("я создаю таблицу");
             this.create_table();
           }
-
-
         });
     },
     create_table() {
-      this.loader = true
+      this.loader = true;
       let data = {
         file_name: this.current_date + ".json",
         content: this.my_data,
@@ -735,12 +828,12 @@ export default {
       api
         .saveIncomes(data)
         .then((response) => {
-          this.loader = false
+          this.loader = false;
 
           console.log(response);
         })
         .catch((error) => {
-          this.loader = false
+          this.loader = false;
 
           console.log(error);
         });
@@ -749,7 +842,7 @@ export default {
     fnExcelReport() {
       var table = this.$refs.theTable;
       var tableHTML = table.outerHTML;
-      var fileName = "Таблица " + this.current_date + '.xls';
+      var fileName = "Таблица " + this.current_date + ".xls";
 
       // var msie = window.navigator.userAgent.indexOf("MSIE ");
 
@@ -763,7 +856,7 @@ export default {
     },
 
     WhoCreated(user, id) {
-      console.log(user)
+      console.log(user);
       event.preventDefault();
       document.getElementById(id).style.background = "#D0ECFC";
       setTimeout(() => {
@@ -776,7 +869,6 @@ export default {
       // console.log(this.my_data);
     },
     PlanToInp(elem_id, val) {
-
       if (
         this.uid == 202 ||
         this.uid == 222 ||
@@ -839,8 +931,16 @@ export default {
             // Общий итог
             let weight = {
               file_name: `${current_date}.json`,
-              path: [`${group}@companies@${name_companie}@plan`, `${group}@plan`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@plan`],
-              value: [Number(input.value), data[group]['plan'], data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["plan"]],
+              path: [
+                `${group}@companies@${name_companie}@plan`,
+                `${group}@plan`,
+                `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@plan`,
+              ],
+              value: [
+                Number(input.value),
+                data[group]["plan"],
+                data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["plan"],
+              ],
             };
             api.patchIncomes(weight).then((response) => {
               api
@@ -850,7 +950,8 @@ export default {
                 })
                 .catch((error) => {
                   this.notifyHead = "Ошибка";
-                  this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
+                  this.notifyMessage =
+                    "Ошибка загрузки данных, повторите запрос позже";
                   this.notifyClass = "wrapper-error";
                   this.showNotify = true;
                   setTimeout(() => {
@@ -859,10 +960,6 @@ export default {
                 });
             });
           }
-
-
-
-
         });
 
         prev_el.innerHTML = "";
@@ -876,8 +973,8 @@ export default {
 
     TdToInp(elem_id, val, day) {
       if (day < new Date().getDate()) {
-        console.log('нельзя')
-        return
+        console.log("нельзя");
+        return;
       }
 
       let data = JSON.parse(JSON.stringify(this.my_data));
@@ -887,7 +984,6 @@ export default {
       if (input_elements.length >= 2) {
         return;
       }
-
 
       // получаем текущий элемент, он уже, можно сказать, предыдущий
       let prev_el = document.getElementById(elem_id);
@@ -914,43 +1010,46 @@ export default {
           let new_value = Number(input.value);
 
           //Доход по ПРОГНОЗУ по агенту
-          let prev_val_prognoz = data[group][companies][name_companie]["prognoz"]
-          data[group][companies][name_companie]["prognoz"] = prev_val_prognoz - prev_value + new_value
+          let prev_val_prognoz =
+            data[group][companies][name_companie]["prognoz"];
+          data[group][companies][name_companie]["prognoz"] =
+            prev_val_prognoz - prev_value + new_value;
 
-          // Прогноз по группе 
-          data[group]['prognoz'] = 0
-          let all_prognoz = []
-          for (let i in data[group]['companies']) {
-            all_prognoz.push(data[group]['companies'][i]['prognoz'])
+          // Прогноз по группе
+          data[group]["prognoz"] = 0;
+          let all_prognoz = [];
+          for (let i in data[group]["companies"]) {
+            all_prognoz.push(data[group]["companies"][i]["prognoz"]);
           }
           let result = all_prognoz.map(function (item, index, arr) {
             let number = parseInt(item);
             return isNaN(number) ? item : number;
           });
 
-          data[group]['prognoz'] = result.reduce((acc, item) => {
-            return acc += item
-          })
-          // Прогноз общий 
-          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'] = 0
-          let oper_prognoz = []
+          data[group]["prognoz"] = result.reduce((acc, item) => {
+            return (acc += item);
+          });
+          // Прогноз общий
+          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"] = 0;
+          let oper_prognoz = [];
           for (let i in data) {
-            if (i == 'ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ') continue
-            oper_prognoz.push(data[i]['prognoz'])
+            if (i == "ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ") continue;
+            oper_prognoz.push(data[i]["prognoz"]);
           }
           let resultPrognoz = oper_prognoz.map(function (item, index, arr) {
             let number = parseInt(item);
             return isNaN(number) ? item : number;
           });
 
-          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'] = resultPrognoz.reduce((acc, item) => {
-            return acc += item
-          })
+          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"] =
+            resultPrognoz.reduce((acc, item) => {
+              return (acc += item);
+            });
           // console.log( data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz'])
 
-
           // ДОход группы по дням
-          data[group]["week_days"][col_idx].val = income_cs - prev_value + new_value;
+          data[group]["week_days"][col_idx].val =
+            income_cs - prev_value + new_value;
 
           data[group][companies][name_companie]["week_days"][col_idx].val =
             input.value;
@@ -958,8 +1057,12 @@ export default {
             last_name;
 
           let prev_val_operation =
-            data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val;
-          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val = prev_val_operation - prev_value + new_value;
+            data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][
+              col_idx
+            ].val;
+          data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][
+            col_idx
+          ].val = prev_val_operation - prev_value + new_value;
 
           // td-шка старая
           let new_el = document.getElementById(elem_id);
@@ -971,10 +1074,26 @@ export default {
 
           let weight = {
             file_name: `${current_date}.json`,
-            path: [`${group}@companies@${name_companie}@week_days@${col_idx}`, `${group}@week_days@${col_idx}@val`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`, `${group}@companies@${name_companie}@prognoz`, `${group}@prognoz`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@prognoz`],
-            value: [{ 'val': Number(input.value), 'user': last_name }, data[group]["week_days"][col_idx].val, data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][col_idx].val, `${(data[group]['companies'][name_companie]['prognoz'])}`, `${(data[group]['prognoz'])}`, `${data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]['prognoz']}`],
+            path: [
+              `${group}@companies@${name_companie}@week_days@${col_idx}`,
+              `${group}@week_days@${col_idx}@val`,
+              `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@week_days@${col_idx}@val`,
+              `${group}@companies@${name_companie}@prognoz`,
+              `${group}@prognoz`,
+              `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@prognoz`,
+            ],
+            value: [
+              { val: Number(input.value), user: last_name },
+              data[group]["week_days"][col_idx].val,
+              data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["week_days"][
+                col_idx
+              ].val,
+              `${data[group]["companies"][name_companie]["prognoz"]}`,
+              `${data[group]["prognoz"]}`,
+              `${data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"]}`,
+            ],
           };
-          console.log(weight)
+          console.log(weight);
           // console.log(weight)
           // console.log(data)
           // console.log(last_name)
@@ -987,7 +1106,8 @@ export default {
               .catch((error) => {
                 console.log(error);
                 this.notifyHead = "Ошибка";
-                this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
+                this.notifyMessage =
+                  "Ошибка загрузки данных, повторите запрос позже";
                 this.notifyClass = "wrapper-error";
                 this.showNotify = true;
                 setTimeout(() => {
@@ -1020,7 +1140,7 @@ export default {
         this.uid === 1 ||
         this.uid === 30
       ) {
-        console.log('123')
+        console.log("123");
         let data = JSON.parse(JSON.stringify(this.my_data));
         let current_date = this.current_date;
 
@@ -1075,8 +1195,16 @@ export default {
         // Общий итог
         let weight = {
           file_name: `${current_date}.json`,
-          path: [`${group}@companies@${name_companie}@prognoz`, `${group}@prognoz`, `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@prognoz`],
-          value: [Number(input.value), data[group]['prognoz'], data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"]],
+          path: [
+            `${group}@companies@${name_companie}@prognoz`,
+            `${group}@prognoz`,
+            `ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ@prognoz`,
+          ],
+          value: [
+            Number(input.value),
+            data[group]["prognoz"],
+            data["ПОСТУПЛЕНИЯ ПО ОПЕРАЦИОННОЙ ДЕЯТЕЛЬНОСТИ"]["prognoz"],
+          ],
         };
         api.patchIncomes(weight).then((response) => {
           api
@@ -1086,7 +1214,8 @@ export default {
             })
             .catch((error) => {
               this.notifyHead = "Ошибка";
-              this.notifyMessage = 'Ошибка загрузки данных, повторите запрос позже';
+              this.notifyMessage =
+                "Ошибка загрузки данных, повторите запрос позже";
               this.notifyClass = "wrapper-error";
               this.showNotify = true;
               setTimeout(() => {
@@ -1095,9 +1224,6 @@ export default {
             });
         });
         //   }
-
-
-
 
         // });
 
@@ -1134,7 +1260,7 @@ export default {
 
 <style lang="scss" scoped>
 .isError {
-  color: red
+  color: red;
 }
 
 tr:hover {
@@ -1147,20 +1273,18 @@ tr:hover {
 
   label {
     text-align: left;
-    color: gray
+    color: gray;
   }
 
   input {
-
     border: #bdc3c7 0.1rem solid !important;
     width: 20rem !important;
     height: 3rem !important;
-
-
-
   }
 }
-
+.isToday {
+  background: orange;
+}
 .collapsed {
   position: absolute;
   background: rgb(50, 50, 50);
@@ -1213,7 +1337,6 @@ th {
 
   &:hover {
     background: lightcyan;
-
   }
 }
 
