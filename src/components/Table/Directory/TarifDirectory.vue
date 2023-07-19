@@ -748,13 +748,14 @@ export default {
         parametrs.destination_station = []
         } else {
           for (let i in this.data) {
+            this.Standard.agreement_number =  this.Standard.annex_number
             Object.assign(this.data[i], this.Standard);
             
           }
         parametrs = this.data;
         }
 
-        // this.loader = true;
+        this.loader = true;
         console.log(parametrs);
         api.postTarifData(parametrs)
             .then(response => {

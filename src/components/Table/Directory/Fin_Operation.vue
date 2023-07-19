@@ -98,7 +98,7 @@
               План
             </th>
             <th rowspan="2" v-show="show_today">План на сегодня</th>
-            <th rowspan="2">Факт</th>
+            <th rowspan="2">Прогноз</th>
             <template v-for="day in days">
               <!-- v-show=" thrd(day)" -->
               <th
@@ -344,7 +344,7 @@ export default {
       first_name: (state) => state.auth.user.user.first_name,
     }),
     isToday(){
-      
+
     },
     dataComputed() {
       if (this.search.length < 2) {
@@ -419,6 +419,7 @@ export default {
     this.today = new Date().getDate();
 
     this.check_data();
+    // this.create_table()
   },
   watch: {
     group_create_counterpar() {
@@ -522,7 +523,7 @@ export default {
           }
         }
 
-        console.log(all_counterpartie)
+        // console.log(all_counterpartie)
 
         // выравнивание длин массивов для дальнейшего сведения в 1 таблицу
         let counterparties = all_counterpartie.slice(3, all_counterpartie.length - 1);
@@ -553,22 +554,23 @@ export default {
         for (let arr of allDataOfDays) {
           arr.forEach((element, index) => {
             if (arr[index].includes("-")) {
-              arr[index] = 0;
+              arr[index] = '0';
             } else if (arr[index].includes(",")) {
-              arr[index] =  parseInt(arr[index].replaceAll(",", ""));
+              arr[index] =  (arr[index].replaceAll(",", "")).toString();
             }
             else if(arr[index] == ''){
-              arr[index] = parseInt(arr[index].replaceAll("", 0));;
+              arr[index] = (arr[index].replaceAll("", 0)).toString();;
             }
             else {
-              arr[index] = element;
+              arr[index] = element.toString();
             }
 
           });
 
         }
+        // console.log(allDataOfDays)
 
-
+        let ptst = allDataOfDays[19]
 // занесение данных в week_days
         let last_key = null;
         for (let i in counterparties) {
@@ -577,11 +579,15 @@ export default {
             try {
               // подгружаю данные для плана по группам и общему итогу
               this.my_data[counterparties[i]]["plan"] = amount_plan[i];
+              // значение верное, вставляется, но переопределяется
+               console.log(this.my_data[counterparties[i]]['week_days'][19]['val'] =  allDataOfDays[19][i])
 
             } catch {
               console.log(new Error("Ошибка длины массивов"));
             }
           } else {
+              // this.my_data[counterparties[i]]["week_days"][19].val =  allDataOfDays[19][i]
+       
             if (last_key != null) {
               if ("companies" in this.my_data[last_key]) {
                 // TODO prognoz
@@ -596,6 +602,9 @@ export default {
           }
         }
 
+
+console.log(this.my_data)
+        
         let week_days = {};
 
         // получаем количество дней в выбранном месяце
@@ -623,16 +632,17 @@ export default {
 
 
         for (let group in this.my_data) {
+          
           this.my_data[group]["week_days"] = week_days;
-
           for (let company in this.my_data[group]?.companies) {
             this.my_data[group]["companies"][company]["week_days"] = week_days;
           }
         }
-        let Table = this.$refs.theTable;
 
 
-    console.log(this.standard_collection,this.my_data )
+//  console.log(this.my_data)       
+
+
 
 
       //  Вставка значений в таблицу( вариант не подошел, так как необходимо занести значения в week_days)
