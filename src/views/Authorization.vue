@@ -21,6 +21,7 @@
             placeholder="Введите пароль"
             v-model.trim="password"
             style="border-bottom: 1px solid grey !important"
+            @keyup.enter="submitEntry()"
           />
 
           <button @click="submitEntry()">Войти</button>
