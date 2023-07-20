@@ -7,7 +7,6 @@
               text-align: center !important;
               justify-content: center !important;
               overflow: auto;
-
             ">
           <b-container class="bv-example-row">
             <b-tab title="Формирование парка " active @click="newTab('Формирование парка')"> </b-tab>
