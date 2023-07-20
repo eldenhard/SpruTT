@@ -3,9 +3,11 @@
       <b-card no-body>
         <b-tabs pills card vertical nav-wrapper-class="w-100" style="
               background: white;
-              height: 100vh !important;
+              height: 95vh;
               text-align: center !important;
               justify-content: center !important;
+              overflow: auto;
+
             ">
           <b-container class="bv-example-row">
             <b-tab title="Формирование парка " active @click="newTab('Формирование парка')"> </b-tab>
