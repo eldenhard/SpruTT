@@ -87,6 +87,8 @@
     </label>
 
       <button class="button Accept mini" @click="getArenda()">Запросить</button>
+      <button class="button Accept mini" @click="getExcel()">Экспорт в Excel</button>
+
     </div>
     <div class="block_answer">
       <div></div>
@@ -248,7 +250,7 @@
                 />
                 <div
                   class="icon-container"
-                  :id="`stavka` + item.id"
+                  :id="`stavkaload` + item.id"
                   style="display: none"
                 >
                   <i class="loader"></i>
@@ -316,7 +318,7 @@
                 <input
                   :id="`landlord` + item.id"
                   v-model="item.landlord"
-                  v-on:keyup.enter="submitLanlord(item.landlord, item.id)"
+                  v-on:keyup.enter="submitLandlord(item.landlord, item.id)"
                 />
                 <div
                   class="icon-container"
@@ -526,18 +528,24 @@ mounted(){
     },
 
     submitStartArenda(element, id) {
-      let new_string = element
+      let new_string
+      if(element == ""){
+        new_string = null
+      } else {
+        new_string = element
         .replace(/\./g, "-")
         .split("-")
         .reverse("")
         .join("-");
+      }
+     
       let data = { start_date: new_string };
       document.getElementById(`wagstart${id}`).style.display = "block";
 
       api
         .patchStavkiArenda(id, data)
         .then((response) => {
-          document.getElementById(`wagstart${id}`).style.display = "block";
+          document.getElementById(`wagstart${id}`).style.display = "none";
 
           let wagon_DOM = document.getElementById(`start_date${id}`);
           wagon_DOM.classList.add("success");
@@ -562,12 +570,16 @@ mounted(){
         });
     },
     submitEndArenda(element, id) {
-      let new_string = element
+      let new_string
+      if(element == ""){
+        new_string = null
+      } else {
+        new_string = element
         .replace(/\./g, "-")
         .split("-")
         .reverse("")
         .join("-");
-
+      }
       let data = { end_date: new_string };
       document.getElementById(`wagend${id}`).style.display = "block";
       api
@@ -597,12 +609,14 @@ mounted(){
         });
     },
     submitStavka(element, id) {
+      console.log(element, id)
       let data = { stavka: element };
-      document.getElementById(`stavka${id}`).style.display = "block";
+      document.getElementById(`stavkaload${id}`).style.display = "block";
+      console.log(data)
       api
         .patchStavkiArenda(id, data)
         .then((response) => {
-          document.getElementById(`stavka${id}`).style.display = "none";
+          document.getElementById(`stavkaload${id}`).style.display = "none";
 
           let wagon_DOM = document.getElementById(`stavka${id}`);
           wagon_DOM.classList.add("success");
@@ -611,7 +625,7 @@ mounted(){
           }, 1000);
         })
         .catch((error) => {
-          document.getElementById(`stavka${id}`).style.display = "none";
+          document.getElementById(`stavkaload${id}`).style.display = "none";
           let wagon_DOM = document.getElementById(`stavka${id}`);
           wagon_DOM.classList.add("error");
           setTimeout(() => {
@@ -627,12 +641,16 @@ mounted(){
         });
     },
     submitStartStavka(element, id) {
-      let new_string = element
+      let new_string
+      if(element == ""){
+        new_string = null
+      } else {
+        new_string = element
         .replace(/\./g, "-")
         .split("-")
         .reverse("")
         .join("-");
-
+      }
       let data = { stavka_start_date: new_string };
       document.getElementById(`stavkaStart${id}`).style.display = "block";
 
@@ -663,11 +681,16 @@ mounted(){
         });
     },
     submitEndStavka(element, id) {
-      let new_string = element
+      let new_string
+      if(element == ""){
+        new_string = null
+      } else {
+        new_string = element
         .replace(/\./g, "-")
         .split("-")
         .reverse("")
         .join("-");
+      }
 
       let data = { stavka_end_date: new_string };
       document.getElementById(`stavkaEnd${id}`).style.display = "block";
@@ -861,6 +884,69 @@ mounted(){
           console.log(error.response);
         });
     },
+    getExcel(){
+      this.loader = true;
+      this.filter_arendaData.tenant = this.tenant;
+      this.filter_arendaData.landlord = this.landlord;
+      let data = this.wagons.replaceAll(' ', ',')
+
+      this.filter_arendaData.wagons_in = data
+      
+      api
+        .getExportExcel(this.filter_arendaData)
+        .then((response) => {
+          this.loader = false;
+          let arr = response.data.data;
+          this.data = response.data.data;
+          console.log(this.data);
+          this.data = JSON.parse(JSON.stringify(arr));
+
+          this.data.forEach((item) => {
+            if (item.end_date == null) {
+              item.end_date = null;
+            }
+            if (item.end_date != null) {
+              item.end_date = new Date(item.end_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+            if (item.start_date == null) {
+              item.start_date = null;
+            }
+            if (item.start_date != null) {
+              item.start_date = new Date(item.start_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+            if (item.stavka_start_date == null) {
+              item.stavka_start_date = null;
+            }
+            if (item.stavka_start_date != null) {
+              item.stavka_start_date = new Date(item.stavka_start_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+            if (item.stavka_end_date == null) {
+              item.stavka_end_date = null;
+            }
+            if (item.stavka_end_date != null) {
+              item.stavka_end_date = new Date(item.stavka_end_date)
+                .toLocaleString()
+                .split(",")[0];
+            }
+          });
+        })
+        .catch((error) => {
+          this.loader = false;
+          this.notifyHead = "Ошибка";
+            this.notifyMessage = "Excel файл не создан, попробуйте позже";
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
+        });
+    }
   },
 };
 </script>

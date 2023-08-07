@@ -446,7 +446,28 @@ export default {
           api
             .getCurrentStation(this.destination_station)
             .then((response) => {
-              this.station_destination_search = response.data.data;
+
+              
+
+              let filter_data = response.data.data
+            console.log(filter_data)
+            let sorted_station = filter_data.reduce((acc, name_station) => {
+                if (acc.handle_station[name_station.name.toLowerCase()])
+                  // если данная станция уже была
+                  return acc; // ничего не делаем, возвращаем уже собранное
+
+                acc.handle_station[name_station.name.toLowerCase()] = true; // помечаем станцию, как обработанную
+                acc.sorted_station.push(name_station); // добавляем объект в массив станция
+                return acc; // возвращаем собранное
+              },
+              {
+                handle_station: {}, // здесь будут отмечаться обработанные станции
+                sorted_station: [], // здесь конечный массив уникальных станций
+              }
+            ).sorted_station; // получаем конечный массив
+
+            this.station_destination_search = sorted_station
+
               this.loaderInputDest = false;
               this.warningDest = true;
             })
@@ -497,7 +518,27 @@ export default {
           api
             .getCurrentStation(this.departure_station)
             .then((response) => {
-              this.station_departure_search = response.data.data;
+          
+
+              let filter_data = response.data.data
+            console.log(filter_data)
+            let sorted_station = filter_data.reduce((acc, name_station) => {
+                if (acc.handle_station[name_station.name.toLowerCase()])
+                  // если данная станция уже была
+                  return acc; // ничего не делаем, возвращаем уже собранное
+
+                acc.handle_station[name_station.name.toLowerCase()] = true; // помечаем станцию, как обработанную
+                acc.sorted_station.push(name_station); // добавляем объект в массив станция
+                return acc; // возвращаем собранное
+              },
+              {
+                handle_station: {}, // здесь будут отмечаться обработанные станции
+                sorted_station: [], // здесь конечный массив уникальных станций
+              }
+            ).sorted_station; // получаем конечный массив
+
+            this.station_departure_search = sorted_station
+
               this.loaderInputDep = false;
               this.warning = true;
             })

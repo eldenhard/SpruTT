@@ -10,8 +10,7 @@
       <hr>
     </template> -->
 
-
-<!-- <template v-for="item, index in TOTAL">
+    <!-- <template v-for="item, index in TOTAL">
   <div style="cursor: pointer; font-weight: bold;" :key="index">
         {{ index + " " + item   }}
       </div>
@@ -23,10 +22,9 @@
   
     </template> -->
 
-
     <div id="container"></div>
 
-    <div class="air_block" style="margin-top: 15%;">
+    <div class="air_block" style="margin-top: 15%">
       <div class="air_block_content">
         <div class="air_block_header">
           <h5>Справочник по станциям</h5>
@@ -34,13 +32,20 @@
         </div>
         <p class="explanation">
           * Для проверки станции, введите её в поле поиска
-
         </p>
         <div>
           <div class="inputcontainer" style="height: 100% !important">
-            <input class="changeRow textarea" v-model="station_search" :type="'станция'"
+            <input
+              class="changeRow textarea"
+              v-model="station_search"
+              :type="'станция'"
               placeholder="введите наименование станции"
-              style="width: 100%; border-bottom: 1px solid rgb(0, 0, 0); padding: 5px;" />
+              style="
+                width: 100%;
+                border-bottom: 1px solid rgb(0, 0, 0);
+                padding: 5px;
+              "
+            />
             <div class="icon-container" v-if="loaderInputDep">
               <i class="loader"></i>
             </div>
@@ -69,11 +74,15 @@
               </tbody>
             </table>
           </div>
-
         </div>
       </div>
-      <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
-      <br>
+      <Notifications
+        :show="showNotify"
+        :header="notifyHead"
+        :message="notifyMessage"
+        :block-class="notifyClass"
+      />
+      <br />
     </div>
   </div>
 </template>
@@ -90,31 +99,104 @@ export default {
 
   data() {
     return {
-
-      data1:
-      {
-        "Текущий 2":
-        {
-          "2. ТР-2":
-          {
-            "1. Работа по ремонту вагона":
-              { "amount": 38, "cost": 93425.48000000001 },
-            "amount": 160, "cost": 645365.6700000004,
-            "2. Подача-уборка вагона":
-              { "amount": 44, "cost": 134792.93 },
-            "4. Средний ремонт колесной пары": { "amount": 8, "cost": 151224.03 },
-            "Контрольные и регламентные операции":
-              { "amount": 31, "cost": 136531.63999999998 },
-            "Услуга по оформлению рекламационно-претензионной документации":
-              { "amount": 8, "cost": 13414.0 },
-            "3. Текущий ремонт колесной пары":
-              { "amount": 20, "cost": 103857.71000000002 },
-            "Колодка тормозная":
-              { "amount": 8, "cost": 4884.48 },
-            "Клин фрикционный":
-              { "amount": 3, "cost": 7235.400000000001 }
-          }, "amount": 175, "cost": 744001.0600000004, "ТР-2": { "3. Текущий ремонт колесной пары": { "amount": 15, "cost": 98635.39 }, "amount": 15, "cost": 98635.39 }
-        }, "amount": 325, "cost": 10783369.08, "Деповской": { "3. ДР": { "1. Работа по ремонту вагона": { "amount": 42, "cost": 3480112.17 }, "amount": 129, "cost": 7872245.079999996, "Подготовка вагона (пропарка/промывка/дегазация)": { "amount": 39, "cost": 377302.86000000004 }, "2. Подача-уборка вагона": { "amount": 14, "cost": 63340.20000000002 }, "Замена з/ч": { "amount": 5, "cost": 8379.48 }, "Капитальный ремонт колесной пары": { "amount": 15, "cost": 2520000.0 }, "Стоимость АС": { "amount": 3, "cost": 45256.0 }, "Стоимость КП": { "amount": 7, "cost": 1237752.63 }, "Привод стояночного тормоза (новый)": { "amount": 1, "cost": 9457.6 }, "Запасной резервуар": { "amount": 1, "cost": 6044.14 }, "Стоимость ПА": { "amount": 2, "cost": 124600.0 } }, "amount": 139, "cost": 9665495.079999996, "ДР": { "Стоимость КП": { "amount": 8, "cost": 1720000.0 }, "amount": 10, "cost": 1793250.0, "Стоимость ТХ": { "amount": 1, "cost": 7700.0 }, "Стоимость ПА": { "amount": 1, "cost": 65550.0 } } }, "Капитальный": { "4. КР": { "1. Работа по ремонту вагона": { "amount": 2, "cost": 296000.0 }, "amount": 8, "cost": 363694.30000000005, "2. Подача-уборка вагона": { "amount": 2, "cost": 9048.6 }, "Подготовка вагона (пропарка/промывка/дегазация)": { "amount": 2, "cost": 16753.68 }, "Полная окраска вагона": { "amount": 2, "cost": 41892.02 } }, "amount": 8, "cost": 363694.30000000005 }, "": { "amount": 2, "cost": 10000.0, "Осмотр вагона": { "": { "amount": 1, "cost": 5000.0 }, "amount": 1, "cost": 5000.0 } }, "Текущий 1": { "1. ТР-1": { "1. Работа по ремонту вагона": { "amount": 1, "cost": 2709.06 }, "amount": 2, "cost": 5178.639999999999, "2. Подача-уборка вагона": { "amount": 1, "cost": 2469.58 } }, "amount": 2, "cost": 5178.639999999999 }
+      data1: {
+        "Текущий 2": {
+          "2. ТР-2": {
+            "1. Работа по ремонту вагона": {
+              amount: 38,
+              cost: 93425.48000000001,
+            },
+            amount: 160,
+            cost: 645365.6700000004,
+            "2. Подача-уборка вагона": { amount: 44, cost: 134792.93 },
+            "4. Средний ремонт колесной пары": { amount: 8, cost: 151224.03 },
+            "Контрольные и регламентные операции": {
+              amount: 31,
+              cost: 136531.63999999998,
+            },
+            "Услуга по оформлению рекламационно-претензионной документации": {
+              amount: 8,
+              cost: 13414.0,
+            },
+            "3. Текущий ремонт колесной пары": {
+              amount: 20,
+              cost: 103857.71000000002,
+            },
+            "Колодка тормозная": { amount: 8, cost: 4884.48 },
+            "Клин фрикционный": { amount: 3, cost: 7235.400000000001 },
+          },
+          amount: 175,
+          cost: 744001.0600000004,
+          "ТР-2": {
+            "3. Текущий ремонт колесной пары": { amount: 15, cost: 98635.39 },
+            amount: 15,
+            cost: 98635.39,
+          },
+        },
+        amount: 325,
+        cost: 10783369.08,
+        Деповской: {
+          "3. ДР": {
+            "1. Работа по ремонту вагона": { amount: 42, cost: 3480112.17 },
+            amount: 129,
+            cost: 7872245.079999996,
+            "Подготовка вагона (пропарка/промывка/дегазация)": {
+              amount: 39,
+              cost: 377302.86000000004,
+            },
+            "2. Подача-уборка вагона": { amount: 14, cost: 63340.20000000002 },
+            "Замена з/ч": { amount: 5, cost: 8379.48 },
+            "Капитальный ремонт колесной пары": { amount: 15, cost: 2520000.0 },
+            "Стоимость АС": { amount: 3, cost: 45256.0 },
+            "Стоимость КП": { amount: 7, cost: 1237752.63 },
+            "Привод стояночного тормоза (новый)": { amount: 1, cost: 9457.6 },
+            "Запасной резервуар": { amount: 1, cost: 6044.14 },
+            "Стоимость ПА": { amount: 2, cost: 124600.0 },
+          },
+          amount: 139,
+          cost: 9665495.079999996,
+          ДР: {
+            "Стоимость КП": { amount: 8, cost: 1720000.0 },
+            amount: 10,
+            cost: 1793250.0,
+            "Стоимость ТХ": { amount: 1, cost: 7700.0 },
+            "Стоимость ПА": { amount: 1, cost: 65550.0 },
+          },
+        },
+        Капитальный: {
+          "4. КР": {
+            "1. Работа по ремонту вагона": { amount: 2, cost: 296000.0 },
+            amount: 8,
+            cost: 363694.30000000005,
+            "2. Подача-уборка вагона": { amount: 2, cost: 9048.6 },
+            "Подготовка вагона (пропарка/промывка/дегазация)": {
+              amount: 2,
+              cost: 16753.68,
+            },
+            "Полная окраска вагона": { amount: 2, cost: 41892.02 },
+          },
+          amount: 8,
+          cost: 363694.30000000005,
+        },
+        "": {
+          amount: 2,
+          cost: 10000.0,
+          "Осмотр вагона": {
+            "": { amount: 1, cost: 5000.0 },
+            amount: 1,
+            cost: 5000.0,
+          },
+        },
+        "Текущий 1": {
+          "1. ТР-1": {
+            "1. Работа по ремонту вагона": { amount: 1, cost: 2709.06 },
+            amount: 2,
+            cost: 5178.639999999999,
+            "2. Подача-уборка вагона": { amount: 1, cost: 2469.58 },
+          },
+          amount: 2,
+          cost: 5178.639999999999,
+        },
       },
       TOTAL: "",
       file: null,
@@ -126,91 +208,84 @@ export default {
       notifyClass: "",
       loaderInputDep: false,
       warning: false,
-      station_search: '',
-      station_search_data: '',
+      station_search: "",
+      station_search_data: [],
       childer_show: false,
       children: "",
       arrow: "▼",
-
     };
   },
   mounted() {
-    this.data1 = JSON.parse(JSON.stringify(this.data1).replaceAll('""', '"----"'))
-    let new_val = JSON.parse(JSON.stringify(this.data1))
-    let amount = new_val.amount
-    let cost = new_val.cost
-    delete new_val.amount
-    delete new_val.cost
-    this.data1 = new_val
-
+    this.data1 = JSON.parse(
+      JSON.stringify(this.data1).replaceAll('""', '"----"')
+    );
+    let new_val = JSON.parse(JSON.stringify(this.data1));
+    let amount = new_val.amount;
+    let cost = new_val.cost;
+    delete new_val.amount;
+    delete new_val.cost;
+    this.data1 = new_val;
 
     this.TOTAL = {
-      'amount': amount,
-      'cost': cost
-    }
-
+      amount: amount,
+      cost: cost,
+    };
   },
 
   methods: {
-
     OpenChildren(eventDiv = null, val, index) {
-      let children = []
+      let children = [];
       try {
-        children = eventDiv.target.childNodes
-      }
-      catch (error) {
-        children = eventDiv.childNodes
+        children = eventDiv.target.childNodes;
+      } catch (error) {
+        children = eventDiv.childNodes;
       }
       if (children.length > 1) {
         while (children.length != 1) {
           try {
-            eventDiv.target.removeChild(children[1])
-          }
-          catch {
-            eventDiv.removeChild(children[1])
-
+            eventDiv.target.removeChild(children[1]);
+          } catch {
+            eventDiv.removeChild(children[1]);
           }
         }
-      }
-      else {
+      } else {
         for (let i in val) {
-          let div = document.createElement('div')
-          if (i == 'amount' || i == 'cost') {
-            div.innerHTML = `${i}: ${val[i].toFixed(2)}`
-            div.style = 'margin-left: 8% !important; font-weight: 500; color: grey; display: flex'
+          let div = document.createElement("div");
+          if (i == "amount" || i == "cost") {
+            div.innerHTML = `${i}: ${val[i].toFixed(2)}`;
+            div.style =
+              "margin-left: 8% !important; font-weight: 500; color: grey; display: flex";
           } else {
-            div.innerHTML = `${i}`
-            div.style = 'margin-left: 8% !important; font-weight: 500; color: darkblue'
+            div.innerHTML = `${i}`;
+            div.style =
+              "margin-left: 8% !important; font-weight: 500; color: darkblue";
           }
-          div.addEventListener('click', () => {
-
-            event.stopPropagation()
+          div.addEventListener("click", () => {
+            event.stopPropagation();
             // console.log(div)
-            this.OpenChildren(div, val[i])
-          })
+            this.OpenChildren(div, val[i]);
+          });
           try {
-            eventDiv.target.append(div)
-            let hr = document.createElement('hr')
-            eventDiv.target.append(hr)
+            eventDiv.target.append(div);
+            let hr = document.createElement("hr");
+            eventDiv.target.append(hr);
           } catch {
-            eventDiv.append(div)
-            let hr = document.createElement('hr')
-            eventDiv.append(hr)
+            eventDiv.append(div);
+            let hr = document.createElement("hr");
+            eventDiv.append(hr);
           }
         }
       }
     },
-
   },
 
   watch: {
     station_search(...args) {
       this.debouncedWatch(...args);
-      if (this.station_search == '') {
+      if (this.station_search == "") {
         this.warning = false;
       }
     },
-
   },
   created() {
     this.debouncedWatch = debounce((newValue, oldValue) => {
@@ -219,8 +294,26 @@ export default {
         api
           .getCurrentStation(this.station_search)
           .then((response) => {
-            this.station_search_data = response.data.data;
-            console.log(this.station_search_data)
+            // this.station_search_data = response.data.data;
+            let filter_data = response.data.data
+            let sorted_station = filter_data.reduce((acc, name_station) => {
+                if (acc.handle_station[name_station.name.toLowerCase()])
+                  // если данная станция уже была
+                  return acc; // ничего не делаем, возвращаем уже собранное
+
+                acc.handle_station[name_station.name.toLowerCase()] = true; // помечаем станцию, как обработанную
+                acc.sorted_station.push(name_station); // добавляем объект в массив станция
+                return acc; // возвращаем собранное
+              },
+              {
+                handle_station: {}, // здесь будут отмечаться обработанные станции
+                sorted_station: [], // здесь конечный массив уникальных станций
+              }
+            ).sorted_station; // получаем конечный массив
+
+            this.station_search_data = sorted_station
+
+
             this.loaderInputDep = false;
             this.warning = true;
           })
@@ -229,18 +322,15 @@ export default {
             console.log(error.response);
           });
       }
-    }, 300);
+    }, 500);
   },
-
-
-}
+};
 </script>
 
 
 <style lang="scss" scoped>
 div {
   cursor: pointer;
-
 }
 
 .isRed {
@@ -273,7 +363,6 @@ td {
   height: 100% !important;
   border: none;
   outline: none;
-
 }
 
 .icon-container {
@@ -334,7 +423,7 @@ td {
   transform: translate(-50%, 0);
 }
 
-.air_block_header>h5 {
+.air_block_header > h5 {
   padding: 1% 0 0 0%;
   color: rgb(202, 202, 202);
 }

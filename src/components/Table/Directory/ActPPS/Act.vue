@@ -79,6 +79,10 @@
           <input type="text" class="textarea mini" v-model="counterparties" />
         </label>
         <label for="">
+          № акта<br />
+          <input type="text" v-model="application_number"  class="textarea mini" />
+        </label>
+        <label for="">
           Дата акта<br />
           <input type="date" v-model="act_date" id="act_date" class="textarea mini" />
         </label>
@@ -306,7 +310,7 @@ class MyClass {
       date_pp_out: this._date_pp_out || null,
       date_processing: null,
       days: this.days,
-      application_number: null,
+      application_number: this.application_number,
       operation: this.operation,
       price_wo_nds: this.price_wo_nds,
       counterparty: this.counterparty,
@@ -322,6 +326,7 @@ export default {
   data() {
     return {
       instruction: false,
+      application_number: "",
       data: [],
       act_date: "",
       counterparties: "",
@@ -459,9 +464,9 @@ export default {
       type.target.value = "";
     },
     sendData() {
-      if (this.counterparties == "") {
+      if (this.counterparties == "" || this.application_number == "") {
         this.notifyHead = "Ошибка";
-        this.notifyMessage = "Поле Контрагент обязательно к заполнению!";
+        this.notifyMessage = "Поле Контрагент и № акта обязательны к заполнению!";
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => {
@@ -474,13 +479,15 @@ export default {
           this.data[i].counterparty = this.counterparties;
           this.data[i].from_cargo = null;
           this.data[i].for_cargo = null;
-          this.data[i].price_wo_nds = this.data[i].price_wo_nds.replace(',', '.')
+          this.data[i].price_wo_nds == "" ||  this.data[i].price_wo_nds == 0 ?  this.data[i].price_wo_nds =null : this.data[i].price_wo_nds.replace(',', '.')
+          this.data[i].application_number = this.application_number
         }
 
         let arr = this.data.map((item) => {
           return item.JSON();
         });
         console.log(arr)
+        console.log(this.application_number)
         api
           .postpps(arr)
           .then((response) => {

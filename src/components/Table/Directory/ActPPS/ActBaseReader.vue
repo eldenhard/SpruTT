@@ -96,11 +96,12 @@
           <th>Дата проведения работ</th>
           <th>Дата вывода с подъез. пути</th>
           <th>Расчетное время в сутках</th>
-          <th>Дата обработки</th>
+          <th>Операция</th>
           <!-- <th>Номер заявки</th>
           <th>Операция</th> -->
           <th>Цена без НДС</th>
           <th>Контрагент</th>
+          <th>№ акта</th>
           <th>Дата акта</th>
           <!-- <th>Подготовлено под груз (код 6)</th>
           <th>Из под груза (код 6)</th> -->
@@ -220,6 +221,17 @@
               :idElement="`counterparty ${item.id}`"
               :valueDataInp="item.counterparty"
               @changeData="DataChange"
+            />
+          </td>
+          <td>
+            <InputLoader
+              :nameInp="`application_number`"
+              :idRow="item.id"
+              :idLoader="`application_numberload ${item.id}`"
+              :idElement="`application_number ${item.id}`"
+              :valueDataInp="item.application_number"
+              :typeInp="'text'"
+              @changeDate="DateChange"
             />
           </td>
           <td>

@@ -133,6 +133,10 @@ const getAllDocuments = () => {
 const getAllStandardDog = () => {
     return api.get(`${finance}/penalty-standards/?page_size=1_000_000`, )
 }
+
+const getExportExcel = (filter_arendaData) => {
+    return api.get(`${finance}/stavki-arenda/export/?`,  {params: filter_arendaData})
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -181,5 +185,6 @@ export default {
     getAllTarifDataPagination,
     getAllDocuments,
     getAllStandardDog,
+    getExportExcel,
 }
 
