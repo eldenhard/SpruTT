@@ -294,33 +294,43 @@ export default {
         api
           .getCurrentStation(this.station_search)
           .then((response) => {
-            // this.station_search_data = response.data.data;
-            let filter_data = response.data.data
-            let sorted_station = filter_data.reduce((acc, name_station) => {
-                if (acc.handle_station[name_station.name.toLowerCase()])
-                  // если данная станция уже была
-                  return acc; // ничего не делаем, возвращаем уже собранное
+            let filter_data = response.data.data;
+            console.log(filter_data);
 
-                acc.handle_station[name_station.name.toLowerCase()] = true; // помечаем станцию, как обработанную
-                acc.sorted_station.push(name_station); // добавляем объект в массив станция
-                return acc; // возвращаем собранное
-              },
-              {
-                handle_station: {}, // здесь будут отмечаться обработанные станции
-                sorted_station: [], // здесь конечный массив уникальных станций
-              }
-            ).sorted_station; // получаем конечный массив
+          //  ChatGPT
+              let new_set = new Set();
 
-            this.station_search_data = sorted_station
-
+              this.station_search_data = filter_data.filter((item) => {
+                let name_lower = item.name.toLowerCase();
+                if (!new_set.has(name_lower)) {
+                  new_set.add(name_lower);
+                  return true;
+                }
+                return false;
+              })
+         
 
             this.loaderInputDep = false;
-            this.warning = true;
+                this.warning = true;
+
+            // let sorted_station = filter_data.reduce((acc, name_station) => {
+            //     if (acc.handle_station[name_station.name.toLowerCase()])
+            //       // если данная станция уже была
+            //       return acc; // ничего не делаем, возвращаем уже собранное
+
+            //     acc.handle_station[name_station.name.toLowerCase()] = true; // помечаем станцию, как обработанную
+            //     acc.sorted_station.push(name_station); // добавляем объект в массив станция
+            //     return acc; // возвращаем собранное
+            //   },
+            //   {
+            //     handle_station: {}, // здесь будут отмечаться обработанные станции
+            //     sorted_station: [], // здесь конечный массив уникальных станций
+            //   }
+            // ).sorted_station; // получаем конечный массив
+
+            // this.station_search_data = sorted_station
           })
-          .catch((error) => {
-            this.loaderInputDep = false;
-            console.log(error.response);
-          });
+        
       }
     }, 500);
   },

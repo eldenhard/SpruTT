@@ -133,6 +133,13 @@
       <div></div>
       <div></div>
     </div>
+
+
+
+
+
+
+
 <div style="display: flex; justify-content: space-between;" v-show="visible">
     <p class="amount" style="padding-top: 2%" v-show="visible">
       Всего записей: {{ total_objects }}
@@ -834,7 +841,6 @@ mounted(){
           this.loader = false;
           let arr = response.data.data;
           this.data = response.data.data;
-          console.log(this.data);
           this.data = JSON.parse(JSON.stringify(arr));
 
           this.data.forEach((item) => {
@@ -888,53 +894,16 @@ mounted(){
       this.loader = true;
       this.filter_arendaData.tenant = this.tenant;
       this.filter_arendaData.landlord = this.landlord;
-      let data = this.wagons.replaceAll(' ', ',')
+      let wagonNumbers = this.wagons.replaceAll(' ', ',')
 
-      this.filter_arendaData.wagons_in = data
-      
+      this.filter_arendaData.wagons_in = wagonNumbers
       api
         .getExportExcel(this.filter_arendaData)
         .then((response) => {
-          this.loader = false;
-          let arr = response.data.data;
-          this.data = response.data.data;
-          console.log(this.data);
-          this.data = JSON.parse(JSON.stringify(arr));
-
-          this.data.forEach((item) => {
-            if (item.end_date == null) {
-              item.end_date = null;
-            }
-            if (item.end_date != null) {
-              item.end_date = new Date(item.end_date)
-                .toLocaleString()
-                .split(",")[0];
-            }
-            if (item.start_date == null) {
-              item.start_date = null;
-            }
-            if (item.start_date != null) {
-              item.start_date = new Date(item.start_date)
-                .toLocaleString()
-                .split(",")[0];
-            }
-            if (item.stavka_start_date == null) {
-              item.stavka_start_date = null;
-            }
-            if (item.stavka_start_date != null) {
-              item.stavka_start_date = new Date(item.stavka_start_date)
-                .toLocaleString()
-                .split(",")[0];
-            }
-            if (item.stavka_end_date == null) {
-              item.stavka_end_date = null;
-            }
-            if (item.stavka_end_date != null) {
-              item.stavka_end_date = new Date(item.stavka_end_date)
-                .toLocaleString()
-                .split(",")[0];
-            }
-          });
+          this.loader = false
+          let link = document.createElement('a')
+          link.href = response.data
+          link.click()
         })
         .catch((error) => {
           this.loader = false;
