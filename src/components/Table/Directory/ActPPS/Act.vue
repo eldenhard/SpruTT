@@ -464,6 +464,7 @@ export default {
       type.target.value = "";
     },
     sendData() {
+      console.log('123')
       if (this.counterparties == "" || this.application_number == "") {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Поле Контрагент и № акта обязательны к заполнению!";
@@ -475,13 +476,18 @@ export default {
       } else {
         this.loader = true;
         for (let i in this.data) {
+          console.log(this.data[i].price_wo_nds)
+        }
+          for (let i in this.data) {
           this.data[i].act_date = this.act_date;
           this.data[i].counterparty = this.counterparties;
           this.data[i].from_cargo = null;
           this.data[i].for_cargo = null;
-          this.data[i].price_wo_nds == "" ||  this.data[i].price_wo_nds == 0 ?  this.data[i].price_wo_nds = null : this.data[i].price_wo_nds = this.data[i].price_wo_nds.replace(',', '.')
+          this.data[i].price_wo_nds == "" ||  this.data[i].price_wo_nds == 0  ||  this.data[i].price_wo_nds === null ?  this.data[i].price_wo_nds = null : this.data[i].price_wo_nds = this.data[i].price_wo_nds.replace(',', '.')
           this.data[i].application_number = this.application_number
+          
         }
+      
 
         let arr = this.data.map((item) => {
           return item.JSON();
