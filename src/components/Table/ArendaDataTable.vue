@@ -158,15 +158,19 @@
       <tr>
         <th>Старое наименование</th>
         <th>Новое наименование</th>
+        <th>Корретное полное наименование</th>
+
       </tr>
-      <tr v-for="item, index in data_hard.cp_work_names" :key="item.id">
-        <td>{{index }}</td>
-        <td>{{ item }}</td>
+      <tr v-for="name in data_hard.cp_work_names" :key="name.id">
+        <td>{{ name[0]}}</td>
+        <td>{{ name[1] }}</td>
+        <td>{{ name[2] }}</td>
+
       </tr>
     </table>
   </div>
 </transition>
-
+<br>
 
     <div class="" v-show="visible">
       <table border="1" v-show="visible">
