@@ -461,7 +461,9 @@ export default {
       this.DB_STRUCTIRE = response.data;
       // Проверяю 2 объекта на их идентивность
       // if (true === true) {
-        if (JSON.stringify(this.DB_STRUCTIRE) == JSON.stringify(this.standard_collection)) {
+        // if (JSON.stringify(this.DB_STRUCTIRE) == JSON.stringify(this.standard_collection)) {
+
+
         // console.log(this.DB_STRUCTIRE, 'Я из БД')
         // console.log(this.standard_collection)
         let rows = window.document.querySelectorAll("table tbody tr");
@@ -568,7 +570,7 @@ export default {
           });
 
         }
-        // console.log(allDataOfDays)
+        console.log(allDataOfDays)
 
         let ptst = allDataOfDays[19]
 // занесение данных в week_days
@@ -580,7 +582,7 @@ export default {
               // подгружаю данные для плана по группам и общему итогу
               this.my_data[counterparties[i]]["plan"] = amount_plan[i];
               // значение верное, вставляется, но переопределяется
-               console.log(this.my_data[counterparties[i]]['week_days'][19]['val'] =  allDataOfDays[19][i])
+              //  console.log(this.my_data[counterparties[i]]['week_days'][19]['val'] =  allDataOfDays[19][i])
 
             } catch {
               console.log(new Error("Ошибка длины массивов"));
@@ -685,17 +687,17 @@ console.log(this.my_data)
         this.today = new Date().getDate();
         this.loader = false;
         this.create_table();
-      } else {
-        console.log("Уже создана");
-        this.loader = false;
-        this.notifyHead = "Ошибка";
-        this.notifyMessage = "Данные из файла уже были ранее загружены";
-        this.notifyClass = "wrapper-error";
-        this.showNotify = true;
-        setTimeout(() => {
-          this.showNotify = false;
-        }, 3500);
-      }
+      // } else {
+      //   console.log("Уже создана");
+      //   this.loader = false;
+      //   this.notifyHead = "Ошибка";
+      //   this.notifyMessage = "Данные из файла уже были ранее загружены";
+      //   this.notifyClass = "wrapper-error";
+      //   this.showNotify = true;
+      //   setTimeout(() => {
+      //     this.showNotify = false;
+      //   }, 3500);
+      // }
       })
     },
 

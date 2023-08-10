@@ -479,7 +479,7 @@ export default {
           this.data[i].counterparty = this.counterparties;
           this.data[i].from_cargo = null;
           this.data[i].for_cargo = null;
-          this.data[i].price_wo_nds == "" ||  this.data[i].price_wo_nds == 0 ?  this.data[i].price_wo_nds =null : this.data[i].price_wo_nds.replace(',', '.')
+          this.data[i].price_wo_nds == "" ||  this.data[i].price_wo_nds == 0 ?  this.data[i].price_wo_nds = null : this.data[i].price_wo_nds = this.data[i].price_wo_nds.replace(',', '.')
           this.data[i].application_number = this.application_number
         }
 
@@ -487,7 +487,6 @@ export default {
           return item.JSON();
         });
         console.log(arr)
-        console.log(this.application_number)
         api
           .postpps(arr)
           .then((response) => {
