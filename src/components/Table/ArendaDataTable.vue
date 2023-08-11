@@ -47,27 +47,10 @@
         <br />
         <input type="text" id="tenant" class="textarea mini" v-model="landlord" />
       </label>
-      <label for="tenant"
-        >Начало аренды
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin"/>
-      </label>
-      <label for="tenant"
-        >Конец аренды
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end"
-      /></label>
 
-      <label for="tenant"
-        >Начало ставки
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_begin"/>
-      </label>
-      <label for="tenant" style="margin-left: 5px;"
-        >Конец ставки
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end"
-      /></label>
+
+
+
 
       <label for="tenant" style="margin-left: 5px;"
         >Тип вагона
@@ -86,8 +69,70 @@
         <input type="text" v-model="wagons" class="textarea mini" placeholder="ввод через пробел">
     </label>
 
-      <button class="button Accept mini" @click="getArenda()">Запросить</button>
-      <button class="button Accept mini" @click="getExcel()">Экспорт в Excel</button>
+
+<div style="display: flex; flex-direction: column;">
+  <!-- Начало аренды -->
+<label for="tenant"
+        >Начало аренды от
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin_from"/>
+      </label>
+
+      <label for="tenant"
+        >Начало аренды до
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin_to"/>
+      </label>
+    </div>     
+    <div style="display: flex; flex-direction: column;">
+<!-- Конец аренды -->
+<label for="tenant"
+        >Конец аренды от
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end_from"
+      /></label>
+
+      <label for="tenant"
+        >Конец аренды до
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end_to"
+      /></label>
+    </div> 
+      <div style="display: flex; flex-direction: column;">
+<!-- Начало ставки -->
+<label for="tenant"
+        >Начало ставки от
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_begin_from"/>
+      </label>
+
+      <label for="tenant"
+        >Начало ставки до
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_begin_to"/>
+      </label>
+</div>
+      <div style="display: flex; flex-direction: column;">
+      <!-- Конец ставки -->
+<label for="tenant"
+        >Конец ставки от
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end_from"/>
+      </label>
+      <label for="tenant" style="margin-left: 5px;"
+        >Конец ставки до
+        <br />
+        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end_to"
+      /></label>
+    </div>
+
+
+
+<div style="width: 100%; display: flex; flex-direction: column;">
+  <button class="button Accept mini" @click="getArenda()">Запросить</button>
+  <button class="button Accept mini" @click="getExcel()">Экспорт в Excel</button>
+
+</div>
 
     </div>
     <div class="block_answer">
@@ -406,10 +451,18 @@ export default {
         page_size: "",
         tenant: "",
         landlord: "",
-        arenda_begin: "",
-        arenda_end: "",
-        stavka_begin: "",
-        stavka_end: "",
+       
+        arenda_begin_from: "",
+        arenda_begin_to: "",
+
+        arenda_end_from: "",
+        arenda_end_to: "",
+
+        stavka_begin_from: "",
+        stavka_begin_to: "",
+
+        stavka_end_from: "",
+        stavka_end_to: "",
         wagon__wagon_type: "",
         wagons_in: ""
       },
