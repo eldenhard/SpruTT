@@ -66,7 +66,7 @@
     <label for="wagon" style="margin-left: 5px;"
         >Номера вагонов
         <br />
-        <input type="text" v-model="wagons" class="textarea mini" placeholder="ввод через пробел">
+        <input type="text" style="width: 300px" v-model="wagons" class="textarea mini" placeholder="ввод через пробел">
     </label>
 
 
