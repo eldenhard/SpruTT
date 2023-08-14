@@ -28,7 +28,7 @@
 
           <template v-for="item in data">
             <tr v-for="pv in item.pv" :key="pv.id">
-              <td class="col1">{{ pv.landlord__work_name | format }}</td>
+              <td class="col1">{{substetition(pv.landlord__work_name)  }}</td>
               <td>{{ pv.on_begin | format }}</td>
               <td>{{ pv.on_end | format }}</td>
               <td>{{ pv.days | format }}</td>
@@ -46,7 +46,7 @@
 
           <template v-for="item in data">
             <tr v-for="cs in item.cs" :key="cs.id">
-              <td  class="col1">{{ cs.landlord__work_name | format }}</td>
+              <td  class="col1">{{ substetition(cs.landlord__work_name)  }}</td>
               <td>{{ cs.on_begin | format }}</td>
               <td>{{ cs.on_end | format }}</td>
               <td>{{ cs.days | format }}</td>
@@ -73,7 +73,7 @@
 import Periods from "./Periods.vue";
 import api from "@/api/reportUO";
 import Loader from "@/components/loader/loader.vue";
-
+import { mapState } from "vuex";
 export default {
   components: { Periods, Loader },
   data() {
@@ -84,12 +84,30 @@ export default {
       loader: false,
     };
   },
+  mounted(){
+  
+  },
   filters: {
     format(value) {
       return String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
     },
+
+  },
+
+  computed: {
+  ...mapState({
+    counter: state => state.counterparties.counterparties
+  })
   },
   methods: {
+    substetition(value){
+      for(let i in this.counter){
+        if(this.counter[i].work_name == value){
+          return value = this.counter[i].full_name
+        }
+      }
+
+    },
     Actioned() {
       this.data = [];
       this.loader = true;
