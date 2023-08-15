@@ -1,4 +1,8 @@
 <template>
+	<div>
+		<Loader :loader="loader" />
+
+
     <div>
         <p>Форма 4.28. "Детализированное состояние взаиморасчетов с экспедиторами по сопредельным территориям"</p>
         <br>
@@ -162,4 +166,21 @@
 </table>
 </div>
     </div>
+</div>
 </template>
+
+
+<script>
+import api from '@/api/reportUO'
+import Loader from '@/components/loader/loader.vue';
+
+export default {
+	components: {Loader},
+	data(){
+		return{
+			uo_28: "",
+			loader: false
+		}
+	}
+}
+</script>
