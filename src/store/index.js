@@ -10,6 +10,7 @@ import cargo_code from "./modules/cargo_code";
 import users from "./modules/users"
 import client from "./modules/client"
 import countries from "./modules/countries";
+import road from "./modules/road";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -28,6 +29,7 @@ const store = new Vuex.Store({
     users,
     client,
     countries,
+    road,
   }
 })
 

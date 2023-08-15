@@ -159,6 +159,9 @@ const getAllCountries = (data) => {
 const getExtensionData = (data) => {
     return api.get(`${resource}/dislocations/last-operations/`, {params: data})
 }
+const getAllRoad = () => {
+    return api.get(`${resource}/countries/`)
+}
 export default {
     getWagons,
     getWagon,
@@ -186,6 +189,7 @@ export default {
     getAmountShipments,
     getCountries,
     getCurrentStationByCode,
+    getAllRoad,
     // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

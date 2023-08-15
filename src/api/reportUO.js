@@ -1,7 +1,7 @@
 import {api} from '@/helpers/axios'
 
 export const resource = 'reports'
-
+export const wagon_park = 'wagon-park'
 
 const getUO41 = (data1, data2) => {
    return api.get(`${resource}/uo/41/park-formation?date_begin=${data1}&date_end=${data2}`, {timeout: 600000})
@@ -30,6 +30,9 @@ const getUO422 = (data1, data2, wag_type, wagon_belong) => {
 const getUO424 = (data1, data2, wag_type) => {
    return api.get(`${resource}/uo/424/repair-downtime?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}`, {timeout: 600000})
 }
+const getUO28 = ( on_date, shipment_source) => {
+   return api.get(`${wagon_park}/shipments/?on_date=${ on_date}&shipment_source=${shipment_source}`, {timeout: 600000})
+}
 export default{
     getUO41,
     getUO42,
@@ -40,4 +43,5 @@ export default{
     getUO47,
     getUO422,
     getUO424,
+    getUO28,
 }
