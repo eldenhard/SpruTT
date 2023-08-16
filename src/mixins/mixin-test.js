@@ -6,7 +6,7 @@ export default {
   },
   methods:{
     log(){
-        console.log('пРВИЕТ')
+        // console.log('пРВИЕТ')
     }
   }
 }

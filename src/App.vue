@@ -51,6 +51,18 @@ export default {
 
     }
   },
+  beforeCreate(){
+    let date = new Date()
+    let limit = localStorage.getItem('first_entry_time')
+    // Получил количество часов
+    if(((date - new Date(limit))/ 3_600_000).toFixed(2) < 12){
+     return
+    } else {
+      localStorage.setItem('first_entry_time', date)
+      location.reload()
+    }
+    // localStorage.setItem('first_entry_time', date)
+  },
   mounted() {
     // console.log(this.token)
     localStorage.setItem('accessToken', JSON.stringify(this.token))

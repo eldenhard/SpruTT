@@ -115,10 +115,12 @@ export default {
 			api.getUO28(date, this.shipment_source)
 				.then(response => {
 					this.loader = false
-					this.uo_28 = response.data.data
-					// console.log(this.uo_28)
+					let arr_data  = response.data.data
+					const key = 'departure_station'; // ключ, по которому будем сортировать
+					const sorted = arr_data.sort((data1, data2) => data1[key] > data2[key] ? 1 : -1);
+					this.uo_28 = sorted
 				}).catch(error => {
-					this.lodear = false
+					this.loader = false
 					console.log(error)
 				})
 		},
