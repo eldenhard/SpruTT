@@ -5,9 +5,16 @@
             <label for="">№ вагонов<br>
                 <input class="textarea" v-model="wagon_in">
             </label>
-            <label for="">Дата <br>
-                <input type="date" v-model="on_date" class="textarea">
-            </label>
+            <div style="display: flex; justify-content: space-between; gap: 2%">
+                <label for="">Дата начала<br>
+                    <input type="datetime-local" v-model="date_begin" class="textarea">
+                </label>
+                <label for="">Дата конца<br>
+                    <input type="datetime-local" v-model="date_end" class="textarea">
+                </label>
+            </div>
+
+            <br>
             <button @click="getData()" class="button Request">Запросить</button>
         </div>
         <div style="overflow: auto">
@@ -47,71 +54,98 @@
                 </thead>
                 <tbody>
                     <tr v-show="no_data">
-                        <td colspan="15"><h2>Нет данных</h2></td>
+                        <td colspan="15">
+                            <h2>Нет данных</h2>
+                        </td>
                     </tr>
                     <tr v-for="item in dislocation" :key="item.id">
-                        <td>{{ item.last_plan_repair_date | formatdate}}</td>
+                        <td>{{ item.last_plan_repair_date | formatdate }}</td>
                         <td>{{ item.run_fact }}</td>
                         <td>{{ item.current_task_client }}</td>
                         <td>{{ item.receipt }}</td>
                         <td>{{ item.invoice }}</td>
                         <td>{{ item.wagon }}</td>
-                        <td>{{ item.last_operation_datetime | formatdate}}</td>
-                        <td>{{ item.current_station_arrival | formatdate}}</td>
+                        <td>{{ item.last_operation_datetime | formatdate }}</td>
+                        <td>{{ item.current_station_arrival | formatdate }}</td>
                         <td>{{ item.operation }}</td>
                         <td>{{ item.departure_station }}</td>
                         <td>{{ item.current_station }}</td>
                         <td>{{ item.destination_station }}</td>
-                        <td>{{ item.current_station_downtime  }}</td>
-                        <td>{{ item.last_operation_downtime  }}</td>
+                        <td>{{ item.current_station_downtime }}</td>
+                        <td>{{ item.last_operation_downtime }}</td>
                         <td>{{ item.documents_registration_downtime }}</td>
                         <td>{{ item.distance_left_from_current_dislocation }}</td>
                         <td>{{ item.distance_all_from_departure_station }}</td>
                         <td>{{ item.cargo }}</td>
                         <td>{{ item.train_index }}</td>
-                        <td>{{ item.is_loaded | loaded}}</td>
+                        <td>{{ item.is_loaded | loaded }}</td>
                         <td>{{ item.weight }}</td>
                         <td>{{ item.current_country }}</td>
                         <td>{{ item.drop }}</td>
                         <td>{{ item.polygon }}</td>
-                        <td>{{ item.loading_date | formatdate}}</td>
-                        <td>{{ item.calc_arrival_date  | formatdate}}</td>
-                        <td>{{ item.arrival_date | formatdate}}</td>
-                        <td>{{ item.destination_station_arrival  | formatdate}}</td>
-                        <td>{{ item.departure_station_arrival  | formatdate}}</td>
+                        <td>{{ item.loading_date | formatdate }}</td>
+                        <td>{{ item.calc_arrival_date | formatdate }}</td>
+                        <td>{{ item.arrival_date | formatdate }}</td>
+                        <td>{{ item.destination_station_arrival | formatdate }}</td>
+                        <td>{{ item.departure_station_arrival | formatdate }}</td>
 
                     </tr>
                 </tbody>
             </table>
         </div>
+        <Notifications
+      :show="showNotify"
+      :header="notifyHead"
+      :message="notifyMessage"
+      :block-class="notifyClass"
+      id="notif"
+    />
     </div>
 </template>
 
 <script>
 import api from "@/api/wagonPark";
 import Loader from '../../../loader/loader.vue';
+import Notifications from "@/components/notifications/Notifications.vue";
+
 export default {
-    components: { Loader },
+    components: { Loader, Notifications },
     data() {
         return {
             wagon_in: "",
-            on_date: "",
+            date_begin: "",
+            date_end: "",
             loader: false,
             dislocation: "",
             no_data: false,
+
+            showNotify: false,
+            notifyHead: "",
+            notifyMessage: "",
+            notifyClass: "",
         }
     },
     methods: {
         getData() {
+            if(this.wagon_in == null || this.wagon_in == ""){
+            this.notifyHead = "Ошибка";
+            this.notifyMessage = "Укажите данные вагонов";
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 3500);
+            return
+            }
             this.loader = true
             this.no_data = false
             let str = this.wagon_in.replace(/[^0-9]/g, "")
             let arr = str.match(/.{1,8}/g)
-            api.getDislocation(arr, this.on_date)
+            api.getDislocation(arr, this.date_begin, this.date_end)
                 .then(response => {
                     this.loader = false
                     this.dislocation = response.data.data
-                    if(this.dislocation.length == 0){
+                    if (this.dislocation.length == 0) {
                         this.no_data = true
                     }
                     console.log(this.dislocation)
@@ -121,11 +155,11 @@ export default {
         }
     },
     filters: {
-        loaded(value){
+        loaded(value) {
             return value == true ? 'Груж' : 'Порож'
         },
-        formatdate(value){
-            if(value == null){
+        formatdate(value) {
+            if (value == null) {
                 return value
             }
             let new_str = value.indexOf('T')
@@ -155,11 +189,12 @@ export default {
         color: grey;
     }
 }
-td{
+
+td {
     padding: 10px;
     white-space: nowrap;
 }
-th{
+
+th {
     padding: 10px;
-}
-</style>
+}</style>

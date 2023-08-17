@@ -162,8 +162,8 @@ const getExtensionData = (data) => {
 const getAllRoad = () => {
     return api.get(`${resource}/countries/`)
 }
-const getDislocation = (wagon_in, on_date) => {
-    return api.get(`${resource}/dislocations/?wagon_in=${wagon_in}&on_date=${on_date}`)
+const getDislocation = (wagon_in,date_begin, date_end) => {
+    return api.get(`${resource}/dislocations/?wagon_in=${wagon_in}&date_begin=${date_begin}&date_end=${date_end}`)
 }
 export default {
     getWagons,
