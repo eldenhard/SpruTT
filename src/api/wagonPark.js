@@ -162,6 +162,9 @@ const getExtensionData = (data) => {
 const getAllRoad = () => {
     return api.get(`${resource}/countries/`)
 }
+const getDislocation = (wagon_in, on_date) => {
+    return api.get(`${resource}/dislocations/?wagon_in=${wagon_in}&on_date=${on_date}`)
+}
 export default {
     getWagons,
     getWagon,
@@ -190,6 +193,7 @@ export default {
     getCountries,
     getCurrentStationByCode,
     getAllRoad,
+    getDislocation,
     // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

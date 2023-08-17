@@ -46,6 +46,10 @@
               <ReportAbandoned />
             </b-card-text>
 
+            <b-card-text v-if="i.name === 'Данные по дислокациям'">
+              <DataDislocation />
+            </b-card-text>
+
             <!-- <b-card-text v-if="i.name === 'Размещение парка'">
                 <AccomodationPark />
               </b-card-text>
@@ -110,6 +114,7 @@
   import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
   import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
   import ExtensionPeriod from '../components/Table/WagonPark/ExtensionPeriod.vue'
+  import DataDislocation from '../components/Table/WagonPark/Dislocation/DataDislocation.vue'
 
   import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
 import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
@@ -137,6 +142,7 @@ export default {
     ManagemtRepNavbar,
     AccomodationPark,
     ExtensionPeriod,
+    DataDislocation,
 
       Table1,
       Table2,
