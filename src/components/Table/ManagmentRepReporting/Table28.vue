@@ -5,9 +5,8 @@
 			<label for="">Выбор месяца и года<br>
 				<input type="month" class="textarea" name="" id="" v-model="data_month">
 			</label>
-			<label for="">Вид отчета <br>
+			<label for="">Источник <br>
 				<select name="" id="" v-model="shipment_source">
-					btlc, arktur, bmp. doom, glp
 					<option value="btlc">БТЛЦ</option>
 					<option value="arktur">АРКТУР</option>
 					<option value="bmp">БМП</option>
@@ -48,19 +47,22 @@
 						</tr>
 					</thead>
 					<tbody>
+						<tr v-if="no_data_available">
+							<td colspan="18"><h2>По вашему запросу нет данных</h2></td>
+						</tr>
 						<tr v-for="item in uo_28" :key="item.id">
 							<td>{{ item.shipment_source | filter_source }}</td>
-							<td>{{ item.weight | format }}</td>
+							<td>{{ item.weight?.toFixed(2) ?? '0' | format }}</td>
 							<td>{{ item.shipment_date | date_format }}</td>
 							<td>{{ item.currency }}</td>
-							<td>{{ item.sum_wo_nds_currency | format }}</td>
-							<td>{{ item.nds_currency | format }}</td>
-							<td>{{ item.sum_wo_nds | format }}</td>
-							<td>{{ item.nds | format }}</td>
+							<td>{{ item.sum_wo_nds_currency?.toFixed(2) | format }}</td>
+							<td>{{ item.nds_currency?.toFixed(2) | format }}</td>
+							<td>{{ item.sum_wo_nds?.toFixed(2) | format }}</td>
+							<td>{{ item.nds?.toFixed(2) | format }}</td>
 							<td>{{ item.act_date | date_format }}</td>
 							<td>{{ item.invoice }}</td>
-							<td>{{ item.rt_sum | format }}</td>
-							<td>{{ item.tariff_rf | format }}</td>
+							<td>{{ item.rt_sum?.toFixed(2) | format }}</td>
+							<td>{{ item.tariff_rf?.toFixed(2) | format }}</td>
 							<td @click="getStation(item.departure_station)" class="whatData">{{ item.departure_station }}</td>
 							<td @click="getStation(item.destination_station)" class="whatData">{{ item.destination_station }}</td>
 							<td @click="filter_cargo(item.cargo)" class="whatData">{{ item.cargo }}</td>
@@ -95,7 +97,7 @@ export default {
 			notifyHead: "",
 			notifyMessage: "",
 			notifyClass: "",
-
+			no_data_available: false,
 			uo_28: "",
 			loader: false,
 			data_month: "",
@@ -110,12 +112,16 @@ export default {
 	},
 	methods: {
 		sendFilterGetUO28() {
+			this.no_data_available = false
 			this.loader = true
 			let date = `${this.data_month}-01`
 			api.getUO28(date, this.shipment_source)
 				.then(response => {
 					this.loader = false
 					let arr_data  = response.data.data
+					if(arr_data.length == 0){
+						this.no_data_available = true
+					}
 					const key = 'departure_station'; // ключ, по которому будем сортировать
 					const sorted = arr_data.sort((data1, data2) => data1[key] > data2[key] ? 1 : -1);
 					this.uo_28 = sorted
@@ -237,5 +243,8 @@ export default {
 	&:hover{
 		background: lightgray;
 	}
+}
+td{
+	white-space: nowrap;
 }
 </style>
