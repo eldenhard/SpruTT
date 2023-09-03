@@ -11,6 +11,8 @@ import editBDR from '../views/editBDR';
 import keyFact from '../views/KeyFacts';
 import managementReporting from '../views/ManagementReporting'
 import Fin_Operation from '../components/Table/Directory/Fin_Operation'
+import fines from '../views/Fines.vue'
+// C:\Users\Asus\Desktop\VueTTRe\project\src\views\Fines.vue
 Vue.use(Router)
 
 export default new Router({
@@ -57,7 +59,10 @@ export default new Router({
       path: '/management-reporting',
       component: managementReporting
     },
-
+    {
+      path: '/fines',
+      component: fines
+    },
     {
       path: '*',
       component: errorPage

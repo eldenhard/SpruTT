@@ -36,6 +36,11 @@
             <router-link to="/management-reporting" class="router-links">Управ. отчетность</router-link>
           </b-nav-item>
 
+          <b-nav-item>
+            <router-link to="/fines" class="router-links">Штрафы</router-link>
+          </b-nav-item>
+
+
           <li class="nav-item" style="padding-top: 1px">
             <a class="nav-link" href="/" @click="logout"
               style="color: black; text-decoration: none; font-size: 15px;">Выход</a>

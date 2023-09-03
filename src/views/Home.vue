@@ -44,11 +44,11 @@
             <Act />
           </b-card-text>
         </b-tab>
-      <b-tab title="Данные по нормативам" >
+      <!-- <b-tab title="Данные по нормативам" >
         <b-card-text>
           <StandartData />
         </b-card-text>
-      </b-tab>
+      </b-tab> -->
       <b-tab title="Данные по поступлениям" >
         <b-card-text>
           <Fin_headerVue />
@@ -102,7 +102,7 @@ import StationsDirectory from "@/components/Table/Directory/StationsDirectory.vu
 import CargoDirectory from "../components/Table/Directory/CargoDirectory.vue";
 import CountriesDirectory from "../components/Table/Directory/CountriesDirectory.vue";
 import WagonDirectory from "../components/Table/Directory/WagonDirectory.vue";
-import StandartData from "../components/Table/Directory/StandartData.vue";
+import StandartData from "../components/Table/Fines/StandartData.vue";
 import Act from "@/components/Table/Directory/ActPPS/Act.vue";
 import Fin_Operation from '@/components/Table/Directory/Fin_Operation'
 import Fin_headerVue from '../components/Table/Directory/Fin_header.vue';
