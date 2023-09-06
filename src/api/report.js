@@ -96,6 +96,9 @@ const getAllDataLastReportAdmin = (data) => {
     return api.get(`${reports}/kpi/get-all-last?date_begin=${data[0]}&date_end=${data[1]}`)
 }
 
+const getSpeedForWagon = (wagon_type, month) => {
+    return api.get(`${reports}/key-facts/get-speed-new?wagon_type=${wagon_type}&month=${month}`)
+}
 // ДОГОВОРА
 const createDocument = (data) => {
     return api.post(`${documents}/contract/`, data)
@@ -154,6 +157,7 @@ export default {
     getKeyFacts,
     getKeyFactsSpeedTon,
     getKeyFactsSpeed,
+    getSpeedForWagon,
     // Уведомеления
     personalTasks,
 
