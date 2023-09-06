@@ -99,7 +99,7 @@ export default {
             wagon: '',
             root: "",
             wagon_type: "Полувагон",
-            month: "2023-07",
+            month: "",
             numbers: [],
             data: "",
         }
@@ -212,6 +212,7 @@ export default {
     methods: {
 
         async getDataSpeedWagonForMonth() {
+            this.loader = true;
             let yui = document.querySelector('.chartdiv44')
             let div = document.createElement('div')
             if (document.getElementById('chartdiv44')) {
@@ -242,7 +243,9 @@ export default {
                 }
 
                 this.printGraph(responseData);
+                this.loader = false
             } catch (error) {
+                this.loader = false
                 console.error("Ошибка при создании графика:", error);
             }
         },
