@@ -641,7 +641,7 @@ export default {
       });
     },
     saveTarif(event) {
-        // console.log('123')
+        console.log(event.target.value)
       if (
         event.target.id == "destination_station" ||
         event.target.id == "departure_station"
