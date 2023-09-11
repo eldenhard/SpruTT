@@ -44,6 +44,11 @@
             <Act />
           </b-card-text>
         </b-tab>
+        <b-tab title="Данные по ПР" active>
+          <b-card-text>
+            <OtherChargesVue />
+          </b-card-text>
+        </b-tab>
       <!-- <b-tab title="Данные по нормативам" >
         <b-card-text>
           <StandartData />
@@ -54,7 +59,7 @@
           <Fin_headerVue />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по ставкам" active>
+      <b-tab title="Данные по ставкам" >
         <b-card-text>
           <TarifDirectory />
         </b-card-text>
@@ -107,6 +112,7 @@ import Act from "@/components/Table/Directory/ActPPS/Act.vue";
 import Fin_Operation from '@/components/Table/Directory/Fin_Operation'
 import Fin_headerVue from '../components/Table/Directory/Fin_header.vue';
 import TarifDirectory from "@/components/Table/Directory/TarifDirectory.vue";
+import OtherChargesVue from '../components/Table/Directory/OtherCharges/OtherCharges.vue';
 export default {
   name: "Directory",
   components: {
@@ -122,6 +128,7 @@ export default {
     Fin_Operation,
     Fin_headerVue,
     TarifDirectory,
+    OtherChargesVue,
   },
   mounted() {
     document.title = "Справочники";
