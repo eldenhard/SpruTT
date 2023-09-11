@@ -48,7 +48,7 @@
         <input type="text" id="tenant" class="textarea mini" v-model="landlord" />
       </label>
 
-
+     
 
 
 
@@ -62,6 +62,8 @@
 
         </select>
     </label>
+
+ 
 
     <label for="wagon" style="margin-left: 5px;"
         >Номера вагонов
@@ -124,6 +126,14 @@
         <br />
         <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end_to"
       /></label>
+
+
+
+      <label for="tenant"
+        >Ставка
+        <br />
+        <input type="number" id="tenant" class="textarea mini" v-model="filter_arendaData.stavka" />
+      </label>
     </div>
 
 
@@ -424,6 +434,7 @@ export default {
   components: { Loader, Notifications },
   data() {
     return {
+     
       selected_record: 0,
       mini_loader: false,
       success: false,
@@ -448,6 +459,7 @@ export default {
       notifyMessage: "",
       notifyClass: "",
       filter_arendaData: {
+        stavka: "",
         page_size: "",
         tenant: "",
         landlord: "",
