@@ -44,11 +44,11 @@
             <Act />
           </b-card-text>
         </b-tab>
-        <!-- <b-tab title="Данные по ПР" active>
+        <b-tab title="Данные по ПР" active>
           <b-card-text>
             <OtherChargesVue />
           </b-card-text>
-        </b-tab> -->
+        </b-tab>
       <!-- <b-tab title="Данные по нормативам" >
         <b-card-text>
           <StandartData />

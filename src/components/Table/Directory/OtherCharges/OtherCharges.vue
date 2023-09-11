@@ -75,7 +75,7 @@
   
         <div class="filter">
           <label for="">
-            Исполнитель<br />
+            Контрагент<br />
             <input type="text" class="textarea mini" v-model="contractor" />
           </label>
           <label for="">
@@ -108,43 +108,17 @@
           </ul>
         </div>
   
-        <div class="textarea" style="
-          height: auto;
-          width: 80%;
-          position: relative;
-          left: 50%;
-          transform: translate(-50%, 0);
-        " v-show="ten_visible2">
-          <ul id="root_tenant">
-            <li v-for="item in filter_forcargo" :key="item.id" @click="checkForCargo(item.name, item.code6)">
-              <span>{{ item.name }}</span>
-              <hr />
-            </li>
-          </ul>
-        </div>
+       
   
-        <div class="textarea" style="
-          height: auto;
-          width: 80%;
-          position: relative;
-          left: 50%;
-          transform: translate(-50%, 0);
-        " v-show="ten_visible3">
-          <ul id="root_tenant">
-            <li v-for="item in filter_fromcargo" :key="item.id" @click="checkFromCargo(item.name, item.code6)">
-              <span>{{ item.name }}</span>
-              <hr />
-            </li>
-          </ul>
-        </div>
+       
         <table style="margin-top: 2%;">
           <thead style="border-top: none !important;">
             <tr style="border: none !important">
               <th style="border: none !important"></th>
               <th style="border: none !important"><button class="delete_col" @click="delete_col('wagon')">Удалить
                   столб.</button></th>
-              <th style="border: none !important"><button class="delete_col" @click="delete_col('from_cargo')">Удалить
-                  столб.</button></th>
+              <!-- <th style="border: none !important"><button class="delete_col" @click="delete_col('from_cargo')">Удалить
+                  столб.</button></th> -->
               <th style="border: none !important"><button class="delete_col" @click="delete_col('arrival_date')">Удалить
                   столб.</button></th>
               <th style="border: none !important"><button class="delete_col" @click="delete_col('parking_begin_date')">Удалить
@@ -166,11 +140,7 @@
                 <br />
                 Вагон
               </th>
-              <th>
-                <input type="text" @keyup.enter="save($event)" placeholder="введите грузы" id="from_cargo" class="in_data"
-                  style="border: 1px solid black !important" />
-                <br />Из под груза
-              </th>
+      
               <th>
                 <input type="text" @keyup.enter="save($event)" placeholder="введите дату" id="arrival_date" class="in_data"
                   style="border: 1px solid black !important" />
@@ -198,14 +168,47 @@
               </th>
   
               <th>
-                <input type="text" @keyup.enter="savework_name($event)" placeholder="введите операцию" id="work_name"
+                <input type="text" @keyup.enter="save($event)" placeholder="введите операцию" id="work_name"
                   class="in_data" style="border: 1px solid black !important" />
-                <br />Наимен. услуги
+                <br />Ремонт запорного механизма люка (шт)
+              </th>
+
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите операцию" id="work_name"
+                  class="in_data" style="border: 1px solid black !important" />
+                <br /> Уборка вагона от снега, без зачистки (шт)
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите операцию" id="work_name"
+                  class="in_data" style="border: 1px solid black !important" />
+                <br />Удаление остатков ранее перевозимого груза (шт)
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите операцию" id="work_name"
+                  class="in_data" style="border: 1px solid black !important" />
+                <br /> Проведение сварочных работ (см)
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите операцию" id="work_name"
+                  class="in_data" style="border: 1px solid black !important" />
+                <br /> Маневровые работы  (час)
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите операцию" id="work_name"
+                  class="in_data" style="border: 1px solid black !important" />
+                <br />Осмотр вагонов (шт)
+              </th>
+
+      
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите цену" id="cost" class="in_data"
+                  style="border: 1px solid black !important" />
+                <br />Стоимость без НДС
               </th>
               <th>
                 <input type="text" @keyup.enter="save($event)" placeholder="введите цену" id="cost" class="in_data"
                   style="border: 1px solid black !important" />
-                <br />Стоимость
+                <br />НДС
               </th>
             </tr>
           </thead>
@@ -214,7 +217,6 @@
               <td @click="deleteRow(index)" v-b-tooltip.hover :title="item.error" class="delete"
                 :class="{ error: item.error != null }">{{ index + 1 }}</td>
               <td><input type="number" v-model="item.wagon" /></td>
-              <td><input type="text" v-model="item.from_cargo" /></td>
               <td><input type="date" v-model="item.arrival_date" /></td>
               <td><input type="date" v-model="item.parking_begin_date" /></td>
               <td><input type="date" v-model="item.departure_date" /></td>
@@ -243,7 +245,6 @@ import Notifications from "@/components/notifications/Notifications.vue";
 class MyClass {
   // #from_cargo = null
   constructor() {
-    this.from_cargo = null;
     this.arrival_date = null;
     this.parking_begin_date = null;
     this.departure_date = null;
@@ -298,7 +299,6 @@ class MyClass {
   // }
   JSON() {
     return {
-      from_cargo: this.from_cargo || null,
       arrival_date: this._arrival_date || null,
       departure_date: this._departure_date || null,
       parking_begin_date: this._parking_begin_date || null,
@@ -321,8 +321,6 @@ export default {
       data: [],
       act_date: "",
       contractor: "",
-      from_cargo: "",
-      for_cargo: "",
       ten_visible: false,
       ten_visible2: false,
       ten_visible3: false,
@@ -364,16 +362,7 @@ export default {
           )
         : "";
     },
-    filter_fromcargo() {
-      if (this.from_cargo.length > 1) {
-        this.ten_visible3 = true;
-      }
-      return this.from_cargo.length > 1
-        ? this.$store.state.cargo_code.cargo_code.filter((item) =>
-            item.name.toLowerCase().includes(this.from_cargo.toLowerCase())
-          )
-        : "";
-    },
+ 
   },
   methods: {
     delete_col(value) {
