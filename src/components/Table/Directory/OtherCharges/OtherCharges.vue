@@ -20,12 +20,23 @@
             type="radio"
             value="РТС Сервис"
             v-model="table_type"
-            disabled
           />
           РТС
         </label>
       </div>
       <div class="dataAct">
+        <label for=""
+        v-if="table_type === 'РТС Сервис'"
+          >Услуги <br>
+          <select name="" id="" class="textarea" style="width: 100%">
+            <option value="">Услуги по маневровой работ</option>
+            <option value="">
+              Комплекс работ и услуг по ком. осмотру и подг. ваг.
+            </option>
+            <option value="">Услуги по подаче и уборке вагонов</option>
+            <option value="">Услуги по отстою</option>
+          </select>
+        </label>
         <label for=""
           >№ договора <br />
           <input type="text" v-model="act_number" class="textarea" />
@@ -44,9 +55,9 @@
       <button class="Accept" @click="loadFromExcel">Загрузить</button>
     </div>
 
-    <table class="table-hover">
+    <table class="table-hover" v-if="table_type != 'РТС Сервис'">
       <thead>
-        <tr class="table-secondary" style="background: #E1E1E2;">
+        <tr class="table-secondary" style="background: #e1e1e2">
           <th></th>
           <th>Вагон</th>
           <th>Из под груза</th>
@@ -91,9 +102,18 @@
         </tr>
       </tbody>
     </table>
+
+    <OtherChargeTableRTS v-if="table_type === 'РТС Сервис'">
+      <tr>
+        <td></td>
+      </tr>
+    </OtherChargeTableRTS>
+
     <button class="Accept" @click="sendData()">Отправить</button>
 
     <OtherChargesChangeVue style="margin-top: 10%" />
+
+
     <Notifications
       :show="showNotify"
       :header="notifyHead"
@@ -109,10 +129,16 @@ import Handsontable from "handsontable";
 import Loader from "../../../loader/loader.vue";
 import api from "@/api/directory";
 import OtherChargesChangeVue from "./OtherChargesChange.vue";
+import OtherChargeTableRTS from "./OtherChargeTableRTS.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 
 export default {
-  components: { Loader, OtherChargesChangeVue, Notifications },
+  components: {
+    Loader,
+    OtherChargesChangeVue,
+    Notifications,
+    OtherChargeTableRTS,
+  },
   data() {
     return {
       excelData: "",
@@ -133,16 +159,16 @@ export default {
 
   methods: {
     sendData() {
-    if(this.act_number == "" || this.act_date == ""){
+      if (this.act_number == "" || this.act_date == "") {
         this.notifyHead = "Ошибка";
-          this.notifyMessage = "Заполните поля № договора/Дата акта";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2500);
-          return
-    }
+        this.notifyMessage = "Заполните поля № договора/Дата акта";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => {
+          this.showNotify = false;
+        }, 2500);
+        return;
+      }
       this.loader = true;
       let new_obj = this.tableData.map((item) => {
         return {
@@ -168,7 +194,7 @@ export default {
         .postOtherChanges(new_obj)
         .then((response) => {
           this.loader = false;
-          this.tableData = []
+          this.tableData = [];
           this.notifyHead = "Успешно";
           this.notifyMessage = "Данные отправлены";
           this.notifyClass = "wrapper-success";
