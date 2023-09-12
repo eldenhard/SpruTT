@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@amcharts/amcharts5": "^5.2.35",
+    "@handsontable/vue": "^13.1.0",
     "@sentry/vue": "^7.62.0",
     "autoprefixer": "^10",
     "axios": "^1.1.2",

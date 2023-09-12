@@ -137,6 +137,14 @@ const getAllStandardDog = () => {
 const getExportExcel = (filter_arendaData) => {
     return api.get(`${finance}/stavki-arenda/export/?`,  {params: filter_arendaData})
 }
+
+
+const postOtherChanges = (data) => {
+    return api.post(`${finance}/other-charges/save-many/`, data)
+}
+const getOtherChanges = () => {
+    return api.get(`${finance}/other-charges/`, )
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -186,5 +194,9 @@ export default {
     getAllDocuments,
     getAllStandardDog,
     getExportExcel,
+
+    // данные по пр
+    postOtherChanges,
+    getOtherChanges,
 }
 
