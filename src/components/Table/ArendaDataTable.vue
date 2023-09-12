@@ -3,31 +3,24 @@
     <Loader :loader="loader" />
 
     <b-modal id="bv-modal-example" hide-footer>
-    <template #modal-title>
-      Подтверждение действия 
-    </template>
-    <div class="d-block text-center">
-      <h4>Вы уверены, что хотите удалить данные?</h4>
-      <p>В случае удаления, данные будут потеряны безвозвратно </p>
-    </div>
-    <b-button variant="danger" @click="deleteStavkiArenda(selected_record)">Да, я уверен</b-button>
-    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Нет, отменить</b-button>
-  </b-modal>
-<br><br>
+      <template #modal-title>
+        Подтверждение действия
+      </template>
+      <div class="d-block text-center">
+        <h4>Вы уверены, что хотите удалить данные?</h4>
+        <p>В случае удаления, данные будут потеряны безвозвратно </p>
+      </div>
+      <b-button variant="danger" @click="deleteStavkiArenda(selected_record)">Да, я уверен</b-button>
+      <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Нет, отменить</b-button>
+    </b-modal>
+    <br><br>
 
     <a class="WatchAllArenda" v-on:click="visible = !visible">
       {{ visible ? "Скрыть данные по аренде" : "Отобразить данные по аренде" }}
     </a>
     <div class="table-content" v-show="visible">
-      <label for="amount"
-        >Количество строк <br />
-        <select
-          name="amount_row"
-          id="amount"
-          v-model="filter_arendaData.page_size"
-          style="width: 100%"
-          class="mini"
-        >
+      <label for="amount">Количество строк <br />
+        <select name="amount_row" id="amount" v-model="filter_arendaData.page_size" style="width: 100%" class="mini">
           <option value="" disabled>кол-во строк на странице</option>
           <option value="15">15</option>
           <option value="50">50</option>
@@ -36,129 +29,105 @@
         </select>
       </label>
 
-      <label for="tenant"
-        >Арендатор
+      <label for="tenant">Арендатор
         <br />
         <input type="text" id="tenant" class="textarea mini" v-model="tenant" />
       </label>
 
-      <label for="tenant"
-        >Арендодатель
+      <label for="tenant">Арендодатель
         <br />
         <input type="text" id="tenant" class="textarea mini" v-model="landlord" />
       </label>
 
-     
 
 
 
-      <label for="tenant" style="margin-left: 5px;"
-        >Тип вагона
+
+      <label for="tenant" style="margin-left: 5px;">Тип вагона
         <br />
-        <select name="" id="" class="mini" style="width: 100%"  v-model="filter_arendaData.wagon__wagon_type">
-          <option  value="">Все</option>
+        <select name="" id="" class="mini" style="width: 100%" v-model="filter_arendaData.wagon__wagon_type">
+          <option value="">Все</option>
           <option value="Полувагон">ПВ</option>
           <option value="Цистерна">ЦС</option>
 
         </select>
-    </label>
+      </label>
 
- 
 
-    <label for="wagon" style="margin-left: 5px;"
-        >Номера вагонов
+
+      <label for="wagon" style="margin-left: 5px;">Номера вагонов
         <br />
         <input type="text" style="width: 300px" v-model="wagons" class="textarea mini" placeholder="ввод через пробел">
-    </label>
-
-
-<div style="display: flex; flex-direction: column;">
-  <!-- Начало аренды -->
-<label for="tenant"
-        >Начало аренды от
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin_from"/>
       </label>
 
-      <label for="tenant"
-        >Начало аренды до
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin_to"/>
-      </label>
-    </div>     
-    <div style="display: flex; flex-direction: column;">
-<!-- Конец аренды -->
-<label for="tenant"
-        >Конец аренды от
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end_from"
-      /></label>
 
-      <label for="tenant"
-        >Конец аренды до
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end_to"
-      /></label>
-    </div> 
       <div style="display: flex; flex-direction: column;">
-<!-- Начало ставки -->
-<label for="tenant"
-        >Начало ставки от
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_begin_from"/>
-      </label>
+        <!-- Начало аренды -->
+        <label for="tenant">Начало аренды от
+          <br />
+          <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin_from" />
+        </label>
 
-      <label for="tenant"
-        >Начало ставки до
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_begin_to"/>
-      </label>
-</div>
+        <label for="tenant">Начало аренды до
+          <br />
+          <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin_to" />
+        </label>
+      </div>
       <div style="display: flex; flex-direction: column;">
-      <!-- Конец ставки -->
-<label for="tenant"
-        >Конец ставки от
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end_from"/>
-      </label>
-      <label for="tenant" style="margin-left: 5px;"
-        >Конец ставки до
-        <br />
-        <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end_to"
-      /></label>
+        <!-- Конец аренды -->
+        <label for="tenant">Конец аренды от
+          <br />
+          <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end_from" /></label>
+
+        <label for="tenant">Конец аренды до
+          <br />
+          <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end_to" /></label>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <!-- Начало ставки -->
+        <label for="tenant">Начало ставки от
+          <br />
+          <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_begin_from" />
+        </label>
+
+        <label for="tenant">Начало ставки до
+          <br />
+          <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_begin_to" />
+        </label>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <!-- Конец ставки -->
+        <label for="tenant">Конец ставки от
+          <br />
+          <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end_from" />
+        </label>
+        <label for="tenant" style="margin-left: 5px;">Конец ставки до
+          <br />
+          <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end_to" /></label>
 
 
 
-      <label for="tenant"
-        >Ставка
-        <br />
-        <input type="number" id="tenant" class="textarea mini" v-model="filter_arendaData.stavka" />
-      </label>
-    </div>
+        <label for="tenant">Ставка
+          <br />
+          <input type="number" id="tenant" class="textarea mini" v-model="filter_arendaData.stavka" />
+        </label>
+      </div>
 
 
 
-<div style="width: 100%; display: flex; flex-direction: column;">
-  <button class="button Accept mini" @click="getArenda()">Запросить</button>
-  <button class="button Accept mini" @click="getExcel()">Экспорт в Excel</button>
+      <div style="width: 100%; display: flex; flex-direction: column;">
+        <button class="button Accept mini" @click="getArenda()">Запросить</button>
+        <button class="button Accept mini" @click="getExcel()">Экспорт в Excel</button>
 
-</div>
+      </div>
 
     </div>
     <div class="block_answer">
       <div></div>
       <label for="">
-        <div
-          class="textarea"
-          style="height: auto; width: 100%;"
-          v-show="ten_visible"
-        >
+        <div class="textarea" style="height: auto; width: 100%;" v-show="ten_visible">
           <ul id="root_tenant">
-            <li
-              v-for="item in filter_tenant"
-              :key="item.id"
-              @click="checkTenant(item.work_name)"
-            >
+            <li v-for="item in filter_tenant" :key="item.id" @click="checkTenant(item.work_name)">
               <span>{{ item.work_name }}</span>
               <hr />
             </li>
@@ -167,17 +136,9 @@
       </label>
 
       <label for="">
-        <div
-          class="textarea"
-          style="height: auto; width: 100%;"
-          v-show="ten_visible2"
-        >
+        <div class="textarea" style="height: auto; width: 100%;" v-show="ten_visible2">
           <ul id="root_tenant">
-            <li
-              v-for="item in filter_landlord"
-              :key="item.id"
-              @click="checkLandlord(item.work_name)"
-            >
+            <li v-for="item in filter_landlord" :key="item.id" @click="checkLandlord(item.work_name)">
               <span>{{ item.work_name }}</span>
               <hr />
             </li>
@@ -195,42 +156,44 @@
 
 
 
-<div style="display: flex; justify-content: space-between;" v-show="visible">
-    <p class="amount" style="padding-top: 2%" v-show="visible">
-      Всего записей: {{ total_objects }}
-    </p>
- 
+    <div style="display: flex; justify-content: space-between;" v-show="visible">
+      <p class="amount" style="padding-top: 2%" v-show="visible">
+        Всего записей: {{ total_objects }}
+      </p>
+
       <div>
-        <button id="tooltip-target-1" style="background: transparent; border: none" v-b-tooltip.hover.lefttop="'Информация по арендатору/арендателю!'"  @click="info_block = !info_block">
-              <img :src="info_btn" alt="" style="width: 25px; height:25px; margin-top: 1%;">
-            </button>
+        <button id="tooltip-target-1" style="background: transparent; border: none"
+          v-b-tooltip.hover.lefttop="'Информация по арендатору/арендателю!'" @click="info_block = !info_block">
+          <img :src="info_btn" alt="" style="width: 25px; height:25px; margin-top: 1%;">
+        </button>
       </div>
 
-  </div>
-  <transition name="fade">
-  <div style="display: flex; justify-content: flex-end;" v-show="info_block">
-    <table>
-      <tr>
-        <th>Старое наименование</th>
-        <th>Новое наименование</th>
-        <th>Корретное полное наименование</th>
+    </div>
+    <transition name="fade">
+      <div style="display: flex; justify-content: flex-end;" v-show="info_block">
+        <table>
+          <tr>
+            <th>Старое наименование</th>
+            <th>Новое наименование</th>
+            <th>Корретное полное наименование</th>
 
-      </tr>
-      <tr v-for="name in data_hard.cp_work_names" :key="name.id">
-        <td>{{ name[0]}}</td>
-        <td>{{ name[1] }}</td>
-        <td>{{ name[2] }}</td>
+          </tr>
+          <tr v-for="name in data_hard.cp_work_names" :key="name.id">
+            <td>{{ name[0] }}</td>
+            <td>{{ name[1] }}</td>
+            <td>{{ name[2] }}</td>
 
-      </tr>
-    </table>
-  </div>
-</transition>
-<br>
+          </tr>
+        </table>
+      </div>
+    </transition>
+    <br>
 
     <div class="" v-show="visible">
       <table border="1" v-show="visible">
         <thead>
           <tr>
+            <th style="border-left: 1px solid white; border-top: 1px solid white;  border-bottom: 1px solid white"></th>
             <th class="col1">#</th>
             <th class="col2">№ вагона</th>
             <th class="col2">Дата начала аренды</th>
@@ -243,30 +206,22 @@
           </tr>
         </thead>
         <tbody>
+        
+
           <tr v-for="(item, index) in data" :key="item.id" :id="item.id">
+            <td style="border-left: 1px solid white;
+             border-top: 1px solid white;
+              border-bottom: 1px solid white">
+              <input type="checkbox" :data-name="item.id"></td>
             <!-- Номер строки -->
             <td class="col1">
-              <input
-                class="hover"
-                style="width: 100%"
-                :value="index + 1"
-                readonly
-               @click="open_modal(item.id)"
-              />
+              <input class="hover" style="width: 100%" :value="index + 1" readonly @click="open_modal(item.id)" />
             </td>
             <!-- ВАГОН -->
             <td class="col1">
               <div class="inputcontainer">
-                <input
-                  :id="`wag` + item.id"
-                  v-model="item.wagon"
-                  v-on:keyup.enter="submitWagon(item.wagon, item.id)"
-                />
-                <div
-                  class="icon-container"
-                  :id="`wagload` + item.id"
-                  style="display: none"
-                >
+                <input :id="`wag` + item.id" v-model="item.wagon" v-on:keyup.enter="submitWagon(item.wagon, item.id)" />
+                <div class="icon-container" :id="`wagload` + item.id" style="display: none">
                   <i class="loader"></i>
                 </div>
               </div>
@@ -274,17 +229,9 @@
             <!-- Дата начала аренды -->
             <td class="col2">
               <div class="inputcontainer">
-                <input
-                  :id="`start_date` + item.id"
-                  v-model="item.start_date"
-                  
-                  v-on:keyup.enter="submitStartArenda(item.start_date, item.id)"
-                />
-                <div
-                  class="icon-container"
-                  :id="`wagstart` + item.id"
-                  style="display: none"
-                >
+                <input :id="`start_date` + item.id" v-model="item.start_date"
+                  v-on:keyup.enter="submitStartArenda(item.start_date, item.id)" />
+                <div class="icon-container" :id="`wagstart` + item.id" style="display: none">
                   <i class="loader"></i>
                 </div>
               </div>
@@ -292,16 +239,9 @@
             <!-- Дата конца аренды -->
             <td class="col2">
               <div class="inputcontainer">
-                <input
-                  :id="`end_date` + item.id"
-                  v-model="item.end_date"
-                  v-on:keyup.enter="submitEndArenda(item.end_date, item.id)"
-                />
-                <div
-                  class="icon-container"
-                  :id="`wagend` + item.id"
-                  style="display: none"
-                >
+                <input :id="`end_date` + item.id" v-model="item.end_date"
+                  v-on:keyup.enter="submitEndArenda(item.end_date, item.id)" />
+                <div class="icon-container" :id="`wagend` + item.id" style="display: none">
                   <i class="loader"></i>
                 </div>
               </div>
@@ -309,16 +249,9 @@
             <!-- Ставка -->
             <td class="col2">
               <div class="inputcontainer">
-                <input
-                  :id="`stavka` + item.id"
-                  v-model="item.stavka"
-                  v-on:keyup.enter="submitStavka(item.stavka, item.id)"
-                />
-                <div
-                  class="icon-container"
-                  :id="`stavkaload` + item.id"
-                  style="display: none"
-                >
+                <input :id="`stavka` + item.id" v-model="item.stavka"
+                  v-on:keyup.enter="submitStavka(item.stavka, item.id)" />
+                <div class="icon-container" :id="`stavkaload` + item.id" style="display: none">
                   <i class="loader"></i>
                 </div>
               </div>
@@ -326,18 +259,10 @@
             <!-- Начало ставки -->
             <td class="col2">
               <div class="inputcontainer">
-                <input
-                  :id="`stavka_start_date` + item.id"
-                  v-model="item.stavka_start_date"
-                  v-on:keyup.enter="
-                    submitStartStavka(item.stavka_start_date, item.id)
-                  "
-                />
-                <div
-                  class="icon-container"
-                  :id="`stavkaStart` + item.id"
-                  style="display: none"
-                >
+                <input :id="`stavka_start_date` + item.id" v-model="item.stavka_start_date" v-on:keyup.enter="
+                  submitStartStavka(item.stavka_start_date, item.id)
+                  " />
+                <div class="icon-container" :id="`stavkaStart` + item.id" style="display: none">
                   <i class="loader"></i>
                 </div>
               </div>
@@ -345,18 +270,10 @@
             <!-- Конец ставки -->
             <td class="col2">
               <div class="inputcontainer">
-                <input
-                  :id="`stavka_end_date` + item.id"
-                  v-model="item.stavka_end_date"
-                  v-on:keyup.enter="
-                    submitEndStavka(item.stavka_end_date, item.id)
-                  "
-                />
-                <div
-                  class="icon-container"
-                  :id="`stavkaEnd` + item.id"
-                  style="display: none"
-                >
+                <input :id="`stavka_end_date` + item.id" v-model="item.stavka_end_date" v-on:keyup.enter="
+                  submitEndStavka(item.stavka_end_date, item.id)
+                  " />
+                <div class="icon-container" :id="`stavkaEnd` + item.id" style="display: none">
                   <i class="loader"></i>
                 </div>
               </div>
@@ -364,16 +281,9 @@
             <!-- Арендатор -->
             <td class="col2">
               <div class="inputcontainer">
-                <input
-                  :id="`tenant` + item.id"
-                  v-model="item.tenant"
-                  v-on:keyup.enter="submitTenant(item.tenant, item.id)"
-                />
-                <div
-                  class="icon-container"
-                  :id="`tenantload` + item.id"
-                  style="display: none"
-                >
+                <input :id="`tenant` + item.id" v-model="item.tenant"
+                  v-on:keyup.enter="submitTenant(item.tenant, item.id)" />
+                <div class="icon-container" :id="`tenantload` + item.id" style="display: none">
                   <i class="loader"></i>
                 </div>
               </div>
@@ -381,16 +291,9 @@
             <!-- Арендодатель -->
             <td class="col2">
               <div class="inputcontainer">
-                <input
-                  :id="`landlord` + item.id"
-                  v-model="item.landlord"
-                  v-on:keyup.enter="submitLandlord(item.landlord, item.id)"
-                />
-                <div
-                  class="icon-container"
-                  :id="`landlordload` + item.id"
-                  style="display: none"
-                >
+                <input :id="`landlord` + item.id" v-model="item.landlord"
+                  v-on:keyup.enter="submitLandlord(item.landlord, item.id)" />
+                <div class="icon-container" :id="`landlordload` + item.id" style="display: none">
                   <i class="loader"></i>
                 </div>
               </div>
@@ -403,24 +306,15 @@
     <div id="wrapper">
       <ul id="pagination">
         <li v-for="btn in total_pages" :key="btn.id">
-          <a
-            @click="getPagination(filter_arendaData.page_size, btn)"
-            :class="{
-              active123: Truefalse(btn),
-              active_new: pageNumber == btn,
-            }"
-            >{{ btn }}</a
-          >
+          <a @click="getPagination(filter_arendaData.page_size, btn)" :class="{
+            active123: Truefalse(btn),
+            active_new: pageNumber == btn,
+          }">{{ btn }}</a>
         </li>
       </ul>
     </div>
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-      id="notif"
-    />
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+      id="notif" />
   </div>
 </template>
 
@@ -434,7 +328,7 @@ export default {
   components: { Loader, Notifications },
   data() {
     return {
-     
+
       selected_record: 0,
       mini_loader: false,
       success: false,
@@ -463,7 +357,7 @@ export default {
         page_size: "",
         tenant: "",
         landlord: "",
-       
+
         arenda_begin_from: "",
         arenda_begin_to: "",
 
@@ -485,18 +379,18 @@ export default {
       ten_visible2: false,
     };
   },
-mounted(){
-  document.body.addEventListener('click', this.onClick);
-},
+  mounted() {
+    document.body.addEventListener('click', this.onClick);
+  },
   filters: {
     filter(value) {
       return new Date(value);
     },
- 
+
   },
   computed: {
-    info_btn(){
-      if(this.info_block == false){
+    info_btn() {
+      if (this.info_block == false) {
         return require(`@/assets/info.png`)
       } return require(`@/assets/cross.png`)
     },
@@ -506,8 +400,8 @@ mounted(){
       }
       return this.tenant.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.toLowerCase().includes(this.tenant.toLowerCase())
-          )
+          i.work_name.toLowerCase().includes(this.tenant.toLowerCase())
+        )
         : "";
     },
     filter_landlord() {
@@ -516,23 +410,23 @@ mounted(){
       }
       return this.landlord.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.toLowerCase().includes(this.landlord.toLowerCase())
-          )
+          i.work_name.toLowerCase().includes(this.landlord.toLowerCase())
+        )
         : "";
     },
   },
   methods: {
 
-    open_modal(id){
+    open_modal(id) {
       this.selected_record = id
-     this.$bvModal.show('bv-modal-example')
+      this.$bvModal.show('bv-modal-example')
     },
-    inf_block(){
+    inf_block() {
       this.info_block = true
     },
     onClick() {
       this.ten_visible = false;
-      this.ten_visible2 = false;    
+      this.ten_visible2 = false;
     },
     checkTenant(value) {
       this.ten_visible = false;
@@ -542,7 +436,7 @@ mounted(){
       this.ten_visible2 = false;
       this.landlord = value;
     },
-    openModalDelete(data){
+    openModalDelete(data) {
       console.log(data)
     },
     deleteStavkiArenda(id) {
@@ -550,24 +444,24 @@ mounted(){
       api
         .deleteStavkiArenda(id)
         .then((response) => {
-               this.loader = false;
-            this.notifyHead = "Успешно";
-            this.notifyMessage = "Данные удалены";
-            this.notifyClass = "wrapper-success";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 2500);
+          this.loader = false;
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Данные удалены";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 2500);
         })
         .catch((error) => {
-              this.loader = false;
-            this.notifyHead = "Ошибка";
-            this.notifyMessage = "Данные не удалены";
-            this.notifyClass = "wrapper-error";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 2500);
+          this.loader = false;
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = "Данные не удалены";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 2500);
           console.log(error);
         });
       let row = document.getElementById(id);
@@ -605,16 +499,16 @@ mounted(){
 
     submitStartArenda(element, id) {
       let new_string
-      if(element == ""){
+      if (element == "") {
         new_string = null
       } else {
         new_string = element
-        .replace(/\./g, "-")
-        .split("-")
-        .reverse("")
-        .join("-");
+          .replace(/\./g, "-")
+          .split("-")
+          .reverse("")
+          .join("-");
       }
-     
+
       let data = { start_date: new_string };
       document.getElementById(`wagstart${id}`).style.display = "block";
 
@@ -647,14 +541,14 @@ mounted(){
     },
     submitEndArenda(element, id) {
       let new_string
-      if(element == ""){
+      if (element == "") {
         new_string = null
       } else {
         new_string = element
-        .replace(/\./g, "-")
-        .split("-")
-        .reverse("")
-        .join("-");
+          .replace(/\./g, "-")
+          .split("-")
+          .reverse("")
+          .join("-");
       }
       let data = { end_date: new_string };
       document.getElementById(`wagend${id}`).style.display = "block";
@@ -718,14 +612,14 @@ mounted(){
     },
     submitStartStavka(element, id) {
       let new_string
-      if(element == ""){
+      if (element == "") {
         new_string = null
       } else {
         new_string = element
-        .replace(/\./g, "-")
-        .split("-")
-        .reverse("")
-        .join("-");
+          .replace(/\./g, "-")
+          .split("-")
+          .reverse("")
+          .join("-");
       }
       let data = { stavka_start_date: new_string };
       document.getElementById(`stavkaStart${id}`).style.display = "block";
@@ -758,14 +652,14 @@ mounted(){
     },
     submitEndStavka(element, id) {
       let new_string
-      if(element == ""){
+      if (element == "") {
         new_string = null
       } else {
         new_string = element
-        .replace(/\./g, "-")
-        .split("-")
-        .reverse("")
-        .join("-");
+          .replace(/\./g, "-")
+          .split("-")
+          .reverse("")
+          .join("-");
       }
 
       let data = { stavka_end_date: new_string };
@@ -903,7 +797,7 @@ mounted(){
       let data = (this.wagons).replaceAll(' ', ',')
 
       this.filter_arendaData.wagons_in = data
-      
+
       api
         .getAllArendaDataStavka(this.filter_arendaData)
         .then((response) => {
@@ -959,7 +853,7 @@ mounted(){
           console.log(error.response);
         });
     },
-    getExcel(){
+    getExcel() {
       this.loader = true;
       this.filter_arendaData.tenant = this.tenant;
       this.filter_arendaData.landlord = this.landlord;
@@ -977,24 +871,31 @@ mounted(){
         .catch((error) => {
           this.loader = false;
           this.notifyHead = "Ошибка";
-            this.notifyMessage = "Excel файл не создан, попробуйте позже";
-            this.notifyClass = "wrapper-error";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 2500);
+          this.notifyMessage = "Excel файл не создан, попробуйте позже";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 2500);
         });
     }
   },
 };
 </script>
 <style lang="scss" scoped>
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity .5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+
+.fade-enter,
+.fade-leave-to
+
+/* .fade-leave-active до версии 2.1.8 */
+  {
   opacity: 0;
 }
+
 .block_answer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -1002,12 +903,15 @@ mounted(){
   width: 100%;
   margin: 0;
 }
+
 li {
   list-style-type: none;
 }
+
 li:hover {
   background: white;
 }
+
 .inputcontainer {
   position: relative;
 }
@@ -1017,14 +921,17 @@ input {
   // font-size: 20px;
   box-sizing: border-box;
 }
+
 .mini {
   height: 40px;
 }
+
 .icon-container {
   position: absolute;
   right: 10px;
   top: calc(50% - 10px);
 }
+
 .loader {
   position: relative;
   height: 20px;
@@ -1037,6 +944,7 @@ input {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -1064,36 +972,44 @@ input {
   animation: around 0.7s ease-in-out 0.1s infinite;
   background: transparent;
 }
+
 tr,
 td,
 th {
   border: 1px solid grey;
 }
+
 .success {
   transition: 0.5s ease-in-out;
   background: rgba(42, 190, 67, 0.4);
   color: black;
 }
+
 .error {
   transition: 0.5 ease-in-out;
   background: lightcoral;
   color: black;
 }
+
 .hover:hover {
   background: lightcoral;
 }
+
 .hover {
   outline: none;
   border: none;
 }
+
 .col1 {
   width: 60px;
   max-width: 60px;
 }
+
 .col2 {
   width: 160px !important;
   max-width: 160px !important;
 }
+
 input {
   border: none;
   text-align: center;
@@ -1106,6 +1022,7 @@ input {
   max-width: 80%;
   width: 80%;
 }
+
 .page-header {
   text-align: center;
   font-size: 1.5em;
@@ -1113,14 +1030,17 @@ input {
   border-bottom: 1px solid #ddd;
   margin: 30px 0;
 }
+
 #pagination {
   margin: 0;
   padding: 0;
   text-align: center;
 }
+
 #pagination li {
   display: inline;
 }
+
 #pagination li a {
   display: inline-block;
   text-decoration: none;
@@ -1135,16 +1055,20 @@ input {
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
+
 #pagination li a.active_new {
   background-color: #18842a;
   color: #fff;
 }
+
 #pagination li a:hover:not(.active_new) {
   background-color: #ddd;
 }
+
 #pagination li a:not(.active123) {
   display: none;
 }
+
 /* border-pagination */
 .b-pagination-outer {
   width: 100%;
@@ -1153,14 +1077,17 @@ input {
   overflow: hidden;
   display: flex;
 }
+
 #border-pagination {
   margin: 0 auto;
   padding: 0;
   text-align: center;
 }
+
 #border-pagination li {
   display: inline;
 }
+
 #border-pagination li a {
   display: block;
   text-decoration: none;
@@ -1169,29 +1096,36 @@ input {
   border: 1px solid #ddd;
   float: left;
 }
+
 #border-pagination li a {
   -webkit-transition: background-color 0.4s;
   transition: background-color 0.4s;
 }
+
 #border-pagination li a.active_new {
   background-color: #18842a;
   color: #fff;
 }
+
 #border-pagination li a:hover:not(.active_new) {
   background: #ddd;
 }
+
 .btn-group {
   display: flex;
   justify-content: space-between;
   width: 100%;
+
   button {
     width: 30%;
     margin-top: 5%;
   }
 }
+
 .table-content2 {
   width: 90% !important;
 }
+
 .table-content {
   margin-top: 4%;
   display: flex;
@@ -1199,9 +1133,11 @@ input {
   flex-wrap: wrap;
   border: 1px solid lightgrey;
   padding: 1%;
+
   label {
     color: rgb(146, 146, 146);
   }
+
   button {
     height: 40px;
     width: 30%;

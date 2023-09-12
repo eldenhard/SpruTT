@@ -32,7 +32,7 @@
             <wagon-directory />
           </b-card-text>
         </b-tab>
-        <b-tab title="Данные по аренде" >
+        <b-tab title="Данные по аренде" active>
           <b-card-text>
             <rentalrateTable />
           </b-card-text>
@@ -44,7 +44,7 @@
             <Act />
           </b-card-text>
         </b-tab>
-        <b-tab title="Данные по ПР" active>
+        <b-tab title="Данные по ПР" >
           <b-card-text>
             <OtherChargesVue />
           </b-card-text>
