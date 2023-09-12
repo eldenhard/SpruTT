@@ -7,7 +7,7 @@
     </div>
     <table class="table-hover">
       <thead>
-        <tr class="table-secondary">
+        <tr class="table-secondary" style="background: #E1E1E2;">
           <th>Вагон</th>
           <th>Из под груза</th>
           <th>Дата прибытия</th>

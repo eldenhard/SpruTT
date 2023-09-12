@@ -46,7 +46,7 @@
 
     <table class="table-hover">
       <thead>
-        <tr class="table-secondary">
+        <tr class="table-secondary" style="background: #E1E1E2;">
           <th></th>
           <th>Вагон</th>
           <th>Из под груза</th>
@@ -168,6 +168,7 @@ export default {
         .postOtherChanges(new_obj)
         .then((response) => {
           this.loader = false;
+          this.tableData = []
           this.notifyHead = "Успешно";
           this.notifyMessage = "Данные отправлены";
           this.notifyClass = "wrapper-success";
@@ -280,7 +281,7 @@ export default {
   flex-direction: column;
   textarea {
     width: 100%;
-    margin-top: 1%;
+    margin-top: 2%;
   }
   button {
     margin-top: 2%;
