@@ -190,10 +190,15 @@
     <br>
 
     <div class="" v-show="visible">
+      <button class="Delete button" style="width: 15%; white-space: nowrap; margin-bottom: 2%;"
+        @click="open_modal(selectedItems)">Удалить выбранное</button>
       <table border="1" v-show="visible">
         <thead>
           <tr>
-            <th style="border-left: 1px solid white; border-top: 1px solid white;  border-bottom: 1px solid white"></th>
+            <th style="border-left: 1px solid white; border-top: 1px solid white;    ">
+              <label for="">Выбрать все
+                <input type="checkbox" :checked="selectAll" @change="toggleSelectAll"></label>
+            </th>
             <th class="col1">#</th>
             <th class="col2">№ вагона</th>
             <th class="col2">Дата начала аренды</th>
@@ -206,13 +211,14 @@
           </tr>
         </thead>
         <tbody>
-        
 
-          <tr v-for="(item, index) in data" :key="item.id" :id="item.id">
+
+          <tr v-for="(item, index) in data" :key="item.id" :id="item.id" class="tableDataHover">
             <td style="border-left: 1px solid white;
              border-top: 1px solid white;
               border-bottom: 1px solid white">
-              <input type="checkbox" :data-name="item.id"></td>
+              <input type="checkbox" :checked="isSelected(item.id)" @change="toggleItemSelection(item.id)">
+            </td>
             <!-- Номер строки -->
             <td class="col1">
               <input class="hover" style="width: 100%" :value="index + 1" readonly @click="open_modal(item.id)" />
@@ -328,7 +334,9 @@ export default {
   components: { Loader, Notifications },
   data() {
     return {
-
+      all_checkbox: [],
+      selectAll: false,
+      selectedItems: [],
       selected_record: 0,
       mini_loader: false,
       success: false,
@@ -416,7 +424,36 @@ export default {
     },
   },
   methods: {
+    toggleSelectAll() {
+      this.selectAll = !this.selectAll
+      if (this.selectAll) {
+        this.selectedItems = this.data.map(item => item.id)
+      } else {
+        this.selectedItems = []
+      }
+      console.log(this.selectedItems)
+    },
+    toggleItemSelection(itemId) {
+      if (this.isSelected(itemId)) {
+        this.selectedItems = this.selectedItems.filter(id => id !== itemId)
+      } else {
+        this.selectedItems.push(itemId)
+      }
 
+      console.log(this.selectedItems)
+    },
+    isSelected(itemId) {
+      return this.selectedItems.includes(itemId)
+    },
+    // addRowToDelete(id) {
+    //   let index = this.all_checkbox.indexOf(id)
+    //   if (index === -1) {
+    //     this.all_checkbox.push(id)
+    //   } else {
+    //     this.all_checkbox.splice(index, 1)
+    //   }
+    //   console.log(this.all_checkbox)
+    // },
     open_modal(id) {
       this.selected_record = id
       this.$bvModal.show('bv-modal-example')
@@ -439,12 +476,18 @@ export default {
     openModalDelete(data) {
       console.log(data)
     },
-    deleteStavkiArenda(id) {
+    async deleteStavkiArenda(id) {
       this.loader = true
-      api
-        .deleteStavkiArenda(id)
-        .then((response) => {
-          this.loader = false;
+      try {
+        if (Array.isArray(id)) {
+          let deletePromise = id.map((item) => api.deleteStavkiArenda(item))
+          await Promise.all(deletePromise)
+          await this.getArenda()
+
+
+          this.$bvModal.hide('bv-modal-example')
+          this.loader = false
+
           this.notifyHead = "Успешно";
           this.notifyMessage = "Данные удалены";
           this.notifyClass = "wrapper-success";
@@ -452,20 +495,42 @@ export default {
           setTimeout(() => {
             this.showNotify = false;
           }, 2500);
-        })
-        .catch((error) => {
-          this.loader = false;
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Данные не удалены";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2500);
-          console.log(error);
-        });
-      let row = document.getElementById(id);
-      row.parentNode.removeChild(row);
+
+        } else {
+          api
+            .deleteStavkiArenda(id)
+            .then((response) => {
+              this.loader = false;
+              this.notifyHead = "Успешно";
+              this.notifyMessage = "Данные удалены";
+              this.notifyClass = "wrapper-success";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false;
+              }, 2500);
+              this.getArenda()
+            })
+            .catch((error) => {
+              this.loader = false;
+              this.notifyHead = "Ошибка";
+              this.notifyMessage = "Данные не удалены";
+              this.notifyClass = "wrapper-error";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false;
+              }, 2500);
+              console.log(error);
+            });
+          // let row = document.getElementById(id);
+          // row.parentNode.removeChild(row);
+          this.$bvModal.hide('bv-modal-example')
+       
+        }
+
+      }
+      catch {
+        this.loader = false
+      }
     },
     submitWagon(element, id) {
       let data = { wagon: element };
@@ -1152,5 +1217,10 @@ input {
   margin-top: 15%;
   font-size: 25px;
   cursor: pointer;
+}
+
+tr:not(:has(th)):hover {
+  background: lightgrey;
+  border: 2px solid black;
 }
 </style>

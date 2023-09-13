@@ -1087,6 +1087,29 @@ export default {
                 this.showNotify = false;
               }, 2500);
       } else {
+
+      let alert_mess = []
+        for(let item in all_array){
+          if(new Date(all_array[item].end_date) - new Date(all_array[item].start_date) < 0){
+            let row_index = Number(item) + 1
+            alert_mess.push(`В строке ${row_index} ошибка очередности дат аренды`)
+          } else if(new Date(all_array[item].stavka_end_date) - new Date(all_array[item].stavka_start_date) < 0){
+            let row_index = Number(item) + 1
+            alert_mess.push(`В строке ${row_index} ошибка очередности дат ставок`)
+          }
+        }
+        if(alert_mess.length !== 0){
+          this.loader = false;
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = alert_mess;
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 6500);
+          return
+        }
+         
         api
           .postSaveMany(all_array)
           .then((response) => {

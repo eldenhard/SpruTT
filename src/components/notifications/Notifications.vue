@@ -3,7 +3,7 @@
   <div class="notifications-main">
       <div class="subject">
       <h5>{{header}}</h5>
-      <p>{{ message }}</p>
+      <p v-html="formatMessage"></p>
       </div>
   </div>
 </div>
@@ -38,7 +38,17 @@ export default{
       return {
 
       }
-    }
+    },
+    computed:{
+      formatMessage(){
+        if(Array.isArray(this.message)){
+          let mess = JSON.parse(JSON.stringify(this.message))
+          return mess.join('<br>')
+        }
+        return this.message
+      }
+    },
+  
 }
 </script>
 

@@ -163,7 +163,8 @@ export default {
             api.getDislocation(arr, this.date_begin, this.date_end)
                 .then(response => {
                     this.loader = false
-                    this.dislocation = response.data.data
+                    this.dislocation = response.data
+                   
                     this.dislocation.sort((a, b) => {
                         const wagonTypeA = a.wagon_type.toLowerCase();
                         const wagonTypeB = b.wagon_type.toLowerCase();
