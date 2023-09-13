@@ -16,6 +16,7 @@
 
         <label for="РТС">
           <input
+          disabled
             id="РТС"
             type="radio"
             value="РТС Сервис"
@@ -103,7 +104,7 @@
       </tbody>
     </table>
 
-    <OtherChargeTableRTS v-if="table_type === 'РТС Сервис'">
+    <OtherChargeTableRTS v-if="table_type === 'РТС Сервис'" :dataMess="TableDataRTS">
       <tr>
         <td></td>
       </tr>

@@ -15,7 +15,22 @@
       </tr>
     </thead>
     <tbody>
-        <slot></slot>
+       <tr>
+        <td>Удалить</td>
+        <td></td>
+       </tr>
     </tbody>
   </table>
 </template>
+
+
+<script>
+export default{
+  props: ['dataMess'],
+  data(){
+    return{
+
+    }
+  }
+}
+</script>

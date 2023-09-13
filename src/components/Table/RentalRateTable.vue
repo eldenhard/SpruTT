@@ -27,14 +27,12 @@
       <br />
     </p>
     <div class="rent_person">
-      <label for="tenant" :class="{ rentError_person: ErrorPerson }"
-        >Арендатор
+      <label for="tenant" :class="{ rentError_person: ErrorPerson }">Арендатор
         <br />
         <input type="text" id="tenant" class="textarea" v-model="tenant" />
       </label>
 
-      <label for="landlord" :class="{ rentError_person: ErrorPersonLand }"
-        >Арендодатель
+      <label for="landlord" :class="{ rentError_person: ErrorPersonLand }">Арендодатель
         <br />
         <input type="text" id="landlord" class="textarea" v-model="landlord" />
       </label>
@@ -49,17 +47,9 @@
 
     <div class="rent_person">
       <label for="">
-        <div
-          class="textarea"
-          style="height: auto; width: 100%"
-          v-show="ten_visible"
-        >
+        <div class="textarea" style="height: auto; width: 100%" v-show="ten_visible">
           <ul id="root_tenant">
-            <li
-              v-for="item in filter_tenant"
-              :key="item.id"
-              @click="checkTenant(item.work_name)"
-            >
+            <li v-for="item in filter_tenant" :key="item.id" @click="checkTenant(item.work_name)">
               <span>{{ item.work_name }}</span>
               <hr />
             </li>
@@ -68,17 +58,9 @@
       </label>
 
       <label for="">
-        <div
-          class="textarea"
-          style="height: auto; width: 100%"
-          v-show="land_visible"
-        >
+        <div class="textarea" style="height: auto; width: 100%" v-show="land_visible">
           <ul id="root_landlord">
-            <li
-              v-for="item in filter_landlord"
-              :key="item.id"
-              @click="checkLanlord(item.work_name)"
-            >
+            <li v-for="item in filter_landlord" :key="item.id" @click="checkLanlord(item.work_name)">
               <span>{{ item.work_name }}</span>
               <hr />
             </li>
@@ -86,11 +68,7 @@
         </div>
       </label>
 
-      <button
-        class="textarea"
-        style="background: transparent; color: white; border: none"
-        disabled
-      >
+      <button class="textarea" style="background: transparent; color: white; border: none" disabled>
         Отправить данные
       </button>
     </div>
@@ -104,7 +82,7 @@
       <p class="amount">Всего: {{ stavka_start_date_arr.length }}</p>
       <p class="amount">Всего: {{ stavka_end_date_arr.length }}</p>
     </div>
-    
+
 
     <div class="rent_information_button">
       <p class="amount"></p>
@@ -121,98 +99,43 @@
           <th></th>
           <th>
             <div class="inputWithIcon">
-              <input
-                type="text"
-                v-model="wagon"
-                autocomplete="off"
-                placeholder="введите номера "
-              />
-              <i
-                class="fa"
-                aria-hidden="true"
-                @click="CreateTable()"
-                v-if="wagon.length > 0"
-              ></i>
+              <input type="text" v-model="wagon" autocomplete="off" placeholder="введите номера " />
+              <i class="fa" aria-hidden="true" @click="CreateTable()" v-if="wagon.length > 0"></i>
             </div>
           </th>
 
           <th>
             <div class="inputWithIcon">
-              <input
-                type="text"
-                v-model="start_date"
-                placeholder="введите дату "
-              />
-              <i
-                class="fa"
-                aria-hidden="true"
-                @click="CreateTableStartDate()"
-                v-if="start_date.length > 0"
-              ></i>
+              <input type="text" v-model="start_date" placeholder="введите дату " />
+              <i class="fa" aria-hidden="true" @click="CreateTableStartDate()" v-if="start_date.length > 0"></i>
             </div>
           </th>
 
           <th>
             <div class="inputWithIcon">
-              <input
-                type="text"
-                v-model="end_date"
-                placeholder="введите дату "
-              />
-              <i
-                class="fa"
-                aria-hidden="true"
-                @click="CreateTableEndDate()"
-                v-if="end_date.length > 0"
-              ></i>
+              <input type="text" v-model="end_date" placeholder="введите дату " />
+              <i class="fa" aria-hidden="true" @click="CreateTableEndDate()" v-if="end_date.length > 0"></i>
             </div>
           </th>
 
           <th>
             <div class="inputWithIcon">
-              <input
-                type="text"
-                v-model="stavka"
-                placeholder="введите ставку "
-              />
-              <i
-                class="fa"
-                aria-hidden="true"
-                @click="CreateTableStavka()"
-                v-if="stavka.length > 0"
-              ></i>
+              <input type="text" v-model="stavka" placeholder="введите ставку " />
+              <i class="fa" aria-hidden="true" @click="CreateTableStavka()" v-if="stavka.length > 0"></i>
             </div>
           </th>
 
           <th>
             <div class="inputWithIcon">
-              <input
-                type="text"
-                v-model="stavka_start_date"
-                placeholder="введите дату "
-              />
-              <i
-                class="fa"
-                aria-hidden="true"
-                @click="CreateStartStavka()"
-                v-if="stavka_start_date.length > 0"
-              ></i>
+              <input type="text" v-model="stavka_start_date" placeholder="введите дату " />
+              <i class="fa" aria-hidden="true" @click="CreateStartStavka()" v-if="stavka_start_date.length > 0"></i>
             </div>
           </th>
 
           <th>
             <div class="inputWithIcon">
-              <input
-                type="text"
-                v-model="stavka_end_date"
-                placeholder="введите дату "
-              />
-              <i
-                class="fa"
-                aria-hidden="true"
-                @click="CreateEndStavka()"
-                v-if="stavka_end_date.length > 0"
-              ></i>
+              <input type="text" v-model="stavka_end_date" placeholder="введите дату " />
+              <i class="fa" aria-hidden="true" @click="CreateEndStavka()" v-if="stavka_end_date.length > 0"></i>
             </div>
           </th>
         </tr>
@@ -229,27 +152,16 @@
       </thead>
       <tbody>
 
-      
+
         <td style="width: 30px !important">
           <!-- Цикл по числу (длина столбца) -->
-          <tr v-for="(wag, index) in sort_data" :key="wag"
-            style="width: 30px !important"
-          >  
-            <td  >
-            
-              <div class="inputWithIcon" >
-                <input
-                  type="text"
-                 
-                  :id="`indexRow`"
-                  name="сheck_in"
-                  :value="index+1"
-                  readonly
-                  style="width: 100% !important; text-align: center"
-                  @click="test(index)"
-                  v-b-tooltip.hover
-                  :title="error_color[index]"
-                />
+          <tr v-for="(wag, index) in sort_data" :key="wag" style="width: 30px !important">
+            <td>
+
+              <div class="inputWithIcon">
+                <input type="text" :id="`indexRow`" name="сheck_in" :value="index + 1" readonly
+                  style="width: 100% !important; text-align: center" @click="test(index)" v-b-tooltip.hover
+                  :title="error_color[index]" />
 
                 <i class="delete_row"></i>
               </div>
@@ -261,20 +173,9 @@
           <tr v-for="(wag, index) in wagon_arr" :key="wag.id">
             <td>
               <div class="inputWithIcon">
-                <input
-                :class="{ red123: (error_mess.length != 0 & error_mess[index] == 'red')}"
-                  type="text"
-                  name="сheck_in"
-                  :id="`wagon` + index"
-                  :value="Transform(wag)"
-                  style="text-align: center"
-                />
-                <i
-                  class="fa"
-                  aria-hidden="true"
-                  @click="deleteArr(wag, index)"
-                  v-if="wagonSaveData"
-                ></i>
+                <input :class="{ red123: (error_mess.length != 0 & error_mess[index] == 'red') }" type="text"
+                  name="сheck_in" :id="`wagon` + index" :value="Transform(wag)" style="text-align: center" />
+                <i class="fa" aria-hidden="true" @click="deleteArr(wag, index)" v-if="wagonSaveData"></i>
               </div>
             </td>
           </tr>
@@ -284,19 +185,9 @@
           <tr v-for="(start, index) in start_date_arr" :key="start.id">
             <td>
               <div class="inputWithIcon">
-                <input
-                  type="text"
-                  name="сheck_in"
-                  :id="`start` + index"
-                  :value="Transform(start)"
-                  style="text-align: center"
-                />
-                <i
-                  class="fa"
-                  aria-hidden="true"
-                  @click="deleteStart(start, index)"
-                  v-if="wagonSaveData"
-                ></i>
+                <input type="text" name="сheck_in" :id="`start` + index" :value="Transform(start)"
+                  style="text-align: center" />
+                <i class="fa" aria-hidden="true" @click="deleteStart(start, index)" v-if="wagonSaveData"></i>
               </div>
             </td>
           </tr>
@@ -306,19 +197,9 @@
           <tr v-for="(end, index) in end_date_arr" :key="end.id">
             <td>
               <div class="inputWithIcon">
-                <input
-                  type="text"
-                  name="сheck_in"
-                  :id="`end` + index"
-                  :value="Transform(end)"
-                  style="text-align: center"
-                />
-                <i
-                  class="fa"
-                  aria-hidden="true"
-                  @click="deleteEnd(end, index)"
-                  v-if="wagonSaveData"
-                ></i>
+                <input type="text" name="сheck_in" :id="`end` + index" :value="Transform(end)"
+                  style="text-align: center" />
+                <i class="fa" aria-hidden="true" @click="deleteEnd(end, index)" v-if="wagonSaveData"></i>
               </div>
             </td>
           </tr>
@@ -328,19 +209,9 @@
           <tr v-for="(stavka, index) in stavka_arr" :key="stavka.id">
             <td>
               <div class="inputWithIcon">
-                <input
-                  type="text"
-                  name="сheck_in"
-                  :id="`stavka` + index"
-                  :value="Transform(stavka)"
-                  style="text-align: center"
-                />
-                <i
-                  class="fa"
-                  aria-hidden="true"
-                  @click="deleteStavka(stavka, index)"
-                  v-if="wagonSaveData"
-                ></i>
+                <input type="text" name="сheck_in" :id="`stavka` + index" :value="Transform(stavka)"
+                  style="text-align: center" />
+                <i class="fa" aria-hidden="true" @click="deleteStavka(stavka, index)" v-if="wagonSaveData"></i>
               </div>
             </td>
           </tr>
@@ -350,19 +221,9 @@
           <tr v-for="(start, index) in stavka_start_date_arr" :key="start.id">
             <td>
               <div class="inputWithIcon">
-                <input
-                  type="text"
-                  name="сheck_in"
-                  :id="`startStavka` + index"
-                  :value="Transform(start)"
-                  style="text-align: center"
-                />
-                <i
-                  class="fa"
-                  aria-hidden="true"
-                  @click="deleteStartStavka(start, index)"
-                  v-if="wagonSaveData"
-                ></i>
+                <input type="text" name="сheck_in" :id="`startStavka` + index" :value="Transform(start)"
+                  style="text-align: center" />
+                <i class="fa" aria-hidden="true" @click="deleteStartStavka(start, index)" v-if="wagonSaveData"></i>
               </div>
             </td>
           </tr>
@@ -372,19 +233,9 @@
           <tr v-for="(end, index) in stavka_end_date_arr" :key="end.id">
             <td>
               <div class="inputWithIcon">
-                <input
-                  type="text"
-                  name="сheck_in"
-                  :id="`endStavka` + index"
-                  :value="Transform(end)"
-                  style="text-align: center"
-                />
-                <i
-                  class="fa"
-                  aria-hidden="true"
-                  @click="deleteEndStavka(end, index)"
-                  v-if="wagonSaveData"
-                ></i>
+                <input type="text" name="сheck_in" :id="`endStavka` + index" :value="Transform(end)"
+                  style="text-align: center" />
+                <i class="fa" aria-hidden="true" @click="deleteEndStavka(end, index)" v-if="wagonSaveData"></i>
               </div>
             </td>
           </tr>
@@ -392,13 +243,8 @@
       </tbody>
     </table>
     <ArendaDataTable />
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-      id="notif"
-    />
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+      id="notif" />
   </div>
 </template>
 
@@ -469,7 +315,7 @@ export default {
         this.stavka_start_date_arr.length,
         this.stavka_end_date_arr.length
       );
-       return Math.max.apply(null, sort_Array);
+      return Math.max.apply(null, sort_Array);
     },
     filter_tenant() {
       if (this.tenant.length > 1) {
@@ -477,8 +323,8 @@ export default {
       }
       return this.tenant.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.toLowerCase().includes((this.tenant).toLowerCase())
-          )
+          i.work_name.toLowerCase().includes((this.tenant).toLowerCase())
+        )
         : "";
     },
     filter_landlord() {
@@ -487,8 +333,8 @@ export default {
       }
       return this.landlord.length > 1
         ? this.$store.state.counterparties.counterparties.filter((i) =>
-            i.work_name.toLowerCase().includes((this.landlord).toLowerCase())
-          )
+          i.work_name.toLowerCase().includes((this.landlord).toLowerCase())
+        )
         : "";
     },
   },
@@ -516,28 +362,28 @@ export default {
         this.error_mess.length,
       );
       let a = Math.max.apply(null, sort_Array);
-      if (this.wagon_arr.length < a ) {
+      if (this.wagon_arr.length < a) {
         let c = a - this.wagon_arr.length;
         for (let i = 1; i <= c; i++) {
           this.wagon_arr.push("null");
-         
+
         }
       }
 
-    
-      if (this.error_color.length < a ) {
+
+      if (this.error_color.length < a) {
         let f = a - this.error_color.length;
         for (let i = 1; i <= f; i++) {
           this.error_color.push("null");
-         
+
         }
       }
 
-      if (this.error_mess.length < a ) {
+      if (this.error_mess.length < a) {
         let x = a - this.error_mess.length;
         for (let i = 1; i <= x; i++) {
           this.error_mess.push("null");
-         
+
         }
       }
 
@@ -562,19 +408,19 @@ export default {
           this.stavka_arr.push("null");
         }
       }
-      if (this.error_color.length < a ) {
+      if (this.error_color.length < a) {
         let f = a - this.error_color.length;
         for (let i = 1; i <= f; i++) {
           this.error_color.push("null");
-         
+
         }
       }
 
-      if (this.error_mess.length < a ) {
+      if (this.error_mess.length < a) {
         let x = a - this.error_mess.length;
         for (let i = 1; i <= x; i++) {
           this.error_mess.push("null");
-         
+
         }
       }
 
@@ -599,19 +445,19 @@ export default {
           this.start_date_arr.push("null");
         }
       }
-      if (this.error_color.length < a ) {
+      if (this.error_color.length < a) {
         let f = a - this.error_color.length;
         for (let i = 1; i <= f; i++) {
           this.error_color.push("null");
-         
+
         }
       }
 
-      if (this.error_mess.length < a ) {
+      if (this.error_mess.length < a) {
         let x = a - this.error_mess.length;
         for (let i = 1; i <= x; i++) {
           this.error_mess.push("null");
-         
+
         }
       }
 
@@ -637,19 +483,19 @@ export default {
           this.end_date_arr.push("null");
         }
       }
-      if (this.error_color.length < a ) {
+      if (this.error_color.length < a) {
         let f = a - this.error_color.length;
         for (let i = 1; i <= f; i++) {
           this.error_color.push("null");
-         
+
         }
       }
 
-      if (this.error_mess.length < a ) {
+      if (this.error_mess.length < a) {
         let x = a - this.error_mess.length;
         for (let i = 1; i <= x; i++) {
           this.error_mess.push("null");
-         
+
         }
       }
 
@@ -675,19 +521,19 @@ export default {
           this.stavka_start_date_arr.push("null");
         }
       }
-      if (this.error_color.length < a ) {
+      if (this.error_color.length < a) {
         let f = a - this.error_color.length;
         for (let i = 1; i <= f; i++) {
           this.error_color.push("null");
-         
+
         }
       }
 
-      if (this.error_mess.length < a ) {
+      if (this.error_mess.length < a) {
         let x = a - this.error_mess.length;
         for (let i = 1; i <= x; i++) {
           this.error_mess.push("null");
-         
+
         }
       }
 
@@ -713,19 +559,19 @@ export default {
           this.stavka_end_date_arr.push("null");
         }
       }
-      if (this.error_color.length < a ) {
+      if (this.error_color.length < a) {
         let f = a - this.error_color.length;
         for (let i = 1; i <= f; i++) {
           this.error_color.push("null");
-         
+
         }
       }
 
-      if (this.error_mess.length < a ) {
+      if (this.error_mess.length < a) {
         let x = a - this.error_mess.length;
         for (let i = 1; i <= x; i++) {
           this.error_mess.push("null");
-         
+
         }
       }
 
@@ -743,14 +589,14 @@ export default {
         (2, 1)
       ]
       */
-      for (let i = 0; i < this.Error.length; i++){
+      for (let i = 0; i < this.Error.length; i++) {
         let row_index = this.Error[i][0] - 1;
         let row_message = this.Error[i][1]
         new_error_mes[row_index] = row_message;
         new_erros_color[row_index] = 'red';
       }
       this.error_color = new_error_mes;
-      
+
       // deleting
       let new_wagons = Object.assign(this.wagon_arr)
       let new_start_date = Object.assign(this.start_date_arr)
@@ -761,9 +607,9 @@ export default {
       let new_errors_messages = Object.assign(this.error_mess)
       let new_error_colors = Object.assign(this.error_color)
 
-      
-      for (let i = 0; i < new_error_mes.length; i++){
-        if (new_error_mes[i] == 'null'){
+
+      for (let i = 0; i < new_error_mes.length; i++) {
+        if (new_error_mes[i] == 'null') {
           delete new_wagons[i];
           delete new_start_date[i];
           delete new_end_date[i];
@@ -796,25 +642,25 @@ export default {
     },
   },
   methods: {
-    delete_col(col){
+    delete_col(col) {
       this.wagon_arr = [];
     },
-    delete_col2(col){
+    delete_col2(col) {
       this.start_date_arr = [];
     },
-    delete_col3(col){
+    delete_col3(col) {
       this.end_date_arr = [];
     },
-    delete_col4(col){
+    delete_col4(col) {
       this.stavka_arr = [];
     },
-    delete_col5(col){
+    delete_col5(col) {
       this.stavka_start_date_arr = [];
     },
-    delete_col6(col){
+    delete_col6(col) {
       this.stavka_end_date_arr = [];
     },
-    deleteTable(){
+    deleteTable() {
       this.wagon_arr = [];
       this.stavka_arr = [];
       this.start_date_arr = [];
@@ -822,7 +668,7 @@ export default {
       this.stavka_end_date_arr = [];
       this.stavka_start_date_arr = [];
       this.error_mess = [],
-      this.error_color = []
+        this.error_color = []
     },
     Transform(value) {
       return value.replace("null", "-");
@@ -967,7 +813,7 @@ export default {
       return [...new Set(a)].length == 1;
     },
     dataCollection() {
-      this.loader = true;
+      // this.loader = true;
       let wagon = [];
       this.wagon_arr.forEach((item) => {
         wagon.push({
@@ -1047,25 +893,25 @@ export default {
 
 
       all_array.forEach((item) => {
-        if (item.end_date == "null" || item.end_date == ""|| item.end_date == "-") {
-           (item.end_date = null);
+        if (item.end_date == "null" || item.end_date == "" || item.end_date == "-") {
+          (item.end_date = null);
         }
         if (item.start_date == "null" || item.start_date == "" || item.start_date == "-") {
-           (item.start_date = null);
+          (item.start_date = null);
         }
         if (item.stavka_start_date == "null" || item.stavka_start_date == "" || item.stavka_start_date == "-") {
-           (item.stavka_start_date = null);
+          (item.stavka_start_date = null);
         }
         if (item.stavka_end_date == "null" || item.stavka_end_date == "" || item.stavka_end_date == "-") {
-           (item.stavka_end_date = null);
+          (item.stavka_end_date = null);
         }
-        if (item.wagon == "null" || item.wagon == ""|| item.wagon == "-") {
-           (item.wagon = 0);
+        if (item.wagon == "null" || item.wagon == "" || item.wagon == "-") {
+          (item.wagon = 0);
         }
-        if (item.stavka == "null" || item.stavka == ""|| item.stavka == "-") {
-           (item.stavka = 0);
+        if (item.stavka == "null" || item.stavka == "" || item.stavka == "-") {
+          (item.stavka = 0);
         }
-         (item.stavka = Number(item.stavka));
+        (item.stavka = Number(item.stavka));
       });
 
 
@@ -1075,30 +921,51 @@ export default {
         if (this.landlord == "") {
           this.ErrorPersonLand = true;
         }
-          if (this.tenant == "") {
-            this.ErrorPerson = true;
-          }
-              this.notifyHead = "Ошибка";
-              this.notifyMessage =
-                "Необходимо указать данные по Арендатору/Арендодателю";
-              this.notifyClass = "wrapper-error";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 2500);
+        if (this.tenant == "") {
+          this.ErrorPerson = true;
+        }
+        this.notifyHead = "Ошибка";
+        this.notifyMessage =
+          "Необходимо указать данные по Арендатору/Арендодателю";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => {
+          this.showNotify = false;
+        }, 2500);
       } else {
 
-      let alert_mess = []
-        for(let item in all_array){
-          if(new Date(all_array[item].end_date) - new Date(all_array[item].start_date) < 0){
-            let row_index = Number(item) + 1
-            alert_mess.push(`В строке ${row_index} ошибка очередности дат аренды`)
-          } else if(new Date(all_array[item].stavka_end_date) - new Date(all_array[item].stavka_start_date) < 0){
-            let row_index = Number(item) + 1
-            alert_mess.push(`В строке ${row_index} ошибка очередности дат ставок`)
+
+        let alert_mess = []
+        console.log(all_array)
+        for (let item in all_array) {
+          const entry = all_array[item];
+          if (
+            (entry.stavka_end_date !== null && entry.stavka_start_date !== null) &&
+            (entry.end_date !== null && entry.start_date !== null)) {
+            if (new Date(all_array[item].end_date) - new Date(all_array[item].start_date) < 0) {
+              let row_index = Number(item) + 1
+              alert_mess.push(`В строке ${row_index} ошибка очередности дат аренды`)
+            } else if (new Date(all_array[item].stavka_end_date) - new Date(all_array[item].stavka_start_date) < 0) {
+              let row_index = Number(item) + 1
+              alert_mess.push(`В строке ${row_index} ошибка очередности дат ставок`)
+            }
+          } else if ((entry.stavka_end_date == null || entry.stavka_start_date == null) &&
+            (entry.end_date !== null && entry.start_date !== null)) {
+            if (new Date(all_array[item].end_date) - new Date(all_array[item].start_date) < 0) {
+              let row_index = Number(item) + 1
+              alert_mess.push(`В строке ${row_index} ошибка очередности дат аренды`)
+            }
+          } else if ((entry.stavka_end_date !== null && entry.stavka_start_date !== null) &&
+            (entry.end_date == null || entry.start_date == null)) {
+            if (new Date(all_array[item].stavka_end_date) - new Date(all_array[item].stavka_start_date) < 0) {
+              let row_index = Number(item) + 1
+              alert_mess.push(`В строке ${row_index} ошибка очередности дат ставок`)
+            }
           }
+       
         }
-        if(alert_mess.length !== 0){
+        console.log(alert_mess)
+        if (alert_mess.length !== 0) {
           this.loader = false;
           this.notifyHead = "Ошибка";
           this.notifyMessage = alert_mess;
@@ -1107,9 +974,13 @@ export default {
           setTimeout(() => {
             this.showNotify = false;
           }, 6500);
-          return
+          return;
         }
-         
+
+
+
+
+
         api
           .postSaveMany(all_array)
           .then((response) => {
@@ -1133,7 +1004,7 @@ export default {
             this.notifyHead = "Ошибка";
             this.Error = error.response.data;
             this.notifyMessage = error.response.data;
-            
+
             this.notifyClass = "wrapper-error";
             this.showNotify = true;
             setTimeout(() => {
@@ -1165,18 +1036,23 @@ export default {
   background: transparent;
   color: black;
 }
-.delete_col:hover{
+
+.delete_col:hover {
   background: rgb(226, 226, 226);
 }
-.grey{
+
+.grey {
   background: grey;
 }
-.red123{
+
+.red123 {
   background-color: red !important;
 }
+
 #indexRow:hover {
   background: rgb(255, 0, 0, 0.2);
 }
+
 .delete_row {
   background: url(@/assets/delete_row.png) no-repeat;
   display: none;
@@ -1189,6 +1065,7 @@ export default {
 .rentError_person {
   color: red;
 }
+
 .success {
   transition: 0.5s ease-in-out;
   background: rgba(42, 190, 67, 0.4);
@@ -1222,6 +1099,7 @@ th,
 th {
   border: 1px solid black;
 }
+
 td {
   vertical-align: top !important;
 }
@@ -1234,7 +1112,7 @@ li {
   padding: 0 0 0 0;
 }
 
-li > span {
+li>span {
   padding-left: 5%;
   text-align: center;
 }
@@ -1289,11 +1167,13 @@ li:hover {
   gap: 2%;
   grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
+
 .rent_information_button {
   display: grid;
   gap: 2px;
   grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
+
 .rent_information_placeholder {
   margin-top: 7%;
   display: grid;
