@@ -11,6 +11,7 @@
           <b-tab title="Тариф по сопр. терр." @click="newTab('Тариф по сопредельным территориям')" >  </b-tab>
           <b-tab title="Продление срока ввоза" @click="newTab('Продление срока ввоза')" >  </b-tab>
           <b-tab title="Данные по дислокациям" @click="newTab('Данные по дислокациям')" >  </b-tab>
+          <b-tab title="GLP" @click="newTab('GLP')" >  </b-tab>
         </b-container>
       </b-tabs>
     </b-card>

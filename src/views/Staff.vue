@@ -63,6 +63,10 @@
               <b-card-text v-if="i.name === 'Парк в аренде'">
                 <Table4 />
               </b-card-text>
+                   
+            <b-card-text v-if="i.name === 'GLP'">
+              <GLP />
+            </b-card-text>
           </b-tab>
         </b-tabs>
       </b-card>
@@ -83,6 +87,7 @@ import FormationPark from "@/components/Table/ManagmentRepReporting/FormationPar
   import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
   import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
   import StaffNavbar from "@/components/Navbar/StaffNavbar.vue";
+  import GLP from '../components/Table/WagonPark/GLP/GLP.vue'
 
 
   import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
@@ -103,7 +108,7 @@ export default {
     TerritoryTable,
     AccomodationPark,
     FormationPark,
-
+    GLP,
 
     Table1,
       Table2,

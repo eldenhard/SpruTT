@@ -11,9 +11,9 @@
 
             </div>
             <div class="filter_block">
-                <label for="">№ вагонов<br>
+                <!-- <label for="">№ вагонов<br>
                     <input class="textarea" v-model="wagon_in">
-                </label>
+                </label> -->
                 <div style="display: flex; justify-content: space-between; gap: 2%">
                     <label for="">Дата начала<br>
                         <input type="datetime-local" v-model="date_begin" class="textarea">
@@ -77,7 +77,7 @@ export default {
     components: { Loader, Notifications, MultiSelectUni },
     data() {
         return {
-            wagon_in: "",
+            // wagon_in: "",
             date_begin: "",
             date_end: "",
             loader: false,
@@ -146,21 +146,21 @@ export default {
             this.selectedCountriesIds.splice(this.selectedCountriesIds.indexOf(id), 1)
         },
         getData() {
-            if (this.wagon_in == null || this.wagon_in == "") {
-                this.notifyHead = "Ошибка";
-                this.notifyMessage = "Укажите данные вагонов";
-                this.notifyClass = "wrapper-error";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 3500);
-                return
-            }
+            // if (this.wagon_in == null || this.wagon_in == "") {
+            //     this.notifyHead = "Ошибка";
+            //     this.notifyMessage = "Укажите данные вагонов";
+            //     this.notifyClass = "wrapper-error";
+            //     this.showNotify = true;
+            //     setTimeout(() => {
+            //         this.showNotify = false;
+            //     }, 3500);
+            //     return
+            // }
             this.loader = true
             this.no_data = false
-            let str = this.wagon_in.replace(/[^0-9]/g, "")
-            let arr = str.match(/.{1,8}/g)
-            api.getDislocation(arr, this.date_begin, this.date_end)
+            // let str = this.wagon_in.replace(/[^0-9]/g, "")
+            // let arr = str.match(/.{1,8}/g)
+            api.getDislocation(this.date_begin, this.date_end)
                 .then(response => {
                     this.loader = false
                     this.dislocation = response.data

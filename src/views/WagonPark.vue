@@ -50,6 +50,9 @@
               <DataDislocation />
             </b-card-text>
 
+            <b-card-text v-if="i.name === 'GLP'">
+              <GLP />
+            </b-card-text>
             <!-- <b-card-text v-if="i.name === 'Размещение парка'">
                 <AccomodationPark />
               </b-card-text>
@@ -115,7 +118,8 @@
   import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
   import ExtensionPeriod from '../components/Table/WagonPark/ExtensionPeriod.vue'
   import DataDislocation from '../components/Table/WagonPark/Dislocation/DataDislocation.vue'
-
+  import GLP from '../components/Table/WagonPark/GLP/GLP.vue'
+  
   import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
 import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
 import Table3 from "@/components/Table/ManagmentRepReporting/Table3.vue";
@@ -143,6 +147,7 @@ export default {
     AccomodationPark,
     ExtensionPeriod,
     DataDislocation,
+    GLP,
 
       Table1,
       Table2,

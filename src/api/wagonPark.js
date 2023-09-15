@@ -162,8 +162,11 @@ const getExtensionData = (data) => {
 const getAllRoad = () => {
     return api.get(`${resource}/countries/`)
 }
-const getDislocation = (wagon_in,date_begin, date_end) => {
-    return api.get(`${resource}/dislocations/restricted/?wagon_in=${wagon_in}&date_begin=${date_begin}&date_end=${date_end}`)
+const getDislocation = (date_begin, date_end) => {
+    return api.get(`${resource}/dislocations/restricted/?date_begin=${date_begin}&date_end=${date_end}`)
+}
+const postFileGLP = (file) => {
+    return api.post(`${resource}/shipments/match-glp-belongs/`, file)
 }
 export default {
     getWagons,
@@ -194,6 +197,7 @@ export default {
     getCurrentStationByCode,
     getAllRoad,
     getDislocation,
+    postFileGLP,
     // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,
