@@ -55,7 +55,7 @@
                     </tr>
                     <tr v-for="item in dislocation" :key="item.id">
                         <td v-for="countrie in selectedCountries" :key="countrie.id">
-                            {{ item[countrie.valen] }}
+                            {{ CustomerRow(item[countrie.valen]) }}
                         </td>
 
                     </tr>
@@ -91,6 +91,7 @@ export default {
             notifyClass: "",
         }
     },
+
     computed: {
         CountrieObj() { //1
             const result = [
@@ -104,15 +105,15 @@ export default {
                 { value: 'Дата и время последней операции', id: 8, valen: 'last_operation_datetime' },
                 { value: 'Дата прибытия на станцию дислокации', id: 9, valen: 'current_station_arrival' },
                 { value: 'Операция', id: 10, valen: 'operation' },
-                { value: 'Станция отправления', id: 11, valen: 'departure_station' },
-                { value: 'Станция текущей дислокации', id: 12, valen: 'current_station' },
-                { value: 'Станция назначения', id: 13, valen: 'destination_station' },
+                { value: 'Станция отправления', id: 11, valen: 'departure_station_name' },
+                { value: 'Станция текущей дислокации', id: 12, valen: 'current_station_name' },
+                { value: 'Станция назначения', id: 13, valen: 'destination_station_name' },
                 { value: 'Простой на станции дислокации', id: 14, valen: 'current_station_downtime' },
                 { value: 'Простой от последней операции', id: 15, valen: 'last_operation_downtime' },
                 { value: 'Простой после оформления', id: 16, valen: 'documents_registration_downtime' },
                 { value: 'Расстояние осталось (от текущей дислокации)', id: 17, valen: 'distance_left_from_current_dislocation' },
                 { value: 'Расстояние осталось (от текущей дислокации)', id: 18, valen: 'distance_all_from_departure_station' },
-                { value: 'Груз', id: 19, valen: 'cargo' },
+                { value: 'Груз', id: 19, valen: 'cargo_name' },
                 { value: 'Индекс поезда', id: 20, valen: 'train_index' },
                 { value: 'Груж/порож', id: 21, valen: 'is_loaded' },
                 { value: 'Вес', id: 22, valen: 'weight' },
@@ -139,6 +140,14 @@ export default {
         },
     },
     methods: {
+       CustomerRow(value) {
+            if (value === true || value === false) {
+                return value === true ? 'Груженый' : 'Порожний'
+            } else {
+                return value
+
+            }
+        },
         updateSelectedCountries(selected) {
             this.selectedCountriesIds = selected
         },
@@ -162,9 +171,10 @@ export default {
             // let arr = str.match(/.{1,8}/g)
             api.getDislocation(this.date_begin, this.date_end)
                 .then(response => {
+                    console.log(response.data)
                     this.loader = false
                     this.dislocation = response.data
-                   
+
                     this.dislocation.sort((a, b) => {
                         const wagonTypeA = a.wagon_type.toLowerCase();
                         const wagonTypeB = b.wagon_type.toLowerCase();

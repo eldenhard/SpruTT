@@ -353,7 +353,7 @@
           <th>№</th>
           <th style="border: 1px solid black">Станция отпр.</th>
           <th style="border: 1px solid black">Станция назн.</th>
-          <th style="border: 1px solid black">Ставка</th>
+          <th style="border: 1px solid black">Ставка без НДС</th>
           <th style="border: 1px solid black">Ставка предв.</th>
           <th style="border: 1px solid black">Дистанция от</th>
           <th style="border: 1px solid black">Дистанция до</th>
