@@ -13,8 +13,11 @@
             <header>
                 <b-icon-cloud-plus /> <br>
                 {{ file ? `Файл: ${file.name}` : 'Перетащите файл в это поле' }}
+                <br>
+                <sup v-if="file">{{ `Размер файла: ${formatFileSize(file.size)}` }}</sup>
             </header>
-            <sup v-if="file">{{ `Размер файла: ${formatFileSize(file.size)}` }}</sup>
+            <br>
+           
             <input type="file" ref="fileInput" style="display: none" @change="handleFileInput" />
         </div>
         <div class="file-details">
@@ -95,7 +98,7 @@ export default {
                         let link = document.createElement('a')
                         link.href = response.data
                         link.click()
-                        // this.file = null;
+                        this.file = null;
                     }).catch(error => {
                         this.loader = false
                         this.notifyHead = "Ошибка";
