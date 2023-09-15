@@ -20,7 +20,13 @@
           <th>Проведение сварочных работ</th>
           <th>Маневровые работы</th>
           <th>Осмотр вагонов</th>
+
+          <th>Услуги по подаче и уборке вагонов</th>
+          <th>Комплекс работ и услуг по ком. осмотру и подг. ваг.</th>
+          <th>Услуги по отстою</th>
+
           <th>Цена</th>
+          <th>НДС</th>
           <th>№ дог</th>
           <th>Дата дог</th>
           <th>Контрагент</th>
@@ -40,7 +46,11 @@
           <td>{{ item.service4 }}</td>
           <td>{{ item.service5 }}</td>
           <td>{{ item.service6 }}</td>
+          <td>{{ item.service7 }}</td>
+          <td>{{ item.service8 }}</td>
+          <td>{{ item.service9 }}</td>
           <td>{{ item.cost }}</td>
+          <td>{{ item.nds }}</td>
           <td>{{ item.act_number }}</td>
           <td>{{ item.act_date| filterData }}</td>
           <td style="white-space: nowrap;">{{ item.contractor }}</td>
@@ -64,7 +74,7 @@ export default {
   },
   filters:{
     filterData(value){
-        return value.split('-').reverse().join('.')
+     return value ? value.split('-').reverse().join('.') : value
     }
   },
   methods: {

@@ -12,6 +12,7 @@ import keyFact from '../views/KeyFacts';
 import managementReporting from '../views/ManagementReporting'
 import Fin_Operation from '../components/Table/Directory/Fin_Operation'
 import fines from '../views/Fines.vue'
+import widgets from '../views/Widgets.vue'
 // C:\Users\Asus\Desktop\VueTTRe\project\src\views\Fines.vue
 Vue.use(Router)
 
@@ -62,6 +63,10 @@ export default new Router({
     {
       path: '/fines',
       component: fines
+    },
+    {
+      path: '/widgets',
+      component: widgets
     },
     {
       path: '*',

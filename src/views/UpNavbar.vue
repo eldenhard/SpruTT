@@ -40,6 +40,9 @@
             <router-link to="/fines" class="router-links">Штрафы</router-link>
           </b-nav-item>
 
+          <b-nav-item>
+            <router-link to="/widgets" class="router-links">Виджеты</router-link>
+          </b-nav-item>
 
           <li class="nav-item" style="padding-top: 1px">
             <a class="nav-link" href="/" @click="logout"

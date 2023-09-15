@@ -1,59 +1,42 @@
 <template>
   <div>
+    <div>
+
+    </div>
     <Loader :loader="loader" />
     <div class="getDataExcel">
       <div class="radio">
         <p style="margin-right: auto">Контрагент :</p>
         <label for="ВСТ">
-          <input
-            id="ВСТ"
-            type="radio"
-            value='ООО "Вагон-Сервис Транс"'
-            v-model="table_type"
-          />
+          <input id="ВСТ" type="radio" value='ООО "Вагон-Сервис Транс"' v-model="table_type" />
           ВСТ
         </label>
 
         <label for="РТС">
-          <input
-          disabled
-            id="РТС"
-            type="radio"
-            value="РТС Сервис"
-            v-model="table_type"
-          />
+          <input id="РТС" type="radio" value="РТС Сервис" v-model="table_type" />
           РТС
         </label>
       </div>
       <div class="dataAct">
-        <label for=""
-        v-if="table_type === 'РТС Сервис'"
-          >Услуги <br>
-          <select name="" id="" class="textarea" style="width: 100%">
-            <option value="">Услуги по маневровой работ</option>
-            <option value="">
-              Комплекс работ и услуг по ком. осмотру и подг. ваг.
+        <label for="" v-if="table_type === 'РТС Сервис'">Услуги <br>
+          <select name="" id="" class="textarea" style="width: 100%" v-model="sericeRTS">
+            <option value="service5">Услуги по маневровой работ</option>
+            <option value="service8"> Комплекс работ и услуг по ком. осмотру и подг. ваг.
             </option>
-            <option value="">Услуги по подаче и уборке вагонов</option>
-            <option value="">Услуги по отстою</option>
+            <option value="service7">Услуги по подаче и уборке вагонов</option>
+            <option value="service9">Услуги по отстою</option>
           </select>
         </label>
-        <label for=""
-          >№ договора <br />
+        <label for="">№ договора <br />
           <input type="text" v-model="act_number" class="textarea" />
         </label>
-        <label for=""
-          >Дата акта<br />
+        <label for="">Дата акта<br />
           <input type="date" v-model="act_date" class="textarea" />
         </label>
       </div>
 
-      <textarea
-        v-model="excelData"
-        placeholder="Вставьте данные из Excel сюда"
-        class="textarea"
-      ></textarea>
-      <button class="Accept" @click="loadFromExcel">Загрузить</button>
+      <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"></textarea>
+      <button class="Accept" @click="loadFromExcel()">Загрузить</button>
     </div>
 
     <table class="table-hover" v-if="table_type != 'РТС Сервис'">
@@ -78,25 +61,11 @@
       <tbody>
         <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
           <td class="deleteRow" @click="deleteRow(rowIndex)">Удалить</td>
-          <td
-            v-for="(cell, cellIndex) in row"
-            :key="cellIndex"
-            style="position: relative"
-          >
-            <input
-              v-model="tableData[rowIndex][cellIndex]"
-              @click="editCell(rowIndex, cellIndex)"
-              @blur="saveCell()"
-              @keyup.enter="saveCell(rowIndex, cellIndex)"
-              v-if="activeCell === `${rowIndex}-${cellIndex}`"
-              ref="editableInput[rowIndex][cellIndex]"
-              class="editable-input"
-            />
-            <div
-              style="width: 100%"
-              v-else
-              @click="editCell(rowIndex, cellIndex)"
-            >
+          <td v-for="(cell, cellIndex) in row" :key="cellIndex" style="position: relative">
+            <input v-model="tableData[rowIndex][cellIndex]" @click="editCell(rowIndex, cellIndex)" @blur="saveCell()"
+              @keyup.enter="saveCell(rowIndex, cellIndex)" v-if="activeCell === `${rowIndex}-${cellIndex}`"
+              ref="editableInput[rowIndex][cellIndex]" class="editable-input" />
+            <div style="width: 100%" v-else @click="editCell(rowIndex, cellIndex)">
               <span class="editable-text">{{ cell }}</span>
             </div>
           </td>
@@ -104,24 +73,23 @@
       </tbody>
     </table>
 
-    <OtherChargeTableRTS v-if="table_type === 'РТС Сервис'" :dataMess="TableDataRTS">
+    <OtherChargeTableRTS v-if="table_type === 'РТС Сервис'" :dataMess="TableDataRTS" 
+      :service="sericeRTS"
+      :contractor='this.table_type'
+      :act_number='this.act_number'
+      :act_date='this.act_date'>
       <tr>
         <td></td>
       </tr>
     </OtherChargeTableRTS>
 
-    <button class="Accept" @click="sendData()">Отправить</button>
+    <button class="Accept" @click="sendData()" v-if="table_type != 'РТС Сервис'">Отправить</button>
 
     <OtherChargesChangeVue style="margin-top: 10%" />
 
 
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-      id="notif"
-    />
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+      id="notif" />
   </div>
 </template>
 
@@ -144,9 +112,11 @@ export default {
     return {
       excelData: "",
       tableData: [],
+      TableDataRTS: [],
       hot: null,
       activeCell: null,
       table_type: 'ООО "Вагон-Сервис Транс"',
+      sericeRTS: "service5",
       act_number: "",
       act_date: "",
       loader: false,
@@ -217,41 +187,51 @@ export default {
     },
     loadFromExcel() {
       const excelData = this.excelData;
-      // Парсим данные из Excel, разделяя их по строкам и столбцам
-      const rows = excelData.split("\n");
-      const data = rows.map((row) => row.split("\t"));
+      if (this.table_type != 'РТС Сервис') {
+        // Парсим данные из Excel, разделяя их по строкам и столбцам
+        const rows = excelData.split("\n");
+        const data = rows.map((row) => row.split("\t"));
 
-      // Уничтожаем текущий экземпляр Handsontable, если он существует
-      if (this.hot) {
-        this.hot.destroy();
-      }
-      for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
-        for (
-          let cellIndex = 0;
-          cellIndex < data[rowIndex].length;
-          cellIndex++
-        ) {
-          if (data[rowIndex][cellIndex].trim() === "") {
-            data[rowIndex][cellIndex] = "0";
+        // Уничтожаем текущий экземпляр Handsontable, если он существует
+        if (this.hot) {
+          this.hot.destroy();
+        }
+        for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
+          for (
+            let cellIndex = 0;
+            cellIndex < data[rowIndex].length;
+            cellIndex++
+          ) {
+            if (data[rowIndex][cellIndex].trim() === "") {
+              data[rowIndex][cellIndex] = "0";
+            }
           }
         }
-      }
-      // Инициализируем Handsontable внутри <tbody> и передаем данные
-      const tbody = document.querySelector("tbody");
-      this.hot = new Handsontable(tbody, {
-        data: data,
-        colHeaders: false, // Отключаем заголовки столбцов
-        rowHeaders: false, // Отключаем заголовки строк
-      });
-      for (let i of data) {
-        if (i.length == 1) {
-          data.splice(data.indexOf(i), 1);
+        // Инициализируем Handsontable внутри <tbody> и передаем данные
+        const tbody = document.querySelector("tbody");
+        this.hot = new Handsontable(tbody, {
+          data: data,
+          colHeaders: false, // Отключаем заголовки столбцов
+          rowHeaders: false, // Отключаем заголовки строк
+        });
+        for (let i of data) {
+          if (i.length == 1) {
+            data.splice(data.indexOf(i), 1);
+          }
         }
+        // Обновляем tableData
+
+        this.tableData = data;
       }
-      // Обновляем tableData
-      this.tableData = data;
+      else {
+        this.TableDataRTS = excelData
+      }
       this.excelData = "";
     },
+
+
+
+
     editCell(rowIndex, cellIndex) {
       this.activeCell = `${rowIndex}-${cellIndex}`;
       //  Этот блок кода выполняется в следующем такте рендера Vue, что позволяет убедиться, что DOM-элементы обновлены после изменения activeCell.
@@ -269,7 +249,6 @@ export default {
       }
     },
     saveCell() {
-      console.log(this.tableData);
       this.activeCell = null; // Завершаем редактирование ячейки
     },
   },
@@ -283,6 +262,7 @@ export default {
   margin-left: auto;
   height: 40px;
 }
+
 .editable-input {
   width: 100%;
 }
@@ -290,31 +270,38 @@ export default {
 .editable-text {
   cursor: pointer;
 }
+
 .dataAct {
   display: flex;
   flex-direction: column;
+
   label {
     width: 100%;
   }
+
   input {
     width: 100%;
   }
 }
+
 .getDataExcel {
   display: flex;
   width: 25%;
   position: relative;
   margin-left: auto !important;
   flex-direction: column;
+
   textarea {
     width: 100%;
     margin-top: 2%;
   }
+
   button {
     margin-top: 2%;
     width: 100%;
   }
 }
+
 .radio {
   display: flex;
   justify-content: center;
@@ -323,6 +310,7 @@ export default {
   border-radius: 5px;
   padding: 1%;
   gap: 5%;
+
   label {
     font-size: 16px;
     font-weight: bold;
@@ -333,6 +321,7 @@ export default {
   background: rgb(255, 176, 162);
   color: grey !important;
 }
+
 table {
   margin-top: 4%;
 }
