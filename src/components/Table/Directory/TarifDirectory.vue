@@ -762,7 +762,7 @@ export default {
         }, 3000);
         return;
       } else {
-
+        this.loader = true
 
         console.log(this.checkCompleteData)
         if (this.checkCompleteData.length == 0) {
