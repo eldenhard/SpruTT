@@ -120,16 +120,6 @@
           </td>
         </tr>
         <br />
-
-        <!-- <tr>
-                    <td class="col1">№ приложения</td>
-                    <td>
-                        <input type="text" id="ln" class="textarea" v-model.trim="Standard.annex_number"
-                            placeholder="№ приложения" />
-                    </td>
-                </tr>
-                <br /> -->
-
         <tr v-show="visible_agreement">
           <td class="col1">Все договора</td>
           <td>
@@ -382,6 +372,7 @@ export default {
   },
   mounted() {
     document.body.addEventListener("click", this.closeWindow);
+    // Получаю все приложения для договора
     this.getAllAgreement();
   },
   watch: {
@@ -452,7 +443,6 @@ export default {
         if (this.distance.at(-1) == "") {
           this.distance.pop();
         }
-        console.log(this.distance);
         for (let i in this.distance) {
           this.distance[i].replaceAll(" ", "");
         }
@@ -498,7 +488,6 @@ export default {
 
 
     saveTarif(event) {
-      console.log(event.target.value)
       if (
         event.target.id == "destination_station" ||
         event.target.id == "departure_station"
@@ -542,7 +531,6 @@ export default {
 
         // Преобразуем каждое число, заменяя пробел на пустую строку и запятую на точку
         all_value = all_value.map(num => parseFloat(num.replace(/ /g, '').replace(',', '.')));
-        console.log(all_value)
         if (all_value) {
           let operationBuffer = all_value.map(Number)
 
@@ -553,7 +541,7 @@ export default {
             return;
           }
           this.WorkInClass(operationBuffer, event)
-        
+
           event.target.value = "";
           return;
         }
@@ -595,7 +583,6 @@ export default {
         } else {
           const response = await api_wagon.getCurrentStation(station_name);
           const server_response = response.data.data[0].code;
-          console.log(response.data.data[0])
           this.$set(this.stationCache, station_name, server_response);
           return server_response;
         }
@@ -775,47 +762,92 @@ export default {
         }, 3000);
         return;
       } else {
-        this.laoder = true
-        api.postTarifData(this.checkCompleteData)
-          .then(response => {
 
-            this.getAllAgreement()
-            this.flagCheck = false
 
-            this.loader = false
-            this.notifyHead = "Успешно";
-            this.notifyMessage = 'Данные загружены';
-            this.notifyClass = "wrapper-success";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 2000);
-            this.data = []
-          })
-          .catch(error => {
-            this.loader = false
-            this.notifyHead = "Ошибка";
-            this.notifyMessage = 'Проверьте поле с ошибками';
-            this.notifyClass = "wrapper-error";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 3000);
+        console.log(this.checkCompleteData)
+        if (this.checkCompleteData.length == 0) {
+          // this.loader = true
+       
+          let Standard = {
+              'destination_station': null,
+              'departure_station': null,
+              'stavka': null,
+              'cargo': "",
+              'nds': null,
+              'distance': null,
+              'distance_min': null,
+              'distance_max': null
+          }
+          let dataStandard = [{...this.Standard, ...Standard}]
+          
+          api.postTarifData(dataStandard)
+            .then(response => {
+              this.loader = false
+              // Получаю все приложения для договора
+              this.getAllAgreement()
+              this.flagCheck = false
+              this.notifyHead = "Успешно";
+              this.notifyMessage = 'Данные отправлены';
+              this.notifyClass = "wrapper-success";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false;
+              }, 2000);
+            }).catch(error => {
+              this.loader = false
+              this.notifyHead = "Ошибка";
+              this.notifyMessage = 'Данные не отправлены';
+              this.notifyClass = "wrapper-error";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false;
+              }, 2000);
+            })
+        } else {
 
-            for (let i in this.data) {
-              this.data[i]['error'] = null
 
-            }
-            for (let i in error.response.data) {
-              this.data[error.response.data[i][0] - 1].error =
-                error.response.data[i][1];
-            }
+          api.postTarifData(this.checkCompleteData)
+            .then(response => {
+              //Получаю все приложения для договора
 
-            let filter_arr = [...this.data];
-            this.data = filter_arr.filter((item) => {
-              return item.error != null;
-            });
-          })
+              this.getAllAgreement()
+              this.flagCheck = false
+
+              this.loader = false
+              this.notifyHead = "Успешно";
+              this.notifyMessage = 'Данные загружены';
+              this.notifyClass = "wrapper-success";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false;
+              }, 2000);
+              this.data = []
+            })
+            .catch(error => {
+              this.loader = false
+              this.notifyHead = "Ошибка";
+              this.notifyMessage = 'Проверьте поле с ошибками';
+              this.notifyClass = "wrapper-error";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false;
+              }, 3000);
+
+              for (let i in this.data) {
+                this.data[i]['error'] = null
+
+              }
+              for (let i in error.response.data) {
+                this.data[error.response.data[i][0] - 1].error =
+                  error.response.data[i][1];
+              }
+
+              let filter_arr = [...this.data];
+              this.data = filter_arr.filter((item) => {
+                return item.error != null;
+              });
+            })
+        }
       }
     },
   },
