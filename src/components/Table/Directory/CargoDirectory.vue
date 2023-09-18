@@ -203,7 +203,7 @@ tr,th,td{
 .air_block_content {
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
   margin: 4% 4% 0;
   gap: 20px;
   /* align-items: baseline; */

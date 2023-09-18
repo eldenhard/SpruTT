@@ -3,8 +3,7 @@
     <Loader :loader="loader" />
     <h3 class="explanation" style="font-size: 17px; margin-top: -1%">
       Перед использованием этого раздела обязательно выполнить
-      <a @click="instruction = !instruction">следующие действия с браузером</a
-      ><br />
+      <a @click="instruction = !instruction">следующие действия с браузером</a><br />
     </h3>
     <!-- <h3 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть инструкцию по браузеру' : 'Смотреть инструкцию  по браузеру' }}</h3> -->
     <div v-show="instruction">
@@ -17,11 +16,7 @@
       </p>
       <figure class="sign">
         <p>
-          <img
-            src="../../../assets/Draw2.png"
-            style="width: 80%; height: auto"
-            alt="Рисунок 1 - адресная строка"
-          />
+          <img src="../../../assets/Draw2.png" style="width: 80%; height: auto" alt="Рисунок 1 - адресная строка" />
         </p>
       </figure>
       <br />
@@ -31,11 +26,7 @@
       </p>
       <figure class="sign">
         <p>
-          <img
-            src="../../../assets/Draw3.png"
-            style="width: 80%; height: auto"
-            alt="Рисунок 2 - поиск данных"
-          />
+          <img src="../../../assets/Draw3.png" style="width: 80%; height: auto" alt="Рисунок 2 - поиск данных" />
         </p>
       </figure>
       <br />
@@ -46,11 +37,7 @@
       </p>
       <figure class="sign">
         <p>
-          <img
-            src="../../../assets/Draw4.png"
-            style="width: 80%; height: auto"
-            alt="Рисунок 3 - сохранение данных"
-          />
+          <img src="../../../assets/Draw4.png" style="width: 80%; height: auto" alt="Рисунок 3 - сохранение данных" />
         </p>
       </figure>
       <br />
@@ -63,17 +50,10 @@
       </p>
       <figure class="sign">
         <p>
-          <img
-            src="../../../assets/Draw5.png"
-            style="width: 80%; height: auto"
-            alt="Рисунок 3 - сохранение данных"
-          />
+          <img src="../../../assets/Draw5.png" style="width: 80%; height: auto" alt="Рисунок 3 - сохранение данных" />
         </p>
       </figure>
-      <h5
-        @click="instruction = !instruction"
-        style="cursor: pointer; text-align: left"
-      >
+      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left">
         {{ instruction ? "Свернуть инструкцию" : "Смотреть инструкцию" }}
       </h5>
     </div>
@@ -89,16 +69,12 @@
       <br />
       &nbsp;Таблица 2. <br />
       *
-      <b
-        >Данные по ставкам должны загружаться из WORD или Excel, числа должны
-        быть в строгом формате. Пример: 1 599,00 </b
-      ><br />
+      <b>Данные по ставкам должны загружаться из WORD или Excel, числа должны
+        быть в строгом формате. Пример: 1 599,00 </b><br />
       * <b>Данные по станциям должны быть указаны через пробел </b><br />
       *
-      <b
-        >Данные по дистанциям должны быть скопированы и вставлены из WORD или
-        Excel в формате 0 - 5 6 - 8</b
-      ><br />
+      <b>Данные по дистанциям должны быть скопированы и вставлены из WORD или
+        Excel в формате 0 - 5 6 - 8</b><br />
       * Чтобы узнать название груза, стации отправления/назначения нажмите
       правой кнопкой мыши на интересующее поле, и подождите несколько секунд
       <br />
@@ -111,19 +87,13 @@
       окончили ввод <br />
     </p>
     <div class="air_block">
-      <div
-        class="air_block_header"
-        style="
+      <div class="air_block_header" style="
           display: flex !important;
           justify-content: space-between !important;
           width: 100%;
-        "
-      >
+        ">
         <h5>Данные по ставкам</h5>
-        <h6
-          v-on:click="visible = !visible"
-          style="padding-right: 4%; cursor: pointer"
-        >
+        <h6 v-on:click="visible = !visible" style="padding-right: 4%; cursor: pointer">
           {{ visible ? "Свернуть " : "Развернуть" }}
         </h6>
       </div>
@@ -135,38 +105,18 @@
           <td>№ документа</td>
           <td>
             <div style="display: flex; justify-content: space-between">
-              <input
-                type="radio"
-                id="one1"
-                value="agreement_number"
-                v-model="picked"
-              />
+              <input type="radio" id="one1" value="agreement_number" v-model="picked" />
               <label for="one1">Договор</label>
               <br />
-              <input
-                type="radio"
-                id="two2"
-                value="annex_number"
-                v-model="picked"
-              />
+              <input type="radio" id="two2" value="annex_number" v-model="picked" />
               <label for="two2">Приложение</label>
               <br />
             </div>
 
-            <input
-              type="text"
-              class="textarea"
-              v-model.trim="Standard.agreement_number"
-              :placeholder="placeholderAgreement"
-              v-show="visible_inp_ag"
-            />
-            <input
-              type="text"
-              class="textarea"
-              v-model.trim="Standard.annex_number"
-              :placeholder="placeholderAgreement"
-              v-show="visible_inp_an"
-            />
+            <input type="text" class="textarea" v-model.trim="Standard.agreement_number"
+              :placeholder="placeholderAgreement" v-show="visible_inp_ag" />
+            <input type="text" class="textarea" v-model.trim="Standard.annex_number" :placeholder="placeholderAgreement"
+              v-show="visible_inp_an" />
           </td>
         </tr>
         <br />
@@ -183,17 +133,9 @@
         <tr v-show="visible_agreement">
           <td class="col1">Все договора</td>
           <td>
-            <select
-              name=""
-              id=""
-              v-model="agreement_number_test"
-              @change="test()"
-            >
-              <option
-                :value="[item.agreement_number, item.client, item.id]"
-                v-for="item in all_agreement_number"
-                :key="item.id"
-              >
+            <select name="" id="" v-model="agreement_number_test" @change="test()">
+              <option :value="[item.agreement_number, item.client, item.id]" v-for="item in all_agreement_number"
+                :key="item.id">
                 {{ item.agreement_number }} {{ item.client }} {{ item.on_date }}
               </option>
             </select>
@@ -204,13 +146,7 @@
         <tr>
           <td class="col1">Дата</td>
           <td>
-            <input
-              type="date"
-              id="a"
-              class="textarea"
-              v-model="Standard.on_date"
-              placeholder="Дата"
-            />
+            <input type="date" id="a" class="textarea" v-model="Standard.on_date" placeholder="Дата" />
           </td>
         </tr>
         <br />
@@ -218,13 +154,7 @@
         <tr>
           <td class="col1">Дата окончания</td>
           <td>
-            <input
-              type="date"
-              id="a"
-              class="textarea"
-              v-model="Standard.end_date"
-              placeholder="Дата"
-            />
+            <input type="date" id="a" class="textarea" v-model="Standard.end_date" placeholder="Дата" />
           </td>
         </tr>
         <br />
@@ -234,30 +164,16 @@
         <tr>
           <td class="col1">Клиент</td>
           <td>
-            <input
-              type="text"
-              id="a"
-              class="textarea"
-              v-model="Standard.client"
-              placeholder="Клиент"
-            />
+            <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Клиент" />
           </td>
         </tr>
         <br />
         <tr v-show="ten_visible">
           <td></td>
           <td>
-            <div
-              class="textarea"
-              style="height: auto; width: 100%; margin-bottom: 1%"
-              v-show="ten_visible"
-            >
+            <div class="textarea" style="height: auto; width: 100%; margin-bottom: 1%" v-show="ten_visible">
               <ul id="root_tenant">
-                <li
-                  v-for="item in filter_client"
-                  :key="item.id"
-                  @click="checkClient(item.client)"
-                >
+                <li v-for="item in filter_client" :key="item.id" @click="checkClient(item.client)">
                   <span>{{ item.client }}</span>
                   <hr />
                 </li>
@@ -265,148 +181,94 @@
             </div>
           </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td class="col1">Груз</td>
           <td>
-            <input
-              type="text"
-              id="a"
-              class="textarea"
-              v-model="cargo_user"
-              placeholder="Груз"
-            />
+            <input type="text" id="a" class="textarea" v-model="cargo_user" placeholder="Груз" />
           </td>
         </tr>
         <br />
         <tr v-show="cargo_list">
           <td></td>
           <td>
-            <div
-              class="textarea"
-              style="height: auto; width: 100%; margin-bottom: 1%"
-              v-show="cargo_list"
-            >
+            <div class="textarea" style="height: auto; width: 100%; margin-bottom: 1%" v-show="cargo_list">
               <ul id="root_tenant">
-                <li
-                  v-for="item in filter_cargo"
-                  :key="item.id"
-                  @click="checkCargo(item.name, item.code6)"
-                >
+                <li v-for="item in filter_cargo" :key="item.id" @click="checkCargo(item.name, item.code6)">
                   <span>{{ item.name }}</span>
                   <hr />
                 </li>
               </ul>
             </div>
           </td>
-        </tr>
+        </tr> -->
       </table>
 
       <table border="1" class="table_stavka" v-show="visible">
         <tr>
           <td style="border: 1px solid white !"></td>
           <td style="border: 1px solid black">
-            <input
-              type="text"
-              name=""
-              id="destination_station"
-              @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные"
-            />
+            <input type="text" name="" id="departure_station" @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные" />
           </td>
           <td style="border: 1px solid black">
-            <input
-              type="text"
-              name=""
-              id="departure_station"
-              @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные"
-            />
+            <input type="text" name="" id="destination_station" @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные" />
           </td>
           <td style="border: 1px solid black">
-            <input
-              type="text"
-              name=""
-              id="stavka"
-              @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные"
-            />
+            <input type="text" name="" id="cargo" @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные" />
           </td>
           <td style="border: 1px solid black">
-            <input
-              type="text"
-              name=""
-              id="stavka_pre"
-              @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные"
-            />
+            <input type="text" name="" id="stavka" @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные" />
+          </td>
+          <td style="border: 1px solid black">
+            <input type="text" name="" id="nds" @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные" />
           </td>
           <td style="border: 1px solid black" colspan="2">
-            <input
-              type="text"
-              id="distance"
-              @keyup.enter="saveDistance($event)"
-              placeholder="скопируйте и вставьте данные"
-            />
+            <input type="text" id="distance" @keyup.enter="saveDistance($event)"
+              placeholder="скопируйте и вставьте данные" />
           </td>
         </tr>
         <tr>
           <th>№</th>
           <th style="border: 1px solid black">Станция отпр.</th>
           <th style="border: 1px solid black">Станция назн.</th>
+          <th style="border: 1px solid black">Груз (ЕСТНГ)</th>
           <th style="border: 1px solid black">Ставка без НДС</th>
-          <th style="border: 1px solid black">Ставка предв.</th>
+          <th style="border: 1px solid black">НДС</th>
+
           <th style="border: 1px solid black">Дистанция от</th>
           <th style="border: 1px solid black">Дистанция до</th>
         </tr>
         <tr v-for="(item, index) in data" :key="index">
-          <td
-            style="border: 1px solid black"
-            @click="data.splice(index, 1)"
-            class="delete"
-            :class="{ error: item.error != null }"
-          >
+          <td style="border: 1px solid black" @click="data.splice(index, 1)" class="delete"
+            :class="{ error: item.error != null }">
             {{ item.error != null ? item?.error : index + 1 }}
           </td>
-
           <td style="border: 1px solid black">
-            <input
-              style="width: 100%"
-              type="number"
-              v-model="item.destination_station"
-            />
+            <input style="width: 100%" type="text" v-model="item.departure_station" />
           </td>
           <td style="border: 1px solid black">
-            <input
-              style="width: 100%"
-              type="number"
-              v-model="item.departure_station"
-            />
+            <input style="width: 100%" type="text" v-model="item.destination_station" />
+          </td>
+          <td style="border: 1px solid black">
+            <input style="width: 100%" type="number" v-model="item.cargo" />
           </td>
           <td style="border: 1px solid black">
             <input style="width: 100%" type="number" v-model="item.stavka" />
           </td>
           <td style="border: 1px solid black">
-            <input
-              style="width: 100%"
-              type="number"
-              v-model="item.stavka_pre"
-            />
+            <input style="width: 100%" type="number" v-model="item.nds" />
           </td>
 
           <td style="border: 1px solid black">
-            <input
-              style="width: 100%"
-              type="number"
-              v-model="item.distance_min"
-            />
+            <input style="width: 100%" type="number" v-model="item.distance_min" />
           </td>
 
           <td style="border: 1px solid black">
-            <input
-              style="width: 100%"
-              type="number"
-              v-model="item.distance_max"
-            />
+            <input style="width: 100%" type="number" v-model="item.distance_max" />
           </td>
         </tr>
       </table>
@@ -425,12 +287,7 @@
     </div>
 
     <TarifDirectoryCreated style="margin-top: 5%" />
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-    />
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
   </div>
 </template>
 
@@ -446,11 +303,23 @@ class Stavki {
     this.destination_station = null;
     this.departure_station = null;
     this.stavka = null;
-    this.stavka_pre = null;
+    this.cargo = null;
+    this.nds = null
     this.distance_min = null;
     this.distance_max = null;
     this.error = null;
   }
+
+  // set destination_station(value) {
+  //   console.log(value)
+
+  //   let modefiedString = value.replace(/ [А-Я]{2}/g, '')
+  //   console.log(modefiedString)
+  //   this._destination_station = modefiedString
+  // }
+  // get destination_station(){
+  //   return this.destination_station = this._destination_station
+  // }
 }
 export default {
   components: { Loader, Notifications, TarifDirectoryCreated },
@@ -511,10 +380,10 @@ export default {
 
       return this.Standard.client.length > 1
         ? this.name_client.filter((item) =>
-            item.client
-              .toLowerCase()
-              .includes(this.Standard.client.toLowerCase())
-          )
+          item.client
+            .toLowerCase()
+            .includes(this.Standard.client.toLowerCase())
+        )
         : "";
     },
     filter_cargo() {
@@ -523,8 +392,8 @@ export default {
       }
       return this.cargo_user.length > 1
         ? this.name_cargo.filter((item) =>
-            item.name.toLowerCase().includes(this.cargo_user.toLowerCase())
-          )
+          item.name.toLowerCase().includes(this.cargo_user.toLowerCase())
+        )
         : "";
     },
   },
@@ -640,17 +509,17 @@ export default {
         return;
       });
     },
+
     saveTarif(event) {
-        console.log(event.target.value)
+      console.log(event.target.value)
       if (
         event.target.id == "destination_station" ||
         event.target.id == "departure_station"
       ) {
-        let operationBuffer = [];
-        operationBuffer = event.target.value.split(" ");
+        let operationBuffer = event.target.value.replace(/ [А-Я]{2}[^ ]*/g, '  ').split("  ")
         let clear_buffer = [];
         for (let i of operationBuffer) {
-          clear_buffer.push(i.trim().replace(/ /g, ""));
+          clear_buffer.push(i.trim());
         }
         if (clear_buffer.at(-1) == "") {
           clear_buffer.pop();
@@ -658,45 +527,78 @@ export default {
         if (clear_buffer[0] == "") {
           return;
         }
+        this.WorkInClass(clear_buffer, event)
 
-        for (let i in clear_buffer) {
-          if (this.data[i] == undefined) {
-            let newObj = new Stavki();
-            newObj[event.target.id] = clear_buffer[i];
-            this.data.push(newObj);
-          } else {
-            this.data[i][event.target.id] = clear_buffer[i];
-          }
-          // this.data = table_data
-        }
         event.target.value = "";
         return;
-      }
-      let operationBuffer = [];
-      operationBuffer = event.target.value.split(",00");
-      let clear_buffer = [];
-      for (let i of operationBuffer) {
-        clear_buffer.push(i.trim().replace(/ /g, ""));
-      }
-      if (clear_buffer.at(-1) == "") {
-        clear_buffer.pop();
-      }
-      if (clear_buffer[0] == "") {
-        return;
+      } else if (event.target.id == 'cargo') {
+        let data = event.target.value.match(/\d+/g)
+        if (data) {
+          let operationBuffer = data.map(Number)
+
+          if (operationBuffer.at(-1) == "") {
+            operationBuffer.pop();
+          }
+          if (operationBuffer[0] == "") {
+            return;
+          }
+          this.WorkInClass(operationBuffer, event)
+
+          event.target.value = "";
+          return;
+        }
+      } else if (event.target.id == 'stavka' || event.target.id == 'nds') {
+
+        let t = event.target.value
+        // Разбиваем строку на массив, используя регулярное выражение для чисел с пробелами и запятой
+        let all_value = t.match(/\d+(?: \d{3})*(?:,\d{2})?/g);
+
+        // Преобразуем каждое число, заменяя пробел на пустую строку и запятую на точку
+        all_value = all_value.map(num => parseFloat(num.replace(/ /g, '').replace(',', '.')));
+        if (all_value) {
+          let operationBuffer = all_value.map(Number)
+
+          if (operationBuffer.at(-1) == "") {
+            operationBuffer.pop();
+          }
+          if (operationBuffer[0] == "") {
+            return;
+          }
+          this.WorkInClass(operationBuffer, event)
+          // for (let i in operationBuffer) {
+          //   if (this.data[i] == undefined) {
+          //     let newObj = new Stavki();
+          //     newObj[event.target.id] = operationBuffer[i];
+          //     this.data.push(newObj);
+          //   } else {
+          //     this.data[i][event.target.id] = operationBuffer[i];
+          //   }
+          //   // this.data = table_data
+          // }
+          event.target.value = "";
+          return;
+        }
+
       }
 
-      for (let i in clear_buffer) {
+    },
+    WorkInClass(operationBuffer, event) {
+      for (let i in operationBuffer) {
         if (this.data[i] == undefined) {
           let newObj = new Stavki();
-          newObj[event.target.id] = clear_buffer[i];
+          newObj[event.target.id] = operationBuffer[i];
           this.data.push(newObj);
         } else {
-          this.data[i][event.target.id] = clear_buffer[i];
+          this.data[i][event.target.id] = operationBuffer[i];
         }
         // this.data = table_data
       }
-      event.target.value = "";
     },
+
+
+
+
+
     closeWindow() {
       this.ten_visible = false;
       this.cargo_list = false;
@@ -709,7 +611,7 @@ export default {
       this.cargo_user = value;
     },
     postData() {
-    console.log('1232313')
+      console.log('1232313')
       if (this.picked == "annex_number" && this.agreement_number_test == "") {
         console.log("123");
         this.notifyHead = "Ошибка";
@@ -739,63 +641,63 @@ export default {
 
         let parametrs;
         if (this.data.length == 0) {
-        parametrs = [this.Standard];
-        parametrs.distance_min = []
-        parametrs.distance_max = []
-        parametrs.stavka = []
-        parametrs.stavka_pre = []
-        parametrs.departure_station = []
-        parametrs.destination_station = []
+          parametrs = [this.Standard];
+          parametrs.distance_min = []
+          parametrs.distance_max = []
+          parametrs.stavka = []
+          parametrs.stavka_pre = []
+          parametrs.departure_station = []
+          parametrs.destination_station = []
         } else {
           for (let i in this.data) {
-            this.Standard.agreement_number =  this.Standard.annex_number
+            this.Standard.agreement_number = this.Standard.annex_number
             Object.assign(this.data[i], this.Standard);
-            
+
           }
-        parametrs = this.data;
+          parametrs = this.data;
         }
 
         this.loader = true;
         console.log(parametrs);
         api.postTarifData(parametrs)
-            .then(response => {
+          .then(response => {
 
-                this.getAllAgreement()
+            this.getAllAgreement()
 
-                this.loader = false
-                this.notifyHead = "Успешно";
-                this.notifyMessage = 'Данные загружены';
-                this.notifyClass = "wrapper-success";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 2000);
-                this.data = []
-            })
-        .catch(error => {
+            this.loader = false
+            this.notifyHead = "Успешно";
+            this.notifyMessage = 'Данные загружены';
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2000);
+            this.data = []
+          })
+          .catch(error => {
             this.loader = false
             this.notifyHead = "Ошибка";
             this.notifyMessage = 'Проверьте поле с ошибками';
             this.notifyClass = "wrapper-error";
             this.showNotify = true;
             setTimeout(() => {
-                this.showNotify = false;
+              this.showNotify = false;
             }, 3000);
 
             for (let i in this.data) {
-                this.data[i]['error'] = null
+              this.data[i]['error'] = null
 
             }
             for (let i in error.response.data) {
-                this.data[error.response.data[i][0] - 1].error =
-                    error.response.data[i][1];
+              this.data[error.response.data[i][0] - 1].error =
+                error.response.data[i][1];
             }
 
             let filter_arr = [...this.data];
             this.data = filter_arr.filter((item) => {
-                return item.error != null;
+              return item.error != null;
             });
-        })
+          })
       }
     },
   },
@@ -806,10 +708,12 @@ export default {
 a:nth-child(1) {
   color: #1d67ac !important;
   cursor: pointer;
+
   &:hover {
     text-decoration: underline !important;
   }
 }
+
 // h3:nth-child(n+2),h5{
 //   color: rgb(0, 0, 0);
 //   &:hover{
@@ -822,6 +726,7 @@ h3:nth-child(1) {
   text-align: center;
   padding-top: 2%;
 }
+
 tr,
 td,
 th {

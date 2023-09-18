@@ -194,7 +194,7 @@ a:hover {
 }
 
 a.router-link-active,
-li.router-link-active {
+li.2 {
   border-bottom: 2px solid #EC2332;
 }
 
