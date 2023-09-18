@@ -80,7 +80,7 @@
                         <th>Расстояние от</th>
                         <th>Расстояние до</th>
                         <th>Ставка</th>
-                        <th>Ставка пред.</th>
+                        <th>НДС</th>
                         <th>Груз</th>
                         <th>Станция отпр.</th>
                         <th>Станция назн.</th>
@@ -199,9 +199,9 @@
                                 <!-- СТАВКА ПРЕ -->
                                 <td>
                                     <div class="inputcontainer">
-                                        <input :id="`stavka_pre` + item.id" v-model="item.stavka_pre" type="number"
-                                            v-on:keyup.enter="submitData(item.stavka_pre, item.id, 'stavka_pre', 'stavka_pre_load')" />
-                                        <div class="icon-container" :id="`stavka_pre_load` + item.id" style="display: none">
+                                        <input :id="`nds` + item.id" v-model="item.nds" type="number"
+                                            v-on:keyup.enter="submitData(item.nds, item.id, 'nds', 'nds_load')" />
+                                        <div class="icon-container" :id="`nds_load` + item.id" style="display: none">
                                             <i class="loader"></i>
                                         </div>
                                     </div>
