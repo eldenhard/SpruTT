@@ -37,18 +37,18 @@
             <rentalrateTable />
           </b-card-text>
         </b-tab>
-        
+        <b-tab title="Данные по ПР" active>
+          <b-card-text style="width: 70vw !important; margin-left: -10%;" >
+            <OtherChargesVue />
+          </b-card-text>
+        </b-tab>
       </b-container>
       <b-tab title="Данные по актам ППС" >
           <b-card-text>
             <Act />
           </b-card-text>
         </b-tab>
-        <b-tab title="Данные по ПР" >
-          <b-card-text>
-            <OtherChargesVue />
-          </b-card-text>
-        </b-tab>
+       
       <!-- <b-tab title="Данные по нормативам" >
         <b-card-text>
           <StandartData />
@@ -59,7 +59,7 @@
           <Fin_headerVue />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по ставкам" active>
+      <b-tab title="Данные по ставкам" >
         <b-card-text>
           <TarifDirectory />
         </b-card-text>

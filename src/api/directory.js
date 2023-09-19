@@ -145,6 +145,10 @@ const postOtherChanges = (data) => {
 const getOtherChanges = () => {
     return api.get(`${finance}/other-charges/`, )
 }
+
+const putOtherChanges = (id, data) => {
+    return api.put(`${finance}/other-charges/${id}/`, data)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -198,5 +202,6 @@ export default {
     // данные по пр
     postOtherChanges,
     getOtherChanges,
+    putOtherChanges,
 }
 

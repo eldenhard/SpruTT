@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <Loader  :loader="loader" />
     <table>
       <thead>
