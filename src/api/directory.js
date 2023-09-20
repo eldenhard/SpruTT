@@ -142,12 +142,15 @@ const getExportExcel = (filter_arendaData) => {
 const postOtherChanges = (data) => {
     return api.post(`${finance}/other-charges/save-many/`, data)
 }
-const getOtherChanges = () => {
-    return api.get(`${finance}/other-charges/`, )
+const getOtherChanges = (filter) => {
+    return api.get(`${finance}/other-charges/`, {params: filter})
 }
 
 const putOtherChanges = (id, data) => {
     return api.put(`${finance}/other-charges/${id}/`, data)
+}
+const deleteOtherChanges = (id) => {
+    return api.delete(`${finance}/other-charges/${id}`)
 }
 export default {
     getAllcounterparties,
@@ -203,5 +206,6 @@ export default {
     postOtherChanges,
     getOtherChanges,
     putOtherChanges,
+    deleteOtherChanges,
 }
 
