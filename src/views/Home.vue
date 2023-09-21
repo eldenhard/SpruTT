@@ -37,7 +37,7 @@
             <rentalrateTable />
           </b-card-text>
         </b-tab>
-        <b-tab title="Данные по ПР" active>
+        <b-tab title="Данные по ПР">
           <b-card-text style="width: 70vw !important; margin-left: -10%;" >
             <OtherChargesVue />
           </b-card-text>
@@ -62,6 +62,11 @@
       <b-tab title="Данные по ставкам" >
         <b-card-text>
           <TarifDirectory />
+        </b-card-text>
+      </b-tab>
+      <b-tab title="Данные по ставкам ПВ" active>
+        <b-card-text>
+          <stavkipvVue />
         </b-card-text>
       </b-tab>
     </b-tabs>
@@ -113,6 +118,7 @@ import Fin_Operation from '@/components/Table/Directory/Fin_Operation'
 import Fin_headerVue from '../components/Table/Directory/Fin_header.vue';
 import TarifDirectory from "@/components/Table/Directory/TarifDirectory.vue";
 import OtherChargesVue from '../components/Table/Directory/OtherCharges/OtherCharges.vue';
+import stavkipvVue from '../components/Table/Directory/StavkiPV/stavkipv.vue';
 export default {
   name: "Directory",
   components: {
@@ -129,6 +135,7 @@ export default {
     Fin_headerVue,
     TarifDirectory,
     OtherChargesVue,
+    stavkipvVue,
   },
   mounted() {
     document.title = "Справочники";
