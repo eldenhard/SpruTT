@@ -50,10 +50,10 @@
             <th>Дата отстоя</th>
             <th>Дата вывода </th>
             <th>Расчетное время (сут)</th>
-            <th>Ремонт запорного мех. люка</th>
+            <!-- <th>Ремонт запорного мех. люка</th>
             <th>Уборка вагона от снега без зач.</th>
             <th>Удаление остатков ранее перев. груза</th>
-            <th>Проведение сварочных работ</th>
+            <th>Проведение сварочных работ</th> -->
             <th>Маневровые работы</th>
             <th>Осмотр вагонов</th>
 
@@ -107,7 +107,7 @@
             </td>
 
 
-
+<!-- 
             <td><input type="number" name="service1" v-model="item.service1" class="service"
                 @keydown.enter="changeThisValueByID(item.id, 'service1', item.service1, $event)">
               <div class="load_mini" v-if="isLoading['service1_' + item.id]"></div>
@@ -127,7 +127,7 @@
                 @keydown.enter="changeThisValueByID(item.id, 'service4', item.service4, $event)">
               <div class="load_mini" v-if="isLoading['service4_' + item.id]"></div>
 
-            </td>
+            </td> -->
             <td><input type="number" name="service5" v-model="item.service5" class="service"
                 @keydown.enter="changeThisValueByID(item.id, 'service5', item.service5, $event)">
               <div class="load_mini" v-if="isLoading['service5_' + item.id]"></div>

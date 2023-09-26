@@ -18,7 +18,7 @@
         </label>
       </div>
       <div class="dataAct">
-        <label for="" v-if="table_type === 'РТС Сервис'">Услуги <br>
+        <!-- <label for="" v-if="table_type === 'РТС Сервис'">Услуги <br>
           <select name="" id="" class="textarea" style="width: 100%" v-model="sericeRTS">
             <option value="service5">Услуги по маневровой работ</option>
             <option value="service8"> Комплекс работ и услуг по ком. осмотру и подг. ваг.
@@ -26,7 +26,7 @@
             <option value="service7">Услуги по подаче и уборке вагонов</option>
             <option value="service9">Услуги по отстою</option>
           </select>
-        </label>
+        </label> -->
         <label for="">№ договора <br />
           <input type="text" v-model="act_number" class="textarea" />
         </label>

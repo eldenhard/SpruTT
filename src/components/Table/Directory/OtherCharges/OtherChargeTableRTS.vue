@@ -1,14 +1,22 @@
 <template>
-  <div >
-    <Loader  :loader="loader" />
-    <table>
+  <div>
+    <Loader :loader="loader" />
+    <div class="serviceTable">
+      <label for="service1">
+        <input type="radio" id="service1" value="service1" v-model="showTable">&nbsp;Таблица 1
+      </label>
+      <label for="service2">
+        <input type="radio" id="service2" value="service2" v-model="showTable">&nbsp;Таблица 2
+      </label>
+    </div>
+    <table v-if="showTable == 'service1'">
       <thead>
         <tr class="table-secondary" style="background: #e1e1e2">
           <th></th>
           <th>Вагон</th>
           <th>Дата подачи вагона</th>
           <th>Дата уборки вагона</th>
-          <th>Услуга</th>
+          <th>Услуги по отстою</th>
           <th>Цена</th>
           <th>НДС</th>
         </tr>
@@ -28,7 +36,35 @@
         </tr>
       </tbody>
     </table>
+    <table v-else>
+      <thead>
+        <tr class="table-secondary" style="background: #e1e1e2">
+          <th></th>
+          <th>Вагон</th>
+          <th>Дата подачи вагона</th>
+          <th>Дата уборки вагона</th>
+          <th>Маневровые работы</th>
+          <th>Подача и уборка</th>
+          <th>Ком. осмотр и подготовка</th>
+          <th>Цена</th>
+          <th>НДС</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(row, rowIndex) in tableData2" :key="rowIndex">
+          <td class="deleteRow" @click="deleteRow(rowIndex)">Удалить</td>
+          <td v-for="(cell, cellIndex) in row" :key="cellIndex" style="position: relative">
+            <input v-model="tableData2[rowIndex][cellIndex]" @click="editCell(rowIndex, cellIndex)" @blur="saveCell()"
+              @keyup.enter="saveCell(rowIndex, cellIndex)" v-show="isActiveCell(rowIndex, cellIndex)"
+              ref="editableInput[rowIndex][cellIndex]" class="editable-input" />
+            <div style="width: 100%" @click="editCell(rowIndex, cellIndex)" v-show="!isActiveCell(rowIndex, cellIndex)">
+              <span class="editable-text">{{ cell }}</span>
+            </div>
 
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <button class="Accept" @click="sendData()">Отправить</button>
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
       id="notif" />
@@ -51,9 +87,11 @@ export default {
   data() {
     return {
       tableData: [],
+      tableData2: [],
       hot: null,
       activeRowIndex: null, // Индекс активной строки
       activeCellIndex: null, // Индекс активной ячейки
+      showTable: 'service1',
       loader: false,
 
       showNotify: false,
@@ -74,6 +112,12 @@ export default {
 
   methods: {
     sendData() {
+      let dataWarehouse = []
+      if (this.showTable == 'service1') {
+        dataWarehouse = this.tableData
+      } else {
+        dataWarehouse = this.tableData2
+      }
       if (this.act_number == "" || this.act_date == "") {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Заполните поля № договора/Дата акта";
@@ -87,25 +131,59 @@ export default {
         return;
       }
       this.loader = true
-      let new_obj = this.tableData.map((item) => {
-        return {
-          wagon: item[0].trim(),
-          arrival_date: item[1].split(".").reverse().join("-"),
-          departure_date: item[2].split(".").reverse().join("-"),
-          [this.service]: item[3].trim()?.replace(",00", ""),
-          cost: parseFloat(item[4].replace(/\s/g, "").replace(",", ".")) ?? null,
-          nds: parseFloat(item[5].replace(/\s/g, "").replace(",", ".")) ?? null,
-          act_number: this.act_number,
-          act_date: this.act_date,
-          contractor: this.contractor,
-        };
-      });
+      let new_obj = {}
+      if (dataWarehouse[0].length == 8 && this.showTable == 'service2') {
+        console.log('1')
+        new_obj = dataWarehouse.map((item) => {
+          return {
+            wagon: item[0].trim(),
+            arrival_date: item[1].split(".").reverse().join("-"),
+            departure_date: item[2].split(".").reverse().join("-"),
+            service5: item[3].trim()?.replace(",00", ""),
+            service7: item[4].trim()?.replace(",00", ""),
+            service8: item[5].trim()?.replace(",00", ""),
+            cost: parseFloat(item[6].replace(/\s/g, "").replace(",", ".")) ?? null,
+            nds: parseFloat(item[7].replace(/\s/g, "").replace(",", ".")) ?? null,
+            act_number: this.act_number,
+            act_date: this.act_date,
+            contractor: this.contractor,
+          };
+        });
+      } else if (dataWarehouse[0].length == 6 && this.showTable == 'service1') {
+        console.log('2')
+        new_obj = dataWarehouse.map((item) => {
+          return {
+            wagon: item[0].trim(),
+            arrival_date: item[1].split(".").reverse().join("-"),
+            departure_date: item[2].split(".").reverse().join("-"),
+            service9: item[3].trim()?.replace(",00", ""),
+            cost: parseFloat(item[4].replace(/\s/g, "").replace(",", ".")) ?? null,
+            nds: parseFloat(item[5].replace(/\s/g, "").replace(",", ".")) ?? null,
+            act_number: this.act_number,
+            act_date: this.act_date,
+            contractor: this.contractor,
+          };
+        });
+      } else {
+        this.notifyHead = "Ошибка!";
+        this.notifyMessage = "Вы загружаете некорректный объем данных( длина таблицы должна соответствовать длине скопированной области)";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => this.showNotify = false, 4500);
+        this.loader = false;
+        return
+      }
 
+      // console.log(new_obj)
       api
         .postOtherChanges(new_obj)
         .then((response) => {
           this.loader = false;
-          this.tableData = [];
+          if (this.showTable == 'service1') {
+            this.tableData = []
+          } else {
+            this.tableData2 = []
+          }
           this.notifyHead = "Успешно";
           this.notifyMessage = "Данные отправлены";
           this.notifyClass = "wrapper-success";
@@ -126,6 +204,7 @@ export default {
         });
     },
     initializeHandsontable(data) {
+      console.log(data)
       // Парсим данные из Excel, разделяя их по строкам и столбцам
       const rows = data.split("\n");
       const tableData = rows.map((row) => row.split("\t"));
@@ -162,7 +241,12 @@ export default {
       }
 
       // Обновляем tableData
-      this.tableData = tableData;
+      if (this.showTable == 'service1') {
+        this.tableData = tableData;
+      } else {
+        this.tableData2 = tableData
+      }
+
     },
 
     editCell(rowIndex, cellIndex) {
@@ -171,7 +255,13 @@ export default {
     },
 
     deleteRow(rowIndex) {
-      this.tableData.splice(rowIndex, 1);
+      if (this.showTable == 'service1') {
+        this.tableData.splice(rowIndex, 1);
+
+      } else {
+        this.tableData2.splice(rowIndex, 1);
+
+      }
     },
 
     saveCell(rowIndex, cellIndex) {
@@ -191,6 +281,16 @@ export default {
 
 
 <style lang="scss" scoped>
+.serviceTable {
+  margin-top: 2%;
+  width: 25%;
+  display: flex;
+  gap: 2%;
+  margin-left: auto;
+  justify-content: center;
+  align-items: center;
+}
+
 tr:hover {
   background: lightgrey;
 }
