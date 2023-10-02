@@ -81,7 +81,7 @@ export default {
           this.$store.dispatch('getRoadAsRoad'),
 
           this.$store.dispatch(actionTypes.staffGlobal),
-          this.$store.dispatch(cpActionTypes.getCounterparties, { url: 'personal/counterparties/?page_size=500', clear: true }),
+          // this.$store.dispatch(cpActionTypes.getCounterparties, { url: 'personal/counterparties/?page_size=500', clear: true }),
           this.$store.dispatch(userActionTypes.getUsers, { url: 'personal/users/?page_size=500', clear: true }),
           this.$store.dispatch(ccActionTypes.getCargoCode, { url: 'wagon-park/cargo/?page_size=500', clear: true }),
         ])
