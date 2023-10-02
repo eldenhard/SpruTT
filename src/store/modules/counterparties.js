@@ -1,5 +1,5 @@
 import api from '@/api/counterparties'
-import {resource} from '@/api/counterparties'
+import { resource } from '@/api/counterparties'
 
 
 const state = {
@@ -68,6 +68,7 @@ const actions = {
 
                 context.commit(mutationTypes.getCounterpartiesSuccess, arr)
                 if (response.data.links.next != null) {
+                    console.log(response.data)
                     resolve(context.dispatch(actionTypes.getCounterparties, { url: response.data.links.next, clear: false }))
                 } else {
                     resolve(response.data)
