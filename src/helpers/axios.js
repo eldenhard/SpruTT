@@ -4,7 +4,7 @@ import { getItem, setItem } from "@/helpers/persistanseStorage";
 // import { HardStartAutentifications } from '@/views/Authorization'
 let config = {
     // baseURL: 'http://10.1.5.20/api/'
-    baseURL: 'https://portal.tehtrans.com/api/'
+    baseURL: '/api/'
 }
 
 const _axios = axios.create(config)
