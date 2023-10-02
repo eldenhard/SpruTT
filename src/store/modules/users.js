@@ -54,7 +54,7 @@ const actions = {
 
                 context.commit(mutationTypes.getUsersSuccess, response.data.data)
                 if (response.data.links.next != null) {
-                    resolve(context.dispatch(actionTypes.getUsers, { url: response.data.links.next, clear: false }))
+                    resolve(context.dispatch(actionTypes.getUsers, { url: response.data.links.next.slice(21), clear: false }))
                 } else {
                     resolve(response.data)
                 }

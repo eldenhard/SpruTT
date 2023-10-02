@@ -63,7 +63,7 @@ const actions = {
        
                 context.commit(mutationTypes.getCargoCodeSuccess, arr)
                 if (response.data.links.next != null) {
-                    resolve(context.dispatch(actionTypes.getCargoCode, { url: response.data.links.next, clear: false }))
+                    resolve(context.dispatch(actionTypes.getCargoCode, { url: response.data.links.next.slice(21), clear: false }))
                 } else {
                     resolve(response.data)
                 }

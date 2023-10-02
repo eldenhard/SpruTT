@@ -69,7 +69,7 @@ const actions = {
                 context.commit(mutationTypes.getCounterpartiesSuccess, arr)
                 if (response.data.links.next != null) {
                     console.log(response.data)
-                    resolve(context.dispatch(actionTypes.getCounterparties, { url: response.data.links.next, clear: false }))
+                    resolve(context.dispatch(actionTypes.getCounterparties, { url: response.data.links.next.slice(21), clear: false }))
                 } else {
                     resolve(response.data)
                 }

@@ -72,7 +72,7 @@ const actions = {
                 })
                 setItem('station', [...getItem('station'), ...stations])
                 if (response.data.links.next != null) {                    
-                    context.dispatch(actionTypes.getStations, { url: response.data.links.next, clear: false })
+                    context.dispatch(actionTypes.getStations, { url: response.data.links.next.slice(21), clear: false })
                 }
             }).catch(error => {
                 setItem('station', [])
