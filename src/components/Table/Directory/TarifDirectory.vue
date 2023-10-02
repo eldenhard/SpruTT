@@ -517,6 +517,7 @@ export default {
     this.getAllAgreement();
   },
   watch: {
+ 
     picked() {
       if (this.picked == "agreement_number") {
         this.placeholderAgreement = "введите номер договора";
@@ -532,6 +533,10 @@ export default {
         this.visible_inp_an = true;
         this.Standard.agreement_number = "";
       }
+    },
+    agreement_number_test(){
+      console.log(this.agreement_number_test)
+      this.flagCheck = false
     },
   },
   methods: {
@@ -892,6 +897,7 @@ export default {
         }, 3000);
         return;
       }
+      // проверка когда перелючено на приложение и не выбран договор
       if (this.picked == "annex_number" && this.agreement_number_test == "") {
         this.notifyHead = "Ошибка";
         this.notifyMessage =
@@ -917,8 +923,6 @@ export default {
         return;
       } else {
         this.loader = true;
-
-        console.log(this.checkCompleteData);
         if (this.checkCompleteData.length == 0) {
           // this.loader = true
 
@@ -932,8 +936,11 @@ export default {
             distance_min: null,
             distance_max: null,
           };
+          let dog_current_number = this.annex_number
+          this.Standard.agreement_number = dog_current_number
+          console.log(this.Standard.agreement_number, dog_current_number)
           let dataStandard = [{ ...this.Standard, ...Standard }];
-
+          console.log(dataStandard)
           api
             .postTarifData(dataStandard)
             .then((response) => {
@@ -960,6 +967,10 @@ export default {
               }, 2000);
             });
         } else {
+          this.checkCompleteData.forEach(item => {
+            item.agreement_number = item.annex_number
+          })
+          console.log(this.checkCompleteData)
           api
             .postTarifData(this.checkCompleteData)
             .then((response) => {

@@ -13,109 +13,109 @@
             <b-button class="mt-3" block @click="$bvModal.hide('standard_directory_created')">Нет, отменить</b-button>
         </b-modal>
         <!-- <b-container> -->
-            <a class="WatchAllArenda" v-on:click="visible = !visible">
-                {{
-                    visible
-                    ? "Скрыть данные по ставкам"
-                    : "Отобразить данные по ставкам"
-                }}
-            </a>
-            <div class="table-content" v-show="visible">
-                <label for="amount">Количество договоров <br />
-                    <select name="amount_row" id="amount" style="width: 100%" v-model="filter_arendaData.page_size"
-                        class="mini">
-                        <option value="" disabled>кол-во строк на странице</option>
-                        <option value="1">1</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                        <option value="500">500</option>
-                    </select>
-                </label>
+        <a class="WatchAllArenda" v-on:click="visible = !visible">
+            {{
+                visible
+                ? "Скрыть данные по ставкам"
+                : "Отобразить данные по ставкам"
+            }}
+        </a>
+        <div class="table-content" v-show="visible">
+            <label for="amount">Количество договоров <br />
+                <select name="amount_row" id="amount" style="width: 100%" v-model="filter_arendaData.page_size"
+                    class="mini">
+                    <option value="" disabled>кол-во строк на странице</option>
+                    <option value="1">1</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="500">500</option>
+                </select>
+            </label>
 
-                <label for="tenant">Клиент
-                    <br />
-                    <input type="text" class="textarea mini" v-model="filter_arendaData.client" />
-                </label>
+            <label for="tenant">Клиент
+                <br />
+                <input type="text" class="textarea mini" v-model="filter_arendaData.client" />
+            </label>
 
-                <label for="tenant">Груз
-                    <br />
-                    <input type="text" class="textarea mini" v-model="cargo" />
-                </label>
+            <label for="tenant">Груз
+                <br />
+                <input type="text" class="textarea mini" v-model="cargo" />
+            </label>
 
 
-                <div class="textarea" style="height: auto; width: 100%; margin-top: 2%" v-show="ten_visible">
-                    <ul id="root_tenant">
-                        <li v-for="item in filter_client" :key="item.id" @click="chechClient(item.client)">
-                            <span>{{ item.client }}</span>
-                            <hr />
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="textarea" style="height: auto; width: 100%; margin-top: 2%" v-show="cargo_search_visible">
-                    <ul id="root_tenant">
-                        <li v-for="item in filter_cargo" :key="item.id" @click="checkCargo(item.name, item.code6)">
-                            <span>{{ item.name }}</span>
-                            <hr />
-                        </li>
-                    </ul>
-                </div>
-
-                <button class="button Accept mini" @click="getStandardData()">
-                    Запросить
-                </button>
+            <div class="textarea" style="height: auto; width: 100%; margin-top: 2%" v-show="ten_visible">
+                <ul id="root_tenant">
+                    <li v-for="item in filter_client" :key="item.id" @click="chechClient(item.client)">
+                        <span>{{ item.client }}</span>
+                        <hr />
+                    </li>
+                </ul>
             </div>
-            <p class="amount" style="padding-top: 2%" v-show="visible">
-                Всего записей: {{ total_objects }}
-            </p>
-            <div style="max-width: 100%; overflow: auto; margin-bottom: 5%">
-                <table border="1" v-show="visible">
-                    <thead>
-                        <th>№</th>
-                        <th>Номер дог.</th>
-                        <th>Номер прил.</th>
-                        <th>Дата</th>
-                        <th>Дата оконч.</th>
-                        <th>Клиент</th>
-                        <th>Расстояние от</th>
-                        <th>Расстояние до</th>
-                        <th>Ставка</th>
-                        <th>НДС</th>
-                        <th>Груз</th>
-                        <th>Станция отпр.</th>
-                        <th>Станция назн.</th>
-                        <th>Ответственный</th>
-                    </thead>
 
-                    <!-- { "id": 295, "agreement_number": null, "on_date": null, "end_date": null, "client": "", "distance_min":
+            <div class="textarea" style="height: auto; width: 100%; margin-top: 2%" v-show="cargo_search_visible">
+                <ul id="root_tenant">
+                    <li v-for="item in filter_cargo" :key="item.id" @click="checkCargo(item.name, item.code6)">
+                        <span>{{ item.name }}</span>
+                        <hr />
+                    </li>
+                </ul>
+            </div>
+
+            <button class="button Accept mini" @click="getStandardData()">
+                Запросить
+            </button>
+        </div>
+        <p class="amount" style="padding-top: 2%" v-show="visible">
+            Всего записей: {{ total_objects }}
+        </p>
+        <div style="max-width: 100%; overflow: auto; margin-bottom: 5%">
+            <table border="1" v-show="visible">
+                <thead>
+                    <th>№</th>
+                    <th>Номер дог.</th>
+                    <!-- <th>Номер прил.</th> -->
+                    <th>Дата</th>
+                    <th>Дата оконч.</th>
+                    <th>Клиент</th>
+                    <th>Расстояние от</th>
+                    <th>Расстояние до</th>
+                    <th>Ставка</th>
+                    <th>НДС</th>
+                    <th>Груз</th>
+                    <th>Станция отпр.</th>
+                    <th>Станция назн.</th>
+                    <th>Ответственный</th>
+                </thead>
+
+                <!-- { "id": 295, "agreement_number": null, "on_date": null, "end_date": null, "client": "", "distance_min":
                     null, "distance_max": null, "stavka": 1487, "stavka_pre": 2722, "base": null, "cargo": null,
                     "departure_station": null, "destination_station": null, "responsible": null } -->
-                    <tbody>
-                        <template v-for="(item, index) in data">
-                            <tr :id="item.id">
+                <tbody>
+                    <template v-for="(item, index) in data">
+                        <tr :id="item.id">
 
-                                <td @click="open_modal(item.id)" class="delete">{{ index + 1 }}</td>
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`agreement_number` + item.id" v-model="item.agreement_number"
-                                            v-on:keyup.enter="
-                                                submitData(
-                                                    item.agreement_number,
-                                                    item.id,
-                                                    'agreement_number',
-                                                    'agreementload'
-                                                )
-                                                " />
-                                        <div class="icon-container" :id="`agreementload` + item.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
+                            <td @click="open_modal(item.id)" class="delete">{{ index + 1 }}</td>
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`agreement_number` + item.id" v-model="item.agreement_number"
+                                        v-on:keyup.enter="
+                                            submitData(
+                                                item.agreement_number,
+                                                item.id,
+                                                'agreement_number',
+                                                'agreementload'
+                                            )
+                                            " />
+                                    <div class="icon-container" :id="`agreementload` + item.id" style="display: none">
+                                        <i class="loader"></i>
                                     </div>
-                                </td>
+                                </div>
+                            </td>
 
 
 
-                                <td></td>
-                                <!-- <td>
+                            <!-- <td></td> -->
+                            <!-- <td>
                                 <div class="inputcontainer">
                                     <input :id="`annex_number` + item.id" type="text" v-model="item.annex_number"
                                         v-on:keyup.enter="
@@ -129,281 +129,314 @@
 
 
 
-                                <!-- ДАТА -->
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input type="date" :id="`on_date` + item.id" v-model="item.on_date"
-                                            v-on:keyup.enter="
-                                                submitData(item.on_date, item.id, 'on_date', 'on_date_load')
-                                                " />
-                                        <div class="icon-container" :id="`on_date_load` + item.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
+                            <!-- ДАТА -->
+                            <td>
+                                <div class="inputcontainer">
+                                    <input type="date" :id="`on_date` + item.id" v-model="item.on_date" v-on:keyup.enter="
+                                        submitData(item.on_date, item.id, 'on_date', 'on_date_load')
+                                        " />
+                                    <div class="icon-container" :id="`on_date_load` + item.id" style="display: none">
+                                        <i class="loader"></i>
                                     </div>
-                                </td>
-                                <!-- ДАТА ОКОНЧАНИЯ -->
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input type="date" :id="`end_date` + item.id" v-model="item.end_date"
-                                            v-on:keyup.enter="
-                                                submitData(item.end_date, item.id, 'end_date', 'end_date_load')
-                                                " />
-                                        <div class="icon-container" :id="`end_date_load` + item.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
+                                </div>
+                            </td>
+                            <!-- ДАТА ОКОНЧАНИЯ -->
+                            <td>
+                                <div class="inputcontainer">
+                                    <input type="date" :id="`end_date` + item.id" v-model="item.end_date" v-on:keyup.enter="
+                                        submitData(item.end_date, item.id, 'end_date', 'end_date_load')
+                                        " />
+                                    <div class="icon-container" :id="`end_date_load` + item.id" style="display: none">
+                                        <i class="loader"></i>
                                     </div>
-                                </td>
-                                <!-- КЛИЕНТ -->
+                                </div>
+                            </td>
+                            <!-- КЛИЕНТ -->
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`client` + item.id" v-model="item.client" v-on:keyup.enter="
+                                        submitData(item.client, item.id, 'client', 'client_load')
+                                        " />
+                                    <div class="icon-container" :id="`client_load` + item.id" style="display: none">
+                                        <i class="loader"></i>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`distance_min` + item.id" v-model="item.distance_min"
+                                        v-on:keyup.enter="submitData(item.distance_min, item.id, 'distance_min', 'distance_min_load')" />
+                                    <div class="icon-container" :id="`distance_min_load` + item.id" style="display: none">
+                                        <i class="loader"></i>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`distance_max` + item.id" type="number" v-model="item.distance_max"
+                                        v-on:keyup.enter="submitData(item.distance_max, item.id, 'distance_max', 'distance_max_load')" />
+                                    <div class="icon-container" :id="`distance_max_load` + item.id" style="display: none">
+                                        <i class="loader"></i>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`stavka` + item.id" v-model="item.stavka" type="number"
+                                        v-on:keyup.enter="submitData(item.stavka, item.id, 'stavka', 'stavka_load')" />
+                                    <div class="icon-container" :id="`stavka_load` + item.id" style="display: none">
+                                        <i class="loader"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- СТАВКА ПРЕ -->
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`nds` + item.id" v-model="item.nds" type="number"
+                                        v-on:keyup.enter="submitData(item.nds, item.id, 'nds', 'nds_load')" />
+                                    <div class="icon-container" :id="`nds_load` + item.id" style="display: none">
+                                        <i class="loader"></i>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <!-- ГРУЗ -->
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`cargo` + item.id" v-model="item.cargo_id" type="number"
+                                        v-on:keyup.enter="submitData(item.cargo_id, item.id, 'cargo', 'cargo_load')"
+                                        @contextmenu="WatchInformationData(item.cargo_id, 'cargo')" />
+                                    <div class="icon-container" :id="`cargo_load` + item.id" style="display: none">
+                                        <i class="loader"></i>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <!-- СТанция отправления -->
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`departure_station` + item.id" v-model="item.departure_station_id"
+                                        v-on:keyup.enter="submitData(item.departure_station_id, item.id, 'departure_station', 'departure_station_load')"
+                                        @contextmenu="WatchInformationData(item.departure_station_id, 'departure_station')" />
+                                    <div class="icon-container" :id="`departure_station_load` + item.id"
+                                        style="display: none">
+                                        <i class="loader"></i>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- destination_station -->
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`destination_station` + item.id" v-model="item.destination_station_id"
+                                        v-on:keyup.enter="submitData(item.destination_station_id, item.id, 'destination_station', 'destination_station_load')"
+                                        @contextmenu="WatchInformationData(item.destination_station_id, 'destination_station')" />
+                                    <div class="icon-container" :id="`destination_station_load` + item.id"
+                                        style="display: none">
+                                        <i class="loader"></i>
+                                    </div>
+
+                                </div>
+                            </td>
+                            <!-- Ответственный -->
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :value="IdToName(item.responsible_id)" readonly />
+
+                                </div>
+                            </td>
+
+                        </tr>
+                        <!-- ПРИЛОЖЕНИЯ -->
+
+                        <tr>
+                            <td colspan="13">
+                                <details>
+                                    <summary style="background: lightgrey; color: black">
+                                        Приложений {{ item.attachments.length }} шт.
+                                    </summary>
+        
+                        <tr v-for="att in item.attachments" :key="att.id">
+                            <td colspan="13">
+                                <details>
+                                    <summary colspan="13">
+                                        Приложение {{ att.agreement_number }}
+                                    </summary>
+                                    <template v-for="childr in att.attachments">
+                                        <tr :key="childr.id" colspan="13">
+                                            <td @click="open_modal(att.id)" class="delete">Удалить</td>
+                                            <td>{{ att.agreement_number }}</td>
+                                            <td>{{ childr.on_date }}</td>
+                                            <td>{{ childr.end_date }}</td>
+                                            <td>{{ childr.client }}</td>
+                                            <td>{{ childr.distance_min }}</td>
+                                            <td>{{ childr.distance_max }}</td>
+                                            <td>{{ childr.stavka }}</td>
+                                            <td>{{ childr.nds }}</td>
+                                            <td>{{ childr.departure_station_id }}</td>
+                                            <td>{{ childr.destination_station_id }}</td>
+                                            <td>{{ IdToName(childr.responsible_id) }}</td>
+                                        </tr>
+                                    </template>
+                                </details>
+                            </td>
+                        </tr>
+                    </details>
+                    </td>
+                    </tr>
+
+
+                    <!-- .   <tr>
+                            <td colspan="13">
+                                <details>
+                                    <summary style="background: lightgrey; color: black">
+                                        Приложений {{ item.attachments.length }} шт.
+                                    </summary>
+                        <tr v-for="att in item.attachments" :key="att.id">
+                            <td colspan="13">
+                                <details>
+                                    <summary>
+                                        Приложение {{ att.agreement_number }}
+                                    </summary>
+                                <td colspan="13" @click="open_modal(att.id)" class="delete">Приложение {{  }}</td>
                                 <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`client` + item.id" v-model="item.client" v-on:keyup.enter="
-                                            submitData(item.client, item.id, 'client', 'client_load')
+                                <div class="inputcontainer">
+                                    <input :id="`on_date` + att.attachments.id" type="date" v-model="att.attachments.on_date" v-on:keyup.enter="
+                                        submitData(att.attachments.on_date, att.attachments.id, 'on_date', 'on_date_load')
+                                        " />
+                                    <div class="icon-container" :id="`on_date_load` + att.attachments.id" style="display: none">
+                                        <i class="loader"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`end_date` + att.attachments.id" type="date" v-model="att.attachments.end_date" v-on:keyup.enter="
+                                        submitData(att.attachments.end_date, att.attachments.id, 'end_date', 'end_date_load')
+                                        " />
+                                    <div class="icon-container" :id="`end_date_load` + att.attachments.id" style="display: none">
+                                        <i class="loader"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`client` + att.attachments.id" type="text" v-model="att.attachments.client" v-on:keyup.enter="
+                                        submitData(att.attachments.client, att.attachments.id, 'client', 'client_load')
+                                        " />
+                                    <div class="icon-container" :id="`client_load` + att.attachments.id" style="display: none">
+                                        <i class="loader"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`distance_min` + att.attachments.id" type="text" v-model="att.attachments.distance_min"
+                                        v-on:keyup.enter="
+                                            submitData(att.attachments.distance_min, att.attachments.id, 'distance_min', 'distance_min_load')
                                             " />
-                                        <div class="icon-container" :id="`client_load` + item.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
+                                    <div class="icon-container" :id="`distance_min_load` + att.attachments.id" style="display: none">
+                                        <i class="loader"></i>
                                     </div>
-                                </td>
-
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`distance_min` + item.id" v-model="item.distance_min"
-                                            v-on:keyup.enter="submitData(item.distance_min, item.id, 'distance_min', 'distance_min_load')" />
-                                        <div class="icon-container" :id="`distance_min_load` + item.id"
-                                            style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`distance_max` + att.attachments.id" type="text" v-model="att.attachments.distance_max"
+                                        v-on:keyup.enter="
+                                            submitData(att.attachments.distance_max, att.attachments.id, 'distance_max', 'distance_max_load')
+                                            " />
+                                    <div class="icon-container" :id="`distance_max_load` + att.attachments.id" style="display: none">
+                                        <i class="loader"></i>
                                     </div>
-                                </td>
-
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`distance_max` + item.id" type="number" v-model="item.distance_max"
-                                            v-on:keyup.enter="submitData(item.distance_max, item.id, 'distance_max', 'distance_max_load')" />
-                                        <div class="icon-container" :id="`distance_max_load` + item.id"
-                                            style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`stavka` + att.attachments.id" type="text" v-model="att.attachments.stavka" v-on:keyup.enter="
+                                        submitData(att.attachments.stavka, att.attachments.id, 'stavka', 'stavka_load')
+                                        " />
+                                    <div class="icon-container" :id="`stavka_load` + att.attachments.id" style="display: none">
+                                        <i class="loader"></i>
                                     </div>
-                                </td>
-
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`stavka` + item.id" v-model="item.stavka" type="number"
-                                            v-on:keyup.enter="submitData(item.stavka, item.id, 'stavka', 'stavka_load')" />
-                                        <div class="icon-container" :id="`stavka_load` + item.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`stavka_pre` + att.attachments.id" type="text" v-model="att.attachments.stavka_pre"
+                                        v-on:keyup.enter="
+                                            submitData(att.attachments.stavka_pre, att.attachments.id, 'stavka_pre', 'stavka_pre_load')
+                                            " />
+                                    <div class="icon-container" :id="`stavka_pre_load` + att.attachments.id" style="display: none">
+                                        <i class="loader"></i>
                                     </div>
-                                </td>
-                                <!-- СТАВКА ПРЕ -->
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`nds` + item.id" v-model="item.nds" type="number"
-                                            v-on:keyup.enter="submitData(item.nds, item.id, 'nds', 'nds_load')" />
-                                        <div class="icon-container" :id="`nds_load` + item.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`cargo` + att.attachments.id" type="text" v-model="att.attachments.cargo_id" v-on:keyup.enter="
+                                        submitData(attattachments.cargo_id, att.attachments.id, 'cargo', 'cargo_load')"
+                                        @contextmenu="WatchInformationData(att.attachments.cargo_id, 'cargo')" />
+                                    <div class="icon-container" :id="`cargo_load` + att.attachments.id" style="display: none">
+                                        <i class="loader"></i>
                                     </div>
-
-                                </td>
-                                <!-- ГРУЗ -->
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`cargo` + item.id" v-model="item.cargo_id" type="number"
-                                            v-on:keyup.enter="submitData(item.cargo_id, item.id, 'cargo', 'cargo_load')"
-                                            @contextmenu="WatchInformationData(item.cargo_id, 'cargo')" />
-                                        <div class="icon-container" :id="`cargo_load` + item.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`departure_station` + att.attachments.id" type="text" v-model="att.attachments.departure_station_id"
+                                        v-on:keyup.enter="
+                                            submitData(att.attachments.departure_station_id, att.attachments.id, 'departure_station', 'departure_station_load')
+                                            " @contextmenu="WatchInformationData(att.attachments.departure_station_id, 'departure_station')" />
+                                    <div class="icon-container" :id="`departure_station_load` + att.attachments.id"
+                                        style="display: none">
+                                        <i class="loader"></i>
                                     </div>
-
-                                </td>
-                                <!-- СТанция отправления -->
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`departure_station` + item.id" v-model="item.departure_station_id"
-                                            v-on:keyup.enter="submitData(item.departure_station_id, item.id, 'departure_station', 'departure_station_load')"
-                                            @contextmenu="WatchInformationData(item.departure_station_id, 'departure_station')" />
-                                        <div class="icon-container" :id="`departure_station_load` + item.id"
-                                            style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="inputcontainer">
+                                    <input :id="`destination_station` + att.attachments.id" type="text"
+                                        v-model="att.attachments.destination_station_id" v-on:keyup.enter="
+                                            submitData(att.attachments.destination_station_id, att.attachments.id, 'destination_station', 'destination_station_load')
+                                            " @contextmenu="WatchInformationData(att.attachments.destination_station_id, 'destination_station')" />
+                                    <div class="icon-container" :id="`destination_station_load` + att.attachments.id"
+                                        style="display: none">
+                                        <i class="loader"></i>
                                     </div>
-                                </td>
+                                </div>
+                            </td>
+                            <td>{{ IdToName(att.attachments.responsible_id) }}</td>
 
-                                <!-- destination_station -->
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`destination_station` + item.id" v-model="item.destination_station_id"
-                                            v-on:keyup.enter="submitData(item.destination_station_id, item.id, 'destination_station', 'destination_station_load')"
-                                            @contextmenu="WatchInformationData(item.destination_station_id, 'destination_station')" />
-                                        <div class="icon-container" :id="`destination_station_load` + item.id"
-                                            style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
+                                </details>
+                            </td>
+                             
 
-                                    </div>
-                                </td>
-                                <!-- Ответственный -->
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input :value="IdToName(item.responsible_id)" readonly />
+                        </tr>
+                        </details>
+                        </td>
+                        </tr> -->
 
-                                    </div>
-                                </td>
 
-                            </tr>
-                            <template>
-                                <tr v-for="att in item.attachments" :key="att.id">
+                    </template>
 
-                                    <td colspan="2"  @click="open_modal(att.id)" class="delete">Приложение</td>
-                                    <!-- <td></td> -->
-                                    <td>
-                                        <div class="inputcontainer">
-                                            <input :id="`agreement_number` + att.id" type="text"
-                                                v-model="att.agreement_number" v-on:keyup.enter="
-                                                    submitData(att.agreement_number, att.id, 'agreement_number', 'agreement_number_load')
-                                                    " />
-                                            <div class="icon-container" :id="`agreement_number_load` + att.id"
-                                                style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="inputcontainer">
-                                            <input :id="`on_date` + att.id" type="date" v-model="att.on_date"
-                                                v-on:keyup.enter="
-                                                    submitData(att.on_date, att.id, 'on_date', 'on_date_load')
-                                                    " />
-                                            <div class="icon-container" :id="`on_date_load` + att.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="inputcontainer">
-                                            <input :id="`end_date` + att.id" type="date" v-model="att.end_date"
-                                                v-on:keyup.enter="
-                                                    submitData(att.end_date, att.id, 'end_date', 'end_date_load')
-                                                    " />
-                                            <div class="icon-container" :id="`end_date_load` + att.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="inputcontainer">
-                                            <input :id="`client` + att.id" type="text" v-model="att.client"
-                                                v-on:keyup.enter="
-                                                    submitData(att.client, att.id, 'client', 'client_load')
-                                                    " />
-                                            <div class="icon-container" :id="`client_load` + att.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="inputcontainer">
-                                            <input :id="`distance_min` + att.id" type="text" v-model="att.distance_min"
-                                                v-on:keyup.enter="
-                                                    submitData(att.distance_min, att.id, 'distance_min', 'distance_min_load')
-                                                    " />
-                                            <div class="icon-container" :id="`distance_min_load` + att.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div>
-                                       </td>
-                                    <td>
-                                        <div class="inputcontainer">
-                                            <input :id="`distance_max` + att.id" type="text" v-model="att.distance_max"
-                                                v-on:keyup.enter="
-                                                    submitData(att.distance_max, att.id, 'distance_max', 'distance_max_load')
-                                                    " />
-                                            <div class="icon-container" :id="`distance_max_load` + att.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="inputcontainer">
-                                            <input :id="`stavka` + att.id" type="text" v-model="att.stavka"
-                                                v-on:keyup.enter="
-                                                    submitData(att.stavka, att.id, 'stavka', 'stavka_load')
-                                                    " />
-                                            <div class="icon-container" :id="`stavka_load` + att.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="inputcontainer">
-                                            <input :id="`stavka_pre` + att.id" type="text" v-model="att.stavka_pre"
-                                                v-on:keyup.enter="
-                                                    submitData(att.stavka_pre, att.id, 'stavka_pre', 'stavka_pre_load')
-                                                    " />
-                                            <div class="icon-container" :id="`stavka_pre_load` + att.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div>
-                                       </td>
-                                    <td>
-                                        <div class="inputcontainer">
-                                            <input :id="`cargo` + att.id" type="text" v-model="att.cargo_id"
-                                                v-on:keyup.enter="
-                                                    submitData(att.cargo_id, att.id, 'cargo', 'cargo_load')"
-                                                    @contextmenu="WatchInformationData(att.cargo_id, 'cargo')" 
-                                                    />
-                                            <div class="icon-container" :id="`cargo_load` + att.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="inputcontainer">
-                                            <input :id="`departure_station` + att.id" type="text" v-model="att.departure_station_id"
-                                                v-on:keyup.enter="
-                                                    submitData(att.departure_station_id, att.id, 'departure_station', 'departure_station_load')
-                                                    " 
-                                                     @contextmenu="WatchInformationData(att.departure_station_id, 'departure_station')" />
-                                            <div class="icon-container" :id="`departure_station_load` + att.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div> 
-                                      </td>
-                                    <td>
-                                        <div class="inputcontainer">
-                                            <input :id="`destination_station` + att.id" type="text" v-model="att.destination_station_id"
-                                                v-on:keyup.enter="
-                                                    submitData(att.destination_station_id, att.id, 'destination_station', 'destination_station_load')
-                                                    " 
-                                                      @contextmenu="WatchInformationData(att.destination_station_id, 'destination_station')" />
-                                            <div class="icon-container" :id="`destination_station_load` + att.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div> 
-                                      </td>
-                                    <td>{{ IdToName(att.responsible_id) }}</td>
+                </tbody>
+            </table>
+        </div>
 
-                                </tr>
-                            </template>
-                        </template>
-
-                    </tbody>
-                </table>
-            </div>
-
-            <div id="wrapper" v-show="visible">
-                <ul id="pagination">
-                    <li v-for="btn in total_pages" :key="btn.id">
-                        <a @click="getPagination(filter_arendaData.page_size, btn)" :class="{
-                            active123: Truefalse(btn),
-                            active_new: pageNumber == btn,
-                        }">{{ btn }}</a>
-                    </li>
-                </ul>
-            </div>
+        <div id="wrapper" v-show="visible">
+            <ul id="pagination">
+                <li v-for="btn in total_pages" :key="btn.id">
+                    <a @click="getPagination(filter_arendaData.page_size, btn)" :class="{
+                        active123: Truefalse(btn),
+                        active_new: pageNumber == btn,
+                    }">{{ btn }}</a>
+                </li>
+            </ul>
+        </div>
 
         <!-- </b-container> -->
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
@@ -422,6 +455,7 @@ export default {
     components: { Loader, Notifications },
     data() {
         return {
+            watchAnnex: true,
             cargo_search_visible: false,
             cargo: "",
             visible: true,
@@ -450,7 +484,9 @@ export default {
     },
     mounted() {
         document.body.addEventListener("click", this.CloseWindow);
+
     },
+
 
     computed: {
         ...mapState({
@@ -458,6 +494,8 @@ export default {
             user: (state) => state.users.users,
             cargo_code: (state) => state.cargo_code.cargo_code
         }),
+
+
         filter_client() {
             if (this.filter_arendaData.client.length > 1) {
                 this.ten_visible = true;
@@ -484,6 +522,7 @@ export default {
         },
     },
     methods: {
+
         WatchInformationData(value, type) {
             event.preventDefault()
 
@@ -610,22 +649,46 @@ export default {
                     this.pagination = response.data.links;
                     this.total_pages = response.data.total_pages;
                     this.total_objects = response.data.total_objects;
-                    this.data = response.data.data;
-                    console.log(this.data)
-                    console.log(response)
+                    this.data = response.data.data
 
-                    this.notifyHead = "Успешно";
-                    this.notifyMessage = 'Данные загружены';
-                    this.notifyClass = "wrapper-success";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 2000);
+                    function groupAttachments(attachments) {
+                        const groupedAttachments = {};
+
+                        attachments.forEach((attachment) => {
+                            const agreementNumber = attachment.agreement_number;
+
+                            if (!groupedAttachments[agreementNumber]) {
+                                groupedAttachments[agreementNumber] = [];
+                            }
+
+                            groupedAttachments[agreementNumber].push(attachment);
+                        });
+
+                        return Object.keys(groupedAttachments).map((key) => ({
+                            agreement_number: key,
+                            attachments: groupedAttachments[key],
+                        }));
+                    }
+
+                    // Обрабатываем каждый элемент данных
+                    return this.data.map((item) => {
+                        item.attachments = groupAttachments(item.attachments);
+                        console.log(this.data)
+                        return item;
+                    });
+
+                    // this.notifyHead = "Успешно";
+                    // this.notifyMessage = 'Данные загружены';
+                    // this.notifyClass = "wrapper-success";
+                    // this.showNotify = true;
+                    // setTimeout(() => {
+                    //     this.showNotify = false;
+                    // }, 2000);
                 })
                 .catch((error) => {
                     this.loader = false
                     this.notifyHead = "Ошибка";
-                    this.notifyMessage = error.response.data;
+                    this.notifyMessage = error.response;
                     this.notifyClass = "wrapper-error";
                     this.showNotify = true;
                     setTimeout(() => {
@@ -652,7 +715,7 @@ export default {
             console.log(element, id, frst, lst)
             let name = frst;
             let data = [];
-            data.push({ [name]: element, responsible : this.uid });
+            data.push({ [name]: element, responsible: this.uid });
             document.getElementById(`${lst}${id}`).style.display = "block";
             console.log(id, data[0])
             api
@@ -955,5 +1018,4 @@ thead {
 li {
     cursor: pointer;
 }
-
 </style>
