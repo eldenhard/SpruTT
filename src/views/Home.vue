@@ -37,7 +37,7 @@
             <rentalrateTable />
           </b-card-text>
         </b-tab>
-        <b-tab title="Данные по ПР" active>
+        <b-tab title="Данные по ПР" >
           <b-card-text style="width: 70vw !important; margin-left: -10%;" >
             <OtherChargesVue />
           </b-card-text>
@@ -59,7 +59,7 @@
           <Fin_headerVue />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по ставкам" >
+      <b-tab title="Данные по ставкам" active >
         <b-card-text>
           <TarifDirectory />
         </b-card-text>
