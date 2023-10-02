@@ -254,23 +254,36 @@
 
                         <tr>
                             <td colspan="13">
-                                <details>
+                                <details colspan="13">
                                     <summary style="background: lightgrey; color: black">
                                         Приложений {{ item.attachments.length }} шт.
                                     </summary>
         
-                        <tr v-for="att in item.attachments" :key="att.id">
-                            <td colspan="13">
-                                <details>
-                                    <summary colspan="13">
-                                        Приложение {{ att.agreement_number }}
-                                    </summary>
+                        <tr v-for="att in item.attachments" :key="att.id" >
+                            <!-- <td>Приложение {{ att.agreement_number }}</td> -->
+                        <details >
+                            <summary style="width: 78.5vw;">
+                                Приложение {{ att.agreement_number }} 
+                            </summary>
+                            <tr>
+                                <th>Дейст</th>
+                                <th>Дата</th>
+                                <th>Дата оконч.</th>
+                                <th>Клиент</th>
+                                <th>Расстояние от</th>
+                                <th>Расстояние до</th>
+                                <th>Ставка</th>
+                                <th>НДС</th>
+                                <th>Груз</th>
+                                <th>Станция отпр.</th>
+                                <th>Станция назн.</th>
+                                <th>Ответственный</th>   
+                            </tr>
                                     <template v-for="childr in att.attachments">
                                         <tr :key="childr.id" colspan="13">
                                             <td @click="open_modal(att.id)" class="delete">Удалить</td>
-                                            <td>{{ att.agreement_number }}</td>
-                                            <td>{{ childr.on_date }}</td>
-                                            <td>{{ childr.end_date }}</td>
+                                            <td>{{ childr.on_date?.split('-')?.reverse()?.join('.') }}</td>
+                                            <td>{{ childr.end_date?.split('-')?.reverse()?.join('.') }}</td>
                                             <td>{{ childr.client }}</td>
                                             <td>{{ childr.distance_min }}</td>
                                             <td>{{ childr.distance_max }}</td>
@@ -282,7 +295,6 @@
                                         </tr>
                                     </template>
                                 </details>
-                            </td>
                         </tr>
                     </details>
                     </td>
