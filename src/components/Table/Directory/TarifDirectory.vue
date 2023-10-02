@@ -3,7 +3,8 @@
     <Loader :loader="loader" />
     <h3 class="explanation" style="font-size: 17px; margin-top: -1%">
       Перед использованием этого раздела обязательно выполнить
-      <a @click="instruction = !instruction">следующие действия с браузером</a><br />
+      <a @click="instruction = !instruction">следующие действия с браузером</a
+      ><br />
     </h3>
     <!-- <h3 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть инструкцию по браузеру' : 'Смотреть инструкцию  по браузеру' }}</h3> -->
     <div v-show="instruction">
@@ -16,7 +17,11 @@
       </p>
       <figure class="sign">
         <p>
-          <img src="../../../assets/Draw2.png" style="width: 80%; height: auto" alt="Рисунок 1 - адресная строка" />
+          <img
+            src="../../../assets/Draw2.png"
+            style="width: 80%; height: auto"
+            alt="Рисунок 1 - адресная строка"
+          />
         </p>
       </figure>
       <br />
@@ -26,7 +31,11 @@
       </p>
       <figure class="sign">
         <p>
-          <img src="../../../assets/Draw3.png" style="width: 80%; height: auto" alt="Рисунок 2 - поиск данных" />
+          <img
+            src="../../../assets/Draw3.png"
+            style="width: 80%; height: auto"
+            alt="Рисунок 2 - поиск данных"
+          />
         </p>
       </figure>
       <br />
@@ -37,7 +46,11 @@
       </p>
       <figure class="sign">
         <p>
-          <img src="../../../assets/Draw4.png" style="width: 80%; height: auto" alt="Рисунок 3 - сохранение данных" />
+          <img
+            src="../../../assets/Draw4.png"
+            style="width: 80%; height: auto"
+            alt="Рисунок 3 - сохранение данных"
+          />
         </p>
       </figure>
       <br />
@@ -50,10 +63,17 @@
       </p>
       <figure class="sign">
         <p>
-          <img src="../../../assets/Draw5.png" style="width: 80%; height: auto" alt="Рисунок 3 - сохранение данных" />
+          <img
+            src="../../../assets/Draw5.png"
+            style="width: 80%; height: auto"
+            alt="Рисунок 3 - сохранение данных"
+          />
         </p>
       </figure>
-      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left">
+      <h5
+        @click="instruction = !instruction"
+        style="cursor: pointer; text-align: left"
+      >
         {{ instruction ? "Свернуть инструкцию" : "Смотреть инструкцию" }}
       </h5>
     </div>
@@ -69,12 +89,16 @@
       <br />
       &nbsp;Таблица 2. <br />
       *
-      <b>Данные по ставкам должны загружаться из WORD или Excel, числа должны
-        быть в строгом формате. Пример: 1 599,00 </b><br />
+      <b
+        >Данные по ставкам должны загружаться из WORD или Excel, числа должны
+        быть в строгом формате. Пример: 1 599,00 </b
+      ><br />
       * <b>Данные по станциям должны быть указаны через пробел </b><br />
       *
-      <b>Данные по дистанциям должны быть скопированы и вставлены из WORD или
-        Excel в формате 0 - 5 6 - 8</b><br />
+      <b
+        >Данные по дистанциям должны быть скопированы и вставлены из WORD или
+        Excel в формате 0 - 5 6 - 8</b
+      ><br />
       * Чтобы узнать название груза, стации отправления/назначения нажмите
       правой кнопкой мыши на интересующее поле, и подождите несколько секунд
       <br />
@@ -87,13 +111,19 @@
       окончили ввод <br />
     </p>
     <div class="air_block">
-      <div class="air_block_header" style="
+      <div
+        class="air_block_header"
+        style="
           display: flex !important;
           justify-content: space-between !important;
           width: 100%;
-        ">
+        "
+      >
         <h5>Данные по ставкам</h5>
-        <h6 v-on:click="visible = !visible" style="padding-right: 4%; cursor: pointer">
+        <h6
+          v-on:click="visible = !visible"
+          style="padding-right: 4%; cursor: pointer"
+        >
           {{ visible ? "Свернуть " : "Развернуть" }}
         </h6>
       </div>
@@ -105,27 +135,55 @@
           <td>№ документа</td>
           <td>
             <div style="display: flex; justify-content: space-between">
-              <input type="radio" id="one1" value="agreement_number" v-model="picked" />
+              <input
+                type="radio"
+                id="one1"
+                value="agreement_number"
+                v-model="picked"
+              />
               <label for="one1">Договор</label>
               <br />
-              <input type="radio" id="two2" value="annex_number" v-model="picked" />
+              <input
+                type="radio"
+                id="two2"
+                value="annex_number"
+                v-model="picked"
+              />
               <label for="two2">Приложение</label>
               <br />
             </div>
 
-            <input type="text" class="textarea" v-model.trim="Standard.agreement_number"
-              :placeholder="placeholderAgreement" v-show="visible_inp_ag" />
-            <input type="text" class="textarea" v-model.trim="Standard.annex_number" :placeholder="placeholderAgreement"
-              v-show="visible_inp_an" />
+            <input
+              type="text"
+              class="textarea"
+              v-model.trim="Standard.agreement_number"
+              :placeholder="placeholderAgreement"
+              v-show="visible_inp_ag"
+            />
+            <input
+              type="text"
+              class="textarea"
+              v-model.trim="Standard.annex_number"
+              :placeholder="placeholderAgreement"
+              v-show="visible_inp_an"
+            />
           </td>
         </tr>
         <br />
         <tr v-show="visible_agreement">
           <td class="col1">Все договора</td>
           <td>
-            <select name="" id="" v-model="agreement_number_test" @change="test()">
-              <option :value="[item.agreement_number, item.client, item.id]" v-for="item in all_agreement_number"
-                :key="item.id">
+            <select
+              name=""
+              id=""
+              v-model="agreement_number_test"
+              @change="test()"
+            >
+              <option
+                :value="[item.agreement_number, item.client, item.id]"
+                v-for="item in all_agreement_number"
+                :key="item.id"
+              >
                 {{ item.agreement_number }} {{ item.client }} {{ item.on_date }}
               </option>
             </select>
@@ -136,7 +194,13 @@
         <tr>
           <td class="col1">Дата</td>
           <td>
-            <input type="date" id="a" class="textarea" v-model="Standard.on_date" placeholder="Дата" />
+            <input
+              type="date"
+              id="a"
+              class="textarea"
+              v-model="Standard.on_date"
+              placeholder="Дата"
+            />
           </td>
         </tr>
         <br />
@@ -144,7 +208,13 @@
         <tr>
           <td class="col1">Дата окончания</td>
           <td>
-            <input type="date" id="a" class="textarea" v-model="Standard.end_date" placeholder="Дата" />
+            <input
+              type="date"
+              id="a"
+              class="textarea"
+              v-model="Standard.end_date"
+              placeholder="Дата"
+            />
           </td>
         </tr>
         <br />
@@ -154,16 +224,30 @@
         <tr>
           <td class="col1">Клиент</td>
           <td>
-            <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Клиент" />
+            <input
+              type="text"
+              id="a"
+              class="textarea"
+              v-model="Standard.client"
+              placeholder="Клиент"
+            />
           </td>
         </tr>
         <br />
         <tr v-show="ten_visible">
           <td></td>
           <td>
-            <div class="textarea" style="height: auto; width: 100%; margin-bottom: 1%" v-show="ten_visible">
+            <div
+              class="textarea"
+              style="height: auto; width: 100%; margin-bottom: 1%"
+              v-show="ten_visible"
+            >
               <ul id="root_tenant">
-                <li v-for="item in filter_client" :key="item.id" @click="checkClient(item.client)">
+                <li
+                  v-for="item in filter_client"
+                  :key="item.id"
+                  @click="checkClient(item.client)"
+                >
                   <span>{{ item.client }}</span>
                   <hr />
                 </li>
@@ -171,37 +255,70 @@
             </div>
           </td>
         </tr>
-
       </table>
-      <button class="button Action" style="height: 30px" @click="checkingData()">Проверка введеных данных</button>
-
+      <button
+        class="button Action"
+        style="height: 30px"
+        @click="checkingData()"
+      >
+        Проверка введеных данных
+      </button>
 
       <table border="1" class="table_stavka" v-show="visible">
         <tr>
           <td style="border: 1px solid white !"></td>
           <td style="border: 1px solid black">
-            <input type="text" name="" id="departure_station" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" />
+            <input
+              type="text"
+              name=""
+              id="departure_station"
+              @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные"
+            />
           </td>
           <td style="border: 1px solid black">
-            <input type="text" name="" id="destination_station" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" />
+            <input
+              type="text"
+              name=""
+              id="destination_station"
+              @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные"
+            />
           </td>
           <td style="border: 1px solid black">
-            <input type="text" name="" id="cargo" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" />
+            <input
+              type="text"
+              name=""
+              id="cargo"
+              @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные"
+            />
           </td>
           <td style="border: 1px solid black">
-            <input type="text" name="" id="stavka" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" />
+            <input
+              type="text"
+              name=""
+              id="stavka"
+              @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные"
+            />
           </td>
           <td style="border: 1px solid black">
-            <input type="text" name="" id="nds" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" />
+            <input
+              type="text"
+              name=""
+              id="nds"
+              @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные"
+            />
           </td>
           <td style="border: 1px solid black" colspan="2">
-            <input type="text" id="distance" @keyup.enter="saveDistance($event)"
-              placeholder="скопируйте и вставьте данные" />
+            <input
+              type="text"
+              id="distance"
+              @keyup.enter="saveDistance($event)"
+              placeholder="скопируйте и вставьте данные"
+            />
           </td>
         </tr>
         <tr>
@@ -212,18 +329,29 @@
           <th style="border: 1px solid black">Ставка без НДС</th>
           <th style="border: 1px solid black">НДС</th>
           <th style="border: 1px solid black" colspan="2">Дистанция</th>
-
         </tr>
         <tr v-for="(item, index) in data" :key="index">
-          <td style="border: 1px solid black" @click="data.splice(index, 1)" class="delete"
-            :class="{ error: item.error != null }">
+          <td
+            style="border: 1px solid black"
+            @click="data.splice(index, 1)"
+            class="delete"
+            :class="{ error: item.error != null }"
+          >
             {{ item.error != null ? item?.error : index + 1 }}
           </td>
           <td style="border: 1px solid black">
-            <input style="width: 100%" type="text" v-model="item.departure_station" />
+            <input
+              style="width: 100%"
+              type="text"
+              v-model="item.departure_station"
+            />
           </td>
           <td style="border: 1px solid black">
-            <input style="width: 100%" type="text" v-model="item.destination_station" />
+            <input
+              style="width: 100%"
+              type="text"
+              v-model="item.destination_station"
+            />
           </td>
           <td style="border: 1px solid black">
             <input style="width: 100%" type="number" v-model="item.cargo" />
@@ -236,11 +364,19 @@
           </td>
 
           <td style="border: 1px solid black">
-            <input style="width: 100%" type="number" v-model="item.distance_min" />
+            <input
+              style="width: 100%"
+              type="number"
+              v-model="item.distance_min"
+            />
           </td>
 
           <td style="border: 1px solid black">
-            <input style="width: 100%" type="number" v-model="item.distance_max" />
+            <input
+              style="width: 100%"
+              type="number"
+              v-model="item.distance_max"
+            />
           </td>
         </tr>
       </table>
@@ -259,7 +395,12 @@
     </div>
 
     <TarifDirectoryCreated style="margin-top: 5%" />
-    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
+    <Notifications
+      :show="showNotify"
+      :header="notifyHead"
+      :message="notifyMessage"
+      :block-class="notifyClass"
+    />
   </div>
 </template>
 
@@ -268,7 +409,7 @@ import Loader from "@/components/loader/loader.vue";
 import { mapState } from "vuex";
 import Notifications from "@/components/notifications/Notifications.vue";
 import api from "@/api/directory";
-import api_wagon from '@/api/wagonPark';
+import api_wagon from "@/api/wagonPark";
 import TarifDirectoryCreated from "./TarifDirectoryCreated.vue";
 
 class Stavki {
@@ -304,7 +445,7 @@ export default {
       checkCompleteData: [],
       checkValueArray: [],
       stationCache: {},
-      distance_type: 'standard',
+      distance_type: "standard",
       instruction: false,
       loader: false,
       visible_agreement: false,
@@ -353,10 +494,10 @@ export default {
 
       return this.Standard.client.length > 1
         ? this.name_client.filter((item) =>
-          item.client
-            .toLowerCase()
-            .includes(this.Standard.client.toLowerCase())
-        )
+            item.client
+              .toLowerCase()
+              .includes(this.Standard.client.toLowerCase())
+          )
         : "";
     },
     filter_cargo() {
@@ -365,8 +506,8 @@ export default {
       }
       return this.cargo_user.length > 1
         ? this.name_cargo.filter((item) =>
-          item.name.toLowerCase().includes(this.cargo_user.toLowerCase())
-        )
+            item.name.toLowerCase().includes(this.cargo_user.toLowerCase())
+          )
         : "";
     },
   },
@@ -435,9 +576,6 @@ export default {
       // console.log(this.agreement_number_test)
     },
     saveDistance(event) {
-
-
-
       navigator.clipboard.readText().then((response) => {
         this.distance = response.split("\r\n");
         if (this.distance.at(-1) == "") {
@@ -486,13 +624,14 @@ export default {
       });
     },
 
-
     saveTarif(event) {
       if (
         event.target.id == "destination_station" ||
         event.target.id == "departure_station"
       ) {
-        let operationBuffer = event.target.value.replace(/ [А-Я]{2}[^ ]*/g, '  ').split("  ")
+        let operationBuffer = event.target.value
+          .replace(/ [А-Я]{2}[^ ]*/g, "  ")
+          .split("  ");
         let clear_buffer = [];
         for (let i of operationBuffer) {
           clear_buffer.push(i.trim());
@@ -503,14 +642,14 @@ export default {
         if (clear_buffer[0] == "") {
           return;
         }
-        this.WorkInClass(clear_buffer, event)
+        this.WorkInClass(clear_buffer, event);
 
         event.target.value = "";
         return;
-      } else if (event.target.id == 'cargo') {
-        let data = event.target.value.match(/\d+/g)
+      } else if (event.target.id == "cargo") {
+        let data = event.target.value.match(/\d+/g);
         if (data) {
-          let operationBuffer = data.map(Number)
+          let operationBuffer = data.map(Number);
 
           if (operationBuffer.at(-1) == "") {
             operationBuffer.pop();
@@ -518,21 +657,34 @@ export default {
           if (operationBuffer[0] == "") {
             return;
           }
-          this.WorkInClass(operationBuffer, event)
+          this.WorkInClass(operationBuffer, event);
 
           event.target.value = "";
           return;
         }
-      } else if (event.target.id == 'stavka' || event.target.id == 'nds') {
+      } else if (event.target.id == "stavka" || event.target.id == "nds") {
+        let t = event.target.value;
 
-        let t = event.target.value
+
+
+        const regex = /(\d[\d\s]*,\d{2})/g;
+        const matches = t.match(regex);
+
+        const numbers = matches.map((match) =>
+          parseFloat(match.replace(/\s/g, "").replace(",", "."))
+        );
+
+        
+
         // Разбиваем строку на массив, используя регулярное выражение для чисел с пробелами и запятой
         let all_value = t.match(/\d+(?: \d{3})*(?:,\d{2})?/g);
-
+        console.log(all_value);
         // Преобразуем каждое число, заменяя пробел на пустую строку и запятую на точку
-        all_value = all_value.map(num => parseFloat(num.replace(/ /g, '').replace(',', '.')));
-        if (all_value) {
-          let operationBuffer = all_value.map(Number)
+        all_value = all_value.map((num) =>
+          parseFloat(num.replace(/ /g, "").replace(",", "."))
+        );
+        if (numbers) {
+          let operationBuffer = numbers.map(Number);
 
           // if (operationBuffer.at(-1) == "") {
           //   operationBuffer.pop();
@@ -540,14 +692,12 @@ export default {
           if (operationBuffer[0] == "") {
             return;
           }
-          this.WorkInClass(operationBuffer, event)
+          this.WorkInClass(operationBuffer, event);
 
           event.target.value = "";
           return;
         }
-
       }
-
     },
     WorkInClass(operationBuffer, event) {
       for (let i in operationBuffer) {
@@ -587,7 +737,11 @@ export default {
           return server_response;
         }
       } catch (error) {
-        this.errorp.push(`Ошибка при получении кода6 для станции "${station_name}" на строке ${index + 1}`)
+        this.errorp.push(
+          `Ошибка при получении кода6 для станции "${station_name}" на строке ${
+            index + 1
+          }`
+        );
         return null; // Возвращаем null в случае ошибки
       }
     },
@@ -600,32 +754,46 @@ export default {
 
         if (item.destination_station) {
           try {
-            const code = await this.getStationCode(item.destination_station, index);
+            const code = await this.getStationCode(
+              item.destination_station,
+              index
+            );
             if (code !== null) {
               newItem.destination_station = code;
             }
           } catch (error) {
-            console.error(`Ошибка при получении кода6 для станции "${item.destination_station}" на индексе ${index}`, error);
+            console.error(
+              `Ошибка при получении кода6 для станции "${item.destination_station}" на индексе ${index}`,
+              error
+            );
           }
         }
 
         if (item.departure_station) {
           try {
-            const code = await this.getStationCode(item.departure_station, index);
+            const code = await this.getStationCode(
+              item.departure_station,
+              index
+            );
             if (code !== null) {
               newItem.departure_station = code;
             }
           } catch (error) {
-            console.error(`Ошибка при получении кода6 для станции "${item.departure_station}" на индексе ${index}`, error);
+            console.error(
+              `Ошибка при получении кода6 для станции "${item.departure_station}" на индексе ${index}`,
+              error
+            );
           }
         }
 
         newData.push(newItem);
       }
       if (this.errorp.length > 0) {
-        this.flagCheck = false
+        this.flagCheck = false;
         this.notifyHead = "Ошибка";
-        this.notifyMessage = this.errorp.filter(item => !item.includes('NaN'));
+        this.notifyMessage = this.errorp.filter(
+          (item) => !item.includes("NaN")
+        );
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => {
@@ -634,7 +802,7 @@ export default {
       } else {
         // this.flagCheck = true
         this.notifyHead = "Успешно";
-        this.notifyMessage = 'Ошибок нет, отправка данных возможна'
+        this.notifyMessage = "Ошибок нет, отправка данных возможна";
         this.notifyClass = "wrapper-succes";
         this.showNotify = true;
         setTimeout(() => {
@@ -646,74 +814,61 @@ export default {
     },
 
     async checkingData() {
-      this.flagCheck = false
-      this.loader = true
-      this.errorp = []
+      this.flagCheck = false;
+      this.loader = true;
+      this.errorp = [];
       try {
         this.Standard.responsible = this.uid;
         let parametrs;
         if (this.data.length == 0) {
           parametrs = [this.Standard];
-          parametrs.distance_min = []
-          parametrs.distance_max = []
-          parametrs.stavka = []
-          parametrs.nds = []
-          parametrs.distance = []
-          parametrs.departure_station = []
-          parametrs.destination_station = []
+          parametrs.distance_min = [];
+          parametrs.distance_max = [];
+          parametrs.stavka = [];
+          parametrs.nds = [];
+          parametrs.distance = [];
+          parametrs.departure_station = [];
+          parametrs.destination_station = [];
         } else {
-
-          let stationNameSet = new Set()
-          this.data.forEach(item => {
+          let stationNameSet = new Set();
+          this.data.forEach((item) => {
             if (item.destination_station) {
               stationNameSet.add(item.destination_station);
             }
             if (item.departure_station) {
-              stationNameSet.add(item.departure_station)
+              stationNameSet.add(item.departure_station);
             }
-          })
-          await Promise.all(Array.from(stationNameSet).map(async stationName => {
-            await this.getStationCode(stationName)
-          }))
+          });
+          await Promise.all(
+            Array.from(stationNameSet).map(async (stationName) => {
+              await this.getStationCode(stationName);
+            })
+          );
           for (let i in this.data) {
             // this.Standard.agreement_number = this.Standard.annex_number
-            Object.assign(this.data[i], this.Standard)
+            Object.assign(this.data[i], this.Standard);
           }
           parametrs = this.data;
         }
-        let new_data = await this.createNewData()
-        this.loader = false
-        console.log(this.flagCheck)
+        let new_data = await this.createNewData();
+        this.loader = false;
+        console.log(this.flagCheck);
         if (this.errorp.length == 0) {
-          this.flagCheck = true
-          this.checkCompleteData = new_data
-          console.log(new_data, 'я итоговые значения')
+          this.flagCheck = true;
+          this.checkCompleteData = new_data;
+          console.log(new_data, "я итоговые значения");
           this.notifyHead = "Успешно";
-          this.notifyMessage = 'Данные проверку прошли!';
+          this.notifyMessage = "Данные проверку прошли!";
           this.notifyClass = "wrapper-success";
           this.showNotify = true;
           setTimeout(() => {
             this.showNotify = false;
           }, 3000);
         }
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     closeWindow() {
       this.ten_visible = false;
@@ -729,14 +884,13 @@ export default {
     postData() {
       if (this.flagCheck == false) {
         this.notifyHead = "Ошибка";
-        this.notifyMessage =
-          "Пройдите проверку введенных";
+        this.notifyMessage = "Пройдите проверку введенных";
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => {
           this.showNotify = false;
         }, 3000);
-        return
+        return;
       }
       if (this.picked == "annex_number" && this.agreement_number_test == "") {
         this.notifyHead = "Ошибка";
@@ -762,71 +916,72 @@ export default {
         }, 3000);
         return;
       } else {
-        this.loader = true
+        this.loader = true;
 
-        console.log(this.checkCompleteData)
+        console.log(this.checkCompleteData);
         if (this.checkCompleteData.length == 0) {
           // this.loader = true
-       
+
           let Standard = {
-              'destination_station': null,
-              'departure_station': null,
-              'stavka': null,
-              'cargo': "",
-              'nds': null,
-              'distance': null,
-              'distance_min': null,
-              'distance_max': null
-          }
-          let dataStandard = [{...this.Standard, ...Standard}]
-          
-          api.postTarifData(dataStandard)
-            .then(response => {
-              this.loader = false
+            destination_station: null,
+            departure_station: null,
+            stavka: null,
+            cargo: "",
+            nds: null,
+            distance: null,
+            distance_min: null,
+            distance_max: null,
+          };
+          let dataStandard = [{ ...this.Standard, ...Standard }];
+
+          api
+            .postTarifData(dataStandard)
+            .then((response) => {
+              this.loader = false;
               // Получаю все приложения для договора
-              this.getAllAgreement()
-              this.flagCheck = false
+              this.getAllAgreement();
+              this.flagCheck = false;
               this.notifyHead = "Успешно";
-              this.notifyMessage = 'Данные отправлены';
+              this.notifyMessage = "Данные отправлены";
               this.notifyClass = "wrapper-success";
               this.showNotify = true;
               setTimeout(() => {
                 this.showNotify = false;
               }, 2000);
-            }).catch(error => {
-              this.loader = false
+            })
+            .catch((error) => {
+              this.loader = false;
               this.notifyHead = "Ошибка";
-              this.notifyMessage = 'Данные не отправлены';
+              this.notifyMessage = "Данные не отправлены";
               this.notifyClass = "wrapper-error";
               this.showNotify = true;
               setTimeout(() => {
                 this.showNotify = false;
               }, 2000);
-            })
+            });
         } else {
-
-
-          api.postTarifData(this.checkCompleteData)
-            .then(response => {
+          api
+            .postTarifData(this.checkCompleteData)
+            .then((response) => {
               //Получаю все приложения для договора
 
-              this.getAllAgreement()
-              this.flagCheck = false
+              this.getAllAgreement();
+              this.flagCheck = false;
 
-              this.loader = false
+              this.loader = false;
               this.notifyHead = "Успешно";
-              this.notifyMessage = 'Данные загружены';
+              this.notifyMessage = "Данные загружены";
               this.notifyClass = "wrapper-success";
               this.showNotify = true;
               setTimeout(() => {
                 this.showNotify = false;
               }, 2000);
-              this.data = []
+              this.data = [];
             })
-            .catch(error => {
-              this.loader = false
+            .catch((error) => {
+              this.loader = false;
               this.notifyHead = "Ошибка";
-              this.notifyMessage = 'Проверьте поле с ошибками';
+              this.notifyMessage = "Проверьте поле с ошибками";
               this.notifyClass = "wrapper-error";
               this.showNotify = true;
               setTimeout(() => {
@@ -834,8 +989,7 @@ export default {
               }, 3000);
 
               for (let i in this.data) {
-                this.data[i]['error'] = null
-
+                this.data[i]["error"] = null;
               }
               for (let i in error.response.data) {
                 this.data[error.response.data[i][0] - 1].error =
@@ -846,7 +1000,7 @@ export default {
               this.data = filter_arr.filter((item) => {
                 return item.error != null;
               });
-            })
+            });
         }
       }
     },
