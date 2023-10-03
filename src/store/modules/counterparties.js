@@ -46,7 +46,7 @@ const mutations = {
 
 const actions = {
     async [actionTypes.getCounterparties](context, { url, clear }) {
-        console.log(url, clear)
+        // console.log(url, clear)
         return new Promise((resolve, reject) => {
             if (clear) { context.commit(mutationTypes.clear) }
             context.commit(mutationTypes.getCounterpartiesStart)
@@ -54,7 +54,6 @@ const actions = {
             .then(response => {
 
                 let arr = []
-                console.log(response.data.data)
                 for(let i of response.data.data){
                    arr.push({
                     full_name: i.full_name,
@@ -68,7 +67,7 @@ const actions = {
 
                 context.commit(mutationTypes.getCounterpartiesSuccess, arr)
                 if (response.data.links.next != null) {
-                    console.log(response.data)
+                    // console.log(response.data)
                     resolve(context.dispatch(actionTypes.getCounterparties, { url: response.data.links.next.slice(21), clear: false }))
                 } else {
                     resolve(response.data)
