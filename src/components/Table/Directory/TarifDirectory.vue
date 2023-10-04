@@ -106,6 +106,26 @@
       <br />
       * Для сохранения отредатированных данных нажмите на Enter после того как
       окончили ввод <br />
+
+      <br><br>
+      * АЛГОРИТМ ДОБАВЛЕНИЯ ДОГОВОРА:
+      <ul>
+        <li>Для создания договора необходимо ввести номер договора</li>
+        <li>Выбрать дату и клиента (если при выборе клиента у вас не появляется выпадающий список, <br>
+          перезагрузите страницу и дождитесь окончания синхронизации данных (индикация в правом верхнем углу))</li>
+        <li>Нажать на кнопку "Проверка введенных данных"</li>
+        <li>После получения уведомления о проверке данных, нажать на кнопку "Отправить данные"</li>
+      </ul>
+<br>
+      * АЛГОРИТМ ДОБАВЛЕНИЯ ПРИЛОЖЕНИЯ:
+      <ul>
+        <li>Переключиться на вкладку Приложение</li>
+        <li>Выбрать из списка договор к которому необходимо прикрепить приложение</li>
+        <li>Заполнить даты и клиента</li>
+        <li>Заполнить данные в таблице</li>
+        <li>Нажать на кнопку "Проверка введенных данных"</li>
+        <li>После получения уведомления о проверке данных, нажать на кнопку "Отправить данные"</li>
+      </ul>
     </p>
     <div class="air_block">
       <div
@@ -933,13 +953,14 @@ export default {
             distance_min: null,
             distance_max: null,
           };
-          let dog_current_number = this.annex_number
-          this.Standard.agreement_number = dog_current_number
-          console.log(this.Standard.agreement_number, dog_current_number)
-          let dataStandard = [{ ...this.Standard, ...Standard }];
-          console.log(dataStandard)
+          // let dog_current_number = this.annex_number
+          // this.Standard.agreement_number = dog_current_number
+          // console.log(this.Standard.agreement_number, dog_current_number)
+          // let dataStandard = [{ ...this.Standard, ...Standard }];
+          // console.log(this.Standard)
+          // console.log('123123')
           api
-            .postTarifData(dataStandard)
+            .postTarifData([this.Standard])
             .then((response) => {
               this.loader = false;
               // Получаю все приложения для договора
