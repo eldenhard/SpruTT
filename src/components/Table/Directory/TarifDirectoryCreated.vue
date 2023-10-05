@@ -623,19 +623,25 @@ export default {
                 const promises = this.data.map(async (item) => {
                     item.attachments = groupAttachments(item.attachments);
                     if (item) {
-                        await Promise.all(item.attachments.flatMap(value => value.attachments || [])) // Ждем завершения всех асинхронных операций
+                        await Promise.all(item.attachments.flatMap(value => value.attachments || []))
                             .then(async (codes) => {
                                 for (const code of codes) {
-                                    code.departure_station_id = await this.WatchInformationData(code?.departure_station_id);
-                                    code.destination_station_id = await this.WatchInformationData(code?.destination_station_id);
+                                    if (code?.departure_station_id !== null) {
+                                        code.departure_station_id = await this.WatchInformationData(code?.departure_station_id);
+                                    }
+                                    if (code?.destination_station_id !== null) {
+                                        code.destination_station_id = await this.WatchInformationData(code?.destination_station_id);
+                                    }
                                 }
                             });
                     }
                     return item;
                 });
 
-                // Дожидаемся завершения всех промисов
-                await Promise.allSettled(promises).then(re => this.loader = false)
+                // Дожидаемся завершения всех промисов и устанавливаем this.loader = false
+                await Promise.allSettled(promises).then((results) => {
+                    this.loader = false;
+                });
             } catch (error) {
                 this.loader = false;
                 this.notifyHead = "Ошибка";

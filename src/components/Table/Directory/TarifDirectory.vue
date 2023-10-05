@@ -3,8 +3,7 @@
     <Loader :loader="loader" />
     <h3 class="explanation" style="font-size: 17px; margin-top: -1%">
       Перед использованием этого раздела обязательно выполнить
-      <a @click="instruction = !instruction">следующие действия с браузером</a
-      ><br />
+      <a @click="instruction = !instruction">следующие действия с браузером</a><br />
     </h3>
     <!-- <h3 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть инструкцию по браузеру' : 'Смотреть инструкцию  по браузеру' }}</h3> -->
     <div v-show="instruction">
@@ -17,11 +16,7 @@
       </p>
       <figure class="sign">
         <p>
-          <img
-            src="../../../assets/Draw2.png"
-            style="width: 80%; height: auto"
-            alt="Рисунок 1 - адресная строка"
-          />
+          <img src="../../../assets/Draw2.png" style="width: 80%; height: auto" alt="Рисунок 1 - адресная строка" />
         </p>
       </figure>
       <br />
@@ -31,11 +26,7 @@
       </p>
       <figure class="sign">
         <p>
-          <img
-            src="../../../assets/Draw3.png"
-            style="width: 80%; height: auto"
-            alt="Рисунок 2 - поиск данных"
-          />
+          <img src="../../../assets/Draw3.png" style="width: 80%; height: auto" alt="Рисунок 2 - поиск данных" />
         </p>
       </figure>
       <br />
@@ -46,11 +37,7 @@
       </p>
       <figure class="sign">
         <p>
-          <img
-            src="../../../assets/Draw4.png"
-            style="width: 80%; height: auto"
-            alt="Рисунок 3 - сохранение данных"
-          />
+          <img src="../../../assets/Draw4.png" style="width: 80%; height: auto" alt="Рисунок 3 - сохранение данных" />
         </p>
       </figure>
       <br />
@@ -63,17 +50,10 @@
       </p>
       <figure class="sign">
         <p>
-          <img
-            src="../../../assets/Draw5.png"
-            style="width: 80%; height: auto"
-            alt="Рисунок 3 - сохранение данных"
-          />
+          <img src="../../../assets/Draw5.png" style="width: 80%; height: auto" alt="Рисунок 3 - сохранение данных" />
         </p>
       </figure>
-      <h5
-        @click="instruction = !instruction"
-        style="cursor: pointer; text-align: left"
-      >
+      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left">
         {{ instruction ? "Свернуть инструкцию" : "Смотреть инструкцию" }}
       </h5>
     </div>
@@ -87,15 +67,11 @@
       <br />
 
       *
-      <b
-        >Данные по ставкам должны загружаться из WORD или Excel, числа должны
-        быть в строгом формате. Пример: 1 599,00 <em>(два числа после запятой обязательны!)</em></b
-      ><br />
+      <b>Данные по ставкам должны загружаться из WORD или Excel, числа должны
+        быть в строгом формате. Пример: 1 599,00 <em>(два числа после запятой обязательны!)</em></b><br />
       *
-      <b
-        >Данные по дистанциям должны быть скопированы и вставлены из WORD или
-        Excel в формате 0 - 5 6 - 8</b
-      ><br />
+      <b>Данные по дистанциям должны быть скопированы и вставлены из WORD или
+        Excel в формате 0 - 5 6 - 8</b><br />
       <!-- * Чтобы узнать название груза, стации отправления/назначения нажмите
       правой кнопкой мыши на интересующее поле, и подождите несколько секунд
       <br /> -->
@@ -109,38 +85,32 @@
 
       <br><br>
       * АЛГОРИТМ ДОБАВЛЕНИЯ ДОГОВОРА:
-      <ul>
-        <li>Для создания договора необходимо ввести номер договора</li>
-        <li>Выбрать дату и клиента (если при выборе клиента у вас не появляется выпадающий список, <br>
-          перезагрузите страницу и дождитесь окончания синхронизации данных (индикация в правом верхнем углу))</li>
-        <li>Нажать на кнопку "Проверка введенных данных"</li>
-        <li>После получения уведомления о проверке данных, нажать на кнопку "Отправить данные"</li>
-      </ul>
-<br>
-      * АЛГОРИТМ ДОБАВЛЕНИЯ ПРИЛОЖЕНИЯ:
-      <ul>
-        <li>Переключиться на вкладку Приложение</li>
-        <li>Выбрать из списка договор к которому необходимо прикрепить приложение</li>
-        <li>Заполнить даты и клиента</li>
-        <li>Заполнить данные в таблице</li>
-        <li>Нажать на кнопку "Проверка введенных данных"</li>
-        <li>После получения уведомления о проверке данных, нажать на кнопку "Отправить данные"</li>
-      </ul>
+    <ul>
+      <li>Для создания договора необходимо ввести номер договора</li>
+      <li>Выбрать дату и клиента (если при выборе клиента у вас не появляется выпадающий список, <br>
+        перезагрузите страницу и дождитесь окончания синхронизации данных (индикация в правом верхнем углу))</li>
+      <li>Нажать на кнопку "Проверка введенных данных"</li>
+      <li>После получения уведомления о проверке данных, нажать на кнопку "Отправить данные"</li>
+    </ul>
+    <br>
+    * АЛГОРИТМ ДОБАВЛЕНИЯ ПРИЛОЖЕНИЯ:
+    <ul>
+      <li>Переключиться на вкладку Приложение</li>
+      <li>Выбрать из списка договор к которому необходимо прикрепить приложение</li>
+      <li>Заполнить даты и клиента</li>
+      <li>Заполнить данные в таблице</li>
+      <li>Нажать на кнопку "Проверка введенных данных"</li>
+      <li>После получения уведомления о проверке данных, нажать на кнопку "Отправить данные"</li>
+    </ul>
     </p>
     <div class="air_block">
-      <div
-        class="air_block_header"
-        style="
+      <div class="air_block_header" style="
           display: flex !important;
           justify-content: space-between !important;
           width: 100%;
-        "
-      >
+        ">
         <h5>Данные по ставкам</h5>
-        <h6
-          v-on:click="visible = !visible"
-          style="padding-right: 4%; cursor: pointer"
-        >
+        <h6 v-on:click="visible = !visible" style="padding-right: 4%; cursor: pointer">
           {{ visible ? "Свернуть " : "Развернуть" }}
         </h6>
       </div>
@@ -152,55 +122,27 @@
           <td>№ документа</td>
           <td>
             <div style="display: flex; justify-content: space-between">
-              <input
-                type="radio"
-                id="one1"
-                value="agreement_number"
-                v-model="picked"
-              />
+              <input type="radio" id="one1" value="agreement_number" v-model="picked" />
               <label for="one1">Договор</label>
               <br />
-              <input
-                type="radio"
-                id="two2"
-                value="annex_number"
-                v-model="picked"
-              />
+              <input type="radio" id="two2" value="annex_number" v-model="picked" />
               <label for="two2">Приложение</label>
               <br />
             </div>
 
-            <input
-              type="text"
-              class="textarea"
-              v-model.trim="Standard.agreement_number"
-              :placeholder="placeholderAgreement"
-              v-show="visible_inp_ag"
-            />
-            <input
-              type="text"
-              class="textarea"
-              v-model.trim="Standard.annex_number"
-              :placeholder="placeholderAgreement"
-              v-show="visible_inp_an"
-            />
+            <input type="text" class="textarea" v-model.trim="Standard.agreement_number"
+              :placeholder="placeholderAgreement" v-show="visible_inp_ag" />
+            <input type="text" class="textarea" v-model.trim="Standard.annex_number" :placeholder="placeholderAgreement"
+              v-show="visible_inp_an" />
           </td>
         </tr>
         <br />
         <tr v-show="visible_agreement">
           <td class="col1">Все договора</td>
           <td>
-            <select
-              name=""
-              id=""
-              v-model="agreement_number_test"
-              @change="test()"
-            >
-              <option
-                :value="[item.agreement_number, item.client, item.id]"
-                v-for="item in all_agreement_number"
-                :key="item.id"
-              >
+            <select name="" id="" v-model="agreement_number_test" @change="test()">
+              <option :value="[item.agreement_number, item.client, item.id]" v-for="item in all_agreement_number"
+                :key="item.id">
                 {{ item.agreement_number }} {{ item.client }} {{ item.on_date }}
               </option>
             </select>
@@ -211,13 +153,7 @@
         <tr>
           <td class="col1">Дата</td>
           <td>
-            <input
-              type="date"
-              id="a"
-              class="textarea"
-              v-model="Standard.on_date"
-              placeholder="Дата"
-            />
+            <input type="date" id="a" class="textarea" v-model="Standard.on_date" placeholder="Дата" />
           </td>
         </tr>
         <br />
@@ -225,13 +161,7 @@
         <tr>
           <td class="col1">Дата окончания</td>
           <td>
-            <input
-              type="date"
-              id="a"
-              class="textarea"
-              v-model="Standard.end_date"
-              placeholder="Дата"
-            />
+            <input type="date" id="a" class="textarea" v-model="Standard.end_date" placeholder="Дата" />
           </td>
         </tr>
         <br />
@@ -241,30 +171,16 @@
         <tr>
           <td class="col1">Клиент</td>
           <td>
-            <input
-              type="text"
-              id="a"
-              class="textarea"
-              v-model="Standard.client"
-              placeholder="Клиент"
-            />
+            <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Клиент" />
           </td>
         </tr>
         <br />
         <tr v-show="ten_visible">
           <td></td>
           <td>
-            <div
-              class="textarea"
-              style="height: auto; width: 100%; margin-bottom: 1%"
-              v-show="ten_visible"
-            >
+            <div class="textarea" style="height: auto; width: 100%; margin-bottom: 1%" v-show="ten_visible">
               <ul id="root_tenant">
-                <li
-                  v-for="item in filter_client"
-                  :key="item.id"
-                  @click="checkClient(item.client)"
-                >
+                <li v-for="item in filter_client" :key="item.id" @click="checkClient(item.client)">
                   <span>{{ item.client }}</span>
                   <hr />
                 </li>
@@ -273,69 +189,37 @@
           </td>
         </tr>
       </table>
-      <button
-        class="button Action"
-        style="height: 30px"
-        @click="checkingData()"
-      >
+      <button class="button Action" style="height: 30px" @click="checkingData()">
         Проверка введеных данных
       </button>
 
       <table border="1" class="table_stavka" v-show="visible">
+
         <tr>
           <td style="border: 1px solid white !"></td>
           <td style="border: 1px solid black">
-            <input
-              type="text"
-              name=""
-              id="departure_station"
-              @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные"
-            />
+            <input type="text" name="" id="departure_station" @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные" />
           </td>
           <td style="border: 1px solid black">
-            <input
-              type="text"
-              name=""
-              id="destination_station"
-              @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные"
-            />
+            <input type="text" name="" id="destination_station" @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные" />
           </td>
           <td style="border: 1px solid black">
-            <input
-              type="text"
-              name=""
-              id="cargo"
-              @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные"
-            />
+            <input type="text" name="" id="cargo" @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные" />
           </td>
           <td style="border: 1px solid black">
-            <input
-              type="text"
-              name=""
-              id="stavka"
-              @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные"
-            />
+            <input type="text" name="" id="stavka" @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные" />
           </td>
           <td style="border: 1px solid black">
-            <input
-              type="text"
-              name=""
-              id="nds"
-              @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные"
-            />
+            <input type="text" name="" id="nds" @keyup.enter="saveTarif($event)"
+              placeholder="скопируйте и вставьте данные" />
           </td>
           <td style="border: 1px solid black" colspan="2">
-            <input
-              type="text"
-              id="distance"
-              @keyup.enter="saveDistance($event)"
-              placeholder="скопируйте и вставьте данные"
-            />
+            <input type="text" id="distance" @keyup.enter="saveDistance($event)"
+              placeholder="скопируйте и вставьте данные" />
           </td>
         </tr>
         <tr>
@@ -344,31 +228,24 @@
           <th style="border: 1px solid black">Станция назн.</th>
           <th style="border: 1px solid black">Груз (ЕСТНГ)</th>
           <th style="border: 1px solid black">Ставка без НДС</th>
-          <th style="border: 1px solid black">НДС</th>
+          <th style="border: 1px solid black; position: relative;">
+            НДС <select name="" id="" v-model="which_nds" style="width: 70%">
+              <option value="percent">%</option>
+              <option value="value">Сумма</option>
+            </select>
+          </th>
           <th style="border: 1px solid black" colspan="2">Дистанция</th>
         </tr>
         <tr v-for="(item, index) in data" :key="index">
-          <td
-            style="border: 1px solid black"
-            @click="data.splice(index, 1)"
-            class="delete"
-            :class="{ error: item.error != null }"
-          >
+          <td style="border: 1px solid black" @click="data.splice(index, 1)" class="delete"
+            :class="{ error: item.error != null }">
             {{ item.error != null ? item?.error : index + 1 }}
           </td>
           <td style="border: 1px solid black">
-            <input
-              style="width: 100%"
-              type="text"
-              v-model="item.departure_station"
-            />
+            <input style="width: 100%" type="text" v-model="item.departure_station" />
           </td>
           <td style="border: 1px solid black">
-            <input
-              style="width: 100%"
-              type="text"
-              v-model="item.destination_station"
-            />
+            <input style="width: 100%" type="text" v-model="item.destination_station" />
           </td>
           <td style="border: 1px solid black">
             <input style="width: 100%" type="number" v-model="item.cargo" />
@@ -381,19 +258,11 @@
           </td>
 
           <td style="border: 1px solid black">
-            <input
-              style="width: 100%"
-              type="number"
-              v-model="item.distance_min"
-            />
+            <input style="width: 100%" type="number" v-model="item.distance_min" />
           </td>
 
           <td style="border: 1px solid black">
-            <input
-              style="width: 100%"
-              type="number"
-              v-model="item.distance_max"
-            />
+            <input style="width: 100%" type="number" v-model="item.distance_max" />
           </td>
         </tr>
       </table>
@@ -412,12 +281,7 @@
     </div>
 
     <TarifDirectoryCreated style="margin-top: 5%" />
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-    />
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
   </div>
 </template>
 
@@ -457,6 +321,7 @@ export default {
   components: { Loader, Notifications, TarifDirectoryCreated },
   data() {
     return {
+      which_nds: 'value',
       errorp: [],
       flagCheck: false,
       checkCompleteData: [],
@@ -511,10 +376,10 @@ export default {
 
       return this.Standard.client.length > 1
         ? this.name_client.filter((item) =>
-            item.client
-              .toLowerCase()
-              .includes(this.Standard.client.toLowerCase())
-          )
+          item.client
+            .toLowerCase()
+            .includes(this.Standard.client.toLowerCase())
+        )
         : "";
     },
     filter_cargo() {
@@ -523,8 +388,8 @@ export default {
       }
       return this.cargo_user.length > 1
         ? this.name_cargo.filter((item) =>
-            item.name.toLowerCase().includes(this.cargo_user.toLowerCase())
-          )
+          item.name.toLowerCase().includes(this.cargo_user.toLowerCase())
+        )
         : "";
     },
   },
@@ -534,7 +399,7 @@ export default {
     this.getAllAgreement();
   },
   watch: {
- 
+
     picked() {
       if (this.picked == "agreement_number") {
         this.placeholderAgreement = "введите номер договора";
@@ -551,7 +416,7 @@ export default {
         this.Standard.agreement_number = "";
       }
     },
-    agreement_number_test(){
+    agreement_number_test() {
       console.log(this.agreement_number_test)
       this.flagCheck = false
     },
@@ -647,6 +512,7 @@ export default {
     },
 
     saveTarif(event) {
+      console.log(event)
       if (
         event.target.id == "destination_station" ||
         event.target.id == "departure_station"
@@ -685,9 +551,21 @@ export default {
           return;
         }
       } else if (event.target.id == "stavka" || event.target.id == "nds") {
+        if (event.target.id == "nds" && this.which_nds == 'percent') {
+          let percent_nds = event.target.value.split(" ")
+          if (percent_nds) {
+            let operationBuffer = percent_nds.map(Number);
+
+            if (operationBuffer[0] == "") {
+              return;
+            }
+            this.WorkInClass(operationBuffer, event);
+
+            event.target.value = "";
+            return;
+          }
+        }
         let t = event.target.value;
-
-
 
         const regex = /(\d[\d\s]*,\d{2})/g;
         const matches = t.match(regex);
@@ -696,7 +574,7 @@ export default {
           parseFloat(match.replace(/\s/g, "").replace(",", "."))
         );
 
-        
+
 
         // Разбиваем строку на массив, используя регулярное выражение для чисел с пробелами и запятой
         let all_value = t.match(/\d+(?: \d{3})*(?:,\d{2})?/g);
@@ -760,8 +638,7 @@ export default {
         }
       } catch (error) {
         this.errorp.push(
-          `Ошибка при получении кода6 для станции "${station_name}" на строке ${
-            index + 1
+          `Ошибка при получении кода6 для станции "${station_name}" на строке ${index + 1
           }`
         );
         return null; // Возвращаем null в случае ошибки
@@ -987,8 +864,11 @@ export default {
         } else {
           this.checkCompleteData.forEach(item => {
             item.agreement_number = item.annex_number
+            if(this.which_nds == 'percent'){
+              item.nds = (item.stavka * (item.nds/100)).toFixed(2)
+            }
           })
-          console.log(this.checkCompleteData)
+        
           api
             .postTarifData(this.checkCompleteData)
             .then((response) => {
