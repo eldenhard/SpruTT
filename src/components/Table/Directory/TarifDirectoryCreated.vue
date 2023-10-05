@@ -207,8 +207,7 @@
                             <td>
                                 <div class="inputcontainer">
                                     <input :id="`cargo` + item.id" v-model="item.cargo_id" type="number"
-                                        v-on:keyup.enter="submitData(item.cargo_id, item.id, 'cargo', 'cargo_load')"
-                                        @contextmenu="WatchInformationData(item.cargo_id, 'cargo')" />
+                                        v-on:keyup.enter="submitData(item.cargo_id, item.id, 'cargo', 'cargo_load')" />
                                     <div class="icon-container" :id="`cargo_load` + item.id" style="display: none">
                                         <i class="loader"></i>
                                     </div>
@@ -219,8 +218,7 @@
                             <td>
                                 <div class="inputcontainer">
                                     <input :id="`departure_station` + item.id" v-model="item.departure_station_id"
-                                        v-on:keyup.enter="submitData(item.departure_station_id, item.id, 'departure_station', 'departure_station_load')"
-                                        @contextmenu="WatchInformationData(item.departure_station_id, 'departure_station')" />
+                                        v-on:keyup.enter="submitData(item.departure_station_id, item.id, 'departure_station', 'departure_station_load')" />
                                     <div class="icon-container" :id="`departure_station_load` + item.id"
                                         style="display: none">
                                         <i class="loader"></i>
@@ -232,8 +230,7 @@
                             <td>
                                 <div class="inputcontainer">
                                     <input :id="`destination_station` + item.id" v-model="item.destination_station_id"
-                                        v-on:keyup.enter="submitData(item.destination_station_id, item.id, 'destination_station', 'destination_station_load')"
-                                        @contextmenu="WatchInformationData(item.destination_station_id, 'destination_station')" />
+                                        v-on:keyup.enter="submitData(item.destination_station_id, item.id, 'destination_station', 'destination_station_load')" />
                                     <div class="icon-container" :id="`destination_station_load` + item.id"
                                         style="display: none">
                                         <i class="loader"></i>
@@ -263,13 +260,14 @@
                             <!-- <td>Приложение {{ att.agreement_number }}</td> -->
                             <details>
                                 <summary style="width: 78.5vw;">
-                                    Приложение {{ att.agreement_number }}
+                                    Приложение {{ att.agreement_number }} <span v-if="att.attachments[0]?.on_date">от</span>
+                                    {{ att.attachments[0]?.on_date?.split('-').reverse().join('.') }}
                                 </summary>
                         <tr>
                             <th>Дейст</th>
-                            <th>Дата</th>
+                            <!-- <th>Дата</th> -->
                             <th>Дата оконч.</th>
-                            <th>Клиент</th>
+                            <!-- <th>Клиент</th> -->
                             <th>Расстояние от</th>
                             <th>Расстояние до</th>
                             <th>Ставка</th>
@@ -294,7 +292,7 @@
                                             <td>{{ childr.destination_station_id }}</td>
                                             <td>{{ IdToName(childr.responsible_id) }}</td> -->
                                 <td @click="open_modal(childr.id)" class="delete">Удалить</td>
-                                <td>
+                                <!-- <td>
                                     <div class="inputcontainer">
                                         <input :id="`on_date` + childr.id" type="date"
                                             v-model="childr.on_date" v-on:keyup.enter="
@@ -305,20 +303,19 @@
                                             <i class="loader"></i>
                                         </div>
                                     </div>
-                                </td>
+                                </td> -->
                                 <td>
                                     <div class="inputcontainer">
-                                        <input :id="`end_date` + childr.id" type="date"
-                                            v-model="childr.end_date" v-on:keyup.enter="
+                                        <input :id="`end_date` + childr.id" type="date" v-model="childr.end_date"
+                                            v-on:keyup.enter="
                                                 submitData(childr.end_date, childr.id, 'end_date', 'end_date_load')
                                                 " />
-                                        <div class="icon-container" :id="`end_date_load` + childr.id"
-                                            style="display: none">
+                                        <div class="icon-container" :id="`end_date_load` + childr.id" style="display: none">
                                             <i class="loader"></i>
                                         </div>
                                     </div>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <div class="inputcontainer">
                                         <input :id="`client` + childr.id" type="text"
                                             v-model="childr.client" v-on:keyup.enter="
@@ -329,11 +326,11 @@
                                             <i class="loader"></i>
                                         </div>
                                     </div>
-                                </td>
+                                </td> -->
                                 <td>
                                     <div class="inputcontainer">
-                                        <input :id="`distance_min` + childr.id" type="text"
-                                            v-model="childr.distance_min" v-on:keyup.enter="
+                                        <input :id="`distance_min` + childr.id" type="text" v-model="childr.distance_min"
+                                            v-on:keyup.enter="
                                                 submitData(childr.distance_min, childr.id, 'distance_min', 'distance_min_load')
                                                 " />
                                         <div class="icon-container" :id="`distance_min_load` + childr.id"
@@ -344,8 +341,8 @@
                                 </td>
                                 <td>
                                     <div class="inputcontainer">
-                                        <input :id="`distance_max` + childr.id" type="text"
-                                            v-model="childr.distance_max" v-on:keyup.enter="
+                                        <input :id="`distance_max` + childr.id" type="text" v-model="childr.distance_max"
+                                            v-on:keyup.enter="
                                                 submitData(childr.distance_max, childr.id, 'distance_max', 'distance_max_load')
                                                 " />
                                         <div class="icon-container" :id="`distance_max_load` + childr.id"
@@ -356,37 +353,31 @@
                                 </td>
                                 <td>
                                     <div class="inputcontainer">
-                                        <input :id="`stavka` + childr.id" type="text"
-                                            v-model="childr.stavka" v-on:keyup.enter="
+                                        <input :id="`stavka` + childr.id" type="text" v-model="childr.stavka"
+                                            v-on:keyup.enter="
                                                 submitData(childr.stavka, childr.id, 'stavka', 'stavka_load')
                                                 " />
-                                        <div class="icon-container" :id="`stavka_load` + childr.id"
-                                            style="display: none">
+                                        <div class="icon-container" :id="`stavka_load` + childr.id" style="display: none">
                                             <i class="loader"></i>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="inputcontainer">
-                                        <input :id="`nds` + childr.id" type="text"
-                                            v-model="childr.nds" v-on:keyup.enter="
-                                                submitData(childr.nds, childr.id, 'nds', 'nds_load')
-                                                " />
-                                        <div class="icon-container" :id="`nds_load` + childr.id"
-                                            style="display: none">
+                                        <input :id="`nds` + childr.id" type="text" v-model="childr.nds" v-on:keyup.enter="
+                                            submitData(childr.nds, childr.id, 'nds', 'nds_load')
+                                            " />
+                                        <div class="icon-container" :id="`nds_load` + childr.id" style="display: none">
                                             <i class="loader"></i>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="inputcontainer">
-                                        <input :id="`cargo` + childr.id" type="text"
-                                            v-model="childr.cargo_id"
+                                        <input :id="`cargo` + childr.id" type="text" v-model="childr.cargo_id"
                                             v-on:keyup.enter="
-                                                submitData(childr.cargo_id, childr.id, 'cargo', 'cargo_load')"
-                                            @contextmenu="WatchInformationData(childr.cargo_id, 'cargo')" />
-                                        <div class="icon-container" :id="`cargo_load` + childr.id"
-                                            style="display: none">
+                                                submitData(childr.cargo_id, childr.id, 'cargo', 'cargo_load')" />
+                                        <div class="icon-container" :id="`cargo_load` + childr.id" style="display: none">
                                             <i class="loader"></i>
                                         </div>
                                     </div>
@@ -396,8 +387,7 @@
                                         <input :id="`departure_station` + childr.id" type="text"
                                             v-model="childr.departure_station_id" v-on:keyup.enter="
                                                 submitData(childr.departure_station_id, childr.id, 'departure_station', 'departure_station_load')
-                                                "
-                                            @contextmenu="WatchInformationData(childr.departure_station_id, 'departure_station')" />
+                                                " />
                                         <div class="icon-container" :id="`departure_station_load` + childr.id"
                                             style="display: none">
                                             <i class="loader"></i>
@@ -409,8 +399,7 @@
                                         <input :id="`destination_station` + childr.id" type="text"
                                             v-model="childr.destination_station_id" v-on:keyup.enter="
                                                 submitData(childr.destination_station_id, childr.id, 'destination_station', 'destination_station_load')
-                                                "
-                                            @contextmenu="WatchInformationData(childr.destination_station_id, 'destination_station')" />
+                                                " />
                                         <div class="icon-container" :id="`destination_station_load` + childr.id"
                                             style="display: none">
                                             <i class="loader"></i>
@@ -461,6 +450,7 @@ export default {
     components: { Loader, Notifications },
     data() {
         return {
+            cache: new Map(),
             watchAnnex: true,
             cargo_search_visible: false,
             cargo: "",
@@ -528,70 +518,6 @@ export default {
         },
     },
     methods: {
-
-        WatchInformationData(value, type) {
-            event.preventDefault()
-
-            switch (type) {
-                case 'cargo':
-                    let cargo = this.cargo_code.filter(item => item.code6.includes(value))
-                    this.notifyHead = "Данные о грузе";
-                    this.notifyMessage = `Наименование: ${cargo[0]['name']}, Код6: ${cargo[0]['code6']}`;
-                    this.notifyClass = "wrapper-success";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 3500);
-                    break
-                case 'departure_station':
-                    apiStations.getCurrentStationByCode(value)
-                        .then(response => {
-                            console.log(response.data.data)
-                            this.notifyHead = "Данные о станции отправления";
-                            console.log(response.data.data)
-                            this.notifyMessage = `Наименование ${response.data.data[0].name}, Дорога ${response.data.data[0].road.name}`;
-                            this.notifyClass = "wrapper-success";
-                            this.showNotify = true;
-                            setTimeout(() => {
-                                this.showNotify = false;
-                            }, 3500);
-                        }).catch(error => {
-                            this.notifyHead = "Ошибка";
-                            this.notifyMessage = `Не найдена станция с таким кодом`;
-                            this.notifyClass = "wrapper-error";
-                            this.showNotify = true;
-                            setTimeout(() => {
-                                this.showNotify = false;
-                            }, 3500);
-                        })
-                    break
-                case 'destination_station':
-                    apiStations.getCurrentStationByCode(value)
-                        .then(response => {
-                            console.log(response.data.data)
-                            this.notifyHead = "Данные о станции назначения";
-                            this.notifyMessage = `
-                                Станция: ${response.data.data[0].name}; Дорога ${response.data.data[0].road.name}   
-                        
-                            `;
-                            this.notifyClass = "wrapper-success";
-                            this.showNotify = true;
-                            setTimeout(() => {
-                                this.showNotify = false;
-                            }, 2500);
-                        }).catch(error => {
-                            this.notifyHead = "Ошибка";
-                            this.notifyMessage = `Не найдена станция с таким кодом`;
-                            this.notifyClass = "wrapper-error";
-                            this.showNotify = true;
-                            setTimeout(() => {
-                                this.showNotify = false;
-                            }, 2500);
-                        })
-                    break
-
-            }
-        },
         deleteRow(index) {
             this.data.splice(index, 1);
         },
@@ -644,64 +570,94 @@ export default {
                 });
         },
 
-        //   Получение данных в таблицу
-        getStandardData() {
-            this.loader = true;
-            api
-                .getTarifData(this.filter_arendaData)
-                .then((response) => {
+
+        async WatchInformationData(value) {
+            if (this.cache.has(value)) {
+                return this.cache.get(value);
+            } else {
+                try {
+                    let response = await apiStations.getCurrentStationByCode(value);
+                    const result = response.data.data[0].name;
+                    this.cache.set(value, result); // Сохраняем результат в кеше
+                    return result;
+                } catch (error) {
+                    console.error(error);
                     this.loader = false
-                    this.pageNumber = response.data.page_number;
-                    this.pagination = response.data.links;
-                    this.total_pages = response.data.total_pages;
-                    this.total_objects = response.data.total_objects;
-                    this.data = response.data.data
+                    return null;
+                }
+            }
+        },
+        //   Получение данных в таблицу
+        async getStandardData() {
+            this.loader = true;
+            this.data = [];
 
-                    function groupAttachments(attachments) {
-                        const groupedAttachments = {};
+            try {
+                const response = await api.getTarifData(this.filter_arendaData);
+                this.pageNumber = response.data.page_number;
+                this.pagination = response.data.links;
+                this.total_pages = response.data.total_pages;
+                this.total_objects = response.data.total_objects;
+                this.data = response.data.data;
 
-                        attachments.forEach((attachment) => {
-                            const agreementNumber = attachment.agreement_number;
+                function groupAttachments(attachments) {
+                    const groupedAttachments = {};
 
-                            if (!groupedAttachments[agreementNumber]) {
-                                groupedAttachments[agreementNumber] = [];
-                            }
+                    attachments.forEach((attachment) => {
+                        const agreementNumber = attachment.agreement_number;
 
-                            groupedAttachments[agreementNumber].push(attachment);
-                        });
+                        if (!groupedAttachments[agreementNumber]) {
+                            groupedAttachments[agreementNumber] = [];
+                        }
 
-                        return Object.keys(groupedAttachments).map((key) => ({
-                            agreement_number: key,
-                            attachments: groupedAttachments[key],
-                        }));
-                    }
-
-                    // Обрабатываем каждый элемент данных
-                    return this.data.map((item) => {
-                        item.attachments = groupAttachments(item.attachments);
-                        console.log(this.data)
-                        return item;
+                        groupedAttachments[agreementNumber].push(attachment);
                     });
 
-                    // this.notifyHead = "Успешно";
-                    // this.notifyMessage = 'Данные загружены';
-                    // this.notifyClass = "wrapper-success";
-                    // this.showNotify = true;
-                    // setTimeout(() => {
-                    //     this.showNotify = false;
-                    // }, 2000);
-                })
-                .catch((error) => {
-                    this.loader = false
-                    this.notifyHead = "Ошибка";
-                    this.notifyMessage = error.response;
-                    this.notifyClass = "wrapper-error";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 2000);
+                    return Object.keys(groupedAttachments).map((key) => ({
+                        agreement_number: key,
+                        attachments: groupedAttachments[key],
+                    }));
+                }
+
+                // Обрабатываем каждый элемент данных
+                const promises = this.data.map(async (item) => {
+                    item.attachments = groupAttachments(item.attachments);
+                    if (item) {
+                        await Promise.all(item.attachments.flatMap(value => value.attachments || [])) // Ждем завершения всех асинхронных операций
+                            .then(async (codes) => {
+                                for (const code of codes) {
+                                    code.departure_station_id = await this.WatchInformationData(code?.departure_station_id);
+                                    code.destination_station_id = await this.WatchInformationData(code?.destination_station_id);
+                                }
+                            });
+                    }
+                    return item;
                 });
+
+                // Дожидаемся завершения всех промисов
+                await Promise.allSettled(promises).then(re => this.loader = false)
+            } catch (error) {
+                this.loader = false;
+                this.notifyHead = "Ошибка";
+                this.notifyMessage = error.response;
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 2000);
+            }
         },
+
+
+
+
+
+
+
+
+
+
+
 
 
         chechClient(item) {
@@ -795,11 +751,12 @@ export default {
   
   
 <style lang="scss" scoped>
-td{
-    input{
+td {
+    input {
         text-align: center;
     }
 }
+
 tr,
 td,
 th {
@@ -1030,4 +987,5 @@ thead {
 
 li {
     cursor: pointer;
-}</style>
+}
+</style>
