@@ -1,7 +1,7 @@
 <template>
     <div class="loader-container" v-if="loader">
       <span class="loader"></span>
-      <span class="loader-text amount">Синхронизация данных</span>
+      <span class="loader-text amount">Синхронизация данных <slot></slot></span>
     </div>
   </template>
   

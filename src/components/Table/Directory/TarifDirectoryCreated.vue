@@ -65,8 +65,9 @@
                 Запросить
             </button>
         </div>
-        <p class="amount" style="padding-top: 2%" v-show="visible">
-            Всего записей: {{ total_objects }}
+        <p class="amount" style="padding-top: 2%; display: flex; justify-content: space-between;" v-show="visible">
+            <span> Всего записей: {{ total_objects }} </span>
+            <loader_mini :loader="loader_mini">по наименованиям станций</loader_mini>
         </p>
         <div style="max-width: 100%; overflow: auto; margin-bottom: 5%">
             <table border="1" v-show="visible">
@@ -376,7 +377,8 @@
                                     <div class="inputcontainer">
                                         <input :id="`cargo` + childr.id" type="text" v-model="childr.cargo_id"
                                             v-on:keyup.enter="
-                                                submitData(childr.cargo_id, childr.id, 'cargo', 'cargo_load')" />
+                                                submitData(childr.cargo_id, childr.id, 'cargo', 'cargo_load')"
+                                            @contextmenu="getCargoNameByCode(childr.cargo_id)" />
                                         <div class="icon-container" :id="`cargo_load` + childr.id" style="display: none">
                                             <i class="loader"></i>
                                         </div>
@@ -386,7 +388,7 @@
                                     <div class="inputcontainer">
                                         <input :id="`departure_station` + childr.id" type="text"
                                             v-model="childr.departure_station_id" v-on:keyup.enter="
-                                                submitData(childr.departure_station_id, childr.id, 'departure_station', 'departure_station_load')
+                                                submitData(childr.departure_station_id, childr.id, 'departure_station', 'departure_station_load', $event)
                                                 " />
                                         <div class="icon-container" :id="`departure_station_load` + childr.id"
                                             style="display: none">
@@ -398,7 +400,7 @@
                                     <div class="inputcontainer">
                                         <input :id="`destination_station` + childr.id" type="text"
                                             v-model="childr.destination_station_id" v-on:keyup.enter="
-                                                submitData(childr.destination_station_id, childr.id, 'destination_station', 'destination_station_load')
+                                                submitData(childr.destination_station_id, childr.id, 'destination_station', 'destination_station_load', $event)
                                                 " />
                                         <div class="icon-container" :id="`destination_station_load` + childr.id"
                                             style="display: none">
@@ -446,8 +448,9 @@ import apiStations from "@/api/wagonPark"
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import { mapState } from "vuex";
+import loader_mini from "@/components/loader/loader_mini.vue";
 export default {
-    components: { Loader, Notifications },
+    components: { Loader, Notifications, loader_mini },
     data() {
         return {
             cache: new Map(),
@@ -458,6 +461,7 @@ export default {
             loader: false,
             selected_record: '',
             loader: false,
+            loader_mini: false,
             data: "",
             interval: 2,
             pagination: "",
@@ -468,7 +472,7 @@ export default {
 
             ten_visible: false,
             filter_arendaData: {
-                page_size: "1",
+                page_size: "100",
                 client: "",
                 cargo: "",
             },
@@ -569,7 +573,30 @@ export default {
                     console.log(error);
                 });
         },
-
+        getCargoNameByCode(value) {
+            event.preventDefault()
+            this.loader = true
+            apiStations.getCargoCodeSearch(value)
+                .then(response => {
+                    this.loader = false
+                    this.notifyHead = "Успешно";
+                    this.notifyMessage = response.data.data[0].name;
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 5000);
+                }).catch((error) => {
+                    this.loader = false
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = 'Груза с таким кодом не найден';
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 2000);
+                })
+        },
 
         async WatchInformationData(value) {
             if (this.cache.has(value)) {
@@ -590,6 +617,7 @@ export default {
         //   Получение данных в таблицу
         async getStandardData() {
             this.loader = true;
+            this.loader_mini = true
             this.data = [];
 
             try {
@@ -618,7 +646,7 @@ export default {
                         attachments: groupedAttachments[key],
                     }));
                 }
-
+                this.loader = false
                 // Обрабатываем каждый элемент данных
                 const promises = this.data.map(async (item) => {
                     item.attachments = groupAttachments(item.attachments);
@@ -640,7 +668,7 @@ export default {
 
                 // Дожидаемся завершения всех промисов и устанавливаем this.loader = false
                 await Promise.allSettled(promises).then((results) => {
-                    this.loader = false;
+                    this.loader_mini = false;
                 });
             } catch (error) {
                 this.loader = false;
@@ -653,14 +681,6 @@ export default {
                 }, 2000);
             }
         },
-
-
-
-
-
-
-
-
 
 
 
@@ -679,13 +699,43 @@ export default {
             this.ten_visible = false;
             this.cargo_search_visible = false;
         },
-        submitData(element, id, frst, lst) {
-            console.log(element, id, frst, lst)
+       async submitData(element, id, frst, lst, event) {
+            document.getElementById(`${lst}${id}`).style.display = "block";
+            let operationBuffer
+            if (frst == 'departure_station' || frst == 'destination_station') {
+                operationBuffer = element.replace(/ [А-Я]{2}[^ ]*/g, "  ").split("  ")[0];
+                try{
+                    let result = await apiStations.getCurrentStation(operationBuffer)
+                    if(result.data.data.length == 0){
+                        document.getElementById(`${lst}${id}`).style.display = "none"
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = 'Станция с таким наименованием не найдена';
+                        this.notifyClass = "wrapper-error";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 2500);
+                    }
+                    let findStation = result.data.data.filter((item) => {
+                        return item.name.toLowerCase() === operationBuffer.toLowerCase()
+                    })
+                    // console.log(findStation)
+                    element = findStation[0]?.code
+                }catch (error){
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = error;
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3500);
+                }
+         
+            }
             let name = frst;
             let data = [];
             data.push({ [name]: element, responsible: this.uid });
-            document.getElementById(`${lst}${id}`).style.display = "block";
-            console.log(id, data[0])
+            console.log(id, data[0], 'i am')
             api
                 .patchTarifData(id, data[0])
                 .then((response) => {
@@ -695,6 +745,11 @@ export default {
                     setTimeout(() => {
                         wagon_DOM.classList.remove("success");
                     }, 1000);
+                    // document.getElementById(`${lst}${id}`).value = operationBuffer
+                    if(event){
+                        event.target.value = operationBuffer
+                    }
+
                 })
                 .catch((error) => {
                     document.getElementById(`${lst}${id}`).style.display = "none";
@@ -704,7 +759,7 @@ export default {
                         wagon_DOM.classList.remove("error");
                     }, 1000);
                     this.notifyHead = "Ошибка";
-                    this.notifyMessage = error.response.data;
+                    this.notifyMessage = error;
                     this.notifyClass = "wrapper-error";
                     this.showNotify = true;
                     setTimeout(() => {

@@ -177,7 +177,7 @@ export default {
         .catch((error) => {
           this.loader = false;
           this.notifyHead = "Ошибка";
-          this.notifyMessage = "Данные не отправлены, повторите позже";
+          this.notifyMessage = `Данные не отправлены, повторите позже ${err}`;
           this.notifyClass = "wrapper-error";
           this.showNotify = true;
           setTimeout(() => {
