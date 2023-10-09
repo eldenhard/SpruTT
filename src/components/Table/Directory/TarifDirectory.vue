@@ -635,18 +635,44 @@ export default {
           return this.stationCache[station_name];
         } else {
           const response = await api_wagon.getCurrentStation(station_name);
-          const server_response = response.data.data[0].code;
-          this.$set(this.stationCache, station_name, server_response);
-          return server_response;
+          const server_response = response.data.data.map(item => item.name.toLowerCase()); // Получаем все имена станций в нижнем регистре
+          const lowerStationName = station_name.toLowerCase(); // Приводим ввод пользователя к нижнему регистру
+          const stationNameMatch = server_response.find(name => name === lowerStationName); // Ищем точное совпадение имени станции
+          if (stationNameMatch) {
+            const stationIndex = server_response.indexOf(stationNameMatch);
+            const stationCode6 = response.data.data[stationIndex].code; // Получаем код6 подходящего варианта
+            this.$set(this.stationCache, station_name, stationCode6);
+            return stationCode6;
+          } else {
+            throw new Error(`Совпадений для станции "${station_name}" (код) не найдено на строке ${index + 1}`);
+          }
         }
       } catch (error) {
-        this.errorp.push(
-          `Ошибка при получении кода6 для станции "${station_name}" на строке ${index + 1
-          }`
-        );
+        this.errorp.push(error.message);
         return null; // Возвращаем null в случае ошибки
       }
     },
+
+
+
+    // async getStationCode(station_name, index) {
+    //   try {
+    //     if (this.stationCache[station_name]) {
+    //       return this.stationCache[station_name];
+    //     } else {
+    //       const response = await api_wagon.getCurrentStation(station_name);
+    //       const server_response = response.data.data[0].code;
+    //       this.$set(this.stationCache, station_name, server_response);
+    //       return server_response;
+    //     }
+    //   } catch (error) {
+    //     this.errorp.push(
+    //       `Ошибка при получении кода6 для станции "${station_name}" на строке ${index + 1
+    //       }`
+    //     );
+    //     return null; // Возвращаем null в случае ошибки
+    //   }
+    // },
 
     async createNewData() {
       const newData = [];
@@ -867,11 +893,11 @@ export default {
         } else {
           this.checkCompleteData.forEach(item => {
             item.agreement_number = item.annex_number
-            if(this.which_nds == 'percent'){
-              item.nds = (item.stavka * (item.nds/100)).toFixed(2)
+            if (this.which_nds == 'percent') {
+              item.nds = (item.stavka * (item.nds / 100)).toFixed(2)
             }
           })
-        
+
           api
             .postTarifData(this.checkCompleteData)
             .then((response) => {
