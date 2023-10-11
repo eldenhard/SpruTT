@@ -389,7 +389,8 @@
                                         <input :id="`departure_station` + childr.id" type="text"
                                             v-model="childr.departure_station_id" v-on:keyup.enter="
                                                 submitData(childr.departure_station_id, childr.id, 'departure_station', 'departure_station_load', $event)
-                                                " />
+                                                " 
+                                                 @contextmenu="getStationNameByCode(childr.departure_station_id)"/>
                                         <div class="icon-container" :id="`departure_station_load` + childr.id"
                                             style="display: none">
                                             <i class="loader"></i>
@@ -401,7 +402,8 @@
                                         <input :id="`destination_station` + childr.id" type="text"
                                             v-model="childr.destination_station_id" v-on:keyup.enter="
                                                 submitData(childr.destination_station_id, childr.id, 'destination_station', 'destination_station_load', $event)
-                                                " />
+                                                "
+                                                 @contextmenu="getStationNameByCode(childr.destination_station_id)" />
                                         <div class="icon-container" :id="`destination_station_load` + childr.id"
                                             style="display: none">
                                             <i class="loader"></i>
@@ -596,6 +598,59 @@ export default {
                         this.showNotify = false;
                     }, 2000);
                 })
+        },
+        getStationNameByCode(value){
+            event.preventDefault()
+            this.loader = true
+            if(typeof value == 'number'){
+                apiStations.getCurrentStationByCode(value)
+                .then(response => {
+                    this.loader = false
+                    this.notifyHead = "Успешно";
+                    this.notifyMessage = response?.data.data[0]?.road?.name;
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                }).catch((error) => {
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = 'Железная дорога не найдена';
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 2000);
+                    console.error(error)
+                })
+            }
+            else{
+                console.log('1')
+                apiStations.getCurrentStation(value)
+                .then( response => {
+                    let all_res = response.data.data.filter(station_name => value.toLowerCase() === station_name.name.toLowerCase())
+                    this.loader = false
+                    this.notifyHead = "Успешно";
+                    this.notifyMessage = all_res[0]?.road.name;
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+
+                }).catch((error) => {
+                    this.loader = false
+                    console.error(error)
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = 'Железная дорога не найдена';
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 2000);
+                    console.error(error)
+                })
+            }
         },
 
         async WatchInformationData(value) {
