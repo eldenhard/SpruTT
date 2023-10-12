@@ -152,6 +152,14 @@ const putOtherChanges = (id, data) => {
 const deleteOtherChanges = (id) => {
     return api.delete(`${finance}/other-charges/${id}`)
 }
+
+const postDocuments = (data) => {
+    return api.post(`${documents}/docs-templates/`, data)
+}
+
+const getDocuments = (data) => {
+    return api.get(`${documents}/docs-templates?category=${data}`)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -207,5 +215,7 @@ export default {
     getOtherChanges,
     putOtherChanges,
     deleteOtherChanges,
+    postDocuments,
+    getDocuments,
 }
 

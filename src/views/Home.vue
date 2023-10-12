@@ -12,6 +12,11 @@
             <contractTable />
           </b-card-text>
         </b-tab>
+        <b-tab title="Шаблоны договоров" active>
+          <b-card-text>
+            <templates />
+          </b-card-text>
+        </b-tab>
         <b-tab title="Справочник станции" >
           <b-card-text>
             <StationsDirectory />
@@ -59,7 +64,7 @@
           <Fin_headerVue />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по ставкам" active >
+      <b-tab title="Данные по ставкам"  >
         <b-card-text>
           <TarifDirectory />
         </b-card-text>
@@ -119,6 +124,7 @@ import Fin_headerVue from '../components/Table/Directory/Fin_header.vue';
 import TarifDirectory from "@/components/Table/Directory/TarifDirectory.vue";
 import OtherChargesVue from '../components/Table/Directory/OtherCharges/OtherCharges.vue';
 import stavkipvVue from '../components/Table/Directory/StavkiPV/stavkipv.vue';
+import templates from '../components/Table/Directory/Templates/Templates.vue'
 export default {
   name: "Directory",
   components: {
@@ -136,6 +142,7 @@ export default {
     TarifDirectory,
     OtherChargesVue,
     stavkipvVue,
+    templates,
   },
   mounted() {
     document.title = "Справочники";
