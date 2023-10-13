@@ -2,7 +2,7 @@
 
   <div>
     <b-card no-body >
-      <b-tabs  align="center" style="width: 90%">
+      <b-tabs  align="center" style="width: 100%">
         <b-tab title="Общехозяйственные" active style="color: black !important"  title-item-class="w-30">
           <b-card-text >
             <farmsContract :named="'Общехозяйственные'" />
@@ -25,6 +25,13 @@
             <farmsContract :named="'С покупателем'"/>
           </b-card-text>
         </b-tab>
+
+        <b-tab title="С поставщиками" style="color: black  !important"  title-item-class="w-30">
+          <b-card-text>
+            <farmsContract :named="'С поставщиками'"/>
+          </b-card-text>
+        </b-tab>
+
 
         <b-tab title="Прочие" style="color: black  !important"  title-item-class="w-30">
           <b-card-text>

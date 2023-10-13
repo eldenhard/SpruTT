@@ -71,6 +71,7 @@
             <option value="economic">Общехозяйственные</option>
             <option value="repair">Ремонтные</option>
             <option value="buyer">С покупателем</option>
+            <option value="supply">С поставщиками</option>
             <option value="financial">Финансовые</option>
             <option value="other">Другие</option>
 

@@ -7,12 +7,12 @@
             <partnerTable />
           </b-card-text>
         </b-tab>
-        <b-tab title="Справочник договора">
-          <b-card-text>
+        <b-tab title="Справочник договора" active  style="width: 130% !important; margin-left: -10% !important;">
+          <b-card-text  >
             <contractTable />
           </b-card-text>
         </b-tab>
-        <b-tab title="Шаблоны договоров" active>
+        <b-tab title="Шаблоны договоров">
           <b-card-text>
             <templates />
           </b-card-text>
@@ -48,6 +48,9 @@
           </b-card-text>
         </b-tab>
       </b-container>
+
+
+
       <b-tab title="Данные по актам ППС" >
           <b-card-text>
             <Act />

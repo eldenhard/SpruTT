@@ -1,39 +1,28 @@
 <template>
   <div>
-    <FilterFarms @updateFilterDataFarms="updateFilterDataFarms"></FilterFarms>
-    <ModalContractCreate :id="CurrentPathApi" :btnClickHandler="getFarmContract"/>
-    <Annexes :contract="contract_number" :btnClickHandler="getFarmContract" :id="CurrentPathApi3"/>
-    <EditAnnexe :contract="contract_number" :annex="editAnnexe" :btnClickHandler="getFarmContract" :id="CurrentPathApi4"/>
-    <EditContract :contract="contract_number" :contract_data="editContract" :id="CurrentPathApi2" :btnClickHandler="getFarmContract"/>
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-      id="notif"
-    />
+    <FilterFarms @updateFilterDataFarms="updateFilterDataFarms" :btnClickHadlerEnter="getFarmContract"></FilterFarms>
+    <ModalContractCreate :id="CurrentPathApi" :btnClickHandler="getFarmContract" />
+    <Annexes :contract="contract_number" :btnClickHandler="getFarmContract" :id="CurrentPathApi3" />
+    <EditAnnexe :contract="contract_number" :annex="editAnnexe" :btnClickHandler="getFarmContract"
+      :id="CurrentPathApi4" />
+    <EditContract :contract="contract_number" :contract_data="editContract" :id="CurrentPathApi2"
+      :btnClickHandler="getFarmContract" />
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+      id="notif" />
     <Loader :loader="loader"></Loader>
-    <button
-      class="Accept"
-      @click="getFarmContract()"
-      style="width: 100%;position: relative;
-        left: 50%;
-        transform: translate(-50%, 0);">
-         Запросить договора
-    </button>
-   
+    <div class="flex_block_button">
+      <button class="Accept" @click="getFarmContract()"> Запросить договора </button>
+      <!-- <button class="Cancel" @click="CreateContract()"> Добавить договор </button> -->
+    </div>
+
+
     <br /><br />
     <p class="amount">всего записей: {{ total_objects }}</p>
     <p class="amount">всего на странице: {{ amount }}</p>
-    <button
-      class="Cancel"
-      style="border-top-left-radius: 10px; border-top-right-radius: 10px" @click="CreateContract()">
-      Добавить договор
-    </button>
-<br>
 
-    <div
-      style="
+    <br>
+
+    <div style="
         width: 100%;
         overflow-x: auto;
         overflow-y: auto;
@@ -41,14 +30,11 @@
         left: 50%;
         transform: translate(-50%, 0);
         max-height: 70vh;
-      "
-    >
-      <table
-        class="table table-sm table-bordered table-hover" id="table"
-        style="margin: 0; border: 1px solid black">
+      ">
+      <table class="table table-sm table-bordered table-hover" id="table" style="margin: 0; border: 1px solid black">
         <thead class="thead-light" style="background: #e9ecef !important">
-          <tr>
-            <th>Действие</th>
+          <tr style="position: sticky; top: 0; margin-top: -10px; padding-top: -5%; background: lightgray; z-index: 5;">
+            <!-- <th>Действие</th> -->
             <th>Номер договора</th>
             <th>Статус ТТ по договору</th>
             <th>Дата заключения</th>
@@ -59,42 +45,61 @@
             <th>Срок действия договора</th>
             <th>Пролонгация</th>
             <th>Статус</th>
-            <th>Скан-копия</th>
+            <!-- <th>Скан-копия</th> -->
             <th>Категория</th>
-            <th>Примечание</th>
+            <!-- <th>Примечание</th> -->
             <th>Контрагент</th>
             <th>Ответственный</th>
+            <th>Путь</th>
           </tr>
+
         </thead>
         <tbody id="tableMain">
           <template v-for=" el in this.farmDirecory">
-            <tr :key="el.id">
-            <td>
+            <tr :key="el.id" style="border-top: 2px solid black;">
+              <!-- <td>
                 <b-dropdown id="dropdown-1" text="Действие договор" size="sm" style="width: 95% !important;">
-                        <b-dropdown-item @click="DeleteCurrentContract(el.id)">Удалить</b-dropdown-item>
-                        <b-dropdown-item @click="EditCurrentContract(el.number, el.id)">Редактировать</b-dropdown-item>
+                  <b-dropdown-item @click="DeleteCurrentContract(el.id)">Удалить</b-dropdown-item>
+                  <b-dropdown-item @click="EditCurrentContract(el.number, el.id)">Редактировать</b-dropdown-item>
                 </b-dropdown>
-            </td>
-            <td>{{ el.number }}</td>
-            <td>{{ el.company_status }}</td>
-            <td>{{ el.created_at }}</td>
-            <td>{{ el.department }}</td>
-            <td>{{ el.contract_type }}</td>
-            <td>{{ el.contract_object }}</td>
-            <td>{{ el.fiat_amount }}</td>
-            <td>{{ el.expiration_date }}</td>
-            <td>{{el.prolongation ? 'Да' : 'Нет'}}</td>
-            <td>{{el.is_active ? 'Активный' : 'Неактивный'}}</td>
-            <td >
+              </td> -->
+              <td>{{ el.number }}</td>
+              <td>{{ el.company_status }}</td>
+              <td>{{ el?.created_at?.split(" ")[0].split('-').reverse().join(".") }}</td>
+              <td>{{ el.department }}</td>
+              <td>{{ el.contract_type }}</td>
+              <td>{{ el.contract_object }}</td>
+              <td>{{ el.fiat_amount }}</td>
+              <td>{{ el?.expiration_date?.split(" ")[0].split('-').reverse().join(".") }}</td>
+              <td>{{ el.prolongation ? 'Да' : 'Нет' }}</td>
+              <td>{{ el.is_active ? 'Активный' : 'Неактивный' }}</td>
+              <!-- <td >
              <a :href="el.scan" target="_blank" v-if="el.scan"><img style="height: 30px" src="@/assets/pdf.png" alt="скан"/></a>
-            </td>
-            <td>{{ CategoryTranslate( el.category) }}</td>
-            <td>{{ el.comment }}</td>
-            <td>{{ ChangeIdCounterByName(el.counterparty) }} </td>
-            <td>{{ ChangeIdByName(el.responsible) }}</td>
-          </tr>
-          <!-- ПРИЛОЖЕНИЯ -->
-                <template>
+            </td> -->
+              <td>{{ CategoryTranslate(el.category) }}</td>
+              <!-- <td>{{ el.comment }}</td> -->
+              <td>{{ ChangeIdCounterByName(el.counterparty) }} </td>
+              <td>{{ ChangeIdByName(el.responsible) }}</td>
+              <td>
+                <a :href="'file://' + el.scan_path">
+                  Путь к файлу
+                </a>
+              </td>
+            </tr>
+            <template>
+              <tr style="background: lightgray;">
+                <th>Приложение</th>
+                <th>Номер приложения</th>
+                <th>Дата приложения</th>
+              </tr>
+              <tr style="border-bottom: 2px solid black;">
+                <td>{{ el.annex }}</td>
+                <td>{{ el.annex_number }}</td>
+                <td>{{ el?.annex_date?.split(" ")[0].split('-').reverse().join(".") }}</td>
+              </tr>
+            </template>
+            <!-- ПРИЛОЖЕНИЯ -->
+            <!-- <template>
                   <tr>
                     <th>
                       <b-button variant="success" size="sm" style="width: 100% !important; margin: 0 !important;" @click=" CreateAnnex(el.number)">Добавить приложение</b-button>
@@ -136,27 +141,17 @@
                   <tr >
                     <th colspan="17"></th>
                   </tr>
-                </template>
-              </template>
+                </template> -->
+          </template>
         </tbody>
       </table>
     </div>
 
     <div style="display: flex; justify-content: space-around; margin-top: 2%">
-      <button
-        class="Cancel"
-        style="width: 20%"
-        v-if="prevLink"
-        @click="goToPage(prevLink)"
-      >
+      <button class="Cancel" style="width: 20%" v-if="prevLink" @click="goToPage(prevLink)">
         назад
       </button>
-      <button
-        class="Cancel"
-        style="width: 20%"
-        v-if="nextLink"
-        @click="goToPage(nextLink)"
-      >
+      <button class="Cancel" style="width: 20%" v-if="nextLink" @click="goToPage(nextLink)">
         вперед
       </button>
     </div>
@@ -182,7 +177,7 @@ import MixinTest from "@/mixins/mixin-test.js"
 export default {
   name: "PartnerTable",
   props: ['named', 'namo'],
-  mixins: [ MixinTest ],
+  mixins: [MixinTest],
   components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe, EditContract },
   data() {
     return {
@@ -218,130 +213,133 @@ export default {
       editContract: [],
     };
   },
-mounted(){
-  // this.getFarmContract();
-  this.loader = true
-  this.log()
-  setTimeout(() =>  this.loader= false, 6500)
+  mounted() {
+    // this.getFarmContract();
+    // this.loader = true
+    // this.log()
+    // setTimeout(() =>  this.loader= false, 6500)
 
-},
+  },
   methods: {
-    ChangeIdByName(id){
+    ChangeIdByName(id) {
       this.users = this.$store.state.users.users
-     const users = getUserById(this.users, id)
-     if (users[0]) {
+      const users = getUserById(this.users, id)
+      if (users[0]) {
         return users[0]?.last_name + " " + users[0]?.first_name[0] + ".";
       }
       return "";
     },
-    ChangeIdCounterByName(id){
+    ChangeIdCounterByName(id) {
       let count_data = this.$store.state.counterparties.counterparties
       const counterpart = getUserById(count_data, id)
-     if (counterpart[0]) {
+      if (counterpart[0]) {
         return counterpart[0]?.work_name;
       }
       return "";
     },
-    CategoryTranslate(name){
-        switch(name){
-          case 'economic':
-            return 'Общехозяйственные'
-          break; 
-          case 'repair':
-            return 'Ремотные'
-          break; 
-          case 'buyer':
-            return 'С покупателем'
-          break; 
-          case 'financial':
-            return 'Финансовые'
-          break; 
-          case 'other ':
-            return 'Другие'
-          break;  
-        }
+    CategoryTranslate(name) {
+      switch (name) {
+        case 'economic':
+          return 'Общехозяйственные'
+          break;
+        case 'repair':
+          return 'Ремотные'
+          break;
+        case 'buyer':
+          return 'С покупателем'
+          break;
+        case 'financial':
+          return 'Финансовые'
+          break;
+        case 'supply':
+          return 'С поставщиками'
+          break;
+        case 'other ':
+          return 'Другие'
+          break;
+      }
     },
-    DeleteCurrentContract(id){
+    DeleteCurrentContract(id) {
       this.loader = true
       api.deleteCurrentContract(id)
-      .then(response => {
-        this.DeleteGetFarmContract()
-        this.loader = false
-        this.notifyHead = "Успешно";
-        this.notifyMessage = "Договор удален";
-        this.notifyClass = "wrapper-success";
-        this.showNotify = true;
-        setTimeout(this.closeNotification, 2500);
-      }).catch(error => {
-        this.notifyHead = "Ошибка";
-        this.notifyMessage = "Договор не удален, повторите операцию";
-        this.notifyClass = "wrapper-error";
-        this.showNotify = true;
-        setTimeout(this.closeNotification, 2500);
-        this.loader = false
-      })
+        .then(response => {
+          this.DeleteGetFarmContract()
+          this.loader = false
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Договор удален";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 2500);
+        }).catch(error => {
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = "Договор не удален, повторите операцию";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 2500);
+          this.loader = false
+        })
     },
-    deleteCurrentAnnexes(id){
+    deleteCurrentAnnexes(id) {
       this.loader = true
       api.deleteCurrentAnnex(id)
-      .then(response => {
-      let table_tr = document.getElementById(id)
-      table_tr.remove();
-      this.notifyHead = "Успешно";
-      this.notifyMessage = "Приложение к договору удалено";
-      this.notifyClass = "wrapper-success";
-      this.showNotify = true;
-      setTimeout(this.closeNotification, 2500);
-        // this.getFarmContract()
-        this.loader = false
-      }).catch(error => {
-        this.notifyHead = "Ошибка";
+        .then(response => {
+          let table_tr = document.getElementById(id)
+          table_tr.remove();
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Приложение к договору удалено";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(this.closeNotification, 2500);
+          // this.getFarmContract()
+          this.loader = false
+        }).catch(error => {
+          this.notifyHead = "Ошибка";
           this.notifyMessage = "Приложение к договору не удалено, повторите операцию";
           this.notifyClass = "wrapper-error";
           this.showNotify = true;
           setTimeout(this.closeNotification, 2500);
-        this.loader = false
-      })
+          this.loader = false
+        })
     },
-    CreateContract(){
+    CreateContract() {
       this.$bvModal.show(this.CurrentPathApi) ///////////////////////
     },
-    CreateAnnex(number){
+    CreateAnnex(number) {
       this.contract_number = number
       this.$bvModal.show(this.CurrentPathApi3) /////////////////////////
     },
     // Редактирование договора
-    EditCurrentContract(number, id){
+    EditCurrentContract(number, id) {
       this.loader = true
       this.contract_number = number
       api.getCurrentContract(id)
-      .then(response => {
-        this.editContract = response.data
-        // console.log(response.data)
-        this.loader = false
-        // console.log(this.CurrentPathApi2)
-        this.$bvModal.show(this.CurrentPathApi2) ////////////////////////
-      }).catch(error => {
-        // console.log(error)
-        this.loader = false
-      })
-     
+        .then(response => {
+          this.editContract = response.data
+          // console.log(response.data)
+          this.loader = false
+          // console.log(this.CurrentPathApi2)
+          this.$bvModal.show(this.CurrentPathApi2) ////////////////////////
+        }).catch(error => {
+          // console.log(error)
+          this.loader = false
+        })
+
     },
-    OpenModalEditAnnexe(number, id){
+    OpenModalEditAnnexe(number, id) {
       this.loader = true
       this.contract_number = number
       apiRep.getContractAnnex(id)
-      .then(response => {
-        this.editAnnexe = response.data
-        this.loader = false
-        this.$bvModal.show(this.CurrentPathApi4) /////////////////////////////////
-      }).catch(error => {
-        // console.log(error)
-        this.loader = false
-      })
+        .then(response => {
+          this.editAnnexe = response.data
+          this.loader = false
+          this.$bvModal.show(this.CurrentPathApi4) /////////////////////////////////
+        }).catch(error => {
+          // console.log(error)
+          this.loader = false
+        })
     },
     getGroupName(group) {
-      return groups.groups[group] ;
+      return groups.groups[group];
     },
     goToPage(link) {
       let url = new URL(link);
@@ -353,16 +351,16 @@ mounted(){
       }
       this.getFarmContract();
     },
-    DeleteGetFarmContract(){
+    DeleteGetFarmContract() {
       api.getDirectoryFarm(this.CurrentPathApi, this.filter_farms)
         .then((response) => {
           let l_data = response.data.data;
-          l_data.forEach((item)=>{
+          l_data.forEach((item) => {
             item.hhh = true;
           })
           this.farmDirecory = l_data;
           this.total_objects = response.data.total_objects;
-          this.amount = response.data.amount;         
+          this.amount = response.data.amount;
         })
         .catch((err) => {
           console.log(err)
@@ -374,7 +372,7 @@ mounted(){
         .then((response) => {
           this.loader = false;
           let l_data = response.data.data;
-          l_data.forEach((item)=>{
+          l_data.forEach((item) => {
             item.hhh = true;
           })
           this.farmDirecory = l_data;
@@ -383,14 +381,14 @@ mounted(){
           this.amount = response.data.amount;
           this.nextLink = response.data.links.next;
           this.prevLink = response.data.links.previous;
-         
+
           this.notifyHead = "Успешно";
           this.notifyMessage = "Данные отфильтрованы";
           this.notifyClass = "wrapper-success";
           this.showNotify = true;
           setTimeout(this.closeNotification, 2500);
         })
-    .catch((err) => {
+        .catch((err) => {
           this.loader = false;
           // console.log(err)
           this.notifyHead = "Ошибка";
@@ -407,7 +405,7 @@ mounted(){
     updateFilterDataFarms(filter_farms) {
       this.filter_farms = filter_farms;
     },
- 
+
   },
   computed: {
     ...mapState({
@@ -418,76 +416,85 @@ mounted(){
     }),
 
     // Для создания договора
-CurrentPathApi(){
-      switch(this.named) {
-            case 'Общехозяйственные': 
-            return 'economic'
+    CurrentPathApi() {
+      switch (this.named) {
+        case 'Общехозяйственные':
+          return 'economic'
           break;
-            case 'Ремонтные': 
-            return 'repair'
+        case 'Ремонтные':
+          return 'repair'
           break;
-            case 'Прочие': 
-            return 'other'
+        case 'Прочие':
+          return 'other'
           break;
-          case 'С покупателем':
+        case 'С покупателем':
           return 'buyer'
           break;
-            case 'Финансовые': 
-            return 'financial'
+        case 'С поставщиками':
+          return 'supply'
           break;
-      }
-  },
-
-// Для редактиварония договора
-CurrentPathApi2(){
-      switch(this.named) {
-            case 'Общехозяйственные': 
-            return 'economic_ed_contr'
-          break;
-            case 'Ремонтные': 
-            return 'repair_ed_contr'
-          break;
-            case 'Прочие': 
-            return 'other_ed_contr'
-          break;
-            case 'Финансовые': 
-            return 'financial_ed_contr'
+        case 'Финансовые':
+          return 'financial'
           break;
       }
     },
 
-// Для создания приложения
-CurrentPathApi3(){
-      switch(this.named) {
-            case 'Общехозяйственные': 
-            return 'economic_annexes'
+    // Для редактиварония договора
+    CurrentPathApi2() {
+      switch (this.named) {
+        case 'Общехозяйственные':
+          return 'economic_ed_contr'
           break;
-            case 'Ремонтные': 
-            return 'repair_annexes'
+        case 'Ремонтные':
+          return 'repair_ed_contr'
           break;
-            case 'Прочие': 
-            return 'other_annexes'
+        case 'Прочие':
+          return 'other_ed_contr'
           break;
-            case 'Финансовые': 
-            return 'financial_annexes'
+          case 'С покупателем':
+          return 'buyer_ed_contr'
+          break;
+        case 'С поставщиками':
+          return 'supply_ed_contr'
+          break;
+        case 'Финансовые':
+          return 'financial_ed_contr'
           break;
       }
     },
 
-  // Для редактирования приложения
-    CurrentPathApi4(){
-      switch(this.named) {
-            case 'Общехозяйственные': 
-            return 'economic_ed_annexes'
+    // Для создания приложения
+    CurrentPathApi3() {
+      switch (this.named) {
+        case 'Общехозяйственные':
+          return 'economic_annexes'
           break;
-            case 'Ремонтные': 
-            return 'repair_ed_annexes'
+        case 'Ремонтные':
+          return 'repair_annexes'
           break;
-            case 'Прочие': 
-            return 'other_ed_annexes'
+        case 'Прочие':
+          return 'other_annexes'
           break;
-            case 'Финансовые': 
-            return 'financial_ed_annexes'
+        case 'Финансовые':
+          return 'financial_annexes'
+          break;
+      }
+    },
+
+    // Для редактирования приложения
+    CurrentPathApi4() {
+      switch (this.named) {
+        case 'Общехозяйственные':
+          return 'economic_ed_annexes'
+          break;
+        case 'Ремонтные':
+          return 'repair_ed_annexes'
+          break;
+        case 'Прочие':
+          return 'other_ed_annexes'
+          break;
+        case 'Финансовые':
+          return 'financial_ed_annexes'
           break;
       }
     },
@@ -496,18 +503,36 @@ CurrentPathApi3(){
 </script>
     
     
-<style>
-.red{
+<style lang="scss" scoped>
+.flex_block_button {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  margin-top: 2%;
+
+  button {
+    width: 30%;
+  }
+
+  button:nth-child(2) {
+    border-radius: 5px;
+  }
+}
+
+.red {
   display: none;
 }
+
 .amount {
   text-align: left;
 }
+
 .td-btr {
   padding: 0 !important;
   vertical-align: middle !important;
 }
-.annexes{
+
+.annexes {
   display: none;
 }
 </style>

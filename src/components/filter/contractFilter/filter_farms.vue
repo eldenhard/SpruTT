@@ -3,7 +3,7 @@
         <div style="display:flex; flex-direction:column;">
             <div class='bg'>
                 <input class='textarea' id='contract-farms' name='Pwd' v-model="filter_farms.search"
-                    @change="updateFilterDataFarms" />
+                    @change="updateFilterDataFarms" v-on:keyup.enter="LoadData()"/>
                 <br>
                 <label for='contract-farms' class='label'>Номер договора</label>
             </div>
@@ -38,6 +38,7 @@ import { mapState } from 'vuex'
 import api from '@/api/staff'
 export default {
     name: 'FilterFarms',
+    props: [ 'btnClickHadlerEnter' ],
     data() {
         return {
             filter_farms: {
@@ -53,6 +54,9 @@ export default {
         }),
     },
     methods: {
+        LoadData(){
+            this.btnClickHadlerEnter()
+        },  
         updateFilterDataFarms() {
 
             this.$emit('updateFilterDataFarms', this.filter_farms)
