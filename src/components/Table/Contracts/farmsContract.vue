@@ -51,8 +51,8 @@
         max-height: 70vh;
       ">
       <table class="table table-sm table-bordered table-hover" id="table" style="margin: 0; border: 1px solid black; width: 100%; border-collapse: collapse;">
-        <thead class="thead-light" style="background: #e9ecef !important">
-          <tr style="position: sticky; top: 0; margin-top: -10px; padding-top: -5%; background: lightgray; z-index: 5;">
+        <thead>
+          <tr style="position: sticky; top: 0; margin-top: -10px; padding-top: -5%; background: rgb(150, 150, 150); z-index: 5;">
             <!-- <th>Действие</th> -->
             <th>Контрагент</th>
             <th>Номер договора</th>
