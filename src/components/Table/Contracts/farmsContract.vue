@@ -104,7 +104,7 @@
               <!-- <td>{{ el.comment }}</td> -->
               <!-- <td>{{ ChangeIdByName(el.responsible) }}</td> -->
               <td>
-                <a :href="'file://' + el.scan_path">
+                <a :href="'file://' + el.scan_path" @click="CopyTEXT(el.scan_path)">
                   Путь к файлу
                 </a>
               </td>
@@ -210,6 +210,12 @@ export default {
 
   },
   methods: {
+    CopyTEXT(value){
+      navigator.clipboard.writeText(value)
+      .then(() => {
+        alert('Данные скопированы')
+      })
+    },
     CustomerRow(value) {
             if (value === true || value === false) {
                 return value === true ? 'Актуальный' : 'Не актуальный'
@@ -532,11 +538,7 @@ export default {
     
 <style lang="scss" scoped>
 div::-webkit-scrollbar {
-  position: absolute;
-  top: 0 !important; 
-  // margin-bottom: 15%;
-  background: red;
-  z-index: 500000;
+  transform: translateY(-1);
 }
 .flex_block_button {
   display: flex;

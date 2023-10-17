@@ -43,7 +43,7 @@
           </b-card-text>
         </b-tab>
         <b-tab title="Данные по ПР" >
-          <b-card-text style="width: 70vw !important; margin-left: -10%;" >
+          <b-card-text style="width: 60vw !important; margin-left: -15%;" >
             <OtherChargesVue />
           </b-card-text>
         </b-tab>
