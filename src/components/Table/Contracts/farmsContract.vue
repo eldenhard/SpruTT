@@ -15,7 +15,26 @@
       <!-- <button class="Cancel" @click="CreateContract()"> Добавить договор </button> -->
     </div>
 
+    <div>
+                <label for="tenant" style="color: grey">Поля таблицы
+                    <MultiSelectUni @change="updateSelectedCountries" :placeholder="'Поля таблицы'" :variants="CountrieObj"
+                        :variant-title="'value'">
+                    </MultiSelectUni>
+                </label>
 
+            </div>
+            <div style="display: flex; justify-content: start; flex-wrap: wrap;">
+            <p style="padding-left: 1%;">Выбранные поля :</p> <br>
+            <!-- <template v-if="selectedCountries"> -->
+            <template>
+
+                <span class="option_select_block_check" v-for="countrie in selectedCountries" :key="countrie.id"
+                    @click="removeselectedCountries(countrie.id)">
+                    <span style="color: black; font-size: 15px"> &#43;</span>
+                    {{ countrie.value }}
+                </span>
+            </template>
+        </div>
     <br /><br />
     <p class="amount">всего записей: {{ total_objects }}</p>
     <p class="amount">всего на странице: {{ amount }}</p>
@@ -31,26 +50,29 @@
         transform: translate(-50%, 0);
         max-height: 70vh;
       ">
-      <table class="table table-sm table-bordered table-hover" id="table" style="margin: 0; border: 1px solid black">
+      <table class="table table-sm table-bordered table-hover" id="table" style="margin: 0; border: 1px solid black; width: 100%; border-collapse: collapse;">
         <thead class="thead-light" style="background: #e9ecef !important">
           <tr style="position: sticky; top: 0; margin-top: -10px; padding-top: -5%; background: lightgray; z-index: 5;">
             <!-- <th>Действие</th> -->
-            <th>Номер договора</th>
-            <th>Статус ТТ по договору</th>
-            <th>Дата заключения</th>
-            <th>Отдел инициатора</th>
-            <th>Вид договора</th>
-            <th>Предмет договора</th>
-            <th>Сумма договора</th>
-            <th>Срок действия договора</th>
-            <th>Пролонгация</th>
-            <th>Статус</th>
-            <!-- <th>Скан-копия</th> -->
-            <th>Категория</th>
-            <!-- <th>Примечание</th> -->
             <th>Контрагент</th>
-            <th>Ответственный</th>
+            <th>Номер договора</th>
+            <!-- <th>Статус ТТ по договору</th> -->
+            <!-- <th>Дата заключения</th> -->
+            <!-- <th>Отдел инициатора</th> -->
+            <!-- <th>Вид договора</th> -->
+            <!-- <th>Предмет договора</th> -->
+            <!-- <th>Сумма договора</th> -->
+            <th>Срок действия договора</th>
+            <!-- <th>Пролонгация</th> -->
+            <!-- <th>Статус</th> -->
+            <!-- <th>Скан-копия</th> -->
+            <!-- <th>Категория</th> -->
+            <!-- <th>Примечание</th> -->
+            <!-- <th>Ответственный</th> -->
             <th>Путь</th>
+            <template v-for="countrie in selectedCountries">
+            <th :key="countrie.id">{{ countrie.value }}</th>
+</template>
           </tr>
 
         </thead>
@@ -63,28 +85,35 @@
                   <b-dropdown-item @click="EditCurrentContract(el.number, el.id)">Редактировать</b-dropdown-item>
                 </b-dropdown>
               </td> -->
+              <td>{{ el.counterparty }} </td>
+
               <td>{{ el.number }}</td>
-              <td>{{ el.company_status }}</td>
-              <td>{{ el?.created_at?.split(" ")[0].split('-').reverse().join(".") }}</td>
-              <td>{{ el.department }}</td>
-              <td>{{ el.contract_type }}</td>
-              <td>{{ el.contract_object }}</td>
-              <td>{{ el.fiat_amount }}</td>
+              <!-- <td>{{ el.company_status }}</td> -->
+              <!-- <td>{{ el?.created_at?.split(" ")[0].split('-').reverse().join(".") }}</td> -->
+              <!-- <td>{{ el.department }}</td> -->
+              <!-- <td>{{ el.contract_type }}</td> -->
+              <!-- <td>{{ el.contract_object }}</td> -->
+              <!-- <td>{{ el.fiat_amount }}</td> -->
               <td>{{ el?.expiration_date?.split(" ")[0].split('-').reverse().join(".") }}</td>
-              <td>{{ el.prolongation ? 'Да' : 'Нет' }}</td>
-              <td>{{ el.is_active ? 'Активный' : 'Неактивный' }}</td>
+              <!-- <td>{{ el.prolongation ? 'Да' : 'Нет' }}</td> -->
+              <!-- <td>{{ el.is_active ? 'Активный' : 'Неактивный' }}</td> -->
               <!-- <td >
              <a :href="el.scan" target="_blank" v-if="el.scan"><img style="height: 30px" src="@/assets/pdf.png" alt="скан"/></a>
             </td> -->
-              <td>{{ CategoryTranslate(el.category) }}</td>
+              <!-- <td>{{ CategoryTranslate(el.category) }}</td> -->
               <!-- <td>{{ el.comment }}</td> -->
-              <td>{{ ChangeIdCounterByName(el.counterparty) }} </td>
-              <td>{{ ChangeIdByName(el.responsible) }}</td>
+              <!-- <td>{{ ChangeIdByName(el.responsible) }}</td> -->
               <td>
                 <a :href="'file://' + el.scan_path">
                   Путь к файлу
                 </a>
               </td>
+             <template v-for="countrie in selectedCountries">
+                        <td  :key="countrie.id">
+                            {{ CustomerRow(el[countrie.valen]) }}
+                        </td>
+
+            </template>
             </tr>
             <template>
               <tr style="background: lightgray;">
@@ -98,50 +127,7 @@
                 <td>{{ el?.annex_date?.split(" ")[0].split('-').reverse().join(".") }}</td>
               </tr>
             </template>
-            <!-- ПРИЛОЖЕНИЯ -->
-            <!-- <template>
-                  <tr>
-                    <th>
-                      <b-button variant="success" size="sm" style="width: 100% !important; margin: 0 !important;" @click=" CreateAnnex(el.number)">Добавить приложение</b-button>
-                    </th>
-                      <th style="cursor: pointer" @click="el.hhh = !el.hhh"  v-if="el.annexes.length != 0">
-                          <img :src="el.hhh ? require('@/assets/arrow-down.png') : require('@/assets/arrow-up2.png')" alt="">
-                      </th>
-                          <template  v-if="el.annexes.length != 0">
-                            <th style="background: burlywood !important">Тип приложения</th>
-                            <th style="background: burlywood !important">Номер  приложения</th>
-                            <th style="background: burlywood !important">Дата</th>
-                            <th style="background: burlywood !important">Примечание</th>
-                            <th style="background: burlywood !important">Скан-копия</th>
-                            <th style="background: burlywood !important">Номер договора</th>
-                          </template>
-                    
-
-                  </tr>
-                  <template >
-                    <tr v-for="e in el.annexes" :key="e.id" :class="{ 'red' : el.hhh }" :id="e.id"> 
-                      <td>
-                        <b-dropdown id="dropdown-1" text="Действие приложение" size="sm" style="width: 95% !important;">
-                          <b-dropdown-item @click="deleteCurrentAnnexes(e.id)">Удалить</b-dropdown-item>
-                          <b-dropdown-item @click="OpenModalEditAnnexe(el.number, e.id)">Редактировать</b-dropdown-item>
-                        </b-dropdown>
-                      </td>
-                      <td style="border: none !important; font-style: italic">Приложение</td>
-                      <td style="background: lightgrey !important">{{ e.number }}</td>
-                      <td style="background: lightgrey !important" > {{e.doc_type }}</td>
-                      <td style="background: lightgrey !important" >{{ new Date(e.created_at).toLocaleString() }}</td>
-                      <td style="background: lightgrey !important" >{{ e.comment }}</td>
-                      <td style="background: lightgrey !important">
-                        <a :href="e.scan" target="_blank"><img src="@/assets/pdf.png" style="height: 20px"
-                        /></a>
-                      </td>
-                        <td style="background: lightgrey !important">{{ e.contract }}</td>
-                    </tr>
-                  </template>
-                  <tr >
-                    <th colspan="17"></th>
-                  </tr>
-                </template> -->
+    
           </template>
         </tbody>
       </table>
@@ -173,12 +159,13 @@ import { getUserById } from "@/helpers/getAllUsers";
 import EditAnnexe from "@/components/Table/Contracts/CreateContract/EditAnnexe.vue"
 import EditContract from "./CreateContract/EditContract.vue";
 import MixinTest from "@/mixins/mixin-test.js"
+import MultiSelectUni from '@/components/ui/MultiSelectUni.vue'
 
 export default {
   name: "PartnerTable",
   props: ['named', 'namo'],
   mixins: [MixinTest],
-  components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe, EditContract },
+  components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe, EditContract, MultiSelectUni },
   data() {
     return {
       // Для модальных окон
@@ -205,6 +192,8 @@ export default {
       filter_farms: {
         number: "",
       },
+      selectedCountriesIds: [],
+      dislocation: "",
       users: [],
       userok: [],
       // Для компонента editAnnexe
@@ -221,6 +210,20 @@ export default {
 
   },
   methods: {
+    CustomerRow(value) {
+            if (value === true || value === false) {
+                return value === true ? 'Актуальный' : 'Не актуальный'
+            } else {
+                return value
+
+            }
+        },
+    updateSelectedCountries(selected) {
+            this.selectedCountriesIds = selected
+        },
+             removeselectedCountries(id) {
+            this.selectedCountriesIds.splice(this.selectedCountriesIds.indexOf(id), 1)
+        },
     ChangeIdByName(id) {
       this.users = this.$store.state.users.users
       const users = getUserById(this.users, id)
@@ -414,7 +417,31 @@ export default {
       allGroups: (state) => state.auth.groups,
       staffGlobal: (state) => state.auth.users,
     }),
+    CountrieObj() { //1
+            const result = [
+                { value: 'Статус ТТ по договору', id: 1, valen: 'company_status' },
+                { value: 'Дата заключения', id: 2, valen: 'created_at' },
+                { value: 'Подразделение инициатора', id: 3, valen: 'department' },
+                { value: 'Ответственный', id: 4, valen: 'responsible' },
+                { value: 'Вид договора', id: 5, valen: 'contract_type' },
+                { value: 'Предмет договора', id: 6, valen: 'contract_object' },
+                { value: 'Сумма договора', id: 7, valen: 'fiat_amount' },
+                { value: 'Пролонгация', id: 8, valen: 'prolongation' },
+                { value: 'Статус', id: 9, valen: 'status' },
+              
+            ]
 
+            result.sort((a, b) => {
+                const valueA = a.value.toLowerCase();
+                const valueB = b.value.toLowerCase();
+                return valueA.localeCompare(valueB); // Сравнение строк с учетом регистра
+            });
+
+            return result;
+        },
+        selectedCountries() { //2
+            return this.CountrieObj.filter(el => this.selectedCountriesIds.includes(el.id))
+        },
     // Для создания договора
     CurrentPathApi() {
       switch (this.named) {
@@ -504,6 +531,13 @@ export default {
     
     
 <style lang="scss" scoped>
+div::-webkit-scrollbar {
+  position: absolute;
+  top: 0 !important; 
+  // margin-bottom: 15%;
+  background: red;
+  z-index: 500000;
+}
 .flex_block_button {
   display: flex;
   justify-content: space-between;
