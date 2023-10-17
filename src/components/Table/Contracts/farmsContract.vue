@@ -54,24 +54,24 @@
         <thead>
           <tr style="position: sticky; top: 0; margin-top: -10px; padding-top: -5%; background: rgb(150, 150, 150); z-index: 5;">
             <!-- <th>Действие</th> -->
-            <th>Контрагент</th>
-            <th>Номер договора</th>
+            <th style="background: rgb(150, 150, 150) !important;">Контрагент</th>
+            <th style="background: rgb(150, 150, 150) !important;">Номер договора</th>
             <!-- <th>Статус ТТ по договору</th> -->
             <!-- <th>Дата заключения</th> -->
             <!-- <th>Отдел инициатора</th> -->
             <!-- <th>Вид договора</th> -->
             <!-- <th>Предмет договора</th> -->
             <!-- <th>Сумма договора</th> -->
-            <th>Срок действия договора</th>
+            <th style="background: rgb(150, 150, 150) !important;">Срок действия договора</th>
             <!-- <th>Пролонгация</th> -->
             <!-- <th>Статус</th> -->
             <!-- <th>Скан-копия</th> -->
             <!-- <th>Категория</th> -->
             <!-- <th>Примечание</th> -->
             <!-- <th>Ответственный</th> -->
-            <th>Путь</th>
+            <th style="background: rgb(150, 150, 150) !important;">Путь</th>
             <template v-for="countrie in selectedCountries">
-            <th :key="countrie.id">{{ countrie.value }}</th>
+            <th :key="countrie.id" style="background: rgb(150, 150, 150) !important;">{{ countrie.value }}</th>
 </template>
           </tr>
 
