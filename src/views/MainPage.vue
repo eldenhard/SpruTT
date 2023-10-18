@@ -134,7 +134,7 @@ export default {
   background: #F8F9FA !important;
 }
 a:hover{
-  color: rgba(97, 5, 5, 0.1)!important;
+  color: rgba(66, 66, 66, 0.5)!important;
 }
 
 a.router-link{

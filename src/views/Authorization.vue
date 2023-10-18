@@ -41,8 +41,8 @@ export default {
 
   data() {
     return {
-      email: "a.reshetilo@tehtrans.com",
-      password: "Tehtrans2022",
+      email: "",
+      password: "",
       watch_hello: false,
       backgr: true,
       showNotify: false,
