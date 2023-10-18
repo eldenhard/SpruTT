@@ -71,7 +71,7 @@ export default new Router({
 
     {
       path: '*',
-      component: errorPage
+      component: main_page
     }
   ]
 })

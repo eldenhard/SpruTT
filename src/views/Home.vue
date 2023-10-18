@@ -7,7 +7,7 @@
             <partnerTable />
           </b-card-text>
         </b-tab>
-        <b-tab title="Справочник договора" active  style="width: 120% !important; margin-left: -10% !important;">
+        <b-tab title="Справочник договоры" active  style="width: 120% !important; margin-left: -10% !important;">
           <b-card-text  >
             <contractTable />
           </b-card-text>
