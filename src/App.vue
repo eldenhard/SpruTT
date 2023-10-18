@@ -69,7 +69,8 @@ export default {
   },
   // Синхронизация
   async mounted() {
-    this.loader_mini = true
+    if (document.title != 'Транспортные')
+      this.loader_mini = true
     // console.log(this.token)
     try {
       localStorage.setItem('accessToken', JSON.stringify(this.token))
@@ -104,4 +105,5 @@ export default {
 
 <style>
 @import './style/style.css';
+
 </style>
