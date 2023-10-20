@@ -15,12 +15,12 @@
       <!-- <button class="Cancel" @click="CreateContract()"> Добавить договор </button> -->
     </div>
 
-    <div>
-                <label for="tenant" style="color: grey">Поля таблицы
+    <div style=" width: 15vw;">
+             
                     <MultiSelectUni @change="updateSelectedCountries" :placeholder="'Поля таблицы'" :variants="CountrieObj"
                         :variant-title="'value'">
                     </MultiSelectUni>
-                </label>
+
 
             </div>
             <div style="display: flex; justify-content: start; flex-wrap: wrap;">

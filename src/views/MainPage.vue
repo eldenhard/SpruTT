@@ -47,7 +47,13 @@
       <router-link to="/personnel-service">
         <div class="main_page__block block_main_page__blocks__inform">
           <img src="../assets//inform.png" alt="Справочная информаиця">
-          <span> Справочная информаиця</span>
+          <span> Справочная информация</span>
+        </div>
+      </router-link>
+      <router-link to="/home">
+        <div class="main_page__block block_main_page__blocks__inform">
+          <img src="../assets//inform.png" alt="Справочная информаиця">
+          <span> Администрирование</span>
         </div>
       </router-link>
     </div>
@@ -56,16 +62,18 @@
 <script>
 export default {
   data() {
-    return {
-
-    }
+    return {};
+  },
+  mounted() {
+    this.alignLastRow();
   },
   methods: {
     OpenPath(url) {
       window.location.href(`/${url}`)
-    }
-  }
-}
+    },
+
+  },
+};
 </script>
 <style lang="scss" scoped>
 .block_main_page {
@@ -94,6 +102,7 @@ export default {
 }
 
 .main_page__block {
+
   width: 30vw;
   height: 25vh;
   border-radius: 10px;

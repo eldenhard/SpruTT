@@ -430,7 +430,7 @@ export default {
         .getAllDocuments()
         .then((response) => {
           let data = response.data.data;
-          console.log(data);
+          // console.log(data);
           let arr = [];
           for (let i in data) {
             arr.push({

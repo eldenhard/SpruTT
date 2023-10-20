@@ -157,8 +157,8 @@ const postDocuments = (data) => {
     return api.post(`${documents}/docs-templates/`, data)
 }
 
-const getDocuments = (data) => {
-    return api.get(`${documents}/docs-templates?category=${data}`)
+const getDocuments = (data, filter) => {
+    return api.get(`${documents}/docs-templates?category=${data}`, {params: filter})
 }
 export default {
     getAllcounterparties,

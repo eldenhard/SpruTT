@@ -27,9 +27,9 @@
             <router-link to="/report" class="router-links">Отчеты</router-link>
           </b-nav-item>
 
-          <b-nav-item>
+          <!-- <b-nav-item>
             <router-link to="/personnel-service" class="router-links">Кадровая служба</router-link>
-          </b-nav-item>
+          </b-nav-item> -->
 
           <b-nav-item>
             <router-link to="/key-facts" class="router-links">Ключевые факты</router-link>
@@ -43,6 +43,9 @@
             <router-link to="/fines" class="router-links">Штрафы</router-link>
           </b-nav-item>
 
+          <b-nav-item>
+            <router-link to="/personnel-service" class="router-links">Справочная информация</router-link>
+          </b-nav-item>
    
 
           <li class="nav-item" style="padding-top: 1px">
@@ -55,6 +58,14 @@
               <div class="circle" v-if="notifications_queue">
                 <span class="circle_notif">{{ count }}</span>
               </div>
+            </i>
+
+          </li>
+
+          <li class="nav-item" style="padding-top: 1px; margin-left: auto !important; float: right; position: absolute; right: 0;" >
+            <i class=" block nav-link">
+              <img src="@/assets/logo2.png" height="10" alt="Логотип компании" style="margin-left: auto;" >
+    
             </i>
 
           </li>

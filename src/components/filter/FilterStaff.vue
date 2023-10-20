@@ -2,23 +2,23 @@
     <div class="filterStaff">
         <div style="display:flex; flex-direction:column; ">
             <div class='bg'>
-                <input class='textarea' id='input-filter-staff1' name='Pwd' v-model="filter_staff.search" @change="updateFilterDataStaff" />
+                <input class='textarea' id='input-filter-staff1' name='Pwd' v-model="filter_staff.search" @change="updateFilterDataStaff" style="background: white;"/>
                 <br>
-                <label for='input-filter-staff1' class='label'>Данные сотрудника</label>
+                <label for='input-filter-staff1' class='label' style="background: white;">Данные сотрудника</label>
             </div>
 
         </div>
         <div style="display:flex; flex-direction:column">
             <div class='bg'>
                 <select class='textarea' id='input-filter-staff2' name='Pwd' v-model="filter_staff.groups"
-                    @change="updateFilterDataStaff">
+                    @change="updateFilterDataStaff" style="background: white;">
                     <option value="">Все отделы</option>
                     <option v-for="groupsFilter in groupsFilterStaff" :key="groupsFilter.id" :value="groupsFilter.id">
                         {{ groupsFilter.name }}
                     </option>
                 </select>
                 <br>
-                <label for='input-filter-staff2' class='label'>Выберите отдел</label>
+                <label for='input-filter-staff2' class='label ' style="background: white;">Выберите отдел</label>
             </div>
 
         </div>
@@ -34,17 +34,18 @@
 }
 
 .filterStaff {
-    width: 80% !important;
+    width: 90% !important;
     display: flex;
     justify-content: space-around;
     /* border-radius: 50px; */
-    background: #EFEFEF !important;
-    box-shadow: 20px 20px 60px #cecece,
+    background: #ffffff !important;
+    box-shadow: 20px 20px 60px #ebebeb,
         -20px -20px 60px #f2f2f2;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
     margin: 1% 0;
+    border-radius: 10px;
 }
 </style>
 

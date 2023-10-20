@@ -12,6 +12,29 @@
             <contractTable />
           </b-card-text>
         </b-tab>
+
+        <b-tab title="Типовые формы документов" @click="$refs.child1.getData('Типовые формы документов')">
+          <b-card-text>
+            <allformdocument :typeDocument="'Типовые формы документов'" ref="child1"/>
+          </b-card-text>
+        </b-tab>
+        <b-tab title="Учредительные документы"  @click="$refs.child2.getData('Учредительные документы')">
+          <b-card-text>
+            <allformdocument :typeDocument="'Учредительные документы'" ref="child2"/>
+          </b-card-text>
+        </b-tab>
+        <b-tab title="Локально нормативные акты" @click="$refs.child3.getData('Локально нормативные акты')">
+          <b-card-text>
+            <allformdocument :typeDocument="'Локально нормативные акты'" ref="child3"/>
+          </b-card-text>
+        </b-tab>
+        <b-tab title="Приказы и распоряжения"  @click="$refs.child4.getData('Приказы и распоряжения')">
+          <b-card-text>
+            <allformdocument :typeDocument="'Приказы и распоряжения'" ref="child4"/>
+          </b-card-text>
+        </b-tab>
+
+
         <b-tab title="Шаблоны договоров">
           <b-card-text>
             <templates />
@@ -128,6 +151,7 @@ import TarifDirectory from "@/components/Table/Directory/TarifDirectory.vue";
 import OtherChargesVue from '../components/Table/Directory/OtherCharges/OtherCharges.vue';
 import stavkipvVue from '../components/Table/Directory/StavkiPV/stavkipv.vue';
 import templates from '../components/Table/Directory/Templates/Templates.vue'
+import allformdocument from '../components/Table/Directory/AllFormsDocument/AllFormDocument.vue'
 export default {
   name: "Directory",
   components: {
@@ -146,6 +170,7 @@ export default {
     OtherChargesVue,
     stavkipvVue,
     templates,
+    allformdocument,
   },
   mounted() {
     document.title = "Справочники";

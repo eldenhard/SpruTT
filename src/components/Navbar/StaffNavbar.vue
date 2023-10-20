@@ -9,7 +9,7 @@
           ">
         <b-container class="bv-example-row">
           <b-tab title="Сотрудники" active @click="newTab('Сотрудники')"> </b-tab>
-
+          <b-tab title="Сотрудники2" active @click="newTab('Сотрудники2')"> </b-tab>
         </b-container>
       </b-tabs>
     </b-card>
