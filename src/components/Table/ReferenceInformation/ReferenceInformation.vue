@@ -13,8 +13,15 @@ import users from '@/store/modules/users';
                         </MultiSelectUni>
                     </div>
                     <div class="btn_group">
-                        <button class="Accept button" @click="getInformationEmployee(filter_staff)">Запросить</button>
+                      <div v-if="user_name.length > 0">
+                        <button class="Action button" >Редатировать сотрудника</button>
+                        <button class="btn-danger button" style="margin-top: 6%;">Удалить сотрудника</button>
+                      </div>
+                      <div>
+                        <button class="Accept button" @click="getInformationEmployee(filter_staff)">Запросить данные</button>
                         <button class="Request button">Добавить сотрудника</button>
+                      </div>
+                        
                     </div>
                 </div>
             </div>
@@ -30,7 +37,6 @@ import users from '@/store/modules/users';
                 </template>
             </div>
             <div class="main_block__content">
-
                 <table>
                     <thead>
                         <tr>
@@ -57,7 +63,7 @@ import users from '@/store/modules/users';
                             <td>{{ user.email }}</td>
                             <template v-for="cell in selectedTableCells">
                                 <td :key="cell.id">
-                                    {{ user[cell?.valen] }}
+                                    {{ WhatTheData(user[cell?.valen], cell?.valen) }}
                                 </td>
 
                             </template>
@@ -65,6 +71,9 @@ import users from '@/store/modules/users';
                     </tbody>
                 </table>
             </div>
+     
+          
+           
         </div>
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
 
@@ -132,8 +141,9 @@ export default {
             this.filter_staff = filter_staff;
         },
         getInformationEmployee(name_employee = null) {
+            console.log(this.allGroups)
             if (!name_employee) {
-                console.log('1')
+
                 this.notifyHead = "Ошибка";
                 this.notifyMessage = "Введите пользователя";
                 this.notifyClass = "wrapper-error";
@@ -154,6 +164,18 @@ export default {
         removeSelectedCells(id) {
             this.selectedTableCellsIds.splice(this.selectedTableCellsIds.indexOf(id), 1)
         },
+        WhatTheData(value, type) {
+            if (type == 'groups') {
+                return this.allGroups.filter(item => item.id == value)[0].name
+            } else if (type == 'manager') {
+                let data = this.staffGlobal.filter(item => item.id == value)[0]
+                return `${data.last_name} ${data.first_name.slice(0, 1)}. `
+                return value
+                // return this.staffGlobal.filter(item => item.id == value)[0].name
+            } else {
+                return value
+            }
+        }
     }
 }
 </script>
@@ -193,13 +215,14 @@ img {
             width: 90%;
             margin-left: 5%;
             display: flex;
-            flex-direction: column;
-
+            justify-content: flex-end;
+            gap: 5%;
             button {
                 margin-left: auto;
-                width: 25%;
-                height: 40px;
-                margin-top: 2%;
+                width: 100%;
+                height: 45px;
+                margin-top: 8%;
+              
             }
         }
     }
