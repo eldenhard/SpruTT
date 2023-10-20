@@ -1,8 +1,7 @@
-
-import users from '@/store/modules/users';
 <template>
     <div>
         <Loader :loader="loader"></Loader>
+        <modal_window :what_is_ref="currentModal" :title_modal="title_currentModal" />
         <div class="main_block">
             <div class="main_block__filter">
                 <FilterStaff @updateFiltersStaff="updateFiltersStaff"></FilterStaff>
@@ -13,15 +12,20 @@ import users from '@/store/modules/users';
                         </MultiSelectUni>
                     </div>
                     <div class="btn_group">
-                      <div v-if="user_name.length > 0">
-                        <button class="Action button" >Редатировать сотрудника</button>
-                        <button class="btn-danger button" style="margin-top: 6%;">Удалить сотрудника</button>
-                      </div>
-                      <div>
-                        <button class="Accept button" @click="getInformationEmployee(filter_staff)">Запросить данные</button>
-                        <button class="Request button">Добавить сотрудника</button>
-                      </div>
-                        
+                        <div v-if="user_name.length > 0">
+                            <button class="Action button"
+                                @click="ModalWindow('change_user', 'Редактирование сотрудника')">Редатировать
+                                сотрудника</button>
+                            <button class="btn-danger button" style="margin-top: 6%;"
+                                @click="ModalWindow('dekete_user', 'Удаление сотрудника')">Удалить сотрудника</button>
+                        </div>
+                        <div>
+                            <button class="Accept button" @click="getInformationEmployee(filter_staff)">Запросить
+                                данные</button>
+                            <button class="Request button"
+                                @click="ModalWindow('add_user', 'Добавление сотрудника')">Добавить сотрудника</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -71,9 +75,9 @@ import users from '@/store/modules/users';
                     </tbody>
                 </table>
             </div>
-     
-          
-           
+
+
+
         </div>
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
 
@@ -85,19 +89,21 @@ import { mapState } from "vuex";
 import api from '../../../api/staff'
 import FilterStaff from "@/components/filter/FilterStaff.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
-import { getGroupName } from "@/helpers/getGroupName";
-import { getUserById } from "@/helpers/getAllUsers";
 import Loader from "@/components/loader/loader.vue";
 import MultiSelectUni from '@/components/ui/MultiSelectUni.vue'
-
+import modal_window from "./modal_window.vue";
+//this.$refs["delete-user"].show();
 export default {
-    components: { FilterStaff, Notifications, Loader, MultiSelectUni },
+    components: { FilterStaff, Notifications, Loader, MultiSelectUni, modal_window },
     data() {
         return {
             filter_staff: "",
             loader: false,
             user_name: "",
             selectedTableCellsIds: "",
+            // Для модального окна
+            currentModal: "",
+            title_currentModal: "",
             // Уведомления
             showNotify: false,
             notifyHead: "",
@@ -175,7 +181,15 @@ export default {
             } else {
                 return value
             }
-        }
+        },
+        ModalWindow(refs, title) {
+            this.currentModal = refs
+            this.title_currentModal = title
+            this.$nextTick(() => {
+                this.$bvModal.show(refs);
+            });
+        },
+
     }
 }
 </script>
@@ -217,12 +231,13 @@ img {
             display: flex;
             justify-content: flex-end;
             gap: 5%;
+
             button {
                 margin-left: auto;
                 width: 100%;
                 height: 45px;
                 margin-top: 8%;
-              
+
             }
         }
     }
@@ -245,5 +260,4 @@ img {
         overflow: auto;
         /* Добавьте прокрутку */
     }
-}
-</style>
+}</style>
