@@ -33,10 +33,10 @@
             <b-card-text v-if="i.name === 'Тариф по сопредельным территориям'">
               <TerritoryTable />
             </b-card-text>
-            <div v-if="i.name === 'Сотрудники'">
+            <!-- <div v-if="i.name === 'Сотрудники'">
                 <StaffTable />
-              </div>
-              <div v-if="i.name === 'Сотрудники2'">
+              </div> -->
+              <div v-if="i.name === 'Сотрудники'">
                 <ReferenceInformation />
               </div>
             <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">

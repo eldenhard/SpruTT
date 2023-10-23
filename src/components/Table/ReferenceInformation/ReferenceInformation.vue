@@ -1,7 +1,7 @@
 <template>
     <div>
         <Loader :loader="loader"></Loader>
-        <modal_window :what_is_ref="currentModal" :title_modal="title_currentModal" />
+        <modal_window :what_is_ref="currentModal" :title_modal="title_currentModal" :info="info_user_modal" @getData="getInformationEmployee(filter_staff)"/>
         <div class="main_block">
             <div class="main_block__filter">
                 <FilterStaff @updateFiltersStaff="updateFiltersStaff"></FilterStaff>
@@ -14,10 +14,10 @@
                     <div class="btn_group">
                         <div v-if="user_name.length > 0">
                             <button class="Action button"
-                                @click="ModalWindow('change_user', 'Редактирование сотрудника')">Редатировать
+                                @click="ModalWindow('change_user', 'Редактирование сотрудника', user_name)">Редатировать
                                 сотрудника</button>
                             <button class="btn-danger button" style="margin-top: 6%;"
-                                @click="ModalWindow('dekete_user', 'Удаление сотрудника')">Удалить сотрудника</button>
+                                @click="ModalWindow('delete_user', 'Удаление сотрудника', user_name)">Удалить сотрудника</button>
                         </div>
                         <div>
                             <button class="Accept button" @click="getInformationEmployee(filter_staff)">Запросить
@@ -56,18 +56,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="user in user_name" :key="user.id">
+                        <!-- <tr>
+                            <td v-if="user_name.length == 0" colspan="6">Данные не найдены</td>
+                        </tr> -->
+                        <tr @click="open_watch_modal('Просмотр сотрудника', user_name)">
                             <td>
-                                <img :src="user.photo" alt="фото пользователя">
+                                <img v-if="user_name[0] && user_name[0].photo" :src="user_name[0].photo" alt="фото пользователя">
                             </td>
-                            <td>{{ user.last_name }}</td>
-                            <td>{{ user.first_name }}</td>
-                            <td>{{ user.middle_name }}</td>
-                            <td>{{ user.phone_corp }}</td>
-                            <td>{{ user.email }}</td>
+                            <td>{{ user_name[0]?.last_name }}</td>
+                            <td>{{ user_name[0]?.first_name }}</td>
+                            <td>{{ user_name[0]?.middle_name }}</td>
+                            <td>{{ user_name[0]?.phone_corp  }}</td>
+                            <td>{{ user_name[0]?.email }}</td>
                             <template v-for="cell in selectedTableCells">
                                 <td :key="cell.id">
-                                    {{ WhatTheData(user[cell?.valen], cell?.valen) }}
+                                    {{ WhatTheData(user_name[0][cell?.valen], cell?.valen) }}
                                 </td>
 
                             </template>
@@ -100,6 +103,7 @@ export default {
             filter_staff: "",
             loader: false,
             user_name: "",
+            info_user_modal: null,
             selectedTableCellsIds: "",
             // Для модального окна
             currentModal: "",
@@ -126,16 +130,12 @@ export default {
                 { value: 'Внутренний номер', id: 4, valen: 'inner_number' },
                 { value: 'Время работы', id: 5, valen: 'schedule' },
                 { value: 'Начальник', id: 6, valen: 'manager' },
-
-
             ]
-
             result.sort((a, b) => {
                 const valueA = a.value.toLowerCase();
                 const valueB = b.value.toLowerCase();
                 return valueA.localeCompare(valueB); // Сравнение строк с учетом регистра
             });
-
             return result;
         },
         selectedTableCells() { //2
@@ -147,9 +147,7 @@ export default {
             this.filter_staff = filter_staff;
         },
         getInformationEmployee(name_employee = null) {
-            console.log(this.allGroups)
             if (!name_employee) {
-
                 this.notifyHead = "Ошибка";
                 this.notifyMessage = "Введите пользователя";
                 this.notifyClass = "wrapper-error";
@@ -157,10 +155,13 @@ export default {
                 setTimeout(() => this.showNotify = false, 2500)
                 return
             }
+            this.loader = true
             api.getAllStaff(name_employee)
                 .then(response => {
                     this.user_name = response.data.data
+                    this.loader = false
                 }).catch((error) => {
+                    this.loader = false
                     console.error(error)
                 })
         },
@@ -175,20 +176,30 @@ export default {
                 return this.allGroups.filter(item => item.id == value)[0].name
             } else if (type == 'manager') {
                 let data = this.staffGlobal.filter(item => item.id == value)[0]
-                return `${data.last_name} ${data.first_name.slice(0, 1)}. `
-                return value
-                // return this.staffGlobal.filter(item => item.id == value)[0].name
+                return `${data?.last_name ?? ""} ${data?.first_name?.slice(0, 1) ?? ""}`
             } else {
                 return value
             }
         },
-        ModalWindow(refs, title) {
+        ModalWindow(refs, title, info) {
             this.currentModal = refs
             this.title_currentModal = title
+            this.info_user_modal = info
             this.$nextTick(() => {
                 this.$bvModal.show(refs);
             });
         },
+        open_watch_modal(refs, val){
+            if(this.user_name.length == 0){
+                return
+            }
+            this.currentModal = refs
+            this.title_currentModal = refs
+            this.info_user_modal = val
+            this.$nextTick(() => {
+                this.$bvModal.show(refs);
+            });
+        }
 
     }
 }
@@ -260,4 +271,5 @@ img {
         overflow: auto;
         /* Добавьте прокрутку */
     }
-}</style>
+}
+</style>

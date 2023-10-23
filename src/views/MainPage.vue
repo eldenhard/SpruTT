@@ -50,12 +50,12 @@
           <span> Справочная информация</span>
         </div>
       </router-link>
-      <router-link to="/home">
+      <!-- <router-link to="/home">
         <div class="main_page__block block_main_page__blocks__inform">
           <img src="../assets//inform.png" alt="Справочная информаиця">
           <span> Администрирование</span>
         </div>
-      </router-link>
+      </router-link> -->
     </div>
   </div>
 </template>
