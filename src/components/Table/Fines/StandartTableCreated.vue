@@ -612,7 +612,7 @@ export default {
 
 
 
-<style lang="scss" scoped>
+<style  scoped>
 tr,
 td,
 th {
