@@ -29,7 +29,8 @@
             <template>
 
                 <span class="option_select_block_check" v-for="countrie in selectedCountries" :key="countrie.id"
-                    @click="removeselectedCountries(countrie.id)">
+                   >
+                   <!--  @click="removeselectedCountries(countrie.id)" -->
                     <span style="color: black; font-size: 15px"> &#43;</span>
                     {{ countrie.value }}
                 </span>
@@ -227,9 +228,9 @@ export default {
     updateSelectedCountries(selected) {
             this.selectedCountriesIds = selected
         },
-             removeselectedCountries(id) {
-            this.selectedCountriesIds.splice(this.selectedCountriesIds.indexOf(id), 1)
-        },
+        //      removeselectedCountries(id) {
+        //     this.selectedCountriesIds.splice(this.selectedCountriesIds.indexOf(id), 1)
+        // },
     ChangeIdByName(id) {
       this.users = this.$store.state.users.users
       const users = getUserById(this.users, id)
