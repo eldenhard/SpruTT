@@ -1,7 +1,8 @@
 <template>
     <div>
         <Loader :loader="loader"></Loader>
-        <modal_window :what_is_ref="currentModal" :title_modal="title_currentModal" :info="info_user_modal" @getData="getInformationEmployee(filter_staff)"/>
+        <modal_window :what_is_ref="currentModal" :title_modal="title_currentModal" :info="info_user_modal"
+            @getData="getInformationEmployee(filter_staff)" />
         <div class="main_block">
             <div class="main_block__filter">
                 <FilterStaff @updateFiltersStaff="updateFiltersStaff"></FilterStaff>
@@ -17,7 +18,8 @@
                                 @click="ModalWindow('change_user', 'Редактирование сотрудника', user_name)">Редатировать
                                 сотрудника</button>
                             <button class="Delete button" style="margin-top: 6%;"
-                                @click="ModalWindow('delete_user', 'Удаление сотрудника', user_name)">Удалить сотрудника</button>
+                                @click="ModalWindow('delete_user', 'Удаление сотрудника', user_name)">Удалить
+                                сотрудника</button>
                         </div>
                         <div>
                             <button class="Accept button" @click="getInformationEmployee(filter_staff)">Запросить
@@ -61,12 +63,13 @@
                         </tr> -->
                         <tr @click="open_watch_modal('Просмотр сотрудника', user_name)">
                             <td>
-                                <img v-if="user_name[0] && user_name[0].photo" :src="user_name[0].photo" alt="фото пользователя">
+                                <img v-if="user_name[0] && user_name[0].photo" :src="user_name[0].photo"
+                                    alt="фото пользователя">
                             </td>
                             <td>{{ user_name[0]?.last_name }}</td>
                             <td>{{ user_name[0]?.first_name }}</td>
                             <td>{{ user_name[0]?.middle_name }}</td>
-                            <td>{{ user_name[0]?.phone_corp  }}</td>
+                            <td>{{ user_name[0]?.phone_corp }}</td>
                             <td>{{ user_name[0]?.email }}</td>
                             <template v-for="cell in selectedTableCells">
                                 <td :key="cell.id">
@@ -158,11 +161,15 @@ export default {
             this.loader = true
             api.getAllStaff(name_employee)
                 .then(response => {
-                    let regex = 'http'
-                    let data = response.data.data
+                    let regex = 'http://10.1.5.20/'
+                    this.user_name = response.data.data
                     // this.user_name[0]['photo'] =  data[0].photo.replace(regex, 'https')
-                    data[0]['photo'].replace(regex, 'https')
-                    this.user_name = data
+                    this.user_name.forEach((element) => {
+                        if (element.photo != null) {
+                            element.photo = element.photo.replace(regex, "");
+                        }
+                    });
+                    console.log(this.user_name)
                     this.loader = false
                 }).catch((error) => {
                     this.loader = false
@@ -193,8 +200,8 @@ export default {
                 this.$bvModal.show(refs);
             });
         },
-        open_watch_modal(refs, val){
-            if(this.user_name.length == 0){
+        open_watch_modal(refs, val) {
+            if (this.user_name.length == 0) {
                 return
             }
             this.currentModal = refs
@@ -211,60 +218,65 @@ export default {
 
 
 <style scoped>
-
 img {
-  max-width: 50%;
-  height: auto;
-  padding: 1%;
+    max-width: 50%;
+    height: auto;
+    padding: 1%;
 }
 
 .main_block {
-  width: 100%;
-  height: auto;
-  min-height: 40vh;
-  border-radius: 15px;
-  background: #ffffff;
-  box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
-  position: relative;
-  left: 50%;
-  transform: translate(-50%, 0);
-  padding: 1%;
+    width: 100%;
+    height: auto;
+    min-height: 40vh;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+    padding: 1%;
 }
+
 .main_block .main_block__filter {
-  width: 100%;
+    width: 100%;
 }
+
 .main_block .main_block__filter .action_group {
-  width: 90%;
-  margin-left: 5%;
-  display: flex;
-  justify-content: space-evenly;
+    width: 90%;
+    margin-left: 5%;
+    display: flex;
+    justify-content: space-evenly;
 }
+
 .main_block .main_block__filter .btn_group {
-  width: 90%;
-  margin-left: 5%;
-  display: flex;
-  justify-content: flex-end;
-  gap: 5%;
+    width: 90%;
+    margin-left: 5%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5%;
 }
+
 .main_block .main_block__filter .btn_group button {
-  margin-left: auto;
-  width: 100%;
-  height: 45px;
-  margin-top: 8%;
+    margin-left: auto;
+    width: 100%;
+    height: 45px;
+    margin-top: 8%;
 }
+
 .main_block .main_block__content {
-  display: flex;
-  justify-content: center;
-  max-width: 90%;
-  overflow: auto;
-  margin-left: 5%;
-  overflow: auto;
-  /* Добавьте прокрутку */
+    display: flex;
+    justify-content: center;
+    max-width: 90%;
+    overflow: auto;
+    margin-left: 5%;
+    overflow: auto;
+    /* Добавьте прокрутку */
 }
+
 .main_block .main_block__content table {
-  margin-top: 2%;
+    margin-top: 2%;
 }
+
 .main_block .main_block__content table th {
-  background: lightgray;
-}
-</style>
+    background: lightgray;
+}</style>
