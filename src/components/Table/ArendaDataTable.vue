@@ -445,15 +445,7 @@ export default {
     isSelected(itemId) {
       return this.selectedItems.includes(itemId)
     },
-    // addRowToDelete(id) {
-    //   let index = this.all_checkbox.indexOf(id)
-    //   if (index === -1) {
-    //     this.all_checkbox.push(id)
-    //   } else {
-    //     this.all_checkbox.splice(index, 1)
-    //   }
-    //   console.log(this.all_checkbox)
-    // },
+  
     open_modal(id) {
       this.selected_record = id
       this.$bvModal.show('bv-modal-example')
