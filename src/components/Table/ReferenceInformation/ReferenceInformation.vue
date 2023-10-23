@@ -163,7 +163,7 @@ export default {
                     // this.user_name[0]['photo'] =  data[0].photo.replace(regex, 'https')
                     data[0]['photo'].replace(regex, 'https')
                     this.user_name = data
-                    // this.loader = false
+                    this.loader = false
                 }).catch((error) => {
                     this.loader = false
                     console.error(error)
