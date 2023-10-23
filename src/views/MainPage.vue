@@ -72,7 +72,7 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .block_main_page {
   background: url(../assets/back_img.png) no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -94,8 +94,8 @@ export default {
 .block_main_page__blocks {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem; // Добавляем отступ между блоками
-  justify-content: center; // Выравниваем все блоки по центру
+  gap: 2rem; 
+  justify-content: center;
 }
 
 .main_page__block {
@@ -107,23 +107,21 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  // background: rgba(170, 32, 32, 0.5);
+  
   background: rgba(66, 66, 66, 0.5);
   font-family: 'Arial Black' sans-serif;
   transition: transform 0.3s;
-
-  &:hover {
-    transform: translate(0, -2%);
-
-  }
-
-  span {
-    font-family: 'Arial Black' sans-serif;
+}
+.main_page__block span{
+  font-family: 'Arial Black' sans-serif;
     color: white;
     font-size: 18px;
     margin-top: 2%;
     font-weight: 600;
-  }
+}
+.main_page__block:hover{
+  transform: translate(0, -2%);
+
 }
 .router-links {
   color: black;

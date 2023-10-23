@@ -533,28 +533,36 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-a:nth-child(1){
+<style scoped>a:nth-child(1) {
   color: #1D67AC !important;
   cursor: pointer;
-  &:hover{
-    text-decoration: underline !important;
-  }
 }
-h3:nth-child(n+2),h5{
-  color: rgb(0, 0, 0);
-  &:hover{
-    text-decoration: underline
-  }
+
+a:nth-child(1):hover {
+  text-decoration: underline !important;
 }
-h3:nth-child(1){
+
+h3:nth-child(n+2), h5 {
+  color: black;
+}
+
+h3:nth-child(n+2):hover {
+  text-decoration: underline;
+}
+
+h5:hover {
+  text-decoration: underline;
+}
+
+h3:nth-child(1) {
   background: #FCE4CC;
   color: #8F5C49;
   text-align: center;
-  padding-top: 2%
+  padding-top: 2%;
 }
+
 .WatchAllArenda {
-  color: rgb(146, 146, 146);
+  color: #929292;
   margin-top: 15%;
   font-size: 25px;
   cursor: pointer;
@@ -587,20 +595,19 @@ th {
 }
 
 .delete_col:hover {
-  background: rgb(226, 226, 226);
+  background: #e2e2e2;
   font-weight: 500;
 }
 
 li {
   cursor: pointer;
-
-  &:hover {
-    font-weight: 600;
-  }
+}
+li:hover {
+  font-weight: 600;
 }
 
 .delete_col:hover {
-  background: rgb(226, 226, 226);
+  background: #e2e2e2;
 }
 
 th {
@@ -622,7 +629,6 @@ input {
 .filter {
   display: flex;
   justify-content: space-between;
-  // align-items: baseline;
 }
 
 .col3 {

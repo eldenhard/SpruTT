@@ -536,7 +536,7 @@ export default {
 </script>
     
     
-<style lang="scss" scoped>
+<style  scoped>
 div::-webkit-scrollbar {
   transform: translateY(-1);
 }
@@ -545,16 +545,13 @@ div::-webkit-scrollbar {
   justify-content: space-between;
   flex-direction: row-reverse;
   margin-top: 2%;
-
-  button {
-    width: 30%;
-  }
-
-  button:nth-child(2) {
+}
+.flex_block_button button{
+  width: 30%;
+}
+.flex_block_button  button:nth-child(2) {
     border-radius: 5px;
   }
-}
-
 .red {
   display: none;
 }
