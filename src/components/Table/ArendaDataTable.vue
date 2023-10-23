@@ -445,7 +445,7 @@ export default {
     isSelected(itemId) {
       return this.selectedItems.includes(itemId)
     },
-  
+
     open_modal(id) {
       this.selected_record = id
       this.$bvModal.show('bv-modal-example')
@@ -516,7 +516,7 @@ export default {
           // let row = document.getElementById(id);
           // row.parentNode.removeChild(row);
           this.$bvModal.hide('bv-modal-example')
-       
+
         }
 
       }
@@ -939,7 +939,7 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity .5s;
@@ -975,7 +975,6 @@ li:hover {
 
 input {
   width: 100%;
-  // font-size: 20px;
   box-sizing: border-box;
 }
 
@@ -1173,12 +1172,12 @@ input {
   justify-content: space-between;
   width: 100%;
 
-  button {
+  
+}
+.btn-group button {
     width: 30%;
     margin-top: 5%;
   }
-}
-
 .table-content2 {
   width: 90% !important;
 }
@@ -1190,18 +1189,18 @@ input {
   flex-wrap: wrap;
   border: 1px solid lightgrey;
   padding: 1%;
+}
 
-  label {
-    color: rgb(146, 146, 146);
-  }
+.table-content label {
+  color: rgb(146, 146, 146);
+}
 
-  button {
-    height: 40px;
-    width: 30%;
-    margin-top: 2.5%;
-    float: right !important;
-    margin-left: auto;
-  }
+.table-content button {
+  height: 40px;
+  width: 30%;
+  margin-top: 2.5%;
+  float: right !important;
+  margin-left: auto;
 }
 
 .WatchAllArenda {
@@ -1214,5 +1213,4 @@ input {
 tr:not(:has(th)):hover {
   background: lightgrey;
   border: 2px solid black;
-}
-</style>
+}</style>
