@@ -16,7 +16,7 @@
                             <button class="Action button"
                                 @click="ModalWindow('change_user', 'Редактирование сотрудника', user_name)">Редатировать
                                 сотрудника</button>
-                            <button class="btn-danger button" style="margin-top: 6%;"
+                            <button class="Delete button" style="margin-top: 6%;"
                                 @click="ModalWindow('delete_user', 'Удаление сотрудника', user_name)">Удалить сотрудника</button>
                         </div>
                         <div>
