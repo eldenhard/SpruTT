@@ -228,7 +228,7 @@ export default {
             this.selectedCountriesIds = selected
         },
              removeselectedCountries(id) {
-            this.selectedCountriesIds.splice(this.selectedCountriesIds.indexOf(id), 1)
+            this.selectedCountriesIds.splice(this.selectedCountriesIds?.indexOf(id), 1)
         },
     ChangeIdByName(id) {
       this.users = this.$store.state.users.users
