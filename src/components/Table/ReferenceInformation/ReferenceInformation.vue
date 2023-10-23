@@ -158,8 +158,12 @@ export default {
             this.loader = true
             api.getAllStaff(name_employee)
                 .then(response => {
-                    this.user_name = response.data.data
-                    this.loader = false
+                    let regex = 'http'
+                    let data = response.data.data
+                    // this.user_name[0]['photo'] =  data[0].photo.replace(regex, 'https')
+                    data[0]['photo'].replace(regex, 'https')
+                    this.user_name = data
+                    // this.loader = false
                 }).catch((error) => {
                     this.loader = false
                     console.error(error)
