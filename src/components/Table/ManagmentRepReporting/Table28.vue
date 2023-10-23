@@ -216,35 +216,32 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style  scoped>
 .filter_block {
-	display: flex;
-	flex-direction: column;
-	width: 30%;
-	border: none;
-	margin-left: auto;
-
-	input,
-	select {
-		width: 100%;
-		margin-top: 2%;
-		height: 40px;
-	}
-
-	button {
-		margin-top: 2%;
-	}
-
-	label {
-		color: grey;
-	}
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  border: none;
+  margin-left: auto;
 }
-.whatData{
-	&:hover{
-		background: lightgray;
-	}
+.filter_block input,
+.filter_block select {
+  width: 100%;
+  margin-top: 2%;
+  height: 40px;
 }
-td{
-	white-space: nowrap;
+.filter_block button {
+  margin-top: 2%;
+}
+.filter_block label {
+  color: grey;
+}
+
+.whatData:hover {
+  background: lightgray;
+}
+
+td {
+  white-space: nowrap;
 }
 </style>

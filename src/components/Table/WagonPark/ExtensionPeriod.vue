@@ -186,69 +186,65 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style  scoped>
 .watchInformation {
-    margin-top: 2%;
-    margin-left: 1%;
-    margin-right: 1%;
+  margin-top: 2%;
+  margin-left: 1%;
+  margin-right: 1%;
 }
 
 .air_block {
-    width: 65%;
-    height: auto;
-    min-height: 40vh;
-    border-radius: 15px;
-    background: #ffffff;
-    box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
+  width: 65%;
+  height: auto;
+  min-height: 40vh;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
 tr,
 td,
 th {
-    border: 1px solid black;
-
+  border: 1px solid black;
 }
 
 .table-content {
-    margin-top: 2%;
-    display: flex;
-    justify-content: space-between;
-    gap: 5%;
-    flex-wrap: wrap;
-    border: 1px solid lightgrey;
-    padding: 1%;
-
-    label {
-        color: rgb(146, 146, 146);
-    }
-
-    button {
-        height: 45px;
-        width: 20%;
-        margin-top: 3%;
-        float: right !important;
-        margin-left: auto;
-    }
+  margin-top: 2%;
+  display: flex;
+  justify-content: space-between;
+  gap: 5%;
+  flex-wrap: wrap;
+  border: 1px solid lightgrey;
+  padding: 1%;
+}
+.table-content label {
+  color: #929292;
+}
+.table-content button {
+  height: 45px;
+  width: 20%;
+  margin-top: 3%;
+  float: right !important;
+  margin-left: auto;
 }
 
 .mini {
-    height: 45px;
+  height: 45px;
 }
 
 .WatchAllArenda {
-    color: rgb(146, 146, 146);
-    margin-top: 20%;
-    padding: 1%;
-    font-size: 25px;
-    cursor: pointer;
-    outline: none;
-
-    &:hover {
-        outline: none;
-        text-decoration: none;
-    }
+  color: #929292;
+  margin-top: 20%;
+  padding: 1%;
+  font-size: 25px;
+  cursor: pointer;
+  outline: none;
+}
+.WatchAllArenda:hover {
+  outline: none;
+  text-decoration: none;
 }
 </style>

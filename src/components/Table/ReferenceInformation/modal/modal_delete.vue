@@ -59,30 +59,27 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style  scoped>
 div {
-    text-align: center;
+  text-align: center;
 }
 
 .question {
-    text-align: center;
-    font-size: 24px;
-
+  text-align: center;
+  font-size: 24px;
 }
 
 .data {
-    font-size: 19px;
-
+  font-size: 19px;
 }
 
 .btn_group {
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 6%;
-
-    button {
-        width: 25%;
-        border-radius: 5px;
-    }
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 6%;
+}
+.btn_group button {
+  width: 25%;
+  border-radius: 5px;
 }
 </style>

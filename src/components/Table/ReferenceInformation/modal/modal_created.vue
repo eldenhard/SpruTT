@@ -174,61 +174,62 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+@charset "UTF-8";
 select,
 input {
-    width: 100%;
-    /* Задаем 100% ширины для инпутов и селектов */
-    height: 2rem;
-    /* Задаем высоту, которая вам подходит */
-    margin: 0;
-    background: white;
-    max-width: 10vw;
-    border-radius: 5px;
+  width: 100%;
+  /* Задаем 100% ширины для инпутов и селектов */
+  height: 2rem;
+  /* Задаем высоту, которая вам подходит */
+  margin: 0;
+  background: white;
+  max-width: 10vw;
+  border-radius: 5px;
 }
 
-input[type="email"] {
-    outline: none;
-    border: none;
+input[type=email] {
+  outline: none;
+  border: none;
 }
 
 .creat_block {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  height: 50vh;
 }
 
 .img_block {
-    background: rgb(230, 230, 230);
-    height: 100%;
-    flex: 3 0 auto;
-    display: flex;
-    flex-direction: column;
-    flex-basis: 30%;
-    max-height: 100%;
-
-    justify-content: center;
-    label {
-        margin-left: 25%;
-    }
-    img {
-        max-width: 100%;
-        max-height: 80%;
-        object-fit: cover;
-    }
+  background: #e6e6e6;
+  height: 100%;
+  flex: 3 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 30%;
+  max-height: 100%;
+  justify-content: center;
+}
+.img_block label {
+  margin-left: 25%;
+}
+.img_block img {
+  max-width: 100%;
+  max-height: 80%;
+  object-fit: cover;
 }
 
 .data_block {
-    background: lightgray;
-    height: 100%;
-    flex: 2 0 auto;
+  background: lightgray;
+  height: 100%;
+  flex: 2 0 auto;
 }
 
 .creat_block__first {
-    display: flex;
-    justify-content: center;
-    gap: 2%;
-    margin-top: 2%;
-}</style>
+  display: flex;
+  justify-content: center;
+  gap: 2%;
+  margin-top: 2%;
+}
+</style>

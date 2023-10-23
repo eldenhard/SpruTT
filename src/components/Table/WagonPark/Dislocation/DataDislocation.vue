@@ -205,33 +205,30 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style  scoped>
 .filter_block {
-    display: flex;
-    flex-direction: column;
-    margin-left: auto;
-    width: 30%;
-    border: none;
-
-    input {
-        width: 100%;
-    }
-
-    textarea {
-        width: 100%;
-    }
-
-    label {
-        color: grey;
-    }
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  width: 30%;
+  border: none;
+}
+.filter_block input {
+  width: 100%;
+}
+.filter_block textarea {
+  width: 100%;
+}
+.filter_block label {
+  color: grey;
 }
 
 td {
-    padding: 10px;
-    white-space: nowrap;
+  padding: 10px;
+  white-space: nowrap;
 }
 
 th {
-    padding: 10px;
+  padding: 10px;
 }
 </style>

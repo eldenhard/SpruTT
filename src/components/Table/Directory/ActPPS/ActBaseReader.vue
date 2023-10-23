@@ -664,8 +664,8 @@ export default {
   },
 };
 </script>
+<style scoped>
 
-<style  scoped>
 li {
   cursor: pointer;
 }
@@ -708,9 +708,13 @@ th {
   flex-wrap: wrap;
   border: 1px solid lightgrey;
   padding: 1%;
-  gap: 2% label;
-  gap-color: #929292;
+  gap: 2%;
 }
+
+.filter label {
+  color: #929292;
+}
+
 .filter button {
   height: 40px;
   width: 30%;

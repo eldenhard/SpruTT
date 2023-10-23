@@ -280,7 +280,7 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
+<style scoped>
 .serviceTable {
   margin-top: 2%;
   width: 25%;
@@ -313,14 +313,12 @@ tr:hover {
 .dataAct {
   display: flex;
   flex-direction: column;
-
-  label {
-    width: 100%;
-  }
-
-  input {
-    width: 100%;
-  }
+}
+.dataAct label {
+  width: 100%;
+}
+.dataAct input {
+  width: 100%;
 }
 
 .getDataExcel {
@@ -329,35 +327,32 @@ tr:hover {
   position: relative;
   margin-left: auto !important;
   flex-direction: column;
-
-  textarea {
-    width: 100%;
-    margin-top: 2%;
-  }
-
-  button {
-    margin-top: 2%;
-    width: 100%;
-  }
+}
+.getDataExcel textarea {
+  width: 100%;
+  margin-top: 2%;
+}
+.getDataExcel button {
+  margin-top: 2%;
+  width: 100%;
 }
 
 .radio {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid rgb(238, 238, 238);
+  border: 1px solid #eeeeee;
   border-radius: 5px;
   padding: 1%;
   gap: 5%;
-
-  label {
-    font-size: 16px;
-    font-weight: bold;
-  }
+}
+.radio label {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .deleteRow {
-  background: rgb(255, 176, 162);
+  background: #ffb0a2;
   color: grey !important;
 }
 

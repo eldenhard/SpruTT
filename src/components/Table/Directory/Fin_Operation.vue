@@ -1270,7 +1270,7 @@ console.log(this.my_data)
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .isError {
   color: red;
 }
@@ -1282,31 +1282,29 @@ tr:hover {
 .content-counter {
   display: flex;
   justify-content: space-between;
-
-  label {
-    text-align: left;
-    color: gray;
-  }
-
-  input {
-    border: #bdc3c7 0.1rem solid !important;
-    width: 20rem !important;
-    height: 3rem !important;
-  }
 }
+.content-counter label {
+  text-align: left;
+  color: gray;
+}
+.content-counter input {
+  border: #bdc3c7 0.1rem solid !important;
+  width: 20rem !important;
+  height: 3rem !important;
+}
+
 .isToday {
   background: orange;
 }
+
 .collapsed {
   position: absolute;
-  background: rgb(50, 50, 50);
+  background: #323232;
   top: 0;
   right: 0;
   height: 100%;
   width: 12%;
-  // margin-top: -25% !important;
   padding: 5px 10px;
-  // text-align: center;
 }
 
 td,
@@ -1327,15 +1325,14 @@ th {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-
-  button {
-    width: 15%;
-    margin-right: 2%;
-  }
+}
+.content_header button {
+  width: 15%;
+  margin-right: 2%;
 }
 
 .col1 {
-  background: rgb(243, 243, 243);
+  background: #f3f3f3;
   font-family: "Montserrat", sans-serif;
   color: black;
   font-weight: bold;
@@ -1343,13 +1340,12 @@ th {
 }
 
 .col2 {
-  background: rgb(243, 243, 243);
+  background: #f3f3f3;
   font-family: "Montserrat", sans-serif;
   color: black;
-
-  &:hover {
-    background: lightcyan;
-  }
+}
+.col2:hover {
+  background: lightcyan;
 }
 
 input {

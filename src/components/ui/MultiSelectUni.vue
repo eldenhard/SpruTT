@@ -23,7 +23,7 @@
     </div>
   </template>
   
-  <style lang="scss" scoped>
+  <style scoped>
   .multipleSelection {
     width: 25vw;
     position: relative;

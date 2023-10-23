@@ -360,7 +360,7 @@ export default {
 
 
 
-<style lang="scss" scoped>
+<style  scoped>
 tr:hover {
   border: 2px solid rgb(104, 104, 104);
 }
@@ -398,7 +398,6 @@ input {
   0% {
     transform: rotate(0deg);
   }
-
   100% {
     transform: rotate(360deg);
   }

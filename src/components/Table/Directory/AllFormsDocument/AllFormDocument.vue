@@ -112,8 +112,9 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
+<style scoped>
 .filter_block {
     display: flex;
     justify-content: space-between;
-}</style>
+}
+</style>

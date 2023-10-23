@@ -206,70 +206,61 @@ export default {
 </script>
 
 
-<style lang="scss" scoped>
+<style scoped>
+
 img {
-    max-width: 50%;
-    height: auto;
-    padding: 1%
+  max-width: 50%;
+  height: auto;
+  padding: 1%;
 }
 
 .main_block {
-    width: 100%;
-    height: auto;
-    min-height: 40vh;
-    border-radius: 15px;
-    background: #ffffff;
-    box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-    padding: 1%;
-    // overflow: hidden;
-
-    .main_block__filter {
-        width: 100%;
-
-        .action_group {
-            width: 90%;
-            margin-left: 5%;
-            display: flex;
-            justify-content: space-evenly;
-        }
-
-        .btn_group {
-            width: 90%;
-            margin-left: 5%;
-            display: flex;
-            justify-content: flex-end;
-            gap: 5%;
-
-            button {
-                margin-left: auto;
-                width: 100%;
-                height: 45px;
-                margin-top: 8%;
-
-            }
-        }
-    }
-
-    .main_block__content {
-        display: flex;
-        justify-content: center;
-        max-width: 90%;
-        overflow: auto;
-        margin-left: 5%;
-
-        table {
-            margin-top: 2%;
-
-            th {
-                background: lightgray;
-            }
-        }
-
-        overflow: auto;
-        /* Добавьте прокрутку */
-    }
+  width: 100%;
+  height: auto;
+  min-height: 40vh;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 1%;
+}
+.main_block .main_block__filter {
+  width: 100%;
+}
+.main_block .main_block__filter .action_group {
+  width: 90%;
+  margin-left: 5%;
+  display: flex;
+  justify-content: space-evenly;
+}
+.main_block .main_block__filter .btn_group {
+  width: 90%;
+  margin-left: 5%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 5%;
+}
+.main_block .main_block__filter .btn_group button {
+  margin-left: auto;
+  width: 100%;
+  height: 45px;
+  margin-top: 8%;
+}
+.main_block .main_block__content {
+  display: flex;
+  justify-content: center;
+  max-width: 90%;
+  overflow: auto;
+  margin-left: 5%;
+  overflow: auto;
+  /* Добавьте прокрутку */
+}
+.main_block .main_block__content table {
+  margin-top: 2%;
+}
+.main_block .main_block__content table th {
+  background: lightgray;
 }
 </style>

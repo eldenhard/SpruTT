@@ -233,7 +233,7 @@ export default {
 };
 </script>
   
-<style lang="scss" scoped>
+<style  scoped>
 .air_block {
     width: 60vw;
     height: max(50vh, auto);
@@ -318,12 +318,10 @@ header {
     justify-content: space-between;
     margin-top: 2%;
     margin-left: 20%;
-
-    button {
-        width: 25%
-    }
 }
-
+.file-details button{
+    width: 25%;
+}
 .Delete {
     border-radius: 5px;
 }
