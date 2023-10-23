@@ -12,7 +12,7 @@
                         <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"
                             style=" background: rgb(230, 230, 230);" />
                     </label>
-                    <img :src="imagePreview" v-show="showPreview" :data-image="info[0].photo" />
+                    <img :src="imagePreview" v-show="showPreview" />
                 </div>
                 <div class="data_block">
                     <div class="creat_block__first">
