@@ -64,9 +64,6 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    this.alignLastRow();
-  },
   methods: {
     OpenPath(url) {
       window.location.href(`/${url}`)
