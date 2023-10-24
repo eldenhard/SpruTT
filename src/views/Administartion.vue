@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div style="position: relative; left: 50%; transform: translate(-50%, 0);">
         <Loader :loader="loader" />
-        <div style="margin: 4% 0 0 -15%;" class="air_block">
+        <div style="margin-top: 4%;" class="air_block">
 
-            <div class="file-details">
+            <div class="file-details" >
                 <label for="select_option">Категория <br>
                     <select name="" id="select_option" v-model="category">
                         <option value="typical">Типовая форма договоров</option>
@@ -45,8 +45,8 @@
 
 
             <div class="table_all_template" style="position: relative; display: flex; flex-direction: column;">
-
-                <label for="select_option" style="margin-left: auto; justify-content: flex-end;">Категория <br>
+                <div style="position: relative; width: 30%; margin-left: auto; justify-content: flex-end;">
+                <label for="select_option">Категория <br>
                     <select name="" id="select_option" v-model="category_get">
                         <option value="typical">Типовая форма договоров</option>
                         <option value="constituent">Учредительные документы</option>
@@ -55,9 +55,9 @@
                         <option value="other">Прочее</option>
                     </select>
                 </label>
-                <button class="Accept" style="height: 45px; width: 28.5%; margin-top: 1%; margin-left: auto;"
+                <button class="Accept" style="height: 45px;  margin-top: 1%; margin-left: auto;"
                     @click="getDocuments()">Запросить</button>
-            
+                </div>
             <div style="max-height: 45vh; overflow: auto;">
                 <table style="margin-top: 2%;">
                     <thead>
@@ -81,7 +81,7 @@
                             <td>{{ document.expiration_date.split('-').reverse("").join(".") }}</td>
                             <td>
                                 <a :href="document.file" style="display: block;">
-                                    <img src="../../../../assets/word.png" alt="word_file" width="25">
+                                    <img src="../assets//word.png" alt="word_file" width="25">
                                 </a>
                             </td>
                         </tr>

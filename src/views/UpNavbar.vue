@@ -46,7 +46,10 @@
           <b-nav-item>
             <router-link to="/personnel-service" class="router-links">Справочная информация</router-link>
           </b-nav-item>
-   
+
+          <b-nav-item>
+            <router-link to="/administration" class="router-links">Администрирование</router-link>
+          </b-nav-item>
 
           <li class="nav-item" style="padding-top: 1px">
             <a class="nav-link" href="/" @click="logout"

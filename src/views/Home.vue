@@ -35,11 +35,7 @@
         </b-tab>
 
 
-        <b-tab title="Шаблоны договоров">
-          <b-card-text>
-            <templates />
-          </b-card-text>
-        </b-tab>
+    
         <b-tab title="Справочник станции" >
           <b-card-text>
             <StationsDirectory />
@@ -150,7 +146,6 @@ import Fin_headerVue from '../components/Table/Directory/Fin_header.vue';
 import TarifDirectory from "@/components/Table/Directory/TarifDirectory.vue";
 import OtherChargesVue from '../components/Table/Directory/OtherCharges/OtherCharges.vue';
 import stavkipvVue from '../components/Table/Directory/StavkiPV/stavkipv.vue';
-import templates from '../components/Table/Directory/Templates/Templates.vue'
 import allformdocument from '../components/Table/Directory/AllFormsDocument/AllFormDocument.vue'
 export default {
   name: "Directory",
@@ -169,7 +164,6 @@ export default {
     TarifDirectory,
     OtherChargesVue,
     stavkipvVue,
-    templates,
     allformdocument,
   },
   mounted() {
