@@ -8,6 +8,7 @@ RUN npm install axios
 RUN npm install vue-router
 RUN npm install bootstrap
 RUN npm install bootstrap-vue
+RUN npm install select2
 COPY ./ .
 RUN npm run build
 

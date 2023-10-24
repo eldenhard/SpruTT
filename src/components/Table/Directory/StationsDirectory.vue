@@ -1,27 +1,6 @@
 <template>
   <div>
     <Loader :loader="loader" />
-
-    <!-- <template v-for="item, index in data1">
-      <div @click="OpenChildren($event, item, index)" ref="FuckingData" :key="item.id"
-        style="cursor: pointer; font-weight: bold;" v-if="index != 'amount'">
-        {{ index == 'amount' || index == 'cost' ? item + index : index }}
-      </div>
-      <hr>
-    </template> -->
-
-    <!-- <template v-for="item, index in TOTAL">
-  <div style="cursor: pointer; font-weight: bold;" :key="index">
-        {{ index + " " + item   }}
-      </div>
-</template> -->
-    <!-- <template v-for="total, indx in TOTAL" >
- 
-        <td>{{ total }}</td>
-        <td>{{ total }}</td>
-  
-    </template> -->
-
     <div id="container"></div>
 
     <div class="air_block" style="margin-top: 15%">
@@ -309,26 +288,8 @@ export default {
                 return false;
               })
          
-
             this.loaderInputDep = false;
                 this.warning = true;
-
-            // let sorted_station = filter_data.reduce((acc, name_station) => {
-            //     if (acc.handle_station[name_station.name.toLowerCase()])
-            //       // если данная станция уже была
-            //       return acc; // ничего не делаем, возвращаем уже собранное
-
-            //     acc.handle_station[name_station.name.toLowerCase()] = true; // помечаем станцию, как обработанную
-            //     acc.sorted_station.push(name_station); // добавляем объект в массив станция
-            //     return acc; // возвращаем собранное
-            //   },
-            //   {
-            //     handle_station: {}, // здесь будут отмечаться обработанные станции
-            //     sorted_station: [], // здесь конечный массив уникальных станций
-            //   }
-            // ).sorted_station; // получаем конечный массив
-
-            // this.station_search_data = sorted_station
           })
         
       }

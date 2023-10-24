@@ -2,7 +2,7 @@
     <div class="filterStaff">
         <div style="display:flex; flex-direction:column; ">
             <div class='bg'>
-                <input class='textarea' id='input-filter-staff1' name='Pwd' v-model="filter_staff.search" @change="updateFilterDataStaff" style="background: white;"/>
+                <input class='textarea' id='input-filter-staff1' name='Pwd' v-model.trim="filter_staff.search" @change="updateFilterDataStaff" style="background: white;"/>
                 <br>
                 <label for='input-filter-staff1' class='label' style="background: white;">Данные сотрудника</label>
             </div>

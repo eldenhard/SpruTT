@@ -150,7 +150,7 @@ export default {
             this.filter_staff = filter_staff;
         },
         getInformationEmployee(name_employee = null) {
-            if (!name_employee) {
+            if (!name_employee || name_employee.search == "") {
                 this.notifyHead = "Ошибка";
                 this.notifyMessage = "Введите пользователя";
                 this.notifyClass = "wrapper-error";
