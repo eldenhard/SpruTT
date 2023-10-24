@@ -270,94 +270,89 @@ export default {
 };
 </script>
   
-<style lang="scss" scoped>
+<style  scoped>
 .dropdown-menu li {
-    position: relative;
+  position: relative;
 }
 
 .dropdown-menu .dropdown-submenu {
-    display: none;
-    position: absolute;
-    left: 100%;
-    top: -7px;
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: -7px;
 }
 
 .dropdown-menu .dropdown-submenu-left {
-    right: 100%;
-    left: auto;
+  right: 100%;
+  left: auto;
 }
 
-.dropdown-menu>li:hover>.dropdown-submenu {
-    display: block;
+.dropdown-menu > li:hover > .dropdown-submenu {
+  display: block;
 }
 
 .Accept {
-    margin-top: 2%;
-    width: 25%;
-    margin-left: auto;
-    height: 40px;
+  margin-top: 2%;
+  width: 25%;
+  margin-left: auto;
+  height: 40px;
 }
 
 .editable-input {
-    width: 100%;
+  width: 100%;
 }
 
 .editable-text {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .dataAct {
-    display: flex;
-    flex-direction: column;
-
-    label {
-        width: 100%;
-    }
-
-    input {
-        width: 100%;
-    }
+  display: flex;
+  flex-direction: column;
+}
+.dataAct label {
+  width: 100%;
+}
+.dataAct input {
+  width: 100%;
 }
 
 .getDataExcel {
-    display: flex;
-    width: 25%;
-    position: relative;
-    margin-left: auto !important;
-    flex-direction: column;
-
-    textarea {
-        width: 100%;
-        margin-top: 2%;
-    }
-
-    button {
-        margin-top: 2%;
-        width: 100%;
-    }
+  display: flex;
+  width: 25%;
+  position: relative;
+  margin-left: auto !important;
+  flex-direction: column;
+}
+.getDataExcel textarea {
+  width: 100%;
+  margin-top: 2%;
+}
+.getDataExcel button {
+  margin-top: 2%;
+  width: 100%;
 }
 
 .radio {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid rgb(238, 238, 238);
-    border-radius: 5px;
-    padding: 1%;
-    gap: 5%;
-
-    label {
-        font-size: 16px;
-        font-weight: bold;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #eeeeee;
+  border-radius: 5px;
+  padding: 1%;
+  gap: 5%;
+}
+.radio label {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .deleteRow {
-    background: rgb(255, 176, 162);
-    color: grey !important;
+  background: #ffb0a2;
+  color: grey !important;
 }
 
 table {
-    margin-top: 4%;
+  margin-top: 4%;
 }
 </style>

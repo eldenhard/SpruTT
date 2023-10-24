@@ -40,7 +40,7 @@
             </b-card-text>
 
             <div v-if="i.name === 'Сотрудники'">
-                <StaffTable />
+                <ReferenceInformation />
               </div>
             <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
               <ReportAbandoned />
@@ -113,7 +113,7 @@
   import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
   import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
   import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
-  import StaffTable from "@/components/Table/StaffTable.vue";
+  import ReferenceInformation from "@/components/Table/ReferenceInformation/ReferenceInformation.vue";
   import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
   import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
   import ExtensionPeriod from '../components/Table/WagonPark/ExtensionPeriod.vue'
@@ -140,7 +140,7 @@ export default {
     WPCalculate,
     WagonRepair,
     BCH,
-    StaffTable,
+    ReferenceInformation,
     TerritoryTable,
     FormationPark,
     ManagemtRepNavbar,

@@ -430,7 +430,7 @@ export default {
         .getAllDocuments()
         .then((response) => {
           let data = response.data.data;
-          console.log(data);
+          // console.log(data);
           let arr = [];
           for (let i in data) {
             arr.push({
@@ -946,22 +946,16 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 a:nth-child(1) {
   color: #1d67ac !important;
   cursor: pointer;
-
-  &:hover {
-    text-decoration: underline !important;
-  }
 }
 
-// h3:nth-child(n+2),h5{
-//   color: rgb(0, 0, 0);
-//   &:hover{
-//     text-decoration: underline
-//   }
-// }
+a:nth-child(1):hover {
+  text-decoration: underline !important;
+}
+
 h3:nth-child(1) {
   background: #fce4cc;
   color: #8f5c49;
@@ -990,7 +984,7 @@ select {
   height: 25px !important;
 }
 
-input[type="checkbox"] {
+input[type=checkbox] {
   width: 20px;
   height: 20px;
 }
@@ -1027,13 +1021,11 @@ input[type="checkbox"] {
 
 .air_block_header {
   padding: 1% 0 0 2%;
-  color: rgb(202, 202, 202);
+  color: #cacaca;
 }
 
 .btn-group_tarif {
-  // display: flex;
   margin-left: -10% !important;
-  // justify-content: space-around !important;
 }
 
 li {

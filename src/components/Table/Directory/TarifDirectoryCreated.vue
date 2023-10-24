@@ -866,242 +866,235 @@ export default {
   
   
   
-<style lang="scss" scoped>
-td {
-    input {
-        text-align: center;
-    }
+<style scoped>
+td input {
+  text-align: center;
 }
 
 tr,
 td,
 th {
-    border: 1px solid black
+  border: 1px solid black;
 }
 
 #wrapper {
-    margin: 0 auto;
-    display: block;
-    margin-top: 2%;
-    max-width: 80%;
-    width: 80%;
+  margin: 0 auto;
+  display: block;
+  margin-top: 2%;
+  max-width: 80%;
+  width: 80%;
 }
 
 .page-header {
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: normal;
-    border-bottom: 1px solid #ddd;
-    margin: 30px 0;
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: normal;
+  border-bottom: 1px solid #ddd;
+  margin: 30px 0;
 }
 
 #pagination {
-    margin: 0;
-    padding: 0;
-    text-align: center;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
 #pagination li {
-    display: inline;
+  display: inline;
 }
 
 #pagination li a {
-    display: inline-block;
-    text-decoration: none;
-    padding: 5px 10px;
-    color: #000;
-    cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  padding: 5px 10px;
+  color: #000;
+  cursor: pointer;
 }
 
 /* Active and Hoverable Pagination */
 #pagination li a {
-    border-radius: 5px;
-    -webkit-transition: background-color 0.3s;
-    transition: background-color 0.3s;
+  border-radius: 5px;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
 }
 
 #pagination li a.active_new {
-    background-color: #18842a;
-    color: #fff;
+  background-color: #18842a;
+  color: #fff;
 }
 
 #pagination li a:hover:not(.active_new) {
-    background-color: #ddd;
+  background-color: #ddd;
 }
 
 #pagination li a:not(.active123) {
-    display: none;
+  display: none;
 }
 
 /* border-pagination */
 .b-pagination-outer {
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-    overflow: hidden;
-    display: flex;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  overflow: hidden;
+  display: flex;
 }
 
 #border-pagination {
-    margin: 0 auto;
-    padding: 0;
-    text-align: center;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
 }
 
 #border-pagination li {
-    display: inline;
+  display: inline;
 }
 
 #border-pagination li a {
-    display: block;
-    text-decoration: none;
-    color: #000;
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    float: left;
+  display: block;
+  text-decoration: none;
+  color: #000;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  float: left;
 }
 
 #border-pagination li a {
-    -webkit-transition: background-color 0.4s;
-    transition: background-color 0.4s;
+  -webkit-transition: background-color 0.4s;
+  transition: background-color 0.4s;
 }
 
 #border-pagination li a.active_new {
-    background-color: #18842a;
-    color: #fff;
+  background-color: #18842a;
+  color: #fff;
 }
 
 #border-pagination li a:hover:not(.active_new) {
-    background: #ddd;
+  background: #ddd;
 }
 
 .delete:hover {
-    background: lightcoral;
-    color: white
+  background: lightcoral;
+  color: white;
 }
 
 .success {
-    transition: 0.5s ease-in-out;
-    background: rgba(42, 190, 67, 0.4);
-    color: black;
+  transition: 0.5s ease-in-out;
+  background: rgba(42, 190, 67, 0.4);
+  color: black;
 }
 
 .error {
-    transition: 0.5 ease-in-out;
-    background: lightcoral;
-    color: black;
+  transition: 0.5 ease-in-out;
+  background: lightcoral;
+  color: black;
 }
 
 .WatchAllArenda {
-    color: rgb(146, 146, 146);
-    margin-top: 20%;
-    font-size: 25px;
-    cursor: pointer;
+  color: #929292;
+  margin-top: 20%;
+  font-size: 25px;
+  cursor: pointer;
 }
 
 .inputcontainer {
-    position: relative;
+  position: relative;
 }
 
 input,
 select {
-    border: 1px solid grey !important;
-    width: 100%;
-    max-height: 35px !important;
-    margin: 0 !important;
-    // font-size: 20px;
-    box-sizing: border-box;
+  border: 1px solid grey !important;
+  width: 100%;
+  max-height: 35px !important;
+  margin: 0 !important;
+  box-sizing: border-box;
 }
 
 .mini {
-    height: 40px;
+  height: 40px;
 }
 
 .icon-container {
-    position: absolute;
-    right: 10px;
-    top: calc(50% - 10px);
+  position: absolute;
+  right: 10px;
+  top: calc(50% - 10px);
 }
 
 .loader {
-    position: relative;
-    height: 20px;
-    width: 20px;
-    display: inline-block;
-    animation: around 5.4s infinite;
+  position: relative;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  animation: around 5.4s infinite;
 }
 
 @keyframes around {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-
 .loader::after,
 .loader::before {
-    content: "";
-    background: white;
-    position: absolute;
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    border-width: 2px;
-    border-color: #333 #333 transparent transparent;
-    border-style: solid;
-    border-radius: 20px;
-    box-sizing: border-box;
-    top: 0;
-    left: 0;
-    animation: around 0.7s ease-in-out infinite;
+  content: "";
+  background: white;
+  position: absolute;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  border-width: 2px;
+  border-color: #333 #333 transparent transparent;
+  border-style: solid;
+  border-radius: 20px;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  animation: around 0.7s ease-in-out infinite;
 }
 
 .loader::after {
-    animation: around 0.7s ease-in-out 0.1s infinite;
-    background: transparent;
+  animation: around 0.7s ease-in-out 0.1s infinite;
+  background: transparent;
 }
 
 .mini {
-    height: 40px;
+  height: 40px;
 }
 
 .table-content {
-    margin-top: 4%;
-    display: flex;
-    justify-content: space-between;
-    gap: 5%;
-    flex-wrap: wrap;
-    border: 1px solid lightgrey;
-    padding: 1%;
+  margin-top: 4%;
+  display: flex;
+  justify-content: space-between;
+  gap: 5%;
+  flex-wrap: wrap;
+  border: 1px solid lightgrey;
+  padding: 1%;
+}
 
-    label {
-        color: rgb(146, 146, 146);
-    }
+.table-content label {
+  color: #929292;
+}
 
-    button {
-        height: 40px;
-        width: 20%;
-        margin-top: 1%;
-        float: right !important;
-        margin-left: auto;
-    }
+.table-content button {
+  height: 40px;
+  width: 20%;
+  margin-top: 1%;
+  float: right !important;
+  margin-left: auto;
 }
 
 table {
-    margin-top: 1%;
+  margin-top: 1%;
 }
 
-thead {
-    th {
-        background: rgb(236, 236, 236);
-        font-family: "Montserrat", sans-serif;
-    }
+thead th {
+  background: #ececec;
+  font-family: "Montserrat", sans-serif;
 }
 
 li {
-    cursor: pointer;
+  cursor: pointer;
 }
 </style>

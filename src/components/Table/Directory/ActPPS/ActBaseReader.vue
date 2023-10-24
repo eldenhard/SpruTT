@@ -664,20 +664,23 @@ export default {
   },
 };
 </script>
+<style scoped>
 
-<style lang="scss" scoped>
-li{
-  cursor: pointer
+li {
+  cursor: pointer;
 }
+
 .select_btn {
   display: flex;
   justify-content: space-around;
   align-items: baseline;
 }
+
 td,
 th {
   border: 1px solid black;
 }
+
 .successStatus {
   transition: 0.5s ease-in-out;
   background: rgba(42, 190, 67, 0.4);
@@ -693,6 +696,7 @@ th {
 .mini {
   height: 40px;
 }
+
 .deleteRow:hover {
   background: lightcoral;
 }
@@ -704,17 +708,17 @@ th {
   flex-wrap: wrap;
   border: 1px solid lightgrey;
   padding: 1%;
-  gap: 2%
-  label {
-    color: rgb(146, 146, 146);
-  }
-  button {
-    height: 40px;
-    width: 30%;
-    margin-top: 1.5%;
+  gap: 2%;
+}
 
-    // margin-left: auto !important;
-  }
+.filter label {
+  color: #929292;
+}
+
+.filter button {
+  height: 40px;
+  width: 30%;
+  margin-top: 1.5%;
 }
 
 #wrapper {

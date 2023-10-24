@@ -8,8 +8,8 @@
             justify-content: center !important;
           ">
         <b-container class="bv-example-row">
+          <!-- <b-tab title="Сотрудники" active @click="newTab('Сотрудники')"> </b-tab> -->
           <b-tab title="Сотрудники" active @click="newTab('Сотрудники')"> </b-tab>
-
         </b-container>
       </b-tabs>
     </b-card>

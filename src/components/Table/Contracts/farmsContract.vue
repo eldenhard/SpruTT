@@ -15,12 +15,12 @@
       <!-- <button class="Cancel" @click="CreateContract()"> Добавить договор </button> -->
     </div>
 
-    <div>
-                <label for="tenant" style="color: grey">Поля таблицы
+    <div style=" width: 15vw;">
+             
                     <MultiSelectUni @change="updateSelectedCountries" :placeholder="'Поля таблицы'" :variants="CountrieObj"
                         :variant-title="'value'">
                     </MultiSelectUni>
-                </label>
+
 
             </div>
             <div style="display: flex; justify-content: start; flex-wrap: wrap;">
@@ -235,7 +235,7 @@ export default {
             this.selectedCountriesIds = selected
         },
              removeselectedCountries(id) {
-            this.selectedCountriesIds.splice(this.selectedCountriesIds.indexOf(id), 1)
+            this.selectedCountriesIds.splice(this.selectedCountriesIds?.indexOf(id), 1)
         },
     ChangeIdByName(id) {
       this.users = this.$store.state.users.users
@@ -543,7 +543,7 @@ export default {
 </script>
     
     
-<style lang="scss" scoped>
+<style  scoped>
 div::-webkit-scrollbar {
   transform: translateY(-1);
 }
@@ -552,16 +552,13 @@ div::-webkit-scrollbar {
   justify-content: space-between;
   flex-direction: row-reverse;
   margin-top: 2%;
-
-  button {
-    width: 30%;
-  }
-
-  button:nth-child(2) {
+}
+.flex_block_button button{
+  width: 30%;
+}
+.flex_block_button  button:nth-child(2) {
     border-radius: 5px;
   }
-}
-
 .red {
   display: none;
 }

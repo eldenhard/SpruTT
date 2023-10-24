@@ -33,8 +33,11 @@
             <b-card-text v-if="i.name === 'Тариф по сопредельным территориям'">
               <TerritoryTable />
             </b-card-text>
-            <div v-if="i.name === 'Сотрудники'">
+            <!-- <div v-if="i.name === 'Сотрудники'">
                 <StaffTable />
+              </div> -->
+              <div v-if="i.name === 'Сотрудники'">
+                <ReferenceInformation />
               </div>
             <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
               <ReportAbandoned />
@@ -88,7 +91,7 @@ import FormationPark from "@/components/Table/ManagmentRepReporting/FormationPar
   import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
   import StaffNavbar from "@/components/Navbar/StaffNavbar.vue";
   import GLP from '../components/Table/WagonPark/GLP/GLP.vue'
-
+import ReferenceInformation from '../components/Table/ReferenceInformation/ReferenceInformation.vue'
 
   import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
 import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
@@ -109,7 +112,7 @@ export default {
     AccomodationPark,
     FormationPark,
     GLP,
-
+    ReferenceInformation,
     Table1,
       Table2,
       Table3,

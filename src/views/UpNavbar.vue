@@ -1,5 +1,5 @@
 <template>
-  <div v-show="visibleElement">
+  <div v-show="visibleElement" style="z-index: 100;">
     <Modal_Notification :modal_notifications="modal_notifications" @close="close_modal" :data="data"/>
 
     <b-navbar toggleable="lg" type="light" style="background: #F8F9FA !important;">
@@ -8,6 +8,9 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
+          <b-nav-item>
+            <router-link to="/main" class="router-links">Главная</router-link>
+          </b-nav-item>
           <b-nav-item>
             <router-link to="/directory" class="router-links">Справочники</router-link>
           </b-nav-item>
@@ -24,9 +27,9 @@
             <router-link to="/report" class="router-links">Отчеты</router-link>
           </b-nav-item>
 
-          <b-nav-item>
+          <!-- <b-nav-item>
             <router-link to="/personnel-service" class="router-links">Кадровая служба</router-link>
-          </b-nav-item>
+          </b-nav-item> -->
 
           <b-nav-item>
             <router-link to="/key-facts" class="router-links">Ключевые факты</router-link>
@@ -41,8 +44,9 @@
           </b-nav-item>
 
           <b-nav-item>
-            <router-link to="/widgets" class="router-links">Виджеты</router-link>
+            <router-link to="/personnel-service" class="router-links">Справочная информация</router-link>
           </b-nav-item>
+   
 
           <li class="nav-item" style="padding-top: 1px">
             <a class="nav-link" href="/" @click="logout"
@@ -54,6 +58,14 @@
               <div class="circle" v-if="notifications_queue">
                 <span class="circle_notif">{{ count }}</span>
               </div>
+            </i>
+
+          </li>
+
+          <li class="nav-item" style="padding-top: 1px; margin-left: auto !important; float: right; position: absolute; right: 0;" >
+            <i class=" block nav-link">
+              <img src="@/assets/logo2.png" height="10" alt="Логотип компании" style="margin-left: auto;" >
+    
             </i>
 
           </li>
@@ -86,6 +98,7 @@ export default {
     if (!window.location.href.includes('fin_operation')){
       this.getTasks();
     }
+  
   },
   computed: {
     visibleElement(){
@@ -183,22 +196,22 @@ export default {
   font-size: 15px;
 }
 
-.disabled {
+
+
+.disabled{
   pointer-events: none;
+  /* background: #E4E4E4; */
   color: #E4E4E4;
   background: #F8F9FA !important;
 }
-
-a:hover {
+a:hover{
   color: rgb(73, 73, 73) !important;
 }
-
-a.router-link-active,
-li.2 {
-  border-bottom: 2px solid #EC2332;
+a.router-link-active, li.router-link-active {
+border-bottom: 2px solid #EC2332;
 }
-
-a.router-link {
+a.router-link{
   text-decoration: none;
   border-bottom: none;
-}</style>
+}
+</style>

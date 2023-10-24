@@ -46,30 +46,32 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .month_block {
   width: 25%;
   margin-right: auto;
-  button {
-    background: green;
-    margin-top: 1%;
-  }
 }
-table{
-    margin-top: 2%;
-    width: 100%;
+.month_block button {
+  background: green;
+  margin-top: 1%;
 }
-td:hover::after {
-    content: "→";
-    font-weight: bold;
 
+table {
+  margin-top: 2%;
+  width: 100%;
 }
-td:hover{
-    font-weight: bold;
-    background: lightgray;
- 
+
+td:hover::after {
+  content: "→";
+  font-weight: bold;
 }
-td,th {
+
+td:hover {
+  font-weight: bold;
+  background: lightgray;
+}
+
+td, th {
   border: 1px solid black;
 }
 </style>

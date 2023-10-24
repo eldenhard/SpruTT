@@ -54,14 +54,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style  scoped>
 .inputcontainer {
   position: relative;
 }
 
 input {
   width: 100%;
-  // font-size: 20px;
   box-sizing: border-box;
 }
 .mini {

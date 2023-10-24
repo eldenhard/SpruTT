@@ -121,7 +121,7 @@ export default {
 };
 </script>
   
-<style lang="scss" scoped>
+<style scoped>
 .errorFormatFile {
     color: rgb(209, 1, 1) !important;
     font-size: 14px;
@@ -190,12 +190,10 @@ header {
     justify-content: space-between;
     margin-top: 2%;
     margin-left: 20%;
-
-    button {
+}
+.file-details button {
         width: 25%
     }
-}
-
 .Delete {
     border-radius: 5px;
 }

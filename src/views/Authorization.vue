@@ -1,42 +1,31 @@
 <template>
-  <div>
+  <div style="display: flex; justify-content: center; align-items: center;">
     <div id="id01" class="modal" v-if="showAuthForm">
-      <div
-        class="modal-content animate"
-        style="width: 60% !important; margin: 0 !important"
-      >
+      <div class="modal-content animate" style="width: 60% !important; margin: 0 !important">
         <div class="container">
           <label for="uname"><b>Email</b></label>
-          <input
-            type="text"
-            placeholder="i.ivanov@tehtrans.com"
-            v-model="email"
-            v-on:keyup="handleInputOnKeyup"
-            style="border-bottom: 1px solid grey !important"
-          />
+          <input type="text" placeholder="i.ivanov@tehtrans.com" v-model="email" v-on:keyup="handleInputOnKeyup"
+            style="border-bottom: 1px solid grey !important" />
 
           <label for="psw"><b>Пароль</b></label>
-          <input
-            type="text"
-            placeholder="Введите пароль"
-            v-model.trim="password"
-            style="border-bottom: 1px solid grey !important"
-            @keyup.enter="submitEntry()"
-          />
+          <div class="password">
+            <input type="password" placeholder="Введите пароль" v-model.trim="password"
+              style="border: none;border-bottom: 1px solid grey !important" @keyup.enter="submitEntry()"
+              id="password-input" />
+            <label>
+              <input type="checkbox" class="password-checkbox" @change="togglePasswordVisibility" />
+              Показать пароль
+            </label>
+          </div>
 
           <button @click="submitEntry()">Войти</button>
         </div>
       </div>
     </div>
 
- 
 
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-    />
+    <ScreensaverVue :watch_hello="watch_hello" v-if="backgr" :firstname="first_name" :lastname="last_name" />
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
   </div>
 </template>
 
@@ -45,24 +34,30 @@
 import { mapState } from "vuex";
 import { actionTypes } from "@/store/modules/auth";
 import Notifications from "@/components/notifications/Notifications.vue";
-
+import ScreensaverVue from '../helpers/Screensaver.vue';
 export default {
   name: "Authorization",
+  components: { Notifications, ScreensaverVue },
+
   data() {
     return {
       email: "",
       password: "",
+      watch_hello: false,
+      backgr: true,
       showNotify: false,
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
       showAuthForm: true,
       CheckLocalStorage: localStorage.getItem('accessToken'),
+      first_name: "",
+      last_name: ""
 
     };
   },
   methods: {
-    submitEntry: function () {
+    async submitEntry() {
       if (this.email.length > 0) {
         this.$store
           .dispatch(actionTypes.login, {
@@ -72,18 +67,28 @@ export default {
           .then((user) => {
             if (this.$store.state.auth.isLoggedIn) {
               this.showNotify = true;
+              this.first_name = this.$store.state.auth.user.user?.first_name
+              this.last_name = this.$store.state.auth.user.user?.last_name
+              console.log(this.$store.state.auth)
               this.notifyHead = "Здравствуйте";
               this.notifyMessage = "Вы успешно авторизированы";
               this.notifyClass = "wrapper-success";
               this.showAuthForm = false
-              // location.reload();
-              // document.location.href = '/'
-
-
-              // document.location.href = '/'
+  
             }
+          }).then((res) => {
+            return new Promise((resolve) => {
+              this.watch_hello = true
+              setTimeout(() => {
+                this.backgr = false;
+                resolve()
+              }, 2500);
+            }).then(() => {
+            window.location.href= '/main'
+            // location.reload()
           })
-          .catch((error) => {
+         
+          }).catch((error) => {
             this.showNotify = true;
             this.notifyHead = "Ошибка авторизации";
             this.notifyMessage = error.response.data;
@@ -96,36 +101,15 @@ export default {
         this.notifyClass = "wrapper-error";
       }
 
-      //const api = "http://10.1.5.65/api/personal/login/";
-      // axios
-      //     .post(api, {
-      //     email: this.email,
-      //     password: this.password,
-      // })
-      //     .then(resp => {
-      //         console.log('in then');
-      //     let user = resp.data;
-      //     console.log(user);
-      //     if (user.token) {
 
-      //         this.$store.commit("setUser", user);
-      //         this.showNotify = true
-      //         this.notifyHead = 'Здравствуйте'
-      //         this.notifyMessage = 'Вы успешно авторизированы'
-      //         this.notifyClass = 'wrapper-success'
-      //     }
-      // })
-      // .catch(err => {
-      //     console.log('in catch');
-      //   this.showNotify = true
-      //   this.notifyHead = 'Ошибка авторизации'
-      //   this.notifyMessage = 'Пожалуйста, проверьте ваши введенные данные'
-      //   this.notifyClass = 'wrapper-error'
-      // })
       return false;
     },
     handleInputOnKeyup() {
       this.email = this.email.toLowerCase();
+    },
+    togglePasswordVisibility() {
+      const passwordInput = document.getElementById("password-input");
+      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
     },
   },
   computed: {
@@ -140,8 +124,8 @@ export default {
     // }
   },
   watch: {
-    CheckLocalStorage(){
-      if(this.CheckLocalStorage === ""){
+    CheckLocalStorage() {
+      if (this.CheckLocalStorage === "") {
         this.showAuthForm = true
       } else {
         this.showAuthForm = false
@@ -163,10 +147,8 @@ export default {
       }
     },
   },
-  components: { Notifications },
   mounted() {
     if (this.authStatus) this.showAuthForm = false;
- 
   },
 };
 </script>
@@ -187,6 +169,7 @@ export default {
   right: 0;
   z-index: 1000;
 }
+
 input[type="text"],
 input[type="password"] {
   width: 100%;
@@ -270,29 +253,21 @@ span.psw {
 }
 
 .animate {
-  -webkit-animation: animatezoom 0.6s;
-  animation: animatezoom 0.6s;
-}
-
-@-webkit-keyframes animatezoom {
-  from {
-    -webkit-transform: scale(0);
-  }
-
-  to {
-    -webkit-transform: scale(1);
-  }
+  /* -webkit-animation: animatezoom 0.6s; */
+  animation: animatezoom 1s;
 }
 
 @keyframes animatezoom {
   from {
-    transform: scale(0);
+    top: -10%;
   }
 
   to {
-    transform: scale(1);
+    top: 0;
   }
 }
+
+
 
 @media screen and (max-width: 300px) {
   span.psw {
@@ -305,9 +280,10 @@ span.psw {
   }
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 600px) {
+
   .modal-content .modal {
-    width: 90% !important;
+    width: 90vw !important;
   }
 }
 </style>

@@ -612,11 +612,11 @@ export default {
 
 
 
-<style lang="scss" scoped>
+<style  scoped>
 tr,
 td,
 th {
-  border: 1px solid black
+  border: 1px solid black;
 }
 
 #wrapper {
@@ -717,7 +717,7 @@ th {
 
 .delete:hover {
   background: lightcoral;
-  color: white
+  color: white;
 }
 
 .success {
@@ -733,7 +733,7 @@ th {
 }
 
 .WatchAllArenda {
-  color: rgb(146, 146, 146);
+  color: #929292;
   margin-top: 20%;
   font-size: 25px;
   cursor: pointer;
@@ -745,11 +745,9 @@ th {
 
 input,
 select {
-
   width: 100%;
   max-height: 35px !important;
   margin: 0 !important;
-  // font-size: 20px;
   box-sizing: border-box;
 }
 
@@ -775,12 +773,10 @@ select {
   0% {
     transform: rotate(0deg);
   }
-
   100% {
     transform: rotate(360deg);
   }
 }
-
 .loader::after,
 .loader::before {
   content: "";
@@ -816,29 +812,25 @@ select {
   flex-wrap: wrap;
   border: 1px solid lightgrey;
   padding: 1%;
-
-  label {
-    color: rgb(146, 146, 146);
-  }
-
-  button {
-    height: 40px;
-    width: 20%;
-    margin-top: 2%;
-    float: right !important;
-    margin-left: auto;
-  }
+}
+.table-content label {
+  color: #929292;
+}
+.table-content button {
+  height: 40px;
+  width: 20%;
+  margin-top: 2%;
+  float: right !important;
+  margin-left: auto;
 }
 
 table {
   margin-top: 1%;
 }
 
-thead {
-  th {
-    background: rgb(236, 236, 236);
-    font-family: "Montserrat", sans-serif;
-  }
+thead th {
+  background: #ececec;
+  font-family: "Montserrat", sans-serif;
 }
 
 li {
