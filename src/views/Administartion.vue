@@ -1,8 +1,6 @@
 <template>
   <div>
     <Loader :loader="loader" />
-
-    <div style="position: relative; left: 50%; transform: translate(-50%, 0)">
       <div style="margin: 4% 0" class="air_block">
         <div class="file-details">
           <label for="select_option"
@@ -71,28 +69,36 @@
           </button>
         </div>
 
-        <div
-          class="table_all_template"
-          style="position: relative; display: flex; flex-direction: column"
-        >
-          <div class="inputcontainer" style="height: 100% !important">
-            <input
-              class="changeRow textarea"
-              v-model="station_search"
-              :type="'станция'"
-              placeholder="введите наименование станции"
-              style="
-                width: 100%;
-                border-bottom: 1px solid rgb(0, 0, 0);
-                padding: 5px;
-              "
-            />
-            <div class="icon-container" v-if="loaderInputDep">
-              <i class="loader"></i>
+      
+           
+            
+       
+        <div class="table_all_template" style="position: relative; display: flex; ">
+        <div style="display: flex; flex-direction: column;">
+          <div class="inputcontainer" >
+                <label for="">Номер договора<br></label>
+              
+                <input
+                  class="changeRow textarea"
+                  v-model="dog_search"
+                  placeholder="введите наименование договора"
+                  style=" width: 100%; border-bottom: 1px solid rgb(0, 0, 0); padding: 5px;"
+                />
+              <!-- </label> -->
+              <div class="icon-container" v-if="loaderInputDep">
+                <i class="loader"></i>
+              </div>
             </div>
-          </div>
-
-
+          <div class="dataDeparture" v-if="warning">
+              <ul>
+                <li v-for="dog in dog_num_search" :key="dog.id"
+                  @click="checkThisDog(dog.name)">
+                {{  dog.name }} 
+                </li>
+              </ul>
+      </div>
+        </div>   
+             
           <div
             style="
               position: relative;
@@ -119,11 +125,15 @@
               Запросить
             </button>
           </div>
-          <div style="max-height: 45vh; overflow: auto">
+        
+        </div>
+    
+
+
+      <div style="max-height: 45vh; overflow: auto">
             <table style="margin-top: 2%">
               <thead>
-                <tr
-                  style="
+                <tr style="
                     position: sticky;
                     top: 0;
                     margin-top: -1%;
@@ -170,7 +180,6 @@
               </tbody>
             </table>
           </div>
-        </div>
         <Notifications
           :show="showNotify"
           :header="notifyHead"
@@ -178,7 +187,7 @@
           :block-class="notifyClass"
         />
       </div>
-    </div>
+    
   </div>
 </template>
   
@@ -188,10 +197,19 @@ import api from "@/api/directory";
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import { mapState } from "vuex";
+import debounce from "lodash.debounce";
+
 export default {
   components: { Notifications, Loader },
   data() {
     return {
+      dog_search: "",
+      loaderInputDep: false,
+      warning: false,
+      dog_num_search: "",
+      debouncedWatch: "",
+
+
       expiration_date: "",
       station_search: "",
       category: "typical",
@@ -214,8 +232,36 @@ export default {
       },
     };
   },
+  mounted() {
+    // this.stations = getItem("station");
+    document.body.addEventListener('click', () => this.warning = false);
+  },
+  beforeDestroy() {
+    document.body.removeEventListener('click', () =>  this.warning = false);
+  },
+  created() {
 
+this.debouncedWatch = debounce((newValue, oldValue) => {
+  if(this.dog_search.length > 1){
+    this.loaderInputDep = true
+    api.getCurrentDocument(this.category_get, this.dog_search)
+  .then((response) => {
+      this.dog_num_search = response.data.data;
+      this.loaderInputDep = false
+      this.warning = true;
+  }).catch(error => {
+    this.loaderInputDep = false
+    console.log(error.response)
+  })
+} 
+}, 300)
+},
   watch: {
+    dog_search(...args) {
+
+        this.debouncedWatch(...args);
+      
+    },
     file() {
       if (this.file) {
         document.querySelector("header").style = "color: darkgrey";
@@ -229,7 +275,18 @@ export default {
       uid: (state) => state.auth.uid,
     }),
   },
+  beforeUnmount() {
+    this.debouncedWatch.cancel();
+  },
+
   methods: {
+    checkThisDog(value){
+      this.warning = false
+      this.dog_search = value
+      this.$nextTick(() => {
+        this.warning = false
+      })
+    },
     onDragEnter() {
       this.isDragging = true;
     },
@@ -253,9 +310,11 @@ export default {
       this.file = null;
     },
     getDocuments() {
+      // cosnole.log(this.category_get, this.dog_search)
+      let data = {name: this.dog_search}
       this.loader = true;
       api
-        .getDocuments(this.category_get)
+        .getDocuments(this.category_get, data)
         .then((response) => {
           console.log(response.data);
           this.documents = response.data.data;
@@ -332,19 +391,27 @@ export default {
 <style  scoped>
 .inputcontainer {
   position: relative;
-}
 
+}
+.dataDeparture {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid grey;
+ 
+  background: rgb(245, 245, 245);
+
+}
 .changeRow {
-  /* width: 100%; */
-  height: 100% !important;
-  border: none;
-  outline: none;
+  width: 100%;
+  /* border: none; */
+  /* outline: none; */
+  background: white;
 }
 
 .icon-container {
   position: absolute;
   right: 15px;
-  top: calc(50% - 10px);
+  top: calc(50% + 5px );
 }
 
 .loader {

@@ -160,6 +160,9 @@ const postDocuments = (data) => {
 const getDocuments = (data, filter) => {
     return api.get(`${documents}/docs-templates?category=${data}`, {params: filter})
 }
+const getCurrentDocument = (type, data) => {
+    return api.get(`${documents}/docs-templates/?category=${type}&search=${data}`)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -217,5 +220,6 @@ export default {
     deleteOtherChanges,
     postDocuments,
     getDocuments,
+    getCurrentDocument,
 }
 
