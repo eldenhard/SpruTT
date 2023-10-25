@@ -1,152 +1,88 @@
 <template>
-  <div style="display: flex;">
-    <div style="width: 15%;">
-        <StaffNavbar :tabs="tabs" :counter="counter"></StaffNavbar>
-    </div>
-    <div style="width: 80%; ">
-      <p class="infoNull" v-if="tabs.length === 0">
-        Вы не выбрали ещё ни одной таблицы
-      </p>
-      <b-card no-body class="leftTable">
-        <b-tabs card v-model="tabActive" @changed="onTabChanged">
-          <b-tab v-for="i in tabs" :key="i.id">
-            <template #title>
-              <span>Таблица {{ i.name }}</span>
-              <span @click="closeTab(i.id)">&nbsp;&nbsp;❌</span>
-            </template>
+  <b-card no-body>
+    <b-tabs pills card vertical style="height: 100vh">
+      <b-container>
+        <b-tab title="Сотрудники">
+          <b-card-text>
+            <ReferenceInformation />
+          </b-card-text>
+        </b-tab>
 
-            <b-card-text v-if="i.name === 'Вагоны'">
-              <component :is="wt"></component>
-            </b-card-text>
-            <b-card-text v-if="i.name === 'Расчет'">
-              <WPCalculate />
-            </b-card-text>
-            <b-card-text v-if="i.name === 'Отправки БЧ'">
-              <BCH />
-            </b-card-text>
-            <b-card-text v-if="i.name === 'Телеграммы'">
-              <WagonTableTelegram />
-            </b-card-text>
-            <b-card-text v-if="i.name === 'Ремонты'">
-              <WagonRepair />
-            </b-card-text>
-            <b-card-text v-if="i.name === 'Тариф по сопредельным территориям'">
-              <TerritoryTable />
-            </b-card-text>
-            <!-- <div v-if="i.name === 'Сотрудники'">
-                <StaffTable />
-              </div> -->
-              <div v-if="i.name === 'Сотрудники'">
-                <ReferenceInformation />
-              </div>
-            <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
-              <ReportAbandoned />
-            </b-card-text>
+        <b-tab title="Типовые формы документов" @click="$refs.child1.getData('Типовые формы документов')">
+          <b-card-text>
+            <AllFormDocument :typeDocument="'Типовые формы документов'" ref="child1"/>
+          </b-card-text>
+        </b-tab>
+        <b-tab title="Учредительные документы"  @click="$refs.child2.getData('Учредительные документы')">
+          <b-card-text>
+            <AllFormDocument :typeDocument="'Учредительные документы'" ref="child2"/>
+          </b-card-text>
+        </b-tab>
+        <b-tab title="Локально нормативные акты" @click="$refs.child3.getData('Локально нормативные акты')">
+          <b-card-text>
+            <AllFormDocument :typeDocument="'Локально нормативные акты'" ref="child3"/>
+          </b-card-text>
+        </b-tab>
+        <b-tab title="Приказы и распоряжения"  @click="$refs.child4.getData('Приказы и распоряжения')">
+          <b-card-text>
+            <AllFormDocument :typeDocument="'Приказы и распоряжения'" ref="child4"/>
+          </b-card-text>
+        </b-tab>
 
-            <!-- <b-card-text v-if="i.name === 'Размещение парка'">
-                <AccomodationPark />
-              </b-card-text>
+      </b-container>
 
-              <b-card-text v-if="i.name === 'Формирование парка'">
-                <FormationPark />
-              </b-card-text> -->
 
-              <b-card-text v-if="i.name === 'Размещение парка'">
-                <Table2 />
-              </b-card-text>
 
-              <b-card-text v-if="i.name === 'Формирование парка'">
-                <Table1 />
-              </b-card-text>
-
-              <b-card-text v-if="i.name === 'Арендованный парк'">
-                <Table3 />
-              </b-card-text>
-
-              <b-card-text v-if="i.name === 'Парк в аренде'">
-                <Table4 />
-              </b-card-text>
-                   
-            <b-card-text v-if="i.name === 'GLP'">
-              <GLP />
-            </b-card-text>
-          </b-tab>
-        </b-tabs>
-      </b-card>
-    </div>
-  </div>
-
+    
+    </b-tabs>
+  </b-card>
 </template>
 
+<style scoped>
+select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#navbarMain {
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  height: 100vh !important;
+}
+
+.nav .nav-pills {
+  height: 100vh !important;
+}
+
+.nav-item {
+  text-align: center !important;
+}
+
+li.nav-item {
+  text-align: center !important;
+  justify-content: center !important;
+  background: red !important;
+}
+/* .nav-pills{
+  background: red !important;
+} */
+</style>
+
 <script>
-import FormationPark from "@/components/Table/ManagmentRepReporting/FormationPark.vue";
-  import WPMainData from "../components/Table/WagonPark/WPMainData.vue";
-  import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
-  import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
-  import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
-  import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
-  import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
-  import StaffTable from "@/components/Table/StaffTable.vue";
-  import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
-  import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
-  import StaffNavbar from "@/components/Navbar/StaffNavbar.vue";
-  import GLP from '../components/Table/WagonPark/GLP/GLP.vue'
-import ReferenceInformation from '../components/Table/ReferenceInformation/ReferenceInformation.vue'
-
-  import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
-import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
-import Table3 from "@/components/Table/ManagmentRepReporting/Table3.vue";
-import Table4 from "@/components/Table/ManagmentRepReporting/Table4.vue";
+import AllFormDocument from '@/components/Table/Directory/AllFormsDocument/AllFormDocument.vue';
+import ReferenceInformation from '@/components/Table/ReferenceInformation/ReferenceInformation.vue';
 export default {
-  name: "Staff",
-  components: { 
-    StaffNavbar,
-    StaffTable,
-    WPMainData,
-    ReportAbandoned,
-    WagonTableTelegram,
-    WPCalculate,
-    WagonRepair,
-    BCH, 
-    TerritoryTable,
-    AccomodationPark,
-    FormationPark,
-    GLP,
+  name: "Directory",
+  components: {
+    AllFormDocument,
     ReferenceInformation,
-    Table1,
-      Table2,
-      Table3,
-      Table4,
-    
-  },
-  data() {
-    return {
-      tabs: [],
-      counter: 1,
-      tabActive: 0,
-      wt: "WPMainData",
-
-    };
-  },
-  methods: {
-    closeTab(x) {
-      for (let i = 0; i < this.tabs.length; i++) {
-        if (this.tabs[i].id === x) {
-          this.tabs.splice(i, 1);
-        }
-      }
-      localStorage.setItem("tabs", JSON.stringify([...this.tabs]));
-    },
-    onTabChanged() {
-      this.tabActive = this.tabs.length - 1;
-    },
   },
   mounted() {
-    const tabs = localStorage.getItem("tabs");
-    if (tabs) {
-      this.tabs = JSON.parse(tabs);
-    }
-    document.title = "Кадровая служба";
+    document.title = "Справочники";
   },
 };
 </script>
+
+
+

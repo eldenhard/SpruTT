@@ -13,7 +13,7 @@
           </b-card-text>
         </b-tab>
 
-        <b-tab title="Типовые формы документов" @click="$refs.child1.getData('Типовые формы документов')">
+        <!-- <b-tab title="Типовые формы документов" @click="$refs.child1.getData('Типовые формы документов')">
           <b-card-text>
             <allformdocument :typeDocument="'Типовые формы документов'" ref="child1"/>
           </b-card-text>
@@ -32,7 +32,7 @@
           <b-card-text>
             <allformdocument :typeDocument="'Приказы и распоряжения'" ref="child4"/>
           </b-card-text>
-        </b-tab>
+        </b-tab> -->
 
 
     
