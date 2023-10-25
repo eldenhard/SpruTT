@@ -7,35 +7,13 @@
             <partnerTable />
           </b-card-text>
         </b-tab>
-        <b-tab title="Справочник договоры" active  style="width: 120% !important; margin-left: -10% !important;">
+        <b-tab title="Справочник договоры" active  >
           <b-card-text  >
             <contractTable />
           </b-card-text>
         </b-tab>
 
-        <!-- <b-tab title="Типовые формы документов" @click="$refs.child1.getData('Типовые формы документов')">
-          <b-card-text>
-            <allformdocument :typeDocument="'Типовые формы документов'" ref="child1"/>
-          </b-card-text>
-        </b-tab>
-        <b-tab title="Учредительные документы"  @click="$refs.child2.getData('Учредительные документы')">
-          <b-card-text>
-            <allformdocument :typeDocument="'Учредительные документы'" ref="child2"/>
-          </b-card-text>
-        </b-tab>
-        <b-tab title="Локально нормативные акты" @click="$refs.child3.getData('Локально нормативные акты')">
-          <b-card-text>
-            <allformdocument :typeDocument="'Локально нормативные акты'" ref="child3"/>
-          </b-card-text>
-        </b-tab>
-        <b-tab title="Приказы и распоряжения"  @click="$refs.child4.getData('Приказы и распоряжения')">
-          <b-card-text>
-            <allformdocument :typeDocument="'Приказы и распоряжения'" ref="child4"/>
-          </b-card-text>
-        </b-tab> -->
 
-
-    
         <b-tab title="Справочник станции" >
           <b-card-text>
             <StationsDirectory />
@@ -146,7 +124,7 @@ import Fin_headerVue from '../components/Table/Directory/Fin_header.vue';
 import TarifDirectory from "@/components/Table/Directory/TarifDirectory.vue";
 import OtherChargesVue from '../components/Table/Directory/OtherCharges/OtherCharges.vue';
 import stavkipvVue from '../components/Table/Directory/StavkiPV/stavkipv.vue';
-import allformdocument from '../components/Table/Directory/AllFormsDocument/AllFormDocument.vue'
+import allformdocument from '../components/Table/ReferenceInformation/AllFormsDocument/AllFormDocument.vue'
 export default {
   name: "Directory",
   components: {

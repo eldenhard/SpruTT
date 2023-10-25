@@ -18,7 +18,7 @@
             <AllFormDocument :typeDocument="'Учредительные документы'" ref="child2"/>
           </b-card-text>
         </b-tab>
-        <b-tab title="Локально нормативные акты" @click="$refs.child3.getData('Локально нормативные акты')">
+        <b-tab title="Локальные нормативные акты" @click="$refs.child3.getData('Локально нормативные акты')">
           <b-card-text>
             <AllFormDocument :typeDocument="'Локально нормативные акты'" ref="child3"/>
           </b-card-text>
@@ -70,7 +70,7 @@ li.nav-item {
 </style>
 
 <script>
-import AllFormDocument from '@/components/Table/Directory/AllFormsDocument/AllFormDocument.vue';
+import AllFormDocument from '@/components/Table/ReferenceInformation/AllFormsDocument/AllFormDocument.vue';
 import ReferenceInformation from '@/components/Table/ReferenceInformation/ReferenceInformation.vue';
 export default {
   name: "Directory",

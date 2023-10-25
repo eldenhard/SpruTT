@@ -23,6 +23,7 @@
             />
           </label>
         </div>
+        <br>
         <div
           class="drop-area"
           :class="{ active: isDragging || file }"
@@ -38,9 +39,7 @@
             <b-icon-cloud-plus /> <br />
             {{ file ? `Файл: ${file.name}` : "Перетащите файл в это поле" }}
             <br />
-            <sup v-if="file">{{
-              `Размер файла: ${formatFileSize(file.size)}`
-            }}</sup>
+            <sup v-if="file">{{ `Размер файла: ${formatFileSize(file.size)}`}}</sup>
           </header>
           <br />
 
