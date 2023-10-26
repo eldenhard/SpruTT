@@ -317,10 +317,6 @@ export default {
         },
     },
     watch: {
-        new_comp(){
-            console.log(this.new_comp)
-        },
-
         picked() {
             if (this.picked == "agreement_number") {
                 this.placeholderAgreement = "введите номер договора";
