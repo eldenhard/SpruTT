@@ -156,7 +156,7 @@
 
                             <b-dropdown-item @click="addField('Ставка НДС')">Ставка НДС</b-dropdown-item>
 
-                            <b-dropdown id="dropdown-2" text="Грузоподъемность" class="m-md-2" dropright>
+                            <b-dropdown id="dropdown-2" text="Грузоподъемность" class="m-md-2" dropright >
                                 <b-dropdown-item @click="addField('Грузоподъемность менее 66 т')">Грузоподъемность менее
                                     66 т</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Грузоподъемность 66 т')">Грузоподъемность 66
@@ -181,7 +181,13 @@
                                     т</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Грузоподъемность более 75 т')">Грузоподъемность более
                                     75 т</b-dropdown-item>
-
+                            </b-dropdown>
+                            <b-dropdown id="dropdown-2" text="Тип отправки" class="m-md-2" dropright style="width: 90%">
+                                <b-dropdown-item @click="addField('Вагонная')">Вагонная</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Маршрутная')">Маршрутная</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Групповая: 2-5 ваг')">Групповая: 2-5 ваг</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Групповая: 6-20 ваг')">Групповая: 6-20 ваг</b-dropdown-item>
+        
                             </b-dropdown>
                         </b-dropdown>
                     </th>
@@ -281,6 +287,7 @@ export default {
                 bvEvent.preventDefault()
             }
         })
+       
     },
     computed: {
         ifIncludeValue() {
