@@ -1,89 +1,184 @@
 <template>
     <div>
         <h1 align="center">Раздел находится в разработке</h1>
-        <div>
-
-        </div>
+        <br>
         <Loader :loader="loader" />
-        <div class="getDataExcel">
+        <div class="air_block">
+            <div class="air_block_header"
+                style="display: flex !important;justify-content: space-between !important; width: 100%;">
+                <h5>Данные по ставкам (полувагоны)</h5>
+                <h6 v-on:click="visible = !visible" style="padding-right: 4%; cursor: pointer">
+                    {{ visible ? "Свернуть " : "Развернуть" }}
+                </h6>
+            </div>
+            <hr />
+            <br />
 
-            <div class="dataAct">
 
-                <label for="">№ договора <br />
-                    <input type="text" v-model="act_number" class="textarea" />
-                </label>
-                <label for="">Дата акта<br />
-                    <input type="date" v-model="act_date" class="textarea" />
-                </label>
+            <div style="display: flex;justify-content: space-between;" v-show="visible">
+                <section style="flex: 1 0 auto;">
+                    <table>
+                        <tr>
+                            <td>№ документа <sup style="color: rgb(172, 9, 9);font-size: 18px">*</sup></td>
+                            <td>
+                                <div style="display: flex; justify-content: space-between">
+                                    <input type="radio" id="one1p" value="agreement_number" v-model="picked" />
+                                    <label for="one1p">Договор</label>
+                                    <br />
+                                    <input type="radio" id="two2p" value="annex_number" v-model="picked" />
+                                    <label for="two2p">Приложение</label>
+                                    <br />
+                                </div>
+
+                                <input type="text" class="textarea" v-model.trim="Standard.agreement_number"
+                                    :placeholder="placeholderAgreement" v-show="visible_inp_ag" />
+                                <input type="text" class="textarea" v-model.trim="Standard.annex_number"
+                                    :placeholder="placeholderAgreement" v-show="visible_inp_an" />
+                            </td>
+                        </tr>
+                        <br />
+                        <tr v-show="visible_agreement">
+                            <td class="col1">Все договора <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
+                            <td>
+                                <select name="" id="data-select" v-model="agreement_number_test" @change="FullDocument()">
+                                    <option :value="[item.agreement_number, item.client, item.id]"
+                                        v-for="item in all_agreement_number" :key="item.id">
+                                        {{ item.agreement_number }} {{ item.client }} {{ item.on_date }}
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <br />
+
+                        <tr>
+                            <td class="col1">Дата начала <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
+                            <td>
+                                <input type="date" id="a" class="textarea" v-model="Standard.on_date" placeholder="Дата" />
+                            </td>
+                        </tr>
+                        <br />
+
+                        <tr>
+                            <td class="col1">Дата окончания</td>
+                            <td>
+                                <input type="date" id="a" class="textarea" v-model="Standard.end_date" placeholder="Дата" />
+                            </td>
+                        </tr>
+                        <br />
+
+                        <br />
+
+                        <tr>
+                            <td class="col1">Клиент <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
+                            <td>
+                                <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Клиент" />
+                            </td>
+                        </tr>
+                        <br />
+                        <tr v-show="ten_visible">
+                            <td></td>
+                            <td>
+                                <div class="textarea" style="height: auto; width: 100%; margin-bottom: 1%"
+                                    v-show="ten_visible">
+                                    <ul id="root_tenant">
+                                        <li v-for="item in filter_client" :key="item.id" @click="checkClient(item.client)">
+                                            <span>{{ item.client }}</span>
+                                            <hr />
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button class="button Accept" style="height: 40px;" v-if="picked == 'agreement_number'"
+                                    @click="createAgreement()">Создать договор</button>
+                            </td>
+                        </tr>
+                    </table>
+
+                </section>
+                <section style="flex: 2 0 auto;">
+                    <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"
+                        style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
+                    <button class="Accept" @click="loadFromExcel()"
+                        style="margin-top: 2%;width: 100%;margin-left: auto;height: 40px;">Загрузить в таблицу</button>
+                </section>
             </div>
 
-            <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"></textarea>
-            <button class="Accept" @click="loadFromExcel()">Загрузить</button>
+            <!-- <div class="btn-group_tarif" v-show="visible">
+                <button class="button Action" @click="checkingData()">
+                    Проверка введеных данных
+                </button>
+                <button class="button Request" @click="data = []" v-show="visible">
+                    Очистить таблицу
+                </button>
+                <button class="button Accept" @click="postData()" v-show="visible">
+                    Отправить данные
+                </button>
+            </div> -->
+            <br />
         </div>
 
-        <table class="table-hover">
-            <thead>
-                <tr class="table-secondary" style="background: #e1e1e2">
-                    <th></th>
-                    <th>Станция отправления</th>
-                    <th>Станция назначения</th>
-                    <th>Груз</th>
-                    <template v-for="field in selectedFields">
-                        <th :key="field" @click="deleteTH(field)">{{ field }}</th>
-                    </template>
-                    <th>
-                        <b-dropdown id="dropdown-1" text="Добавить поле" class="m-md-2">
-                            <b-dropdown-item @click="addField('Оборот, сут')">Оборот, сут</b-dropdown-item>
-                            <b-dropdown-item @click="addField('НДС')">НДС</b-dropdown-item>
-                            <b-dropdown-item @click="addField('Коэффициент')">Коэффициент</b-dropdown-item>
-                            <b-dropdown id="dropdown-2" text="Ставка по тарифу" class="m-md-2" dropright>
-                                <b-dropdown-item @click="addField('Ставка без НДС')">Ставка без НДС</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Ставка с 20% НДС')">Ставка с 20% НДС</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Ставка 0% НДС')">Ставка 0% НДС</b-dropdown-item>
+
+        <div class="air_block" style="margin-top: 2%;">
+            <p class="amount">Таблица "Данные из Excel"</p>
+            <table>
+                <thead>
+                    <tr style="background: #e1e1e2">
+                        <th style="border: 1px solid grey;">Действие</th>
+                        <th style="border: 1px solid grey;">Станция отправления</th>
+                        <th style="border: 1px solid grey;">Станция назначения</th>
+                        <th style="border: 1px solid grey;">Груз</th>
+                        <template v-for="field in selectedFields">
+                            <th :key="field" @click="deleteTH(field)" v-b-tooltip.hover title="По клику удаление элемента шапки таблицы" class="deleteth" style="border: 1px solid grey;">{{ field }}</th>
+                        </template>
+                        <th>
+                            <b-dropdown id="dropdown-1" text="Добавить поле" class="m-md-2">
+                                <b-dropdown-item @click="addField('Оборот, сут')">Оборот, сут</b-dropdown-item>
+                                <b-dropdown-item @click="addField('НДС')">НДС</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Коэффициент')">Коэффициент</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Ставка НДС')">Ставка НДС</b-dropdown-item>
+
+                                <b-dropdown id="dropdown-2" text="Грузоподъемность" class="m-md-2" dropright>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 66 т')">Грузоподъемность менее 66 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 66 т')">Грузоподъемность 66 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 66 т')">Грузоподъемность более 66 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69 т')">Грузоподъемность менее 69 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 69 т')">Грузоподъемность 69 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 69 т')">Грузоподъемность более 69 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 71 т')">Грузоподъемность менее 71 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 71 т')">Грузоподъемность 71 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 71 т')">Грузоподъемность более 71 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 75 т')">Грузоподъемность менее 75 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 75 т')">Грузоподъемность 75 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 75 т')">Грузоподъемность более 75 т</b-dropdown-item>
+
+                                </b-dropdown>
                             </b-dropdown>
 
-                            <b-dropdown id="dropdown-2" text="Грузподъемность" class="m-md-2" dropright>
-                                <b-dropdown-item @click="addField('Грузподъемность менее 66 т')">Грузподъемность менее 66
-                                    т</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Грузподъемность более 66 т')">Грузподъемность более 66
-                                    т</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Грузподъемность менее 69 т')">Грузподъемность менее 69
-                                    т</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Грузподъемность более 69 т')">Грузподъемность более 69
-                                    т</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Грузподъемность менее 71 т')">Грузподъемность менее 71
-                                    т</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Грузподъемность более 71 т')">Грузподъемность более 71
-                                    т</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Грузподъемность менее 75 т')">Грузподъемность менее 75
-                                    т</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Грузподъемность более 75 т')">Грузподъемность более 75
-                                    т</b-dropdown-item>
 
-                            </b-dropdown>
-                        </b-dropdown>
-
-
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
-                    <td class="deleteRow" @click="deleteRow(rowIndex)">Удалить</td>
-                    <td v-for="(cell, cellIndex) in row" :key="cellIndex" style="position: relative">
-                        {{ cell }}
-                        <!-- <input v-model="tableData[rowIndex][cellIndex]" @click="editCell(rowIndex, cellIndex)"
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
+                        <td class="deleteRow" @click="deleteRow(rowIndex)">Удалить</td>
+                        <td v-for="(cell, cellIndex) in row" :key="cellIndex" style="position: relative">
+                            {{ cell }}
+                            <!-- <input v-model="tableData[rowIndex][cellIndex]" @click="editCell(rowIndex, cellIndex)"
                             @blur="saveCell()" @keyup.enter="saveCell(rowIndex, cellIndex)"
                             v-if="activeCell === `${rowIndex}-${cellIndex}`" ref="editableInput[rowIndex][cellIndex]"
                             class="editable-input" />
                         <div style="width: 100%" v-else @click="editCell(rowIndex, cellIndex)">
                             <span class="editable-text">{{ cell }}</span>
                         </div> -->
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
 
 
@@ -94,12 +189,13 @@
             id="notif" />
     </div>
 </template>
-  
+  <!-- postTarifData -->
 <script>
 import Handsontable from "handsontable";
 import api from "@/api/directory";
 import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from '../../../loader/loader.vue';
+import { mapState } from "vuex";
 export default {
     components: {
         Loader,
@@ -107,17 +203,34 @@ export default {
     },
     data() {
         return {
+            visible: true,
+            picked: "agreement_number",
+            placeholderAgreement: "введите номер договора",
+            Standard: {
+                agreement_number: null,
+                annex_number: null,
+                on_date: null,
+                end_date: null,
+                client: "",
+                base: null,
+                responsible: null,
+            },
+            visible_inp_an: false,
+            visible_inp_ag: true,
+            visible_agreement: false,
+            all_agreement_number: "",
+            agreement_number_test: "",
+            ten_visible: false,
+
+
             excelData: "",
             tableData: [],
             TableDataRTS: [],
             selectedFields: [],
             hot: null,
             activeCell: null,
-            sericeRTS: "service5",
-            act_number: "",
-            act_date: "",
             loader: false,
-
+            // Уведомелния
             showNotify: false,
             notifyHead: "",
             notifyMessage: "",
@@ -141,69 +254,140 @@ export default {
             }
         })
     },
+    computed: {
+        ...mapState({
+            name_client: (state) => state.client.name_client,
+            name_cargo: (state) => state.cargo_code.cargo_code,
+            uid: (state) => state.auth.uid,
+        }),
+
+        filter_client() {
+            if (this.Standard.client.length > 1) {
+                this.ten_visible = true;
+            }
+
+            return this.Standard.client.length > 1
+                ? this.name_client.filter((item) =>
+                    item.client
+                        .toLowerCase()
+                        .includes(this.Standard.client.toLowerCase())
+                )
+                : "";
+        },
+        filter_cargo() {
+            if (this.cargo_user.length > 1) {
+                this.cargo_list = true;
+            }
+            return this.cargo_user.length > 1
+                ? this.name_cargo.filter((item) =>
+                    item.name.toLowerCase().includes(this.cargo_user.toLowerCase())
+                )
+                : "";
+        },
+    },
+    watch: {
+
+        picked() {
+            if (this.picked == "agreement_number") {
+                this.placeholderAgreement = "введите номер договора";
+                this.visible_agreement = false;
+                this.visible_inp_ag = true;
+                this.visible_inp_an = false;
+                this.Standard.annex_number = "";
+                this.agreement_number_test = "";
+            } else {
+                this.placeholderAgreement = "введите номер приложения";
+                this.visible_agreement = true;
+                this.visible_inp_ag = false;
+                this.visible_inp_an = true;
+                this.Standard.agreement_number = "";
+            }
+        },
+        agreement_number_test() {
+            console.log(this.agreement_number_test)
+            this.flagCheck = false
+        },
+    },
     methods: {
+        // Создать договор
+        createAgreement() {
+            let agreement = [{
+                agreement_number: this.Standard.agreement_number,
+                on_date: this.Standard.on_date,
+                end_date: this.Standard.end_date,
+                client: this.Standard.client,
+            }]
+            api.postTarifData(agreement)
+                .then(response => {
+                    this.notifyHead = "Успешно";
+                    this.notifyMessage = "Договор создан";
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                }).catch((error) => {
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = `Договор не создан! Повторите попытку позже`;
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                })
+        },
+        // Получить все договора по клиенту
+        getAgreementByClient() {
+            this.loader = true
+            api.getAllDocumentsByClient(this.Standard.client)
+                .then(response => {
+                    this.loader = false
+  
+                    this.all_agreement_number = response.data.data
+                    this.notifyHead = "Успешно";
+                    this.notifyMessage = "Договора получены";
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                }).catch((error) => {
+                    this.loader = false
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = "Договора не получены! Повторите попытку позже";
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                    console.error(error)
+                })
+        },
+        // Заполнить поля приложения из выбранного договора
+        FullDocument() {
+            this.Standard.agreement_number = this.agreement_number_test[0];
+            this.Standard.client = this.agreement_number_test[1];
+            this.Standard.base = this.agreement_number_test[2];
+            // console.log(this.agreement_number_test)
+        },
+        // Выбор клиента для селекта
+        checkClient(value) {
+            this.Standard.client = value;
+            this.$nextTick(() => {
+                if(this.picked != 'agreement_number'){
+                    this.getAgreementByClient()
+                }
+                this.ten_visible = false;
+                this.cargo_list = false;
+            })
+        },
         deleteTH(value) {
             return this.selectedFields.splice(this.selectedFields.indexOf(value), 1)
         },
         addField(field) {
             this.selectedFields.push(field); // Добавляем выбранный элемент в массив
         },
-        sendData() {
-            if (this.act_number == "" || this.act_date == "") {
-                this.notifyHead = "Ошибка";
-                this.notifyMessage = "Заполните поля № договора/Дата акта";
-                this.notifyClass = "wrapper-error";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 2500);
-                return;
-            }
-            this.loader = true;
-            let new_obj = this.tableData.map((item) => {
-                return {
-                    wagon: item[0].trim(),
-                    from_cargo: item[1].trim(),
-                    arrival_date: item[2].split(".").reverse().join("-"),
-                    parking_begin_date: item[3].split(".").reverse().join("-"),
-                    departure_date: item[4].split(".").reverse().join("-"),
-                    days: Number(item[5].trim()),
-                    service1: item[6].trim(),
-                    service2: item[7].trim(),
-                    service3: item[8].trim(),
-                    service4: item[9].trim(),
-                    service5: item[10].trim(),
-                    service6: item[11].trim(),
-                    cost: Number(item[12].replace(" ", "").replace(",", ".")) ?? null,
-                    act_number: this.act_number,
-                    act_date: this.act_date,
-                    contractor: this.table_type,
-                };
-            });
-            api
-                .postOtherChanges(new_obj)
-                .then((response) => {
-                    this.loader = false;
-                    this.tableData = [];
-                    this.notifyHead = "Успешно";
-                    this.notifyMessage = "Данные отправлены";
-                    this.notifyClass = "wrapper-success";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 2500);
-                })
-                .catch((error) => {
-                    this.loader = false;
-                    this.notifyHead = "Ошибка";
-                    this.notifyMessage = "Данные не отправлены, повторите позже";
-                    this.notifyClass = "wrapper-error";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 2500);
-                });
-        },
+        // Загрузка из Excel в таблицу
         loadFromExcel() {
             const excelData = this.excelData;
             // Парсим данные из Excel, разделяя их по строкам и столбцам
@@ -271,88 +455,100 @@ export default {
 </script>
   
 <style  scoped>
+.deleteth{
+    background: rgb(139, 144, 148);
+}
+.deleteth:hover{
+    background: lightcoral !important;
+}
+.btn-group_tarif {
+    width: 30%;
+    margin-left: auto;
+}
+
+.btn-group_tarif button {
+    margin-top: 2%;
+    width: 80%;
+    margin-left: auto;
+    height: 40px;
+}
+
 .dropdown-menu li {
-  position: relative;
+    position: relative;
 }
 
 .dropdown-menu .dropdown-submenu {
-  display: none;
-  position: absolute;
-  left: 100%;
-  top: -7px;
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -7px;
 }
 
 .dropdown-menu .dropdown-submenu-left {
-  right: 100%;
-  left: auto;
+    right: 100%;
+    left: auto;
 }
 
-.dropdown-menu > li:hover > .dropdown-submenu {
-  display: block;
+.dropdown-menu>li:hover>.dropdown-submenu {
+    display: block;
 }
 
-.Accept {
-  margin-top: 2%;
-  width: 25%;
-  margin-left: auto;
-  height: 40px;
-}
+
 
 .editable-input {
-  width: 100%;
+    width: 100%;
 }
 
 .editable-text {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-.dataAct {
-  display: flex;
-  flex-direction: column;
-}
-.dataAct label {
-  width: 100%;
-}
-.dataAct input {
-  width: 100%;
-}
-
-.getDataExcel {
-  display: flex;
-  width: 25%;
-  position: relative;
-  margin-left: auto !important;
-  flex-direction: column;
-}
-.getDataExcel textarea {
-  width: 100%;
-  margin-top: 2%;
-}
-.getDataExcel button {
-  margin-top: 2%;
-  width: 100%;
+td,
+th,
+tr {
+    border: none;
 }
 
 .radio {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #eeeeee;
-  border-radius: 5px;
-  padding: 1%;
-  gap: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
+    padding: 1%;
+    gap: 5%;
 }
+
 .radio label {
-  font-size: 16px;
-  font-weight: bold;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .deleteRow {
-  background: #ffb0a2;
-  color: grey !important;
+    background: #ffb0a2;
+    color: grey !important;
 }
 
 table {
-  margin-top: 4%;
+    margin-top: 4%;
 }
+
+.air_block {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background: #ffffff;
+    box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
+    position: relative;
+    left: 50%;
+    padding: 1%;
+    transform: translate(-50%, 0);
+}
+
+.air_block_header {
+    padding: 1% 0 0 2%;
+    color: #cacaca;
+}
+
 </style>
