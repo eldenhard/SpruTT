@@ -40,74 +40,76 @@
                         <tr v-show="visible_agreement">
                             <td class="col1">Все договора <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
                             <td>
-                                <select name="" id="data-select" v-model="agreement_number_test" @change="FullDocument()">
+                                <v-select v-model="new_comp" :options="all_agreement_number" label="agreement_number"></v-select>
+                          
+                            <!-- <select name="" id="data-select" v-model="agreement_number_test" @change="FullDocument()">
                                     <option :value="[item.agreement_number, item.client, item.id]"
                                         v-for="item in all_agreement_number" :key="item.id">
                                         {{ item.agreement_number }} {{ item.client }} {{ item.on_date }}
                                     </option>
-                                </select>
-                            </td>
-                        </tr>
-                        <br />
+                                </select> -->
+                        </td>
+                    </tr>
+                    <br />
 
-                        <tr>
-                            <td class="col1">Дата начала <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
-                            <td>
-                                <input type="date" id="a" class="textarea" v-model="Standard.on_date" placeholder="Дата" />
-                            </td>
-                        </tr>
-                        <br />
+                    <tr>
+                        <td class="col1">Дата начала <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
+                        <td>
+                            <input type="date" id="a" class="textarea" v-model="Standard.on_date" placeholder="Дата" />
+                        </td>
+                    </tr>
+                    <br />
 
-                        <tr>
-                            <td class="col1">Дата окончания</td>
-                            <td>
-                                <input type="date" id="a" class="textarea" v-model="Standard.end_date" placeholder="Дата" />
-                            </td>
-                        </tr>
-                        <br />
+                    <tr>
+                        <td class="col1">Дата окончания</td>
+                        <td>
+                            <input type="date" id="a" class="textarea" v-model="Standard.end_date" placeholder="Дата" />
+                        </td>
+                    </tr>
+                    <br />
 
-                        <br />
+                    <br />
 
-                        <tr>
-                            <td class="col1">Клиент <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
-                            <td>
-                                <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Клиент" />
-                            </td>
-                        </tr>
-                        <br />
-                        <tr v-show="ten_visible">
-                            <td></td>
-                            <td>
-                                <div class="textarea" style="height: auto; width: 100%; margin-bottom: 1%"
-                                    v-show="ten_visible">
-                                    <ul id="root_tenant">
-                                        <li v-for="item in filter_client" :key="item.id" @click="checkClient(item.client)">
-                                            <span>{{ item.client }}</span>
-                                            <hr />
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button class="button Accept" style="height: 40px;" v-if="picked == 'agreement_number'"
-                                    @click="createAgreement()">Создать договор</button>
-                            </td>
-                        </tr>
-                    </table>
+                    <tr>
+                        <td class="col1">Клиент <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
+                        <td>
+                            <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Клиент" />
+                        </td>
+                    </tr>
+                    <br />
+                    <tr v-show="ten_visible">
+                        <td></td>
+                        <td>
+                            <div class="textarea" style="height: auto; width: 100%; margin-bottom: 1%"
+                                v-show="ten_visible">
+                                <ul id="root_tenant">
+                                    <li v-for="item in filter_client" :key="item.id" @click="checkClient(item.client)">
+                                        <span>{{ item.client }}</span>
+                                        <hr />
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button class="button Accept" style="height: 40px;" v-if="picked == 'agreement_number'"
+                                @click="createAgreement()">Создать договор</button>
+                        </td>
+                    </tr>
+                </table>
 
-                </section>
-                <section style="flex: 2 0 auto;">
-                    <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"
-                        style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
-                    <button class="Accept" @click="loadFromExcel()"
-                        style="margin-top: 2%;width: 100%;margin-left: auto;height: 40px;">Загрузить в таблицу</button>
-                </section>
-            </div>
+            </section>
+            <section style="flex: 2 0 auto;">
+                <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"
+                    style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
+                <button class="Accept" @click="loadFromExcel()"
+                    style="margin-top: 2%;width: 100%;margin-left: auto;height: 40px;">Загрузить в таблицу</button>
+            </section>
+        </div>
 
-            <!-- <div class="btn-group_tarif" v-show="visible">
+        <!-- <div class="btn-group_tarif" v-show="visible">
                 <button class="button Action" @click="checkingData()">
                     Проверка введеных данных
                 </button>
@@ -118,77 +120,99 @@
                     Отправить данные
                 </button>
             </div> -->
-            <br />
-        </div>
+        <br />
+    </div>
 
 
-        <div class="air_block" style="margin-top: 2%;">
-            <p class="amount">Таблица "Данные из Excel"</p>
-            <table>
-                <thead>
-                    <tr style="background: #e1e1e2">
-                        <th style="border: 1px solid grey;">Действие</th>
-                        <th style="border: 1px solid grey;">Станция отправления</th>
-                        <th style="border: 1px solid grey;">Станция назначения</th>
-                        <th style="border: 1px solid grey;">Груз</th>
-                        <template v-for="field in selectedFields">
-                            <th :key="field" @click="deleteTH(field)" v-b-tooltip.hover title="По клику удаление элемента шапки таблицы" class="deleteth" style="border: 1px solid grey;">{{ field }}</th>
-                        </template>
-                        <th>
-                            <b-dropdown id="dropdown-1" text="Добавить поле" class="m-md-2">
-                                <b-dropdown-item @click="addField('Оборот, сут')">Оборот, сут</b-dropdown-item>
-                                <b-dropdown-item @click="addField('НДС')">НДС</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Коэффициент')">Коэффициент</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Ставка НДС')">Ставка НДС</b-dropdown-item>
+    <div class="air_block" style="margin-top: 2%;">
+        <p class="amount">Таблица "Данные из Excel"</p>
+        <table>
+            <thead>
+                <tr style="background: #e1e1e2">
+                    <th style="border: 1px solid grey;">Действие</th>
+                    <th style="border: 1px solid grey;">Станция отправления</th>
+                    <th style="border: 1px solid grey;">Станция назначения</th>
+                    <th style="border: 1px solid grey; position: relative;">Груз
+                        <select name="" id="" style="width: 70%">
+                            <option value="nameCargo">Наименование</option>
+                            <option value="classCargo">Класс</option>
+                        </select>
+                    </th>
+                    <template v-for="field in selectedFields">
+                        <th :key="field" @click="deleteTH(field)" v-b-tooltip.hover
+                            title="По клику удаление элемента шапки таблицы" class="deleteth"
+                            style="border: 1px solid grey;">{{ field }}</th>
+                    </template>
 
-                                <b-dropdown id="dropdown-2" text="Грузоподъемность" class="m-md-2" dropright>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 66 т')">Грузоподъемность менее 66 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 66 т')">Грузоподъемность 66 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 66 т')">Грузоподъемность более 66 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69 т')">Грузоподъемность менее 69 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 69 т')">Грузоподъемность 69 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 69 т')">Грузоподъемность более 69 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 71 т')">Грузоподъемность менее 71 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 71 т')">Грузоподъемность 71 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 71 т')">Грузоподъемность более 71 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 75 т')">Грузоподъемность менее 75 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 75 т')">Грузоподъемность 75 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 75 т')">Грузоподъемность более 75 т</b-dropdown-item>
+                    <th>
+                        <b-dropdown id="dropdown-1" text="Добавить поле" class="m-md-2">
+                            <b-dropdown-item @click="addField('Дорога назначения')">Дорога назначения</b-dropdown-item>
+                            <b-dropdown-item @click="addField('Дорога отправления')">Дорога
+                                отправления</b-dropdown-item>
+                            <b-dropdown-item @click="addField('Коэффициент')">Коэффициент</b-dropdown-item>
+                            <b-dropdown-item @click="addField('НДС')">НДС</b-dropdown-item>
+                            <b-dropdown-item @click="addField('Оборот, сут')">Оборот, сут</b-dropdown-item>
 
-                                </b-dropdown>
+
+                            <b-dropdown-item @click="addField('Ставка НДС')">Ставка НДС</b-dropdown-item>
+
+                            <b-dropdown id="dropdown-2" text="Грузоподъемность" class="m-md-2" dropright>
+                                <b-dropdown-item @click="addField('Грузоподъемность менее 66 т')">Грузоподъемность менее
+                                    66 т</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Грузоподъемность 66 т')">Грузоподъемность 66
+                                    т</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Грузоподъемность более 66 т')">Грузоподъемность более
+                                    66 т</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Грузоподъемность менее 69 т')">Грузоподъемность менее
+                                    69 т</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Грузоподъемность 69 т')">Грузоподъемность 69
+                                    т</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Грузоподъемность более 69 т')">Грузоподъемность более
+                                    69 т</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Грузоподъемность менее 71 т')">Грузоподъемность менее
+                                    71 т</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Грузоподъемность 71 т')">Грузоподъемность 71
+                                    т</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Грузоподъемность более 71 т')">Грузоподъемность более
+                                    71 т</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Грузоподъемность менее 75 т')">Грузоподъемность менее
+                                    75 т</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Грузоподъемность 75 т')">Грузоподъемность 75
+                                    т</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Грузоподъемность более 75 т')">Грузоподъемность более
+                                    75 т</b-dropdown-item>
+
                             </b-dropdown>
-
-
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
-                        <td class="deleteRow" @click="deleteRow(rowIndex)">Удалить</td>
-                        <td v-for="(cell, cellIndex) in row" :key="cellIndex" style="position: relative">
-                            {{ cell }}
-                            <!-- <input v-model="tableData[rowIndex][cellIndex]" @click="editCell(rowIndex, cellIndex)"
+                        </b-dropdown>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
+                    <td class="deleteRow" @click="deleteRow(rowIndex)">Удалить</td>
+                    <td v-for="(cell, cellIndex) in row" :key="cellIndex" style="position: relative">
+                        {{ cell }}
+                        <!-- <input v-model="tableData[rowIndex][cellIndex]" @click="editCell(rowIndex, cellIndex)"
                             @blur="saveCell()" @keyup.enter="saveCell(rowIndex, cellIndex)"
                             v-if="activeCell === `${rowIndex}-${cellIndex}`" ref="editableInput[rowIndex][cellIndex]"
                             class="editable-input" />
                         <div style="width: 100%" v-else @click="editCell(rowIndex, cellIndex)">
                             <span class="editable-text">{{ cell }}</span>
                         </div> -->
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-
-
-
-
-        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
-            id="notif" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-</template>
+
+
+
+
+
+
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+        id="notif" />
+</div></template>
   <!-- postTarifData -->
 <script>
 import Handsontable from "handsontable";
@@ -196,10 +220,13 @@ import api from "@/api/directory";
 import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from '../../../loader/loader.vue';
 import { mapState } from "vuex";
+import vSelect from "vue-select";
+
 export default {
     components: {
         Loader,
         Notifications,
+        vSelect,
     },
     data() {
         return {
@@ -218,9 +245,10 @@ export default {
             visible_inp_an: false,
             visible_inp_ag: true,
             visible_agreement: false,
-            all_agreement_number: "",
+            all_agreement_number: [],
             agreement_number_test: "",
             ten_visible: false,
+            new_comp: "",
 
 
             excelData: "",
@@ -255,6 +283,9 @@ export default {
         })
     },
     computed: {
+        ifIncludeValue() {
+
+        },
         ...mapState({
             name_client: (state) => state.client.name_client,
             name_cargo: (state) => state.cargo_code.cargo_code,
@@ -286,6 +317,9 @@ export default {
         },
     },
     watch: {
+        new_comp(){
+            console.log(this.new_comp)
+        },
 
         picked() {
             if (this.picked == "agreement_number") {
@@ -342,7 +376,7 @@ export default {
             api.getAllDocumentsByClient(this.Standard.client)
                 .then(response => {
                     this.loader = false
-  
+
                     this.all_agreement_number = response.data.data
                     this.notifyHead = "Успешно";
                     this.notifyMessage = "Договора получены";
@@ -374,7 +408,7 @@ export default {
         checkClient(value) {
             this.Standard.client = value;
             this.$nextTick(() => {
-                if(this.picked != 'agreement_number'){
+                if (this.picked != 'agreement_number') {
                     this.getAgreementByClient()
                 }
                 this.ten_visible = false;
@@ -454,13 +488,33 @@ export default {
 };
 </script>
   
-<style  scoped>
-.deleteth{
+<style lang="scss"  scoped>
+body {
+  font-family: 62.5%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  height: 90vh;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+}
+
+span {
+  display: flex;
+
+  img {
+    width: 50px;
+    margin-right: 20px;
+  }
+}
+.deleteth {
     background: rgb(139, 144, 148);
 }
-.deleteth:hover{
+
+.deleteth:hover {
     background: lightcoral !important;
 }
+
 .btn-group_tarif {
     width: 30%;
     margin-left: auto;
@@ -550,5 +604,4 @@ table {
     padding: 1% 0 0 2%;
     color: #cacaca;
 }
-
 </style>

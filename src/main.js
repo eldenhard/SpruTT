@@ -3,6 +3,8 @@ import router from './router'
 import App from '../src/App'
 import store from './store'
 import Vuex from 'vuex'
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
 // import * as Sentry from "@sentry/vue";
 
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
@@ -29,6 +31,7 @@ new Vue({
   components: {App},
   template: '<App/>',
   store,
+  vSelect,
   render: h => h(App)
 }).$mount('#app')
 

@@ -11,6 +11,7 @@ RUN npm install bootstrap-vue
 RUN npm install select2
 RUN npm install -save vue-xlsx
 RUN npm install @handsontable/vue
+RUN npm install vue-select
 COPY ./ .
 RUN npm run build
 
