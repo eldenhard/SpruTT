@@ -45,16 +45,11 @@
         width: 100%;
         overflow-x: auto;
         overflow-y: auto;
-        /* position: relative;
+        position: relative;
         left: 50%;
-        transform: translate(-50%, 0); */
-        max-height: 70vh;
-        transform: scaleY(-1);
-      
+        transform: translate(-50%, 0);
+        max-height: 70vh;      
       ">
-      <div style=" transform: scaleY(-1);   max-height: 70vh;">
-
-     
       <table class="table table-sm table-bordered table-hover" id="table" style="margin: 0; border: 1px solid black; width: 100%; border-collapse: collapse;">
         <thead>
           <tr style="position: sticky; top: 0; margin-top: -10px; padding-top: -5%; background: rgb(150, 150, 150); z-index: 5;">
@@ -136,7 +131,7 @@
           </template>
         </tbody>
       </table>
-    </div>
+
       
     </div>
 

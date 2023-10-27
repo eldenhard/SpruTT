@@ -491,25 +491,8 @@ export default {
 };
 </script>
   
-<style lang="scss"  scoped>
-body {
-  font-family: 62.5%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  height: 90vh;
-  background: #fff;
-  display: flex;
-  justify-content: center;
-}
+<style  scoped>
 
-span {
-  display: flex;
-
-  img {
-    width: 50px;
-    margin-right: 20px;
-  }
-}
 .deleteth {
     background: rgb(139, 144, 148);
 }

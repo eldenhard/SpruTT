@@ -7,7 +7,7 @@
             <partnerTable />
           </b-card-text>
         </b-tab>
-        <b-tab title="Справочник договоры">
+        <b-tab title="Справочник договоры" active>
           <b-card-text  >
             <contractTable />
           </b-card-text>
@@ -69,7 +69,7 @@
           <TarifDirectory />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по ставкам ПВ" active>
+      <b-tab title="Данные по ставкам ПВ" >
         <b-card-text>
           <stavkipvVue />
         </b-card-text>
