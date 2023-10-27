@@ -95,7 +95,7 @@
                 {{  dog.name }} 
                 </li>
               </ul>
-      </div>
+          </div>
         </div>   
              
           <div
