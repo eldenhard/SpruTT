@@ -104,9 +104,7 @@ export default {
             if (this.start_filter != "") {
                 for (let i in this.type_of_filters) {
                     if (i == this.start_filter) {
-                        console.log(this.type_of_filters[i])
                         delete this.type_of_filters[i]
-                        this.start_filter = ""
                     }
                 }
                 this.all_type_filter.push(this.start_filter)
@@ -114,8 +112,8 @@ export default {
             }
         },
         all_type_filter() {
-            // console.log(this.all_type_filter)
             if(this.all_type_filter.length == 0){
+                this.start_filter = ""
                 this.visible_start = true
             }
             
