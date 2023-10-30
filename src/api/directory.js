@@ -170,6 +170,10 @@ const getCurrentDocument = (type, data) => {
 const getIncompleteOccurrence = (category, occurence, data, filter) => {
     return api.get(`${documents}/contract/?${occurence}=${data}&category=${category}`, {params: filter})
 }
+// Загрузить файл по пути
+const getFilesToPath = (data) => {
+    return api.post(`${documents}/contract/files-download/`, data)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -230,5 +234,6 @@ export default {
     getDocuments,
     getCurrentDocument,
     getAllDocumentsByClient,
+    getFilesToPath,
 }
 
