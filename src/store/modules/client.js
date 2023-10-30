@@ -1,12 +1,16 @@
 import api from '@/api/wagonPark'
 
 const state = {
-    name_client: []
+    name_client: [],
+    current_input: null,
 }
 
 const mutations = {
     Change_client(state, data){
         state.name_client = data
+    },
+    setMycurrent_input(state, data){
+        state.current_input = data
     }
 }
 

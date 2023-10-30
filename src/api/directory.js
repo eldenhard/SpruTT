@@ -165,6 +165,11 @@ const getDocuments = (data, filter) => {
 const getCurrentDocument = (type, data) => {
     return api.get(`${documents}/docs-templates/?category=${type}&search=${data}`)
 }
+
+// фильтры для договоров
+const getIncompleteOccurrence = (category, occurence, data) => {
+    return api.get(`${documents}/contract/?${occurence}=${data}&category=${category}`)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -178,6 +183,7 @@ export default {
     CreateCurrentAnnex,
     ChangeCurrentAnnex,
     getCurrentContract,
+    getIncompleteOccurrence,
     // Телеграммы
     getNumberDog,
 
