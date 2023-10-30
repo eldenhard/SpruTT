@@ -167,8 +167,8 @@ const getCurrentDocument = (type, data) => {
 }
 
 // фильтры для договоров
-const getIncompleteOccurrence = (category, occurence, data) => {
-    return api.get(`${documents}/contract/?${occurence}=${data}&category=${category}`)
+const getIncompleteOccurrence = (category, occurence, data, filter) => {
+    return api.get(`${documents}/contract/?${occurence}=${data}&category=${category}`, {params: filter})
 }
 export default {
     getAllcounterparties,

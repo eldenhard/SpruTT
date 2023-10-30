@@ -88,8 +88,8 @@ export default {
             type_of_filters: {
                 '№ Договора': 'number',
                 'Контрагент': 'counterparty',
-                // 'Подразделение': 'department',
-                // 'Ответственный': 'responsible',
+                'Подразделение': 'department',
+                'Ответственный': 'responsible',
             },
             number: "",
             counterparty: "",
@@ -207,14 +207,9 @@ export default {
             }, 500);
         },
         sendRequest(data, name_inp) {
+            
             if (name_inp == '№ Договора') {
                 this.loaderInputDepStates[name_inp] = true
-                let filter_farms = {
-                counterparty: this.filter_farms.counterparty,
-                number: this.filter_farms.number,
-                responsible: this.filter_farms.responsible,
-                department: this.filter_farms.department,
-            }
                 // console.log("Отправка запроса на сервер с данными:", list, occurence, data,);
                 api.getDirectoryFarm('economic',  this.filter_farms)
                     .then(response => {
@@ -256,8 +251,14 @@ export default {
                     break;
             }
             this.loaderInputDepStates[name_inp] = true
+            let filter = {
+                'number': this.filter_farms.number,
+                'counterparty': this.filter_farms.counterparty,
+                'department': this.filter_farms.department,
+                'responsible': this.filter_farms.responsible,
+            }
             // console.log("Отправка запроса на сервер с данными:", list, occurence, data,);
-            api.getIncompleteOccurrence('economic', occurence, data)
+            api.getIncompleteOccurrence('economic', occurence, data, filter)
                 .then(response => {
                     this.loaderInputDepStates[name_inp] = false
                     this.list_data
