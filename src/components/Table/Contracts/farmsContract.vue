@@ -16,25 +16,25 @@
     </div>
 
     <div style=" width: 15vw;">
-             
-                    <MultiSelectUni @change="updateSelectedCountries" :placeholder="'Поля таблицы'" :variants="CountrieObj"
-                        :variant-title="'value'">
-                    </MultiSelectUni>
+
+      <MultiSelectUni @change="updateSelectedCountries" :placeholder="'Поля таблицы'" :variants="CountrieObj"
+        :variant-title="'value'">
+      </MultiSelectUni>
 
 
-            </div>
-            <div style="display: flex; justify-content: start; flex-wrap: wrap;">
-            <p style="padding-left: 1%;">Выбранные поля :</p> <br>
-            <!-- <template v-if="selectedCountries"> -->
-            <template>
+    </div>
+    <div style="display: flex; justify-content: start; flex-wrap: wrap;">
+      <p style="padding-left: 1%;">Выбранные поля :</p> <br>
+      <!-- <template v-if="selectedCountries"> -->
+      <template>
 
-                <span class="option_select_block_check" v-for="countrie in selectedCountries" :key="countrie.id"
-                    @click="removeselectedCountries(countrie.id)">
-                    <span style="color: black; font-size: 15px"> &#43;</span>
-                    {{ countrie.value }}
-                </span>
-            </template>
-        </div>
+        <span class="option_select_block_check" v-for="countrie in selectedCountries" :key="countrie.id"
+          @click="removeselectedCountries(countrie.id)">
+          <span style="color: black; font-size: 15px"> &#43;</span>
+          {{ countrie.value }}
+        </span>
+      </template>
+    </div>
     <br /><br />
     <p class="amount">всего записей: {{ total_objects }}</p>
     <p class="amount">всего на странице: {{ amount }}</p>
@@ -50,9 +50,11 @@
         transform: translate(-50%, 0);
         max-height: 70vh;      
       ">
-      <table class="table table-sm table-bordered table-hover" id="table" style="margin: 0; border: 1px solid black; width: 100%; border-collapse: collapse;">
+      <table class="table table-sm table-bordered table-hover" id="table"
+        style="margin: 0; border: 1px solid black; width: 100%; border-collapse: collapse;">
         <thead>
-          <tr style="position: sticky; top: 0; margin-top: -10px; padding-top: -5%; background: rgb(150, 150, 150); z-index: 5;">
+          <tr
+            style="position: sticky; top: 0; margin-top: -10px; padding-top: -5%; background: rgb(150, 150, 150); z-index: 5;">
             <!-- <th>Действие</th> -->
             <th style="background: rgb(150, 150, 150) !important;">Контрагент</th>
             <th style="background: rgb(150, 150, 150) !important;">Номер договора</th>
@@ -69,10 +71,10 @@
             <!-- <th>Категория</th> -->
             <!-- <th>Примечание</th> -->
             <!-- <th>Ответственный</th> -->
-            <th style="background: rgb(150, 150, 150) !important;">Путь</th>
+            <th style="background: rgb(150, 150, 150) !important;">Файл</th>
             <template v-for="countrie in selectedCountries">
-            <th :key="countrie.id" style="background: rgb(150, 150, 150) !important;">{{ countrie.value }}</th>
-</template>
+              <th :key="countrie.id" style="background: rgb(150, 150, 150) !important;">{{ countrie.value }}</th>
+            </template>
           </tr>
 
         </thead>
@@ -104,16 +106,16 @@
               <!-- <td>{{ el.comment }}</td> -->
               <!-- <td>{{ ChangeIdByName(el.responsible) }}</td> -->
               <td>
-                <a  @click="CopyTEXT(el.scan_path)">
-                  Путь к файлу
+                <a @click="CopyTEXT(el.scan_path)">
+                  <img src="../../../assets/word.png" alt="" height="30">
                 </a>
               </td>
-             <template v-for="countrie in selectedCountries">
-                        <td  :key="countrie.id">
-                            {{ CustomerRow(el[countrie.valen]) }}
-                        </td>
+              <template v-for="countrie in selectedCountries">
+                <td :key="countrie.id">
+                  {{ CustomerRow(el[countrie.valen]) }}
+                </td>
 
-            </template>
+              </template>
             </tr>
             <template>
               <tr style="background: lightgray;">
@@ -127,12 +129,12 @@
                 <td>{{ el?.annex_date?.split(" ")[0].split('-').reverse().join(".") }}</td>
               </tr>
             </template>
-    
+
           </template>
         </tbody>
       </table>
 
-      
+
     </div>
 
     <div style="display: flex; justify-content: space-around; margin-top: 2%">
@@ -212,36 +214,54 @@ export default {
 
   },
   methods: {
-    CopyTEXT(value){
-      // this.loader = true
+    CopyTEXT(value) {
+        navigator.clipboard.writeText(value)
+      .then(() => {
+        // alert('Данные скопированы')
+      })
+    
+      this.loader = true
       let data = {
         dir_path: value
       }
+      let path
       api.getFilesToPath(data)
-      .then(res => {
-        console.log(res)
-        let a = document.createElement('a')
-        
-      })
-      // navigator.clipboard.writeText(value)
-      // .then(() => {
-      //   alert('Данные скопированы')
-      // })
+        .then(res => {
+          path = res.data[0].path
+        }).then(() => {
+          let data = {
+            file_path: path
+          }
+          console.log(path)
+          api.getFilesToPath2(data)
+            .then(response => {
+              this.loader = false
+              console.log(response)
+              let a = document.createElement('a')
+              a.href = response.data.link
+              a.click()
+            }).catch((er) => {
+              this.loader = false
+            })
+        }).catch((er) => {
+          this.loader = false
+        })
+
     },
     CustomerRow(value) {
-            if (value === true || value === false) {
-                return value === true ? 'Актуальный' : 'Не актуальный'
-            } else {
-                return value
+      if (value === true || value === false) {
+        return value === true ? 'Актуальный' : 'Не актуальный'
+      } else {
+        return value
 
-            }
-        },
+      }
+    },
     updateSelectedCountries(selected) {
-            this.selectedCountriesIds = selected
-        },
-             removeselectedCountries(id) {
-            this.selectedCountriesIds.splice(this.selectedCountriesIds?.indexOf(id), 1)
-        },
+      this.selectedCountriesIds = selected
+    },
+    removeselectedCountries(id) {
+      this.selectedCountriesIds.splice(this.selectedCountriesIds?.indexOf(id), 1)
+    },
     ChangeIdByName(id) {
       this.users = this.$store.state.users.users
       const users = getUserById(this.users, id)
@@ -436,30 +456,30 @@ export default {
       staffGlobal: (state) => state.auth.users,
     }),
     CountrieObj() { //1
-            const result = [
-                { value: 'Статус ТТ по договору', id: 1, valen: 'company_status' },
-                { value: 'Дата заключения', id: 2, valen: 'created_at' },
-                { value: 'Подразделение инициатора', id: 3, valen: 'department' },
-                { value: 'Ответственный', id: 4, valen: 'responsible' },
-                { value: 'Вид договора', id: 5, valen: 'contract_type' },
-                { value: 'Предмет договора', id: 6, valen: 'contract_object' },
-                { value: 'Сумма договора', id: 7, valen: 'fiat_amount' },
-                { value: 'Пролонгация', id: 8, valen: 'prolongation' },
-                { value: 'Статус', id: 9, valen: 'status' },
-              
-            ]
+      const result = [
+        { value: 'Статус ТТ по договору', id: 1, valen: 'company_status' },
+        { value: 'Дата заключения', id: 2, valen: 'created_at' },
+        { value: 'Подразделение инициатора', id: 3, valen: 'department' },
+        { value: 'Ответственный', id: 4, valen: 'responsible' },
+        { value: 'Вид договора', id: 5, valen: 'contract_type' },
+        { value: 'Предмет договора', id: 6, valen: 'contract_object' },
+        { value: 'Сумма договора', id: 7, valen: 'fiat_amount' },
+        { value: 'Пролонгация', id: 8, valen: 'prolongation' },
+        { value: 'Статус', id: 9, valen: 'status' },
 
-            result.sort((a, b) => {
-                const valueA = a.value.toLowerCase();
-                const valueB = b.value.toLowerCase();
-                return valueA.localeCompare(valueB); // Сравнение строк с учетом регистра
-            });
+      ]
 
-            return result;
-        },
-        selectedCountries() { //2
-            return this.CountrieObj.filter(el => this.selectedCountriesIds.includes(el.id))
-        },
+      result.sort((a, b) => {
+        const valueA = a.value.toLowerCase();
+        const valueB = b.value.toLowerCase();
+        return valueA.localeCompare(valueB); // Сравнение строк с учетом регистра
+      });
+
+      return result;
+    },
+    selectedCountries() { //2
+      return this.CountrieObj.filter(el => this.selectedCountriesIds.includes(el.id))
+    },
     // Для создания договора
     CurrentPathApi() {
       switch (this.named) {
@@ -496,7 +516,7 @@ export default {
         case 'Прочие':
           return 'other_ed_contr'
           break;
-          case 'С покупателем':
+        case 'С покупателем':
           return 'buyer_ed_contr'
           break;
         case 'С поставщиками':
@@ -552,18 +572,22 @@ export default {
 div::-webkit-scrollbar {
   transform: translateY(-1);
 }
+
 .flex_block_button {
   display: flex;
   justify-content: space-between;
   flex-direction: row-reverse;
   margin-top: 2%;
 }
-.flex_block_button button{
+
+.flex_block_button button {
   width: 30%;
 }
-.flex_block_button  button:nth-child(2) {
-    border-radius: 5px;
-  }
+
+.flex_block_button button:nth-child(2) {
+  border-radius: 5px;
+}
+
 .red {
   display: none;
 }

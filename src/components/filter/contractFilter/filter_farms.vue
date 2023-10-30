@@ -21,8 +21,7 @@
                                 <div class="inputcontainer">
                                     <input class="changeRow textarea" v-model="const_of_filters[inp]"
                                         @input="debouncedSendRequest(const_of_filters[inp], inp)"
-                                        @change="updateFilterDataFarms"
-                                        @focus="saveVUEX(inp)"
+                                        @change="updateFilterDataFarms" @focus="saveVUEX(inp)"
                                         style="width: 100%; border-bottom: 1px solid rgb(0, 0, 0); padding: 5px;"
                                         type="text" />
                                     <div class="icon-container">
@@ -49,7 +48,7 @@
                         </label>
                     </template>
                 </div>
-<br>
+                <br>
             </div>
 
         </div>
@@ -118,9 +117,13 @@ export default {
         }
     },
     mounted() {
-        // document.body.addEventListener('click', this.answer_block = false)
-
-    },
+    // Добавляем обработчик события click на объект document
+    document.addEventListener('click', this.handleDocumentClick);
+  },
+  beforeDestroy() {
+    // Удаляем обработчик события перед разрушением компонента
+    document.removeEventListener('click', this.handleDocumentClick);
+  },
     watch: {
         FLAG_CHECK() {
             if (this.FLAG_CHECK == true) {
@@ -160,7 +163,16 @@ export default {
     },
 
     methods: {
-        saveVUEX(val){
+        handleDocumentClick(event) {
+      // Получаем элемент с классом "answer"
+      const answerElement = document.querySelector('.answer');
+
+      // Проверяем, был ли клик выполнен вне элемента с классом "answer"
+      if (answerElement && !answerElement.contains(event.target)) {
+        this.answer_block = false;
+      }
+    },
+        saveVUEX(val) {
             this.$store.commit('setMycurrent_input', val)
         },
         selectItem(index) {
@@ -207,11 +219,11 @@ export default {
             }, 500);
         },
         sendRequest(data, name_inp) {
-            
+
             if (name_inp == '№ Договора') {
                 this.loaderInputDepStates[name_inp] = true
                 // console.log("Отправка запроса на сервер с данными:", list, occurence, data,);
-                api.getDirectoryFarm('economic',  this.filter_farms)
+                api.getDirectoryFarm('economic', this.filter_farms)
                     .then(response => {
                         this.loaderInputDepStates[name_inp] = false
                         let data = response?.data?.data
@@ -229,7 +241,7 @@ export default {
                         console.log(err)
                         return
                     })
-                    return
+                return
             }
             if (data.length <= 1) {
                 return

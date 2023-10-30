@@ -172,6 +172,9 @@ const getIncompleteOccurrence = (category, occurence, data, filter) => {
 }
 // Загрузить файл по пути
 const getFilesToPath = (data) => {
+    return api.post(`${documents}/contract/files-list/`, data)
+}
+const getFilesToPath2 = (data) => {
     return api.post(`${documents}/contract/files-download/`, data)
 }
 export default {
@@ -235,5 +238,6 @@ export default {
     getCurrentDocument,
     getAllDocumentsByClient,
     getFilesToPath,
+    getFilesToPath2,
 }
 
