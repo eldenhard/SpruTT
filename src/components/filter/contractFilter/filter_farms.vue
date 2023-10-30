@@ -1,6 +1,6 @@
 <template>
     <div class="filterFarms">
-        <div style="display:flex; flex-direction:column;">
+        <div style="display: flex; flex-direction: column;">
             <label for="" v-show="visible_start">Выберите тип фильтра <br>
                 <select v-model="start_filter">
                     <option :value="'№ Договора'">№ Договора</option>
@@ -11,12 +11,17 @@
             </label>
 
             <div class="filter_group">
-                <template v-for="inp, index in all_type_filter">
-                    <label :key="inp.id"> <span class="label_delete" @click="deleteThisElement(inp)">{{ inp }} </span> <br>
+                <template v-for="(inp, index) in all_type_filter">
+                    <label :key="inp.id"> <span class="label_delete" @click="deleteThisElement(index)">{{ inp }} </span>
+                        <br>
                         <div class="inp_block">
                             <div class="inputcontainer">
+                                <!-- <input class="changeRow textarea" v-model="const_of_filters[inp]"
+                                    :disabled="shouldDisableInput(index)" @input="updateModel(index, inp, $event)"
+                                    style="width: 100%; border-bottom: 1px solid rgb(0, 0, 0); padding: 5px;" type="text" /> -->
                                 <input class="changeRow textarea" v-model="const_of_filters[inp]"
-                                @input="getData()"
+                                    :disabled="index > 0 && shouldDisableInput(index)"
+                                    @input="updateModel(index, inp, $event)"
                                     style="width: 100%; border-bottom: 1px solid rgb(0, 0, 0); padding: 5px;" type="text" />
                                 <div class="icon-container" v-if="loaderInputDep">
                                     <i class="loader"></i>
@@ -31,7 +36,8 @@
                             </div>
                             <b-dropdown id="dropdown-dropright" dropright variant="primary">
                                 <template v-for="item, index in type_of_filters">
-                                    <b-dropdown-item href="#" :key="item.id" @click="AddCell(index)">{{ index }}</b-dropdown-item>
+                                    <b-dropdown-item href="#" :key="item.id" @click="AddCell(index)">{{ index
+                                    }}</b-dropdown-item>
                                 </template>
                             </b-dropdown>
                         </div>
@@ -68,8 +74,11 @@ export default {
             counterparty: "",
             department: "",
             responsible: "",
-            loaderInputDep: true,
+            loaderInputDep: false,
             warning: false,
+            isFirstInputFilled: false,
+            const_of_filters: {},
+            previousInputValues: {},
 
             NoData: true,
             activeFilters: {},
@@ -99,6 +108,7 @@ export default {
             }
         },
         all_type_filter() {
+            console.log(this.all_type_filter)
             if (this.all_type_filter.length == 0) {
                 this.start_filter = ""
                 this.visible_start = true
@@ -115,7 +125,34 @@ export default {
     },
 
     methods: {
-        getData(){
+        shouldDisableInput(index) {
+            // Этот метод определяет, должен ли быть инпут заблокирован
+            return !this.isFirstInputFilled && index > 0;
+        },
+        // updateModel(index, inp, event) {
+        //   // Ваша логика для обновления модели
+        //   if (inp === this.all_type_filter[0]) {
+        //     this.isFirstInputFilled = event.target.value.trim() !== '';
+        //   }
+        // },
+
+        // shouldDisableInput(index) {
+        //     return this.const_of_filters[this.all_type_filter[index - 1]] === '';
+        // },
+
+        updateModel(index, inp, event) {
+            if (inp === this.all_type_filter[0] && event.target.value.trim() !== '') {
+                this.isFirstInputFilled = true;
+            }
+            if (event.target.value.trim() === '') {
+                for (let i = index; i < this.all_type_filter.length; i++) {
+                    this.const_of_filters[this.all_type_filter[i]] = '';
+                }
+            }
+        },
+
+
+        getData() {
             console.log(this.const_of_filters['№ Договора'])
         },
         checkThisValue(val) {
@@ -155,7 +192,7 @@ export default {
         updateFilterDataFarms() {
             this.$emit('updateFilterDataFarms', this.filter_farms)
         },
-      
+
     },
 }
 </script>
