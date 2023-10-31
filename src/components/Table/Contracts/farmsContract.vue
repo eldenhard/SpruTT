@@ -167,7 +167,7 @@ import MultiSelectUni from '@/components/ui/MultiSelectUni.vue'
 
 export default {
   name: "PartnerTable",
-  props: ['named', 'namo'],
+  props: ['named', 'namo', 'current_tab'],
   mixins: [MixinTest],
   components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe, EditContract, MultiSelectUni },
   data() {

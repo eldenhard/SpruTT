@@ -219,11 +219,13 @@ export default {
             }, 500);
         },
         sendRequest(data, name_inp) {
-
+            let type_report = this.$store.state.users.active_tab
             if (name_inp == '№ Договора') {
                 this.loaderInputDepStates[name_inp] = true
                 // console.log("Отправка запроса на сервер с данными:", list, occurence, data,);
-                api.getDirectoryFarm('economic', this.filter_farms)
+              
+
+                api.getDirectoryFarm(type_report, this.filter_farms)
                     .then(response => {
                         this.loaderInputDepStates[name_inp] = false
                         let data = response?.data?.data
@@ -269,8 +271,9 @@ export default {
                 'department': this.filter_farms.department,
                 'responsible': this.filter_farms.responsible,
             }
+            
             // console.log("Отправка запроса на сервер с данными:", list, occurence, data,);
-            api.getIncompleteOccurrence('economic', occurence, data, filter)
+            api.getIncompleteOccurrence(type_report, occurence, data, filter)
                 .then(response => {
                     this.loaderInputDepStates[name_inp] = false
                     this.list_data

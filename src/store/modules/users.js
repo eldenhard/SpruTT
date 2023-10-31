@@ -5,7 +5,8 @@ const state = {
     users: [],
 
     isLoading: false,
-    errors: null
+    errors: null,
+    active_tab: 'economic',
 }
 
 export const mutationTypes = {
@@ -38,7 +39,9 @@ const mutations = {
     [mutationTypes.clear](state) {
         state.users = []
     },
-
+    setCurrentTab(state, data){
+        state.active_tab = data
+    }
 
 
 }
