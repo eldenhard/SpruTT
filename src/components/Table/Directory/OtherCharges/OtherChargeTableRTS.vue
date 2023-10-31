@@ -12,13 +12,20 @@
     <table v-if="showTable == 'service1'">
       <thead>
         <tr class="table-secondary" style="background: #e1e1e2">
-          <th></th>
+          <!-- <th></th>
           <th>Вагон</th>
           <th>Дата подачи вагона</th>
           <th>Дата уборки вагона</th>
           <th>Услуги по отстою</th>
           <th>Цена</th>
-          <th>НДС</th>
+          <th>НДС</th> -->
+          <th></th>
+          <th>№ вагона</th>
+          <th>Дата подачи вагона / Начало отчетного периода</th>
+          <th>Дата уборки вагона  / Конец отчетного периода</th>
+          <th>Кол-во отстоя (свыше 7)</th>
+          <th>Цена за отстой 1 вагона в сутки без учета НДС, руб</th>
+  
         </tr>
       </thead>
       <tbody>
@@ -39,15 +46,24 @@
     <table v-else>
       <thead>
         <tr class="table-secondary" style="background: #e1e1e2">
-          <th></th>
-          <th>Вагон</th>
+          <!-- <th></th>
+          <th>№ вагона</th>
           <th>Дата подачи вагона</th>
           <th>Дата уборки вагона</th>
           <th>Маневровые работы</th>
           <th>Подача и уборка</th>
           <th>Ком. осмотр и подготовка</th>
           <th>Цена</th>
-          <th>НДС</th>
+          <th>НДС</th> -->
+          <th></th>
+          <th>№ вагона</th>
+          <th>Дата подачи вагона</th>
+          <th>Дата уборки вагона</th>
+          <th>Цена за комплекс работ и услуг по коммерческому осмотру и подготовке, за ваг., без учета НДС</th>
+          <!-- <th>Стоимость работ и услуг по коммерческому осмотру и подготовке, без учета НДС, руб</th> -->
+          <th>Услуги по маневровой работе</th>
+          <th>Услуги по подаче и уборке вагонов</th>
+
         </tr>
       </thead>
       <tbody>
@@ -130,27 +146,31 @@ export default {
 
         return;
       }
-      this.loader = true
+      // this.loader = true
       let new_obj = {}
-      if (dataWarehouse[0].length == 8 && this.showTable == 'service2') {
+      if (dataWarehouse[0].length == 6 && this.showTable == 'service2') {
         console.log('1')
+        
         new_obj = dataWarehouse.map((item) => {
           return {
             wagon: item[0].trim(),
             arrival_date: item[1].split(".").reverse().join("-"),
             departure_date: item[2].split(".").reverse().join("-"),
-            service5: item[3].trim()?.replace(",00", ""),
-            service7: item[4].trim()?.replace(",00", ""),
-            service8: item[5].trim()?.replace(",00", ""),
-            cost: parseFloat(item[6].replace(/\s/g, "").replace(",", ".")) ?? null,
-            nds: parseFloat(item[7].replace(/\s/g, "").replace(",", ".")) ?? null,
+            // Цена за комплекс
+            cost: parseFloat(item[3].replace(/\s/g, "").replace(",", ".")) ?? null,
+            // кол-во работ и услуг по ком осмотру
+            service8: "1",
+           
+            nds: parseFloat((item[3].replace(/\s/g, "").replace(",", ".") * 0.2).toFixed(2)) ?? null,
+            service5: item[4].trim()?.replace(",00", ""),
+            service7: item[5].trim()?.replace(",00", ""),
+
             act_number: this.act_number,
             act_date: this.act_date,
             contractor: this.contractor,
           };
         });
-      } else if (dataWarehouse[0].length == 6 && this.showTable == 'service1') {
-        console.log('2')
+      } else if (dataWarehouse[0].length == 5 && this.showTable == 'service1') {
         new_obj = dataWarehouse.map((item) => {
           return {
             wagon: item[0].trim(),
@@ -158,7 +178,7 @@ export default {
             departure_date: item[2].split(".").reverse().join("-"),
             service9: item[3].trim()?.replace(",00", ""),
             cost: parseFloat(item[4].replace(/\s/g, "").replace(",", ".")) ?? null,
-            nds: parseFloat(item[5].replace(/\s/g, "").replace(",", ".")) ?? null,
+            nds: parseFloat((item[4].replace(/\s/g, "").replace(",", ".") * 0.2).toFixed(2)) ?? null,
             act_number: this.act_number,
             act_date: this.act_date,
             contractor: this.contractor,
@@ -174,37 +194,37 @@ export default {
         return
       }
 
-      // console.log(new_obj)
-      api
-        .postOtherChanges(new_obj)
-        .then((response) => {
-          this.loader = false;
-          if (this.showTable == 'service1') {
-            this.tableData = []
-          } else {
-            this.tableData2 = []
-          }
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Данные отправлены";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2500);
-        })
-        .catch((error) => {
-          this.loader = false;
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Данные не отправлены, повторите позже";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2500);
-        });
+      console.log(new_obj)
+      // api
+      //   .postOtherChanges(new_obj)
+      //   .then((response) => {
+      //     this.loader = false;
+      //     if (this.showTable == 'service1') {
+      //       this.tableData = []
+      //     } else {
+      //       this.tableData2 = []
+      //     }
+      //     this.notifyHead = "Успешно";
+      //     this.notifyMessage = "Данные отправлены";
+      //     this.notifyClass = "wrapper-success";
+      //     this.showNotify = true;
+      //     setTimeout(() => {
+      //       this.showNotify = false;
+      //     }, 2500);
+      //   })
+      //   .catch((error) => {
+      //     this.loader = false;
+      //     this.notifyHead = "Ошибка";
+      //     this.notifyMessage = "Данные не отправлены, повторите позже";
+      //     this.notifyClass = "wrapper-error";
+      //     this.showNotify = true;
+      //     setTimeout(() => {
+      //       this.showNotify = false;
+      //     }, 2500);
+      //   });
     },
     initializeHandsontable(data) {
-      console.log(data)
+
       // Парсим данные из Excel, разделяя их по строкам и столбцам
       const rows = data.split("\n");
       const tableData = rows.map((row) => row.split("\t"));

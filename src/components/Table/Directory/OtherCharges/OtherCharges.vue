@@ -30,7 +30,7 @@
         <label for="">№ договора <br />
           <input type="text" v-model="act_number" class="textarea" />
         </label>
-        <label for="">Дата акта<br />
+        <label for="">Дата договора<br />
           <input type="date" v-model="act_date" class="textarea" />
         </label>
       </div>
