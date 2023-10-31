@@ -81,6 +81,7 @@
           <tbody>
             <template v-for="(item, index) in data">
               <tr :key="item.id" :id="item.id">
+               
                 <td @click="open_modal(item.id)" class="delete">{{ index + 1 }}</td>
                 <!-- № договора -->
                 <td>

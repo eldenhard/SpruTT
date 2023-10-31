@@ -94,7 +94,6 @@
                 <tbody>
                     <template v-for="(item, index) in data">
                         <tr :id="item.id">
-
                             <td @click="open_modal(item.id)" class="delete">{{ index + 1 }}</td>
                             <td>
                                 <div class="inputcontainer">

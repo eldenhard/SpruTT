@@ -139,7 +139,17 @@
               v-show="visible_inp_an" />
           </td>
           <td></td>
-         
+          <td>
+            <label for=""> Норматив по выгрузке, дн.
+              <input type="text" class="textarea" v-model="standard_unloading">
+            </label>
+          </td>
+          <td></td>
+          <td>
+            <label for=""> Норматив по погрузке, дн.
+              <input type="text" class="textarea" v-model="standard_loading">
+            </label>
+          </td>
         </tr>
         <br />
         <tr v-show="visible_agreement">
@@ -160,7 +170,18 @@
           <td>
             <input type="date" id="a" class="textarea" v-model="Standard.on_date" placeholder="Дата" />
           </td>
-         
+          <td></td>
+          <td>
+            <label for=""> Штраф по выгрузке, дн.
+              <input type="text" class="textarea" v-model="penalty_unloading">
+            </label>
+          </td>
+          <td></td>
+          <td>
+            <label for=""> Штраф по погрузке, дн.
+              <input type="text" class="textarea" v-model="penalty_loading">
+            </label>
+          </td>
         </tr>
         <br />
 
@@ -169,7 +190,16 @@
           <td>
             <input type="date" id="a" class="textarea" v-model="Standard.end_date" placeholder="Дата" />
           </td>
-         
+          <td></td>
+          <td>
+            <label for=""> Тип вагона
+              <select type="text" class="textarea" v-model="wagon_type">
+                <option value="Полувагон">ПВ</option>
+                <option value="Цистерна">ЦС</option>
+
+              </select>
+            </label>
+          </td>
 
         </tr>
         <br />
@@ -181,9 +211,33 @@
           <td>
             <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Клиент" />
           </td>
-         
-        
-        
+          <td></td>
+
+          <td colspan="3">
+            <label for=""> <span style="font-weight: bold; background: lightgray; padding: 0 2%; color: black">Маска
+                ввода</span>
+              <div style="display: flex; gap: 1%;">
+                <label for="">Станция
+                  <select name="" id="" v-model="mask1" style="width: 80%;">
+                    <option value="н">Станция отправления</option>
+                    <option value="о">Станция назначения</option>
+                  </select>
+                </label>
+                <br>
+                <label for="">Погрузка/Выгрузка
+                  <select name="" id="" v-model="mask2" style="width: 80%;">
+                    <option value="п">Погрузка</option>
+                    <option value="в">Выгрузка</option>
+                  </select>
+                </label>
+                <br>
+                <label for="">Кол-во дней <br>
+                  <input type="text" name="" id="" style="width: 100%;" placeholder="кол-во дней" class="textarea"
+                    v-model="mask3">
+                </label>
+              </div>
+            </label>
+          </td>
         </tr>
         <br />
         <tr v-show="ten_visible">
@@ -372,7 +426,15 @@ export default {
         responsible: null,
       },
 
-    
+      // Для штрафов
+      standard_loading: null,
+      standard_unloading: null,
+      penalty_loading: null,
+      penalty_unloading: null,
+      wagon_type: 'Полувагон',
+      mask1: "",
+      mask2: "",
+      mask3: "",
     };
   },
   computed: {
@@ -817,8 +879,17 @@ export default {
       this.Standard.cargo = code6;
       this.cargo_user = value;
     },
-    postData() {
-     
+    async postData() {
+      if (this.mask1 == "" || this.mask2 == "" || this.mask3 == "") {
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Заполните маску ввода";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => {
+          this.showNotify = false;
+        }, 3000);
+        return
+      }
       if (this.flagCheck == false) {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Пройдите проверку введенных";
@@ -854,10 +925,33 @@ export default {
         }, 3000);
         return;
       } else {
-        this.loader = true;
+        // this.loader = true;
         if (this.checkCompleteData.length == 0) {
-          this.loader = true
-   
+          // this.loader = true
+          let maska = [this.mask1, this.mask2, this.mask3].join(';')
+          let Standard = {
+            agreement: this.Standard.agreement_number,
+            base: this.Standard.base,
+            agreement_date: this.Standard.on_date,
+            end_date: this.Standard.end_date,
+            is_actual: true,
+            standard_loading: this.standard_loading,
+            standard_unloading: this.standard_unloading,
+            penalty_loading: this.penalty_loading,
+            penalty_unloading: this.penalty_unloading,
+            client: this.Standard.client,
+            wagon_type: this.wagon_type,
+            mask: maska
+          }
+          if (this.picked == 'agreement_number') {
+            Standard.base = null
+          }
+          api.postPenaltyStandards(Standard)
+            .then(res => {
+              console.log(res)
+            }).catch((err) => {
+              console.error(err)
+            })
 
           api
             .postTarifData([this.Standard])
@@ -891,53 +985,102 @@ export default {
               item.nds = (item.stavka * (item.nds / 100)).toFixed(2)
             }
           })
+          console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!')
+          // ДЛЯ ПРИЛОЖЕНИЯ !!!!!!
+          let maska = [this.mask1, this.mask2, this.mask3].join(';')
+          let Standard = {
+            agreement: this.Standard.annex_number,
+            base: this.Standard.base,
+            agreement_date: this.Standard.on_date,
+            end_date: this.Standard.end_date,
+            is_actual: true,
+            standard_loading: this.standard_loading,
+            standard_unloading: this.standard_unloading,
+            penalty_loading: this.penalty_loading,
+            penalty_unloading: this.penalty_unloading,
+            client: this.Standard.client,
+            wagon_type: this.wagon_type,
+            mask: maska
+          }
+          let filter_arendaData = {
+            agreement: this.Standard.agreement_number
+          }
 
-          api
-            .postTarifData(this.checkCompleteData)
-            .then((response) => {
-              //Получаю все приложения для договора
 
-              this.getAllAgreement();
-              this.flagCheck = false;
 
-              this.loader = false;
-              this.notifyHead = "Успешно";
-              this.notifyMessage = "Данные загружены";
-              this.notifyClass = "wrapper-success";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 2000);
-              this.data = [];
-            })
-            .catch((error) => {
-              this.loader = false;
+          try {
+            const response1 = await api.getStandard(filter_arendaData);
+            Standard.base = response1.data.data[0]?.id;
+
+            if (Standard.base == "" || Standard.base == null) {
               this.notifyHead = "Ошибка";
-              this.notifyMessage = "Проверьте поле с ошибками";
+              this.notifyMessage = "Не найден такой договор по штрафам";
               this.notifyClass = "wrapper-error";
               this.showNotify = true;
               setTimeout(() => {
                 this.showNotify = false;
               }, 3000);
+              return; // Остановка выполнения функции
+            }
 
-              for (let i in this.data) {
-                this.data[i]["error"] = null;
-              }
-              for (let i in error.response.data) {
-                this.data[error.response.data[i][0] - 1].error =
-                  error.response.data[i][1];
-              }
+            if (this.picked == 'agreement_number') {
+              Standard.base = null
+            }
 
-              let filter_arr = [...this.data];
-              this.data = filter_arr.filter((item) => {
-                return item.error != null;
-              });
+            const response2 = await api.postPenaltyStandards(Standard);
+            console.log(response2);
+            const response3 = await api.postTarifData(this.checkCompleteData);
+            await this.getAllAgreement();
+            this.flagCheck = false;
+            this.loader = false;
+            this.notifyHead = "Успешно";
+            this.notifyMessage = "Данные загружены";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2000);
+            this.data = [];
+          } catch (error) {
+            this.loader = false;
+            this.notifyHead = "Ошибка";
+            this.notifyMessage = "Проверьте поле с ошибками";
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 3000);
+
+            for (let i in this.data) {
+              this.data[i]["error"] = null;
+            }
+            for (let i in error.response.data) {
+              this.data[error.response.data[i][0] - 1].error =
+                error.response.data[i][1];
+            }
+
+            let filter_arr = [...this.data];
+            this.data = filter_arr.filter((item) => {
+              return item.error != null;
             });
+          }
         }
+        // ///////////////////
+
+
+
+
+
+
+
+
+
+
       }
-    },
-  },
-};
+    }
+  }
+}
+
 </script>
 
 <style scoped>
