@@ -31,6 +31,9 @@ const getAllStation = (url) => {
 const getCurrentStation = (data) => {
     return api.get(`${resource}/stations/?search=` + data)
 }
+const getCurrentStationByName = (data) => {
+    return api.get(`${resource}/stations/?name=${data}`)
+}
 const getCurrentStationByCode = (data) => {
     return api.get(`${resource}/stations/?code=` + data)
 }
@@ -198,6 +201,7 @@ export default {
     getAllRoad,
     getDislocation,
     postFileGLP,
+    getCurrentStationByName,
     // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

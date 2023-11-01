@@ -139,7 +139,7 @@
               v-show="visible_inp_an" />
           </td>
           <td></td>
-         
+
         </tr>
         <br />
         <tr v-show="visible_agreement">
@@ -160,7 +160,7 @@
           <td>
             <input type="date" id="a" class="textarea" v-model="Standard.on_date" placeholder="Дата" />
           </td>
-         
+
         </tr>
         <br />
 
@@ -169,7 +169,7 @@
           <td>
             <input type="date" id="a" class="textarea" v-model="Standard.end_date" placeholder="Дата" />
           </td>
-         
+
 
         </tr>
         <br />
@@ -181,9 +181,9 @@
           <td>
             <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Клиент" />
           </td>
-         
-        
-        
+
+
+
         </tr>
         <br />
         <tr v-show="ten_visible">
@@ -372,7 +372,7 @@ export default {
         responsible: null,
       },
 
-    
+
     };
   },
   computed: {
@@ -648,9 +648,17 @@ export default {
           const server_response = response.data.data.map(item => item.name.toLowerCase()); // Получаем все имена станций в нижнем регистре
           const lowerStationName = station_name.toLowerCase(); // Приводим ввод пользователя к нижнему регистру
           const stationNameMatch = server_response.find(name => name === lowerStationName); // Ищем точное совпадение имени станции
+          if (stationNameMatch == undefined) {
+            const res = await api_wagon.getCurrentStationByName(station_name)
+            let server_response2 = res.data.data[0]?.code
+            console.log(server_response2, '!!!!!!!!!')
+            this.$set(this.stationCache, station_name, server_response2);
+            
+            return server_response2
+          }
           if (stationNameMatch) {
             const stationIndex = server_response.indexOf(stationNameMatch);
-            const stationCode6 = response.data.data[stationIndex].code; // Получаем код6 подходящего варианта
+            const stationCode6 = response.data.data[stationIndex].code; // Получаем код подходящего варианта
             this.$set(this.stationCache, station_name, stationCode6);
             return stationCode6;
           } else {
@@ -818,7 +826,7 @@ export default {
       this.cargo_user = value;
     },
     postData() {
-     
+
       if (this.flagCheck == false) {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Пройдите проверку введенных";
@@ -857,7 +865,7 @@ export default {
         this.loader = true;
         if (this.checkCompleteData.length == 0) {
           this.loader = true
-   
+
 
           api
             .postTarifData([this.Standard])
