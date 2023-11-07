@@ -345,7 +345,7 @@
       <br />
     </div>
 
-    <TarifDirectoryCreated style="margin-top: 5%" />
+    <StavkiCSChange style="margin-top: 5%" />
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
   </div>
 </template>
@@ -356,7 +356,7 @@ import { mapState } from "vuex";
 import Notifications from "@/components/notifications/Notifications.vue";
 import api from "@/api/directory";
 import api_wagon from "@/api/wagonPark";
-import TarifDirectoryCreated from "./TarifDirectoryCreated.vue";
+import StavkiCSChange from "./StavkiCSChange.vue";
 
 class Stavki {
   constructor() {
@@ -383,7 +383,7 @@ class Stavki {
   // }
 }
 export default {
-  components: { Loader, Notifications, TarifDirectoryCreated },
+  components: { Loader, Notifications, StavkiCSChange },
   data() {
     return {
       which_nds: 'value',

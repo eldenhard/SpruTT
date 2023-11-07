@@ -134,12 +134,12 @@
                         <th style="border: 1px solid grey;">Действие</th>
                         <th style="border: 1px solid grey;">Станция отправления</th>
                         <th style="border: 1px solid grey;">Станция назначения</th>
-                        <th style="border: 1px solid grey; position: relative;">Груз
+                        <!-- <th style="border: 1px solid grey; position: relative;">Груз
                             <select name="" id="" style="width: 70%">
                                 <option value="nameCargo">Наименование</option>
                                 <option value="classCargo">Класс</option>
                             </select>
-                        </th>
+                        </th> -->
                         <template v-for="field in selectedFields">
                             <th :key="field" @click="deleteTH(field)" v-b-tooltip.hover
                                 title="По клику удаление элемента шапки таблицы" class="deleteth"
@@ -148,6 +148,13 @@
 
                         <th>
                             <b-dropdown id="dropdown-1" text="Добавить поле" class="m-md-2">
+                                <b-dropdown id="dropdown-2" text="Груз" class="m-md-2" dropright style="width: 85%">
+                                    <b-dropdown-item @click="addField('Наименование груза')">Наименование</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Код ЕСТНГ')">Код ЕСТНГ</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Группа позиций по ЕСТНГ')">Группа позиций по ЕСТНГ</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Класс груза')">Класс груза</b-dropdown-item>
+
+                                </b-dropdown>
                                 <b-dropdown-item @click="addField('Дорога назначения')">Дорога назначения</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Дорога отправления')">Дорога
                                     отправления</b-dropdown-item>

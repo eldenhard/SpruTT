@@ -70,6 +70,9 @@ export default {
   data() {
     return {};
   },
+  mounted(){
+  document.title= 'Главная'
+  },
   methods: {
     OpenPath(url) {
       window.location.href(`/${url}`)

@@ -4,15 +4,15 @@
   <pre>{{ obj }}</pre>
   <pre>{{ norm }}</pre>
 </div> -->
-   <!-- <pre>{{ normalized }}</pre> -->
+   <pre>{{ normalized }}</pre>
   <!-- {{ object }} -->
 
     <Loader :loader="loader" />
-    <Periods @Action="Actioned" @data="getCurrentData"  style="width: 15% !important;">
+    <Periods @Action="Actioned" @data="getCurrentData"  >
       <label for="">
         Тип вагона
         <br />
-        <select name="" id="" v-model="wag_type">
+        <select name="" id="" v-model="wag_type" style="width: 100%">
           <option value="Полувагон">Полувагон</option>
           <option value="Цистерна">Цистерна</option>
         </select>
@@ -155,25 +155,26 @@ export default {
     rowspan: (attr2) => attr2.reduce((acc, n) => acc + n.attr3.length + 1, 0),
 
     normalizeObject() {
-      const test = Object.keys(this.objects2.data).map((key) => {
+      const test = Object.keys(this.objects2).map((key) => {
         const obj = {
           road: key,
-          attr1: Object.keys(this.objects2.data[key].data).map((client) => {
+
+          attr1: Object.keys(this.objects2[key]).map((client) => {
             return {
               client,
-              attr3: Object.keys(this.objects2.data[key].data[client].data).map(
+              attr3: Object.keys(this.objects2.data[key][client]).map(
                 (road) => {
                   return {
                     road,
                     cargo: Object.keys(
-                      this.objects2.data[key].data[client].data[road].data
+                      this.objects2.data[key][client][road]
                     ).map((cargo) => {
                       return {
                         name: cargo,
-                        name_weight: Object.keys(this.objects2.data[key].data[client].data[road].data[cargo].data),
-                        name_cargo: Object.keys(this.objects2.data[key].data[client].data[road].data[cargo].data).map(item => {
+                        name_weight: Object.keys(this.objects2.data[key][client][road][cargo]),
+                        name_cargo: Object.keys(this.objects2.data[key][client][road][cargo]).map(item => {
                           return{
-                           ...this.objects2.data[key].data[client].data[road].data[cargo].data[item]
+                           ...this.objects2.data[key][client][road][cargo][item]
                           }
                         })
                         // cargo:  this.objects2.data[key].data[client].data[road].data[cargo]
@@ -182,10 +183,10 @@ export default {
                   };
                 }
               ),
-              total: this.objects2.data[key].data[client].total,
+              total: this.objects2.data[key][client]?.total,
             };
           }),
-          TOTAL_ROAD: this.objects2.data[key].total,
+          TOTAL_ROAD: this.objects2[key]?.total,
         };
         return obj;
       });
@@ -203,7 +204,8 @@ export default {
         .getUO46(this.date_begin, this.date_end, this.wag_type)
         .then((response) => {
           this.loader = false;
-          this.objects2 = response.data;
+          this.objects2 = response;
+
           this.normalizeObject();
         })
         .catch((error) => {

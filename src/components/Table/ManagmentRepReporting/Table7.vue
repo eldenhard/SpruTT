@@ -7,11 +7,11 @@
     </div> -->
    
     <Loader :loader="loader" />
-    <Periods @Action="get47" @data="getCurrentData"  style="width: 15% !important;">
+    <Periods @Action="get47" @data="getCurrentData" >
     <label for="">
         Тип вагона
         <br />
-        <select name="" id="" v-model="wag_type">
+        <select name="" id="" v-model="wag_type"  style="width: 100%" >
           <option value="Полувагон">Полувагон</option>
           <option value="Цистерна">Цистерна</option>
         </select>

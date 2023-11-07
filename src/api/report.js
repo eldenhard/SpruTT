@@ -18,7 +18,7 @@ const getReportByIdCreator = (id) => {
     return api.get(`${reports}/kpi?` + `creator=${id}`)
 }
 const saveReport = (id, data) => {
-    return api.patch(`${reports}/kpi/${id}/update-report-file/`, data)
+    return api.put(`${reports}/kpi/${id}/update-report-file/`, data)
 }
 const getLastDataReports = (id) => {
     return api.get(`${reports}/kpi/${id}/get-last-on-employee/`)

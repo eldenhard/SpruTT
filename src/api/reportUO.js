@@ -16,13 +16,13 @@ const getUO44 = (data1, data2, wag_type) => {
    return api.get(`${resource}/uo/44/park-rented-out?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}`, {timeout: 600000})
 }
  const getUO45 = (data1, data2, wag_type) => {
-    return api.get(`${resource}/uo/45-46/transportations?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}`, {timeout: 600000})
+    return api.get(`${resource}/uo/45/?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}`, {timeout: 600000})
  }
  const getUO46 = (data1, data2, wag_type) => {
-   return api.get(`${resource}/uo/46/transportations?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}`, {timeout: 600000})
+   return api.get(`${resource}/uo/46/?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}`, {timeout: 600000})
 }
 const getUO47 = (data1, data2, wag_type) => {
-   return api.get(`${resource}/uo/47/transportations?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}`, {timeout: 600000})
+   return api.get(`${resource}/uo/47/?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}`, {timeout: 600000})
 }
 const getUO422 = (data1, data2, wag_type, wagon_belong) => {
    return api.get(`${resource}/uo/422/repair-expenses?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}&wagon_belong=${wagon_belong}`, {timeout: 600000})

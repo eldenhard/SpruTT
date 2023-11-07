@@ -1,20 +1,20 @@
 <template>
-  <div style="display: flex; flex-direction: column; ">
+  <div style="display: flex; flex-direction: column; position: relative; width: 25% ">
     <div class="btn-group">
       <label for="dateStart" :class="{ Error: is_error_start }"
-        >Начало периода
+      style="width: 100%" >Начало периода
         <br />
-        <input type="date" id="dateStart" v-model="date_begin" min="2022-01-01" />
+        <input type="date" id="dateStart" v-model="date_begin" min="2022-01-01"  style="width: 100%"/>
       </label>
 
       <label for="dateEnd" :class="{ Error: is_error_end }"
-        >Конец периода
+      style="width: 100%"  >Конец периода
         <br />
-        <input type="date" id="dateEnd" v-model="date_end" min="2022-01-01"/>
+        <input type="date" id="dateEnd" v-model="date_end" min="2022-01-01" style="width: 100%"/>
       </label>
     </div>
-<slot></slot>
-    <button class="button Request" @click="getData()">Загрузить данные</button>
+    <slot></slot>
+    <button class="Accept" @click="getData()">Загрузить данные</button>
   </div>
 </template>
 
@@ -64,7 +64,10 @@ export default {
 
 <style scoped>
 input{
-  width: 100%
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+  padding: 1%;
 }
 .Error {
   color: rgb(247, 0, 0);
@@ -76,6 +79,8 @@ input{
 .btn-group {
   /* width: 25%; */
   /* display: flex; */
+  width: 100%;
+  display: flex;
   gap: 8%;
   /* justify-content: end; */
 }
