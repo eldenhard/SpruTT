@@ -79,9 +79,10 @@
       окончили ввод <br />
       &nbsp;(если индикация зеленая - все хорошо, в противном случае
       ознакомьтесь с ошибкой)
-      <br />
+      <br /> 
       * Наименования станций при редактировании должны вбиваться в таком формате: Тобольск СВР, Парто Цкали ГРЗ <br>
-      &nbsp;То есть обязательно краткое наименование дороги
+      &nbsp;То есть обязательно краткое наименование дороги<br>
+      * При выборе груза отличного от знака "—" вводить код не нужно, данные подгрузятся автоматическиб=, и поле ввода будет заблокировано
 
 
       <br />
@@ -218,7 +219,7 @@
           </td>
           <td style="border: 1px solid black">
             <input type="text" name="" id="cargo" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" />
+              placeholder="скопируйте и вставьте данные" :disabled="disabled_cargo"/>
           </td>
           <td style="border: 1px solid black">
             <input type="text" name="" id="stavka" @keyup.enter="saveTarif($event)"
@@ -340,6 +341,7 @@ export default {
   components: { Loader, Notifications, TarifDirectoryCreated },
   data() {
     return {
+      disabled_cargo: false,
       which_nds: "value",
       which_cargo: "",
       errorp: [],
@@ -419,6 +421,13 @@ export default {
     this.getAllAgreement();
   },
   watch: {
+    which_cargo(){
+      if(this.which_cargo == ""){
+        this.disabled_cargo = false
+      }else {
+        this.disabled_cargo = true
+      }
+    },
     picked() {
       if (this.picked == "agreement_number") {
         this.placeholderAgreement = "введите номер договора";
