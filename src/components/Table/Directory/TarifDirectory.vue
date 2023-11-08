@@ -908,9 +908,9 @@ export default {
         }, 3000);
         return;
       } else {
-        // this.loader = true;
+        this.loader = true;
         if (this.checkCompleteData.length == 0) {
-          // this.loader = true
+          this.loader = true
 
           api
             .postTarifData([this.Standard])
