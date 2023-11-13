@@ -12,6 +12,7 @@
           <b-tab title="Продление срока ввоза" @click="newTab('Продление срока ввоза')" >  </b-tab>
           <b-tab title="Данные по дислокациям" @click="newTab('Данные по дислокациям')" >  </b-tab>
           <b-tab title="GLP" @click="newTab('GLP')" >  </b-tab>
+          <b-tab title="Влияние простоя брош. ваг. на просрочку доставки" @click="newTab('Влияние простоя брош. ваг. на просрочку доставки')" >  </b-tab>
         </b-container>
       </b-tabs>
     </b-card>

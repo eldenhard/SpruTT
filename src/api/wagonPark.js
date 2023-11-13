@@ -171,6 +171,9 @@ const getDislocation = (date_begin, date_end) => {
 const postFileGLP = (file) => {
     return api.post(`${resource}/shipments/match-glp-belongs/`, file)
 }
+const postGetDropsAmount = (file) => {
+    return api.post(`${resource}/get-drops-amount-from-xlsx-file-of-flights/`, file)
+}
 export default {
     getWagons,
     getWagon,
@@ -232,4 +235,7 @@ export default {
     // Продление срока ввоза
     getAllCountries,
     getExtensionData,
+
+    // ImpactDowntime
+    postGetDropsAmount
 }
