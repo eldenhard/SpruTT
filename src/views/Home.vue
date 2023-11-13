@@ -146,6 +146,7 @@ export default {
   },
   mounted() {
     document.title = "Справочники";
+  
   },
 };
 </script>

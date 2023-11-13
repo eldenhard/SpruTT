@@ -103,6 +103,8 @@ export default {
 
     };
   },
+
+
   methods: {
     rowspan: (attr2) => attr2.reduce((acc, n) => acc + n.attr3.length + 1, 0),
 

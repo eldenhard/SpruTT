@@ -1,6 +1,6 @@
 <template>
   <div class="block_main_page">
-    <div class="block_main_page__blocks">
+    <div class="main_block_grid">
       <router-link to="/directory">
         <div class="main_page__block block_main_page__blocks__directory">
           <img src="../assets//directrory.png" alt="Справочники">
@@ -13,18 +13,19 @@
           <span>Вагонный парк</span>
         </div>
       </router-link>
-      <router-link to="/report">
-        <div class="main_page__block block_main_page__blocks__report">
-          <img src="../assets//report_img.png" alt="Отчеты">
-          <span> Отчеты</span>
-        </div>
-      </router-link>
       <router-link to="/lk">
         <div class="main_page__block block_main_page__blocks__lk">
           <img src="../assets//lk.png" alt="Личный кабинет">
           <span> Личный кабинет</span>
         </div>
       </router-link>
+      <router-link to="/report">
+        <div class="main_page__block block_main_page__blocks__report">
+          <img src="../assets//report_img.png" alt="Отчеты">
+          <span> Отчеты</span>
+        </div>
+      </router-link>
+      
       <router-link to="/key-facts">
         <div class="main_page__block block_main_page__blocks__key_facts">
           <img src="../assets//keyfact.png" alt="Ключевые факты">
@@ -56,6 +57,7 @@
           <span> Администрирование</span>
         </div>
       </router-link>
+
       <!-- <router-link to="/home">
         <div class="main_page__block block_main_page__blocks__inform">
           <img src="../assets//inform.png" alt="Справочная информаиця">
@@ -99,27 +101,24 @@ export default {
   justify-content: center;
   margin-top: 2%;
 }
-
-.block_main_page__blocks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem; 
-  justify-content: center;
+.main_block_grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(3, 1fr)
 }
 
 .main_page__block {
-
   width: 30vw;
   height: 25vh;
   border-radius: 10px;
-  display: flex;
+ display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   
   background: rgba(66, 66, 66, 0.5);
   font-family: 'Arial Black' sans-serif;
-  transition: transform 0.3s;
+  transition: transform 0.3s; 
 }
 .main_page__block span{
   font-family: 'Arial Black' sans-serif;

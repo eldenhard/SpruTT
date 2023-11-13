@@ -30,6 +30,7 @@ export default {
       is_error_end: false,
     };
   },
+
   watch: {
     date_begin() {
       return this.date_begin == ""
@@ -63,6 +64,9 @@ export default {
 </script>
 
 <style scoped>
+.Accept {
+  margin-top: 2%;
+}
 input{
   width: 100%;
   border-radius: 5px;
