@@ -79,9 +79,10 @@
       окончили ввод <br />
       &nbsp;(если индикация зеленая - все хорошо, в противном случае
       ознакомьтесь с ошибкой)
-      <br />
+      <br /> 
       * Наименования станций при редактировании должны вбиваться в таком формате: Тобольск СВР, Парто Цкали ГРЗ <br>
-      &nbsp;То есть обязательно краткое наименование дороги
+      &nbsp;То есть обязательно краткое наименование дороги<br>
+      * При выборе груза отличного от знака "—" вводить код не нужно, данные подгрузятся автоматическиб=, и поле ввода будет заблокировано
 
 
       <br />
@@ -207,7 +208,7 @@
       <table border="1" class="table_stavka" v-show="visible">
 
         <tr>
-          <td style="border: 1px solid white !"></td>
+          <td ></td>
           <td style="border: 1px solid black">
             <input type="text" name="" id="departure_station" @keyup.enter="saveTarif($event)"
               placeholder="скопируйте и вставьте данные" />
@@ -218,7 +219,7 @@
           </td>
           <td style="border: 1px solid black">
             <input type="text" name="" id="cargo" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" />
+              placeholder="скопируйте и вставьте данные" :disabled="disabled_cargo"/>
           </td>
           <td style="border: 1px solid black">
             <input type="text" name="" id="stavka" @keyup.enter="saveTarif($event)"
@@ -237,7 +238,15 @@
           <th>№</th>
           <th style="border: 1px solid black">Станция отпр.</th>
           <th style="border: 1px solid black">Станция назн.</th>
-          <th style="border: 1px solid black">Груз (ЕСТНГ)</th>
+          <th style="border: 1px solid black">Груз(ЕСТНГ)<select name="" id="" v-model="which_cargo" style="width: 60%">
+            <option value="">—</option>
+              <option value="top_diz">Топ.диз</option>
+              <option value="anothertop">Отд.виды топ.</option>
+              <option value="benz">Бензины</option>
+              <option value="bgs">БГС</option>
+              <option value="masla">Масла</option>
+
+            </select></th>
           <th style="border: 1px solid black">Ставка без НДС</th>
           <th style="border: 1px solid black; position: relative;">
             НДС <select name="" id="" v-model="which_nds" style="width: 70%">
@@ -332,7 +341,9 @@ export default {
   components: { Loader, Notifications, TarifDirectoryCreated },
   data() {
     return {
-      which_nds: 'value',
+      disabled_cargo: false,
+      which_nds: "value",
+      which_cargo: "",
       errorp: [],
       flagCheck: false,
       checkCompleteData: [],
@@ -371,8 +382,6 @@ export default {
         base: null,
         responsible: null,
       },
-
-
     };
   },
   computed: {
@@ -389,10 +398,10 @@ export default {
 
       return this.Standard.client.length > 1
         ? this.name_client.filter((item) =>
-          item.client
-            .toLowerCase()
-            .includes(this.Standard.client.toLowerCase())
-        )
+            item.client
+              .toLowerCase()
+              .includes(this.Standard.client.toLowerCase())
+          )
         : "";
     },
     filter_cargo() {
@@ -401,8 +410,8 @@ export default {
       }
       return this.cargo_user.length > 1
         ? this.name_cargo.filter((item) =>
-          item.name.toLowerCase().includes(this.cargo_user.toLowerCase())
-        )
+            item.name.toLowerCase().includes(this.cargo_user.toLowerCase())
+          )
         : "";
     },
   },
@@ -412,7 +421,13 @@ export default {
     this.getAllAgreement();
   },
   watch: {
-
+    which_cargo(){
+      if(this.which_cargo == ""){
+        this.disabled_cargo = false
+      }else {
+        this.disabled_cargo = true
+      }
+    },
     picked() {
       if (this.picked == "agreement_number") {
         this.placeholderAgreement = "введите номер договора";
@@ -430,8 +445,8 @@ export default {
       }
     },
     agreement_number_test() {
-      console.log(this.agreement_number_test)
-      this.flagCheck = false
+      console.log(this.agreement_number_test);
+      this.flagCheck = false;
     },
   },
   methods: {
@@ -525,7 +540,7 @@ export default {
     },
 
     saveTarif(event) {
-      console.log(event)
+      console.log(event);
       if (
         event.target.id == "destination_station" ||
         event.target.id == "departure_station"
@@ -564,8 +579,8 @@ export default {
           return;
         }
       } else if (event.target.id == "stavka" || event.target.id == "nds") {
-        if (event.target.id == "nds" && this.which_nds == 'percent') {
-          let percent_nds = event.target.value.split(" ")
+        if (event.target.id == "nds" && this.which_nds == "percent") {
+          let percent_nds = event.target.value.split(" ");
           if (percent_nds) {
             let operationBuffer = percent_nds.map(Number);
 
@@ -586,8 +601,6 @@ export default {
         const numbers = matches.map((match) =>
           parseFloat(match.replace(/\s/g, "").replace(",", "."))
         );
-
-
 
         // Разбиваем строку на массив, используя регулярное выражение для чисел с пробелами и запятой
         let all_value = t.match(/\d+(?: \d{3})*(?:,\d{2})?/g);
@@ -657,13 +670,13 @@ export default {
     //           let server_response2 = res.data.data[0]?.code
     //         console.log(server_response2, '!!!!!!!!!')
     //         this.$set(this.stationCache, station_name, server_response2);
-            
+
     //         return server_response2
     //         }
     //         catch{
     //           throw new Error(`Совпадений для станции "${station_name}" (код) не найдено на строке ${index + 1}`);
     //         }
-          
+
     //       }
     //       if (stationNameMatch) {
     //         const stationIndex = server_response.indexOf(stationNameMatch);
@@ -681,40 +694,57 @@ export default {
     // },
 
     async getStationCode(station_name, index) {
-  try {
-    if (this.stationCache[station_name]) {
-      return this.stationCache[station_name];
-    } else {
-      const response = await api_wagon.getCurrentStation(station_name);
-      const server_response = response.data.data.map(item => item.name.toLowerCase()); // Получаем все имена станций в нижнем регистре
-      const lowerStationName = station_name.toLowerCase(); // Приводим ввод пользователя к нижнему регистру
-      const stationNameMatch = server_response.find(name => name === lowerStationName); // Ищем точное совпадение имени станции
-      if (stationNameMatch == undefined) {
-        const res = await api_wagon.getCurrentStationByName(station_name);
+      try {
+        if (this.stationCache[station_name]) {
+          return this.stationCache[station_name];
+        } else {
+          const response = await api_wagon.getCurrentStation(station_name);
+          const server_response = response.data.data.map((item) =>
+            item.name.toLowerCase()
+          ); // Получаем все имена станций в нижнем регистре
+          const lowerStationName = station_name.toLowerCase(); // Приводим ввод пользователя к нижнему регистру
+          const stationNameMatch = server_response.find(
+            (name) => name === lowerStationName
+          ); // Ищем точное совпадение имени станции
+          if (stationNameMatch == undefined) {
+            const res = await api_wagon.getCurrentStationByName(station_name);
 
-        // Добавьте проверку на наличие данных и кода в ответе
-        if (!res.data || !res.data.data || res.data.data.length === 0 || !res.data.data[0].code) {
-          throw new Error(`Ошибка: Не удалось получить код станции "${station_name}" (код) на строке ${index + 1}`);
+            // Добавьте проверку на наличие данных и кода в ответе
+            if (
+              !res.data ||
+              !res.data.data ||
+              res.data.data.length === 0 ||
+              !res.data.data[0].code
+            ) {
+              throw new Error(
+                `Ошибка: Не удалось получить код станции "${station_name}" (код) на строке ${
+                  index + 1
+                }`
+              );
+            }
+
+            const stationCode2 = res.data.data[0].code;
+            this.$set(this.stationCache, station_name, stationCode2);
+            return stationCode2;
+          }
+          if (stationNameMatch) {
+            const stationIndex = server_response.indexOf(stationNameMatch);
+            const stationCode6 = response.data.data[stationIndex].code; // Получаем код подходящего варианта
+            this.$set(this.stationCache, station_name, stationCode6);
+            return stationCode6;
+          } else {
+            throw new Error(
+              `Совпадений для станции "${station_name}" (код) не найдено на строке ${
+                index + 1
+              }`
+            );
+          }
         }
-
-        const stationCode2 = res.data.data[0].code;
-        this.$set(this.stationCache, station_name, stationCode2);
-        return stationCode2;
+      } catch (error) {
+        this.errorp.push(error.message);
+        return null; // Возвращаем null в случае ошибки
       }
-      if (stationNameMatch) {
-        const stationIndex = server_response.indexOf(stationNameMatch);
-        const stationCode6 = response.data.data[stationIndex].code; // Получаем код подходящего варианта
-        this.$set(this.stationCache, station_name, stationCode6);
-        return stationCode6;
-      } else {
-        throw new Error(`Совпадений для станции "${station_name}" (код) не найдено на строке ${index + 1}`);
-      }
-    }
-  } catch (error) {
-    this.errorp.push(error.message);
-    return null; // Возвращаем null в случае ошибки
-  }
-},
+    },
 
     async createNewData() {
       const newData = [];
@@ -852,7 +882,6 @@ export default {
       this.cargo_user = value;
     },
     postData() {
-
       if (this.flagCheck == false) {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Пройдите проверку введенных";
@@ -892,7 +921,6 @@ export default {
         if (this.checkCompleteData.length == 0) {
           this.loader = true
 
-
           api
             .postTarifData([this.Standard])
             .then((response) => {
@@ -919,12 +947,50 @@ export default {
               }, 2000);
             });
         } else {
-          this.checkCompleteData.forEach(item => {
-            item.agreement_number = item.annex_number
-            if (this.which_nds == 'percent') {
-              item.nds = (item.stavka * (item.nds / 100)).toFixed(2)
+          this.checkCompleteData.forEach((item) => {
+            item.agreement_number = item.annex_number;
+            if (this.which_nds == "percent") {
+              item.nds = (item.stavka * (item.nds / 100)).toFixed(2);
             }
-          })
+          });
+
+          if (this.which_cargo != "") {
+            console.log("я тут");
+            let which_cargo_check;
+            switch (this.which_cargo) {
+              case "top_diz":
+                which_cargo_check = [214039, 214043, 214058];
+                break;
+              case "anothertop":
+                which_cargo_check = [
+                  212052, 214109, 214081, 221136, 214096, 211153,
+                ];
+                break;
+              case "benz":
+                which_cargo_check = [
+                  211011, 211026, 211030, 211056, 211100, 211115,
+                ];
+                break;
+              case "bgs":
+                which_cargo_check = [226021];
+                break;
+              case "masla":
+                which_cargo_check = [
+                  213163, 213182, 213197, 213204, 213214, 213229, 213252,
+                  213290, 213303, 213318, 213322, 213337, 213356, 213360,
+                  213380, 213411, 213426, 213411,
+                ];
+                break;
+            }
+            const allCheckCompleteData = []
+            for(let i of which_cargo_check){
+              allCheckCompleteData.push(...this.checkCompleteData.map((item) => ({
+                ...item,
+                cargo: i
+              })))
+            }
+            this.checkCompleteData = allCheckCompleteData
+          }
 
           api
             .postTarifData(this.checkCompleteData)
@@ -1012,7 +1078,7 @@ select {
   height: 25px !important;
 }
 
-input[type=checkbox] {
+input[type="checkbox"] {
   width: 20px;
   height: 20px;
 }
