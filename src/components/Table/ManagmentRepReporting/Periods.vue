@@ -14,6 +14,7 @@
       </label>
     </div>
     <slot></slot>
+    
     <button class="Accept" @click="getData()">Загрузить данные</button>
   </div>
 </template>
@@ -24,8 +25,8 @@ export default {
     props: ['func1'],
   data() {
     return {
-      date_begin: "",
-      date_end: "",
+      date_begin: "2023-01-01",
+      date_end: "2023-01-02",
       is_error_start: false,
       is_error_end: false,
     };

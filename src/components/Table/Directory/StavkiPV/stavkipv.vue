@@ -127,7 +127,10 @@
 
 
         <div class="air_block" style="margin-top: 2%;">
-            <p class="amount">Таблица "Данные из Excel"</p>
+            <section style="display: flex; justify-content: space-between;">
+                <p class="amount">Таблица "Данные из Excel"</p>
+                <button class="Action button" style="width: 15%; height: 40px;">Преобразовать данные</button>
+            </section>
             <table>
                 <thead>
                     <tr style="background: #e1e1e2">

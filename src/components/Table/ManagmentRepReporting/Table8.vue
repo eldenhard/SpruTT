@@ -1,204 +1,426 @@
 <template>
   <div>
     <p>Форма 4.8 "Производство по универсальным перевозкам (собственный парк)"</p>
-    <div style="overflow: auto;">
-      <table>
-        <thead>
-          <tr>
-            <th>Основной клиент</th>
-            <th>Схема</th>
-            <th>Клиент</th>
-            <th>Дорога отпр.</th>
-            <th>Станция отпр.</th>
-            <th>Дорога назнач.</th>
-            <th>Станция назнач.</th>
-            <th>Продукт</th>
-            <th>Кол-во погр.</th>
-            <th>Выручка</th>
-            <th>Штрафы</th>
-            <th>Экспедирование</th>
-            <th>Тариф порож.</th>
-            <th>Тариф CT</th>
-            <th>Тариф груж</th>
-            <th>Подготовка</th>
-            <th>Доп. услуги</th>
-            <th>Вагоно-сутки</th>
-            <th>МД</th>
-            <th>Доходность</th>
-            <th>Ставка, руб./ваг</th>
-            <th>Оборачиваемость, сут</th>
 
-          </tr>
-        </thead>
-        <template v-for="obj in objects">
-          <template v-for="{ client_main, attr1, TOTAL } in obj.data">
-            <template v-for="({ scheme, attr3, total }, iAttr1) in attr1">
-              <tr v-for="(attr3Item, iAttr3) in attr3" :key="attr3Item.id">
-                <td :rowspan="rowspan(attr1)" v-if="!iAttr1 && !iAttr3">{{ client_main }}</td>
-                <td :rowspan="attr3.length" v-if="!iAttr3">{{ scheme }}</td>
-                <td>{{ attr3Item?.client }}</td>
-                <td>{{ attr3Item?.road_dep }}</td>
-                <td>{{ attr3Item?.station_dep }}</td>
-                <td>{{ attr3Item?.road_dest }}</td>
+    <Loader :loader="loader" />
+    <Periods @Action="Actioned" @data="getCurrentData">
 
-                <td>{{ attr3Item?.station_dest }}</td>
-                <td>{{ attr3Item?.product }}</td>
-                <td>{{ attr3Item?.amount }}</td>
-                <td>{{ attr3Item?.proceeds }}</td>
-
-                <td>{{ attr3Item?.fines }}</td>
-                <td>{{ attr3Item?.forwarding }}</td>
-                <td>{{ attr3Item?.tf_empty }}</td>
-                <td>{{ attr3Item?.tf_st }}</td>
-
-                <td>{{ attr3Item?.tf_laden }}</td>
-                <td>{{ attr3Item?.preparation }}</td>
-                <td>{{ attr3Item?.add_service }}</td>
-                <td>{{ attr3Item?.wag_day }}</td>
-
-                <td>{{ attr3Item?.md }}</td>
-                <td>{{ attr3Item?.profit }}</td>
-                <td>{{ attr3Item?.stavka }}</td>
-                <td>{{ attr3Item?.turnover }}</td>
-              </tr>
-              <tr class="total">
-                <td colspan="2">Итого {{ scheme }}:</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>{{ total?.amount }}</td>
-                <td>{{ total?.proceeds }}</td>
-
-                <td>{{ total?.fines }}</td>
-                <td>{{ total?.forwarding }}</td>
-                <td>{{ total?.tf_empty }}</td>
-                <td>{{ total?.tf_st }}</td>
-
-                <td>{{ total?.tf_laden }}</td>
-                <td>{{ total?.preparation }}</td>
-                <td>{{ total?.add_service }}</td>
-                <td>{{ total?.wag_day }}</td>
-
-                <td>{{ total?.md }}</td>
-                <td>{{ total?.profit }}</td>
-                <td>{{ total?.stavka }}</td>
-                <td>{{ total?.turnover }}</td>
-              </tr>
-            </template>
-            <tr class="total_2">
-              <td colspan="3">Итого {{ client_main }}:</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ TOTAL?.amount }}</td>
-              <td>{{ TOTAL?.proceeds }}</td>
-
-              <td>{{ TOTAL?.fines }}</td>
-              <td>{{ TOTAL?.forwarding }}</td>
-              <td>{{ TOTAL?.tf_empty }}</td>
-              <td>{{ TOTAL?.tf_st }}</td>
-
-              <td>{{ TOTAL?.tf_laden }}</td>
-              <td>{{ TOTAL?.preparation }}</td>
-              <td>{{ TOTAL?.add_service }}</td>
-              <td>{{ TOTAL?.wag_day }}</td>
-
-              <td>{{ TOTAL?.md }}</td>
-              <td>{{ TOTAL?.profit }}</td>
-              <td>{{ TOTAL?.stavka }}</td>
-              <td>{{ TOTAL?.turnover }}</td>
-            </tr>
-          </template>
-        </template>
-        <tr v-for="obj in objects" :key="obj.id" style="border: 1px solid black" class="all_total">
-          <td colspan="3">Всего погрузки</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>{{ obj.ALL_TOTAL?.amount }}</td>
-          <td>{{ obj.ALL_TOTAL?.proceeds }}</td>
-
-          <td>{{ obj.ALL_TOTAL?.fines }}</td>
-          <td>{{ obj.ALL_TOTAL?.forwarding }}</td>
-          <td>{{ obj.ALL_TOTAL?.tf_empty }}</td>
-          <td>{{ obj.ALL_TOTAL?.tf_st }}</td>
-
-          <td>{{ obj.ALL_TOTAL?.tf_laden }}</td>
-          <td>{{ obj.ALL_TOTAL?.preparation }}</td>
-          <td>{{ obj.ALL_TOTAL?.add_service }}</td>
-          <td>{{ obj.ALL_TOTAL?.wag_day }}</td>
-
-          <td>{{ obj.ALL_TOTAL?.md }}</td>
-          <td>{{ obj.ALL_TOTAL?.profit }}</td>
-          <td>{{ obj.ALL_TOTAL?.stavka }}</td>
-          <td>{{ obj.ALL_TOTAL?.turnover }}</td>
-        </tr>
-      </table>
-    </div>
-
+    </Periods>
+    <br>
+    <div id="TableReport8"></div>
   </div>
 </template>
 
 <script>
+import api from "@/api/reportUO";
+import Periods from "./Periods.vue";
+import Loader from "@/components/loader/loader.vue";
+import jsonData from '@/components/Table/ManagmentRepReporting/f8.json';
 export default {
+  components: { Periods, Loader },
   data() {
     return {
-      objects: [{
-        data: [
-          {
-            client_main: "Клиент_1!",
-            attr1: [
-              {
-                scheme: "Схема_1",
-                attr3: [
-                  { client: "Клиент 1", road_dep: 'РЖД', station_dep: 'Биклянь', road_dest: 'КЖД', station_dest: "Астана", product: 'Уголь', amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789', wag_day: '567', md: "980", profit: ' 10000', stavka: '560', turnover: '67' },
-                  { client: "Клиент 1", road_dep: 'РЖД', station_dep: 'Биклянь', road_dest: 'КЖД', station_dest: "Астана", product: 'Уголь', amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789', wag_day: '567', md: "980", profit: ' 10000', stavka: '560', turnover: '67' },
-                  { client: "Клиент 1", road_dep: 'РЖД', station_dep: 'Биклянь', road_dest: 'КЖД', station_dest: "Астана", product: 'Уголь', amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789', wag_day: '567', md: "980", profit: ' 10000', stavka: '560', turnover: '67' },
-                ],
-                total: { amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789', wag_day: '567', md: "980", profit: ' 10000', stavka: '560', turnover: '67' }
-              },
-              {
-                scheme: "Схема_2",
-                attr3: [
-                  { client: "Клиент 1", road_dep: 'РЖД', station_dep: 'Биклянь', road_dest: 'КЖД', station_dest: "Астана", product: 'Уголь', amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789', wag_day: '567', md: "980", profit: ' 10000', stavka: '560', turnover: '67' },
-                  { client: "Клиент 1", road_dep: 'РЖД', station_dep: 'Биклянь', road_dest: 'КЖД', station_dest: "Астана", product: 'Уголь', amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789', wag_day: '567', md: "980", profit: ' 10000', stavka: '560', turnover: '67' },
-                ],
-                total: { amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789', wag_day: '567', md: "980", profit: ' 10000', stavka: '560', turnover: '67' }
-
-              },
-            ],
-            TOTAL: {
-              amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789', wag_day: '567', md: "980", profit: ' 10000', stavka: '560', turnover: '67'
-            }
-
-          },
-
-        ],
-        ALL_TOTAL: {
-          amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789', wag_day: '567', md: "980", profit: ' 10000', stavka: '560', turnover: '67'
-        }
-      }
-
-      ],
+      jsonData,
+      loader: false,
     }
   },
+  mounted() {
+    console.log(this.jsonData)
+  },
+  updated() {
+    this.processTables();
+  },
   methods: {
-    //     getRowCount(obj) {
-    //   let total = 0;
-    //   let last_item = '';
-    //   obj.attr1.forEach((item) => {
-    //     total += item.attr3.length;
-    //   });
-    //   return total;
-    // },
-    rowspan: attr1 => attr1.reduce((acc, n) => acc + n.attr3.length + 1, 0),
+    Actioned() {
+      this.OpenChildren(document.getElementById('TableReport8'), this.jsonData)
+    },
+    getCurrentData() {
 
+    },
+    Translate(val) {
+      switch (val) {
+        case 'null':
+          return 'Не определено'
+          break
+        case 'amount':
+          return 'Количество'
+          break
+        case 'cost':
+          return 'Сумма'
+          break
+        case 'weight':
+          return 'Вес'
+          break
+        case 'stavka_per_ton':
+          return 'Ставка за тонну'
+          break
+        case 'revenue':
+          return 'Доход'
+          break
+        case "product":
+          return 'Продукт'
+          break
+        case "fine":
+          return 'Штраф'
+          break
+        case "":
+          return 'Не определено'
+          break
+        case val:
+          return val
+          break
+
+      }
+    },
+    FilterValue(val) {
+      return String(val).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+    },
+    TEST(obj) {
+      let arr = []
+      for (let i in obj) {
+
+        arr.push([i, obj[i]])
+      }
+
+      arr.sort(function (a, b) {
+        if (Array.isArray(a[1])) {
+          return 1
+        }
+        if (Array.isArray(b[1])) {
+          return -1
+        }
+        if (Array.isArray(a[1]) && Array.isArray(b[1])) {
+          return 0
+        }
+        if (typeof a[1] < typeof b[1]) {
+          return 1
+        }
+        if (typeof a[1] > typeof b[1]) {
+          return -1
+        }
+        return 0;
+      });
+      return arr
+    },
+
+//     OpenChildren(eventDiv = null, val) {
+//   let collapse = "+";
+//   let val_copy = this.TEST(val);
+//   let hr = null;
+//   let children = [];
+  
+//   try {
+//     children = eventDiv.target.childNodes;
+//   } catch (error) {
+//     children = eventDiv.childNodes;
+//   }
+  
+//   if (children.length > 1) {
+//     while (children.length != 1) {
+//       try {
+//         eventDiv.target.removeChild(children[1]);
+//       } catch {
+//         eventDiv.removeChild(children[1]);
+//       }
+//     }
+//   } else {
+//     let thead = [];
+//     let tbody = [];
+
+//     for (let i in val_copy) {
+//       let key = val_copy[i][0];
+//       let value = val_copy[i][1];
+//       let div = document.createElement('div');
+
+//       if (typeof value == 'number' || typeof value == 'string' || Array.isArray(value)) {
+//         hr = null;
+//         let name = this.Translate(key);
+//         let value123 = value;
+
+//         if (Array.isArray(value)) {
+//           value123 = this.FilterValue(value.reduce((acc, item) => acc += item)?.toFixed(2));
+//           console.log(value123);
+//         }
+
+//         if (typeof value == 'number') {
+//           value123 = this.FilterValue(value?.toFixed(2));
+//         }
+
+//         thead.push(name);
+//         tbody.push(value123);
+
+//         div.innerHTML = `
+//           <table>
+//             <thead>
+//               <tr>
+//                 ${thead.map((header, ind) => `<th style="white-space: nowrap;">${header}</th>`).join('')}
+//               </tr>
+//             </thead>
+//             <tbody>
+//               <tr>
+//                 ${tbody.map(value => `<td style="white-space: nowrap;">${value}</td>`).join('')}
+//               </tr>
+//             </tbody>
+//           </table>
+//         `;
+
+//         div.style = 'font-weight: 500; color: black; padding: 0; background: #fff;';
+//       } else {
+//         hr = document.createElement('hr');
+//         div.innerHTML = `${this.Translate(key)} ${collapse}`;
+//         div.style = 'padding-left: 2% !important; font-weight: 500; color: darkblue; border: 1px solid lightgrey; padding: 1%;';
+//       }
+
+//       div.addEventListener('click', () => {
+//         event.stopPropagation();
+//         this.OpenChildren(div, value);
+//       });
+
+//       try {
+//         eventDiv.target.append(div);
+//       } catch {
+//         eventDiv.append(div);
+//       }
+//     }
+//   }
+
+
+// },
+// async processTables() {
+//       // Дождитесь, пока данные полностью накопятся
+//       await this.$nextTick();
+
+//       let childTables = this.$el.querySelectorAll('table');
+//       let tablesArray = Array.from(childTables);
+//       let uniqueTables = new Set();
+
+//       // Функция для получения строки из таблицы
+//       const getTableString = (table) => {
+//         let tableString = '';
+//         table.querySelectorAll('tr').forEach(row => {
+//           row.querySelectorAll('th, td').forEach(cell => {
+//             tableString += cell.textContent.trim();
+//           });
+//         });
+//         return tableString;
+//       };
+
+//       // Удалить повторяющиеся таблицы
+//       tablesArray.forEach((table, index) => {
+//         let tableString = getTableString(table);
+//         if (!uniqueTables.has(tableString)) {
+//           uniqueTables.add(tableString);
+//         } else {
+//           table.parentElement.removeChild(table);
+//         }
+//       });
+//     },
+
+OpenChildren(eventDiv = null, val) {
+  let collapse = "+";
+  let val_copy = this.TEST(val);
+  let hr = null;
+
+  // Удаляем все элементы, кроме первого, если они есть
+
+
+  // Создаем таблицу
+  let thead = [];
+  let tbody = [];
+
+  for (let i in val_copy) {
+    let key = val_copy[i][0];
+    let value = val_copy[i][1];
+
+    if (typeof value == 'number' || typeof value == 'string' || Array.isArray(value)) {
+      hr = null;
+      let name = this.Translate(key);
+      let value123 = Array.isArray(value)
+        ? this.FilterValue(value.reduce((acc, item) => acc + item)?.toFixed(2))
+        : this.FilterValue(value?.toFixed(2));
+
+      thead.push(name);
+      tbody.push(value123);
+    } else {
+      // hr = document.createElement('hr');
+      // eventDiv.appendChild(hr);
+
+      let div = document.createElement('div');
+      div.innerHTML = `${this.Translate(key)} ${collapse}`;
+      div.style = 'padding-left: 2% !important; font-weight: 500; color: darkblue; border: 1px solid lightgrey; padding: 1%;';
+
+      div.addEventListener('click', (event) => {
+        event.stopPropagation();
+        this.OpenChildren(div, value);
+      });
+
+      eventDiv.appendChild(div);
+    }
+  }
+
+  if (thead.length > 0 && tbody.length > 0) {
+    let div = document.createElement('div');
+    div.innerHTML = `
+      <span style="margin: 0 1%">Итого</span>
+      <table>
+        <thead>
+          <tr>
+            ${thead.map((header, ind) => `<th style="white-space: nowrap;">${header}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            ${tbody.map(value => `<td style="white-space: nowrap;">${value}</td>`).join('')}
+          </tr>
+        </tbody>
+      </table>
+    `;
+    div.style = 'font-weight: 500; color: black; padding: 0; background: #fff;';
+    eventDiv.appendChild(div);
+  }
+},
+
+async processTables() {
+  // Дождитесь, пока данные полностью накопятся
+  await this.$nextTick();
+
+  let childTables = this.$el.querySelectorAll('table');
+  let tablesArray = Array.from(childTables);
+  let uniqueTables = new Set();
+
+  // Функция для получения строки из таблицы
+  const getTableString = (table) => {
+    let tableString = '';
+    table.querySelectorAll('tr').forEach(row => {
+      row.querySelectorAll('th, td').forEach(cell => {
+        tableString += cell.textContent.trim();
+      });
+    });
+    return tableString;
+  };
+
+  // Удалить повторяющиеся таблицы
+  tablesArray.forEach((table, index) => {
+    let tableString = getTableString(table);
+    if (!uniqueTables.has(tableString)) {
+      uniqueTables.add(tableString);
+    } else {
+      table.parentElement.removeChild(table);
+    }
+  });
+},
+
+
+
+
+
+    // OpenChildren(eventDiv = null, val) {
+     
+    //   // let thead = [];
+    //   // let tbody = []
+    //   let collapse = "+"
+    //   let val_copy = this.TEST(val)
+    //   let hr = null
+    //   let children = []
+    //   try {
+    //     children = eventDiv.target.childNodes
+    //   }
+    //   catch (error) {
+    //     children = eventDiv.childNodes
+    //   }
+    //   if (children.length > 1) {
+    //     while (children.length != 1) {
+    //       try {
+    //         eventDiv.target.removeChild(children[1])
+            
+    //       }
+    //       catch {
+    //         eventDiv.removeChild(children[1])
+
+    //       }
+    //     }
+    //   }
+    //   else {
+    //     let thead = [];
+    //     let tbody = []
+     
+    //     for (let i in val_copy) {
+    //       let key = val_copy[i][0]
+    //       let value = val_copy[i][1]
+    //       let div = document.createElement('div')
+    //       if (typeof value == 'number' || typeof value == 'string' || Array.isArray(value)) {
+
+    //         hr = null
+    //         let name = this.Translate(key)
+    //         let value123 = value
+    //         if (Array.isArray(value)) {
+    //           value123 = this.FilterValue(value.reduce((acc, item) => acc += item)?.toFixed(2))
+    //           console.log(value123)
+    //         }
+    //         if (typeof value == 'number') {
+    //           value123 = this.FilterValue(value?.toFixed(2))
+    //         }
+    //           thead.push(name);
+    //           tbody.push(value123)
+    //           this.$nextTick(() => {
+    //           div.innerHTML = `
+
+    //         <table >
+    //             <thead>
+    //               <tr>
+    //                 ${thead.map((header, ind) => `<th style="white-space: nowrap;">${header}</th>`).join('')}
+    //               </tr>
+    //             </thead>
+    //             <tbody>
+    //               <tr>
+    //                 ${tbody.map(value => `<td style="white-space: nowrap;">${value}</td>`).join('')}
+    //               </tr>
+    //             </tbody>
+    //             </table>
+    //        `
+    //           div.style = 'font-weight: 500; color: black; padding: 0; background: #fff;'
+          
+    //         })
+    //       }
+    //       else {
+       
+    //         hr = document.createElement('hr')
+    //         div.innerHTML = `${this.Translate(key)} ${collapse}`
+    //         div.style = 'padding-left: 2% !important; font-weight: 500; color: darkblue; border: 1px solid lightgrey; padding: 1%;'
+           
+
+    //       }
+    //       div.addEventListener('click', () => {
+
+    //         event.stopPropagation()
+    //         this.OpenChildren(div, value)
+    //       })
+    //       try {
+    //         eventDiv.target.append(div)
+    //         // if(hr != null) eventDiv.target.append(hr)
+    //       } catch {
+    //         eventDiv.append(div)
+    //         // if(hr != null) eventDiv.append(hr)
+    //       }
+    //     }
+       
+    //   }
+    //    this.$nextTick(() => {
+    //     let childTables = document.querySelectorAll('table');
+    //     // Преобразовать NodeList в массив
+    //     let tablesArray = Array.from(childTables);
+    //     // Удалить все таблицы кроме последней
+    //     tablesArray.forEach((table, index) => {
+    //       if (index !== tablesArray.length - 1) {
+    //         table.parentElement.removeChild(table);
+    //         }
+    //       })
+    //    })
+    // },
+
+
+
+    
   }
 }
 </script>
@@ -286,4 +508,5 @@ table>tbody>tr>td.inner>div {
 
 thead>th {
   border: 1px solid black;
-}</style>
+}
+</style>
