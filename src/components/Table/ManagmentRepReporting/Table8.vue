@@ -7,7 +7,7 @@
 
     </Periods>
     <br>
-    <div id="TableReport8"></div>
+    <div :id="'TableReport8'+id_page"></div>
   </div>
 </template>
 
@@ -20,6 +20,7 @@ export default {
   components: { Periods, Loader },
   data() {
     return {
+      id_page: new Date(),
       jsonData,
       dataReport8: "",
       loader: false,
@@ -35,13 +36,15 @@ export default {
   },
   methods: {
     Actioned() {
+  
       // this.loader = true;
       // api
       //   .getUO48(this.date_begin, this.date_end, this.wag_type)
       //   .then((response) => {
       //     this.loader = false;
       //     this.dataReport8 = response.data;
-          this.OpenChildren(document.getElementById('TableReport8'), this.jsonData)
+      document.getElementById(`TableReport8${this.id_page}`).innerHTML = ""
+        this.OpenChildren(document.getElementById(`TableReport8${this.id_page}`), this.jsonData)
 
         // })
         // .catch((error) => {
@@ -159,6 +162,8 @@ export default {
 
 
   OpenChildren(eventDiv = null, val) {
+    // console.log(document.getElementById('TableReport8'))
+  
   let collapse = "+";
   let val_copy = this.TEST(val);
   let hr = null;
