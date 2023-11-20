@@ -2,7 +2,7 @@
   <div>
     <!-- <pre>{{data}}</pre> -->
     <Loader :loader="loader" />
-    <Periods @Action="Actioned" @data="getCurrentData"  style="width: 15% !important;margin-left: auto;"/>
+    <Periods @Action="Actioned" @data="getCurrentData"/>
     <div style="overflow: auto; margin-top: 5%">
       <p>Форма 4.4 "Парк, переданный в аренду"</p>
 

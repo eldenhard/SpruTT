@@ -36,7 +36,10 @@ export default {
   },
   methods: {
     Actioned() {
-  
+      if(document.getElementById(`TableReport8${this.id_page}`)){
+        let blockDiv = document.getElementById(`TableReport8${this.id_page}`)
+        blockDiv.innerHTML = ''
+      }
       // this.loader = true;
       // api
       //   .getUO48(this.date_begin, this.date_end, this.wag_type)

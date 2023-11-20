@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; flex-direction: column; position: relative; width: 25% ">
+  <div style="display: flex; flex-direction: column; position: relative; width: auto; max-width: 30% ">
     <div class="btn-group">
       <label for="dateStart" :class="{ Error: is_error_start }"
       style="width: 100%" >Начало периода

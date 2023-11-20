@@ -1,7 +1,7 @@
 <template>
     <div>
         <Loader :loader="loader" />
-        <Periods @Action="Actioned" @data="getCurrentData" style="width: 15% !important;margin-left: auto;"/>
+        <Periods @Action="Actioned" @data="getCurrentData"/>
         <div style="overflow: auto; margin-top: 5%;">
             <p>Форма 4.1 "Формирование парка"</p>
 
@@ -203,6 +203,7 @@ export default {
     components: { Periods, Loader },
     data() {
         return {
+            id_page: new Date(),
             formation_park_data: true,
             index_font_size: '1%',
             dataFormation: '',
