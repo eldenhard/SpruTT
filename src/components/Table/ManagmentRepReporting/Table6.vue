@@ -25,12 +25,13 @@
     <div class="block-table">
 
       <table>
-        
+
+
         <tbody>
-          
+    
           <template v-for="(valueClient, client) in dataReport6">
             <tr :key="valueClient.id">
-        
+            
               <td
                 v-if="
                   client !== 'stavka_per_ton' &&
@@ -57,127 +58,40 @@
                         <td>{{ clientRoadRoad }}</td>
                         <td>{{ TransLateBelong(clientRoad) }}</td>
                         <td>{{ cargo }}</td>
-                        <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['weight']?.toFixed(2) }}</td>
-                        <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['stavka_per_ton']?.toFixed(2) }}</td>
-                        <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['revenue']?.toFixed(2) }}</td>
+                        <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['weight']?.toFixed(2) | format}}</td>
+                        <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['stavka_per_ton']?.toFixed(2) | format}}</td>
+                        <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['revenue']?.toFixed(2) | format}}</td>
                       </tr>
                      
                     </template>
                    
                   </template>
-               
+                  <tr >
+                    <td  colspan="2"></td>
+                   
+                  <td style="background:#FDFFDA" colspan="2">ИТОГО {{ TransLateBelong(clientRoad) }}</td>
+                  <td style="background:#FDFFDA">{{ dataReport6[client][road][clientRoad]['weight']?.toFixed(2) | format}}</td>
+                  <td style="background:#FDFFDA">{{ dataReport6[client][road][clientRoad]['stavka_per_ton']?.toFixed(2) | format}}</td>
+                  <td style="background:#FDFFDA">{{ dataReport6[client][road][clientRoad]['revenue']?.toFixed(2) | format}}</td>
+                </tr>
                 </template>
-                <tr style="background: rgb(202, 212, 216)">
+                <tr style="background: #DDFCCF">
                   <td colspan="4">ИТОГО {{ road }}</td>
-                  <td>{{ dataReport6[client][road]['weight']?.toFixed(2) }}</td>
-                  <td>{{ dataReport6[client][road]['stavka_per_ton']?.toFixed(2) }}</td>
-                  <td>{{ dataReport6[client][road]['revenue']?.toFixed(2) }}</td>
+                  <td>{{ dataReport6[client][road]['weight']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport6[client][road]['stavka_per_ton']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport6[client][road]['revenue']?.toFixed(2) | format}}</td>
                 </tr>
               </template>
-              <!-- <tr style="background: rgb(202, 212, 216);">
-                  <td colspan="3">ИТОГО {{ client }}</td>
-                  <td>{{ dataReport6[client]['weight']?.toFixed(2) }}</td>
-                  <td>{{ dataReport6[client]['stavka_per_ton']?.toFixed(2) }}</td>
-                  <td>{{ dataReport6[client]['revenue']?.toFixed(2) }}</td>
-                </tr> -->
+           
                
               
             </tr>
-        
+           
           </template>
-         
-          <!-- <template v-for="clientRoad in getNextKey(dataReport6[client][road])">
-                        <tr :key="clientRoad.id">
-                         <td>{{ clientRoad }}</td>
-                          <template v-for="clientRoadRoad in getNextKey(dataReport6[client][road][clientRoad])">
-                              <tr :key="clientRoadRoad.id">
-                                <td >{{ clientRoadRoad }}</td>
-                                <template  v-for="cargo in getNextKey(dataReport6[client][road][clientRoad][clientRoadRoad])">
-                                    <tr :key="cargo.id">
-                                      <td >{{ cargo }}</td>
-                                      <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['weight']?.toFixed(2) }}</td>
-                                      <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['stavka_per_ton']?.toFixed(2) }}</td>
-                                      <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['revenue']?.toFixed(2) }}</td>
-                                    </tr>  
-                                </template>
-                              </tr>
-                              <tr style="background: #FDFFD9;">
-                                <td>ИТОГО {{ clientRoadRoad }}</td>
-                                <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad]['weight']?.toFixed(2) }}</td>
-                                <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad]['stavka_per_ton']?.toFixed(2) }}</td>
-                                <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad]['revenue']?.toFixed(2) }}</td>
-
-                              </tr>
-                          </template>
-                        </tr>
-                        <tr style="background: #49b677;">
-                          <td>ИТОГО {{ clientRoad }}</td>
-                          <td>{{ dataReport6[client][road][clientRoad]['weight']?.toFixed(2) }}</td>
-                          <td>{{ dataReport6[client][road][clientRoad]['stavka_per_ton']?.toFixed(2) }}</td>
-                          <td>{{ dataReport6[client][road][clientRoad]['revenue']?.toFixed(2) }}</td>
-                        </tr>
-                    </template> -->
-          <!-- </tr> -->
-          <!-- <tr style="background: rgb(202, 212, 216);">
-              <td>ИТОГО {{ road }}</td>
-              <td>{{ dataReport6[client][road]['weight']?.toFixed(2) }}</td>
-              <td>{{ dataReport6[client][road]['stavka_per_ton']?.toFixed(2) }}</td>
-              <td>{{ dataReport6[client][road]['revenue']?.toFixed(2) }}</td>
-            </tr> -->
-          <!-- </template>
-            </tr>
-          </template> -->
+    
+       
         </tbody>
-        <!-- <tbody>
-          <template v-for="(valueClient, client) in dataReport6">
-            <tr :key="valueClient.id">
-              <td v-if="client !== 'stavka_per_ton' && client !== 'weight' && client !== 'revenue'">{{ client }}</td>
-              <template v-for="road in getNextKey(dataReport6[client])">
-            <tr :key="road.id">
-              <td >{{ road }}</td>
-
-              <template v-for="clientRoad in getNextKey(dataReport6[client][road])">
-                        <tr :key="clientRoad.id">
-                         <td>{{ clientRoad }}</td>
-                          <template v-for="clientRoadRoad in getNextKey(dataReport6[client][road][clientRoad])">
-                              <tr :key="clientRoadRoad.id">
-                                <td >{{ clientRoadRoad }}</td>
-                                <template  v-for="cargo in getNextKey(dataReport6[client][road][clientRoad][clientRoadRoad])">
-                                    <tr :key="cargo.id">
-                                      <td >{{ cargo }}</td>
-                                      <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['weight']?.toFixed(2) }}</td>
-                                      <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['stavka_per_ton']?.toFixed(2) }}</td>
-                                      <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['revenue']?.toFixed(2) }}</td>
-                                    </tr>  
-                                </template>
-                              </tr>
-                              <tr style="background: #FDFFD9;">
-                                <td>ИТОГО {{ clientRoadRoad }}</td>
-                                <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad]['weight']?.toFixed(2) }}</td>
-                                <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad]['stavka_per_ton']?.toFixed(2) }}</td>
-                                <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad]['revenue']?.toFixed(2) }}</td>
-
-                              </tr>
-                          </template>
-                        </tr>
-                        <tr style="background: #49b677;">
-                          <td>ИТОГО {{ clientRoad }}</td>
-                          <td>{{ dataReport6[client][road][clientRoad]['weight']?.toFixed(2) }}</td>
-                          <td>{{ dataReport6[client][road][clientRoad]['stavka_per_ton']?.toFixed(2) }}</td>
-                          <td>{{ dataReport6[client][road][clientRoad]['revenue']?.toFixed(2) }}</td>
-                        </tr>
-                    </template>
-            </tr>
-            <tr style="background: rgb(202, 212, 216);">
-              <td>ИТОГО {{ road }}</td>
-              <td>{{ dataReport6[client][road]['weight']?.toFixed(2) }}</td>
-              <td>{{ dataReport6[client][road]['stavka_per_ton']?.toFixed(2) }}</td>
-              <td>{{ dataReport6[client][road]['revenue']?.toFixed(2) }}</td>
-            </tr>
-          </template>
-          </tr>
-          </template>
-        </tbody> -->
+       
       </table>
     </div>
   </div>
@@ -209,6 +123,7 @@ export default {
   mounted(){
   },
   methods: {
+   
     TransLateBelong(val){
       switch (val) {
         case "А":
@@ -572,4 +487,6 @@ export default {
 };
 </script>
 
+<style scoped>
 
+</style>

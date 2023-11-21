@@ -53,9 +53,7 @@
           <template v-for="(item, client) in jsonData">
             <template v-for="road of getNextKey(item)">
               <template v-for="station_dest of getNextKey(item[road])">
-                <template
-                  v-for="CountryDep of getNextKey(item[road][station_dest])"
-                >
+                <template v-for="CountryDep of getNextKey(item[road][station_dest])">
                   <template
                     v-for="StationDep of getNextKey(
                       item[road][station_dest][CountryDep]

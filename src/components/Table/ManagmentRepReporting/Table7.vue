@@ -21,111 +21,59 @@
     <br />
 
     <p>Форма 4.7. "Анализ перевозки и выручки по сегменту полувагонов"</p>
-    <div :id="'TableReport7'+id_page" ></div>
-
-    <div class="block-table">
-      <!-- <table class="table_search">
+    <!-- <div :id="'TableReport7'+id_page" ></div> -->
+    <table>
         <thead>
-          <th>Парк</th>
-          <th>Станция погрузки</th>
-          <th style="width: 200px">Клиент</th>
-          <th style="width: 200px">Станция выгрузки</th>
-
-          <th style="width: 200px">Груз</th>
-          <th style="width: 200px">Погрузка, тн</th>
-          <th style="width: 200px">Ставка, руб/тн без НДС</th>
-
-          <th style="width: 200px">Выручка, руб, без НДС</th>
-
+          <tr>
+            <th>Клиент</th>
+            <th>Дорога </th>
+            <th>Принадлежность</th>
+            <th>Полигон</th>
+            <th>Кол-во погрузок</th>
+            <th>Выручка, руб. без НДС</th>
+           
+          </tr>
+          <tr style="background: #FFD453;">
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+            <th>D</th>
+            <th>E</th>
+            <th>F</th>
+            
+          </tr>
         </thead>
         <tbody>
-           <template v-for="obj in normalized">
-          <template v-for="{ road, attr1, TOTAL_ROAD } in obj.data">
-            <template v-for="({ client, attr3, total }, iAttr1) in attr1">
-              <tr v-for="(attr3Item, iAttr3) in attr3">
-                <td :rowspan="rowspan(attr1)" v-if="!iAttr1 && !iAttr3">
-                  {{ road | ifNull}}
-                </td>
-                <td :rowspan="attr3.length" v-if="!iAttr3">{{ client }}</td>
-                <td >{{ attr3Item.road }}</td>
-          
-                <td>
-                  <tr v-for="item in attr3Item.cargo" :key="item.id">
-                    <td style="border: none !important">{{ item.name }}</td>
-                  </tr>
-                </td>
-          
-                <td>
-                  <template v-for="item in attr3Item.cargo" >
-                    <tr v-for="i in item.name_weight" :key="i.id">
-                      <td style="border: none !important">{{ i }}</td>
-                    </tr>
-    
-                  </template>
-                </td>
-                <td>
-                  <template v-for="item in attr3Item.cargo" >
-                    <tr v-for="i in item.name_cargo" :key="i.id">
-                     <td style="border: none !important">{{ i?.amount.toFixed(2) | format}}</td>
-                    </tr>
-                  </template>
-                </td>
-                <td>
-                  <template v-for="item in attr3Item.cargo" >
-                    <tr v-for="i in item.name_cargo" :key="i.id">
-                     <td style="border: none !important">{{ i?.stavka.toFixed(2) | format}}</td>
-                    </tr>
-                  </template>
-                </td>
-                <td>
-                  <template v-for="item in attr3Item.cargo" >
-                    <tr v-for="i in item.name_cargo" :key="i.id">
-                     <td style="border: none !important">{{ i?.revenue.toFixed(2) | format}}</td>
-                    </tr>
-                  </template>
-                </td>
-              <td>
-           
-              </td>
-              </tr>
-              <tr class="total">
-                <td colspan="2">Итого {{ client }}:</td>
-                <td></td>
-                <td></td>
-                <td>{{ total?.amount.toFixed(2) | format }}</td>
-                <td>{{ total?.stavka.toFixed(2) | format }}</td>
-                <td>{{ total?.revenue.toFixed(2) | format }}</td>
-              </tr>
-            </template>
-            <tr class="total_2">
-              <td colspan="3">Итого {{ road }}:</td>
-              <td></td>
-              <td></td>
-              <td>{{ TOTAL_ROAD?.amount.toFixed(2) | format }}</td>
-              <td>{{ TOTAL_ROAD?.stavka.toFixed(2) | format }}</td>
-              <td>{{ TOTAL_ROAD?.revenue.toFixed(2) | format }}</td>
+          <template v-for="(item, client) in dataReport7">
+            <template v-for="road in getNextKey(item)">
+              <template v-for="belong in getNextKey(item[road])">
+                <template v-for="polygon in getNextKey(item[road][belong])">
+            <tr>
+              <td v-if="CheckValue(client)" style="border: none !important;">{{ client }}</td>
+              <td v-if="CheckValue(client)">{{ road }}</td>
+              <td v-if="CheckValue(client)">{{ TransLateBelong(belong) }}</td>
+              <td v-if="CheckValue(client)">{{ polygon == 'null' ? '—' : polygon }}</td>
+              <td v-if="CheckValue(client)">{{ item[road][belong][polygon]['wagon']?.toFixed(2) | format }}</td>
+              <td v-if="CheckValue(client)">{{ item[road][belong][polygon]['revenue']?.toFixed(2) | format }}</td>
             </tr>
+              </template>
+              
+            </template>
+            <tr style="background:#FDFFDA">
+                <td colspan="4" style="font-weight: bold;">Итого {{ client }}</td>
+                <td>{{ item?.wagon?.toFixed(2) | format }}</td>
+                <td>{{ item?.revenue?.toFixed(2) | format }}</td>
+              </tr>
           </template>
         </template>
-        <tr
-          v-for="obj in normalized"
-          :key="obj.id"
-          style="border: 1px solid black"
-          class="all_total"
-        >
-          <td colspan="3">Всего погрузки</td>
-          <td></td>
-          <td></td>
-          <td>{{ obj.total?.amount.toFixed(2) | format }}</td>
-          <td>{{ obj.total?.stavka.toFixed(2) | format }}</td>
-          <td>{{ obj.total?.revenue.toFixed(2) | format }}</td>
-        </tr>
-        </tbody> 
+        <tr style="background:#DDFCCF;">
+                <td colspan="4" style="font-weight: bold;">Всего {{  }}</td>
+                <td>{{ dataReport7?.wagon?.toFixed(2) | format }}</td>
+                <td>{{  dataReport7?.revenue?.toFixed(2) | format }}</td>
+              </tr>
+        </tbody>
+      </table>
 
-
-
-      </table> -->
-    </div>
   </div>
 </template>
   
@@ -148,13 +96,81 @@ export default {
       date_end: "",
       wag_type: "Полувагон",
 
-      dataReport7: "",
+      dataReport7: ""
 
 
 
     };
   },
   methods: {
+    TransLateBelong(val){
+      switch (val) {
+        case "А":
+          return "Арендованный";
+          break;
+          case "АА":
+          return "Арендованный сдан в аренду";
+          break;
+          case "АЛ":
+          return "Арендованный в лизинге";
+          break;
+          case "С":
+          return "Собственный";
+          break;
+          case "СЛ":
+          return "СЛ";
+          break;
+          case "СВ":
+          return "Взят в скрытую аренду";
+          break;
+          case "Ч":
+          return "Чужой";
+          break;
+          case "СА":
+          return "Собственный сдан в аренду";
+          break;
+ 
+          case "ЛА":
+          return "Взят в лизинг сдан в аренду";
+          break;
+
+    }
+  },
+    CheckValue(value) {
+      let client = value;
+      if (
+        client != "wagon" &&
+        client != "penalties" &&
+        client != "expedition" &&
+        client != "tariff_empty" &&
+        client != "tariff_inroad" &&
+        client != "tariff_loaded" &&
+        client != "prepare" &&
+        client != "travel_time" &&
+        client != "income" &&
+        client != "stavka_rub_wagons" &&
+        client != "oborot" &&
+        client != "pps" &&
+        client != "stavka_per_ton" &&
+        client != "weight" &&
+        client != "revenue"
+      ) {
+        return true;
+      }
+    },
+    getNextKey(obj) {
+      const keys = Object.keys(obj);
+      let correctKeys = [];
+      for (let i of keys) {
+        if (i === "wagon" || i === "revenue") {
+          continue;
+        } else {
+          correctKeys.push(i);
+        }
+      }
+      console.log(correctKeys);
+      return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
+    },
     Translate(val) {
       switch (val) {
         case 'amount':
@@ -328,10 +344,10 @@ export default {
     },
 
     Actioned() {
-      if(document.getElementById(`TableReport7${this.id_page}`)){
-        let blockDiv = document.getElementById(`TableReport7${this.id_page}`)
-        blockDiv.innerHTML = ''
-      }
+      // if(document.getElementById(`TableReport7${this.id_page}`)){
+      //   let blockDiv = document.getElementById(`TableReport7${this.id_page}`)
+      //   blockDiv.innerHTML = ''
+      // }
     
       // document.getElementById('FuckingData15').innerHTML = ""
 
@@ -344,7 +360,7 @@ export default {
         .then((response) => {
           this.loader = false;
           this.dataReport7 = response.data;
-          this.OpenChildren(document.getElementById(`TableReport7${this.id_page}`), this.dataReport7)
+          // this.OpenChildren(document.getElementById(`TableReport7${this.id_page}`), this.dataReport7)
 
         })
         .catch((error) => {
@@ -432,97 +448,16 @@ export default {
       return value
     }
   },
-};
+}
 </script>
 
 <style scoped>
-.block-table {
-  position: relative;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 100%;
-  overflow: auto;
+td{
+  white-space: nowrap;
+  padding: 10px; 
+  color: black;
 }
-
-.table_search {
-  width: 50%;
-  max-width: 50% !important;
-}
-
-th {
-  font-size: 12px !important;
-}
-
-.total {
-  background: #fdffd9;
-}
-
-.total_2 {
-  background: #ddface;
-}
-
-tr:hover {
-  background: rgb(236, 236, 236);
-}
-
-td {
-  border: 1px solid black !important;
-  color: black !important;
-  font-size: 13px;
-}
-
-table {
-  width: 50%;
-  max-width: 50% !important;
-  border-collapse: collapse;
-  background: yellow;
-}
-
-table>tbody>tr>td,
-table>tbody>tr>td.inner>div {
-  vertical-align: top;
-  border: 1px solid #ddd;
-}
-
-table>tbody>tr>td.inner {
-  padding: 0;
-  border-right: 0;
-}
-
-table>tbody>tr>td.inner>div {
-  padding: 3px;
-  border-width: 0 0 1px 0;
-}
-
-table>tbody>tr>td.inner>div:last-child {
-  border: 0;
-}
-
-table>tbody>tr>td.inner>table {
-  margin-bottom: 0;
-}
-
-table>tbody>tr>td.inner>table td {
-  border-width: 0 1px 1px 0;
-}
-
-table>tbody>tr>td.inner>table tr:last-child td {
-  border-bottom: 0;
-}
-
-table>tbody>tr>td.inner>div {
-  border-right: 0;
-}
-
-thead>th {
-  border: 1px solid black;
-}
-
-.total_row {
-  background: #ddface;
-}
-
-.total_road {
-  background: greenyellow;
+tr:hover{
+  background: lightcyan;
 }
 </style>
