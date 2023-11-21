@@ -1,194 +1,311 @@
 <template>
-    <div>
-        <p>Форма 4.9. "Производство по универсальным перевозкам (привлеченный парк)"</p>
-        <div style="overflow: auto;">
-            <table>
-                <thead>
-                    <tr>
-                    <th>Экспедитор</th>
-                    <th>Клиент</th>
-                    <th>Дорога отпр.</th>
-                    <th>Станция отпр.</th>
-                    <th>Дорога назнач.</th>
-                    <th>Станция назнач.</th>
-                    <th>Продукт</th>
-                    <th>Кол-во погр.</th>
-                    <th>Выручка</th>
-                    <th>Штрафы</th>
-
-                    <th>Экспедирование</th>
-                    <th>Тариф порож.</th>
-                    <th>Тариф CT</th>
-                    <th>Тариф груж</th>
-                    <th>Подготовка</th>
-                    <th>Доп. услуги</th>
-                    <th>МД</th>
-                    <th>Удельный МД, руб./ваг.</th>
-
-                </tr>
-                </thead>
-                <tbody >
-                <template v-for="obj in objects[0].data">
-                <tr v-for="subobj, index in obj.attr2" :key="subobj.id">
-                    <!-- <td></td> -->
-                    <td v-if="index == 0" :rowspan="obj.attr2.length" style="text-align: left !important; padding-left: 1% !important;">{{ obj.attr1 }}</td>
-                    <td>{{ subobj.client }}</td>
-                    <td>{{ subobj.road_dep }}</td>
-                    <td>{{ subobj.station_dep }}</td>
-
-                    <td>{{ subobj.road_dest }}</td>
-                    <td>{{ subobj.station_dest }}</td>
-                    <td>{{ subobj.product }}</td>
-
-                    <td>{{ subobj.amount }}</td>
-                    <td>{{ subobj.proceeds }}</td>
-                    <td>{{ subobj.fines }}</td>
-                    
-                    <td>{{ subobj.forwarding }}</td>
-                    <td>{{ subobj.tf_empty }}</td>
-                    <td>{{ subobj.tf_st }}</td>
-
-                          
-                    <td>{{ subobj.tf_laden }}</td>
-                    <td>{{ subobj.preparation }}</td>
-                    <td>{{ subobj.add_service }}</td>
-
-                    <td>{{ subobj.md }}</td>
-                    <td>{{ subobj.spec_md }}</td>
-                </tr>
-                <tr class="total_row" :key="obj.id">
-                    <td style="text-align: left !important; padding-left: 1% !important;">Итого {{ obj.attr1 }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ obj.total.amount }}</td>
-                    <td>{{ obj.total.proceeds }}</td>
-                    <td>{{ obj.total.fines }}</td>
-                    
-                    <td>{{ obj.total.forwarding }}</td>
-                    <td>{{ obj.total.tf_empty }}</td>
-                    <td>{{ obj.total.tf_st }}</td>
-
-                          
-                    <td>{{ obj.total.tf_laden }}</td>
-                    <td>{{ obj.total.preparation }}</td>
-                    <td>{{ obj.total.add_service }}</td>
-
-                    <td>{{ obj.total.md }}</td>
-                    <td>{{ obj.total.spec_md }}</td>
-                </tr>
+  <div>
+    <p>
+      Форма 4.9. "Производство по универсальным перевозкам (привлеченный парк)"
+    </p>
+    <div style="overflow: auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Клиент</th>
+            <th>Дорога отправления</th>
+            <th>Станция отправления</th>
+            <th>Дорога назначения</th>
+            <th>Станция назначения</th>
+            <th>Груз</th>
+            <th>Вагоны</th>
+            <th>Штрафы</th>
+            <th>Экспедирование</th>
+            <th>Тариф порожний</th>
+            <th>Тариф по ин. дорогам</th>
+            <th>Тариф груженый</th>
+            <th>Подготовка</th>
+            <th>ППС</th>
+            <th>Время в пути</th>
+            <th>Доход</th>
+            <th>Выручка</th>
+            <th>Ставка руб за вагон</th>
+            <th>Оборот</th>
+          </tr>
+          <tr style="background: #FFD453;">
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+            <th>D</th>
+            <th>E</th>
+            <th>F</th>
+            <th>G</th>
+            <th>H</th>
+            <th>I</th>
+            <th>J</th>
+            <th>K</th>
+            <th>L</th>
+            <th>M</th>
+            <th>N</th>
+            <th>O</th>
+            <th>P</th>
+            <th>Q</th>
+            <th>R</th>
+            <th>S</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="(item, client) in jsonData">
+            <template v-for="road of getNextKey(item)">
+              <template v-for="station_dest of getNextKey(item[road])">
+                <template
+                  v-for="CountryDep of getNextKey(item[road][station_dest])"
+                >
+                  <template
+                    v-for="StationDep of getNextKey(
+                      item[road][station_dest][CountryDep]
+                    )"
+                  >
+                    <template
+                      v-for="Cargo of getNextKey(
+                        item[road][station_dest][CountryDep][StationDep]
+                      )"
+                    >
+                      <tr>
+                        <td v-if="CheckValue(client)">{{ client }}</td>
+                        <td v-if="CheckValue(client)">{{ road }}</td>
+                        <td v-if="CheckValue(client)">{{ station_dest }}</td>
+                        <td v-if="CheckValue(client)">{{ CountryDep }}</td>
+                        <td v-if="CheckValue(client)">{{ StationDep }}</td>
+                        <td v-if="CheckValue(client)">{{ Cargo }}</td>
+                        <td v-if="CheckValue(client)">
+                          {{ item[road][station_dest][CountryDep][StationDep]?.wagon?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{item[road][station_dest][CountryDep][StationDep]?.penalties?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{item[road][station_dest][CountryDep][StationDep]?.expedition?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{item[road][station_dest][CountryDep][StationDep]?.tariff_empty?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{item[road][station_dest][CountryDep][StationDep]?.tariff_inroad?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{item[road][station_dest][CountryDep][StationDep]?.tariff_loaded?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{item[road][station_dest][CountryDep][StationDep]?.prepare?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{item[road][station_dest][CountryDep][StationDep]?.pps?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{item[road][station_dest][CountryDep][StationDep]?.travel_time?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{item[road][station_dest][CountryDep][StationDep]?.income?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{item[road][station_dest][CountryDep][StationDep]?.revenue?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{ CheckValueMath(item[road][station_dest][CountryDep][StationDep]?.stavka_rub_wagons)?.toFixed(2) | format}}
+                        </td>
+                        <td v-if="CheckValue(client)">
+                          {{ CheckValueMath(item[road][station_dest][CountryDep][StationDep]?.oborot)?.toFixed(2) | format}}
+                        </td>
+                      </tr>
+                    </template>
+                  </template>
                 </template>
-                <tr v-for="obj in objects" :key="obj.id" class="all_total">
-                    <!-- <td></td> -->
-                    <td colspan="3" style="font-weight: bold; text-align: left !important; padding-left: 1% !important;">Всего по погрузке (привлеченный парк)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ obj.ALL_TOTAL.amount }}</td>
-                    <td>{{ obj.ALL_TOTAL.proceeds }}</td>
-                    <td>{{ obj.ALL_TOTAL.fines }}</td>
-                    
-                    <td>{{ obj.ALL_TOTAL.forwarding }}</td>
-                    <td>{{ obj.ALL_TOTAL.tf_empty }}</td>
-                    <td>{{ obj.ALL_TOTAL.tf_st }}</td>
+              </template>
+            </template>
+            <tr style="background:#FDFFDA">
+              <td colspan="6" v-if="CheckValue(client)">Итого {{ client }}</td>
+              <td v-if="CheckValue(client)">{{ item?.wagon?.toFixed(2) }}</td>
+              <td v-if="CheckValue(client)">
+                {{ item?.penalties?.toFixed(2) | format}}
+              </td>
+              <td v-if="CheckValue(client)">
+                {{ item?.expedition?.toFixed(2)| format }}
+              </td>
+              <td v-if="CheckValue(client)">
+                {{ item?.tariff_empty?.toFixed(2) | format}}
+              </td>
+              <td v-if="CheckValue(client)">
+                {{ item?.tariff_inroad?.toFixed(2) | format}}
+              </td>
+              <td v-if="CheckValue(client)">
+                {{ item?.tariff_loaded?.toFixed(2) | format}}
+              </td>
+              <td v-if="CheckValue(client)">{{ item?.prepare?.toFixed(2) | format}}</td>
+              <td v-if="CheckValue(client)">{{ item?.pps?.toFixed(2) | format}}</td>
+              <td v-if="CheckValue(client)">
+                {{ item?.travel_time?.toFixed(2) | format}}
+              </td>
+              <td v-if="CheckValue(client)">{{ item?.income?.toFixed(2) | format}}</td>
+              <td v-if="CheckValue(client)">{{ item?.revenue?.toFixed(2) | format}}</td>
+              <td v-if="CheckValue(client)">
+                {{ CheckValueMath(item?.stavka_rub_wagons)?.toFixed(2) | format }}
+              </td>
+              <td v-if="CheckValue(client)">
+                {{ CheckValueMath(item?.oborot)?.toFixed(2) | format }}
+              </td>
+            </tr>
+          </template>
 
-                          
-                    <td>{{ obj.ALL_TOTAL.tf_laden }}</td>
-                    <td>{{ obj.ALL_TOTAL.preparation }}</td>
-                    <td>{{ obj.ALL_TOTAL.add_service }}</td>
-
-                    <td>{{ obj.ALL_TOTAL.md }}</td>
-                    <td>{{ obj.ALL_TOTAL.spec_md }}</td>
-
-                </tr>
-            </tbody>
-
-            </table>
-        </div>
-
+          <tr style="background:#DDFCCF">
+            <td colspan="6">
+              Всего по погрузке 
+            </td>
+            <td>{{ jsonData.wagon }}</td>
+            <td>{{ jsonData.penalties ?.toFixed(2) | format}}</td>
+            <td>{{ jsonData.expedition?.toFixed(2) | format}}</td>
+            <td>{{jsonData.tariff_empty?.toFixed(2) | format}}</td>
+            <td>{{jsonData.tariff_inroad?.toFixed(2) | format}}</td>
+            <td>{{jsonData.tariff_loaded?.toFixed(2) | format}}</td>
+            <td>{{jsonData.prepare?.toFixed(2) | format}}</td>
+            <td>{{jsonData.pps?.toFixed(2) | format}}</td>
+            <td>{{jsonData.travel_time?.toFixed(2) | format}}</td>
+            <td>{{jsonData.income?.toFixed(2) | format}}</td>
+            <td>{{jsonData.revenue?.toFixed(2) | format}}</td>
+            <td>{{CheckValueMath(jsonData.stavka_rub_wagons)?.toFixed(2) | format}}</td>
+            <td>{{CheckValueMath(jsonData.oborot)?.toFixed(2) | format}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </template>
 
 <script>
-export default {
-    data() {
-        return {
-            objects: [{
-                data: [{
-                    attr1: 'Экспедитор 1',
-                    attr2: [
-                    { client: "Клиент 1", road_dep: 'РЖД', station_dep: 'Биклянь', road_dest: 'КЖД', station_dest: "Астана", product: 'Уголь', amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789',  md: "980", spec_md: '123' },
-                    { client: "Клиент 1", road_dep: 'РЖД', station_dep: 'Биклянь', road_dest: 'КЖД', station_dest: "Астана", product: 'Уголь', amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789',  md: "980", spec_md: '123' },
-                    { client: "Клиент 1", road_dep: 'РЖД', station_dep: 'Биклянь', road_dest: 'КЖД', station_dest: "Астана", product: 'Уголь', amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789',  md: "980", spec_md: '123' },
-                    ],
-                    total: { amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789',  md: "980", spec_md: '123' }
-                },
-                {
-                    attr1: 'Экспедитор 2',
-                    attr2: [{ client: "Клиент 1", road_dep: 'РЖД', station_dep: 'Биклянь', road_dest: 'КЖД', station_dest: "Астана", product: 'Уголь', amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789',  md: "980", spec_md: '123' },
-                    { client: "Клиент 1", road_dep: 'РЖД', station_dep: 'Биклянь', road_dest: 'КЖД', station_dest: "Астана", product: 'Уголь', amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789',  md: "980", spec_md: '123' },
-                    { client: "Клиент 1", road_dep: 'РЖД', station_dep: 'Биклянь', road_dest: 'КЖД', station_dest: "Астана", product: 'Уголь', amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789',  md: "980", spec_md: '123' },
-                    ],
-                    total: { amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789',  md: "980", spec_md: '123' }
-                },
-            ],
-                ALL_TOTAL: {
-                    amount: '1000', proceeds: '2500', fines: '90', forwarding: '11', tf_empty: '123', tf_st: "445", tf_laden: '456', preparation: '12345', add_service: '789',  md: "980", spec_md: '123'
-                }
+import jsonData from "@/components/Table/ManagmentRepReporting/response9.json";
 
-            }]
-        }
+export default {
+  data() {
+    return {
+      jsonData,
+    };
+  },
+  filters: {
+    format(value) {
+      return String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
     },
- 
-    methods: {
-        getRowCount(obj) {
-            let total = 0;
-            let last_item = '';
-            obj.attr1.forEach((item) => {
-                total += item.attr3.length;
-            });
-            return total;
+  },
+  methods: {
+    getNextKey(obj) {
+      const keys = Object.keys(obj);
+      let correctKeys = [];
+      for (let i of keys) {
+        if (
+          i === "expedition" ||
+          i === "income" ||
+          i === "oborot" ||
+          i === "penalties" ||
+          i === "pps" ||
+          i === "prepare" ||
+          i === "revenue" ||
+          i === "stavka_rub_wagons" ||
+          i === "tariff_empty" ||
+          i === "tariff_inroad" ||
+          i === "tariff_loaded" ||
+          i === "travel_time" ||
+          i === "wagon"
+        ) {
+          continue;
+        } else {
+          correctKeys.push(i);
         }
-    }
-}
+      }
+      console.log(correctKeys);
+      return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
+    },
+
+    CheckValueMath(value) {
+      console.log(value);
+      let sumMean = 0
+      for(let i of value){
+        sumMean += i
+      }
+      return sumMean/value.length.toFixed(2)
+    },
+    CheckValueAMOUNT(val) {
+      let client = val;
+      if (
+        client == "wagon" ||
+        client == "penalties" ||
+        client == "expedition" ||
+        client == "tariff_empty" ||
+        client == "tariff_inroad" ||
+        client == "tariff_loaded" ||
+        client == "prepare" ||
+        client == "travel_time" ||
+        client == "income" ||
+        client == "stavka_rub_wagons" ||
+        client == "oborot" ||
+        client == "pps" ||
+        client == "stavka_per_ton" ||
+        client == "weight" ||
+        client == "revenue"
+      ) {
+        return true;
+      }
+    },
+    CheckValue(value) {
+      let client = value;
+      if (
+        client != "wagon" &&
+        client != "penalties" &&
+        client != "expedition" &&
+        client != "tariff_empty" &&
+        client != "tariff_inroad" &&
+        client != "tariff_loaded" &&
+        client != "prepare" &&
+        client != "travel_time" &&
+        client != "income" &&
+        client != "stavka_rub_wagons" &&
+        client != "oborot" &&
+        client != "pps" &&
+        client != "stavka_per_ton" &&
+        client != "weight" &&
+        client != "revenue"
+      ) {
+        return true;
+      }
+    },
+  },
+};
 </script>
 
 
 <style scoped>
-
-.total{
-  background: #FDFFD9;
+.total {
+  background: #fdffd9;
 }
-.total_2{
-  background: #DDFACE;
+.total_2 {
+  background: #ddface;
 }
-tr:hover{
+tr:hover {
   background: rgb(236, 236, 236);
 }
-.itogo{
-    font-weight: bold;
-    border-right: none !important;
-
+.itogo {
+  font-weight: bold;
+  border-right: none !important;
 }
 .all_total {
-    background: #EAF1DD;
+  background: #eaf1dd;
 }
 /* .last:nth-last-of-type(3n) {
    border-bottom: 2px solid rgb(0, 0, 0) !important
 } */
 .total_row {
-    background: #DAEEF3;
+  background: #daeef3;
 }
-td, th {
+td,
+th {
   border: 1px solid rgb(102, 102, 102) !important;
   color: black !important;
 }
 .all_total {
-    background: #EAF1DD;
+  background: #eaf1dd;
 }
 table {
   width: 100%;
@@ -218,7 +335,7 @@ table > tbody > tr > td.inner > table td {
 }
 table > tbody > tr > td.inner > table tr:last-child td {
   border-bottom: 0;
-} 
+}
 
 table > tbody > tr > td.inner > div {
   border-right: 0;
