@@ -300,13 +300,13 @@ td {
   width: 250px;
   height: 20px;
   vertical-align: middle;
-  padding: 0 !important;
+  /* padding: 0 !important; */
   vertical-align: middle !important;
   align-items: center;
   justify-content: center;
   text-align: center !important;
   cursor: pointer !important;
-  color: #757575 !important;
+  color: #1f1f1f !important;
   z-index: 0 !important;
 }
 

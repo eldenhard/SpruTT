@@ -1,0 +1,37 @@
+
+td,th{
+    white-space: nowrap;
+   
+}
+tr:hover{
+    background: lightcyan;
+}
+.TableHeader{
+    position: sticky;
+    top: 0;
+    background: rgb(235, 235, 235);
+    border: 1px solid black;
+    margin-top: -1px;
+}
+.ClientRow{
+    font-weight: 600;
+    background: rgb(221, 238, 238);
+}
+.RowAlphabet{
+    background: #FFD453;
+}
+.Total_1{
+    background: #FDFFD9;
+}
+.Total_1 td{
+    font-weight: 400;
+}
+.Total_2{
+    background: #DDFACE;
+}
+.Total_2 td{
+    font-weight: 500;
+}
+.GrandTotal{
+    background:#a9ada6;
+}

@@ -7,17 +7,173 @@
 
     </Periods>
     <br>
-    <div :id="'TableReport8'+id_page"></div>
+    <div style="overflow: auto; max-height: 65vh;" >
+    <table style="margin: 0 auto;" >
+        <thead>
+          <tr class="TableHeader">
+            <!-- <th>Клиент</th> -->
+            <th>Полигон </th>
+            <th>Дорога отправления</th>
+            <th>Станция отправления</th>
+            <th>Дорога назначения</th>
+            <th>Станция назначения</th>
+            <th>Груз</th>
+            <th>Вагоны</th>
+            <th>Доход</th>
+            <th>Штрафы</th>
+            <th>Экспедирование</th>
+            <th>Тариф порожний</th>
+            <th>Тариф иногородний??</th>
+            <th>Тариф груженый</th>
+            <th>Подготовка</th>
+            <th>ППС</th>
+            <th>Время в пути</th>
+            <th>Прибыль</th>
+            <th>Ставка руб за вагон</th>
+            <th>Оборот</th>
+          </tr>
+          <tr class="RowAlphabet ">
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+            <th>D</th>
+            <th>E</th>
+            <th>F</th>
+            <th>G</th>
+            <th>H</th>
+            <th>I</th>
+            <th>J</th>
+            <th>K</th>
+            <th>L</th>
+            <th>M</th>
+            <th>N</th>
+            <th>O</th>
+            <th>P</th>
+            <th>Q</th>
+            <th>R</th>
+            <th>S</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="(item, client) in jsonData">
+            <td class="ClientRow" v-if="CheckValue(client)" colspan="6">{{ client }}</td>
+            <td class="ClientRow" v-if="CheckValue(client)" colspan="6">{{ client }}</td>
+            <td class="ClientRow" v-if="CheckValue(client)" colspan="7">{{ client }}</td>
+            <template v-for="polygon in getNextKey(item)">
+          
+              <!-- <td v-if="CheckValue(client)" colspan="6" style="font-weight: bold; background: rgb(221, 238, 238);">{{ client }}</td> -->
+              <template v-for="roadDeparture in getNextKey(item[polygon])">
+                <template v-for="stationDeparture in getNextKey(item[polygon][roadDeparture])">
+                  <template v-for="roadDestination in getNextKey(item[polygon][roadDeparture][stationDeparture])">
+                    <template v-for="stationdDestination in getNextKey(item[polygon][roadDeparture][stationDeparture][roadDestination])">
+                      <template v-for="cargo in getNextKey(item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination])">
+                        <tr>
+                        
+                          <td v-if="CheckValue(client)">{{ polygon == 'null' ? 'Не определено' : polygon }}</td>
+                          <td v-if="CheckValue(client)">{{ roadDeparture }}</td>
+                          <td v-if="CheckValue(client)">{{ stationDeparture }}</td>
+                          <td v-if="CheckValue(client)">{{ roadDestination }}</td>
+                          <td v-if="CheckValue(client)">{{ stationdDestination }}</td>
+                          <td v-if="CheckValue(client)">{{ cargo }}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['wagon']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['revenue']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['penalties']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['expedition']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['tariff_empty']?.toFixed(2)| format }}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['tariff_inroad']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['tariff_loaded']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['prepare']?.toFixed(2) | format }}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['pps']?.toFixed(2)| format }}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['travel_time']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['income']?.toFixed(2)| format }}</td>
+                          <td v-if="CheckValue(client)">{{ AverageValue(item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['stavka_rub_wagons'])?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ AverageValue(item[polygon][roadDeparture][stationDeparture][roadDestination][stationdDestination][cargo]['oborot'])?.toFixed(2) | format}}</td>
+
+                        </tr>
+                      </template>
+                  
+                    </template>
+                </template>
+           
+              </template>
+              <!-- Полигоны -->
+                    <tr class="Total_1">
+                          <td v-if="CheckValue(client)" colspan="6">Итого: {{ polygon == 'null' ? 'Не определено' : polygon }}</td>
+                           <td v-if="CheckValue(client)">{{ item[polygon]['wagon']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon]['revenue']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon]['penalties']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon]['expedition']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon]['tariff_empty']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon]['tariff_inroad']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon]['tariff_loaded']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon]['prepare']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon]['pps']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon]['travel_time']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item[polygon]['income']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ AverageValue(item[polygon]['stavka_rub_wagons'])?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ AverageValue(item[polygon]['oborot'])?.toFixed(2) | format}}</td>
+                    </tr>
+              
+
+            </template>
+          
+
+          </template>
+            <!-- Итого по клиенту -->
+            <tr class="Total_2">
+                  <td v-if="CheckValue(client)" colspan="6">Итого: {{client }}</td>
+                  <td v-if="CheckValue(client)">{{ item['wagon']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item['revenue']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item['penalties']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item['expedition']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item['tariff_empty']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item['tariff_inroad']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item['tariff_loaded']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item['prepare']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item['pps']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item['travel_time']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ item['income']?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ AverageValue(item['stavka_rub_wagons'])?.toFixed(2) | format}}</td>
+                          <td v-if="CheckValue(client)">{{ AverageValue(item['oborot'])?.toFixed(2) | format}}</td>
+                </tr>
+        </template>
+        <tr class="GrandTotal">
+                  <td v-if="CheckValue(client)" colspan="6">Общий итог: </td>
+                  <td v-if="CheckValue(client)">{{ jsonData['wagon']?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ jsonData['revenue']?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ jsonData['penalties']?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ jsonData['expedition']?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ jsonData['tariff_empty']?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ jsonData['tariff_inroad']?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ jsonData['tariff_loaded']?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ jsonData['prepare']?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ jsonData['pps']?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ jsonData['travel_time']?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ jsonData['income']?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ AverageValue(jsonData['stavka_rub_wagons'])?.toFixed(2) | format}}</td>
+                  <td v-if="CheckValue(client)">{{ AverageValue(jsonData['oborot'])?.toFixed(2) | format}}</td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
+<style scoped>
+@import '../../../style/UOTableStyle.css';
+
+</style>
+
 <script>
+
 import api from "@/api/reportUO";
 import Periods from "./Periods.vue";
 import Loader from "@/components/loader/loader.vue";
 import jsonData from '@/components/Table/ManagmentRepReporting/f8.json';
+import AverageValue from '@/mixins/AverageValue'
 export default {
   components: { Periods, Loader },
+  mixins: [AverageValue],
   data() {
     return {
       id_page: new Date(),
@@ -28,26 +184,109 @@ export default {
       date_end: "",
     }
   },
-  mounted() {
-    console.log(this.jsonData)
+  filters: {
+    format(value) {
+      return String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+    },
   },
   updated() {
     this.processTables();
   },
   methods: {
-    Actioned() {
-      if(document.getElementById(`TableReport8${this.id_page}`)){
-        let blockDiv = document.getElementById(`TableReport8${this.id_page}`)
-        blockDiv.innerHTML = ''
+    TransLateBelong(val){
+      switch (val) {
+        case "А":
+          return "Арендованный";
+          break;
+          case "АА":
+          return "Арендованный сдан в аренду";
+          break;
+          case "АЛ":
+          return "Арендованный в лизинге";
+          break;
+          case "С":
+          return "Собственный";
+          break;
+          case "СЛ":
+          return "СЛ";
+          break;
+          case "СВ":
+          return "Взят в скрытую аренду";
+          break;
+          case "Ч":
+          return "Чужой";
+          break;
+          case "СА":
+          return "Собственный сдан в аренду";
+          break;
+ 
+          case "ЛА":
+          return "Взят в лизинг сдан в аренду";
+          break;
+
+    }
+  },
+    CheckValue(value) {
+      let client = value;
+      if (
+        client != "wagon" &&
+        client != "penalties" &&
+        client != "expedition" &&
+        client != "tariff_empty" &&
+        client != "tariff_inroad" &&
+        client != "tariff_loaded" &&
+        client != "prepare" &&
+        client != "travel_time" &&
+        client != "income" &&
+        client != "stavka_rub_wagons" &&
+        client != "oborot" &&
+        client != "pps" &&
+        client != "stavka_per_ton" &&
+        client != "weight" &&
+        client != "revenue"
+      ) {
+        return true;
       }
+    },
+    getNextKey(obj) {
+      const keys = Object.keys(obj);
+      let correctKeys = [];
+      for (let i of keys) {
+        if ( i == "wagon" ||
+        i == "penalties" ||
+        i == "expedition" ||
+        i == "tariff_empty" ||
+        i == "tariff_inroad" ||
+        i == "tariff_loaded" ||
+        i == "prepare" ||
+        i == "travel_time" ||
+        i == "income" ||
+        i == "stavka_rub_wagons" ||
+        i == "oborot" ||
+        i == "pps" ||
+        i == "stavka_per_ton" ||
+        i == "weight" ||
+        i == "revenue") {
+          continue;
+        } else {
+          correctKeys.push(i);
+        }
+      }
+      return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
+    },
+    Actioned() {
+      // if(document.getElementById(`TableReport8${this.id_page}`)){
+      //   let blockDiv = document.getElementById(`TableReport8${this.id_page}`)
+      //   blockDiv.innerHTML = ''
+      // }
       // this.loader = true;
       // api
       //   .getUO48(this.date_begin, this.date_end, this.wag_type)
       //   .then((response) => {
       //     this.loader = false;
       //     this.dataReport8 = response.data;
-      document.getElementById(`TableReport8${this.id_page}`).innerHTML = ""
-        this.OpenChildren(document.getElementById(`TableReport8${this.id_page}`), this.jsonData)
+      // document.getElementById(`TableReport8${this.id_page}`).innerHTML = ""
+        // this.OpenChildren(document.getElementById(`TableReport8${this.id_page}`), this.jsonData)
 
         // })
         // .catch((error) => {
@@ -279,88 +518,3 @@ export default {
 }
 </script>
 
-<style scoped>
-.total {
-  background: #FDFFD9;
-}
-
-.total_2 {
-  background: #DDFACE;
-}
-
-tr:hover {
-  background: rgb(236, 236, 236);
-}
-
-.itogo {
-  font-weight: bold;
-  border-right: none !important;
-
-}
-
-.all_total {
-  background: #EAF1DD;
-}
-
-/* .last:nth-last-of-type(3n) {
-   border-bottom: 2px solid rgb(0, 0, 0) !important
-} */
-.total_row {
-  background: #DAEEF3;
-}
-
-td,
-th {
-  border: 1px solid rgb(102, 102, 102) !important;
-  color: black !important;
-}
-
-.all_total {
-  background: #EAF1DD;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table>tbody>tr>td,
-table>tbody>tr>td.inner>div {
-  vertical-align: top;
-  border: 1px solid #ddd;
-}
-
-table>tbody>tr>td.inner {
-  padding: 0;
-  border-right: 0;
-}
-
-table>tbody>tr>td.inner>div {
-  padding: 5px;
-  border-width: 0 0 1px 0;
-}
-
-table>tbody>tr>td.inner>div:last-child {
-  border: 0;
-}
-
-table>tbody>tr>td.inner>table {
-  margin-bottom: 0;
-}
-
-table>tbody>tr>td.inner>table td {
-  border-width: 0 1px 1px 0;
-}
-
-table>tbody>tr>td.inner>table tr:last-child td {
-  border-bottom: 0;
-}
-
-table>tbody>tr>td.inner>div {
-  border-right: 0;
-}
-
-thead>th {
-  border: 1px solid black;
-}
-</style>

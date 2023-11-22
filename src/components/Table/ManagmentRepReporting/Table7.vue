@@ -22,10 +22,10 @@
 
     <p>Форма 4.7. "Анализ перевозки и выручки по сегменту полувагонов"</p>
     <!-- <div :id="'TableReport7'+id_page" ></div> -->
-    <table>
+    <table style="margin: 0 auto;">
         <thead>
-          <tr>
-            <th>Клиент</th>
+          <tr class="stickyBlock">
+            <!-- <th>Клиент</th> -->
             <th>Дорога </th>
             <th>Принадлежность</th>
             <th>Полигон</th>
@@ -39,17 +39,19 @@
             <th>C</th>
             <th>D</th>
             <th>E</th>
-            <th>F</th>
+            <!-- <th>F</th> -->
             
           </tr>
         </thead>
         <tbody>
           <template v-for="(item, client) in dataReport7">
             <template v-for="road in getNextKey(item)">
+            
+              <td v-if="CheckValue(client)" colspan="6" style="font-weight: bold; background: rgb(221, 238, 238);">{{ client }}</td>
               <template v-for="belong in getNextKey(item[road])">
                 <template v-for="polygon in getNextKey(item[road][belong])">
-            <tr>
-              <td v-if="CheckValue(client)" style="border: none !important;">{{ client }}</td>
+           
+               <tr>
               <td v-if="CheckValue(client)">{{ road }}</td>
               <td v-if="CheckValue(client)">{{ TransLateBelong(belong) }}</td>
               <td v-if="CheckValue(client)">{{ polygon == 'null' ? '—' : polygon }}</td>
@@ -57,17 +59,21 @@
               <td v-if="CheckValue(client)">{{ item[road][belong][polygon]['revenue']?.toFixed(2) | format }}</td>
             </tr>
               </template>
-              
+              <tr style="background:#FDFFDA" >
+                <td colspan="3" style="font-weight: bold;">Итого {{ TransLateBelong(belong) }}</td>
+                <td>{{item[road][belong]['wagon']?.toFixed(2) | format }}</td>
+                <td>{{item[road][belong]['revenue']?.toFixed(2) | format }}</td>
+              </tr>
             </template>
-            <tr style="background:#FDFFDA">
-                <td colspan="4" style="font-weight: bold;">Итого {{ client }}</td>
+            <tr style="background:#DDFCCF" >
+                <td colspan="3" style="font-weight: bold;">Итого {{ client }}</td>
                 <td>{{ item?.wagon?.toFixed(2) | format }}</td>
                 <td>{{ item?.revenue?.toFixed(2) | format }}</td>
               </tr>
           </template>
         </template>
-        <tr style="background:#DDFCCF;">
-                <td colspan="4" style="font-weight: bold;">Всего {{  }}</td>
+        <tr style="background:#a9ada6; ">
+                <td colspan="3" style="font-weight: bold; color: white !important; ">Всего {{  }}</td>
                 <td>{{ dataReport7?.wagon?.toFixed(2) | format }}</td>
                 <td>{{  dataReport7?.revenue?.toFixed(2) | format }}</td>
               </tr>
@@ -452,6 +458,15 @@ export default {
 </script>
 
 <style scoped>
+
+.stickyBlock{
+  position: sticky;
+  top:0;
+}
+.stickyBlock th{
+  background: rgb(240, 240, 240);
+  border: 1px solid black;
+}
 td{
   white-space: nowrap;
   padding: 10px; 

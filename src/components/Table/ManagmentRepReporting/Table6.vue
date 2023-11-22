@@ -28,19 +28,25 @@
 
 
         <tbody>
-    
+       
           <template v-for="(valueClient, client) in dataReport6">
             <tr :key="valueClient.id">
-            
-              <td
-                v-if="
-                  client !== 'stavka_per_ton' &&
-                  client !== 'weight' &&
-                  client !== 'revenue'">
-                {{ client }}
-              </td>
+              <tr style="background: #F0F0F0">
+                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Дорога отправления</th>
+                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Дорога назначения</th>
+                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Принадлежность</th>
+                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Груз</th>
+                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Вес</th>
+                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Ставка за тонну</th>
+                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Выручка</th>
+              </tr>
+             
+              <!-- <td  v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">{{ client }}</td> -->
+
               <template v-for="road in getNextKey(dataReport6[client])">
-                <tr>
+                <!-- <td  v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">{{ client }}</td> -->
+
+                <!-- <tr>
                         <th>Дорога отправления</th>
                         <th>Дорога назначения</th>
                         <th>Принадлежность</th>
@@ -48,11 +54,18 @@
                         <th>Вес</th>
                         <th>Ставка за тонну</th>
                         <th>Выручка</th>
-                      </tr>
-                <template v-for="clientRoad in getNextKey(dataReport6[client][road])">
+                      </tr> -->
+                      <tr>
+                      <td  v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'" colspan="7"
+                      style="font-weight: bold; background: rgb(221, 238, 238);">{{ client }}</td>
+                  </tr>
+                      <template v-for="clientRoad in getNextKey(dataReport6[client][road])">
+                 
                   <template v-for="clientRoadRoad in getNextKey(dataReport6[client][road][clientRoad])">
+                 
                     <template  v-for="cargo in getNextKey(dataReport6[client][road][clientRoad][clientRoadRoad])">
-                     
+                    
+
                       <tr :key="road.id">
                         <td>{{ road }}</td>
                         <td>{{ clientRoadRoad }}</td>
@@ -66,20 +79,19 @@
                     </template>
                    
                   </template>
-                  <tr >
-                    <td  colspan="2"></td>
-                   
-                  <td style="background:#FDFFDA" colspan="2">ИТОГО {{ TransLateBelong(clientRoad) }}</td>
-                  <td style="background:#FDFFDA">{{ dataReport6[client][road][clientRoad]['weight']?.toFixed(2) | format}}</td>
-                  <td style="background:#FDFFDA">{{ dataReport6[client][road][clientRoad]['stavka_per_ton']?.toFixed(2) | format}}</td>
-                  <td style="background:#FDFFDA">{{ dataReport6[client][road][clientRoad]['revenue']?.toFixed(2) | format}}</td>
+                  <tr style="background:#FDFFDA">
+
+                  <td  colspan="4">ИТОГО {{ TransLateBelong(clientRoad) }}</td>
+                  <td  style="font-weight: 500;">{{ dataReport6[client][road][clientRoad]['weight']?.toFixed(2) | format}}</td>
+                  <td  style="font-weight: 500;">{{ dataReport6[client][road][clientRoad]['stavka_per_ton']?.toFixed(2) | format}}</td>
+                  <td  style="font-weight: 500;">{{ dataReport6[client][road][clientRoad]['revenue']?.toFixed(2) | format}}</td>
                 </tr>
                 </template>
                 <tr style="background: #DDFCCF">
                   <td colspan="4">ИТОГО {{ road }}</td>
-                  <td>{{ dataReport6[client][road]['weight']?.toFixed(2) | format}}</td>
-                  <td>{{ dataReport6[client][road]['stavka_per_ton']?.toFixed(2) | format}}</td>
-                  <td>{{ dataReport6[client][road]['revenue']?.toFixed(2) | format}}</td>
+                  <td style="font-weight: 700;">{{ dataReport6[client][road]['weight']?.toFixed(2) | format}}</td>
+                  <td  style="font-weight: 00;">{{ dataReport6[client][road]['stavka_per_ton']?.toFixed(2) | format}}</td>
+                  <td  style="font-weight: 700;">{{ dataReport6[client][road]['revenue']?.toFixed(2) | format}}</td>
                 </tr>
               </template>
            
