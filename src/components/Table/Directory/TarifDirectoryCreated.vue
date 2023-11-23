@@ -241,7 +241,7 @@
                             <!-- Ответственный -->
                             <td>
                                 <div class="inputcontainer">
-                                    <input :value="IdToName(item.responsible_id)" readonly />
+                                    <input :value="item.responsible_name" readonly />
 
                                 </div>
                             </td>
@@ -374,10 +374,10 @@
                                 </td>
                                 <td>
                                     <div class="inputcontainer">
-                                        <input :id="`cargo` + childr.id" type="text" v-model="childr.cargo_id"
+                                        <input :id="`cargo` + childr.id" type="text" v-model="childr.cargo_name"
                                             v-on:keyup.enter="
-                                                submitData(childr.cargo_id, childr.id, 'cargo', 'cargo_load')"
-                                            @contextmenu="getCargoNameByCode(childr.cargo_id)" />
+                                                submitData(childr.cargo_name, childr.id, 'cargo', 'cargo_load')"
+                                             />
                                         <div class="icon-container" :id="`cargo_load` + childr.id" style="display: none">
                                             <i class="loader"></i>
                                         </div>
@@ -386,10 +386,11 @@
                                 <td>
                                     <div class="inputcontainer">
                                         <input :id="`departure_station` + childr.id" type="text"
-                                            v-model="childr.departure_station_id" v-on:keyup.enter="
-                                                submitData(childr.departure_station_id, childr.id, 'departure_station', 'departure_station_load', $event)
+                                            v-model="childr.departure_station_name" v-on:keyup.enter="
+                                                submitData(childr.departure_station_name, childr.id, 'departure_station', 'departure_station_load', $event)
                                                 " 
-                                                 @contextmenu="getStationNameByCode(childr.departure_station_id)"/>
+                                               
+                                                 />
                                         <div class="icon-container" :id="`departure_station_load` + childr.id"
                                             style="display: none">
                                             <i class="loader"></i>
@@ -399,17 +400,18 @@
                                 <td>
                                     <div class="inputcontainer">
                                         <input :id="`destination_station` + childr.id" type="text"
-                                            v-model="childr.destination_station_id" v-on:keyup.enter="
-                                                submitData(childr.destination_station_id, childr.id, 'destination_station', 'destination_station_load', $event)
+                                            v-model="childr.destination_station_name" v-on:keyup.enter="
+                                                submitData(childr.destination_station_name, childr.id, 'destination_station', 'destination_station_load', $event)
                                                 "
-                                                 @contextmenu="getStationNameByCode(childr.destination_station_id)" />
+                                            
+                                                 />
                                         <div class="icon-container" :id="`destination_station_load` + childr.id"
                                             style="display: none">
                                             <i class="loader"></i>
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{ IdToName(childr.responsible_id) }}</td>
+                                <td>{{ childr.responsible_name }}</td>
                             </tr>
                         </template>
                         </details>
@@ -709,10 +711,10 @@ export default {
                             .then(async (codes) => {
                                 for (const code of codes) {
                                     if (code?.departure_station_id !== null) {
-                                        code.departure_station_id = await this.WatchInformationData(code?.departure_station_id);
+                                        code.departure_station_id = code.departure_station_id;
                                     }
                                     if (code?.destination_station_id !== null) {
-                                        code.destination_station_id = await this.WatchInformationData(code?.destination_station_id);
+                                        code.destination_station_id = code.destination_station_id;
                                     }
                                 }
                             });
@@ -765,10 +767,12 @@ export default {
                         this.notifyHead = "Ошибка";
                         this.notifyMessage = 'Станция с таким наименованием не найдена';
                         this.notifyClass = "wrapper-error";
+                        wagon_DOM.classList.remove("error");
                         this.showNotify = true;
                         setTimeout(() => {
                             this.showNotify = false;
                         }, 2500);
+                        return
                     }
                     let findStation = result.data.data.filter((item) => {
                         return item.name.toLowerCase() === operationBuffer.toLowerCase()
@@ -785,7 +789,7 @@ export default {
                     }, 3500);
                 }
          
-            }
+            } 
             let name = frst;
             let data = [];
             data.push({ [name]: element, responsible: this.uid });
