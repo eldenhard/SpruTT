@@ -1,11 +1,5 @@
 
-td,th{
-    white-space: nowrap;
-   
-}
-tr:hover{
-    background: lightcyan;
-}
+
 .TableHeader{
     position: sticky;
     top: 0;

@@ -55,7 +55,7 @@
           </tr>
         </thead>
         <tbody>
-          <template v-for="(item, client) in jsonData">
+          <template v-for="(item, client) in dataReport8">
             <td class="ClientRow" v-if="CheckValue(client)" colspan="6">{{ client }}</td>
             <td class="ClientRow" v-if="CheckValue(client)" colspan="6">{{ client }}</td>
             <td class="ClientRow" v-if="CheckValue(client)" colspan="7">{{ client }}</td>
@@ -138,20 +138,20 @@
                 </tr>
         </template>
         <tr class="GrandTotal">
-                  <td v-if="CheckValue(client)" colspan="6">Общий итог: </td>
-                  <td v-if="CheckValue(client)">{{ jsonData['wagon']?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ jsonData['revenue']?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ jsonData['penalties']?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ jsonData['expedition']?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ jsonData['tariff_empty']?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ jsonData['tariff_inroad']?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ jsonData['tariff_loaded']?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ jsonData['prepare']?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ jsonData['pps']?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ jsonData['travel_time']?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ jsonData['income']?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ AverageValue(jsonData['stavka_rub_wagons'])?.toFixed(2) | format}}</td>
-                  <td v-if="CheckValue(client)">{{ AverageValue(jsonData['oborot'])?.toFixed(2) | format}}</td>
+                  <td colspan="6">Общий итог: </td>
+                  <td>{{ dataReport8['wagon']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport8['revenue']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport8['penalties']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport8['expedition']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport8['tariff_empty']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport8['tariff_inroad']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport8['tariff_loaded']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport8['prepare']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport8['pps']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport8['travel_time']?.toFixed(2) | format}}</td>
+                  <td>{{ dataReport8['income']?.toFixed(2) | format}}</td>
+                  <td>{{ AverageValue(dataReport8['stavka_rub_wagons']) | format}}</td>
+                  <td>{{ AverageValue(dataReport8['oborot']) | format}}</td>
                 </tr>
         </tbody>
       </table>
@@ -161,7 +161,13 @@
 
 <style scoped>
 @import '../../../style/UOTableStyle.css';
-
+td,th{
+    white-space: nowrap;
+   
+}
+tr:hover{
+    background: lightcyan;
+}
 </style>
 
 <script>
@@ -279,20 +285,20 @@ export default {
       //   let blockDiv = document.getElementById(`TableReport8${this.id_page}`)
       //   blockDiv.innerHTML = ''
       // }
-      // this.loader = true;
-      // api
-      //   .getUO48(this.date_begin, this.date_end, this.wag_type)
-      //   .then((response) => {
-      //     this.loader = false;
-      //     this.dataReport8 = response.data;
+      this.loader = true;
+      api
+        .getUO48(this.date_begin, this.date_end, this.wag_type)
+        .then((response) => {
+          this.loader = false;
+          this.dataReport8 = response.data;
       // document.getElementById(`TableReport8${this.id_page}`).innerHTML = ""
-        // this.OpenChildren(document.getElementById(`TableReport8${this.id_page}`), this.jsonData)
+      //   this.OpenChildren(document.getElementById(`TableReport8${this.id_page}`), this.jsonData)
 
-        // })
-        // .catch((error) => {
-        //   console.log(error);
-        //   this.loader = false;
-        // });
+        })
+        .catch((error) => {
+          console.log(error);
+          this.loader = false;
+        });
     },
     getCurrentData(data) {
       this.date_begin = data.date_begin;

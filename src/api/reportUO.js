@@ -27,6 +27,9 @@ const getUO47 = (data1, data2, wag_type) => {
 const getUO48 = (data1, data2) => {
    return api.get(`${resource}/uo/48?date_begin=${data1}&date_end=${data2}`)
 }
+const getUO49 = (data1, data2) => {
+   return api.get(`${resource}/uo/49?date_begin=${data1}&date_end=${data2}`)
+}
 const getUO10 = (data1,data2) => {
    return api.get(`${resource}/uo/410?date_begin=${data1}&date_end=${data2}`)
 }
@@ -49,6 +52,7 @@ export default{
     getUO46,
     getUO47,
     getUO48,
+    getUO49,
     getUO10,
     getUO422,
     getUO424,

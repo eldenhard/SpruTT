@@ -158,7 +158,13 @@
 
 <style scoped>
 @import '../../../style/UOTableStyle.css';
-
+td,th{
+    white-space: nowrap;
+   
+}
+tr:hover{
+    background: lightcyan;
+}
 </style>
 <script>
 import Periods from "./Periods.vue";

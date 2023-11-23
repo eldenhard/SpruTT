@@ -500,5 +500,11 @@ export default {
 </script>
 
 <style scoped>
-
+td,th{
+    white-space: nowrap;
+   
+}
+tr:hover{
+    background: lightcyan;
+}
 </style>

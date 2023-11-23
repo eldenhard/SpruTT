@@ -1,12 +1,16 @@
 <template>
   <div>
+    <Loader :loader="loader" />
+
+<Periods @Action="Actioned" @data="getCurrentData" />
+
     <p>
       Форма 4.9. "Производство по универсальным перевозкам (привлеченный парк)"
     </p>
     <div style="overflow: auto">
       <table>
         <thead>
-          <tr>
+          <tr  class="TableHeader">
             <th>Клиент</th>
             <th>Дорога отправления</th>
             <th>Станция отправления</th>
@@ -50,7 +54,7 @@
           </tr>
         </thead>
         <tbody>
-          <template v-for="(item, client) in jsonData">
+          <template v-for="(item, client) in data">
             <template v-for="road of getNextKey(item)">
               <template v-for="station_dest of getNextKey(item[road])">
                 <template v-for="CountryDep of getNextKey(item[road][station_dest])">
@@ -105,10 +109,10 @@
                           {{item[road][station_dest][CountryDep][StationDep]?.revenue?.toFixed(2) | format}}
                         </td>
                         <td v-if="CheckValue(client)">
-                          {{ CheckValueMath(item[road][station_dest][CountryDep][StationDep]?.stavka_rub_wagons)?.toFixed(2) | format}}
+                          {{ AverageValue(item[road][station_dest][CountryDep][StationDep]?.stavka_rub_wagons)?.toFixed(2) | format}}
                         </td>
                         <td v-if="CheckValue(client)">
-                          {{ CheckValueMath(item[road][station_dest][CountryDep][StationDep]?.oborot)?.toFixed(2) | format}}
+                          {{ AverageValue(item[road][station_dest][CountryDep][StationDep]?.oborot)?.toFixed(2) | format}}
                         </td>
                       </tr>
                     </template>
@@ -116,7 +120,7 @@
                 </template>
               </template>
             </template>
-            <tr style="background:#FDFFDA">
+            <tr class="Total_1">
               <td colspan="6" v-if="CheckValue(client)">Итого {{ client }}</td>
               <td v-if="CheckValue(client)">{{ item?.wagon?.toFixed(2) }}</td>
               <td v-if="CheckValue(client)">
@@ -142,31 +146,31 @@
               <td v-if="CheckValue(client)">{{ item?.income?.toFixed(2) | format}}</td>
               <td v-if="CheckValue(client)">{{ item?.revenue?.toFixed(2) | format}}</td>
               <td v-if="CheckValue(client)">
-                {{ CheckValueMath(item?.stavka_rub_wagons)?.toFixed(2) | format }}
+                {{ AverageValue(item?.stavka_rub_wagons)?.toFixed(2) | format }}
               </td>
               <td v-if="CheckValue(client)">
-                {{ CheckValueMath(item?.oborot)?.toFixed(2) | format }}
+                {{ AverageValue(item?.oborot)?.toFixed(2) | format }}
               </td>
             </tr>
           </template>
 
-          <tr style="background:#DDFCCF">
+          <tr class="Total_2">
             <td colspan="6">
               Всего по погрузке 
             </td>
-            <td>{{ jsonData.wagon }}</td>
-            <td>{{ jsonData.penalties ?.toFixed(2) | format}}</td>
-            <td>{{ jsonData.expedition?.toFixed(2) | format}}</td>
-            <td>{{jsonData.tariff_empty?.toFixed(2) | format}}</td>
-            <td>{{jsonData.tariff_inroad?.toFixed(2) | format}}</td>
-            <td>{{jsonData.tariff_loaded?.toFixed(2) | format}}</td>
-            <td>{{jsonData.prepare?.toFixed(2) | format}}</td>
-            <td>{{jsonData.pps?.toFixed(2) | format}}</td>
-            <td>{{jsonData.travel_time?.toFixed(2) | format}}</td>
-            <td>{{jsonData.income?.toFixed(2) | format}}</td>
-            <td>{{jsonData.revenue?.toFixed(2) | format}}</td>
-            <td>{{CheckValueMath(jsonData.stavka_rub_wagons)?.toFixed(2) | format}}</td>
-            <td>{{CheckValueMath(jsonData.oborot)?.toFixed(2) | format}}</td>
+            <td>{{ data.wagon }}</td>
+            <td>{{ data.penalties ?.toFixed(2) | format}}</td>
+            <td>{{ data.expedition?.toFixed(2) | format}}</td>
+            <td>{{data.tariff_empty?.toFixed(2) | format}}</td>
+            <td>{{data.tariff_inroad?.toFixed(2) | format}}</td>
+            <td>{{data.tariff_loaded?.toFixed(2) | format}}</td>
+            <td>{{data.prepare?.toFixed(2) | format}}</td>
+            <td>{{data.pps?.toFixed(2) | format}}</td>
+            <td>{{data.travel_time?.toFixed(2) | format}}</td>
+            <td>{{data.income?.toFixed(2) | format}}</td>
+            <td>{{data.revenue?.toFixed(2) | format}}</td>
+            <td>{{AverageValue(data.stavka_rub_wagons) | format}}</td>
+            <td>{{AverageValue(data.oborot)| format}}</td>
           </tr>
         </tbody>
       </table>
@@ -176,19 +180,53 @@
 
 <script>
 import jsonData from "@/components/Table/ManagmentRepReporting/response9.json";
+import Periods from "./Periods.vue";
+import api from "@/api/reportUO"
+import Notifications from "@/components/notifications/Notifications.vue";
+import Loader from "@/components/loader/loader.vue";
+import AverageValue from '@/mixins/AverageValue'
 
 export default {
-  data() {
-    return {
-      jsonData,
-    };
-  },
+
+  components: { Periods, Notifications, Loader },
+    mixins: [AverageValue],
+
+    data() {
+        return {
+          data: "",
+            loader: false,
+            wag_type: "",
+            date_begin: "",
+            date_end: "",
+          
+
+        }
+    },
   filters: {
     format(value) {
       return String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
     },
   },
   methods: {
+    Actioned() {
+
+this.loader = true;
+api
+    .getUO49(this.date_begin, this.date_end)
+    .then((response) => {
+        this.loader = false;
+        this.data = response.data;
+
+    })
+    .catch((error) => {
+        console.log(error);
+        this.loader = false;
+    });
+},
+getCurrentData(data) {
+this.date_begin = data.date_begin;
+this.date_end = data.date_end;
+},
     getNextKey(obj) {
       const keys = Object.keys(obj);
       let correctKeys = [];
@@ -217,14 +255,6 @@ export default {
       return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
     },
 
-    CheckValueMath(value) {
-      console.log(value);
-      let sumMean = 0
-      for(let i of value){
-        sumMean += i
-      }
-      return sumMean/value.length.toFixed(2)
-    },
     CheckValueAMOUNT(val) {
       let client = val;
       if (
@@ -275,70 +305,12 @@ export default {
 
 
 <style scoped>
-.total {
-  background: #fdffd9;
+@import '../../../style/UOTableStyle.css';
+td,th{
+    white-space: nowrap;
+   
 }
-.total_2 {
-  background: #ddface;
-}
-tr:hover {
-  background: rgb(236, 236, 236);
-}
-.itogo {
-  font-weight: bold;
-  border-right: none !important;
-}
-.all_total {
-  background: #eaf1dd;
-}
-/* .last:nth-last-of-type(3n) {
-   border-bottom: 2px solid rgb(0, 0, 0) !important
-} */
-.total_row {
-  background: #daeef3;
-}
-td,
-th {
-  border: 1px solid rgb(102, 102, 102) !important;
-  color: black !important;
-}
-.all_total {
-  background: #eaf1dd;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-table > tbody > tr > td,
-table > tbody > tr > td.inner > div {
-  vertical-align: top;
-  border: 1px solid #ddd;
-}
-table > tbody > tr > td.inner {
-  padding: 0;
-  border-right: 0;
-}
-table > tbody > tr > td.inner > div {
-  padding: 5px;
-  border-width: 0 0 1px 0;
-}
-table > tbody > tr > td.inner > div:last-child {
-  border: 0;
-}
-table > tbody > tr > td.inner > table {
-  margin-bottom: 0;
-}
-table > tbody > tr > td.inner > table td {
-  border-width: 0 1px 1px 0;
-}
-table > tbody > tr > td.inner > table tr:last-child td {
-  border-bottom: 0;
-}
-
-table > tbody > tr > td.inner > div {
-  border-right: 0;
-}
-thead > th {
-  border: 1px solid black;
+tr:hover{
+    background: lightcyan;
 }
 </style>
