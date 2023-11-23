@@ -25,8 +25,8 @@ export default {
     props: ['func1'],
   data() {
     return {
-      date_begin: "2023-01-01",
-      date_end: "2023-01-31",
+      date_begin: "",
+      date_end: "",
       is_error_start: false,
       is_error_end: false,
     };

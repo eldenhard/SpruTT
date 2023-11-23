@@ -13,7 +13,7 @@
             <div class="hello" ref="chartdiv"></div>
             <div>
                 
-                <div class="filters_key_facts">
+                <div class="filters_key_facts" style="border: 1px solid rgb(224, 224, 224)black">
                    
                     <label for="">Тип вагона <br>
                         <select name="" id="" v-model="wagon_type" class="textarea">
@@ -29,7 +29,7 @@
                     </label>
                 </div>
                
-                <div class="chartdiv44"></div>
+                <div class="chartdiv44" style="border: 1px solid rgb(224, 224, 224)"></div>
 
             </div>
         </div>

@@ -98,7 +98,7 @@
               </template>
               <!-- Полигоны -->
                     <tr class="Total_1">
-                          <td v-if="CheckValue(client)" colspan="6">Итого: {{ polygon == 'null' ? 'Не определено' : polygon }}</td>
+                          <td v-if="CheckValue(client)" colspan="6" >Итого: {{ polygon == 'null' ? 'Не определено' : polygon }}</td>
                            <td v-if="CheckValue(client)">{{ item[polygon]['wagon']?.toFixed(2) | format}}</td>
                           <td v-if="CheckValue(client)">{{ item[polygon]['revenue']?.toFixed(2) | format}}</td>
                           <td v-if="CheckValue(client)">{{ item[polygon]['penalties']?.toFixed(2) | format}}</td>

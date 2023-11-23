@@ -33,5 +33,11 @@ tr:hover{
     font-weight: 500;
 }
 .GrandTotal{
-    background:#a9ada6;
+    background:#dfdfdf;
+}
+.GrandTotal td{
+    font-weight: 700;
+}
+.active_row{
+    background: rgb(226, 226, 226);
 }

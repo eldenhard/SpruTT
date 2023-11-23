@@ -27,6 +27,9 @@ const getUO47 = (data1, data2, wag_type) => {
 const getUO48 = (data1, data2) => {
    return api.get(`${resource}/uo/48?date_begin=${data1}&date_end=${data2}`)
 }
+const getUO10 = (data1,data2) => {
+   return api.get(`${resource}/uo/410?date_begin=${data1}&date_end=${data2}`)
+}
 const getUO422 = (data1, data2, wag_type, wagon_belong) => {
    return api.get(`${resource}/uo/422/repair-expenses?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}&wagon_belong=${wagon_belong}`, {timeout: 600000})
 }
@@ -46,6 +49,7 @@ export default{
     getUO46,
     getUO47,
     getUO48,
+    getUO10,
     getUO422,
     getUO424,
     getUO28,
