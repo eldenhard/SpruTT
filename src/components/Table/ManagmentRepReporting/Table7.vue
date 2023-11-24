@@ -43,7 +43,7 @@
             
           </tr>
         </thead>
-        <tbody>
+        <tbody v-show="Object.keys(dataReport7).length > 0">
           <template v-for="(item, client) in dataReport7">
             <template v-for="road in getNextKey(item)">
             

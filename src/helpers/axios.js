@@ -3,7 +3,7 @@ import axios from "axios";
 import { getItem, setItem } from "@/helpers/persistanseStorage";
 // import { HardStartAutentifications } from '@/views/Authorization'
 let config = {
-    // baseURL: 'http://10.1.5.20/api/'
+    //  baseURL: 'http://10.1.5.20/api/'
     baseURL: '/api/'
 }
 

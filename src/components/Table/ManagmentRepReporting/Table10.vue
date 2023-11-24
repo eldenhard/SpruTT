@@ -51,7 +51,7 @@
                     <th>R</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody v-show="Object.keys(data).length > 0">
               <template v-for="ClientValue, client in data">
                 <td class="ClientRow" v-if="CheckValue(client)" colspan="6">{{ client }}</td>
                 <td class="ClientRow" v-if="CheckValue(client)" colspan="6">{{ client }}</td>

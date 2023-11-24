@@ -54,7 +54,7 @@
             <th>S</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-show="Object.keys(dataReport8).length > 0">
           <template v-for="(item, client) in dataReport8">
             <td class="ClientRow" v-if="CheckValue(client)" colspan="6">{{ client }}</td>
             <td class="ClientRow" v-if="CheckValue(client)" colspan="6">{{ client }}</td>
