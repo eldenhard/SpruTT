@@ -1,265 +1,249 @@
 <template>
     <div>
+        <Loader :loader="loader" />
+      <p class="explanation">* По клику на строку таблицы вы можете дополнительно выделить её цветом, для собственных нужд, <br>
+         для снятия выделения повторно кликните на этот элменет</p>
         <p>Форма 4.14. "Анализ доходности по направлениям по сегменту вагоно-цистерн (собственный парк)"</p>
-        <Periods @Action="Actioned" @data="getCurrentData" style="width: 15% !important;">
-        <div style="display: flex; flex-direction: column;">
+        <Periods @Action="Actioned" @data="getCurrentData" />
+  
+        <br>
+        <div  style="overflow: auto; max-height: 65vh;">
+         
+            <table>
+                <thead>
+                <tr class="TableHeader">
+                  <th>Груз</th>
+                  <th>Станция выгрузки</th>
+                  <th>Объем, тн</th>
+                  <th>МД</th>
+                  <th>Стат. нагрузка тн</th>
+                  <th>Оборот (сут.)</th>
+                  <th>Доходность руб./сут</th>
 
-            <label for="">
-                Тип вагона
-                <br />
-                <select name="" id="" v-model="wag_type">
-                    <option value="ПВ">Полувагон</option>
-                    <option value="ЦС">Цистерна</option>
-                </select>
-            </label>
+                </tr>
+                <tr class="RowAlphabet">
+                    <th v-for="item in getTh" :key="item.id">{{ item.toUpperCase() }}</th>
+                </tr>
+            </thead>
+                <tbody v-show="Object.keys(data).length > 0">
+                     <template v-for="TotalAmount, stationDeparture in data">
+                        <td v-if="CheckValue(stationDeparture)" class="ClientRow" colspan="4">Станция погрузки: {{ stationDeparture }}</td>
+                        <td v-if="CheckValue(stationDeparture)" class="ClientRow" colspan="3">Станция погрузки: {{ stationDeparture }}</td>
+                            <template v-for="cargo in getNextKey(TotalAmount)">
+                                <template v-for="stationDestination in getNextKey(TotalAmount[cargo])">
+                                <tr>
+                                    <td v-if="CheckValue(stationDeparture)" @click="ChangeColorRow($event.target)">{{ cargo }}</td>
+                                    <td v-if="CheckValue(stationDeparture)" @click="ChangeColorRow($event.target)">{{ stationDestination }}</td>
+                                    <td v-if="CheckValue(stationDeparture)" @click="ChangeColorRow($event.target)">{{ TotalAmount[cargo][stationDestination]['weight']?.toFixed(2) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)" @click="ChangeColorRow($event.target)">{{ TotalAmount[cargo][stationDestination]['md']?.toFixed(2) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)" @click="ChangeColorRow($event.target)">{{ AverageValue(TotalAmount[cargo][stationDestination]['stat_load']) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)" @click="ChangeColorRow($event.target)">{{ AverageValue(TotalAmount[cargo][stationDestination]['mean_turnover']) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)" @click="ChangeColorRow($event.target)">{{ AverageValue(TotalAmount[cargo][stationDestination]['income']) | format}}</td>
+                                </tr>
+                                </template>
+                                <tr class="Total_1">
+                                    <td colspan="2" v-if="CheckValue(stationDeparture)">Итого: {{ cargo }}</td>
+                                    <td v-if="CheckValue(stationDeparture)">{{ TotalAmount[cargo]['weight']?.toFixed(2) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)">{{ TotalAmount[cargo]['md']?.toFixed(2) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)">{{ AverageValue(TotalAmount[cargo]['stat_load']) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)">{{ AverageValue(TotalAmount[cargo]['mean_turnover']) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)">{{ AverageValue(TotalAmount[cargo]['income']) | format}}</td>
+                                </tr>
+                            </template>
+                            <tr class="Total_2">
+                                    <td colspan="2" v-if="CheckValue(stationDeparture)">Итого: {{ stationDeparture }}</td>
+                                    <td v-if="CheckValue(stationDeparture)">{{ TotalAmount['weight']?.toFixed(2) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)">{{ TotalAmount['md']?.toFixed(2) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)">{{ AverageValue(TotalAmount['stat_load']) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)">{{ AverageValue(TotalAmount['mean_turnover']) | format}}</td>
+                                    <td v-if="CheckValue(stationDeparture)">{{ AverageValue(TotalAmount['income']) | format}}</td>
+                                </tr>
+                     </template>
+                </tbody>
+            </table>
         </div>
-    </Periods>
-        <div id="FuckingData14"></div>
     </div>
-</template>
-
-<script>
-import Periods from "./Periods.vue";
-import api from "@/api/reportUO"
-import Notifications from "@/components/notifications/Notifications.vue";
-import Loader from "@/components/loader/loader.vue";
-
-export default {
-    components: { Periods,Notifications, Loader },
+  </template>
+  <style scoped>
+  @import '../../../style/UOTableStyle.css';
+  
+  td,
+  th {
+    white-space: nowrap;
+    padding: 0 10px !important;
+  
+  }
+  
+  tr:hover {
+    background: lightcyan;
+  }
+  </style>
+  <script>
+  import Periods from "./Periods.vue";
+  import api from "@/api/reportUO"
+  import Notifications from "@/components/notifications/Notifications.vue";
+  import Loader from "@/components/loader/loader.vue";
+  import AverageValue from '@/mixins/AverageValue'
+  
+  export default {
+    components: { Periods, Notifications, Loader, },
+    mixins: [AverageValue],
     data() {
         return {
+          loader: false,
             wag_type: "",
-            data:
-            {
-                "Станция погрузки 1": {
-                    "amount": 250,
-                    "cost": 1420775.280000001,
-                    "Груз 1": {
-                        "amount": 250,
-                        "cost": 1420775.280000001,
-                        "Станция выгрузки 1": {
-                            'Объем, тн.': 123,
-                            'МД, руб.': 3333333,
-                            ' Стат. нагрузка (тн.)': 10_000,
-                            "Оборот (сут.)": 253,
-                            " Доходность (руб./сут.) груж.  ": 254,
-                           
-                        }
-                    }
-
-                },
-         
-                "Станция погрузки 2": {
-                    "amount": 250,
-                    "cost": 1420775.280000001,
-                    "Груз 1": {
-                        "amount": 250,
-                        "cost": 1420775.280000001,
-                        "Станция выгрузки 1": {
-                            'Объем, тн.': 123,
-                            'МД, руб.': 3333333,
-                            ' Стат. нагрузка (тн.)': 10_000,
-                            "Оборот (сут.)": 253,
-                            " Доходность (руб./сут.) груж.  ": 254,
-                           
-                        }
-                    }
-
-                },
-                "Станция погрузки 3": {
-                    "amount": 250,
-                    "cost": 1420775.280000001,
-                    "Груз 1": {
-                        "amount": 250,
-                        "cost": 1420775.280000001,
-                        "Станция выгрузки 1": {
-                            'Объем, тн.': 123,
-                            'МД, руб.': 3333333,
-                            ' Стат. нагрузка (тн.)': 10_000,
-                            "Оборот (сут.)": 253,
-                            " Доходность (руб./сут.) груж.  ": 254,
-                           
-                        }
-                    }
-
-                },
-                "Станция погрузки 4": {
-                    "amount": 250,
-                    "cost": 1420775.280000001,
-                    "Груз 1": {
-                        "amount": 250,
-                        "cost": 1420775.280000001,
-                        "Станция выгрузки 1": {
-                            'Объем, тн.': 123,
-                            'МД, руб.': 3333333,
-                            ' Стат. нагрузка (тн.)': 10_000,
-                            "Оборот (сут.)": 253,
-                            " Доходность (руб./сут.) груж.  ": 254,
-                           
-                        }
-                    }
-
-                },
-            "amount": 349,
-            "cost": 4504838.459999999,
-
+            alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+            loader: false,
+            data: "",
+           date_begin: "",
+           date_end: "",
         }
+    },
+    mounted() {
+        // this.OpenChildren(document.getElementById('FuckingData11'), this.data)
+    },
+    filters: {
+        format(value) {
+          return String(value).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+        },
+      },
+    computed:{
+        getTh(){
+            return this.alphabet.slice(0, 7)
+        }
+    },
+    methods: {
+      ChangeColorRow(element){
+          if( element.parentNode.classList.contains('active_row')){
+              element.parentNode.classList.remove('active_row')
+          }else {
+              element.parentNode.classList.add('active_row')
+  
+          }
+      },
+        ChangeColorRow(element){
+        if( element.parentNode.classList.contains('active_row')){
+            element.parentNode.classList.remove('active_row')
+        }else {
+            element.parentNode.classList.add('active_row')
+  
+        }
+    },
+    TransLateBelong(val){
+      switch (val) {
+        case "А":
+          return "Арендованный";
+          break;
+          case "АА":
+          return "Арендованный сдан в аренду";
+          break;
+          case "АЛ":
+          return "Арендованный в лизинге";
+          break;
+          case "С":
+          return "Собственный";
+          break;
+          case "СЛ":
+          return "СЛ";
+          break;
+          case "СВ":
+          return "Взят в скрытую аренду";
+          break;
+          case "Ч":
+          return "Чужой";
+          break;
+          case "СА":
+          return "Собственный сдан в аренду";
+          break;
+ 
+          case "ЛА":
+          return "Взят в лизинг сдан в аренду";
+          break;
+
     }
-},
-mounted() {
-   
-},
-methods: {
-    Translate(val) {
-        switch (val) {
-            case 'amount':
-                return 'Количество'
-                break
-            case 'cost':
-                return 'Сумма'
-                break
-            case "product":
-                return 'Продукт'
-                break
-            case "fine":
-                return 'Штраф'
-                break
-            case "":
-                return 'Не определено'
-                break
-            case val:
-                return val
-                break
-
-        }
-    },
-    FilterValue(val) {
-        return String(val).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
-    },
-    TEST(obj) {
-        let arr = []
-        for (let i in obj) {
-
-            arr.push([i, obj[i]])
-        }
-
-        arr.sort(function (a, b) {
-            if (Array.isArray(a[1])) {
-                return 1
+  },
+        CheckValue(value) {
+            let client = value;
+            if (
+                client !=  'weight' &&
+                client !=  'md' &&
+                client != 'stat_load' &&
+                client != "mean_turnover" &&
+                client != "income"
+            ) {
+                return true;
             }
-            if (Array.isArray(b[1])) {
-                return -1
-            }
-            if (Array.isArray(a[1]) && Array.isArray(b[1])) {
-                return 0
-            }
-            if (typeof a[1] < typeof b[1]) {
-                return 1
-            }
-            if (typeof a[1] > typeof b[1]) {
-                return -1
-            }
-            return 0;
-        });
-        return arr
-    },
-    OpenChildren(eventDiv = null, val) {
-        let collapse = "+"
-        let val_copy = this.TEST(val)
-        let hr = null
-        let children = []
-        try {
-            children = eventDiv.target.childNodes
-        }
-        catch (error) {
-            children = eventDiv.childNodes
-        }
-        if (children.length > 1) {
-            while (children.length != 1) {
-                try {
-                    eventDiv.target.removeChild(children[1])
-
-                }
-                catch {
-                    eventDiv.removeChild(children[1])
-
+        },
+        getNextKey(obj) {
+            const keys = Object.keys(obj);
+            let correctKeys = [];
+            for (let i of keys) {
+                if (
+                i ==  'weight'  ||
+                i ==  'md'  ||
+                i == 'stat_load'  ||
+                i == "mean_turnover"  ||
+                i == "income") {
+                    continue;
+                } else {
+                    correctKeys.push(i);
                 }
             }
-        }
-        else {
-            for (let i in val_copy) {
-                let key = val_copy[i][0]
-                let value = val_copy[i][1]
-                let div = document.createElement('div')
-                if (typeof value == 'number' || typeof value == 'string') {
-                    hr = null
-                    let name = this.Translate(key)
-                    let value123 = value
-                    if (typeof value == 'number') {
-                        value123 = this.FilterValue(value?.toFixed(2))
-                    }
-
-                    div.innerHTML = `${name}: ${value123}`
-                    div.style = 'margin-left: 8% !important; font-weight: 500; color: black; padding: 0; background: #D2ECDE;'
-                }
-                else {
-                    hr = document.createElement('hr')
-                    div.innerHTML = `${this.Translate(key)} ${collapse}`
-                    div.style = 'margin-left: 8% !important; font-weight: 500; color: darkblue; border: 1px solid lightgrey; padding: 1%;'
-
-                }
-                div.addEventListener('click', () => {
-
-                    event.stopPropagation()
-                    this.OpenChildren(div, value)
+            return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
+        },
+        Translate(val) {
+            switch (val) {
+                case 'amount':
+                    return 'Количество'
+                    break
+                case 'cost':
+                    return 'Сумма'
+                    break
+                case "product":
+                    return 'Продукт'
+                    break
+                case "fine":
+                    return 'Штраф'
+                    break
+                case "":
+                    return 'Не определено'
+                    break
+                case val:
+                    return val
+                    break
+  
+            }
+        },
+        FilterValue(val) {
+            return String(val).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+        },
+  
+  
+        Actioned() {
+  
+  
+  
+            this.loader = true;
+            api
+                .getUO14(this.date_begin, this.date_end)
+                .then((response) => {
+                    this.loader = false;
+                    this.data = response.data;
                 })
-                try {
-                    eventDiv.target.append(div)
-                    // if(hr != null) eventDiv.target.append(hr)
-                } catch {
-                    eventDiv.append(div)
-                    // if(hr != null) eventDiv.append(hr)
-                }
-            }
-        }
-    },
-    Actioned() {
-        // if (this.wag_type == "" || this.wagon_belong == "" || this.date_begin == "" || this.date_end == "") {
-        //     this.notifyHead = "Ошибка";
-        //     this.notifyMessage = 'Заполните все поля';
-        //     this.notifyClass = "wrapper-error";
-        //     this.showNotify = true;
-        //     setTimeout(() => {
-        //         this.showNotify = false;
-        //     }, 2000);
-        //     return
-        // } else {
-        //     this.loader = true;
-        document.getElementById('FuckingData14').innerHTML = ""
-
-            this.OpenChildren(document.getElementById('FuckingData14'), this.data)
-            // api
-            //     .getUO422(this.date_begin, this.date_end, this.wag_type, this.wagon_belong)
-            //     .then((response) => {
-            //         this.loader = false;
-            //         this.data3123 = response.data;
-            //         this.OpenChildren(document.getElementById('FuckingData11'), this.data3123)
-
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //         this.loader = false;
-            //     });
-        // }
-
-    },
-    getCurrentData(data) {
-        this.date_begin = data.date_begin;
-        this.date_end = data.date_end;
-    },
-
-}
-}
-
-
-</script>
+                .catch((error) => {
+                    console.log(error);
+                    this.loader = false;
+                });
+  
+  
+        },
+        getCurrentData(data) {
+            this.date_begin = data.date_begin;
+            this.date_end = data.date_end;
+        },
+  
+    }
+  }
+  
+  
+  </script>

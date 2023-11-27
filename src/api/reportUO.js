@@ -39,6 +39,16 @@ const getUO11 = (data1,data2) => {
 const getUO12 = (data1,data2) => {
    return api.get(`${resource}/uo/412?date_begin=${data1}&date_end=${data2}`)
 }
+const getUO13 = (data1,data2) => {
+   return api.get(`${resource}/uo/413?date_begin=${data1}&date_end=${data2}`)
+}
+const getUO14 = (data1,data2) => {
+   return api.get(`${resource}/uo/414?date_begin=${data1}&date_end=${data2}`)
+}
+const getUO15 = (data1,data2) => {
+   return api.get(`${resource}/uo/415?date_begin=${data1}&date_end=${data2}`)
+}
+
 const getUO422 = (data1, data2, wag_type, wagon_belong) => {
    return api.get(`${resource}/uo/422/repair-expenses?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}&wagon_belong=${wagon_belong}`, {timeout: 600000})
 }
@@ -62,6 +72,9 @@ export default{
     getUO10,
     getUO11,
     getUO12,
+    getUO13,
+    getUO14,
+    getUO15,
     getUO422,
     getUO424,
     getUO28,
