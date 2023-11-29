@@ -53,9 +53,15 @@
             <b-card-text v-if="i.name === 'GLP'">
               <GLP />
             </b-card-text>
+
             <b-card-text v-if="i.name === 'Влияние простоя брош. ваг. на просрочку доставки'">
               <ImpactDowntimeVue />
             </b-card-text>
+
+            <b-card-text v-if="i.name === 'Данные по количеству брош.ваг.'">
+              <DropWagonAmount />
+            </b-card-text>
+
             <b-card-text v-if="i.name === 'Размещение парка'">
                 <Table2 />
               </b-card-text>
@@ -184,6 +190,7 @@
   import DataDislocation from '../components/Table/WagonPark/Dislocation/DataDislocation.vue'
   import GLP from '../components/Table/WagonPark/GLP/GLP.vue'
   import ImpactDowntimeVue from '../components/Table/WagonPark/ImpactDowntime/ImpactDowntime.vue';
+  import DropWagonAmount from '../components/Table/WagonPark/DropWagonAmount/DropWagonAmount.vue'
 
   import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
 import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
@@ -214,6 +221,7 @@ import Table26 from "@/components/Table/ManagmentRepReporting/Table26.vue";
 import Table27 from "@/components/Table/ManagmentRepReporting/Table27.vue";
 import Table28 from "@/components/Table/ManagmentRepReporting/Table28.vue";
 import ExtensionPeriodVue from '../components/Table/WagonPark/ExtensionPeriod.vue';
+import DropWagonAmountVue from '../components/Table/WagonPark/DropWagonAmount/DropWagonAmount.vue';
 export default {
   name: "WagonPark",
   components: {
@@ -233,6 +241,7 @@ export default {
     DataDislocation,
     GLP,
     ImpactDowntimeVue,
+    DropWagonAmount,
 
     Table1,
       Table2,
