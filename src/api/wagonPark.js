@@ -54,8 +54,8 @@ const getWagonsThrowTypes = () => {
     return api.get(`${resource}/wagon-type`)
 }
 
-const getDropsAmount = (date_begin, date_end) => {
-    return api.get(`${resource}/get-drops-amount?date_begin=${date_begin} 00:00:00&date_end=${date_end} 23:59:59`)
+const getDropsAmount = (date_begin, date_end, wagon_type) => {
+    return api.get(`${resource}/get-drops-amount?date_begin=${date_begin} 00:00:00&date_end=${date_end} 23:59:59&wagon_type=${wagon_type}`)
 }
 
 // Запросы для дислокации

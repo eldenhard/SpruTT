@@ -16,9 +16,17 @@
                     <br />
                     <input type="date" class="textarea mini" style="margin-top: 3%;" v-model="date_end" />
                 </label>
-
-
-                <button class="button Accept mini" @click="GetFile()">Запросить</button>
+                <label for="tenant" >Тип вагона
+                    <br />
+                    <select name="" id="" v-model="wagon_type">
+                        <option value="Полувагон">Полувагон</option>
+                        <option value="Цистерна">Цистерна</option>
+                    </select>
+                </label>
+                <label >
+                    <br>
+                    <button class=" Accept mini textarea" @click="GetFile()" style="background: darkgreen;">Запросить</button>
+                </label>
             </div>
 
             <p class="explanation" style="padding-left: 1%; position: absolute; bottom: 0">
@@ -46,6 +54,7 @@ export default {
             notifyHead: "",
             notifyMessage: "",
             notifyClass: "",
+            wagon_type: 'Полувагон'
         }
     },
 
@@ -64,7 +73,7 @@ export default {
             }
             this.loader = true
 
-            api.getDropsAmount(this.date_begin, this.date_end)
+            api.getDropsAmount(this.date_begin, this.date_end, this.wagon_type)
                 .then(response => {
                     this.showNotify = true;
                     this.date_begin = ""
@@ -129,13 +138,13 @@ th {
     color: #929292;
 }
 
-.table-content button {
+/* .table-content button {
     height: 45px;
     width: 20%;
     margin-top: 3%;
     float: right !important;
     margin-left: auto;
-}
+} */
 
 .mini {
     height: 45px;
