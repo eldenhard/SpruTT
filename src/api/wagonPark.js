@@ -41,7 +41,9 @@ const getCurrentStationByCode = (data) => {
 const getWagonType = () => {
     return api.get(`${resource}/wagon-types/`)
 }
-
+const getCalculateValue = (Value) => {
+    return api.post(`${resource}/stavki-calculator`, Value)
+}
 // ------------- ЗАПРОСЫ ДЛЯ БРОШЕННЫХ ВАГОНОВ ---------------
 // const getWagonsThrow = (url, filter_abadon) => {
 //     return api.get(url, {params: filter_abadon})
@@ -208,6 +210,7 @@ export default {
     getDislocation,
     postFileGLP,
     getCurrentStationByName,
+    getCalculateValue,
     // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,

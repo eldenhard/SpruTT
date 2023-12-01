@@ -14,7 +14,7 @@
           <b-tab title="GLP" @click="newTab('GLP')" >  </b-tab>
           <b-tab title="Влияние простоя брош. ваг. на просрочку доставки" @click="newTab('Влияние простоя брош. ваг. на просрочку доставки')" >  </b-tab>
           <b-tab title="Данные по количеству брош.ваг." @click="newTab('Данные по количеству брош.ваг.')" >  </b-tab>
-
+          <b-tab title="Калькулятор ставок" @click="newTab('Калькулятор ставок')" >  </b-tab>
         </b-container>
       </b-tabs>
     </b-card>

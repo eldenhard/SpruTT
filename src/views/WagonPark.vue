@@ -62,6 +62,13 @@
               <DropWagonAmount />
             </b-card-text>
 
+       
+            <b-card-text v-if="i.name === 'Калькулятор ставок'">
+              <CallculatorRT />
+            </b-card-text>
+
+            
+
             <b-card-text v-if="i.name === 'Размещение парка'">
                 <Table2 />
               </b-card-text>
@@ -222,6 +229,7 @@ import Table27 from "@/components/Table/ManagmentRepReporting/Table27.vue";
 import Table28 from "@/components/Table/ManagmentRepReporting/Table28.vue";
 import ExtensionPeriodVue from '../components/Table/WagonPark/ExtensionPeriod.vue';
 import DropWagonAmountVue from '../components/Table/WagonPark/DropWagonAmount/DropWagonAmount.vue';
+import CallculatorRT from '../components/Table/WagonPark/CalculatorRT/CallculatorRT.vue';
 export default {
   name: "WagonPark",
   components: {
@@ -242,6 +250,7 @@ export default {
     GLP,
     ImpactDowntimeVue,
     DropWagonAmount,
+    CallculatorRT,
 
     Table1,
       Table2,
