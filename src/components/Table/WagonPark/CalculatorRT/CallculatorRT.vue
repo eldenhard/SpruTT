@@ -298,7 +298,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{{ response2.cargo }}</td>
+                            <td></td>
                             <td>{{ response1.distance + response2.distance ?? ""}}</td>
                             <td>{{ response1.loading + response2.loading ?? ""}}</td>
                             <td>{{ response1.travel_days + response2.travel_days ?? ""}}</td>
