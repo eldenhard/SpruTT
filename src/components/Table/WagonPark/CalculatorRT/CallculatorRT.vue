@@ -301,24 +301,25 @@
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr v-if="Object.keys(this.response2).length >1 && Object.keys(this.response1).length > 1">
+                        <tr v-if="Object.keys(this.response2).length > 1 && Object.keys(this.response1).length > 1">
                             <td>Итого</td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{{ response1.distance + response2.distance ?? ""}}</td>
-                            <td>{{ response1.loading + response2.loading ?? ""}}</td>
-                            <td>{{ response1.travel_days + response2.travel_days ?? ""}}</td>
-                            <td>{{ response1.unloading + response2.unloading ?? ""}}</td>
-                            <td>{{ response1.total_days + response2.total_days - this.prepare_volume ?? ""}}</td>
-                            <td>{{ response2.stavka ?? ""}}</td>
+                            <td>{{ response1.distance + response2.distance ?? "" }}</td>
+                            <td>{{ response1.loading + response2.loading ?? "" }}</td>
+                            <td>{{ response1.travel_days + response2.travel_days ?? "" }}</td>
+                            <td>{{ response1.unloading + response2.unloading ?? "" }}</td>
+                            <td>{{ response1.total_days + response2.total_days - this.prepare_volume ?? "" }}</td>
+                            <td>{{ response2.stavka ?? "" }}</td>
                             <td>{{ response2.cost_wo_nds }}</td>
-                            <td>{{ (response1.cost_wo_nds + response2.cost_wo_nds)?.toFixed(2) ?? ""}}</td>
-                            <td>{{ (response1.nds + response2.nds)?.toFixed(2) ?? ""}}</td>
-                            <td>{{ (response1.add_expenses + response2.add_expenses)?.toFixed(2) ?? ""}}</td>
-                            <td>{{ (response1.income + response2.income - this.prepare_amount)?.toFixed(2) ?? ""}}</td>
-                            <td>{{ (response1.clear_income/ (response1.total_days + response2.total_days - this.prepare_volume))?.toFixed(2) ?? ""}}</td>
+                            <td>{{ (response1.cost_wo_nds + response2.cost_wo_nds)?.toFixed(2) ?? "" }}</td>
+                            <td>{{ (response1.nds + response2.nds)?.toFixed(2) ?? "" }}</td>
+                            <td>{{ (response1.add_expenses + response2.add_expenses)?.toFixed(2) ?? "" }}</td>
+                            <td>{{ (response1.income + response2.income - this.prepare_amount)?.toFixed(2) ?? "" }}</td>
+                            <td>{{ ((response1.income + response2.income - this.prepare_amount) / (response1.total_days +
+                                response2.total_days - this.prepare_volume))?.toFixed(2) ?? "" }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -523,24 +524,24 @@ input {
 }
 </style>
 <script>
-       
+
 
 import Notifications from "@/components/notifications/Notifications.vue";
 
-   
+
 
 import api from "@/api/wagonPark";
 import Loader from '@/components/loader/loader.vue';
 
 export default {
-    components: { Notifications , Loader },
-        data() {
+    components: { Notifications, Loader },
+    data() {
         return {
             prepare_volume: 0,
             prepare_amount: 0,
             loader: false,
-                // уведомление
-                showNotify: false,
+            // уведомление
+            showNotify: false,
             notifyHead: "",
             notifyMessage: "",
             notifyClass: "",
@@ -681,7 +682,7 @@ export default {
                     'stavka': Number(this.stavkaEmpty)
                 }
             ]
-                console.log(dataObjects)
+            console.log(dataObjects)
             const promises = dataObjects.map((dataObject, index) => {
                 return api.getCalculateValue(dataObject)
                     .then(response => {
@@ -694,10 +695,10 @@ export default {
                     .catch((err) => {
                         console.error(err);
                         this.notifyHead = "Ошибка";
-                    this.notifyMessage = `Введены некорректные данные. Таблица не может быть расчитана полностью! ${err}`;
-                    this.notifyClass = "wrapper-error";
-                    this.showNotify = true;
-                    setTimeout(() => (this.showNotify = false), 2000);
+                        this.notifyMessage = `Введены некорректные данные. Таблица не может быть расчитана полностью! ${err}`;
+                        this.notifyClass = "wrapper-error";
+                        this.showNotify = true;
+                        setTimeout(() => (this.showNotify = false), 2000);
                         throw err;
                     });
             });
