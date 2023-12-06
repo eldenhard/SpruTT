@@ -274,7 +274,7 @@
                             <td>{{ response1.travel_days }}</td>
                             <td>{{ response1.unloading }}</td>
                             <td>{{ response1.total_days }}</td>
-                            <td>{{ response1.stavka }}</td>
+                            <td style="background: lightskyblue;">{{ response1.stavka }}</td>
                             <td>0</td>
                             <td>{{ response1.cost_wo_nds?.toFixed(2) }}</td>
                             <td>{{ response1.nds?.toFixed(2) }}</td>
@@ -312,13 +312,13 @@
                             <td>{{ response1.travel_days + response2.travel_days ?? "" }}</td>
                             <td>{{ response1.unloading + response2.unloading ?? "" }}</td>
                             <td>{{ response1.total_days + response2.total_days - this.prepare_volume ?? "" }}</td>
-                            <td>{{ response2.stavka ?? "" }}</td>
-                            <td>{{ response2.cost_wo_nds }}</td>
+                            <td></td>
+                            <td>{{ response2.cost }}</td>
                             <td>{{ (response1.cost_wo_nds + response2.cost_wo_nds)?.toFixed(2) ?? "" }}</td>
                             <td>{{ (response1.nds + response2.nds)?.toFixed(2) ?? "" }}</td>
                             <td>{{ (response1.add_expenses + response2.add_expenses)?.toFixed(2) ?? "" }}</td>
                             <td>{{ (response1.income + response2.income - this.prepare_amount)?.toFixed(2) ?? "" }}</td>
-                            <td>{{ ((response1.income + response2.income - this.prepare_amount) / (response1.total_days +
+                            <td style="background: lightsalmon;">{{ ((response1.income + response2.income - this.prepare_amount) / (response1.total_days +
                                 response2.total_days - this.prepare_volume))?.toFixed(2) ?? "" }}</td>
                         </tr>
                     </tbody>
