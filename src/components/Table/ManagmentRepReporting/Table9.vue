@@ -251,7 +251,7 @@ this.date_end = data.date_end;
           correctKeys.push(i);
         }
       }
-      console.log(correctKeys);
+      // console.log(correctKeys);
       return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
     },
 

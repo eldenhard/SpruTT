@@ -42,7 +42,7 @@ const getWagonType = () => {
     return api.get(`${resource}/wagon-types/`)
 }
 const getCalculateValue = (Value) => {
-    return api.post(`${resource}/stavki-calculator`, Value)
+    return api.post(`${resource}/stavki-calculator`, Value, {timeout: 600000})
 }
 // ------------- ЗАПРОСЫ ДЛЯ БРОШЕННЫХ ВАГОНОВ ---------------
 // const getWagonsThrow = (url, filter_abadon) => {

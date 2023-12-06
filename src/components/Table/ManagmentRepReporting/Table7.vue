@@ -174,7 +174,7 @@ export default {
           correctKeys.push(i);
         }
       }
-      console.log(correctKeys);
+      // console.log(correctKeys);
       return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
     },
     Translate(val) {

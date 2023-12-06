@@ -101,6 +101,14 @@
                         </label>
                     </div>
                     <div class="ToGOBlock">
+                        <label for="">&nbsp;Подготовка ваг (сут) <br>
+                            <input type="number" placeholder="Укажите кол-во" v-model="prepare_volume">
+                        </label>
+                        <label for="">&nbsp;Сумма подготовки<br>
+                            <input type="number" placeholder="Укажите кол-во" v-model="prepare_amount">
+                        </label>
+                    </div>
+                    <div class="ToGOBlock">
                         <label for="">&nbsp;Доп. затраты <br>
                             <input type="number" placeholder="Укажите кол-во" v-model="add_expenses">
                         </label>
@@ -198,14 +206,14 @@
                             </select>
                         </label>
                     </div>
-                    <div class="ToGOBlock">
+                    <!-- <div class="ToGOBlock">
                         <label for="">&nbsp;Дней на погрузке <br>
                             <input type="number" placeholder="Укажите кол-во" v-model="loadings_daysEmpty">
                         </label>
                         <label for="">&nbsp;Дней на выгрузке<br>
                             <input type="number" placeholder="Укажите кол-во" v-model="unloading_daysEmpty">
                         </label>
-                    </div>
+                    </div> -->
                     <div class="ToGOBlock">
                         <label for="">&nbsp;Доп. затраты <br>
                             <input type="number" placeholder="Укажите кол-во" v-model="add_expensesEmpty">
@@ -271,8 +279,8 @@
                             <td>{{ response1.cost_wo_nds?.toFixed(2) }}</td>
                             <td>{{ response1.nds?.toFixed(2) }}</td>
                             <td>{{ response1.add_expenses?.toFixed(2) }}</td>
-                            <td>{{ response1.income?.toFixed(2) }}</td>
-                            <td>{{ response1.clear_income?.toFixed(2) }}</td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>{{ response2.departure_station }}</td>
@@ -290,8 +298,8 @@
                             <td>{{ response2.cost_wo_nds?.toFixed(2) }}</td>
                             <td>{{ response2.nds?.toFixed(2) }}</td>
                             <td>{{ response2.add_expenses?.toFixed(2) }}</td>
-                            <td>{{ response2.income?.toFixed(2) }}</td>
-                            <td>{{ response2.clear_income?.toFixed(2) }}</td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr v-if="Object.keys(this.response2).length >1 && Object.keys(this.response1).length > 1">
                             <td>Итого</td>
@@ -303,14 +311,14 @@
                             <td>{{ response1.loading + response2.loading ?? ""}}</td>
                             <td>{{ response1.travel_days + response2.travel_days ?? ""}}</td>
                             <td>{{ response1.unloading + response2.unloading ?? ""}}</td>
-                            <td>{{ response1.total_days + response2.total_days ?? ""}}</td>
+                            <td>{{ response1.total_days + response2.total_days - this.prepare_volume ?? ""}}</td>
                             <td>{{ response2.stavka ?? ""}}</td>
                             <td>{{ response2.cost_wo_nds }}</td>
                             <td>{{ (response1.cost_wo_nds + response2.cost_wo_nds)?.toFixed(2) ?? ""}}</td>
                             <td>{{ (response1.nds + response2.nds)?.toFixed(2) ?? ""}}</td>
                             <td>{{ (response1.add_expenses + response2.add_expenses)?.toFixed(2) ?? ""}}</td>
-                            <td>{{ (response1.income + response2.income)?.toFixed(2) ?? ""}}</td>
-                            <td>{{ (response1.clear_income + response2.clear_income)?.toFixed(2) ?? ""}}</td>
+                            <td>{{ (response1.income + response2.income - this.prepare_amount)?.toFixed(2) ?? ""}}</td>
+                            <td>{{ (response1.clear_income/ (response1.total_days + response2.total_days - this.prepare_volume))?.toFixed(2) ?? ""}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -528,6 +536,8 @@ export default {
     components: { Notifications , Loader },
         data() {
         return {
+            prepare_volume: 0,
+            prepare_amount: 0,
             loader: false,
                 // уведомление
                 showNotify: false,
