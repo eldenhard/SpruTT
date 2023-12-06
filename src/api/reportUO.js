@@ -25,28 +25,28 @@ const getUO47 = (data1, data2, wag_type) => {
    return api.get(`${resource}/uo/47/?date_begin=${data1}&date_end=${data2}&wagon_type=${wag_type}`, {timeout: 600000})
 }
 const getUO48 = (data1, data2) => {
-   return api.get(`${resource}/uo/48?date_begin=${data1}&date_end=${data2}`)
+   return api.get(`${resource}/uo/48?date_begin=${data1}&date_end=${data2}`, {timeout: 600000})
 }
 const getUO49 = (data1, data2) => {
-   return api.get(`${resource}/uo/49?date_begin=${data1}&date_end=${data2}`)
+   return api.get(`${resource}/uo/49?date_begin=${data1}&date_end=${data2}`, {timeout: 600000})
 }
 const getUO10 = (data1,data2) => {
-   return api.get(`${resource}/uo/410?date_begin=${data1}&date_end=${data2}`)
+   return api.get(`${resource}/uo/410?date_begin=${data1}&date_end=${data2}`, {timeout: 600000})
 }
 const getUO11 = (data1,data2) => {
-   return api.get(`${resource}/uo/411?date_begin=${data1}&date_end=${data2}`)
+   return api.get(`${resource}/uo/411?date_begin=${data1}&date_end=${data2}`, {timeout: 600000})
 }
 const getUO12 = (data1,data2) => {
-   return api.get(`${resource}/uo/412?date_begin=${data1}&date_end=${data2}`)
+   return api.get(`${resource}/uo/412?date_begin=${data1}&date_end=${data2}`, {timeout: 600000})
 }
 const getUO13 = (data1,data2) => {
-   return api.get(`${resource}/uo/413?date_begin=${data1}&date_end=${data2}`)
+   return api.get(`${resource}/uo/413?date_begin=${data1}&date_end=${data2}`, {timeout: 600000})
 }
 const getUO14 = (data1,data2) => {
-   return api.get(`${resource}/uo/414?date_begin=${data1}&date_end=${data2}`)
+   return api.get(`${resource}/uo/414?date_begin=${data1}&date_end=${data2}`, {timeout: 600000})
 }
 const getUO15 = (data1,data2) => {
-   return api.get(`${resource}/uo/415?date_begin=${data1}&date_end=${data2}`)
+   return api.get(`${resource}/uo/415?date_begin=${data1}&date_end=${data2}`, {timeout: 600000})
 }
 
 const getUO422 = (data1, data2, wag_type, wagon_belong) => {
