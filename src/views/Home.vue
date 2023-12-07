@@ -74,6 +74,12 @@
           <stavkipvVue />
         </b-card-text>
       </b-tab>
+      <b-tab title="План погрузки" >
+        <b-card-text>
+          <LoadingPlanAndFactVue />
+        </b-card-text>
+      </b-tab>
+      
     </b-tabs>
   </b-card>
 </template>
@@ -125,6 +131,8 @@ import TarifDirectory from "@/components/Table/Directory/TarifDirectory.vue";
 import OtherChargesVue from '../components/Table/Directory/OtherCharges/OtherCharges.vue';
 import stavkipvVue from '../components/Table/Directory/StavkiPV/stavkipv.vue';
 import allformdocument from '../components/Table/ReferenceInformation/AllFormsDocument/AllFormDocument.vue'
+
+import LoadingPlanAndFactVue from '../components/Table/Directory/LoadingPlanAndFact/LoadingPlanAndFact.vue';
 export default {
   name: "Directory",
   components: {
@@ -143,6 +151,7 @@ export default {
     OtherChargesVue,
     stavkipvVue,
     allformdocument,
+    LoadingPlanAndFactVue,
   },
   mounted() {
     document.title = "Справочники";

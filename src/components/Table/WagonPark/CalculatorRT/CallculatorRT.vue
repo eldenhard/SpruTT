@@ -172,9 +172,15 @@
                                 </div>
                             </div>
                         </label>
-                        <label for="">Вес <br>
-                            <input type="number" placeholder="Укажите вес" v-model="cargo_weightEmpty">
+                        <label for="">&nbsp;Доп. затраты <br>
+                            <input type="number" placeholder="Укажите кол-во" v-model="add_expensesEmpty">
                         </label>
+                           <!-- <label for="">&nbsp;Ставка<br>
+                            <input type="number" placeholder="Укажите ставку" v-model="stavkaEmpty">
+                        </label> -->
+                        <!-- <label for="">Вес <br>
+                            <input type="number" placeholder="Укажите вес" v-model="cargo_weightEmpty">
+                        </label> -->
                     </div>
                     <!-- ГРУЗ -->
                     <div class="ToGOBlock" style=" margin-top: -1%;">
@@ -215,12 +221,12 @@
                         </label>
                     </div> -->
                     <div class="ToGOBlock">
-                        <label for="">&nbsp;Доп. затраты <br>
+                        <!-- <label for="">&nbsp;Доп. затраты <br>
                             <input type="number" placeholder="Укажите кол-во" v-model="add_expensesEmpty">
-                        </label>
-                        <label for="">&nbsp;Ставка<br>
+                        </label> -->
+                        <!-- <label for="">&nbsp;Ставка<br>
                             <input type="number" placeholder="Укажите ставку" v-model="stavkaEmpty">
-                        </label>
+                        </label> -->
 
                     </div>
                 </div>
@@ -307,19 +313,21 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{{ response1.distance + response2.distance ?? "" }}</td>
-                            <td>{{ response1.loading + response2.loading ?? "" }}</td>
-                            <td>{{ response1.travel_days + response2.travel_days ?? "" }}</td>
-                            <td>{{ response1.unloading + response2.unloading ?? "" }}</td>
-                            <td>{{ response1.total_days + response2.total_days - this.prepare_volume ?? "" }}</td>
+                            <td>{{ Math.ceil(response1.distance + response2.distance) ?? "" }}</td>
+                            <td>{{  Math.ceil(response1.loading + response2.loading) ?? "" }}</td>
+                            <td>{{  Math.ceil(response1.travel_days + response2.travel_days) ?? "" }}</td>
+                            <td>{{  Math.ceil(response1.unloading + response2.unloading) ?? "" }}</td>
+                            <td>{{  Math.ceil(response1.total_days + response2.total_days - this.prepare_volume) ?? "" }}</td>
                             <td></td>
-                            <td>{{ response2.cost }}</td>
-                            <td>{{ (response1.cost_wo_nds + response2.cost_wo_nds)?.toFixed(2) ?? "" }}</td>
-                            <td>{{ (response1.nds + response2.nds)?.toFixed(2) ?? "" }}</td>
-                            <td>{{ (response1.add_expenses + response2.add_expenses)?.toFixed(2) ?? "" }}</td>
-                            <td>{{ (response1.income + response2.income - this.prepare_amount)?.toFixed(2) ?? "" }}</td>
-                            <td style="background: lightsalmon;">{{ ((response1.income + response2.income - this.prepare_amount) / (response1.total_days +
-                                response2.total_days - this.prepare_volume))?.toFixed(2) ?? "" }}</td>
+                            <td>{{  Math.ceil(response2.cost) }}</td>
+                            <td>{{  Math.ceil((response1.cost_wo_nds + response2.cost_wo_nds)) ?? "" }}</td>
+                            <td>{{  Math.ceil((response1.nds + response2.nds)) ?? "" }}</td>
+                            <td>{{  Math.ceil((response1.add_expenses + response2.add_expenses)) ?? "" }}</td>
+                            <td>{{  Math.ceil((response1.income + response2.income - this.prepare_amount)) ?? "" }}</td>
+                            <td style="background: lightsalmon;">
+                            {{  Math.ceil(((response1.income + response2.income - this.prepare_amount) 
+                                        / 
+                            (response1.total_days + response2.total_days - this.prepare_volume))) ?? "" }}</td>
                         </tr>
                     </tbody>
                 </table>

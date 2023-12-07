@@ -22,88 +22,78 @@
 
     <p>Форма 4.6. "Справка о выполнении перевозок вагоно-цистернами"</p>
     <!-- <div :id="'TableReport6'+id_page" ></div> -->
-    <div class="block-table">
+    <div class="block-table" >
 
-      <table>
+      <table style="margin: 0 auto !important;">
 
 
         <tbody>
-       
-          <template v-for="(valueClient, client) in dataReport6">
+          <template v-for="(valueClient, client) in dataReport6" >
             <tr :key="valueClient.id">
-              <tr style="background: #F0F0F0">
-                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Дорога отправления</th>
-                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Дорога назначения</th>
-                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Принадлежность</th>
-                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Груз</th>
-                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Вес</th>
-                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Ставка за тонну</th>
-                <th v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">Выручка</th>
+              <tr >
+                <td v-if="client !== 'stavka_per_ton' && client !== 'weight' && client !== 'revenue'" colspan="7"
+                 @click="CheckClientOpen(client, $event)" style="font-weight: 700;">{{ client }}</td>
               </tr>
-             
-              <!-- <td  v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">{{ client }}</td> -->
+            <tr style="background: #F0F0F0" :data-attr='client' class="block_element">
+              <th v-if="client !== 'stavka_per_ton' && client !== 'weight' && client !== 'revenue'">Дорога отправления</th>
+              <th v-if="client !== 'stavka_per_ton' && client !== 'weight' && client !== 'revenue'">Дорога назначения</th>
+              <th v-if="client !== 'stavka_per_ton' && client !== 'weight' && client !== 'revenue'">Принадлежность</th>
+              <th v-if="client !== 'stavka_per_ton' && client !== 'weight' && client !== 'revenue'">Груз</th>
+              <th v-if="client !== 'stavka_per_ton' && client !== 'weight' && client !== 'revenue'">Вес</th>
+              <th v-if="client !== 'stavka_per_ton' && client !== 'weight' && client !== 'revenue'">Ставка за тонну</th>
+              <th v-if="client !== 'stavka_per_ton' && client !== 'weight' && client !== 'revenue'">Выручка</th>
+            </tr>
 
-              <template v-for="road in getNextKey(dataReport6[client])">
-                <!-- <td  v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'">{{ client }}</td> -->
+            <template v-for="road in getNextKey(dataReport6[client])"  :data-attr='client' class="block_element">
 
-                <!-- <tr>
-                        <th>Дорога отправления</th>
-                        <th>Дорога назначения</th>
-                        <th>Принадлежность</th>
-                        <th>Груз</th>
-                        <th>Вес</th>
-                        <th>Ставка за тонну</th>
-                        <th>Выручка</th>
-                      </tr> -->
-                      <tr>
-                      <td  v-if="client !== 'stavka_per_ton' &&client !== 'weight' &&client !== 'revenue'" colspan="7"
-                      style="font-weight: bold; background: rgb(221, 238, 238);">{{ client }}</td>
-                  </tr>
-                      <template v-for="clientRoad in getNextKey(dataReport6[client][road])">
-                 
-                  <template v-for="clientRoadRoad in getNextKey(dataReport6[client][road][clientRoad])">
-                 
-                    <template  v-for="cargo in getNextKey(dataReport6[client][road][clientRoad][clientRoadRoad])">
-                    
+              <template v-for="clientRoad in getNextKey(dataReport6[client][road])"  :data-attr='client' class="block_element">
 
-                      <tr :key="road.id">
-                        <td>{{ road }}</td>
-                        <td>{{ clientRoadRoad }}</td>
-                        <td>{{ TransLateBelong(clientRoad) }}</td>
-                        <td>{{ cargo }}</td>
-                        <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['weight']?.toFixed(2) | format}}</td>
-                        <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['stavka_per_ton']?.toFixed(2) | format}}</td>
-                        <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['revenue']?.toFixed(2) | format}}</td>
-                      </tr>
-                     
-                    </template>
-                   
+                <template v-for="clientRoadRoad in getNextKey(dataReport6[client][road][clientRoad])"  :data-attr='client' class="block_element">
+
+                  <template v-for="cargo in getNextKey(dataReport6[client][road][clientRoad][clientRoadRoad])"  :data-attr='client' class="block_element">
+
+                    <tr :key="road.id" class="block_element"  :data-attr='client'>
+                      <td>{{ road }}</td>
+                      <td>{{ clientRoadRoad }}</td>
+                      <td>{{ TransLateBelong(clientRoad) }}</td>
+                      <td>{{ cargo }}</td>
+                      <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['weight']?.toFixed(2) | format }}
+                      </td>
+                      <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['stavka_per_ton']?.toFixed(2) |
+                        format }}</td>
+                      <td>{{ dataReport6[client][road][clientRoad][clientRoadRoad][cargo]['revenue']?.toFixed(2) |
+                        format }}</td>
+                    </tr>
+
                   </template>
-                  <tr style="background:#FDFFDA">
 
-                  <td  colspan="4">ИТОГО {{ TransLateBelong(clientRoad) }}</td>
-                  <td  style="font-weight: 500;">{{ dataReport6[client][road][clientRoad]['weight']?.toFixed(2) | format}}</td>
-                  <td  style="font-weight: 500;">{{ dataReport6[client][road][clientRoad]['stavka_per_ton']?.toFixed(2) | format}}</td>
-                  <td  style="font-weight: 500;">{{ dataReport6[client][road][clientRoad]['revenue']?.toFixed(2) | format}}</td>
-                </tr>
                 </template>
-                <tr style="background: #DDFCCF">
-                  <td colspan="4">ИТОГО {{ road }}</td>
-                  <td style="font-weight: 700;">{{ dataReport6[client][road]['weight']?.toFixed(2) | format}}</td>
-                  <td  style="font-weight: 00;">{{ dataReport6[client][road]['stavka_per_ton']?.toFixed(2) | format}}</td>
-                  <td  style="font-weight: 700;">{{ dataReport6[client][road]['revenue']?.toFixed(2) | format}}</td>
+                <tr style="background:#FDFFDA" class="block_element"  :data-attr='client'>
+
+                  <td colspan="4">ИТОГО {{ TransLateBelong(clientRoad) }}</td>
+                  <td style="font-weight: 500;">{{ dataReport6[client][road][clientRoad]['weight']?.toFixed(2) | format }}
+                  </td>
+                  <td style="font-weight: 500;">{{ dataReport6[client][road][clientRoad]['stavka_per_ton']?.toFixed(2) |
+                    format }}</td>
+                  <td style="font-weight: 500;">{{ dataReport6[client][road][clientRoad]['revenue']?.toFixed(2) | format }}
+                  </td>
                 </tr>
               </template>
-           
-               
-              
+              <tr style="background: #DDFCCF" class="block_element"  :data-attr='client'>
+                <td colspan="4">ИТОГО {{ road }}</td>
+                <td style="font-weight: 700;">{{ dataReport6[client][road]['weight']?.toFixed(2) | format }}</td>
+                <td style="font-weight: 00;">{{ dataReport6[client][road]['stavka_per_ton']?.toFixed(2) | format }}</td>
+                <td style="font-weight: 700;">{{ dataReport6[client][road]['revenue']?.toFixed(2) | format }}</td>
+              </tr>
+            </template>
+
             </tr>
-           
+
           </template>
-    
-       
+
+
         </tbody>
-       
+
       </table>
     </div>
   </div>
@@ -123,52 +113,65 @@ export default {
       normalized: [],
       norm: [],
       objects2: "",
-
       loader: false,
       date_begin: "",
       date_end: "",
       wag_type: "Полувагон",
 
-      dataReport6:"",
+      dataReport6: "",
     };
   },
-  mounted(){
+  mounted() {
   },
   methods: {
-   
-    TransLateBelong(val){
+    CheckClientOpen(val, event){
+      event.target.classList.toggle('check_element')
+      let trs = document.getElementsByTagName('tr')
+      console.log(event.target)
+      for(let tr of trs){
+        if(tr.getAttribute('data-attr') == val){
+         tr.classList.toggle('block_element')
+        } else {
+          continue
+        }
+      }
+      // console.log(currentRows)
+      // let ElementValue = tr.getAttribute('data-attr')
+      // console.log(trs, val)
+    },
+    TransLateBelong(val) {
       switch (val) {
         case "А":
           return "Арендованный";
           break;
-          case "АА":
+        case "АА":
           return "Арендованный сдан в аренду";
           break;
-          case "АЛ":
+        case "АЛ":
           return "Арендованный в лизинге";
           break;
-          case "С":
+        case "С":
           return "Собственный";
           break;
-          case "СЛ":
+        case "СЛ":
           return "СЛ";
           break;
-          case "СВ":
+        case "СВ":
           return "Взят в скрытую аренду";
           break;
-          case "Ч":
+        case "Ч":
           return "Чужой";
           break;
-          case "СА":
+        case "СА":
           return "Собственный сдан в аренду";
           break;
- 
-          case "ЛА":
+
+        case "ЛА":
           return "Взят в лизинг сдан в аренду";
           break;
 
-    }
-  },
+      }
+    },
     // countRows(obj) {
     //   return Object.keys(obj).filter(key => key !== 'stavka_per_ton' && key !== 'weight' && key !== 'revenue').length;
     // },
@@ -221,7 +224,7 @@ export default {
           correctKeys.push(i);
         }
       }
-      console.log(correctKeys);
+      // console.log(correctKeys);
       return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
     },
 
@@ -439,7 +442,7 @@ export default {
                         ).map((item) => {
                           return {
                             ...this.objects2.data[key][client][road][cargo][
-                              item
+                            item
                             ],
                           };
                         }),
@@ -500,11 +503,18 @@ export default {
 </script>
 
 <style scoped>
-td,th{
-    white-space: nowrap;
-   
+.check_element {
+  background: rgb(142, 182, 182);
+  font-weight: bold;
 }
-tr:hover{
-    background: lightcyan;
+td,
+th {
+  white-space: nowrap;
+  
 }
-</style>
+.block_element{
+  display: none;
+}
+tr:hover {
+  background: lightcyan;
+}</style>
