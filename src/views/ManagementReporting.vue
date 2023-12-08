@@ -257,6 +257,9 @@ import Table28 from "@/components/Table/ManagmentRepReporting/Table28.vue";
       };
     },
     methods: {
+      check(data){
+          console.log(data)
+      },
       closeTab(x) {
         for (let i = 0; i < this.tabs.length; i++) {
           if (this.tabs[i].id === x) {

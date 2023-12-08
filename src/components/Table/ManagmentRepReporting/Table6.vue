@@ -23,7 +23,6 @@
     <p>Форма 4.6. "Справка о выполнении перевозок вагоно-цистернами"</p>
     <!-- <div :id="'TableReport6'+id_page" ></div> -->
     <div class="block-table" >
-
       <table style="margin: 0 auto !important;">
 
 

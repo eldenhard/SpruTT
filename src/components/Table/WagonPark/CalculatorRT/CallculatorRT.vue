@@ -232,18 +232,12 @@
                 </div>
             </div>
 
-
-
-
-
             <button class="Accept" style="width: 20%; margin-left: auto; margin-top: 2%;"
                 @click="CalculateValue()">Рассчитать</button>
 
 
 
             <div style="overflow: auto; margin-top: 4%;">
-
-
                 <table>
                     <thead>
                         <tr>

@@ -7,7 +7,7 @@
                 <div class="inputcontainer">
                     <!-- <label for="">Номер договора<br></label> -->
 
-                    <input class="changeRow textarea" v-model="dog_search" placeholder="введите наименование договора"
+                    <input class="changeRow textarea" v-model="dog_search" placeholder="введите наименование документа"
                         style=" width: 100%; border-bottom: 1px solid rgb(0, 0, 0); padding: 5px;" />
 
                     <div class="icon-container" v-if="loaderInputDep">
