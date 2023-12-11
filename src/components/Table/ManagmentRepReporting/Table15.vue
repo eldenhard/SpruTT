@@ -120,14 +120,7 @@
         }
     },
     methods: {
-      ChangeColorRow(element){
-          if( element.parentNode.classList.contains('active_row')){
-              element.parentNode.classList.remove('active_row')
-          }else {
-              element.parentNode.classList.add('active_row')
-  
-          }
-      },
+
         ChangeColorRow(element){
         if( element.parentNode.classList.contains('active_row')){
             element.parentNode.classList.remove('active_row')

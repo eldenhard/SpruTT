@@ -1,125 +1,91 @@
 <template>
     <div>
-        <p>Форма 4.20. "Совокупная операционная прибыль от предоставления вагонов под погрузку"</p>
-        <div style="overflow: auto;">
+        <p class="explanation">* По клику на строку таблицы вы можете дополнительно выделить её цветом, для собственных нужд, <br>
+         для снятия выделения повторно кликните на этот элменет</p>
+
+        <p>Форма 4.21. "Анализ маржинального дохода по сегменту вагоно-цистерн"</p>
+
+        <Loader :loader="loader" />
+        <Periods @Action="Actioned" @data="getCurrentData" />
+        <div style="overflow: auto; margin: 4% auto;">
             <table>
                 <thead>
-                    <tr >
+                    <tr>
                         <th>Станция погрузки</th>
                         <th>Принадлежность парка</th>
                         <th>Группа вагонов</th>
-                        <th>Вагон</th>
                         <th>Объем перевозки, тн.</th>
-                        <th>Вагоно-сутки</th>
-                        <th>Доход-ность на в/с</th>
-                        <th>Маржинальный доход (+)</th>
+                        <th>Вагонно-сутки</th>
+                        <th>Доходность на в/с</th>
+                        <th>Маржинальный доход </th>
                         <th>Выручка (+)</th>
                         <th>Штрафы (+)</th>
-                        <th>Привлечение (-)</th>
-                        <th>Тариф порожний (-)</th>
-                        <th>Тариф груженый (-)</th>
-                        <th>Тариф СТ (-)</th>
-                        <th>Прочие пере-менные расхо-ды (-)</th>
-  
-
+                        <th>Экспедирование </th>
+                        <th>Тариф порожний (-) </th>
+                        <th>Тариф груженый (-) </th>
+                        <th>Тариф СТ (-) </th>
+                        <th>ППС (-) </th>
+                        <th>Прочие перем. расходы (-)</th>
+                    </tr>
+                    <tr class="RowAlphabet">
+                        <th v-for="item in getTh" :key="item.id">{{ item.toUpperCase() }}</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr class="col0">
-                        <td>Биклянь</td>
-                        <td>Собственный парк</td>
-                        <td>ЦС</td>
-                        <td>57046336</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 752) }}</td>
-                        <td>{{ Math.floor(Math.random() * 656) }}</td>
-                        <td>{{ Math.floor(Math.random() * 777) }}</td>
+                <tbody v-if="Object.keys(data).length > 1">
+                    <template v-for="item, StationLoaded in data">
+                        <template v-for="belongPark in getNextKey(item)">
+                            <template v-for="wagonType in getNextKey(item[belongPark])">
+                                <tr v-if="CheckValue(StationLoaded)">
+                                    <td @click="ChangeColorRow($event.target)">{{ StationLoaded }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ TransLateBelong(belongPark) }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ wagonType }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['weight'] | format }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['travel_time'] | format }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['dohod_vs'] | format }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['margin_income'] | format }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['revenue'] | format }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['penalties'] | format }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['expedition'] | format }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['tariff_empty'] | format }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['tariff_loaded'] | format }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['tariff_inroad'] | format }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['pps'] | format }}</td>
+                                    <td @click="ChangeColorRow($event.target)">{{ item[belongPark]['other_charges'] | format }}</td>
+                                </tr>
+                            </template>
 
-                        <td>{{ Math.floor(Math.random() * 33) }}</td>
-                        <td>{{ Math.floor(Math.random() * 147530) }}</td>
-                        <td>{{ Math.floor(Math.random() * 37) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-
+                        </template>
+                        <tr v-if="CheckValue(StationLoaded)" class="Total_1">
+                            <td colspan="3">Итого: {{ StationLoaded }}</td>
+                            <td>{{ item['weight'] | format }}</td>
+                            <td>{{ item['travel_time'] | format }}</td>
+                            <td>{{ item['dohod_vs'] | format }}</td>
+                            <td>{{ item['margin_income'] | format }}</td>
+                            <td>{{ item['revenue'] | format }}</td>
+                            <td>{{ item['penalties'] | format }}</td>
+                            <td>{{ item['expedition'] | format }}</td>
+                            <td>{{ item['tariff_empty'] | format }}</td>
+                            <td>{{ item['tariff_loaded'] | format }}</td>
+                            <td>{{ item['tariff_inroad'] | format }}</td>
+                            <td>{{ item['pps'] | format }}</td>
+                            <td>{{ item['other_charges'] | format }}</td>
+                        </tr>
+                    </template>
+                    <tr class="Total_2">
+                        <td colspan="3">Итого: </td>
+                        <td>{{ data['weight'] | format }}</td>
+                        <td>{{ data['travel_time'] | format }}</td>
+                        <td>{{ data['dohod_vs'] | format }}</td>
+                        <td>{{ data['margin_income'] | format }}</td>
+                        <td>{{ data['revenue'] | format }}</td>
+                        <td>{{ data['penalties'] | format }}</td>
+                        <td>{{ data['expedition'] | format }}</td>
+                        <td>{{ data['tariff_empty'] | format }}</td>
+                        <td>{{ data['tariff_loaded'] | format }}</td>
+                        <td>{{ data['tariff_inroad'] | format }}</td>
+                        <td>{{ data['pps'] | format }}</td>
+                        <td>{{ data['other_charges'] | format }}</td>
                     </tr>
-                    <tr class="col0">
-                        <td>Биклянь</td>
-                        <td>Привлеченный парк</td>
-                        <td>ЦС</td>
-                        <td>57046337</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 752) }}</td>
-                        <td>{{ Math.floor(Math.random() * 656) }}</td>
-                        <td>{{ Math.floor(Math.random() * 777) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 33) }}</td>
-                        <td>{{ Math.floor(Math.random() * 147530) }}</td>
-                        <td>{{ Math.floor(Math.random() * 37) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-
-                    </tr>
-                    <tr class="col0">
-                        <td>Биклянь</td>
-                        <td>Арендованный парк</td>
-                        <td>ЦС</td>
-                        <td>57046338</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 752) }}</td>
-                        <td>{{ Math.floor(Math.random() * 656) }}</td>
-                        <td>{{ Math.floor(Math.random() * 777) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 33) }}</td>
-                        <td>{{ Math.floor(Math.random() * 147530) }}</td>
-                        <td>{{ Math.floor(Math.random() * 37) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-
-                    </tr>
-                    <tr class="col0">
-                        <td>Биклянь</td>
-                        <td>Лизинг </td>
-                        <td>ЦС</td>
-                        <td>57046339</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 752) }}</td>
-                        <td>{{ Math.floor(Math.random() * 656) }}</td>
-                        <td>{{ Math.floor(Math.random() * 777) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 33) }}</td>
-                        <td>{{ Math.floor(Math.random() * 147530) }}</td>
-                        <td>{{ Math.floor(Math.random() * 37) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-
-                    </tr>
-                    <tr class="total">
-                        <td colspan="2">Итого</td>
-                        <td>ЦС</td>
-                        <td>57046336</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 752) }}</td>
-                        <td>{{ Math.floor(Math.random() * 656) }}</td>
-                        <td>{{ Math.floor(Math.random() * 777) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 33) }}</td>
-                        <td>{{ Math.floor(Math.random() * 147530) }}</td>
-                        <td>{{ Math.floor(Math.random() * 37) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-
-                    </tr>
-
                 </tbody>
 
             </table>
@@ -127,117 +93,173 @@
 
     </div>
 </template>
-
+        
 <script>
+import Periods from "./Periods.vue";
+import api from "@/api/reportUO"
+import Notifications from "@/components/notifications/Notifications.vue";
+import Loader from "@/components/loader/loader.vue";
+import AverageValue from '@/mixins/AverageValue'
 export default {
+    components: { Periods, Notifications, Loader, },
+    mixins: [AverageValue],
     data() {
         return {
+            loader: false,
+            alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+
+            data: "",
+            date_begin: "",
+            date_end: "",
+            alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+            amount_cols: 0,
 
         }
     },
+    computed: {
+        getTh() {
 
+            return this.alphabet.slice(0, 15)
+        },
+    },
+    filters: {
+        format(value) {
+            if (value != "" && !!value) {
+                let TwoSignNum = value?.toFixed(2)
+                return String(TwoSignNum).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+            }
+            return value
+
+        },
+    },
     methods: {
-        getRowCount(obj) {
-            let total = 0;
-            let last_item = '';
-            obj.attr1.forEach((item) => {
-                total += item.attr3.length;
-            });
-            return total;
+        ChangeColorRow(element){
+        if( element.parentNode.classList.contains('active_row')){
+            element.parentNode.classList.remove('active_row')
+        }else {
+            element.parentNode.classList.add('active_row')
         }
+    },
+        CheckValue(value) {
+            let client = value;
+            if (
+                client != 'travel_time' &&
+                client != 'dohod_vs' &&
+                client != 'expedition' &&
+                client != 'margin_income' &&
+                client != "other_charges" &&
+                client != 'penalties' &&
+                client != 'pps' &&
+                client != 'revenue' &&
+                client != "tariff_empty" &&
+                client != 'tariff_inroad' &&
+                client != 'travel_time' &&
+                client != "weight" &&
+                client != "tariff_loaded"
+            ) {
+                return true;
+            }
+        },
+        getNextKey(obj) {
+            const keys = Object.keys(obj);
+            let correctKeys = [];
+            for (let i of keys) {
+                if (
+                    i == 'travel_time' ||
+                    i == 'dohod_vs' ||
+                    i == 'expedition' ||
+                    i == 'margin_income' ||
+                    i == "other_charges" ||
+                    i == 'penalties' ||
+                    i == 'pps' ||
+                    i == 'revenue' ||
+                    i == "tariff_empty" ||
+                    i == 'tariff_inroad' ||
+                    i == 'travel_time' ||
+                    i == "weight" ||
+                    i == "tariff_loaded") {
+                    continue;
+                } else {
+                    correctKeys.push(i);
+                }
+            }
+            return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
+        },
+        TransLateBelong(val) {
+            if (val != "" && !!val) {
+                switch (val) {
+                    case "А":
+                        return "Арендованный";
+                        break;
+                    case "АА":
+                        return "Арендованный сдан в аренду";
+                        break;
+                    case "АЛ":
+                        return "Арендованный в лизинге";
+                        break;
+                    case "С":
+                        return "Собственный";
+                        break;
+                    case "СЛ":
+                        return "СЛ";
+                        break;
+                    case "СВ":
+                        return "Взят в скрытую аренду";
+                        break;
+                    case "Ч":
+                        return "Чужой";
+                        break;
+                    case "СА":
+                        return "Собственный сдан в аренду";
+                        break;
+
+                    case "ЛА":
+                        return "Взят в лизинг сдан в аренду";
+                        break;
+
+                }
+            }
+            return val
+        },
+        Actioned() {
+            this.loader = true;
+            api
+                .getUO21(this.date_begin, this.date_end)
+                .then((response) => {
+                    this.loader = false;
+                    console.log(this.data)
+                    this.data = response.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.loader = false;
+                });
+
+
+        },
+        getCurrentData(data) {
+            this.date_begin = data.date_begin;
+            this.date_end = data.date_end;
+        },
     }
 }
 </script>
-
-
+        
+        
 <style scoped>
-
-.col1{
-    background: #F2F2F2
-}
-.col2{
-    background: #FDFFD9;
-}
-.total {
-    background: #FDFFD9;
-}
-
-.total_2 {
-    background: #DDFACE;
-}
-
-tr:hover {
-    background: rgb(236, 236, 236);
-}
-
-.itogo {
-    font-weight: bold;
-    border-right: none !important;
-
-}
-
-.all_total {
-    background: #EAF1DD;
-}
-
-/* .last:nth-last-of-type(3n) {
-   border-bottom: 2px solid rgb(0, 0, 0) !important
-} */
-.total_row {
-    background: #DAEEF3;
-}
+@import '../../../style/UOTableStyle.css';
 
 td,
 th {
-    border: 1px solid rgb(102, 102, 102) !important;
-    color: black !important;
+    white-space: nowrap;
+    padding: 0 10px !important;
 }
 
-.all_total {
-    background: #EAF1DD;
+tr>td:first-child {
+    text-align: left !important;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+tr:hover {
+    background: lightcyan;
 }
-
-table>tbody>tr>td,
-table>tbody>tr>td.inner>div {
-    vertical-align: top;
-    border: 1px solid #ddd;
-}
-
-table>tbody>tr>td.inner {
-    padding: 0;
-    border-right: 0;
-}
-
-table>tbody>tr>td.inner>div {
-    padding: 5px;
-    border-width: 0 0 1px 0;
-}
-
-table>tbody>tr>td.inner>div:last-child {
-    border: 0;
-}
-
-table>tbody>tr>td.inner>table {
-    margin-bottom: 0;
-}
-
-table>tbody>tr>td.inner>table td {
-    border-width: 0 1px 1px 0;
-}
-
-table>tbody>tr>td.inner>table tr:last-child td {
-    border-bottom: 0;
-}
-
-table>tbody>tr>td.inner>div {
-    border-right: 0;
-}
-
-thead>th {
-    border: 1px solid black;
-}</style>
+</style>    

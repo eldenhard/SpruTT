@@ -175,7 +175,6 @@ tr:hover{
 import api from "@/api/reportUO";
 import Periods from "./Periods.vue";
 import Loader from "@/components/loader/loader.vue";
-import jsonData from '@/components/Table/ManagmentRepReporting/f8.json';
 import AverageValue from '@/mixins/AverageValue'
 export default {
   components: { Periods, Loader },

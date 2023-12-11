@@ -18,13 +18,15 @@
     background: #FDFFD9;
 }
 .Total_1 td{
-    font-weight: 400;
+    font-weight: 500;
 }
 .Total_2{
     background: #DDFACE;
+   
 }
 .Total_2 td{
     font-weight: 500;
+    font-size: 18px;
 }
 .Total_blue{
     background: #DAEEF3;

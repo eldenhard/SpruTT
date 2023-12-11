@@ -1,114 +1,64 @@
 <template>
     <div>
         <p>Форма 4.18. "Операционная прибыль от предоставления вагонов под погрузку по сегменту вагоно-цистерн"</p>
-        <div style="overflow: auto;">
+        <Loader :loader="loader" />
+        <Periods @Action="Actioned" @data="getCurrentData" />
+        <div style="overflow: auto; margin: 4% auto;">
             <table>
                 <thead>
-                    <tr >
+                    <tr>
                         <th>Принадлежность парка</th>
                         <th>Группа вагонов</th>
-                        <th>Вагон</th>
+                        <th>Кол-во отправок</th>
                         <th>Объем перевозки, тн.</th>
-                        
-                        <th>Операцион-ная при-быль, в т.ч</th>
+
+                        <th>Операционная прибыль, в т.ч</th>
                         <th>Маржинальный доход (+)</th>
                         <th>Штрафы (+)</th>
                         <th>Расходы на аренду (-)</th>
 
                         <th>Расходы на текущий ремонт и з/ч (-)</th>
-                        <th>Амортиза-ция (-)</th>
+                        <th>Амортизация (-)</th>
                         <th>Расходы на оплату труда в составе произв. расходов (-)</th>
                         <th>Прочие произв. расходы (-)</th>
-
+                    </tr>
+                    <tr class="RowAlphabet">
+                        <th v-for="item in getTh" :key="item.id">{{ item.toUpperCase() }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="col0">
-                        <td>Собственный парк</td>
-                        <td>ЦС</td>
-                        <td>57046336</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
+                    <template v-for="item, belong_wagon in data">
+                        <template v-for="dataBelongWagon, inxData in getNextKey(item)">
 
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 752) }}</td>
-                        <td>{{ Math.floor(Math.random() * 656) }}</td>
-                        <td>{{ Math.floor(Math.random() * 777) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 33) }}</td>
-                        <td>{{ Math.floor(Math.random() * 147530) }}</td>
-                        <td>{{ Math.floor(Math.random() * 37) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-   
+                            <tr>
+                                <td v-if="CheckValue(belong_wagon)" :key="inxData">{{ TransLateBelong(belong_wagon) }}</td>
+                                <td v-if="CheckValue(belong_wagon)">{{ dataBelongWagon }}</td>
+                                <td>{{ item[dataBelongWagon]['aid'] | format }}</td>
+                                <td>{{ item[dataBelongWagon]['weight'] | format }}</td>
+                                <td>{{ item[dataBelongWagon]['oper_profit'] | format }}</td>
+                                <td>{{ item[dataBelongWagon]['margin_income'] | format }}</td>
+                                <td>{{ item[dataBelongWagon]['penalties'] | format }}</td>
+                                <td>{{ item[dataBelongWagon]['rent_expenses'] | format }}</td>
+                                <td>{{ item[dataBelongWagon]['current_repair_expenses'] | format }}</td>
+                                <td>{{ item[dataBelongWagon]['amortization'] | format }}</td>
+                                <td>{{ item[dataBelongWagon]['salary'] | format }}</td>
+                                <td>{{ item[dataBelongWagon]['other_charges'] | format }}</td>
+                            </tr>
+                        </template>
+                    </template>
+                    <tr class="Total_2">
+                        <td v-if="CheckValue(belong_wagon)" colspan="2">Общий итог</td>
+                        <td>{{ data['aid'] | format }}</td>
+                        <td>{{ data['weight'] | format }}</td>
+                        <td>{{ data['oper_profit'] | format }}</td>
+                        <td>{{ data['margin_income'] | format }}</td>
+                        <td>{{ data['penalties'] | format }}</td>
+                        <td>{{ data['rent_expenses'] | format }}</td>
+                        <td>{{ data['current_repair_expenses'] | format }}</td>
+                        <td>{{ data['amortization'] | format }}</td>
+                        <td>{{ data['salary'] | format }}</td>
+                        <td>{{ data['other_charges'] | format }}</td>
                     </tr>
-                    <tr class="col0">
-                        <td>Привлеченный парк</td>
-                        <td>ЦС</td>
-                        <td>57046337</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 752) }}</td>
-                        <td>{{ Math.floor(Math.random() * 656) }}</td>
-                        <td>{{ Math.floor(Math.random() * 777) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 33) }}</td>
-                        <td>{{ Math.floor(Math.random() * 147530) }}</td>
-                        <td>{{ Math.floor(Math.random() * 37) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-   
-                    </tr>
-                    <tr class="col0">
-                        <td>Арендованный парк</td>
-                        <td>ЦС</td>
-                        <td>57046338</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 752) }}</td>
-                        <td>{{ Math.floor(Math.random() * 656) }}</td>
-                        <td>{{ Math.floor(Math.random() * 777) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 33) }}</td>
-                        <td>{{ Math.floor(Math.random() * 147530) }}</td>
-                        <td>{{ Math.floor(Math.random() * 37) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-   
-                    </tr>
-                    <tr class="col0">
-                        <td>Лизинг </td>
-                        <td>ЦС</td>
-                        <td>57046339</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 752) }}</td>
-                        <td>{{ Math.floor(Math.random() * 656) }}</td>
-                        <td>{{ Math.floor(Math.random() * 777) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 33) }}</td>
-                        <td>{{ Math.floor(Math.random() * 147530) }}</td>
-                        <td>{{ Math.floor(Math.random() * 37) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-   
-                    </tr>
-                    <tr class="total">
-                        <td>Итого</td>
-                        <td>ЦС</td>
-                        <td>57046336</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 752) }}</td>
-                        <td>{{ Math.floor(Math.random() * 656) }}</td>
-                        <td>{{ Math.floor(Math.random() * 777) }}</td>
-
-                        <td>{{ Math.floor(Math.random() * 33) }}</td>
-                        <td>{{ Math.floor(Math.random() * 147530) }}</td>
-                        <td>{{ Math.floor(Math.random() * 37) }}</td>
-                        <td>{{ Math.floor(Math.random() * 142220) }}</td>
-   
-                    </tr>
-
                 </tbody>
 
             </table>
@@ -118,115 +68,155 @@
 </template>
 
 <script>
+import Periods from "./Periods.vue";
+import api from "@/api/reportUO"
+import Notifications from "@/components/notifications/Notifications.vue";
+import Loader from "@/components/loader/loader.vue";
+import AverageValue from '@/mixins/AverageValue'
 export default {
+    components: { Periods, Notifications, Loader, },
+    mixins: [AverageValue],
     data() {
         return {
+            loader: false,
+            alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+
+            data: "",
+            date_begin: "",
+            date_end: "",
+            alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+            amount_cols: 0,
 
         }
     },
+    computed: {
+        getTh() {
 
+            return this.alphabet.slice(0, 12)
+        },
+    },
+    filters: {
+        format(value) {
+            if (value != "" && !!value) {
+                let TwoSignNum = value?.toFixed(2)
+                return String(TwoSignNum).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+            }
+            return value
+
+        },
+    },
     methods: {
-        getRowCount(obj) {
-            let total = 0;
-            let last_item = '';
-            obj.attr1.forEach((item) => {
-                total += item.attr3.length;
-            });
-            return total;
-        }
+        CheckValue(value) {
+            let client = value;
+            if (
+                client != 'aid' &&
+                client != 'weight' &&
+                client != 'margin_income' &&
+                client != 'penalties' &&
+                client != "rent_expenses" &&
+                client != 'current_repair_expenses' &&
+                client != 'amortization' &&
+                client != 'salary' &&
+                client != "other_charges" &&
+                client != 'oper_profit'
+            ) {
+                return true;
+            }
+        },
+        getNextKey(obj) {
+            const keys = Object.keys(obj);
+            let correctKeys = [];
+            for (let i of keys) {
+                if (
+                    i == 'aid' ||
+                    i == 'weight' ||
+                    i == 'margin_income' ||
+                    i == 'penalties' ||
+                    i == "rent_expenses" ||
+                    i == 'current_repair_expenses' ||
+                    i == 'amortization' ||
+                    i == 'salary' ||
+                    i == "other_charges" ||
+                    i == 'oper_profit') {
+                    continue;
+                } else {
+                    correctKeys.push(i);
+                }
+            }
+            return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
+        },
+        TransLateBelong(val) {
+            switch (val) {
+                case "А":
+                    return "Арендованный";
+                    break;
+                case "АА":
+                    return "Арендованный сдан в аренду";
+                    break;
+                case "АЛ":
+                    return "Арендованный в лизинге";
+                    break;
+                case "С":
+                    return "Собственный";
+                    break;
+                case "СЛ":
+                    return "СЛ";
+                    break;
+                case "СВ":
+                    return "Взят в скрытую аренду";
+                    break;
+                case "Ч":
+                    return "Чужой";
+                    break;
+                case "СА":
+                    return "Собственный сдан в аренду";
+                    break;
+
+                case "ЛА":
+                    return "Взят в лизинг сдан в аренду";
+                    break;
+
+            }
+        },
+        Actioned() {
+            this.loader = true;
+            api
+                .getUO18(this.date_begin, this.date_end)
+                .then((response) => {
+                    this.loader = false;
+                    console.log(this.data)
+                    this.data = response.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.loader = false;
+                });
+
+
+        },
+        getCurrentData(data) {
+            this.date_begin = data.date_begin;
+            this.date_end = data.date_end;
+        },
     }
 }
 </script>
 
 
 <style scoped>
-
-.col1{
-    background: #F2F2F2
-}
-.col2{
-    background: #FDFFD9;
-}
-.total {
-    background: #FDFFD9;
-}
-
-.total_2 {
-    background: #DDFACE;
-}
-
-tr:hover {
-    background: rgb(236, 236, 236);
-}
-
-.itogo {
-    font-weight: bold;
-    border-right: none !important;
-
-}
-
-.all_total {
-    background: #EAF1DD;
-}
-
-/* .last:nth-last-of-type(3n) {
-   border-bottom: 2px solid rgb(0, 0, 0) !important
-} */
-.total_row {
-    background: #DAEEF3;
-}
+@import '../../../style/UOTableStyle.css';
 
 td,
 th {
-    border: 1px solid rgb(102, 102, 102) !important;
-    color: black !important;
+    white-space: nowrap;
+    padding: 0 10px !important;
 }
 
-.all_total {
-    background: #EAF1DD;
+tr>td:first-child {
+    text-align: left !important;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+tr:hover {
+    background: lightcyan;
 }
-
-table>tbody>tr>td,
-table>tbody>tr>td.inner>div {
-    vertical-align: top;
-    border: 1px solid #ddd;
-}
-
-table>tbody>tr>td.inner {
-    padding: 0;
-    border-right: 0;
-}
-
-table>tbody>tr>td.inner>div {
-    padding: 5px;
-    border-width: 0 0 1px 0;
-}
-
-table>tbody>tr>td.inner>div:last-child {
-    border: 0;
-}
-
-table>tbody>tr>td.inner>table {
-    margin-bottom: 0;
-}
-
-table>tbody>tr>td.inner>table td {
-    border-width: 0 1px 1px 0;
-}
-
-table>tbody>tr>td.inner>table tr:last-child td {
-    border-bottom: 0;
-}
-
-table>tbody>tr>td.inner>div {
-    border-right: 0;
-}
-
-thead>th {
-    border: 1px solid black;
-}</style>
+</style>
