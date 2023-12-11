@@ -26,6 +26,9 @@
 .Total_2 td{
     font-weight: 500;
 }
+.Total_blue{
+    background: #DAEEF3;
+}
 .GrandTotal{
     background:#dfdfdf;
 }

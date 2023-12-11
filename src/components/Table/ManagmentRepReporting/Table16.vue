@@ -1,265 +1,146 @@
 <template>
     <div>
         <p>Форма 4.16. "Операционные доходы и расходы в детализации «до вагона»"</p>
-        <div style="overflow: auto;">
+        <Periods @Action="Actioned" @data="getCurrentData" />
+        <div style="overflow: auto; margin-top: 4%;">
             <table>
                 <thead>
-                    <tr >
-                        <th>Показатель / Группа вагонов / Вагон</th>
-                        <th>Всего, в т.ч</th>
-                        <th>янв.23</th>
-                        <th>фев.23</th>
-                        <th>мар.23</th>
-                        <th>май.23</th>
-
-                    </tr>
+                    <th>&nbsp;Показатель/ Группа вагонов / Вагон&nbsp;</th>
+                    <th>Всего в т.ч</th>
+                    <template v-for="item in getCollection">
+                        <th :key="item.id">{{ item }}</th>
+                    </template>
                 </thead>
                 <tbody>
-                    <tr class="col1">
-                        <td>Выручка от предоставления вагонов под погрузку</td>
-                        <td>123</td>
-                        <td>123</td>
-                        <td>123</td>
-                        <td>123</td>
-                        <td>123</td>
-                    </tr>
-                    <tr class="col2">
-                        <td>Группа 1</td>
-                        <td>12312</td>
-                        <td>1231</td>
-                        <td>123</td>
-                        <td>123123</td>
-                        <td>123123</td>
-                    </tr>
                     <tr>
-                        <td>50273499</td>
-                        <td>14124</td>
-                        <td>12132</td>
-                        <td>123</td>
-                        <td>12132</td>
-                        <td>12132</td>
+                        <td v-if="CheckValue(wagon_type)" style="background: lightblue;" :colspan="HowManyNewCells">
+                            Выручка от предоставления вагонов под погрузку
+                        </td>
                     </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
+
                     <tr>
-                        <td>57399560</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Выручка от сдачи в аренду</td>
                     </tr>
-                    <tr class="col2">
-                        <td>Группа 2</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col1">
-                        <td>Выручка от сдачи в аренду</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col2">
-                        <td>Группа 1</td>
-                        <td>12312</td>
-                        <td>1231</td>
-                        <td>123</td>
-                        <td>123123</td>
-                        <td>123123</td>
-                    </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
                     <tr>
-                        <td>57399560</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Штрафы к получению</td>
                     </tr>
-                    <tr class="col2">
-                        <td>Группа 2</td>
-                        <td>12312</td>
-                        <td>1231</td>
-                        <td>123</td>
-                        <td>123123</td>
-                        <td>123123</td>
-                    </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
                     <tr>
-                        <td>57399560</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Тариф</td>
                     </tr>
-                    <tr class="col1">
-                        <td>Штрафы к получению</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Привлеченеи ПС</td>
                     </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Подготовка вагонов</td>
+                    </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Прочие условно-переменные расходы</td>
+                    </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Амортизация</td>
+                    </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Расходы на аренду ПС</td>
+                    </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Ремонт, сервисное обслуживание и з/ч
+                        </td>
+                    </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Расходы на оплату труда (произв.)</td>
+                    </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Прочие условно-постоянные произв.
+                            Расходы</td>
+                    </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td style="background: lightblue;" :colspan="HowManyNewCells">Операционная прибыль</td>
+                    </tr>
+                    <template v-for="allDataByWagonType, wagon_type in data">
+                        <tr>
+                            <td v-if="CheckValue(wagon_type)">{{ wagon_type }}</td>
+                            <td v-if="CheckValue(wagon_type)"></td>
+                        </tr>
+                    </template>
 
 
-                    <tr class="col2">
-                        <td>Группа 1</td>
-                        <td>12312</td>
-                        <td>1231</td>
-                        <td>123</td>
-                        <td>123123</td>
-                        <td>123123</td>
-                    </tr>
-                    <tr>
-                        <td>50273499</td>
-                        <td>14124</td>
-                        <td>12132</td>
-                        <td>123</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr>
-                        <td>57399560</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col2">
-                        <td>Группа 2</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col1">
-                        <td>Тариф</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col2">
-                        <td>Группа 1</td>
-                        <td>12312</td>
-                        <td>1231</td>
-                        <td>123</td>
-                        <td>123123</td>
-                        <td>123123</td>
-                    </tr>
-                    <tr>
-                        <td>57399560</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col2">
-                        <td>Группа 2</td>
-                        <td>12312</td>
-                        <td>1231</td>
-                        <td>123</td>
-                        <td>123123</td>
-                        <td>123123</td>
-                    </tr>
-                    <tr>
-                        <td>57399560</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col1">
-                        <td>Привлечение ПС</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col2">
-                        <td>Группа 1</td>
-                        <td>12312</td>
-                        <td>1231</td>
-                        <td>123</td>
-                        <td>123123</td>
-                        <td>123123</td>
-                    </tr>
-                    <tr>
-                        <td>57399560</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col2">
-                        <td>Группа 2</td>
-                        <td>12312</td>
-                        <td>1231</td>
-                        <td>123</td>
-                        <td>123123</td>
-                        <td>123123</td>
-                    </tr>
-                    <tr>
-                        <td>57399560</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col0">
-                        <td>Операционная прибыль</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col2">
-                        <td>Группа 1</td>
-                        <td>12312</td>
-                        <td>1231</td>
-                        <td>123</td>
-                        <td>123123</td>
-                        <td>123123</td>
-                    </tr>
-                    <tr>
-                        <td>57399560</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
-                    <tr class="col2">
-                        <td>Группа 2</td>
-                        <td>12312</td>
-                        <td>1231</td>
-                        <td>123</td>
-                        <td>123123</td>
-                        <td>123123</td>
-                    </tr>
-                    <tr>
-                        <td>57399560</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                        <td>12132</td>
-                    </tr>
+
+
+
 
                 </tbody>
-
             </table>
         </div>
 
@@ -267,117 +148,223 @@
 </template>
 
 <script>
+import Periods from "./Periods.vue";
+import api from "@/api/reportUO"
+import Notifications from "@/components/notifications/Notifications.vue";
+import Loader from "@/components/loader/loader.vue";
+import AverageValue from '@/mixins/AverageValue'
 export default {
+    components: { Periods, Notifications, Loader, },
+    mixins: [AverageValue],
     data() {
         return {
+            loader: false,
+            data: {
+                "Полувагон": {
+                    "loading_revenue": 400,
+                    "rent_revenue": 400,
+                    "penalties": 400,
+                    "tariff": 340983409.19,
+                    "attraction": 6124607.300000001,
+                    "prepare": 11770.74,
+                    "other_charges": 3267124.7800000063,
+                    "amortization": 0,
+                    "rent_expenses": 0,
+                    "repair": 0,
+                    "salary": 0,
+                    "other_expenses": 0,
+                    "profit": -350386912.01000035,
+                    "1-2023": {
+                        "loading_revenue": 1,
+                        "rent_revenue": 2,
+                        "penalties": 3,
+                        "tariff": 340252420.19,
+                        "attraction": 6124607.300000001,
+                        "prepare": 11770.74,
+                        "other_charges": 3267124.7800000063,
+                        "amortization": 0,
+                        "rent_expenses": 0,
+                        "repair": 0,
+                        "salary": 0,
+                        "other_expenses": 0,
+                        "profit": -349655923.01000035
+                    },
+                    "12-2022": {
+                        "loading_revenue": 0,
+                        "rent_revenue": 0,
+                        "penalties": 0,
+                        "tariff": 730989.0,
+                        "attraction": 0,
+                        "prepare": 0,
+                        "other_charges": 0,
+                        "amortization": 0,
+                        "rent_expenses": 0,
+                        "repair": 0,
+                        "salary": 0,
+                        "other_expenses": 0,
+                        "profit": -730989.0
+                    }
+                },
+                "loading_revenue": 500,
+                "rent_revenue": 500,
+                "penalties": 500,
+                "tariff": 961112061.2800001,
+                "attraction": 40206570.13000003,
+                "prepare": 2437328.130000003,
+                "other_charges": 3267124.7800000063,
+                "amortization": 1968485.7800000047,
+                "rent_expenses": 0,
+                "repair": 0,
+                "salary": 0,
+                "other_expenses": 0,
+                "profit": -1008991570.1000102,
+
+                "Цистерна": {
+                    "loading_revenue": 0,
+                    "rent_revenue": 0,
+                    "penalties": 0,
+                    "tariff": 620128652.0899998,
+                    "attraction": 34081962.830000006,
+                    "prepare": 2425557.3900000034,
+                    "other_charges": 0,
+                    "amortization": 1968485.7800000047,
+                    "rent_expenses": 0,
+                    "repair": 0,
+                    "salary": 0,
+                    "other_expenses": 0,
+                    "profit": -658604658.0900021,
+                    "1-2023": {
+                        "loading_revenue": 0,
+                        "rent_revenue": 0,
+                        "penalties": 0,
+                        "tariff": 619673045.0899998,
+                        "attraction": 34081962.830000006,
+                        "prepare": 2425557.3900000034,
+                        "other_charges": 0,
+                        "amortization": 1968485.7800000047,
+                        "rent_expenses": 0,
+                        "repair": 0,
+                        "salary": 0,
+                        "other_expenses": 0,
+                        "profit": -658149051.0900021
+                    },
+                    "12-2022": {
+                        "loading_revenue": 0,
+                        "rent_revenue": 0,
+                        "penalties": 0,
+                        "tariff": 455607.0,
+                        "attraction": 0,
+                        "prepare": 0,
+                        "other_charges": 0,
+                        "amortization": 0,
+                        "rent_expenses": 0,
+                        "repair": 0,
+                        "salary": 0,
+                        "other_expenses": 0,
+                        "profit": -455607.0
+                    }
+                }
+            },
+            date_begin: "",
+            date_end: "",
 
         }
     },
-
-    methods: {
-        getRowCount(obj) {
-            let total = 0;
-            let last_item = '';
-            obj.attr1.forEach((item) => {
-                total += item.attr3.length;
-            });
-            return total;
+    computed: {
+        HowManyNewCells() {
+            return this.getCollection.length + 2
+        },
+        getCollection() {
+            let newCollection = new Set()
+            for (let i in this.data) {
+                if (typeof this.data[i] == 'object') {
+                    for (let month in this.data[i]) {
+                        if (this.CheckValue(month)) {
+                            newCollection.add(month)
+                        }
+                    }
+                    return [...newCollection]
+                }
+                return
+            }
         }
+    },
+    methods: {
+        CheckValue(value) {
+            let index = value;
+            if (
+                index != 'loading_revenue' &&
+                index != 'rent_revenue' &&
+                index != 'penalties' &&
+                index != "tariff" &&
+
+                index != 'attraction' &&
+                index != 'prepare' &&
+                index != 'other_charges' &&
+                index != "amortization" &&
+
+                index != 'rent_expenses' &&
+                index != 'repair' &&
+                index != 'salary' &&
+                index != "other_expenses" &&
+                index != "profit"
+            ) {
+                return true;
+            }
+        },
+        getNextKey(obj) {
+            const keys = Object.keys(obj);
+            let correctKeys = [];
+            for (let i of keys) {
+                if (
+                    i == 'loading_revenue' ||
+                    i == 'rent_revenue' ||
+                    i == 'penalties' ||
+                    i == "tariff" ||
+
+                    i == 'attraction' ||
+                    i == 'prepare' ||
+                    i == 'other_charges' ||
+                    i == "amortization" ||
+
+                    i == 'rent_expenses' ||
+                    i == 'repair' ||
+                    i == 'salary' ||
+                    i == "other_expenses" ||
+                    i == "profit") {
+                    continue;
+                } else {
+                    correctKeys.push(i);
+                }
+            }
+            return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
+        },
+        Actioned() {
+            this.loader = true;
+            api
+                .getUO15(this.date_begin, this.date_end)
+                .then((response) => {
+                    this.loader = false;
+                    this.data = response.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.loader = false;
+                });
+
+
+        },
+        getCurrentData(data) {
+            this.date_begin = data.date_begin;
+            this.date_end = data.date_end;
+        },
     }
 }
 </script>
 
 
 <style scoped>
-.col0{
-    background: #DAEEF3;
-}
-.col1{
-    background: #F2F2F2
-}
-.col2{
-    background: #FDFFD9;
-}
-.total {
-    background: #FDFFD9;
-}
-
-.total_2 {
-    background: #DDFACE;
-}
-
-tr:hover {
-    background: rgb(236, 236, 236);
-}
-
-.itogo {
-    font-weight: bold;
-    border-right: none !important;
-
-}
-
-.all_total {
-    background: #EAF1DD;
-}
-
-/* .last:nth-last-of-type(3n) {
-   border-bottom: 2px solid rgb(0, 0, 0) !important
-} */
-.total_row {
-    background: #DAEEF3;
-}
-
-td,
 th {
-    border: 1px solid rgb(102, 102, 102) !important;
-    color: black !important;
+    white-space: nowrap;
 }
-
-.all_total {
-    background: #EAF1DD;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table>tbody>tr>td,
-table>tbody>tr>td.inner>div {
-    vertical-align: top;
-    border: 1px solid #ddd;
-}
-
-table>tbody>tr>td.inner {
-    padding: 0;
-    border-right: 0;
-}
-
-table>tbody>tr>td.inner>div {
-    padding: 5px;
-    border-width: 0 0 1px 0;
-}
-
-table>tbody>tr>td.inner>div:last-child {
-    border: 0;
-}
-
-table>tbody>tr>td.inner>table {
-    margin-bottom: 0;
-}
-
-table>tbody>tr>td.inner>table td {
-    border-width: 0 1px 1px 0;
-}
-
-table>tbody>tr>td.inner>table tr:last-child td {
-    border-bottom: 0;
-}
-
-table>tbody>tr>td.inner>div {
-    border-right: 0;
-}
-
-thead>th {
-    border: 1px solid black;
-}</style>
+</style>
