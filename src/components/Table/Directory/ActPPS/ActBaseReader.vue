@@ -551,7 +551,6 @@ export default {
       if (btn < this.pageNumber && btn > this.pageNumber - this.interval) {
         return true;
       }
-
       return false;
     },
     getPagination(pg_size, pg_number) {

@@ -75,7 +75,9 @@ const getUO424 = (data1, data2, wag_type) => {
 const getUO28 = ( on_date, shipment_source) => {
    return api.get(`${wagon_park}/shipments/?on_date=${ on_date}&shipment_source=${shipment_source}`, {timeout: 600000})
 }
-
+const getUO28Pagination = (on_date, shipment_source, page_number) => {
+   return api.get(`${wagon_park}/shipments/?on_date=${on_date}&shipment_source=${shipment_source}&page=${page_number}`)
+}
 export default{
     getUO41,
     getUO42,
@@ -101,4 +103,5 @@ export default{
     getUO422,
     getUO424,
     getUO28,
+    getUO28Pagination,
 }

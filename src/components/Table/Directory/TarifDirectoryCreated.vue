@@ -466,7 +466,7 @@ export default {
             loader: false,
             loader_mini: false,
             data: "",
-            interval: 2,
+            interval: 1,
             pagination: "",
             total_pages: "",
             total_objects: 0,
