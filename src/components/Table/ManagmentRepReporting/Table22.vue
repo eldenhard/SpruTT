@@ -80,45 +80,89 @@
 
             </div>
             <Periods @Action="Actioned" @data="getCurrentData" />
+           
+           
         </div>
 
 
         <h4 class="NoData" v-show="NoData">По заданным параметрам нет данных</h4>
+        <button @click="DownloadExcel()" class="Accept" style="width: 20%; height: 40px; margin-top: 2%; margin-left: auto;">Скачать в эксель</button>
+        <div style="overflow: auto; margin-top: 2%;">
 
-        {{ data }}
-        <table>
+       
+        <table ref="theTable">
             <thead>
-                <tr>
-                    <td rowspan="2">Показатель</td>
-                    <td rowspan="2">Всего</td>
-                    <td rowspan="2">Кол-во</td>
-                    <td rowspan="2">Цена</td>
-                    <td colspan="2">В т.ч. по типам ПС</td>
+                <tr >
+                    <td rowspan="2" style="text-align: center !important; background: rgb(231, 231, 231);  border: 1px solid black; ">Показатель</td>
+                    <td rowspan="2" style="background: rgb(231, 231, 231);  border: 1px solid black; ">Кол-во</td>
+                    <td rowspan="2" style="background: rgb(231, 231, 231);  border: 1px solid black; ">Цена</td>
+                    <td rowspan="2" style="background: rgb(231, 231, 231);  border: 1px solid black; ">Ср. расход</td>
+                    <td colspan="3" style="background: rgb(231, 231, 231);  border: 1px solid black; " >ПВ</td>
+                    <td colspan="3" style="background: rgb(231, 231, 231);  border: 1px solid black; ">ЦС</td>
                 </tr>
                 <tr>
-                    <td>ПВ</td>
-                    <td>ЦС</td>
+
+                    <td style="text-align: center !important; background: rgb(231, 231, 231);  border: 1px solid black; ">Кол-во</td>
+                    <td style="background: rgb(231, 231, 231);  border: 1px solid black; ">Цена</td>
+                    <td style="background: rgb(231, 231, 231);  border: 1px solid black; ">Ср. расход</td>
+                    <td style="background: rgb(231, 231, 231); text-align: center !important;  border: 1px solid black;">Кол-во</td>
+                    <td style="background: rgb(231, 231, 231);  border: 1px solid black;">Цена</td>
+                    <td style="background: rgb(231, 231, 231);  border: 1px solid black;">Ср. расход</td>
+                </tr>
+                <tr class="RowAlphabet">
+                    <th v-for="item in getTh" :key="item.id" style="background: #FFD453;  border: 1px solid black; text-align: center;">{{ item.toUpperCase() }}</th>
                 </tr>
             </thead>
             <tbody>
                 <template v-for="item, inducation in data">
                     <template v-for="group in getNextKey(item)">
+                       
                         <tr class="Total_blue" v-if="CheckValue(inducation)">
-                                <td>{{ inducation }}</td>
-                            </tr>
-                            <tr class="Total_1" v-if="CheckValue(inducation)">
-                                <td>{{ group }}</td>
-                            </tr>
+                            <td style="background: #DAEEF3;  border: 1px solid black; text-align: center;">{{ inducation }}</td>
+                            <td style="background: #DAEEF3;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #DAEEF3;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #DAEEF3;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #DAEEF3;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #DAEEF3;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #DAEEF3;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #DAEEF3;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #DAEEF3;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #DAEEF3;  border: 1px solid black; text-align: center;">{{ }}</td>
+                        </tr>
+                        <tr class="Total_1" v-if="CheckValue(inducation)">
+                            <td style="background: #FDFFD9;  border: 1px solid black; text-align: center;">{{ group }}</td>
+                            <td style="background: #FDFFD9;  border: 1px solid black; text-align: center;">{{ item[group]['amount'] }}</td>
+                            <td style="background: #FDFFD9;  border: 1px solid black; text-align: center;">{{ item[group]['cost'] | format }}</td>
+                            <td style="background: #FDFFD9;  border: 1px solid black; text-align: center;">{{ item[group]['cost'] / item[group]['amount'] | format }}</td>
+                            <td style="background: #FDFFD9;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #FDFFD9;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #FDFFD9;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #FDFFD9;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #FDFFD9;  border: 1px solid black; text-align: center;">{{ }}</td>
+                            <td style="background: #FDFFD9;  border: 1px solid black; text-align: center;">{{ }}</td>
+                        </tr>
                         <template v-for="service in getNextKey(item[group])">
                             <tr v-if="CheckValue(inducation)">
-                                <td >{{ service }}</td>
+                                <td style=" border: 1px solid black; text-align: center;">{{ service }}</td>
+                                <td style=" border: 1px solid black; text-align: center;">{{ item[group][service]['amount'] }}</td>
+                                <td style=" border: 1px solid black; text-align: center;">{{ item[group][service]['cost'] | format }}</td>
+                                <td style=" border: 1px solid black; text-align: center;">{{ item[group][service]['cost'] / item[group][service]['amount'] | format }}</td>
+                                <td style=" border: 1px solid black; text-align: center;">{{ item[group][service]['Полувагон']?.amount ?? 0 }}</td>
+                                <td style=" border: 1px solid black; text-align: center;">{{ item[group][service]['Полувагон']?.cost ?? 0 | format }}</td>
+                                <td style=" border: 1px solid black; text-align: center;">{{ isNaN(item[group][service]['Полувагон']?.cost / item[group][service]['Полувагон']?.amount) ? 0 : 
+                                 item[group][service]['Полувагон']?.cost / item[group][service]['Полувагон']?.amount | format }}</td>
+                                <td style=" border: 1px solid black; text-align: center;">{{ item[group][service]['Цистерна']?.amount ?? 0 }}</td>
+                                <td style=" border: 1px solid black; text-align: center;">{{ item[group][service]['Цистерна']?.cost ?? 0 | format }}</td>
+                                <td style=" border: 1px solid black; text-align: center;">{{ isNaN(item[group][service]['Цистерна']?.cost / item[group][service]['Цистерна']?.amount) ? 0 : 
+                                 item[group][service]['Цистерна']?.cost / item[group][service]['Цистерна']?.amount | format }}</td>
+
                             </tr>
                         </template>
                     </template>
                 </template>
             </tbody>
         </table>
-
+    </div>
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
 
     </div>
@@ -175,19 +219,7 @@ export default {
     data() {
         return {
 
-            data: {
-                "Текущий 1":
-                {
-                    "amount": 13, "cost": 56984.29999999998,
-                    "1. ТР-1": {
-                        "amount": 13, "cost": 56984.29999999998,
-                        "2. Подача-уборка вагона": {
-                            "amount": 4, "cost": 5311.820000000001,
-                            "Полувагон": { "amount": 4, "cost": 5311.820000000001 }
-                        }, "1. Работа по ремонту вагона": { "amount": 9, "cost": 51672.47999999999, "Полувагон": { "amount": 9, "cost": 51672.47999999999 } }
-                    }
-                }, "amount": 39, "cost": 402946.41, "Текущий 2": { "amount": 23, "cost": 64495.350000000006, "2. ТР-2": { "amount": 23, "cost": 64495.350000000006, "1. Работа по ремонту вагона": { "amount": 6, "cost": 6060.790000000001, "Полувагон": { "amount": 6, "cost": 6060.790000000001 } }, "2. Подача-уборка вагона": { "amount": 7, "cost": 14303.159999999998, "Полувагон": { "amount": 7, "cost": 14303.159999999998 } }, "Контрольные и регламентные операции": { "amount": 6, "cost": 26278.879999999997, "Полувагон": { "amount": 6, "cost": 26278.879999999997 } }, "Услуга по оформлению рекламационно-претензионной документации": { "amount": 1, "cost": 1628, "Полувагон": { "amount": 1, "cost": 1628 } }, "3. Текущий ремонт колесной пары": { "amount": 2, "cost": 15588.62, "Полувагон": { "amount": 2, "cost": 15588.62 } }, "Колодка тормозная": { "amount": 1, "cost": 635.9, "Полувагон": { "amount": 1, "cost": 635.9 } } } }, "Капитальный": { "amount": 3, "cost": 281466.76, "4. КР": { "amount": 3, "cost": 281466.76, "1. Работа по ремонту вагона": { "amount": 2, "cost": 279000, "Полувагон": { "amount": 2, "cost": 279000 } }, "Работы по нанесению логотипа": { "amount": 1, "cost": 2466.76, "Полувагон": { "amount": 1, "cost": 2466.76 } } } }
-            },
+            data: "",
             date_begin: "",
             date_end: "",
             loader: false,
@@ -200,16 +232,46 @@ export default {
             notifyClass: "",
             TOTAL: "",
             today: "",
+
+            alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+            amount_cols: 0,
+
         }
+    },
+    computed: {
+        getTh() {
+            return this.alphabet.slice(0, 10)
+        },
     },
     mounted() {
         this.today = new Date().getMilliseconds() + Math.random() * 150
+    },
+    filters: {
+        format(value) {
+            if (value != "" && !!value) {
+                let TwoSignNum = value?.toFixed(2)
+                return String(TwoSignNum).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+            }
+            return value
 
-
-
-
+        },
     },
     methods: {
+        DownloadExcel() {
+      var table = this.$refs.theTable;
+      var tableHTML = table.outerHTML;
+      var fileName = "Таблица 'Форма 22'.xls";
+
+      // var msie = window.navigator.userAgent.indexOf("MSIE ");
+
+      var a = document.createElement("a");
+      tableHTML = tableHTML.replace(/  /g, "").replace(/ /g, "%20");
+      a.href = "data:application/vnd.ms-excel," + tableHTML;
+      a.setAttribute("download", fileName);
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    },
         CheckValue(value) {
             let client = value;
             if (
