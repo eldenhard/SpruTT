@@ -43,11 +43,11 @@
                         <input type="checkbox" value="Слежение" id="Слежение" v-model="wagon_belong">
                         <label for="Слежение" style="color: black;">&nbsp;Слежение</label>
                         <br>
-                     
+
                     </label>
                 </div>
                 <div></div>
-                <div  style="display: flex;  flex-direction: column;">
+                <div style="display: flex;  flex-direction: column;">
                     <label for="" style="color: gray;">
                         Принадлежность
                         <br />
@@ -85,13 +85,61 @@
 
         <h4 class="NoData" v-show="NoData">По заданным параметрам нет данных</h4>
 
-        <div :id="'FuckingData1' + today"></div>
+        {{ data }}
+        <table>
+            <thead>
+                <tr>
+                    <td rowspan="2">Показатель</td>
+                    <td rowspan="2">Всего</td>
+                    <td rowspan="2">Кол-во</td>
+                    <td rowspan="2">Цена</td>
+                    <td colspan="2">В т.ч. по типам ПС</td>
+                </tr>
+                <tr>
+                    <td>ПВ</td>
+                    <td>ЦС</td>
+                </tr>
+            </thead>
+            <tbody>
+                <template v-for="item, inducation in data">
+                    <template v-for="group in getNextKey(item)">
+                        <tr class="Total_blue" v-if="CheckValue(inducation)">
+                                <td>{{ inducation }}</td>
+                            </tr>
+                            <tr class="Total_1" v-if="CheckValue(inducation)">
+                                <td>{{ group }}</td>
+                            </tr>
+                        <template v-for="service in getNextKey(item[group])">
+                            <tr v-if="CheckValue(inducation)">
+                                <td >{{ service }}</td>
+                            </tr>
+                        </template>
+                    </template>
+                </template>
+            </tbody>
+        </table>
 
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
 
     </div>
 </template>
-<style>
+<style scoped>
+@import '../../../style/UOTableStyle.css';
+
+td,
+th {
+    white-space: nowrap;
+    padding: 0 10px !important;
+}
+
+tr>td:first-child {
+    text-align: left !important;
+}
+
+tr:hover {
+    background: lightcyan;
+}
+
 .filter_block {
     display: flex;
     justify-content: space-between;
@@ -104,10 +152,7 @@
     margin-top: 15%;
 }
 
-#FuckingData1 {
-    margin-top: 1%;
 
-}
 
 tr,
 td,
@@ -129,13 +174,26 @@ export default {
     components: { Periods, Notifications, Loader },
     data() {
         return {
-            NoData: false,
-            data3123: "",
+
+            data: {
+                "Текущий 1":
+                {
+                    "amount": 13, "cost": 56984.29999999998,
+                    "1. ТР-1": {
+                        "amount": 13, "cost": 56984.29999999998,
+                        "2. Подача-уборка вагона": {
+                            "amount": 4, "cost": 5311.820000000001,
+                            "Полувагон": { "amount": 4, "cost": 5311.820000000001 }
+                        }, "1. Работа по ремонту вагона": { "amount": 9, "cost": 51672.47999999999, "Полувагон": { "amount": 9, "cost": 51672.47999999999 } }
+                    }
+                }, "amount": 39, "cost": 402946.41, "Текущий 2": { "amount": 23, "cost": 64495.350000000006, "2. ТР-2": { "amount": 23, "cost": 64495.350000000006, "1. Работа по ремонту вагона": { "amount": 6, "cost": 6060.790000000001, "Полувагон": { "amount": 6, "cost": 6060.790000000001 } }, "2. Подача-уборка вагона": { "amount": 7, "cost": 14303.159999999998, "Полувагон": { "amount": 7, "cost": 14303.159999999998 } }, "Контрольные и регламентные операции": { "amount": 6, "cost": 26278.879999999997, "Полувагон": { "amount": 6, "cost": 26278.879999999997 } }, "Услуга по оформлению рекламационно-претензионной документации": { "amount": 1, "cost": 1628, "Полувагон": { "amount": 1, "cost": 1628 } }, "3. Текущий ремонт колесной пары": { "amount": 2, "cost": 15588.62, "Полувагон": { "amount": 2, "cost": 15588.62 } }, "Колодка тормозная": { "amount": 1, "cost": 635.9, "Полувагон": { "amount": 1, "cost": 635.9 } } } }, "Капитальный": { "amount": 3, "cost": 281466.76, "4. КР": { "amount": 3, "cost": 281466.76, "1. Работа по ремонту вагона": { "amount": 2, "cost": 279000, "Полувагон": { "amount": 2, "cost": 279000 } }, "Работы по нанесению логотипа": { "amount": 1, "cost": 2466.76, "Полувагон": { "amount": 1, "cost": 2466.76 } } } }
+            },
             date_begin: "",
             date_end: "",
             loader: false,
             wag_type: [],
             wagon_belong: [],
+            NoData: false,
             showNotify: false,
             notifyHead: "",
             notifyMessage: "",
@@ -152,6 +210,29 @@ export default {
 
     },
     methods: {
+        CheckValue(value) {
+            let client = value;
+            if (
+                client != 'amount' &&
+                client != 'cost'
+            ) {
+                return true;
+            }
+        },
+        getNextKey(obj) {
+            const keys = Object.keys(obj);
+            let correctKeys = [];
+            for (let i of keys) {
+                if (
+                    i == 'amount' ||
+                    i == 'cost') {
+                    continue;
+                } else {
+                    correctKeys.push(i);
+                }
+            }
+            return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
+        },
         Translate(val) {
             switch (val) {
                 case 'amount':
@@ -173,93 +254,11 @@ export default {
         FilterValue(val) {
             return String(val).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
         },
-        TEST(obj) {
-            let arr = []
-            for (let i in obj) {
 
-                arr.push([i, obj[i]])
-            }
 
-            arr.sort(function (a, b) {
-                if (Array.isArray(a[1])) {
-                    return 1
-                }
-                if (Array.isArray(b[1])) {
-                    return -1
-                }
-                if (Array.isArray(a[1]) && Array.isArray(b[1])) {
-                    return 0
-                }
-                if (typeof a[1] < typeof b[1]) {
-                    return 1
-                }
-                if (typeof a[1] > typeof b[1]) {
-                    return -1
-                }
-                return 0;
-            });
-            return arr
-        },
-        OpenChildren(eventDiv = null, val) {
-            let collapse = "+"
-            let val_copy = this.TEST(val)
-            let hr = null
-            let children = []
-            try {
-                children = eventDiv.target.childNodes
-            }
-            catch (error) {
-                children = eventDiv.childNodes
-            }
-            if (children.length > 1) {
-                while (children.length != 1) {
-                    try {
-                        eventDiv.target.removeChild(children[1])
-
-                    }
-                    catch {
-                        eventDiv.removeChild(children[1])
-
-                    }
-                }
-            }
-            else {
-                for (let i in val_copy) {
-                    let key = val_copy[i][0]
-                    let value = val_copy[i][1]
-                    let div = document.createElement('div')
-                    if (typeof value == 'number') {
-                        hr = null
-                        let name = this.Translate(key)
-                        let value123 = this.FilterValue(value.toFixed(2))
-                        div.innerHTML = `${name}: ${value123}`
-                        div.style = 'margin-left: 8% !important; font-weight: 500; color: black; padding: 0; background: #9FD5B7;'
-                    }
-                    else {
-                        hr = document.createElement('hr')
-                        div.innerHTML = `${this.Translate(key)} ${collapse}`
-                        div.style = 'margin-left: 8% !important; font-weight: 500; color: darkblue; border: 1px solid lightgrey; padding: 1%;'
-
-                    }
-                    div.addEventListener('click', () => {
-
-                        event.stopPropagation()
-                        this.OpenChildren(div, value)
-                    })
-                    try {
-                        eventDiv.target.append(div)
-                        // if(hr != null) eventDiv.target.append(hr)
-                    } catch {
-                        eventDiv.append(div)
-                        // if(hr != null) eventDiv.append(hr)
-                    }
-                }
-            }
-        },
         Actioned() {
-            this.NoData = false
-            document.getElementById('FuckingData1' + this.today).innerHTML = ""
-            if (this.wag_type.length == 0  || this.wagon_belong.length == 0 || this.date_begin == "" || this.date_end == "") {
+
+            if (this.wag_type.length == 0 || this.wagon_belong.length == 0 || this.date_begin == "" || this.date_end == "") {
                 this.notifyHead = "Ошибка";
                 this.notifyMessage = 'Заполните все поля';
                 this.notifyClass = "wrapper-error";
@@ -271,15 +270,10 @@ export default {
             } else {
                 this.loader = true;
                 api
-                    .getUO422(this.date_begin, this.date_end,  this.wag_type.join(','), this.wagon_belong.toString())
+                    .getUO422(this.date_begin, this.date_end, this.wag_type.join(','), this.wagon_belong.toString())
                     .then((response) => {
                         this.loader = false;
-                        this.data3123 = response.data;
-                        this.OpenChildren(document.getElementById('FuckingData1' + this.today), this.data3123)
-                        if(Object.keys(this.data3123).length == 0){
-                            this.NoData = true
-                        }
-     
+                        this.data = response.data;
                     })
                     .catch((error) => {
                         console.log(error);

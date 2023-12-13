@@ -182,7 +182,7 @@ export default {
   data() {
     return {
       id_page: new Date(),
-      jsonData,
+  
       dataReport8: "",
       loader: false,
       date_begin: "",
