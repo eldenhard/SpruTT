@@ -123,7 +123,7 @@
 
     </div>
 </template>
-<style scoped>
+<style>
 @import '../../../style/UOTableStyle.css';
 
 td,
