@@ -79,7 +79,7 @@
 
 
             </div>
-            <Periods @Action="Actioned" @data="getCurrentData" />
+            <Periods @Action="Actioned" @data="getCurrentData" style="width: 30%"/>
            
            
         </div>

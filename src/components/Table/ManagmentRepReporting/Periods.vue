@@ -4,18 +4,18 @@
       <label for="dateStart" :class="{ Error: is_error_start }"
       style="width: 100%" >Начало периода
         <br />
-        <input type="date" id="dateStart" v-model="date_begin" min="2022-01-01"  style="width: 100%"/>
+        <input type="date" id="dateStart" v-model="date_begin" min="2022-01-01"  />
       </label>
 
       <label for="dateEnd" :class="{ Error: is_error_end }"
       style="width: 100%"  >Конец периода
         <br />
-        <input type="date" id="dateEnd" v-model="date_end" min="2022-01-01" style="width: 100%"/>
+        <input type="date" id="dateEnd" v-model="date_end" min="2022-01-01" />
       </label>
     </div>
     <slot></slot>
     
-    <button class="Accept" @click="getData()">Загрузить данные</button>
+    <button class="Accept" @click="getData()" style="height: 40px; ">Загрузить данные</button>
   </div>
 </template>
 

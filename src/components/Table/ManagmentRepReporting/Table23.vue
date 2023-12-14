@@ -1,48 +1,61 @@
 <template>
     <div>
+        <p class="explanation">* По клику на строку таблицы вы можете дополнительно выделить её цветом, для собственных
+            нужд, <br>
+            для снятия выделения повторно кликните на этот элменет</p>
         <p>Форма 4.23. "Депо плановых ремонтов"</p>
-        <div style="overflow: auto;">
+        <Loader :loader="loader" />
+        <Periods @Action="Actioned" @data="getCurrentData" />
+        <div style="overflow: auto; margin-top: 4%;">
             <table>
                 <thead>
-                    <tr >
-                        <th>Наименование ВРД</th>
-                        <th>Доля, %</th>
+                    <tr>
+                        <th rowspan="2">Наименование ВРД</th>
+                        <th rowspan="2">Доля, %</th>
+                        <th rowspan="2">Всего в т.ч</th>
+                        <th colspan="2">ПВ</th>
+                        <th colspan="2">ЦС</th>
+                    </tr>
+                    <tr>
+                        <th>Доля по ВРД, %</th>
                         <th>Всего в т.ч</th>
-                        <th>ПВ</th>
-                        <th>ЦС</th>
-                       
-
+                        <th>Доля по ВРД, %</th>
+                        <th>Всего в т.ч</th>
+                    </tr>
+                    <tr class="RowAlphabet">
+                        <th v-for="item in getTh" :key="item.id">{{ item.toUpperCase() }}</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr class="col0">
-                        <td>Ремонт</td>
-                        <td>{{ Math.floor(Math.random() * 100) }}</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
+                <tbody v-if="Object.keys(this.data).length > 0">
+                    <template v-for="item, index in data">
+                        <tr @click="ChangeColorRow($event.target)">
+                            <td v-if="CheckValue(index)">{{ index }}</td>
+                            <td v-if="CheckValue(index)">{{ (item.hash_value / data.hash_value * 100)?.toFixed(2) }} %</td>
+                            <td v-if="CheckValue(index)">{{ item.hash_value }}</td>
 
-                    </tr>
-                    <tr class="col0">
-                        <td>Профилактика</td>
-                        <td>{{ Math.floor(Math.random() * 100) }}</td>
-                        <td>{{ Math.floor(Math.random() * 140) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
+                            <td v-if="CheckValue(index)">
+                                {{ isNaN(item['Полувагон']?.hash_value / item.hash_value) ? "0" :
+                                    (item['Полувагон']?.hash_value / item.hash_value * 100)?.toFixed(2) }} %
+                            </td>
 
-                    </tr>
-                
-                    <tr class="total">
+                            <td v-if="CheckValue(index)">{{ item['Полувагон']?.hash_value ?? '0' }}</td>
+
+                            <td v-if="CheckValue(index)">{{ isNaN(item['Цистерна']?.hash_value / item.hash_value) ? 0 :
+                                (item['Цистерна']?.hash_value / item.hash_value * 100)?.toFixed(2) }} %</td>
+                            <td v-if="CheckValue(index)">
+                                {{ item['Цистерна']?.hash_value ?? '0' }}</td>
+                        </tr>
+                    </template>
+                    <tr class="GrandTotal">
                         <td>Итого</td>
-                        <td>{{ Math.floor(Math.random() * 100) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 215) }}</td>
-                        <td>{{ Math.floor(Math.random() * 752) }}</td>
-
+                        <td></td>
+                        <td>{{ data.hash_value }}</td>
+                        <td>{{ (sumPoluvagon / data.hash_value * 100)?.toFixed(2) }} %</td>
+                        <td>{{ sumPoluvagon }}</td>
+                        <td>{{ (sumTsisterna / data.hash_value * 100)?.toFixed(2) }} %</td>
+                        <td>{{ sumTsisterna }}</td>
                     </tr>
-
                 </tbody>
-
             </table>
         </div>
 
@@ -50,14 +63,98 @@
 </template>
 
 <script>
+import Periods from "./Periods.vue";
+import api from "@/api/reportUO"
+import Notifications from "@/components/notifications/Notifications.vue";
+import Loader from "@/components/loader/loader.vue";
+import AverageValue from '@/mixins/AverageValue'
 export default {
+    components: { Periods, Notifications, Loader, },
+    mixins: [AverageValue],
     data() {
         return {
 
+            data: "",
+            alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
+            amount_cols: 0,
+            loader: false,
+            sumPoluvagon: 0,
+            sumTsisterna: 0,
+            date_begin: "",
+            date_end: "",
+
         }
     },
-
+    computed: {
+        getTh() {
+            return this.alphabet.slice(0, 7)
+        },
+    },
+    watch: {
+        data: {
+            immediate: true,
+            handler() {
+                this.calculateSums();
+            },
+        },
+    },
     methods: {
+        ChangeColorRow(element) {
+            if (element.parentNode.classList.contains('active_row')) {
+                element.parentNode.classList.remove('active_row')
+            } else {
+                element.parentNode.classList.add('active_row')
+            }
+        },
+        calculateSums() {
+            this.sumPoluvagon = Object.values(this.data).reduce((sum, item) => {
+                return sum + (item['Полувагон']?.hash_value || 0);
+            }, 0);
+
+            this.sumTsisterna = Object.values(this.data).reduce((sum, item) => {
+                return sum + (item['Цистерна']?.hash_value || 0);
+            }, 0);
+        },
+        CheckValue(value) {
+            let client = value;
+            if (
+                client != 'hash_value'
+            ) {
+                return true;
+            }
+        },
+        Actioned() {
+            this.loader = true;
+            api
+                .getUO423(this.date_begin, this.date_end)
+                .then((response) => {
+                    this.loader = false;
+                    this.data = response.data;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.loader = false;
+                });
+
+
+        },
+        getCurrentData(data) {
+            this.date_begin = data.date_begin;
+            this.date_end = data.date_end;
+        },
+        getNextKey(obj) {
+            const keys = Object.keys(obj);
+            let correctKeys = [];
+            for (let i of keys) {
+                if (
+                    i == 'hash_value') {
+                    continue;
+                } else {
+                    correctKeys.push(i);
+                }
+            }
+            return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
+        },
         getRowCount(obj) {
             let total = 0;
             let last_item = '';
@@ -70,95 +167,20 @@ export default {
 }
 </script>
 
-
 <style scoped>
-
-.col1{
-    background: #F2F2F2
-}
-.col2{
-    background: #FDFFD9;
-}
-.total {
-    background: #FDFFD9;
-}
-
-.total_2 {
-    background: #DDFACE;
-}
-
-tr:hover {
-    background: rgb(236, 236, 236);
-}
-
-.itogo {
-    font-weight: bold;
-    border-right: none !important;
-
-}
-
-.all_total {
-    background: #EAF1DD;
-}
-
-/* .last:nth-last-of-type(3n) {
-   border-bottom: 2px solid rgb(0, 0, 0) !important
-} */
-.total_row {
-    background: #DAEEF3;
-}
+@import '../../../style/UOTableStyle.css';
 
 td,
 th {
-    border: 1px solid rgb(102, 102, 102) !important;
-    color: black !important;
+    white-space: nowrap;
+    padding: 0 10px !important;
 }
 
-.all_total {
-    background: #EAF1DD;
+tr>td:first-child {
+    text-align: left !important;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+tr:hover {
+    background: lightcyan;
 }
-
-table>tbody>tr>td,
-table>tbody>tr>td.inner>div {
-    vertical-align: top;
-    border: 1px solid #ddd;
-}
-
-table>tbody>tr>td.inner {
-    padding: 0;
-    border-right: 0;
-}
-
-table>tbody>tr>td.inner>div {
-    padding: 5px;
-    border-width: 0 0 1px 0;
-}
-
-table>tbody>tr>td.inner>div:last-child {
-    border: 0;
-}
-
-table>tbody>tr>td.inner>table {
-    margin-bottom: 0;
-}
-
-table>tbody>tr>td.inner>table td {
-    border-width: 0 1px 1px 0;
-}
-
-table>tbody>tr>td.inner>table tr:last-child td {
-    border-bottom: 0;
-}
-
-table>tbody>tr>td.inner>div {
-    border-right: 0;
-}
-
-thead>th {
-    border: 1px solid black;
-}</style>
+</style>
