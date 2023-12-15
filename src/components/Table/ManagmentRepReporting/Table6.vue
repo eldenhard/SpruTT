@@ -20,7 +20,7 @@
     </Periods>
     <br />
 
-    <p>Форма 4.6. "Справка о выполнении перевозок вагоно-цистернами"</p>
+    <p>Форма 4.6. "Справка о выполнении перевозок {{ wag_type == 'Цистерна'  ?  wag_type.toLowerCase() + 'ми' : wag_type.toLowerCase() + 'ами'}}"</p>
     <!-- <div :id="'TableReport6'+id_page" ></div> -->
     <div class="block-table" >
       <table style="margin: 0 auto !important;">

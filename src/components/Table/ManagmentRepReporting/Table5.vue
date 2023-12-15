@@ -15,7 +15,7 @@
     <br />
 
     <!-- <pre>{{ normalized }}</pre> -->
-    <p>Форма 4.5. "Справка о выполнении перевозок полувагонами"</p>
+    <p>Форма 4.5. "Справка о выполнении перевозок {{ wag_type == 'Цистерна'  ?  wag_type.toLowerCase() + 'ми' : wag_type.toLowerCase() + 'ами'}}"</p>
     <div  class="block-table">
       <table class="table_search" >
         <thead>

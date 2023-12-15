@@ -85,6 +85,7 @@ export default {
 
         }
     },
+    
     computed: {
         getTh() {
             return this.alphabet.slice(0, 7)
