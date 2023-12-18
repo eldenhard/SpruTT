@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 80vw !important;">
     <Loader :loader="loader" />
     <h3 class="explanation" style="font-size: 17px; margin-top: -1%;">
       Перед использованием этого раздела обязательно выполнить <a @click="instruction = !instruction">следующие действия с
@@ -94,14 +94,7 @@
           Дата акта<br />
           <input type="date" v-model="act_date" id="act_date" class="textarea mini" />
         </label>
-        <!-- <label for="">
-        Подготовлено под груз<br />
-        <input type="text" v-model="for_cargo" class="textarea mini" />
-      </label>
-      <label for="">
-        Из под груза<br />
-        <input type="text" v-model="from_cargo" class="textarea mini" />
-      </label> -->
+
         <label for="">
           <br />
           <button class="button Accept mini" style="width: 350px" @click="sendData()">Отправить</button>
@@ -154,94 +147,125 @@
       </div>
       <button class="Delete button" style="width: 15%; white-space: nowrap; margin: 2% 0; height: 30px"
         @click="deleteChecked(selectedItems)">Удалить выбранное</button>
-      <table style="margin-top: 2%;">
-        <thead style="border-top: none !important;">
-          <tr style="border: none !important">
-            <th style="border: none !important"></th>
-            <th style="border: none !important"><button class="delete_col" @click="delete_col('wagon')">Удалить
-                столб.</button></th>
-            <th style="border: none !important"><button class="delete_col" @click="delete_col('date_pp_in')">Удалить
-                столб.</button></th>
-            <th style="border: none !important"><button class="delete_col" @click="delete_col('date_work')">Удалить
-                столб.</button></th>
-            <th style="border: none !important"><button class="delete_col" @click="delete_col('date_pp_out')">Удалить
-                столб.</button></th>
-            <!-- <th style="border: none !important"><button class="delete_col" @click="delete_col('days')">Удалить столб.</button></th>
-    <th style="border: none !important"><button class="delete_col" @click="delete_col('date_processing')">Удалить столб.</button></th> -->
-            <th style="border: none !important"><button class="delete_col"
-                @click="delete_col('application_number')">Удалить столб.</button></th>
-            <th style="border: none !important"><button class="delete_col" @click="delete_col('operation')">Удалить
-                столб.</button></th>
-            <th style="border: none !important"><button class="delete_col" @click="delete_col('price_wo_nds')">Удалить
-                столб.</button></th>
-          </tr>
-          <tr>
-            <th style="border-left: 1px solid white; border-top: 1px solid white;">
-              <label for="all" style="display: flex; align-items: center; justify-content: center">Все&nbsp;<input
-                  id="all" type="checkbox" :checked="selectAll" @change="toggleSelectAll"></label>
-            </th>
-            <th>№</th>
-            <th>
-              <input type="text" @keyup.enter="save($event)" placeholder="введите № вагона" id="wagon" class="in_data"
-                style="border: 1px solid black !important" />
-              <br />
-              Вагон
-            </th>
-            <th>
-              <input type="text" @keyup.enter="save($event)" placeholder="введите дату" id="date_pp_in" class="in_data"
-                style="border: 1px solid black !important" />
-              <br />Дата передачи на подъез. путь
-            </th>
-            <th>
-              <input type="text" @keyup.enter="save($event)" placeholder="введите дату" id="date_work" class="in_data"
-                style="border: 1px solid black !important" />
-              <br />Дата проведения работ
-            </th>
-            <th>
-              <input type="text" @keyup.enter="save($event)" placeholder="введите дату" id="date_pp_out" class="in_data"
-                style="border: 1px solid black !important" />
-              <br />Дата вывода с подъез. пути
-            </th>
-            <th>
-              <input type="text" @keyup.enter="save($event)" placeholder="введите кол-во дней" id="days" class="in_data"
-                style="border: 1px solid black !important" />
-              <br />Расчетное время в сутках
-            </th>
+      <div style="overflow:auto">
+        <table style="margin-top: 2%;">
+          <thead style="border-top: none !important;">
+            <tr style="border: none !important">
+              <th style="border: none !important"></th>
+              <th style="border: none !important"></th>
+              <th style="border: none !important"><button class="delete_col" @click="delete_col('wagon')">Удалить
+                  столб.</button></th>
+              <th style="border: none !important"><button class="delete_col" @click="delete_col('date_pp_in')">Удалить
+                  столб.</button></th>
+              <th style="border: none !important"><button class="delete_col" @click="delete_col('date_work')">Удалить
+                  столб.</button></th>
+              <th style="border: none !important"><button class="delete_col" @click="delete_col('date_pp_out')">Удалить
+                  столб.</button></th>
+              <th style="border: none !important"><button class="delete_col"
+                  @click="delete_col('application_number')">Удалить столб.</button></th>
+              <th style="border: none !important"><button class="delete_col" @click="delete_col('operation')">Удалить
+                  столб.</button></th>
+              <th style="border: none !important"><button class="delete_col" @click="delete_col('price_wo_nds')">Удалить
+                  столб.</button></th>
+              <th style="border: none !important"><button class="delete_col" @click="delete_col('station_name')">Удалить
+                  столб.</button></th>
+              <th style="border: none !important"><button class="delete_col" @click="delete_col('currency')">Удалить
+                  столб.</button></th>
+              <th style="border: none !important"><button class="delete_col" @click="delete_col('agent_reward')">Удалить
+                  столб.</button></th>
+              <th style="border: none !important"><button class="delete_col"
+                  @click="delete_col('fact_wagon_compensation')">Удалить столб.</button></th>
+            </tr>
+            <tr>
+              <th style="border-left: 1px solid white; border-top: 1px solid white;">
+                <label for="all" style="display: flex; align-items: center; justify-content: center">Все&nbsp;<input
+                    id="all" type="checkbox" :checked="selectAll" @change="toggleSelectAll"></label>
+              </th>
+              <th>№</th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите № вагона" id="wagon" class="in_data"
+                  style="border: 1px solid black !important" />
+                <br />
+                Вагон
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите дату" id="date_pp_in" class="in_data"
+                  style="border: 1px solid black !important" />
+                <br />Дата передачи на подъез. путь
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите дату" id="date_work" class="in_data"
+                  style="border: 1px solid black !important" />
+                <br />Дата проведения работ
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите дату" id="date_pp_out" class="in_data"
+                  style="border: 1px solid black !important" />
+                <br />Дата вывода с подъез. пути
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите кол-во дней" id="days" class="in_data"
+                  style="border: 1px solid black !important" />
+                <br />Расчетное время в сутках
+              </th>
 
-            <th>
-              <input type="text" @keyup.enter="saveOperation($event)" placeholder="введите операцию" id="operation"
-                class="in_data" style="border: 1px solid black !important" />
-              <br />Операция
-            </th>
-            <th>
-              <input type="text" @keyup.enter="save($event)" placeholder="введите цену" id="price_wo_nds" class="in_data"
-                style="border: 1px solid black !important" />
-              <br />Цена без НДС
-            </th>
-          </tr>
-        </thead>
-        <tbody ref="table_watch">
-          <tr v-for="(item, index) in data" :key="item.id">
+              <th>
+                <input type="text" @keyup.enter="saveOperation($event)" placeholder="введите операцию" id="operation"
+                  class="in_data" style="border: 1px solid black !important" />
+                <br />Операция
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите цену" id="price_wo_nds"
+                  class="in_data" style="border: 1px solid black !important" />
+                <br />Цена без НДС
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите станцию" id="station_name"
+                  class="in_data" style="border: 1px solid black !important" />
+                <br />Станция
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите валюту" id="currency" class="in_data"
+                  style="border: 1px solid black !important" />
+                <br />Валюта
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите сумму" id="agent_reward"
+                  class="in_data" style="border: 1px solid black !important" />
+                <br />Агентское вознаграждение
+              </th>
+              <th>
+                <input type="text" @keyup.enter="save($event)" placeholder="введите данные" id="fact_wagon_compensation"
+                  class="in_data" style="border: 1px solid black !important" />
+                <br />Факт по вагонам к возмещению
+              </th>
+            </tr>
+          </thead>
+          <tbody ref="table_watch">
+            <tr v-for="(item, index) in data" :key="item.id">
 
-            <td>
-              <input type="checkbox" :checked="isSelected(index)" @change="toggleItemSelection(index)">
-            </td>
+              <td>
+                <input type="checkbox" :checked="isSelected(index)" @change="toggleItemSelection(index)">
+              </td>
 
-            <td @click="deleteRow(index)" v-b-tooltip.hover :title="item.error" class="delete"
-              :class="{ error: item.error != null }">{{ index + 1 }}</td>
-            <td><input type="number" v-model="item.wagon" /></td>
-            <td><input type="date" v-model="item.date_pp_in" /></td>
-            <td><input type="date" v-model="item.date_work" /></td>
-            <td><input type="date" v-model="item.date_pp_out" /></td>
-            <td><input type="number" v-model="item.days" /></td>
-            <!-- <td><input type="date" v-model="item.date_processing" /></td>
-          <td><input type="text" v-model="item.application_number" /></td> -->
-            <td><input type="text" v-model="item.operation" /></td>
-            <td><input type="text" v-model="item.price_wo_nds" /></td>
+              <td @click="deleteRow(index)" v-b-tooltip.hover :title="item.error" class="delete"
+                :class="{ error: item.error != null }">{{ index + 1 }}</td>
+              <td><input type="number" v-model="item.wagon" /></td>
+              <td><input type="date" v-model="item.date_pp_in" /></td>
+              <td><input type="date" v-model="item.date_work" /></td>
+              <td><input type="date" v-model="item.date_pp_out" /></td>
+              <td><input type="number" v-model="item.days" /></td>
+              <td><input type="text" v-model="item.operation" /></td>
+              <td><input type="text" v-model="item.price_wo_nds" /></td>
 
-          </tr>
-        </tbody>
-      </table>
+              <td><input type="text" v-model="item.station_name" /></td>
+              <td><input type="text" v-model="item.currency" /></td>
+              <td><input type="text" v-model="item.agent_reward" /></td>
+              <td><input type="text" v-model="item.fact_wagon_compensation" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <ActBaseReader />
@@ -272,7 +296,10 @@ class MyClass {
     this.wagon = 0;
     this.for_cargo = null;
     this.from_cargo = null;
-    this.act_date = null;
+    this.currency = null;
+    this.station_name = null;
+    this.agent_reward = null;
+    this.fact_wagon_compensation = null;
     this.error = null;
   }
   set date_pp_in(value) {
@@ -314,14 +341,6 @@ class MyClass {
     return (this.date_processing = this._date_processing);
   }
 
-  // set price_wo_nds(value){
-  //   let date = value
-  //   let a = date.replace(',', '.')
-  //   this._price_wo_nds = a
-  // }
-  // get price_wo_nds(){
-  //   return (this.price_wo_nds = this._price_wo_nds)
-  // }
   JSON() {
     return {
       date_pp_in: this._date_pp_in || null,
@@ -334,6 +353,10 @@ class MyClass {
       price_wo_nds: this.price_wo_nds,
       counterparty: this.counterparty,
       wagon: this.wagon,
+      agent_reward: this.agent_reward,
+      fact_wagon_compensation: this.fact_wagon_compensation,
+      station_name: this.station_name,
+      currency: this.currency,
       for_cargo: null,
       from_cargo: null,
       act_date: this.act_date || null,
@@ -428,8 +451,7 @@ export default {
     deleteChecked(indexArray) {
       this.data = this.data.filter((_, index) => !indexArray.includes(index));
       this.selectedItems = [];
-}, 
-
+    },
     toggleSelectAll() {
       this.selectAll = !this.selectAll
       if (this.selectAll) {
@@ -514,7 +536,6 @@ export default {
       type.target.value = "";
     },
     sendData() {
-      console.log('123')
       if (this.counterparties == "" || this.application_number == "") {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Поле Контрагент и № акта обязательны к заполнению!";
@@ -526,9 +547,6 @@ export default {
       } else {
         this.loader = true;
         for (let i in this.data) {
-          console.log(this.data[i].price_wo_nds)
-        }
-        for (let i in this.data) {
           this.data[i].act_date = this.act_date;
           this.data[i].counterparty = this.counterparties;
           this.data[i].from_cargo = null;
@@ -536,8 +554,12 @@ export default {
           this.data[i].price_wo_nds == "" || this.data[i].price_wo_nds == 0 || this.data[i].price_wo_nds === null ? this.data[i].price_wo_nds = null : this.data[i].price_wo_nds = this.data[i].price_wo_nds.replace(',', '.')
           this.data[i].application_number = this.application_number
 
-        }
+          this.data[i].agent_reward = this.agent_reward
+          this.data[i].fact_wagon_compensation = this.fact_wagon_compensation
+          this.data[i].station_name = this.station_name
+          this.data[i].currency = this.currency
 
+        }
 
         let arr = this.data.map((item) => {
           return item.JSON();
@@ -686,5 +708,4 @@ input {
 
 .col3 {
   border: none;
-}
-</style>
+}</style>

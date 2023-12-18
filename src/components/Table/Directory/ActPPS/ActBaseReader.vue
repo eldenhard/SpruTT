@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 5%">
+  <div style="margin-top: 5%; width: 80vw !important;">
     <Loader :loader="loader" />
 
     <b-modal id="AcTDelete" hide-footer>
@@ -65,7 +65,8 @@
     <p class="amount" style="padding-top: 2%">
       Всего записей: {{ total_objects }}
     </p>
-    <table border="1">
+    <div style="overflow: auto; ">
+    <table border="1" style="width: 100%">
       <thead>
         <tr>
           <th style="border-left: 1px solid white; border-top: 1px solid white;">
@@ -79,12 +80,16 @@
           <th>Дата вывода с подъез. пути</th>
           <th>Расчетное время в сутках</th>
           <th>Операция</th>
+          <th>Станция</th>
           <!-- <th>Номер заявки</th>
           <th>Операция</th> -->
           <th>Цена без НДС</th>
+          <th>Валюта</th>
           <th>Контрагент</th>
+          <th>Агентское вознаграждение</th>
           <th>№ акта</th>
           <th>Дата акта</th>
+          <th>Факт по вагонам к возмещению</th>
           <!-- <th>Подготовлено под груз (код 6)</th>
           <th>Из под груза (код 6)</th> -->
         </tr>
@@ -148,13 +153,28 @@
               :idElement="`operation ${item.id}`" :valueDataInp="item.operation" @changeData="DataChange" />
           </td>
           <td>
+            <InputLoader :nameInp="`station_name`" :idRow="item.id" :idLoader="`station_nameload ${item.id}`"
+              :idElement="`station_name ${item.id}`" :valueDataInp="item.station_name" @changeData="DataChange" />
+          </td>
+          
+          <td>
             <InputLoader :nameInp="`price_wo_nds`" :idRow="item.id" :idLoader="`price_wo_ndsload ${item.id}`"
               :idElement="`price_wo_nds ${item.id}`" :valueDataInp="item.price_wo_nds" @changeData="DataChange" />
           </td>
           <td>
+            <InputLoader :nameInp="`currency`" :idRow="item.id" :idLoader="`currencyload ${item.id}`"
+              :idElement="`currency ${item.id}`" :valueDataInp="item.currency" @changeData="DataChange" />
+          </td>
+   
+          <td>
             <InputLoader :nameInp="`counterparty`" :idRow="item.id" :idLoader="`counterpartyload ${item.id}`"
               :idElement="`counterparty ${item.id}`" :valueDataInp="item.counterparty" @changeData="DataChange" />
           </td>
+          <td>
+            <InputLoader :nameInp="`agent_reward`" :idRow="item.id" :idLoader="`agent_rewardload ${item.id}`"
+              :idElement="`agent_reward ${item.id}`" :valueDataInp="item.agent_reward" @changeData="DataChange" />
+          </td>
+          
           <td>
             <InputLoader :nameInp="`application_number`" :idRow="item.id" :idLoader="`application_numberload ${item.id}`"
               :idElement="`application_number ${item.id}`" :valueDataInp="item.application_number" :typeInp="'text'"
@@ -165,6 +185,12 @@
               :idElement="`act_date ${item.id}`" :valueDataInp="item.act_date" :typeInp="'date'"
               @changeDate="DateChange" />
           </td>
+          <td>
+            <InputLoader :nameInp="`fact_wagon_compensation`" :idRow="item.id" :idLoader="`fact_wagon_compensationload ${item.id}`"
+              :idElement="`fact_wagon_compensation ${item.id}`" :valueDataInp="item.fact_wagon_compensation" :typeInp="'text'"
+              @changeDate="DateChange" />
+          </td>
+          
           <!-- <td>
             <InputLoader
               :nameInp="`for_cargo`"
@@ -188,6 +214,7 @@
         </tr>
       </tbody>
     </table>
+  </div>
     <div id="wrapper">
       <ul id="pagination">
         <li v-for="btn in total_pages" :key="btn.id">
@@ -570,8 +597,7 @@ export default {
             newClass.date_pp_out = response.data.data[i].date_pp_out;
             newClass.days = response.data.data[i].days;
             newClass.date_processing = response.data.data[i].date_processing;
-            newClass.application_number =
-              response.data.data[i].application_number;
+            newClass.application_number =  response.data.data[i].application_number;
             newClass.operation = response.data.data[i].operation;
             newClass.price_wo_nds = response.data.data[i].price_wo_nds;
             newClass.counterparty = response.data.data[i].counterparty;
