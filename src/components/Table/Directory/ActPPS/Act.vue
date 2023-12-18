@@ -260,7 +260,7 @@
 
               <td><input type="text" v-model="item.station_name" /></td>
               <td><input type="text" v-model="item.currency" /></td>
-              <td><input type="text" v-model="item.agent_reward" /></td>
+              <td><input type="number" v-model="item.agent_reward" /></td>
               <td><input type="text" v-model="item.fact_wagon_compensation" /></td>
             </tr>
           </tbody>
@@ -298,7 +298,7 @@ class MyClass {
     this.from_cargo = null;
     this.currency = null;
     this.station_name = null;
-    this.agent_reward = null;
+    this.agent_reward = 0;
     this.fact_wagon_compensation = null;
     this.error = null;
   }
@@ -353,10 +353,10 @@ class MyClass {
       price_wo_nds: this.price_wo_nds,
       counterparty: this.counterparty,
       wagon: this.wagon,
-      agent_reward: this.agent_reward,
-      fact_wagon_compensation: this.fact_wagon_compensation,
-      station_name: this.station_name,
-      currency: this.currency,
+      agent_reward: this.agent_reward || null,
+      fact_wagon_compensation: this.fact_wagon_compensation || null,
+      station_name: this.station_name || null,
+      currency: this.currency || null,
       for_cargo: null,
       from_cargo: null,
       act_date: this.act_date || null,
@@ -392,21 +392,6 @@ export default {
     };
   },
   mounted() {
-    // let first_row = new MyClass();
-    // first_row.date_pp_in = '2022-01-01';
-    // first_row.date_work = '2022-01-01';
-    // first_row.date_pp_out = '2022-01-01';
-    // first_row.days = 5;
-    // first_row.date_processing = '2022-01-01';
-    // first_row.application_number = 123;
-    // first_row.operation = 123;
-    // first_row.price_wo_nds = 0;
-    // first_row.counterparty = '11 ААС';
-    // first_row.wagon = 50664085;
-    // first_row.for_cargo = 11;
-    // first_row.from_cargo = 11;
-    // first_row.act_date = '2022-01-01';
-    // this.data.push(first_row)
     document.body.addEventListener("click", () => {
       this.ten_visible = false;
       this.ten_visible2 = false;
@@ -473,7 +458,6 @@ export default {
     isSelected(itemId) {
       return this.selectedItems.includes(itemId)
     },
-
     delete_col(value) {
       for (let i in this.data) {
         this.data[i][value] = null;
@@ -546,6 +530,7 @@ export default {
         }, 5500);
       } else {
         this.loader = true;
+        console.log(this.data, this.station_name)
         for (let i in this.data) {
           this.data[i].act_date = this.act_date;
           this.data[i].counterparty = this.counterparties;
