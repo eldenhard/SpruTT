@@ -40,3 +40,27 @@
 .active_row{
     background: rgb(226, 226, 226);
 }
+
+/* td,
+th {
+    white-space: nowrap;
+    padding: 0 10px !important;
+} */
+
+/* tr>td:first-child {
+    text-align: left !important;
+} */
+
+/* tr:hover {
+    background: lightcyan;
+} */
+
+tr,
+td,
+th {
+    border: 1px solid black
+}
+
+div:hover {
+    cursor: pointer;
+}

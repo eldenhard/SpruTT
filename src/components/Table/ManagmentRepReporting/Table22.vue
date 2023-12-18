@@ -167,22 +167,9 @@
 
     </div>
 </template>
-<style>
+<style scoped>
 @import '../../../style/UOTableStyle.css';
 
-td,
-th {
-    white-space: nowrap;
-    padding: 0 10px !important;
-}
-
-tr>td:first-child {
-    text-align: left !important;
-}
-
-tr:hover {
-    background: lightcyan;
-}
 
 .filter_block {
     display: flex;
@@ -196,17 +183,6 @@ tr:hover {
     margin-top: 15%;
 }
 
-
-
-tr,
-td,
-th {
-    border: 1px solid black
-}
-
-div:hover {
-    cursor: pointer;
-}
 </style>
 
 <script>

@@ -14,7 +14,7 @@
       <b-button class="mt-3" block @click="$bvModal.hide('otherChangeModal')">Нет, отменить</b-button>
     </b-modal>
     <h4>Просмотр ранее сохраненных данных</h4>
-    <div class="filter_block">
+    <div class="filter_block" s>
       <label for="">Контрагент <br>
         <select name="" id="" v-model="filter.contractor">
           <option value='ООО "Вагон-Сервис Транс"'>ООО "Вагон-Сервис Транс"</option>
@@ -40,9 +40,8 @@
       <table>
         <thead>
           <tr class="table-secondary" style="background: #E1E1E2;">
-            <th style="border-left: 1px solid white; border-top: 1px solid white;    ">
-              <label for="">Выбрать все
-                <input type="checkbox" :checked="selectAll" @change="toggleSelectAll"></label>
+            <th style="border-left: 1px solid white; border-top: 1px solid white;">
+              <label for="all" style="display: flex; align-items: center; justify-content: center">Все&nbsp;<input id="all" type="checkbox" :checked="selectAll" @change="toggleSelectAll"></label>
             </th>
             <th>Вагон</th>
             <th>Из под груза</th>
@@ -429,5 +428,7 @@ td {
   display: flex;
   justify-content: space-between;
   position: relative;
+  border: 1px solid rgb(221, 221, 221);
+  padding: 2%;
 }
 </style>

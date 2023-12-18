@@ -2,14 +2,16 @@
   <div>
     <Loader :loader="loader" />
     <h3 class="explanation" style="font-size: 17px; margin-top: -1%;">
-       Перед использованием этого раздела обязательно выполнить <a @click="instruction = !instruction">следующие действия с браузером</a><br>
+      Перед использованием этого раздела обязательно выполнить <a @click="instruction = !instruction">следующие действия с
+        браузером</a><br>
     </h3>
     <!-- <h3 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть инструкцию по браузеру' : 'Смотреть инструкцию  по браузеру' }}</h3> -->
     <div v-show="instruction">
       <p class="explanation">Пример приводится на основе браузера Google Chrome</p>
       <p>1. В адресную строку браузера ввести <b>chrome://flags/</b> и нажать Enter</p>
       <figure class="sign">
-        <p><img src="../../../../assets/Draw2.png" style="width: 80%; height: auto;" alt="Рисунок 1 - адресная строка"></p>
+        <p><img src="../../../../assets/Draw2.png" style="width: 80%; height: auto;" alt="Рисунок 1 - адресная строка">
+        </p>
       </figure>
       <br>
       <p>2. В поисковую строку открывшейся страницы ввести <b>#unsafely-treat-insecure-origin-as-secure</b></p>
@@ -17,18 +19,24 @@
         <p><img src="../../../../assets/Draw3.png" style="width: 80%; height: auto;" alt="Рисунок 2 - поиск данных"></p>
       </figure>
       <br>
-      <p>3. В поле ввода (над подчеркнутым желтым цветом поле) ввести <b>http://portal.tehtrans.com</b>, <br> перевести правый селектор в положение Enabled и нажать Relaunch</p>
+      <p>3. В поле ввода (над подчеркнутым желтым цветом поле) ввести <b>http://portal.tehtrans.com</b>, <br> перевести
+        правый селектор в положение Enabled и нажать Relaunch</p>
       <figure class="sign">
-        <p><img src="../../../../assets/Draw4.png" style="width: 80%; height: auto;" alt="Рисунок 3 - сохранение данных"></p>
+        <p><img src="../../../../assets/Draw4.png" style="width: 80%; height: auto;" alt="Рисунок 3 - сохранение данных">
+        </p>
       </figure>
       <br>
       <p>4. После нажатия на Relaunch Ваш браузер перезапустится, <br>
-         далее когда вы будете копировать данные из Excel и вставлять их в поле <b>Операция</b> браузер запросит у Вас разрешение на доступ <br>
-        <b>обязательно нажмите Разрешить</b>, после выполнения этих действий Вы можете пользоваться разделом в полной мере</p>
-         <figure class="sign">
-        <p><img src="../../../../assets/Draw5.png" style="width: 80%; height: auto;" alt="Рисунок 3 - сохранение данных"></p>
+        далее когда вы будете копировать данные из Excel и вставлять их в поле <b>Операция</b> браузер запросит у Вас
+        разрешение на доступ <br>
+        <b>обязательно нажмите Разрешить</b>, после выполнения этих действий Вы можете пользоваться разделом в полной мере
+      </p>
+      <figure class="sign">
+        <p><img src="../../../../assets/Draw5.png" style="width: 80%; height: auto;" alt="Рисунок 3 - сохранение данных">
+        </p>
       </figure>
-      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть инструкцию' : 'Смотреть инструкцию' }}</h5>
+      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть
+              инструкцию' : 'Смотреть инструкцию' }}</h5>
 
     </div>
 
@@ -80,7 +88,7 @@
         </label>
         <label for="">
           № акта<br />
-          <input type="text" v-model="application_number"  class="textarea mini" />
+          <input type="text" v-model="application_number" class="textarea mini" />
         </label>
         <label for="">
           Дата акта<br />
@@ -144,6 +152,8 @@
           </li>
         </ul>
       </div>
+      <button class="Delete button" style="width: 15%; white-space: nowrap; margin: 2% 0; height: 30px"
+        @click="deleteChecked(selectedItems)">Удалить выбранное</button>
       <table style="margin-top: 2%;">
         <thead style="border-top: none !important;">
           <tr style="border: none !important">
@@ -166,6 +176,10 @@
                 столб.</button></th>
           </tr>
           <tr>
+            <th style="border-left: 1px solid white; border-top: 1px solid white;">
+              <label for="all" style="display: flex; align-items: center; justify-content: center">Все&nbsp;<input
+                  id="all" type="checkbox" :checked="selectAll" @change="toggleSelectAll"></label>
+            </th>
             <th>№</th>
             <th>
               <input type="text" @keyup.enter="save($event)" placeholder="введите № вагона" id="wagon" class="in_data"
@@ -206,8 +220,13 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody ref="table_watch">
           <tr v-for="(item, index) in data" :key="item.id">
+
+            <td>
+              <input type="checkbox" :checked="isSelected(index)" @change="toggleItemSelection(index)">
+            </td>
+
             <td @click="deleteRow(index)" v-b-tooltip.hover :title="item.error" class="delete"
               :class="{ error: item.error != null }">{{ index + 1 }}</td>
             <td><input type="number" v-model="item.wagon" /></td>
@@ -231,7 +250,7 @@
   </div>
 </template>
 
-<!-- 12.01.1998 -->
+
 <script>
 import api from "@/api/directory";
 import ActBaseReader from "./ActBaseReader.vue";
@@ -325,6 +344,10 @@ export default {
   components: { ActBaseReader, Loader, Notifications },
   data() {
     return {
+      all_checkbox: [],
+      selectAll: false,
+      selectedItems: [],
+
       instruction: false,
       application_number: "",
       data: [],
@@ -402,6 +425,33 @@ export default {
     },
   },
   methods: {
+    deleteChecked(indexArray) {
+      this.data = this.data.filter((_, index) => !indexArray.includes(index));
+      this.selectedItems = [];
+}, 
+
+    toggleSelectAll() {
+      this.selectAll = !this.selectAll
+      if (this.selectAll) {
+        this.selectedItems = this.data.map((_, index) => index)
+      } else {
+        this.selectedItems = []
+      }
+      console.log(this.selectedItems)
+    },
+    toggleItemSelection(itemId) {
+      if (this.isSelected(itemId)) {
+        this.selectedItems = this.selectedItems.filter(id => id !== itemId)
+      } else {
+        this.selectedItems.push(itemId)
+      }
+
+      console.log(this.selectedItems)
+    },
+    isSelected(itemId) {
+      return this.selectedItems.includes(itemId)
+    },
+
     delete_col(value) {
       for (let i in this.data) {
         this.data[i][value] = null;
@@ -478,16 +528,16 @@ export default {
         for (let i in this.data) {
           console.log(this.data[i].price_wo_nds)
         }
-          for (let i in this.data) {
+        for (let i in this.data) {
           this.data[i].act_date = this.act_date;
           this.data[i].counterparty = this.counterparties;
           this.data[i].from_cargo = null;
           this.data[i].for_cargo = null;
-          this.data[i].price_wo_nds == "" ||  this.data[i].price_wo_nds == 0  ||  this.data[i].price_wo_nds === null ?  this.data[i].price_wo_nds = null : this.data[i].price_wo_nds = this.data[i].price_wo_nds.replace(',', '.')
+          this.data[i].price_wo_nds == "" || this.data[i].price_wo_nds == 0 || this.data[i].price_wo_nds === null ? this.data[i].price_wo_nds = null : this.data[i].price_wo_nds = this.data[i].price_wo_nds.replace(',', '.')
           this.data[i].application_number = this.application_number
-          
+
         }
-      
+
 
         let arr = this.data.map((item) => {
           return item.JSON();
@@ -517,7 +567,7 @@ export default {
             setTimeout(() => {
               this.showNotify = false;
             }, 5500);
-            
+
             for (let i in error.response.data) {
               this.data[error.response.data[i][0]].error =
                 error.response.data[i][1];
@@ -533,7 +583,8 @@ export default {
 };
 </script>
 
-<style scoped>a:nth-child(1) {
+<style scoped>
+a:nth-child(1) {
   color: #1D67AC !important;
   cursor: pointer;
 }
@@ -542,7 +593,8 @@ a:nth-child(1):hover {
   text-decoration: underline !important;
 }
 
-h3:nth-child(n+2), h5 {
+h3:nth-child(n+2),
+h5 {
   color: black;
 }
 
@@ -602,6 +654,7 @@ th {
 li {
   cursor: pointer;
 }
+
 li:hover {
   font-weight: 600;
 }

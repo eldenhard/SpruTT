@@ -8,24 +8,13 @@
         <h4>Вы уверены, что хотите удалить данные?</h4>
         <p>В случае удаления, данные будут потеряны безвозвратно</p>
       </div>
-      <b-button variant="danger" @click="deletePPS(selected_record)"
-        >Да, я уверен</b-button
-      >
-      <b-button class="mt-3" block @click="$bvModal.hide('AcTDelete')"
-        >Нет, отменить</b-button
-      >
+      <b-button variant="danger" @click="deletePPS(selected_record)">Да, я уверен</b-button>
+      <b-button class="mt-3" block @click="$bvModal.hide('AcTDelete')">Нет, отменить</b-button>
     </b-modal>
 
     <div class="filter">
-      <label for="amount"
-        >Количество строк <br />
-        <select
-          name="amount_row"
-          id="amount"
-          v-model="filter.page_size"
-          style="width: 100%"
-          class="mini"
-        >
+      <label for="amount">Количество строк <br />
+        <select name="amount_row" id="amount" v-model="filter.page_size" style="width: 100%" class="mini">
           <option value="" disabled>кол-во строк на странице</option>
           <option value="10">10</option>
           <option value="50">50</option>
@@ -36,32 +25,20 @@
 
       <label for="">
         Контрагент <br />
-        <input type="text" class="textarea mini" v-model="filter.counterparty"/>
+        <input type="text" class="textarea mini" v-model="filter.counterparty" />
       </label>
       <label for="">
         № вагонов <br />
-        <input type="text" class="textarea mini" v-model="filter.wagon" placeholder="№ вагонов через пробел"/>
+        <input type="text" class="textarea mini" v-model="filter.wagon" placeholder="№ вагонов через пробел" />
       </label>
 
-      <button
-        class="button Accept mini"
-        style="width: 320px;"
-        @click="getPPS()"
-      >
+      <button class="button Accept mini" style="width: 320px;" @click="getPPS()">
         Запросить
       </button>
 
-      <div
-        class="textarea"
-        style="height: auto; width: 100%; margin-top: 2%"
-        v-show="ten_visible"
-      >
+      <div class="textarea" style="height: auto; width: 100%; margin-top: 2%" v-show="ten_visible">
         <ul id="root_tenant">
-          <li
-            v-for="item in filter_cargo"
-            :key="item.id"
-            @click="checkCargo(item.code6)"
-          >
+          <li v-for="item in filter_cargo" :key="item.id" @click="checkCargo(item.code6)">
             <span>{{ item.name }} ({{ item.code6 }})</span>
             <hr />
           </li>
@@ -76,20 +53,25 @@
         left: 50%;
         transform: translate(-50%, 0);
       " v-show="ten_visible_client">
-        <ul id="root_tenant">
-          <li v-for="item in filter_client" :key="item.id" @click="checkCounterpartie(item.work_name)">
-            <span>{{ item.work_name }}</span>
-            <hr />
-          </li>
-        </ul>
-      </div>
-
+      <ul id="root_tenant">
+        <li v-for="item in filter_client" :key="item.id" @click="checkCounterpartie(item.work_name)">
+          <span>{{ item.work_name }}</span>
+          <hr />
+        </li>
+      </ul>
+    </div>
+    <button class="Delete button" style="width: 15%; white-space: nowrap; margin: 2% 0; height: 30px"
+      @click="open_modal(selectedItems)">Удалить выбранное</button>
     <p class="amount" style="padding-top: 2%">
       Всего записей: {{ total_objects }}
     </p>
     <table border="1">
       <thead>
         <tr>
+          <th style="border-left: 1px solid white; border-top: 1px solid white;">
+            <label for="all" style="display: flex; align-items: center; justify-content: center">Все&nbsp;<input id="all"
+                type="checkbox" :checked="selectAll" @change="toggleSelectAll"></label>
+          </th>
           <th>№</th>
           <th>Вагон</th>
           <th>Дата передачи на подъез. путь</th>
@@ -109,68 +91,36 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="item.id" :id="item.id">
-          <td>
-            <input
-              class="deleteRow"
-              style="width: 100%"
-              :value="index + 1"
-              readonly
-              @click="open_modal(item.id)"
-            />
+          <td style="border-left: 1px solid white;
+             border-top: 1px solid white;
+              border-bottom: 1px solid white">
+            <input type="checkbox" :checked="isSelected(item.id)" @change="toggleItemSelection(item.id)">
           </td>
           <td>
-            <InputLoader
-              :nameInp="`wagon`"
-              :idRow="item.id"
-              :idLoader="`wagload ${item.id}`"
-              :idElement="`wagon ${item.id}`"
-              :valueDataInp="item.wagon"
-              :typeInp="'number'"
-              @changeData="DataChange"
-            />
+            <input class="deleteRow" style="width: 100%" :value="index + 1" readonly @click="open_modal(item.id)" />
           </td>
           <td>
-            <InputLoader
-              :nameInp="`date_pp_in`"
-              :idRow="item.id"
-              :idLoader="`date_pp_inload ${item.id}`"
-              :idElement="`date_pp_in ${item.id}`"
-              :valueDataInp="item.date_pp_in"
-              :typeInp="'date'"
-              @changeDate="DateChange"
-            />
+            <InputLoader :nameInp="`wagon`" :idRow="item.id" :idLoader="`wagload ${item.id}`"
+              :idElement="`wagon ${item.id}`" :valueDataInp="item.wagon" :typeInp="'number'" @changeData="DataChange" />
           </td>
           <td>
-            <InputLoader
-              :nameInp="`date_work`"
-              :idRow="item.id"
-              :idLoader="`date_workload ${item.id}`"
-              :idElement="`date_work ${item.id}`"
-              :valueDataInp="item.date_work"
-              :typeInp="'date'"
-              @changeDate="DateChange"
-            />
+            <InputLoader :nameInp="`date_pp_in`" :idRow="item.id" :idLoader="`date_pp_inload ${item.id}`"
+              :idElement="`date_pp_in ${item.id}`" :valueDataInp="item.date_pp_in" :typeInp="'date'"
+              @changeDate="DateChange" />
           </td>
           <td>
-            <InputLoader
-              :nameInp="`date_pp_out`"
-              :idRow="item.id"
-              :idLoader="`date_pp_outload ${item.id}`"
-              :idElement="`date_pp_out ${item.id}`"
-              :valueDataInp="item.date_pp_out"
-              :typeInp="'date'"
-              @changeDate="DateChange"
-            />
+            <InputLoader :nameInp="`date_work`" :idRow="item.id" :idLoader="`date_workload ${item.id}`"
+              :idElement="`date_work ${item.id}`" :valueDataInp="item.date_work" :typeInp="'date'"
+              @changeDate="DateChange" />
           </td>
           <td>
-            <InputLoader
-              :nameInp="`days`"
-              :idRow="item.id"
-              :idLoader="`daysload ${item.id}`"
-              :idElement="`days ${item.id}`"
-              :valueDataInp="item.days"
-              @changeData="DataChange"
-            />
+            <InputLoader :nameInp="`date_pp_out`" :idRow="item.id" :idLoader="`date_pp_outload ${item.id}`"
+              :idElement="`date_pp_out ${item.id}`" :valueDataInp="item.date_pp_out" :typeInp="'date'"
+              @changeDate="DateChange" />
+          </td>
+          <td>
+            <InputLoader :nameInp="`days`" :idRow="item.id" :idLoader="`daysload ${item.id}`"
+              :idElement="`days ${item.id}`" :valueDataInp="item.days" @changeData="DataChange" />
           </td>
           <!-- <td>
             <InputLoader
@@ -194,56 +144,26 @@
             />
           </td> -->
           <td>
-            <InputLoader
-              :nameInp="`operation`"
-              :idRow="item.id"
-              :idLoader="`operationload ${item.id}`"
-              :idElement="`operation ${item.id}`"
-              :valueDataInp="item.operation"
-              @changeData="DataChange"
-            />
+            <InputLoader :nameInp="`operation`" :idRow="item.id" :idLoader="`operationload ${item.id}`"
+              :idElement="`operation ${item.id}`" :valueDataInp="item.operation" @changeData="DataChange" />
           </td>
           <td>
-            <InputLoader
-              :nameInp="`price_wo_nds`"
-              :idRow="item.id"
-              :idLoader="`price_wo_ndsload ${item.id}`"
-              :idElement="`price_wo_nds ${item.id}`"
-              :valueDataInp="item.price_wo_nds"
-              @changeData="DataChange"
-            />
+            <InputLoader :nameInp="`price_wo_nds`" :idRow="item.id" :idLoader="`price_wo_ndsload ${item.id}`"
+              :idElement="`price_wo_nds ${item.id}`" :valueDataInp="item.price_wo_nds" @changeData="DataChange" />
           </td>
           <td>
-            <InputLoader
-              :nameInp="`counterparty`"
-              :idRow="item.id"
-              :idLoader="`counterpartyload ${item.id}`"
-              :idElement="`counterparty ${item.id}`"
-              :valueDataInp="item.counterparty"
-              @changeData="DataChange"
-            />
+            <InputLoader :nameInp="`counterparty`" :idRow="item.id" :idLoader="`counterpartyload ${item.id}`"
+              :idElement="`counterparty ${item.id}`" :valueDataInp="item.counterparty" @changeData="DataChange" />
           </td>
           <td>
-            <InputLoader
-              :nameInp="`application_number`"
-              :idRow="item.id"
-              :idLoader="`application_numberload ${item.id}`"
-              :idElement="`application_number ${item.id}`"
-              :valueDataInp="item.application_number"
-              :typeInp="'text'"
-              @changeDate="DateChange"
-            />
+            <InputLoader :nameInp="`application_number`" :idRow="item.id" :idLoader="`application_numberload ${item.id}`"
+              :idElement="`application_number ${item.id}`" :valueDataInp="item.application_number" :typeInp="'text'"
+              @changeDate="DateChange" />
           </td>
           <td>
-            <InputLoader
-              :nameInp="`act_date`"
-              :idRow="item.id"
-              :idLoader="`act_dateload ${item.id}`"
-              :idElement="`act_date ${item.id}`"
-              :valueDataInp="item.act_date"
-              :typeInp="'date'"
-              @changeDate="DateChange"
-            />
+            <InputLoader :nameInp="`act_date`" :idRow="item.id" :idLoader="`act_dateload ${item.id}`"
+              :idElement="`act_date ${item.id}`" :valueDataInp="item.act_date" :typeInp="'date'"
+              @changeDate="DateChange" />
           </td>
           <!-- <td>
             <InputLoader
@@ -271,23 +191,14 @@
     <div id="wrapper">
       <ul id="pagination">
         <li v-for="btn in total_pages" :key="btn.id">
-          <a
-            @click="getPagination(filter.page_size, btn)"
-            :class="{
-              active123: Truefalse(btn),
-              active_new: pageNumber == btn,
-            }"
-            >{{ btn }}</a
-          >
+          <a @click="getPagination(filter.page_size, btn)" :class="{
+            active123: Truefalse(btn),
+            active_new: pageNumber == btn,
+          }">{{ btn }}</a>
         </li>
       </ul>
     </div>
-    <Notifications
-      :show="showNotify"
-      :header="notifyHead"
-      :message="notifyMessage"
-      :block-class="notifyClass"
-    />
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
   </div>
 </template>
 
@@ -320,9 +231,13 @@ export default {
   components: { InputLoader, Loader, Notifications },
   data() {
     return {
+      all_checkbox: [],
+      selectAll: false,
+      selectedItems: [],
+
       cargo: "",
       ten_visible_client: "",
-      interval: 2,
+      interval: 5,
       InpType: "",
       picked: "code6",
       ten_visible: false,
@@ -348,13 +263,13 @@ export default {
       notifyClass: "",
     };
   },
-  mounted(){
+  mounted() {
     document.body.addEventListener('click', this.closeWindow)
-  
+
   },
-  watch:{
-    ten_visible(){
-      if(this.filter.cargo_code.length < 1){
+  watch: {
+    ten_visible() {
+      if (this.filter.cargo_code.length < 1) {
         this.ten_visible = false
       }
     },
@@ -380,8 +295,8 @@ export default {
       if (this.InpType == "text") {
         return this.filter.for_cargo.length > 1
           ? this.cargo_code.filter((item) =>
-              item.name.toLowerCase().includes(this.filter.for_cargo.toLowerCase())
-            )
+            item.name.toLowerCase().includes(this.filter.for_cargo.toLowerCase())
+          )
           : "";
       } else {
         let data = [...this.cargo_code];
@@ -407,14 +322,99 @@ export default {
     },
   },
   methods: {
+    toggleSelectAll() {
+      this.selectAll = !this.selectAll
+      if (this.selectAll) {
+        this.selectedItems = this.data.map(item => item.id)
+      } else {
+        this.selectedItems = []
+      }
+      console.log(this.selectedItems)
+    },
+    toggleItemSelection(itemId) {
+      if (this.isSelected(itemId)) {
+        this.selectedItems = this.selectedItems.filter(id => id !== itemId)
+      } else {
+        this.selectedItems.push(itemId)
+      }
+
+      console.log(this.selectedItems)
+    },
+    isSelected(itemId) {
+      return this.selectedItems.includes(itemId)
+    },
+    open_modal(id) {
+      this.selected_record = id
+      this.$bvModal.show('AcTDelete')
+    },
+    async deleteOtherChange(id) {
+
+      this.loader = true
+      try {
+        if (Array.isArray(id)) {
+          let deletePromise = id.map((item) => api.deleteOtherChanges(item))
+          await Promise.all(deletePromise)
+          await this.getData()
+
+
+          this.$bvModal.hide('AcTDelete')
+          this.loader = false
+
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Данные удалены";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 2500);
+
+        } else {
+          api
+            .deleteOtherChanges(id)
+            .then((response) => {
+              this.loader = false;
+              this.notifyHead = "Успешно";
+              this.notifyMessage = "Данные удалены";
+              this.notifyClass = "wrapper-success";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false;
+              }, 2500);
+              this.getData()
+            })
+            .catch((error) => {
+              this.loader = false;
+              this.notifyHead = "Ошибка";
+              this.notifyMessage = "Данные не удалены";
+              this.notifyClass = "wrapper-error";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false;
+              }, 2500);
+              console.log(error);
+            });
+          // let row = document.getElementById(id);
+          // row.parentNode.removeChild(row);
+          this.$bvModal.hide('otherChangeModal')
+
+        }
+
+      }
+      catch {
+        this.loader = false
+      }
+    },
+
+
+
     checkCounterpartie(value) {
       this.filter.counterparty = value;
     },
-    checkCargo(value){
+    checkCargo(value) {
       this.filter.for_cargo = value
       this.ten_visible = false
     },
-    closeWindow(){
+    closeWindow() {
       this.ten_visible = false
       this.ten_visible_client = false
     },
@@ -556,7 +556,7 @@ export default {
     getPagination(pg_size, pg_number) {
       this.loader = true;
       this.data = [];
-
+      console.log(this.filter)
       api
         .getPaginationPPS(this.filter, pg_size, pg_number)
         .then((response) => {
@@ -631,7 +631,37 @@ export default {
         });
     },
     deletePPS(id) {
+      if (Array.isArray(id)) {
+        this.loader = true
+        let requests = id.map(url => api.deletePPS(url))
+        Promise.all(requests)
+          .then(res => {
+            this.loader = false
+            this.notifyHead = "Успешно";
+            this.notifyMessage = "Данные удалены";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
+            this.getPPS()
+            this.$bvModal.hide("AcTDelete");
+          }).catch((err) => {
+            this.loader = false
+            this.notifyHead = "Ошибка";
+            this.notifyMessage = "Данные не удалены";
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
+            this.$bvModal.hide("AcTDelete");
+          })
+
+        return
+      }
       this.loader = true;
+
       api
         .deletePPS(id)
         .then((response) => {
@@ -664,6 +694,9 @@ export default {
 };
 </script>
 <style scoped>
+tr:hover {
+  background: none !important;
+}
 
 li {
   cursor: pointer;

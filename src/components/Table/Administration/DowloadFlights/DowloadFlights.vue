@@ -27,11 +27,13 @@
                         </label>
                     </div>
 
-                        <br>
+                    <br>
                     <button class="Accept" @click="sendRequest()">Загрузить</button>
                 </div>
             </div>
         </div>
+        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
+
     </div>
 </template>
 
@@ -41,7 +43,7 @@ import api from "@/api/wagonPark";
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 export default {
-    components: { Loader },
+    components: { Loader, Notifications },
     data() {
         return {
             wagon_types: {
@@ -51,45 +53,49 @@ export default {
             date_begin: "",
             date_end: "",
             belongs: [],
-            belongWagon: ["А","АА","АЛ","ЛА","С","СА","СВ","СЛ","Ч"],
-            loader: false
+            belongWagon: ["А", "АА", "АЛ", "ЛА", "С", "СА", "СВ", "СЛ", "Ч"],
+            loader: false,
+            showNotify: false,
+            notifyHead: "",
+            notifyMessage: "",
+            notifyClass: "",
         }
     },
 
     methods: {
-        TransLateBelong(val){
-      switch (val) {
-        case "А":
-          return "Арендованный";
-          break;
-          case "АА":
-          return "Арендованный сдан в аренду";
-          break;
-          case "АЛ":
-          return "Арендованный в лизинге";
-          break;
-          case "С":
-          return "Собственный";
-          break;
-          case "СЛ":
-          return "Собственный в лизинге";
-          break;
-          case "СВ":
-          return "Взят в скрытую аренду";
-          break;
-          case "Ч":
-          return "Чужой";
-          break;
-          case "СА":
-          return "Собственный сдан в аренду";
-          break;
- 
-          case "ЛА":
-          return "Взят в лизинг сдан в аренду";
-          break;
+        TransLateBelong(val) {
+            switch (val) {
+                case "А":
+                    return "Арендованный";
+                    break;
+                case "АА":
+                    return "Арендованный сдан в аренду";
+                    break;
+                case "АЛ":
+                    return "Арендованный в лизинге";
+                    break;
+                case "С":
+                    return "Собственный";
+                    break;
+                case "СЛ":
+                    return "Собственный в лизинге";
+                    break;
+                case "СВ":
+                    return "Взят в скрытую аренду";
+                    break;
+                case "Ч":
+                    return "Чужой";
+                    break;
+                case "СА":
+                    return "Собственный сдан в аренду";
+                    break;
 
-    }
-  },
+                case "ЛА":
+                    return "Взят в лизинг сдан в аренду";
+                    break;
+
+            }
+        },
         sendRequest() {
 
             const selectedWagonTypes = Object.keys(this.wagon_types).filter(type => this.wagon_types[type]);
@@ -99,10 +105,22 @@ export default {
             api.getFileFlights(this.date_begin, this.date_end, selectedWagonTypes, selectedBelongs)
                 .then((response) => {
                     this.loader = false
-                    console.log(response)
+                    this.notifyHead = "Успешно";
+                    this.notifyMessage = `Данные будут загружены в папку ${response.data}`;
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3500);
                 }).catch((err) => {
                     this.loader = false
-                    console.log(err)
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = `Данные не загружены. Повторите попытку`;
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 2000);
                 })
         }
     }
@@ -147,4 +165,5 @@ export default {
     left: 50%;
     padding: 2%;
     transform: translate(-50%, 0);
-}</style>
+}
+</style>

@@ -38,7 +38,7 @@
       <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"></textarea>
       <button class="Accept" @click="loadFromExcel()">Загрузить</button>
     </div>
-
+<div style="overflow: auto;">
     <table class="table-hover" v-if="table_type != 'РТС Сервис'">
       <thead>
         <tr class="table-secondary" style="background: #e1e1e2">
@@ -72,7 +72,7 @@
         </tr>
       </tbody>
     </table>
-
+  </div>
     <OtherChargeTableRTS v-if="table_type === 'РТС Сервис'" :dataMess="TableDataRTS" 
       :service="sericeRTS"
       :contractor='this.table_type'
@@ -255,7 +255,8 @@ export default {
 };
 </script>
 
-<style  scoped>.Accept {
+<style  scoped>
+.Accept {
   margin-top: 2%;
   width: 25%;
   margin-left: auto;

@@ -235,7 +235,7 @@
                                         style="display: none">
                                         <i class="loader"></i>
                                     </div>
-
+detailstr
                                 </div>
                             </td>
                             <!-- Ответственный -->
@@ -252,14 +252,14 @@
                         <tr>
                             <td colspan="13">
                                 <details colspan="13">
-                                    <summary style="background: lightgrey; color: black">
+                                    <summary style="background: lightgrey; color: black; text-align: center !important;">
                                         Приложений {{ item.attachments.length }} шт.
                                     </summary>
 
                         <tr v-for="att in item.attachments" :key="att.id">
                             <!-- <td>Приложение {{ att.agreement_number }}</td> -->
                             <details>
-                                <summary style="width: 78.5vw;">
+                                <summary style="width: 78.5vw;  text-align: center !important;">
                                     Приложение {{ att.agreement_number }} <span v-if="att.attachments[0]?.on_date">от</span>
                                     {{ att.attachments[0]?.on_date?.split('-').reverse().join('.') }}
                                 </summary>

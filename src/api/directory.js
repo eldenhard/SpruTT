@@ -92,7 +92,7 @@ const getpps = (data) => {
     return api.get(`${finance}/pps/?`, {params: data})
 }
 const getPaginationPPS = (filter_arendaData, page_size, page_number) => {
-    return api.get(`${finance}/pps/?page_size=${page_size}&page=${page_number}`, )
+    return api.get(`${finance}/pps/?page=${page_number}`, {params: filter_arendaData})
 }
 const patchpps = (id,data) => {
     return api.patch(`${finance}/pps/${id}`, data)
