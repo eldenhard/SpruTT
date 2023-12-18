@@ -11,7 +11,7 @@
                 </div>
                 <div class="wagonBelongs">
                     <label :for="belong[index]" v-for="belong, index in belongWagon" :key="index">
-                        <input type="checkbox" v-model="belongs[index]" :id="belong[index]"> {{ belong }}
+                        <input type="checkbox" v-model="belongs[index]" :id="belong[index]"> {{ TransLateBelong(belong) }}
                     </label>
                 </div>
                 <div class="data_block">
@@ -27,7 +27,7 @@
                         </label>
                     </div>
 
-
+                        <br>
                     <button class="Accept" @click="sendRequest()">Загрузить</button>
                 </div>
             </div>
@@ -57,6 +57,39 @@ export default {
     },
 
     methods: {
+        TransLateBelong(val){
+      switch (val) {
+        case "А":
+          return "Арендованный";
+          break;
+          case "АА":
+          return "Арендованный сдан в аренду";
+          break;
+          case "АЛ":
+          return "Арендованный в лизинге";
+          break;
+          case "С":
+          return "Собственный";
+          break;
+          case "СЛ":
+          return "Собственный в лизинге";
+          break;
+          case "СВ":
+          return "Взят в скрытую аренду";
+          break;
+          case "Ч":
+          return "Чужой";
+          break;
+          case "СА":
+          return "Собственный сдан в аренду";
+          break;
+ 
+          case "ЛА":
+          return "Взят в лизинг сдан в аренду";
+          break;
+
+    }
+  },
         sendRequest() {
 
             const selectedWagonTypes = Object.keys(this.wagon_types).filter(type => this.wagon_types[type]);
