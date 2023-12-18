@@ -179,6 +179,13 @@ const postFileGLP = (file) => {
 const postGetDropsAmount = (file) => {
     return api.post(`${resource}/get-drops-amount-from-xlsx-file-of-flights/`, file)
 }
+
+const getFileFlights = (date_begin, date_end, wagon_types, belongs) => {
+    return api.get(`${resource}/flights/export-to-file?date_begin=${date_begin} 00:00:00&date_end=${date_end} 00:00:00&wagon_types=${wagon_types}&belongs=${belongs}`)
+}
+const test = () => {
+    return api.get(`${resource}/flights/belongs`)
+}
 export default {
     getWagons,
     getWagon,
@@ -211,6 +218,8 @@ export default {
     postFileGLP,
     getCurrentStationByName,
     getCalculateValue,
+    getFileFlights,
+    test,
     // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,
