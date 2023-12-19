@@ -225,8 +225,8 @@
                 <br />Станция
               </th>
               <th>
-                <input type="text" @keyup.enter="save($event)" placeholder="введите валюту" id="currency" class="in_data"
-                  style="border: 1px solid black !important" />
+                <input type="text" @keyup.enter="save($event)" placeholder="выбор в таблице" id="currency" class="in_data"
+                  style="border: 1px solid black !important" disabled/>
                 <br />Валюта
               </th>
               <th>
@@ -259,9 +259,14 @@
               <td><input type="text" v-model="item.price_wo_nds" /></td>
 
               <td><input type="text" v-model="item.station_name" /></td>
-              <td><input type="text" v-model="item.currency" /></td>
+              <td>
+                <select v-model="item.currency">
+                  <option value="RUB">RUB</option>  
+                  <option value="USD">USD</option>  
+                </select>
+              </td>
               <td><input type="number" v-model="item.agent_reward" /></td>
-              <td><input type="text" v-model="item.fact_wagon_compensation" /></td>
+              <td><input type="number" v-model="item.fact_wagon_compensation" /></td>
             </tr>
           </tbody>
         </table>
@@ -296,7 +301,7 @@ class MyClass {
     this.wagon = 0;
     this.for_cargo = null;
     this.from_cargo = null;
-    this.currency = null;
+    this.currency = 'RUB';
     this.station_name = null;
     this.agent_reward = 0;
     this.fact_wagon_compensation = null;
@@ -530,7 +535,6 @@ export default {
         }, 5500);
       } else {
         this.loader = true;
-        console.log(this.data, this.station_name)
         for (let i in this.data) {
           this.data[i].act_date = this.act_date;
           this.data[i].counterparty = this.counterparties;
@@ -538,11 +542,6 @@ export default {
           this.data[i].for_cargo = null;
           this.data[i].price_wo_nds == "" || this.data[i].price_wo_nds == 0 || this.data[i].price_wo_nds === null ? this.data[i].price_wo_nds = null : this.data[i].price_wo_nds = this.data[i].price_wo_nds.replace(',', '.')
           this.data[i].application_number = this.application_number
-
-          this.data[i].agent_reward = this.agent_reward
-          this.data[i].fact_wagon_compensation = this.fact_wagon_compensation
-          this.data[i].station_name = this.station_name
-          this.data[i].currency = this.currency
 
         }
 
@@ -573,7 +572,7 @@ export default {
             this.showNotify = true;
             setTimeout(() => {
               this.showNotify = false;
-            }, 5500);
+            }, 4000);
 
             for (let i in error.response.data) {
               this.data[error.response.data[i][0]].error =
@@ -591,6 +590,9 @@ export default {
 </script>
 
 <style scoped>
+input{
+  text-align: center;
+}
 a:nth-child(1) {
   color: #1D67AC !important;
   cursor: pointer;

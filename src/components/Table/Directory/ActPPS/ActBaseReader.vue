@@ -153,6 +153,7 @@
               :idElement="`operation ${item.id}`" :valueDataInp="item.operation" @changeData="DataChange" />
           </td>
           <td>
+            <!-- {{ data }} -->
             <InputLoader :nameInp="`station_name`" :idRow="item.id" :idLoader="`station_nameload ${item.id}`"
               :idElement="`station_name ${item.id}`" :valueDataInp="item.station_name" @changeData="DataChange" />
           </td>
@@ -605,6 +606,11 @@ export default {
             newClass.for_cargo = response.data.data[i].for_cargo;
             newClass.from_cargo = response.data.data[i].from_cargo;
             newClass.act_date = response.data.data[i].act_date;
+
+            newClass.station_name = response.data.data[i].station_name;
+            newClass.agent_reward = response.data.data[i].agent_reward;
+            newClass.fact_wagon_compensation = response.data.data[i].fact_wagon_compensation;
+            newClass.currency = response.data.data[i].currency;
             this.data.push(newClass);
           }
           // console.log(this.data)
@@ -633,8 +639,7 @@ export default {
             newClass.date_pp_out = response.data.data[i].date_pp_out;
             newClass.days = response.data.data[i].days;
             newClass.date_processing = response.data.data[i].date_processing;
-            newClass.application_number =
-              response.data.data[i].application_number;
+            newClass.application_number = response.data.data[i].application_number;
             newClass.operation = response.data.data[i].operation;
             newClass.price_wo_nds = response.data.data[i].price_wo_nds;
             newClass.counterparty = response.data.data[i].counterparty;
@@ -642,6 +647,11 @@ export default {
             newClass.for_cargo = response.data.data[i].for_cargo;
             newClass.from_cargo = response.data.data[i].from_cargo;
             newClass.act_date = response.data.data[i].act_date;
+
+            newClass.station_name = response.data.data[i].station_name;
+            newClass.agent_reward = response.data.data[i].agent_reward;
+            newClass.fact_wagon_compensation = response.data.data[i].fact_wagon_compensation;
+            newClass.currency = response.data.data[i].currency;
             this.data.push(newClass);
           }
 
