@@ -14,7 +14,7 @@
       <b-button class="mt-3" block @click="$bvModal.hide('otherChangeModal')">Нет, отменить</b-button>
     </b-modal>
     <h4>Просмотр ранее сохраненных данных</h4>
-    <div class="filter_block" s>
+    <div class="filter_block" >
       <label for="">Контрагент <br>
         <select name="" id="" v-model="filter.contractor">
           <option value='ООО "Вагон-Сервис Транс"'>ООО "Вагон-Сервис Транс"</option>

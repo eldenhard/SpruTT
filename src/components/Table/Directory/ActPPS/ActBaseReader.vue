@@ -65,8 +65,8 @@
     <p class="amount" style="padding-top: 2%">
       Всего записей: {{ total_objects }}
     </p>
-    <div style="overflow: auto; ">
-    <table border="1" style="width: 100%">
+    <div style="overflow: auto; max-width: 99%;">
+    <table border="1" >
       <thead>
         <tr>
           <th style="border-left: 1px solid white; border-top: 1px solid white;">

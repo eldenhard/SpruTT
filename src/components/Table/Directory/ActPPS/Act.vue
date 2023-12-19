@@ -35,8 +35,7 @@
         <p><img src="../../../../assets/Draw5.png" style="width: 80%; height: auto;" alt="Рисунок 3 - сохранение данных">
         </p>
       </figure>
-      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть
-              инструкцию' : 'Смотреть инструкцию' }}</h5>
+      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть инструкцию' : 'Смотреть инструкцию' }}</h5>
 
     </div>
 
@@ -136,8 +135,8 @@
         width: 80%;
         position: relative;
         left: 50%;
-        transform: translate(-50%, 0);
-      " v-show="ten_visible3">
+        transform: translate(-50%, 0);"
+        v-show="ten_visible3">
         <ul id="root_tenant">
           <li v-for="item in filter_fromcargo" :key="item.id" @click="checkFromCargo(item.name, item.code6)">
             <span>{{ item.name }}</span>
@@ -147,7 +146,7 @@
       </div>
       <button class="Delete button" style="width: 15%; white-space: nowrap; margin: 2% 0; height: 30px"
         @click="deleteChecked(selectedItems)">Удалить выбранное</button>
-      <div style="overflow:auto">
+      <div style="overflow:auto; max-width: 99%;">
         <table style="margin-top: 2%;">
           <thead style="border-top: none !important;">
             <tr style="border: none !important">
