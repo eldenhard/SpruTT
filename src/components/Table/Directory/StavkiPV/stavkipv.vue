@@ -592,4 +592,5 @@ table {
 .air_block_header {
     padding: 1% 0 0 2%;
     color: #cacaca;
-}</style>
+}
+</style>

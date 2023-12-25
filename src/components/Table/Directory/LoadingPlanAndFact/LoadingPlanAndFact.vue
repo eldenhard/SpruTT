@@ -21,7 +21,7 @@
                 </div>
             <button @click="dowloadData()" class="Accept" style="width: 20vw; margin-top: 4%; margin-left: auto;">Запросить</button>
         </div>
-        {{ objLoading }}
+        <!-- {{ objLoading }} -->
     </div>
 </template>
 

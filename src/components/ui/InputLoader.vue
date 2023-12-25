@@ -8,6 +8,7 @@
         :id="idElement"
         @keyup.enter="$emit('changeData', {[nameInp]: $event.target.value, 'id': idRow, 'loader': idLoader, 'idElement' : idElement})"
         @change="$emit('changeDate', {[nameInp]: $event.target.value, 'id': idRow, 'loader': idLoader, 'idElement' : idElement})"
+        
       />
       <div class="icon-container" :id="idLoader" v-show="Visible" >
         <i class="loader"></i>
@@ -62,6 +63,7 @@ export default {
 input {
   width: 100%;
   box-sizing: border-box;
+  border: none !important;
 }
 .mini {
   height: 40px;
