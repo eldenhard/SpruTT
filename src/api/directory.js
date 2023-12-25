@@ -181,6 +181,11 @@ const getFilesToPath2 = (data) => {
 const LoadingPlanAndFact = (data) => {
     return api.get(`${finance}/loading-plan-and-fact?month_begin=${data[0]}&year_begin=${data[1]}&month_end=${data[2]}&year_end=${data[3]}`)
 }
+
+// Загрузка актов
+const getActs = (filter) => {
+    return api.get(`${finance}/acts/`, {params: filter})
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -245,5 +250,8 @@ export default {
     getFilesToPath2,
 
     LoadingPlanAndFact,
+
+    // Загрузка актов
+    getActs,
 }
 

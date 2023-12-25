@@ -3,7 +3,7 @@
         <table>
             <tr>
                 <th>
-                    1
+                    
                 </th>
             </tr>
         </table>

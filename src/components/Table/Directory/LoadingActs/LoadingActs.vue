@@ -1,5 +1,7 @@
 <template>
     <div>
+        <Loader :loader="loader" />
+
         <div class="air_block">
             <div class="air_block_header">
                 <h5>Загрузка актов</h5>
@@ -46,6 +48,8 @@
             <div class="second_level">
                 <LoadingActTableVue />
             </div>
+
+            <CheckActs  @startLoader="startLoader" @stopLoader="stopLoader"/>
         </div>
     </div>
 </template>
@@ -53,12 +57,16 @@
 <script>
 import InputLoader from '../../../ui/InputLoader.vue'
 import LoadingActTableVue from './components/LoadingActTable.vue'
+import CheckActs from './components/CheckActs.vue';
 import api from "@/api/directory";
+import Loader from "@/components/loader/loader.vue";
 
 export default {
     components: {
         LoadingActTableVue,
         InputLoader,
+        CheckActs,
+        Loader,
     },
     data() {
         return {
@@ -68,6 +76,7 @@ export default {
             loaderInputSeller: false,
             loaderInputBuyer: false,
             currentInput: null, // Изменено
+            loader: false,
         }
     },
     mounted() {
@@ -106,6 +115,12 @@ export default {
         checkValue(val) {
             return this.currentInput === 'seller' ? this.seller = val : this.buyer = val
         },
+        startLoader(){
+            this.loader = true
+        },
+        stopLoader(){
+            this.loader = false
+        }
     },
 }
 </script>
