@@ -40,7 +40,9 @@
 .active_row{
     background: rgb(226, 226, 226);
 }
-
+.Total_red{
+    background: rgb(238, 188, 188);
+}
 /* td,
 th {
     white-space: nowrap;
