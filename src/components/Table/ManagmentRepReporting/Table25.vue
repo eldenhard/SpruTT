@@ -273,8 +273,10 @@
                 </tr>
                 <tr>
                     <td>Тариф порожний всего</td>
-                    <td></td>
-                    <td></td>
+                    <td ></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['тариф_порожний'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">В собственном парке</td>
@@ -289,7 +291,9 @@
                 <tr>
                     <td>Тариф груженный всего</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['тариф_груженый'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">В собственном парке</td>
@@ -304,7 +308,9 @@
                 <tr>
                     <td>Тариф по сопредельным государствам всего</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['тариф_по_сопредельным_государствам'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">В собственном парке</td>
@@ -324,7 +330,9 @@
                 <tr>
                     <td>Тариф порожний всего</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['тариф_порожний'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">В собственном парке</td>
@@ -339,7 +347,9 @@
                 <tr>
                     <td>Тариф груженный всего</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['тариф_груженый'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">В собственном парке</td>
@@ -354,7 +364,9 @@
                 <tr>
                     <td>Тариф по сопредельным государствам всего</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['тариф_по_сопредельным_государствам'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">В собственном парке</td>
@@ -369,22 +381,30 @@
                 <tr class="Total_red">
                     <td>&nbsp;&nbsp;Привлечение&nbsp;&nbsp;</td>
                     <td>{{ file['привлечение'] | format }}</td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['привлечение'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Привлечение ЦС</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['привлечение'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Привлечение ПВ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['привлечение'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_red">
                     <td>&nbsp;&nbsp;Доп услуги&nbsp;&nbsp;</td>
-                    <td>{{ file['привлечение'] | format }}</td>
-                    <td></td>
+                    <td>{{ file['доп_услуги'] | format }}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['доп_услуги'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_1">
                     <td>Доп услуги ЦС</td>
@@ -394,7 +414,9 @@
                 <tr>
                     <td>ППС ЦС</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ппс'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">В собственном парке</td>
@@ -409,7 +431,9 @@
                 <tr>
                     <td>Отстой ЦС</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['отстой'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">В собственном парке</td>
@@ -424,7 +448,9 @@
                 <tr>
                     <td>Прочие услуги ЦС</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['прочие_услуги'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">В собственном парке</td>
@@ -440,6 +466,47 @@
                     <td>Доп услуги ПВ</td>
                     <td></td>
                     <td></td>
+                </tr>
+                <tr>
+                    <td>ППС ПВ</td>
+                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ппс'] | format}}</td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="pre_amount">В собственном парке</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="pre_amount">В привлеченном парке</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Отстой ПВ</td>
+                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['отстой'] | format}}</td>
+                    </template>
+                </tr>
+                <tr>
+                    <td class="pre_amount">В собственном парке</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="pre_amount">В привлеченном парке</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Прочие услуги ПВ</td>
+                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['прочие_услуги'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">В собственном парке</td>
@@ -494,17 +561,23 @@
                 <tr class="Total_2">
                     <td>Вагонно-сутки</td>
                     <td>{{ file['вагоносутки'] | format }}</td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['вагоносутки'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Вагонно-сутки ВЦ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['вагоносутки'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Вагонно-сутки ПВ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['вагоносутки'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_2">
                     <td>Доходность в собственном парке</td>
@@ -537,14 +610,18 @@
                     <td></td>
                 </tr>
                 <tr class="Total_2">
-                    <td>Маржинальный доход </td>
+                    <td>Маржинальная рентабельность </td>
                     <td>{{ file['ДППВПД_доходность'] | format }}</td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_доходность'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_1">
                     <td>Маржинальный доход ВЦ </td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_доходность'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Маржинальный доход в собственном парке</td>
@@ -559,7 +636,9 @@
                 <tr class="Total_1">
                     <td>Маржинальный доход ПВ </td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_доходность'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Маржинальный доход в собственном парке</td>
@@ -573,98 +652,138 @@
                 </tr>
                 <tr class="Total_blue">
                     <td>Условно постоянные расходы</td>
-                    <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ file['ДППВПД_условно_постоянные_расходы'] | format}}</td>
+                    </template>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_условно_постоянные_расходы'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_red">
                     <td>Аренда ПС</td>
                     <td>{{ file['ДППВПД_аренда_пс'] | format }}</td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_аренда_пс'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Аренда ВЦ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_аренда_пс'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Аренда ПВ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_аренда_пс'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_red">
                     <td>Амортизация ПС</td>
                     <td>{{ file['ДППВПД_амортизация_пс'] | format }}</td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_амортизация_пс'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Амортизация ЦС</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_амортизация_пс'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Амортизация ПВ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_амортизация_пс'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_red">
                     <td>Текущий ремонт включая з/ч</td>
                     <td>{{ file['ДППВПД_текущий_ремонт_включая_запчасти'] | format }}</td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_текущий_ремонт_включая_запчасти'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Текущий ремонт ЦС</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_текущий_ремонт_включая_запчасти'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Текущий ремонт ПВ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_текущий_ремонт_включая_запчасти'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_red">
                     <td>Сервисное обслуживание ПС</td>
                     <td>{{ file['ДППВПД_сервисное_обслуживание_пс'] | format }}</td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_сервисное_обслуживание_пс'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Сервисное обслуживание ЦС</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_сервисное_обслуживание_пс'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Сервисное обслуживание ПВ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_сервисное_обслуживание_пс'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_red">
                     <td>&nbsp;Расходы на оплату труда в составе производственных расходов&nbsp;</td>
                     <td>{{ file['ДППВПД_расходы_на_оплату_труда_в_составе_производственных_расходов'] | format }}</td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_расходы_на_оплату_труда_в_составе_производственных_расходов'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Оплата труда ЦС</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_расходы_на_оплату_труда_в_составе_производственных_расходов'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Оплата труда ПВ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_расходы_на_оплату_труда_в_составе_производственных_расходов'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_red">
                     <td>Прочие условно-постоянные расходы</td>
                     <td>{{ file['ДППВПД_прочие_условно_постоянные_расходы'] | format }}</td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_прочие_условно_постоянные_расходы'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Прочие расходы ЦС</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_прочие_условно_постоянные_расходы'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Прочие расходы ПВ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_прочие_условно_постоянные_расходы'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_2">
                     <td>&nbsp;&nbsp;Операционная прибыль от предоставления вагонов под погрузку&nbsp;&nbsp;</td>
