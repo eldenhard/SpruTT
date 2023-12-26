@@ -43,6 +43,9 @@
 .Total_red{
     background: rgb(238, 188, 188);
 }
+.Row_grey{
+    background: rgb(186, 196, 204);
+}
 /* td,
 th {
     white-space: nowrap;
