@@ -521,17 +521,23 @@
                 <tr class="Total_red">
                     <td>&nbsp;&nbsp;Штрафы к уплате&nbsp;&nbsp;</td>
                     <td>{{ file['штрафы_к_уплате'] | format }}</td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['штрафы_к_уплате'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_2">
                     <td>&nbsp;&nbsp;Маржинальный доход&nbsp;&nbsp;</td>
                     <td>{{ file['ДППВПД_маржинальный_доход'] | format }}</td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_маржинальный_доход'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_1">
                     <td>Маржинальный доход ВЦ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_маржинальный_доход'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Маржинальный доход в собственном парке</td>
@@ -546,7 +552,9 @@
                 <tr class="Total_1">
                     <td>Маржинальный доход ПВ</td>
                     <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_маржинальный_доход'] | format}}</td>
+                    </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Маржинальный доход в собственном парке</td>
@@ -611,44 +619,24 @@
                 </tr>
                 <tr class="Total_2">
                     <td>Маржинальная рентабельность </td>
-                    <td>{{ file['ДППВПД_доходность'] | format }}</td>
+                    <td>{{ file['ДППВПД_маржинальная_рентабельность'] | format }}</td>
                     <template v-for="(data, index) in file">
-                        <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_доходность'] | format}}</td>
-                    </template>
-                </tr>
-                <tr class="Total_1">
-                    <td>Маржинальный доход ВЦ </td>
-                    <td></td>
-                    <template v-for="(data, index) in file">
-                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_доходность'] | format}}</td>
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_маржинальная_рентабельность'] | format}}</td>
                     </template>
                 </tr>
                 <tr>
-                    <td class="pre_amount">Маржинальный доход в собственном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">Маржинальный доход в привлеченном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="Total_1">
-                    <td>Маржинальный доход ПВ </td>
+                    <td class="pre_amount">Маржинальная рентабельность ВЦ</td>
                     <td></td>
                     <template v-for="(data, index) in file">
-                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_доходность'] | format}}</td>
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_маржинальная_рентабельность'] | format}}</td>
                     </template>
                 </tr>
                 <tr>
-                    <td class="pre_amount">Маржинальный доход в собственном парке</td>
+                    <td class="pre_amount">Маржинальная рентабельность ПВ</td>
                     <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">Маржинальный доход в привлеченном парке</td>
-                    <td></td>
-                    <td></td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_маржинальная_рентабельность'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_blue">
                     <td>Условно постоянные расходы</td>
@@ -806,6 +794,7 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_операционная_прибыль'] | format}}</td>
                     </template>
                 </tr>
+                <br>
                 <!-- НОВЫЙ РАЗДЕЛ -->
                 <tr class="Row_grey">
                     <th colspan="3">ДЕЯТЕЛЬНОСТЬ ПО СДАЧЕ ВАГОНОВ В АРЕНДУ</th>
@@ -901,7 +890,153 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДПСВВА_сервисное_обслуживание_пс'] | format}}</td>
                     </template>
                 </tr>
+                <br>
                 <!-- НОВЫЙ РАЗДЕЛ -->
+                <tr class="Row_grey">
+                    <th colspan="3">ПРОЧИЕ ВИДЫ ОСНОВНОЙ ДЕЯТЕЛЬНОСТИ</th>
+                </tr>
+                <tr class="Total_2">
+                    <td>Выручка</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Выручка от оптовой торговли</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Выручка от реализации металлолома</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Выручка от агентской деятельности</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Прочая выручка от основной деятельности</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="Total_2">
+                    <td>Себестоимость</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Себестоимость реализованных товаров</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Себестоиость реализованного металлолома</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="Total_2">
+                    <td>&nbsp;Операционная прибыль по прочим видам основной деятельности&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <br>
+                <tr class="Total_2">
+                    <td>&nbsp;Всего операционная прибыль&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Административно-хозяйственные расходы</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">В том числе амортизация</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="Total_2">
+                    <td>&nbsp;Прибыль / убыток от продаж&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <br>
+                <tr class="Total_2">
+                    <td>&nbsp;Прочие доходы и расходы&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="Total_red">
+                    <td >Прочие доходы</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Проценты к получению</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Доходы по курсовым разницам</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Иные прочие доходы</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="Total_red">
+                    <td >Прочие расходы</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Проценты к уплате</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Расходы по курсовым разницам</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td class="pre_amount">Иные прочие расходы</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="Total_2">
+                    <td>EBITDA</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td>Рентабельность по EBITDA</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="Total_2">
+                    <td>Прибыль до налогооблажения</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td>Налог на прибыль</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="Total_2">
+                    <td>Чистая прибыль</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr >
+                    <td>Рентабельность по чистой прибыли</td>
+                    <td></td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </div>
