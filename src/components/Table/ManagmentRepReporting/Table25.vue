@@ -6,7 +6,9 @@
                 <tr>
                     <th>Показатель</th>
                     <th>Всего в т.ч</th>
-                    <th>Всего в янв-23</th>
+                    <template v-for="month in Object.keys(file)">
+                        <th v-if="CheckValue(month)">Всего в {{ month }}</th>
+                    </template>
                 </tr>
                 <tr class="RowAlphabet">
                     <th v-for="item in getTh" :key="item.id">{{ item.toUpperCase() }}</th>
@@ -26,39 +28,42 @@
                 </tr>
                 <tr class="Total_1">
                     <td>Объем ЦС (тн)</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Цистерна', 'вес') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['вес'] | format }}</td>
                     </template>
 
                 </tr>
-                <tr>
-                    <td class="pre_amount">Объем - парк в управлении</td>
-                    <td></td>
-             
-                </tr>
-                <tr>
-                    <td class="pre_amount">Объем - привлеченный парк</td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Цистерна' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">Объем - полигон {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('вес', polygon, 'Цистерна') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Цистерна'][polygon]['вес'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
+
                 <tr class="Total_1">
                     <td>Объем ПВ (тн)</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Полувагон', 'вес') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['вес'] | format }}</td>
                     </template>
                 </tr>
-                <tr>
-                    <td class="pre_amount">Объем - парк в управлении</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">Объем - привлеченный парк</td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">Объем - полигон {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('вес', polygon, 'Полувагон') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Полувагон'][polygon]['вес'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
                 <tr class="Total_2">
                     <td>&nbsp;&nbsp;Общий объем перевозок компании (ваг)&nbsp;&nbsp;</td>
                     <td>{{ file['погрузка'] }}</td>
@@ -68,38 +73,40 @@
                 </tr>
                 <tr class="Total_1">
                     <td>Погрузка ЦС (тн)</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Цистерна', 'погрузка') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['погрузка'] }}</td>
                     </template>
                 </tr>
-                <tr>
-                    <td class="pre_amount">Погрузка - парк в управлении</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">Погрузка - привлеченный парк</td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Цистерна' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">Погрузка - полигон {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('погрузка', polygon, 'Цистерна') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Цистерна'][polygon]['погрузка'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
                 <tr class="Total_1">
                     <td>Погрузка ПВ (тн)</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Полувагон', 'погрузка') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['погрузка'] }}</td>
                     </template>
                 </tr>
-                <tr>
-                    <td class="pre_amount">Погрузка - парк в управлении</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">Погрузка - привлеченный парк</td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">Погрузка - полигон {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('погрузка', polygon, 'Полувагон') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Полувагон'][polygon]['погрузка'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
                 <tr class="Total_2">
                     <td>&nbsp;&nbsp;Расстояние груж (собств.парк)&nbsp;&nbsp;</td>
                     <td>{{ file['расстояние_груженое'] | format }}</td>
@@ -109,14 +116,14 @@
                 </tr>
                 <tr>
                     <td class="pre_amount">Расстояние груж ЦС</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Цистерна', 'расстояние_груженое') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['расстояние_груженое'] | format}}</td>
                     </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Расстояние груж ПВ</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Полувагон', 'расстояние_груженое') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['расстояние_груженое'] | format}}</td>
                     </template>
@@ -130,14 +137,14 @@
                 </tr>
                 <tr>
                     <td class="pre_amount">Груж плечо ЦС</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Цистерна', 'груженое_плечо') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['груженое_плечо'] | format}}</td>
                     </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Груж плечо ПВ</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Полувагон', 'груженое_плечо') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['груженое_плечо'] | format}}</td>
                     </template>
@@ -151,14 +158,14 @@
                 </tr>
                 <tr>
                     <td class="pre_amount">Грузооборот ЦС</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Цистерна', 'грузооборот') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['грузооборот'] | format}}</td>
                     </template>
                 </tr>
                 <tr>
                     <td class="pre_amount">Грузооборот ПВ</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Полувагон', 'грузооборот') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['грузооборот'] | format}}</td>
                     </template>
@@ -175,6 +182,7 @@
                     </template>
                 </tr>
                 <tr>
+<!-- Не считал общий -->
                     <td class="pre_amount">Производительность ЦС</td>
                     <td></td>
                     <template v-for="(data, index) in file">
@@ -203,47 +211,53 @@
                 </tr>
                 <tr class="Total_1">
                     <td>Выручка ВЦ</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Цистерна', 'ДППВПД_выручка_от_оперирования') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_выручка_от_оперирования'] | format}}</td>
                     </template>
                 </tr>
-                <tr>
-                    <td class="pre_amount">В собственном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">В привлеченном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Цистерна' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">В {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('ДППВПД_выручка_от_оперирования', polygon, 'Цистерна') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Цистерна'][polygon]['ДППВПД_выручка_от_оперирования'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
                 <tr>
                     <td class="pre_amount">Штрафы к получению ЦС</td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Цистерна', 'ДППВПД_штрафы_к_получению') | format  }}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['ДППВПД_штрафы_к_получению'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_1">
                     <td>Выручка ПВ</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Полувагон', 'ДППВПД_выручка_от_оперирования') | format  }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_выручка_от_оперирования'] | format}}</td>
                     </template>
                 </tr>
-                <tr>
-                    <td class="pre_amount">В собственном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">В привлеченном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">В {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('ДППВПД_выручка_от_оперирования', polygon, 'Полувагон') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Полувагон'][polygon]['ДППВПД_выручка_от_оперирования'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
                 <tr>
                     <td class="pre_amount">Штрафы к получению ПВ</td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Полувагон', 'ДППВПД_штрафы_к_получению') | format  }}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_штрафы_к_получению'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_2">
                     <td>&nbsp;&nbsp;Себестоимость&nbsp;&nbsp;</td>
@@ -266,118 +280,124 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['жд_тариф'] | format}}</td>
                     </template>
                 </tr>
-                <tr class="Total_1">
+                <tr class="Total_2">
                     <td>Тарифы ВЦ</td>
                     <td></td>
                     <td></td>
                 </tr>
-                <tr>
+                <tr class="Total_1">
                     <td>Тариф порожний всего</td>
-                    <td ></td>
+                    <td>{{ calculateSumNotPolygon('Цистерна', 'тариф_порожний') | format }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['тариф_порожний'] | format}}</td>
                     </template>
                 </tr>
-                <tr>
-                    <td class="pre_amount">В собственном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">В привлеченном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Цистерна' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">В {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('тариф_порожний', polygon, 'Цистерна') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Цистерна'][polygon]['тариф_порожний'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
+                <tr class="Total_1">
                     <td>Тариф груженный всего</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Цистерна', 'тариф_груженый') | format }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['тариф_груженый'] | format}}</td>
                     </template>
                 </tr>
-                <tr>
-                    <td class="pre_amount">В собственном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">В привлеченном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Цистерна' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">В {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('тариф_груженый', polygon, 'Цистерна') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Цистерна'][polygon]['тариф_груженый'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
+                <tr class="Total_1">
                     <td>Тариф по сопредельным государствам всего</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Цистерна', 'тариф_по_сопредельным_государствам') | format }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['тариф_по_сопредельным_государствам'] | format}}</td>
                     </template>
                 </tr>
-                <tr>
-                    <td class="pre_amount">В собственном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">В привлеченном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="Total_1">
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Цистерна' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">В {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('тариф_по_сопредельным_государствам', polygon, 'Цистерна') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Цистерна'][polygon]['тариф_по_сопредельным_государствам'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
+                <tr class="Total_2">
                     <td>Тарифы ПВ</td>
                     <td></td>
                     <td></td>
                 </tr>
-                <tr>
+                <tr class="Total_1">
                     <td>Тариф порожний всего</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Полувагон', 'тариф_порожний') | format }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['тариф_порожний'] | format}}</td>
                     </template>
                 </tr>
-                <tr>
-                    <td class="pre_amount">В собственном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">В привлеченном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">В {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('тариф_порожний', polygon, 'Полувагон') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Полувагон'][polygon]['тариф_порожний'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
+                <tr class="Total_1">
                     <td>Тариф груженный всего</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Полувагон', 'тариф_груженый') | format }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['тариф_груженый'] | format}}</td>
                     </template>
                 </tr>
-                <tr>
-                    <td class="pre_amount">В собственном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">В привлеченном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">В {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('тариф_груженый', polygon, 'Полувагон') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Полувагон'][polygon]['тариф_груженый'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
+                <tr class="Total_1">
                     <td>Тариф по сопредельным государствам всего</td>
-                    <td></td>
+                    <td>{{ calculateSumNotPolygon('Полувагон', 'тариф_по_сопредельным_государствам') | format }}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['тариф_по_сопредельным_государствам'] | format}}</td>
                     </template>
                 </tr>
-                <tr>
-                    <td class="pre_amount">В собственном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">В привлеченном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <template v-for="(item, indication) in file">
+                    <template v-for="group in getNextKey(item)">
+                        <tr v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" :key="polygon.id">
+                            <td class="pre_amount">В {{ polygon.toLowerCase() }}</td>
+                            <td>{{ calculateSum('тариф_по_сопредельным_государствам', polygon, 'Полувагон') | format }}</td>
+                            <template v-for="index in Object.keys(file)">
+                                <td :key="index" v-if="CheckValue(index)">{{ file[index]['Полувагон'][polygon]['тариф_по_сопредельным_государствам'] | format }}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </template>
                 <tr class="Total_red">
                     <td>&nbsp;&nbsp;Привлечение&nbsp;&nbsp;</td>
                     <td>{{ file['привлечение'] | format }}</td>
@@ -795,7 +815,7 @@
                     </template>
                 </tr>
                 <br>
-                <!-- НОВЫЙ РАЗДЕЛ -->
+<!-- НОВЫЙ РАЗДЕЛ -->
                 <tr class="Row_grey">
                     <th colspan="3">ДЕЯТЕЛЬНОСТЬ ПО СДАЧЕ ВАГОНОВ В АРЕНДУ</th>
                 </tr>
@@ -891,151 +911,207 @@
                     </template>
                 </tr>
                 <br>
-                <!-- НОВЫЙ РАЗДЕЛ -->
+<!-- НОВЫЙ РАЗДЕЛ -->
                 <tr class="Row_grey">
                     <th colspan="3">ПРОЧИЕ ВИДЫ ОСНОВНОЙ ДЕЯТЕЛЬНОСТИ</th>
                 </tr>
                 <tr class="Total_2">
                     <td>Выручка</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['ПВОД_выручка'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ПВОД_выручка'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Выручка от оптовой торговли</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['выручка_от_оптовой_торговли'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['выручка_от_оптовой_торговли'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Выручка от реализации металлолома</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['выручка_от_реализации_металлолома'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['выручка_от_реализации_металлолома'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Выручка от агентской деятельности</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['выручка_от_агентской_деятельности'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['выручка_от_агентской_деятельности'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Прочая выручка от основной деятельности</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['прочая_выручка_от_основной_деятельности'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['прочая_выручка_от_основной_деятельности'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_2">
                     <td>Себестоимость</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['ПВОД_себестоимость'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ПВОД_себестоимость'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Себестоимость реализованных товаров</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['ПВОД_себестоимость_реализованных_товаров'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ПВОД_себестоимость_реализованных_товаров'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Себестоиость реализованного металлолома</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['ПВОД_себестоимость_реализованного_металлолома'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ПВОД_себестоимость_реализованного_металлолома'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_2">
                     <td>&nbsp;Операционная прибыль по прочим видам основной деятельности&nbsp;</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['ПВОД_операционная_прибыль_по_прочим_видам_основной_деятельности'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ПВОД_операционная_прибыль_по_прочим_видам_основной_деятельности'] | format}}</td>
+                    </template>
                 </tr>
                 <br>
                 <tr class="Total_2">
                     <td>&nbsp;Всего операционная прибыль&nbsp;</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['всего_операционная_прибыль'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['всего_операционная_прибыль'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Административно-хозяйственные расходы</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['административно_хозяйственные_расходы'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['административно_хозяйственные_расходы'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">В том числе амортизация</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['административно_хозяйственные_расходы_и_амортизация'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['административно_хозяйственные_расходы_и_амортизация'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_2">
                     <td>&nbsp;Прибыль / убыток от продаж&nbsp;</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['прибыль_и_убыток_от_продаж'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['прибыль_и_убыток_от_продаж'] | format}}</td>
+                    </template>
                 </tr>
                 <br>
                 <tr class="Total_2">
                     <td>&nbsp;Прочие доходы и расходы&nbsp;</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['прочие_доходы_и_расходы'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['прочие_доходы_и_расходы'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_red">
                     <td >Прочие доходы</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['прочие_доходы'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['прочие_доходы'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Проценты к получению</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['проценты_к_получению'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['проценты_к_получению'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Доходы по курсовым разницам</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['доходы_по_курсовым_разницам'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['доходы_по_курсовым_разницам'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Иные прочие доходы</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['иные_прочие_доходы'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['иные_прочие_доходы'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_red">
                     <td >Прочие расходы</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['прочие_расходы'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['прочие_расходы'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Проценты к уплате</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['проценты_к_уплате'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['проценты_к_уплате'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Расходы по курсовым разницам</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['расходы_по_курсовым_разницам'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['расходы_по_курсовым_разницам'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
                     <td class="pre_amount">Иные прочие расходы</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['иные_прочие_расходы'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['иные_прочие_расходы'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_2">
                     <td>EBITDA</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['ebitda'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['ebitda'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
-                    <td>Рентабельность по EBITDA</td>
-                    <td></td>
-                    <td></td>
+                    <td class="pre_amount">Рентабельность по EBITDA</td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['рентабельность_по_ebitda'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['рентабельность_по_ebitda'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_2">
                     <td>Прибыль до налогооблажения</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['прибыль_до_налогооблажения'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['прибыль_до_налогооблажения'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
-                    <td>Налог на прибыль</td>
-                    <td></td>
-                    <td></td>
+                    <td class="pre_amount">Налог на прибыль</td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['налог_на_прибыль'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['налог_на_прибыль'] | format}}</td>
+                    </template>
                 </tr>
                 <tr class="Total_2">
                     <td>Чистая прибыль</td>
-                    <td></td>
-                    <td></td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['чистая_прибыль'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['чистая_прибыль'] | format}}</td>
+                    </template>
                 </tr>
                 <tr >
-                    <td>Рентабельность по чистой прибыли</td>
-                    <td></td>
-                    <td></td>
+                    <td class="pre_amount">Рентабельность по чистой прибыли</td>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['рентабельность_по_чистой_прибыли'] | format}}</td>
+                    <template v-for="(data, index) in file">
+                        <td :key="index" v-if="CheckValue(index)">{{ data['рентабельность_по_чистой_прибыли'] | format}}</td>
+                    </template>
                 </tr>
             </tbody>
         </table>
@@ -1059,7 +1135,7 @@ export default {
         return {
             alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
             file: {
-                "1": {
+                "01-2023": {
                     "вес": 144754.4900000005,
                     "погрузка": 2268,
                     "расстояние_груженое": 5459797.0,
@@ -4345,260 +4421,7 @@ export default {
                                     16251.375,
                                     12044.388461538463,
                                     34884.48888888888,
-                                    10501.023529411765,
-                                    12939.599999999999,
-                                    24863.042857142857,
-                                    31836.15,
-                                    23575.0,
-                                    30651.718090909093,
-                                    34929.333333333336,
-                                    43066.35,
-                                    10330.652941176471,
-                                    17553.23942857143,
-                                    48813.6,
-                                    32191.2,
-                                    30544.363636363636,
-                                    23575.0,
-                                    29650.005000000005,
-                                    9328.764705882353,
-                                    39245.049999999996,
-                                    16215.5,
-                                    28410.75,
-                                    16251.375,
-                                    31741.47,
-                                    19983.566666666666,
-                                    29501.01,
-                                    40847.32142857143,
-                                    35335.25,
-                                    17815.165714285715,
-                                    40966.15,
-                                    31930.829999999998,
-                                    21151.75,
-                                    12890.287499999999,
-                                    44722.97142857143,
-                                    14352.627272727272,
-                                    49132.875,
-                                    16311.166666666666,
-                                    19836.844444444443,
-                                    36491.387500000004,
-                                    16018.333333333334,
-                                    41055.271428571425,
-                                    26155.350000000002,
-                                    23557.916666666668,
-                                    35182.444444444445,
-                                    16024.166666666666,
-                                    43314.75,
-                                    31646.789999999997,
-                                    39245.049999999996,
-                                    23575.0,
-                                    17815.165714285715,
-                                    30993.545454545456,
-                                    20745.18,
-                                    17681.25,
-                                    25201.571428571428,
-                                    31646.789999999997,
-                                    43283.700000000004,
-                                    39245.049999999996,
-                                    24919.464285714286,
-                                    30921.227181818183,
-                                    39245.049999999996,
-                                    23575.0,
-                                    17681.25,
-                                    35182.444444444445,
-                                    39245.049999999996,
-                                    34884.48888888888,
-                                    39245.049999999996,
-                                    30898.768090909092,
-                                    20232.953333333335,
-                                    39245.049999999996,
-                                    30808.931727272728,
-                                    28282.69575,
-                                    28282.69575,
-                                    17681.25,
-                                    39245.049999999996,
-                                    24083.492785714287,
-                                    42911.1,
-                                    38963.924999999996,
-                                    29288.159999999996,
-                                    28303.283250000004,
-                                    17815.165714285715,
-                                    7799.265000000001,
-                                    26044.74,
-                                    14395.663636363637,
-                                    14470.977272727272,
-                                    23575.0,
-                                    41322.635714285716,
-                                    35106.51111111111,
-                                    16230.145454545453,
-                                    49132.875,
-                                    10253.211764705882,
-                                    29437.155000000006,
-                                    31788.810000000005,
-                                    41174.1,
-                                    38963.924999999996,
-                                    20838.88,
-                                    43066.35,
-                                    29266.875,
-                                    30674.177181818184,
-                                    43128.450000000004,
-                                    43004.25,
-                                    27999.0,
-                                    29245.590000000004,
-                                    19558.072222222225,
-                                    40639.37142857143,
-                                    34904.02222222222,
-                                    20330.399999999998,
-                                    38963.924999999996,
-                                    17930.20625,
-                                    24919.464285714286,
-                                    32025.510000000002,
-                                    34929.333333333336,
-                                    10183.514705882353,
-                                    30544.363636363636,
-                                    38963.924999999996,
-                                    30544.363636363636,
-                                    13028.362500000001,
-                                    35182.444444444445,
-                                    29501.01,
-                                    15610.0,
-                                    39245.049999999996,
-                                    32214.870000000003,
-                                    29458.440000000002,
-                                    29479.725,
-                                    19895.533333333333,
-                                    -14384.222222222223,
-                                    19323.294444444444,
-                                    39245.049999999996,
-                                    49097.4,
-                                    43159.5,
-                                    43035.299999999996,
-                                    34884.48888888888,
-                                    35182.444444444445,
-                                    39245.049999999996,
-                                    15965.414999999999,
-                                    41292.92857142857,
-                                    41084.978571428575,
-                                    41352.34285714285,
-                                    20033.06,
-                                    39245.049999999996,
-                                    39245.049999999996,
-                                    15976.333333333334,
-                                    14277.313636363635,
-                                    34884.48888888888,
-                                    24502.862500000003,
-                                    30013.559999999998,
-                                    21986.249999999996,
-                                    17815.165714285715,
-                                    41292.92857142857,
-                                    35182.444444444445,
-                                    17681.25,
-                                    25201.571428571428,
-                                    40639.37142857143,
-                                    39245.049999999996,
-                                    20218.322222222225,
-                                    43314.75,
-                                    34884.48888888888,
-                                    29587.5,
-                                    32904.444444444445,
-                                    38559.87142857143,
-                                    32752.57777777778,
-                                    28972.079999999998,
-                                    38797.52857142857,
-                                    43948.8,
-                                    33598.8,
-                                    48600.75,
-                                    35106.51111111111,
-                                    39245.049999999996,
-                                    30993.545454545456,
-                                    23575.0,
-                                    25839.809999999998,
-                                    16083.958333333334,
-                                    32049.18,
-                                    28303.283250000004,
-                                    17815.165714285715,
-                                    39245.049999999996,
-                                    31741.47,
-                                    39245.049999999996,
-                                    31481.1,
-                                    30993.545454545456,
-                                    29522.294999999995,
-                                    43345.799999999996,
-                                    30993.545454545456,
-                                    41174.1,
-                                    41025.56428571429,
-                                    25895.7,
-                                    35157.13333333333,
-                                    32509.35,
-                                    43159.5,
-                                    49168.35,
-                                    25858.440000000002,
-                                    40847.32142857143,
-                                    34884.48888888888,
-                                    17815.165714285715,
-                                    30853.849909090906,
-                                    39245.049999999996,
-                                    26549.850000000002,
-                                    39245.049999999996,
-                                    39245.049999999996,
-                                    43314.75,
-                                    29373.3,
-                                    41471.17142857143,
-                                    35182.444444444445,
-                                    39245.049999999996,
-                                    7439.142857142857,
-                                    28303.283250000004,
-                                    30853.849909090906,
-                                    14535.531818181818,
-                                    31552.110000000004,
-                                    35055.88888888889,
-                                    24712.585714285717,
-                                    35157.13333333333,
-                                    39245.049999999996,
-                                    34884.48888888888,
-                                    39245.049999999996,
-                                    31670.460000000003,
-                                    34884.48888888888,
-                                    43345.799999999996,
-                                    39245.049999999996,
-                                    17681.25,
-                                    43159.5,
-                                    35182.444444444445,
-                                    35131.822222222225,
-                                    39245.049999999996,
-                                    39245.049999999996,
-                                    15635.199999999999,
-                                    35081.2,
-                                    28410.75,
-                                    23506.666666666668,
-                                    39245.049999999996,
-                                    29288.159999999996,
-                                    29437.155000000006,
-                                    39245.049999999996,
-                                    43190.549999999996,
-                                    35131.822222222225,
-                                    28303.283250000004,
-                                    49132.875,
-                                    39245.049999999996,
-                                    18154.292785714286,
-                                    32635.488888888885,
-                                    46011.07499999999,
-                                    43981.833333333336,
-                                    46082.025,
-                                    40613.4,
-                                    651.0,
-                                    24906.4,
-                                    22037.5,
-                                    32635.488888888885,
-                                    29191.877181818185,
-                                    13771.636363636364,
-                                    27606.644999999997,
-                                    32635.488888888885,
-                                    24168.711461538463,
-                                    27606.644999999997,
-                                    9587.217647058822,
-                                    40520.25,
-                                    40365.0,
-                                    9525.264705882353
+                                  
                                 ],
                                 "ДППВПД_выручка_от_оперирования": 38391081.900000006,
                                 "ДППВПД_штрафы_к_получению": 0,
@@ -5058,9 +4881,10 @@ export default {
                 "налог_на_прибыль": 0,
                 "чистая_прибыль": 56802448.36000005,
                 "рентабельность_по_чистой_прибыли": -301.17655376179664
-            }
+            },
         }
     },
+
     computed: {
         getTh() {
             return this.alphabet.slice(0, 3)
@@ -5078,6 +4902,105 @@ export default {
 
     },
     methods: {
+        calculateSum(property, polygon, wagon_type) {
+            let sum = 0;
+            for (const index of Object.keys(this.file)) {
+                if (this.CheckValue(index)) {
+                    sum += parseFloat(this.file[index][wagon_type][polygon][property]) || 0;
+                }
+            }
+            return sum;
+        },
+        calculateSumNotPolygon(wagon_type, property){
+            let sum = 0;
+            for (const index of Object.keys(this.file)) {
+                if (this.CheckValue(index)) {
+                    sum += parseFloat(this.file[index][wagon_type][property]) || 0;
+                }
+            }
+            return sum;
+        },
+        getNextKey(obj) {
+            console.log(obj)
+            const keys = Object.keys(obj);
+            let correctKeys = [];
+            for (let client of keys) {
+                if (
+                    client == "вес" ||
+                    client == "погрузка" ||
+                    client == "расстояние_груженое" ||
+                    client == "груженое_плечо" ||
+                    client == "грузооборот" ||
+                    client == "производительность" ||
+                    client == "ДППВПД_выручка_от_оперирования" ||
+                    client == "ДППВПД_штрафы_к_получению" ||
+                    client == "ДППВПД_себестоимость" ||
+                    client == "ДППВПД_условно_переменные_расходы" ||
+                    client == "жд_тариф" ||
+                    client == "тариф_порожний" ||
+                    client == "тариф_груженый" ||
+                    client == "тариф_по_сопредельным_государствам" ||
+                    client == "привлечение" ||
+                    client == "доп_услуги" ||
+                    client == "ппс" ||
+                    client == "отстой" ||
+                    client == "вагоносутки" ||
+                    client == "ДППВПД_доходность" ||
+                    client == "ДППВПД_маржинальная_рентабельность" ||
+                    client == "ДППВПД_условно_постоянные_расходы" ||
+                    client == "ДППВПД_аренда_пс" ||
+                    client == "ДППВПД_амортизация_пс" ||
+                    client == "ДППВПД_текущий_ремонт_включая_запчасти" ||
+                    client == "ДППВПД_сервисное_обслуживание_пс" ||
+                    client == "ДППВПД_расходы_на_оплату_труда_в_составе_производственных_расходов" ||
+                    client == "ДППВПД_прочие_условно_постоянные_расходы" ||
+                    client == "ДППВПД_операционная_прибыль" ||
+                    client == "ДПСВВА_выручка_от_сдачи_в_аренду" ||
+                    client == "ДПСВВА_себестоимость" ||
+                    client == "ДПСВВА_аренда_пс" ||
+                    client == "ДПСВВА_амортизация_пс" ||
+                    client == "ДПСВВА_сервисное_обслуживание_пс" ||
+                    client == "ПВОД_выручка" ||
+                    client == "выручка_от_оптовой_торговли" ||
+                    client == "выручка_от_реализации_металлолома" ||
+                    client == "выручка_от_агентской_деятельности" ||
+                    client == "прочая_выручка_от_основной_деятельности" ||
+                    client == "ПВОД_себестоимость" ||
+                    client == "ПВОД_себестоимость_реализованных_товаров" ||
+                    client == "ПВОД_себестоимость_реализованного_металлолома" ||
+                    client == "ПВОД_операционная_прибыль_по_прочим_видам_основной_деятельности" ||
+                    client == "всего_операционная_прибыль" ||
+                    client == "административно_хозяйственные_расходы" ||
+                    client == "административно_хозяйственные_расходы_и_амортизация" ||
+                    client == "прибыль_и_убыток_от_продаж" ||
+                    client == "прочие_доходы_и_расходы" ||
+                    client == "прочие_доходы" ||
+                    client == "проценты_к_получению" ||
+                    client == "доходы_по_курсовым_разницам" ||
+                    client == "иные_прочие_доходы" ||
+                    client == "прочие_расходы" ||
+                    client == "проценты_к_уплате" ||
+                    client == "расходы_по_курсовым_разницам" ||
+                    client == "иные_прочие_расходы" ||
+                    client == "ebitda" ||
+                    client == "рентабельность_по_ebitda" ||
+                    client == "прибыль_до_налогооблажения" ||
+                    client == "налог_на_прибыль" ||
+                    client == "чистая_прибыль" ||
+                    client == "рентабельность_по_чистой_прибыли"||
+                    client == "прочие_услуги" ||
+                    client == "штрафы_к_уплате" ||
+                    client == "ДППВПД_маржинальный_доход" ) {
+                    continue;
+                } else {
+                   
+                    correctKeys.push(client);
+                    
+                }
+            }
+            console.log(correctKeys)
+            return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
+        },
             CheckValue(value) {
                 let client = value;
                 if (
