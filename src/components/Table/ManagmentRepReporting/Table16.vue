@@ -254,7 +254,7 @@ export default {
         getTh() {
             // const table = document.getElementsByTagName('table')[0];
             // const numberOfColumns = table.rows[0].cells.length;
-            return this.alphabet.slice(0, this.amount_cols)
+            return this.alphabet.slice(0, 3)
         },
         HowManyNewCells() {
             if (this.getCollection) {
