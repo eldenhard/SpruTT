@@ -129,6 +129,7 @@ export default {
 label{
     color: grey;
 }
+
 .air_block {
     width: 100%;
     height: auto;
@@ -170,11 +171,11 @@ label{
 
 .answer_block {
     width: 100%;
-    background: lightgray;
+    background: rgb(243, 243, 243);
 }
 
 .second_level {
-    margin-top: 4%;
+    margin: 2% 0 4% 0;
     width: 100%;
 }
 
