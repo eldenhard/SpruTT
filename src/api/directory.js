@@ -186,6 +186,7 @@ const LoadingPlanAndFact = (data) => {
 const getActs = (filter) => {
     return api.get(`${finance}/acts/`, {params: filter})
 }
+
 export default {
     getAllcounterparties,
     putCounterparties,
