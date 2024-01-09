@@ -1,5 +1,16 @@
 <template>
     <div>
+        <b-modal id="AcTNotPPSDelete" hide-footer>
+            <template #modal-title> Подтверждение действия </template>
+            <div class="d-block text-center">
+                <h4>Вы уверены, что хотите удалить данные?</h4>
+                <p>В случае удаления, данные будут потеряны безвозвратно</p>
+            </div>
+            <b-button variant="danger" @click="deleteActs(selected_record)">Да, я уверен</b-button>
+            <b-button class="mt-3" block @click="$bvModal.hide('AcTNotPPSDelete')">Нет, отменить</b-button>
+        </b-modal>
+        <button class="Delete button" style="width: 15%; white-space: nowrap; margin: 2% 0; height: 30px"
+            @click="open_modal(selectedItems)">Удалить выбранное</button>
         <div class="filter_block">
             <label for="">Кол-во записей <br>
                 <select v-model="filter.page_size">
@@ -17,6 +28,11 @@
             <table>
                 <thead>
                     <tr class="TableHeader">
+                        <th style="border-left: 1px solid white; border-top: 1px solid white;">
+                            <label for="all"
+                                style="display: flex; align-items: center; justify-content: center">Все&nbsp;<input id="all"
+                                    type="checkbox" :checked="selectAll" @change="toggleSelectAll"></label>
+                        </th>
                         <th>№ акта</th>
                         <th>Дата акта</th>
                         <th>Продавец</th>
@@ -33,20 +49,71 @@
                 <tbody>
                     <tr v-for="item, index in responseActs" :key="index">
                         <td>
-                            <input type="text" name="" id="" :value="item.number">
+                            <input type="checkbox" :checked="isSelected(item.id)" @change="toggleItemSelection(item.id)">
                         </td>
                         <td>
-                            <input type="date" name="" id="" :value="item.on_date.split('T')[0]">
+                            <InputLoader :nameInp="`number`" :idRow="item.id" :idLoader="`numberload ${item.id}`"
+                                :idElement="`number ${item.id}`" :valueDataInp="item.number" :typeInp="'text'"
+                                @changeDate="DateChange" />
                         </td>
-                        <td><input type="text" :value="item.seller"> &nbsp;</td>
-                        <td><input type="text" :value="item.buyer"></td>
-                        <td><input type="text" :value="item.agr"></td>
-                        <td><input type="text" :value="item.wagon"></td>
-                        <td><input type="text" :value="item.invoice_number"></td>
-                        <td><input type="text" :value="item.total_wo_nds"></td>
-                        <td><input type="text" :value="item.nds"></td>
-                        <td><input type="text" :value="item.total"></td>
-                        <td><input type="text" :value="item.act_type"></td>
+                        <td>
+                            <!-- <input type="date" name="" id="" :value="item.on_date.split('T')[0]"> -->
+                            <InputLoader :nameInp="`on_date`" :idRow="item.id" :idLoader="`on_dateload ${item.id}`"
+                                :idElement="`on_date ${item.id}`" :valueDataInp="item.on_date.split('T')[0]" :typeInp="'date'"
+                                @changeDate="DateChange" />
+                        </td>
+
+                        <td>
+                            <InputLoader :nameInp="`seller`" :idRow="item.id" :idLoader="`sellerload ${item.id}`"
+                                :idElement="`seller ${item.id}`" :valueDataInp="item.seller" :typeInp="'text'"
+                                @changeDate="DateChange" />
+                        </td>
+
+                        <td>
+                            <InputLoader :nameInp="`buyer`" :idRow="item.id" :idLoader="`buyerload ${item.id}`"
+                                :idElement="`buyer ${item.id}`" :valueDataInp="item.buyer" :typeInp="'text'"
+                                @changeDate="DateChange" />
+                        </td>
+                        <td>
+                            <InputLoader :nameInp="`agr`" :idRow="item.id" :idLoader="`agrload ${item.id}`"
+                                :idElement="`agr ${item.id}`" :valueDataInp="item.agr" :typeInp="'text'"
+                                @changeDate="DateChange" />
+                        </td>
+                        <td>
+                            <InputLoader :nameInp="`wagon`" :idRow="item.id" :idLoader="`wagonload ${item.id}`"
+                                :idElement="`wagon ${item.id}`" :valueDataInp="item.wagon" :typeInp="'text'"
+                                @changeDate="DateChange" />
+                        </td>
+                        <td>
+                            <InputLoader :nameInp="`invoice_number`" :idRow="item.id"
+                                :idLoader="`invoice_numberload ${item.id}`" :idElement="`invoice_number ${item.id}`"
+                                :valueDataInp="item.invoice_number" :typeInp="'text'" @changeDate="DateChange" />
+                        </td>
+                        <td>
+                            <InputLoader :nameInp="`total_wo_nds`" :idRow="item.id"
+                                :idLoader="`total_wo_ndsload ${item.id}`" :idElement="`total_wo_nds ${item.id}`"
+                                :valueDataInp="item.total_wo_nds" :typeInp="'text'" @changeDate="DateChange" />
+
+                        </td>
+                        <td>
+                            <InputLoader :nameInp="`nds`" :idRow="item.id" :idLoader="`ndsload ${item.id}`"
+                                :idElement="`nds ${item.id}`" :valueDataInp="item.nds" :typeInp="'text'"
+                                @changeDate="DateChange" />
+
+                        </td>
+                        <td>
+                            <InputLoader :nameInp="`total`" :idRow="item.id" :idLoader="`totalload ${item.id}`"
+                                :idElement="`total ${item.id}`" :valueDataInp="item.total" :typeInp="'text'"
+                                @changeDate="DateChange" />
+
+                        </td>
+                        <td>
+                            <input type="text" :value="item.act_type" disabled>
+                            <!-- <InputLoader :nameInp="`act_type`" :idRow="item.id" :idLoader="`act_typeload ${item.id}`"
+                                :idElement="`act_type ${item.id}`" :valueDataInp="item.act_type" :typeInp="'text'"
+                                @changeDate="DateChange" /> -->
+
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -61,19 +128,22 @@
                 </li>
             </ul>
         </div>
+        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
+
     </div>
 </template>
 
 <script>
 import api from "@/api/directory";
-import Loader from "@/components/loader/loader.vue";
+import InputLoader from "../../../../ui/InputLoader.vue";
+import Notifications from "@/components/notifications/Notifications.vue";
+
 export default {
-    components: { Loader },
+    components: { InputLoader, Notifications },
 
     data() {
         return {
             responseActs: null,
-            loader: false,
             filter: {
                 'page_size': 10,  // Значение по умолчанию
                 'page': 1
@@ -83,6 +153,16 @@ export default {
             total_pages: "",
             total_objects: 0,
             interval: 4,
+
+            all_checkbox: [],
+            selectAll: false,
+            selectedItems: [],
+
+
+            showNotify: false,
+            notifyHead: "",
+            notifyMessage: "",
+            notifyClass: "",
         }
     },
     watch: {
@@ -122,7 +202,7 @@ export default {
                     this.total_objects = response.data.total_objects;
                 })
                 .catch((error) => {
-                    this.$emit('stopLoader')            
+                    this.$emit('stopLoader')
                     console.log(error)
                 });
         },
@@ -140,7 +220,129 @@ export default {
                     this.$emit('stopLoader')
                     console.error(err)
                 })
-        }
+        },
+        DateChange(data) {
+            let elementLoader = document.getElementById(data.loader);
+            let element = document.getElementById(data.idElement);
+            elementLoader.style.display = "block";
+            const result = Object.entries(data).map((item) => ({
+                [item[0]]: item[1],
+            }));
+            api
+                .patchActs(result[1].id, result[0])
+                .then((response) => {
+                    elementLoader.style.display = "none";
+                    element.classList.add("successStatus");
+                    setTimeout(() => {
+                        element.classList.remove("successStatus");
+                    }, 1000);
+                })
+                .catch((error) => {
+                    elementLoader.style.display = "none";
+                    element.classList.add("errorStatus");
+                    setTimeout(() => {
+                        element.classList.remove("errorStatus");
+                    }, 1000);
+
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = error.response.data;
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3500);
+                });
+        },
+        deleteChecked(indexArray) {
+            this.responseActs = this.responseActs.filter((_, index) => !indexArray.includes(index));
+            this.selectedItems = [];
+        },
+        toggleSelectAll() {
+            this.selectAll = !this.selectAll
+            if (this.selectAll) {
+                this.selectedItems = this.responseActs.map((_, index) => index)
+            } else {
+                this.selectedItems = []
+            }
+            console.log(this.selectedItems)
+        },
+        toggleItemSelection(itemId) {
+            if (this.isSelected(itemId)) {
+                this.selectedItems = this.selectedItems.filter(id => id !== itemId)
+            } else {
+                this.selectedItems.push(itemId)
+            }
+
+            console.log(this.selectedItems)
+        },
+        isSelected(itemId) {
+            return this.selectedItems.includes(itemId)
+        },
+        deleteActs(id) {
+           
+            if (Array.isArray(id)) {
+                this.loader = true
+                let requests = id.map(url => api.deleteActs(url))
+                Promise.all(requests)
+                    .then(res => {
+                        this.loader = false
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = "Данные удалены";
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 2500);
+                        this.getPPS()
+                        this.$bvModal.hide("AcTDelete");
+                    }).catch((err) => {
+                        this.loader = false
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = "Данные не удалены";
+                        this.notifyClass = "wrapper-error";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 2500);
+                        this.$bvModal.hide("AcTDelete");
+                    })
+
+                return
+            }
+            this.loader = true;
+            // В случае если выбран 1 чекбокс (на сервере не реализован механизм удлаления множества элементов)
+            api
+                .deleteActs(id)
+                .then((response) => {
+                    this.loader = false;
+                    this.notifyHead = "Успешно";
+                    this.notifyMessage = "Данные удалены";
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 2500);
+                    this.$bvModal.hide("AcTDelete");
+                })
+                .catch((error) => {
+                    this.loader = false;
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = "Данные не удалены";
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 2500);
+                    console.log(error);
+                    this.$bvModal.hide("AcTDelete");
+                });
+            let row = document.getElementById(id);
+            row.parentNode.removeChild(row);
+        },
+        open_modal(id) {
+            this.selected_record = id;
+            this.$bvModal.show("AcTNotPPSDelete");
+        },
     }
 }
 </script>
@@ -256,7 +458,7 @@ tr:hover {
     border: 2px solid rgb(39, 39, 39);
 }
 
-input {
+input:not([type=checkbox]) {
     width: 100%;
     height: 100%;
     text-align: center;

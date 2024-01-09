@@ -189,7 +189,12 @@ const getActs = (filter) => {
 const saveActs = (data) => {
     return api.post(`${finance}/acts/save-many/`, data)
 }
-
+const patchActs = (id, data) => {
+    return api.patch(`${finance}/acts/${id}/`, data)
+}
+const deleteActs = (id, data) => {
+    return api.patch(`${finance}/acts/${id}/`, data)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -258,5 +263,6 @@ export default {
     // Загрузка актов
     getActs,
     saveActs,
+    patchActs,
 }
 
