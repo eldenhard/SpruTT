@@ -2,11 +2,11 @@
   <div>
     <!-- <pre>{{normalized}}</pre> -->
     <Loader :loader="loader" />
-    <Periods @Action="Actioned" @data="getCurrentData" >
+    <Periods @Action="Actioned" @data="getCurrentData">
       <label for="">
         Тип вагона
         <br />
-        <select name="" id="" v-model="wag_type"  style="width: 100%" >
+        <select name="" id="" v-model="wag_type" style="width: 100%">
           <option value="Полувагон">Полувагон</option>
           <option value="Цистерна">Цистерна</option>
         </select>
@@ -15,69 +15,77 @@
     <br />
 
     <!-- <pre>{{ normalized }}</pre> -->
-    <p>Форма 4.5. "Справка о выполнении перевозок {{ wag_type == 'Цистерна'  ?  wag_type.toLowerCase() + 'ми' : wag_type.toLowerCase() + 'ами'}}"</p>
-    <div  class="block-table">
-      <table class="table_search" >
-        <thead>
-          <th>Дорога погрузки</th>
-          <th>Клиент</th>
-          <th>Дорога выгрузки</th>
-          <th style="width:220px">Груз</th>
-          <th style="width: 180px">Вес</th>
-          <th style="width: 180px">Кол-во погрузок</th>
-          <th style="width: 180px">Выручка руб, без НДС</th>
-        </thead>
+    <p>Форма 4.5. "Справка о выполнении перевозок {{ wag_type == 'Цистерна' ? wag_type.toLowerCase() + 'ми' :
+      wag_type.toLowerCase() + 'ами' }}"</p>
+    <div class="block-table">
+      <table class="table_search">
 
-        <template v-for="obj in normalized">
-          <template v-for="{ road, attr1, TOTAL_ROAD } in obj.data">
-            <template v-for="({ client, attr3, total }, iAttr1) in attr1">
-              <tr v-for="(attr3Item, iAttr3) in attr3">
-                <td :rowspan="rowspan(attr1)" v-if="!iAttr1 && !iAttr3">
-                  {{ road }}
-                </td>
-                <td :rowspan="attr3.length" v-if="!iAttr3">{{ client }}</td>
-                <td>{{ attr3Item.road }}</td>
-                <table>
-                  <tr v-for="item in attr3Item.cargo" :key="item.id">
-                    <td style="width:220px">{{ item.name }}</td>
-                    <td style="width: 180px">{{ item?.cargo?.toFixed(2) }}</td>
-                    <td style="width: 180px">{{ item.loads | format }}</td>
-                    <td style="width: 180px">
-                      {{ item?.revenue?.toFixed(2) | format }}
-                    </td>
-                  </tr>
-                </table>
-              </tr>
-              <tr class="total">
-                <td colspan="2">Итого {{ client }}:</td>
-                <td></td>
-                <td>{{ total?.cargo.toFixed(2) | format }}</td>
-                <td>{{ total?.amount | format }}</td>
-                <td>{{ total?.revenue.toFixed(2) | format }}</td>
+
+        <tbody v-if="Object.keys(responseObject).length > 0">
+          <template v-for="(valueClient, client) in responseObject">
+            <tr :key="valueClient.id">
+            <tr>
+              <td colspan="7" @click="CheckClientOpen(client, $event)" style="font-weight: 700;"
+                v-if="CheckValue(client)">{{ client }}</td>
+            </tr>
+            <tr style="background: #F0F0F0" :data-attr='client' class="block_element" v-if="CheckValue(client)">
+              <th>Дорога погрузки</th>
+              <th>Дорога выгрузки</th>
+              <th>Груз</th>
+              <th>Вес</th>
+              <th>Кол-во погрузок</th>
+              <th>Выручка руб, без НДС</th>
+            </tr>
+
+            <template v-for="road in getNextKey(responseObject[client])" :data-attr='client' class="block_element">
+              <template v-for="clientRoad in getNextKey(responseObject[client][road])" :data-attr='client' lass="block_element">
+                  <template v-for="cargo in getNextKey(responseObject[client][road][clientRoad])" :data-attr='client' class="block_element"> 
+
+                    <tr :key="road.id" class="block_element" :data-attr='client'>
+                      <td>{{ road }}</td>
+                      <td>{{ clientRoad }}</td>
+                      <td>&nbsp;{{ cargo }}&nbsp;</td>
+                      <td>&nbsp;{{ responseObject[client][road][clientRoad][cargo]['weight']?.toFixed(2) | format}}&nbsp;</td>
+                      <td>&nbsp;{{ responseObject[client][road][clientRoad][cargo]['aid'] }}&nbsp;</td>
+                      <td>&nbsp;{{ responseObject[client][road][clientRoad][cargo]['revenue'] }}&nbsp;</td>
+                    </tr>
+
+
+                </template>
+                <tr style="background:#FDFFDA" class="block_element" :data-attr='client'>
+
+                  <td colspan="3">ИТОГО {{ clientRoad }}</td>
+                  <td style="font-weight: 500;">{{ responseObject[client][road][clientRoad]['weight']?.toFixed(2) | format }}</td>
+                  <td style="font-weight: 500;">{{ responseObject[client][road][clientRoad]['aid'] }}</td>
+                  <td style="font-weight: 500;">{{ responseObject[client][road][clientRoad]['revenue']?.toFixed(2) | format }}
+                  </td>
+                </tr>
+              </template>
+              <tr style="background: #DDFCCF" class="block_element" :data-attr='client'>
+                <td colspan="3">ИТОГО {{ road }}</td>
+                <td style="font-weight: 700;">{{ responseObject[client][road]['weight']?.toFixed(2) | format }}</td>
+                <td style="font-weight: 00;">{{ responseObject[client][road]['aid'] }}</td>
+                <td style="font-weight: 700;">{{ responseObject[client][road]['revenue']?.toFixed(2) | format }}</td>
               </tr>
             </template>
-            <tr class="total_2">
-              <td colspan="3">Итого {{ road }}:</td>
-              <td></td>
-              <td>{{ TOTAL_ROAD?.cargo.toFixed(2) | format }}</td>
-              <td>{{ TOTAL_ROAD?.amount | format }}</td>
-              <td>{{ TOTAL_ROAD?.revenue.toFixed(2) | format }}</td>
+        
             </tr>
           </template>
-        </template>
-        <tr
-          v-for="obj in normalized"
-          :key="obj.id"
-          style="border: 1px solid black"
-          class="all_total"
-        >
-          <td colspan="3">Всего погрузки</td>
-          <td></td>
+          <tr style="background: #F0F0F0;">
+            <td colspan="3" style="font-weight: bold; ">Общий</td>
+              <th>Вес</th>
+              <th>Кол-во погрузок</th>
+              <th>Выручка руб, без НДС</th>
+          </tr>
+              <tr class="GrandTotal" >
 
-          <td>{{ obj.total?.cargo.toFixed(2) | format }}</td>
-          <td>{{ obj.total?.amount | format }}</td>
-          <td>{{ obj.total?.revenue.toFixed(2) | format }}</td>
-        </tr>
+                <td colspan="3"> итог </td>
+                <td style="font-weight: 700;">{{ responseObject['weight']?.toFixed(2) | format }}</td>
+                <td style="font-weight: 00;">{{ responseObject['aid'] }}</td>
+                <td style="font-weight: 700;">{{ responseObject['revenue']?.toFixed(2) | format }}</td>
+              </tr>
+           
+        </tbody>
       </table>
     </div>
   </div>
@@ -98,55 +106,77 @@ export default {
       date_end: "",
       wag_type: "Полувагон",
 
-    
-      objects2: "",
+
+      responseObject: {}
 
     };
   },
 
+  filters: {
+    format(value) {
+            if (value != "") {
+                let TwoSignNum = value?.toFixed(2)
+                return String(TwoSignNum).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+            }
+            return value
 
-  methods: {
-    rowspan: (attr2) => attr2.reduce((acc, n) => acc + n.attr3.length + 1, 0),
-
-    normalizeObject() {
-      const test = Object.keys(this.objects2.data).map((key) => {
-        const obj = {
-          road: key,
-          attr1: Object.keys(this.objects2.data[key].data).map((client) => {
-            return {
-              client,
-              attr3: Object.keys(this.objects2.data[key].data[client].data).map(
-                (road) => {
-                  return {
-                    road,
-                    cargo: Object.keys(
-                      this.objects2.data[key].data[client].data[road].data
-                    ).map((cargo) => {
-                      return {
-                        name: cargo,
-                        ...this.objects2.data[key].data[client].data[road].data[
-                          cargo
-                        ],
-                        // cargo:  this.objects2.data[key].data[client].data[road].data[cargo]
-                      };
-                    }),
-                  };
-                }
-              ),
-              total: this.objects2.data[key].data[client].total,
-            };
-          }),
-          TOTAL_ROAD: this.objects2.data[key].total,
-        };
-        return obj;
-      });
-
-      this.normalized = [
-        {
-          data: test,
-          total: this.objects2.total,
         },
-      ];
+    ifNull(value) {
+      if (value == null || value == 'null') {
+        return 'Неопределенно'
+      }
+      return value
+    }
+  },
+  methods: {
+    CheckClientOpen(val, event){
+      event.target.classList.toggle('check_element')
+      let trs = document.getElementsByTagName('tr')
+      console.log(event.target)
+      for(let tr of trs){
+        if(tr.getAttribute('data-attr') == val){
+         tr.classList.toggle('block_element')
+        } else {
+          continue
+        }
+      }
+    },
+    CheckValue(value) {
+      let client = value;
+      if (
+        client != "aid" &&
+        client != "weight" &&
+        client != "revenue"
+      ) {
+        return true;
+      }
+    },
+    getNextKey(obj) {
+      const keys = Object.keys(obj);
+      let correctKeys = [];
+      for (let i of keys) {
+        if (i === "aid" || i === "weight" || i === "revenue") {
+          continue;
+        } else {
+          correctKeys.push(i);
+        }
+      }
+      // console.log(correctKeys);
+      return correctKeys; // предполагая, что следующий ключ - первый ключ в объекте
+    },
+    isObject(val) {
+      if (typeof val !== "object" || val === null) {
+        return false;
+      }
+
+      const keys = Object.keys(val);
+      for (let i of keys) {
+        if (val[i] === undefined) {
+          return false;
+        }
+      }
+
+      return true;
     },
     Actioned() {
       this.loader = true;
@@ -154,10 +184,7 @@ export default {
         .getUO45(this.date_begin, this.date_end, this.wag_type)
         .then((response) => {
           this.loader = false;
-          this.objects2 = response.data;
-          console.log( this.objects2, '5')
-          console.log(response, '5')
-          this.normalizeObject();
+          this.responseObject = response.data;
         })
         .catch((error) => {
           console.log(error);
@@ -189,89 +216,22 @@ tr{
   }
 </style> -->
 <style scoped>
-.block-table{
-  position: relative;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 100%;
-  overflow:auto;
-}
-.table_search {
-  width: 50%;
-  max-width: 50% !important;
-}
-th{
-  font-size: 12px !important;
-}
-.total {
-  background: #fdffd9;
+.check_element {
+  background: rgb(142, 182, 182);
+  font-weight: bold;
 }
 
-.total_2 {
-  background: #ddface;
+td,
+th {
+  white-space: nowrap;
+
+}
+
+.block_element {
+  display: none;
 }
 
 tr:hover {
-  background: rgb(236, 236, 236);
-}
-
-td {
-  border: 1px solid black !important;
-  color: black !important;
-  font-size: 13px;
-}
-
-table {
-  width: 50%;
-  max-width: 50% !important;
-  border-collapse: collapse;
-}
-
-table > tbody > tr > td,
-table > tbody > tr > td.inner > div {
-  vertical-align: top;
-  border: 1px solid #ddd;
-}
-
-table > tbody > tr > td.inner {
-  padding: 0;
-  border-right: 0;
-}
-
-table > tbody > tr > td.inner > div {
-  padding: 3px;
-  border-width: 0 0 1px 0;
-}
-
-table > tbody > tr > td.inner > div:last-child {
-  border: 0;
-}
-
-table > tbody > tr > td.inner > table {
-  margin-bottom: 0;
-}
-
-table > tbody > tr > td.inner > table td {
-  border-width: 0 1px 1px 0;
-}
-
-table > tbody > tr > td.inner > table tr:last-child td {
-  border-bottom: 0;
-}
-
-table > tbody > tr > td.inner > div {
-  border-right: 0;
-}
-
-thead > th {
-  border: 1px solid black;
-}
-
-.total_row {
-  background: #ddface;
-}
-
-.total_road {
-  background: greenyellow;
+  background: lightcyan;
 }
 </style>

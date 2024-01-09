@@ -134,9 +134,6 @@ export default {
           continue
         }
       }
-      // console.log(currentRows)
-      // let ElementValue = tr.getAttribute('data-attr')
-      // console.log(trs, val)
     },
     TransLateBelong(val) {
       switch (val) {
