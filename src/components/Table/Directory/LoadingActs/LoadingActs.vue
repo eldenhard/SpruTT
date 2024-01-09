@@ -11,7 +11,7 @@
             <div class="first_level">
                 <label for="">Договор <br>
                     <div class="inputcontainer">
-                        <input type="text" class="inp_select mini">
+                        <input type="text" class="inp_select mini" v-model="agr">
                     </div>
                 </label>
                 <label for="">&nbsp;Продавец <br>
@@ -33,7 +33,7 @@
                     </div>
                 </label>
                 <label for="">Тип акта <br>
-                    <select type="text" class="inp_select mini">
+                    <select type="text" class="inp_select mini" v-model="act_type">
                         <option value="Транспортный">Транспортный</option>
                         <option value="Аренда">Аренда</option>
                     </select>
@@ -46,7 +46,7 @@
                 </ul>
             </div>
             <div class="second_level">
-                <LoadingActTableVue />
+                <LoadingActTableVue  @startLoader="startLoader" @stopLoader="stopLoader" :seller="seller" :buyer="buyer" :act_type="act_type" :agr="agr"/>
             </div>
 
             <CheckActs  @startLoader="startLoader" @stopLoader="stopLoader"/>
@@ -72,6 +72,8 @@ export default {
         return {
             seller: "",
             buyer: "",
+            act_type: "Транспортный",
+            agr: "",
             responseCounterparty: null,
             loaderInputSeller: false,
             loaderInputBuyer: false,

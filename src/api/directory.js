@@ -186,6 +186,9 @@ const LoadingPlanAndFact = (data) => {
 const getActs = (filter) => {
     return api.get(`${finance}/acts/`, {params: filter})
 }
+const saveActs = (data) => {
+    return api.post(`${finance}/acts/save-many/`, data)
+}
 
 export default {
     getAllcounterparties,
@@ -254,5 +257,6 @@ export default {
 
     // Загрузка актов
     getActs,
+    saveActs,
 }
 

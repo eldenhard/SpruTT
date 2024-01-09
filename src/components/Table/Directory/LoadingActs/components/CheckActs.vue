@@ -56,7 +56,7 @@
                 <li v-for="btn in total_pages" :key="btn.id">
                     <a @click="getPagination(btn)" :class="{
                         active123: Truefalse(btn),
-                        active_new: filter['page_number'] == btn,
+                        active_new: filter['page'] == btn,
                     }">{{ btn }}</a>
                 </li>
             </ul>
@@ -69,13 +69,14 @@ import api from "@/api/directory";
 import Loader from "@/components/loader/loader.vue";
 export default {
     components: { Loader },
+
     data() {
         return {
             responseActs: null,
             loader: false,
             filter: {
                 'page_size': 10,  // Значение по умолчанию
-                'page_number': 1
+                'page': 1
             },
             // Пагинация
             pagination: "",
@@ -91,7 +92,7 @@ export default {
     },
     methods: {
         Truefalse(btn) {
-            if (btn == this.filter['page_number']) {
+            if (btn == this.filter['page']) {
                 return true;
             }
             if (btn == 1) {
@@ -100,10 +101,10 @@ export default {
             if (btn == this.total_pages) {
                 return true;
             }
-            if (btn > this.filter['page_number'] && btn < this.filter['page_number'] + this.interval) {
+            if (btn > this.filter['page'] && btn < this.filter['page'] + this.interval) {
                 return true;
             }
-            if (btn < this.filter['page_number'] && btn > this.filter['page_number'] - this.interval) {
+            if (btn < this.filter['page'] && btn > this.filter['page'] - this.interval) {
                 return true;
             }
 
@@ -111,7 +112,7 @@ export default {
         },
         getPagination(pg_number) {
             this.$emit('startLoader')
-            this.filter['page_number'] = pg_number
+            this.filter['page'] = pg_number
             api
                 .getActs(this.filter)
                 .then((response) => {
@@ -131,7 +132,7 @@ export default {
             api.getActs(this.filter)
                 .then(response => {
                     this.responseActs = response.data.data
-                    this.filter['page_number'] = response.data.page_number;
+                    this.filter['page'] = response.data.page_number;
                     this.total_pages = response.data.total_pages;
                     this.total_objects = response.data.total_objects;
                     this.$emit('stopLoader')
