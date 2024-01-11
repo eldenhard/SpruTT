@@ -57,9 +57,9 @@ class LoadActs {
     set on_date(value) {
         if (value) {
             let correctDate = value.split('.').reverse().join('-');
-            this._on_date = correctDate; // Устанавливаем значение в on_date
+            this._on_date = correctDate;
         } else {
-            this._on_date = value; // Если значение falsy, устанавливаем его напрямую
+            this._on_date = value; 
         }
     }
 
@@ -112,7 +112,7 @@ export default {
     },
     computed: {
         inputTypes() {
-            const types = {};
+            let types = {};
             for (const header of this.headers) {
                 types[header.property] = header.property === 'on_date' ? 'date' : 'text';
             }

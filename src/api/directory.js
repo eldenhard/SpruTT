@@ -11,6 +11,9 @@ const putCounterparties = (id, data) => {
     return api.patch(`${resource}/counterparties/update/` + `${id}`, data)
 }
 
+const getAllDocumentsNotType = (data) => {
+    return api.get(`${documents}/contact/?search=${data}`)
+}
 
 // типы договоров
 const getDirectoryFarm = (category, filter_farms) => {
@@ -264,5 +267,8 @@ export default {
     getActs,
     saveActs,
     patchActs,
+
+    // новая загрузка документов
+    getAllDocumentsNotType,
 }
 

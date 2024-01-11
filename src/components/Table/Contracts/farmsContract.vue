@@ -1,28 +1,87 @@
 <template>
-  <div>
-    <FilterFarms @updateFilterDataFarms="updateFilterDataFarms" :btnClickHadlerEnter="getFarmContract"></FilterFarms>
-    <ModalContractCreate :id="CurrentPathApi" :btnClickHandler="getFarmContract" />
-    <Annexes :contract="contract_number" :btnClickHandler="getFarmContract" :id="CurrentPathApi3" />
-    <EditAnnexe :contract="contract_number" :annex="editAnnexe" :btnClickHandler="getFarmContract"
-      :id="CurrentPathApi4" />
-    <EditContract :contract="contract_number" :contract_data="editContract" :id="CurrentPathApi2"
-      :btnClickHandler="getFarmContract" />
-    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
-      id="notif" />
-    <Loader :loader="loader"></Loader>
-    <div class="flex_block_button">
-      <button class="Accept" @click="getFarmContract()"> Запросить договора </button>
-      <!-- <button class="Cancel" @click="CreateContract()"> Добавить договор </button> -->
+  <div class="air_block">
+    <Loader :loader="loader" />
+    <div class="air_block_header">
+      <h5>Справочник договоры</h5>
     </div>
+    <hr>
+
+
+
+    <section class="search_bloc">
+      <div class="long_search">
+        <input type="text" placeholder="Поиск..." @input="IputProcessing($event.target.value)">
+        <button class="Request" @click="sendRequestToServerData()">Найти</button>
+      </div>
+    </section>
+
+    <section class="advanced_settings_block">
+      <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">Расширенный поиск</button>
+      <Transition name="fade">
+        <div v-if="isAdvancedSettings" class="advanced_settings">
+          <div class="section_category">
+            <div class="left_section">
+              <p>Категория:</p>
+            </div>
+
+            <div class="right_section">
+              <select name="" id="">
+                <option value="">Не выбрано</option>
+                <option value="economic">Общехозяйственные</option>
+                <option value="repair">Ремонтные</option>
+                <option value="financial">Финансовые</option>
+                <option value="buyer">С покупателем</option>
+                <option value="supply">С поставщиками</option>
+                <option value="other">Прочие</option>
+              </select>
+
+            </div>
+          </div>
+          <hr>
+          <div class="section_date">
+            <div class="left_section">
+              <p>Дата создания документа от:</p>
+            </div>
+            <div class="right_section">
+              <input type="date" class="textarea">
+            </div>
+          </div>
+          <hr>
+          <div class="inn_ogrn">
+            <div class="left_section">
+              <p>ИНН/ОГРН</p>
+            </div>
+            <div class="right_section">
+              <input type="number" class="textarea" placeholder="ИНН">
+              <input type="number" class="textarea" placeholder="ОГРН">
+            </div>
+          </div>
+          <hr>
+          <div class="income_expense">
+            <div class="left_section">
+              <p>Вариант документа:</p>
+            </div>
+            <div class="right_section">
+              <label for="income"><input type="checkbox" id="income"> Доходный </label>
+              <label for="expenses"><input type="checkbox" id="expenses"> Расходный </label>
+            </div>
+          </div>
+          <hr>
+        </div>
+      </Transition>
+    </section>
+
+
+    <!-- <button class="Accept" @click="getFarmContract()"> Запросить договора </button> -->
+
 
     <div style=" width: 15vw;">
-
       <MultiSelectUni @change="updateSelectedCountries" :placeholder="'Поля таблицы'" :variants="CountrieObj"
         :variant-title="'value'">
       </MultiSelectUni>
-
-
     </div>
+
+
     <div style="display: flex; justify-content: start; flex-wrap: wrap;">
       <p style="padding-left: 1%;">Выбранные поля :</p> <br>
       <!-- <template v-if="selectedCountries"> -->
@@ -55,22 +114,9 @@
         <thead>
           <tr
             style="position: sticky; top: 0; margin-top: -10px; padding-top: -5%; background: rgb(150, 150, 150); z-index: 5;">
-            <!-- <th>Действие</th> -->
             <th style="background: rgb(150, 150, 150) !important;">Контрагент</th>
             <th style="background: rgb(150, 150, 150) !important;">Номер договора</th>
-            <!-- <th>Статус ТТ по договору</th> -->
-            <!-- <th>Дата заключения</th> -->
-            <!-- <th>Отдел инициатора</th> -->
-            <!-- <th>Вид договора</th> -->
-            <!-- <th>Предмет договора</th> -->
-            <!-- <th>Сумма договора</th> -->
             <th style="background: rgb(150, 150, 150) !important;">Срок действия договора</th>
-            <!-- <th>Пролонгация</th> -->
-            <!-- <th>Статус</th> -->
-            <!-- <th>Скан-копия</th> -->
-            <!-- <th>Категория</th> -->
-            <!-- <th>Примечание</th> -->
-            <!-- <th>Ответственный</th> -->
             <th style="background: rgb(150, 150, 150) !important;">Файл</th>
             <template v-for="countrie in selectedCountries">
               <th :key="countrie.id" style="background: rgb(150, 150, 150) !important;">{{ countrie.value }}</th>
@@ -81,30 +127,10 @@
         <tbody id="tableMain">
           <template v-for=" el in this.farmDirecory">
             <tr :key="el.id" style="border-top: 2px solid black;">
-              <!-- <td>
-                <b-dropdown id="dropdown-1" text="Действие договор" size="sm" style="width: 95% !important;">
-                  <b-dropdown-item @click="DeleteCurrentContract(el.id)">Удалить</b-dropdown-item>
-                  <b-dropdown-item @click="EditCurrentContract(el.number, el.id)">Редактировать</b-dropdown-item>
-                </b-dropdown>
-              </td> -->
               <td>{{ el.counterparty }} </td>
-
               <td>{{ el.number }}</td>
-              <!-- <td>{{ el.company_status }}</td> -->
-              <!-- <td>{{ el?.created_at?.split(" ")[0].split('-').reverse().join(".") }}</td> -->
-              <!-- <td>{{ el.department }}</td> -->
-              <!-- <td>{{ el.contract_type }}</td> -->
-              <!-- <td>{{ el.contract_object }}</td> -->
-              <!-- <td>{{ el.fiat_amount }}</td> -->
               <td>{{ el?.expiration_date?.split(" ")[0].split('-').reverse().join(".") }}</td>
-              <!-- <td>{{ el.prolongation ? 'Да' : 'Нет' }}</td> -->
-              <!-- <td>{{ el.is_active ? 'Активный' : 'Неактивный' }}</td> -->
-              <!-- <td >
-             <a :href="el.scan" target="_blank" v-if="el.scan"><img style="height: 30px" src="@/assets/pdf.png" alt="скан"/></a>
-            </td> -->
-              <!-- <td>{{ CategoryTranslate(el.category) }}</td> -->
-              <!-- <td>{{ el.comment }}</td> -->
-              <!-- <td>{{ ChangeIdByName(el.responsible) }}</td> -->
+
               <td>
                 <a @click="CopyTEXT(el.scan_path)">
                   <img src="../../../assets/word.png" alt="" height="30">
@@ -137,46 +163,28 @@
 
     </div>
 
-    <div style="display: flex; justify-content: space-around; margin-top: 2%">
-      <button class="Cancel" style="width: 20%" v-if="prevLink" @click="goToPage(prevLink)">
-        назад
-      </button>
-      <button class="Cancel" style="width: 20%" v-if="nextLink" @click="goToPage(nextLink)">
-        вперед
-      </button>
-    </div>
+
+    <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
+      id="notif" />
   </div>
 </template>
     
 <script>
 import api from "@/api/directory";
-import apiCounter from "@/api/counterparties"
-import apiRep from '@/api/report'
 import { mapState } from "vuex";
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import groups from "@/helpers/groups";
-import FilterFarms from "@/components/filter/contractFilter/filter_farms.vue";
-import ModalContractCreate from '@/components/Table/Contracts/CreateContract/ModalWindow.vue'
-import Annexes from "./CreateContract/Annexes.vue";
-import { getUserById } from "@/helpers/getAllUsers";
-import EditAnnexe from "@/components/Table/Contracts/CreateContract/EditAnnexe.vue"
-import EditContract from "./CreateContract/EditContract.vue";
-import MixinTest from "@/mixins/mixin-test.js"
 import MultiSelectUni from '@/components/ui/MultiSelectUni.vue'
 
 export default {
   name: "PartnerTable",
-  props: ['named', 'namo', 'current_tab'],
-  mixins: [MixinTest],
-  components: { Loader, Notifications, FilterFarms, ModalContractCreate, Annexes, EditAnnexe, EditContract, MultiSelectUni },
+
+  components: { Loader, Notifications, MultiSelectUni },
   data() {
     return {
-      // Для модальных окон
-      current_id_by_modal: '',
-      current_id_by_annexes: '',
-      current_id_by_editannexe: '',
-      current_id_by_editcontract: '',
+      isAdvancedSettings: false,
+      intervalresponse: null,
 
       nextLink: null,
       prevLink: null,
@@ -198,255 +206,8 @@ export default {
       },
       selectedCountriesIds: [],
       dislocation: "",
-      users: [],
-      userok: [],
-      // Для компонента editAnnexe
-      editAnnexe: [],
-      // Для компонента editContract
-      editContract: [],
+
     };
-  },
-  mounted() {
-    // this.getFarmContract();
-    // this.loader = true
-    // this.log()
-    // setTimeout(() =>  this.loader= false, 6500)
-
-  },
-  methods: {
-    CopyTEXT(value) {
-        navigator.clipboard.writeText(value)
-      .then(() => {
-        // alert('Данные скопированы')
-      })
-    
-      this.loader = true
-      let data = {
-        dir_path: value
-      }
-      let path
-      api.getFilesToPath(data)
-        .then(res => {
-          path = res.data[0].path
-        }).then(() => {
-          let data = {
-            file_path: path
-          }
-          console.log(path)
-          api.getFilesToPath2(data)
-            .then(response => {
-              this.loader = false
-              console.log(response)
-              let a = document.createElement('a')
-              a.href = response.data.link
-              a.click()
-            }).catch((er) => {
-              this.loader = false
-            })
-        }).catch((er) => {
-          this.loader = false
-        })
-
-    },
-    CustomerRow(value) {
-      if (value === true || value === false) {
-        return value === true ? 'Актуальный' : 'Не актуальный'
-      } else {
-        return value
-
-      }
-    },
-    updateSelectedCountries(selected) {
-      this.selectedCountriesIds = selected
-    },
-    removeselectedCountries(id) {
-      this.selectedCountriesIds.splice(this.selectedCountriesIds?.indexOf(id), 1)
-    },
-    ChangeIdByName(id) {
-      this.users = this.$store.state.users.users
-      const users = getUserById(this.users, id)
-      if (users[0]) {
-        return users[0]?.last_name + " " + users[0]?.first_name[0] + ".";
-      }
-      return "";
-    },
-    ChangeIdCounterByName(id) {
-      let count_data = this.$store.state.counterparties.counterparties
-      const counterpart = getUserById(count_data, id)
-      if (counterpart[0]) {
-        return counterpart[0]?.work_name;
-      }
-      return "";
-    },
-    CategoryTranslate(name) {
-      switch (name) {
-        case 'economic':
-          return 'Общехозяйственные'
-          break;
-        case 'repair':
-          return 'Ремотные'
-          break;
-        case 'buyer':
-          return 'С покупателем'
-          break;
-        case 'financial':
-          return 'Финансовые'
-          break;
-        case 'supply':
-          return 'С поставщиками'
-          break;
-        case 'other ':
-          return 'Другие'
-          break;
-      }
-    },
-    DeleteCurrentContract(id) {
-      this.loader = true
-      api.deleteCurrentContract(id)
-        .then(response => {
-          this.DeleteGetFarmContract()
-          this.loader = false
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Договор удален";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 2500);
-        }).catch(error => {
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Договор не удален, повторите операцию";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 2500);
-          this.loader = false
-        })
-    },
-    deleteCurrentAnnexes(id) {
-      this.loader = true
-      api.deleteCurrentAnnex(id)
-        .then(response => {
-          let table_tr = document.getElementById(id)
-          table_tr.remove();
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Приложение к договору удалено";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 2500);
-          // this.getFarmContract()
-          this.loader = false
-        }).catch(error => {
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Приложение к договору не удалено, повторите операцию";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 2500);
-          this.loader = false
-        })
-    },
-    CreateContract() {
-      this.$bvModal.show(this.CurrentPathApi) ///////////////////////
-    },
-    CreateAnnex(number) {
-      this.contract_number = number
-      this.$bvModal.show(this.CurrentPathApi3) /////////////////////////
-    },
-    // Редактирование договора
-    EditCurrentContract(number, id) {
-      this.loader = true
-      this.contract_number = number
-      api.getCurrentContract(id)
-        .then(response => {
-          this.editContract = response.data
-          // console.log(response.data)
-          this.loader = false
-          // console.log(this.CurrentPathApi2)
-          this.$bvModal.show(this.CurrentPathApi2) ////////////////////////
-        }).catch(error => {
-          // console.log(error)
-          this.loader = false
-        })
-
-    },
-    OpenModalEditAnnexe(number, id) {
-      this.loader = true
-      this.contract_number = number
-      apiRep.getContractAnnex(id)
-        .then(response => {
-          this.editAnnexe = response.data
-          this.loader = false
-          this.$bvModal.show(this.CurrentPathApi4) /////////////////////////////////
-        }).catch(error => {
-          // console.log(error)
-          this.loader = false
-        })
-    },
-    getGroupName(group) {
-      return groups.groups[group];
-    },
-    goToPage(link) {
-      let url = new URL(link);
-      let pageNumber = url.searchParams.get("page");
-      if (pageNumber != null) {
-        this.filter_farms.page = pageNumber;
-      } else {
-        delete this.filter_farms.page;
-      }
-      this.getFarmContract();
-    },
-    DeleteGetFarmContract() {
-      api.getDirectoryFarm(this.CurrentPathApi, this.filter_farms)
-        .then((response) => {
-          let l_data = response.data.data;
-          l_data.forEach((item) => {
-            item.hhh = true;
-          })
-          this.farmDirecory = l_data;
-          this.total_objects = response.data.total_objects;
-          this.amount = response.data.amount;
-        })
-        .catch((err) => {
-          console.log(err)
-        });
-    },
-    getFarmContract() {
-      this.loader = true;
-      api.getDirectoryFarm(this.CurrentPathApi, this.filter_farms)
-        .then((response) => {
-          this.loader = false;
-          let l_data = response.data.data;
-          l_data.forEach((item) => {
-            item.hhh = true;
-          })
-          this.farmDirecory = l_data;
-          // console.log(this.farmDirecory, 'SCAN')
-          this.total_objects = response.data.total_objects;
-          this.amount = response.data.amount;
-          this.nextLink = response.data.links.next;
-          this.prevLink = response.data.links.previous;
-
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Данные отфильтрованы";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 2500);
-        })
-        .catch((err) => {
-          this.loader = false;
-          // console.log(err)
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Данные не отфильтрованы, попробуйте еще раз";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(this.closeNotification, 2500);
-        });
-    },
-
-    closeNotification() {
-      this.showNotify = false;
-    },
-    updateFilterDataFarms(filter_farms) {
-      this.filter_farms = filter_farms;
-    },
-
   },
   computed: {
     ...mapState({
@@ -481,128 +242,201 @@ export default {
       return this.CountrieObj.filter(el => this.selectedCountriesIds.includes(el.id))
     },
     // Для создания договора
-    CurrentPathApi() {
-      switch (this.named) {
-        case 'Общехозяйственные':
-          return 'economic'
-          break;
-        case 'Ремонтные':
-          return 'repair'
-          break;
-        case 'Прочие':
-          return 'other'
-          break;
-        case 'С покупателем':
-          return 'buyer'
-          break;
-        case 'С поставщиками':
-          return 'supply'
-          break;
-        case 'Финансовые':
-          return 'financial'
-          break;
-      }
-    },
 
-    // Для редактиварония договора
-    CurrentPathApi2() {
-      switch (this.named) {
-        case 'Общехозяйственные':
-          return 'economic_ed_contr'
-          break;
-        case 'Ремонтные':
-          return 'repair_ed_contr'
-          break;
-        case 'Прочие':
-          return 'other_ed_contr'
-          break;
-        case 'С покупателем':
-          return 'buyer_ed_contr'
-          break;
-        case 'С поставщиками':
-          return 'supply_ed_contr'
-          break;
-        case 'Финансовые':
-          return 'financial_ed_contr'
-          break;
-      }
-    },
-
-    // Для создания приложения
-    CurrentPathApi3() {
-      switch (this.named) {
-        case 'Общехозяйственные':
-          return 'economic_annexes'
-          break;
-        case 'Ремонтные':
-          return 'repair_annexes'
-          break;
-        case 'Прочие':
-          return 'other_annexes'
-          break;
-        case 'Финансовые':
-          return 'financial_annexes'
-          break;
-      }
-    },
-
-    // Для редактирования приложения
-    CurrentPathApi4() {
-      switch (this.named) {
-        case 'Общехозяйственные':
-          return 'economic_ed_annexes'
-          break;
-        case 'Ремонтные':
-          return 'repair_ed_annexes'
-          break;
-        case 'Прочие':
-          return 'other_ed_annexes'
-          break;
-        case 'Финансовые':
-          return 'financial_ed_annexes'
-          break;
-      }
-    },
   },
-};
+  methods: {
+    IputProcessing(val) {
+      clearTimeout(this.intervalresponse);
+
+      // Установка нового таймера на 2 секунды
+      this.intervalresponse = setTimeout(() => {
+        // Выполняется после остановки ввода на 2 секунды
+        this.sendRequestToServerData(val);
+      }, 1000);
+    },
+    sendRequestToServerData(val) {
+      if(!val) return
+      api.getAllDocumentsNotType(val)
+        .then(response => {
+          console.log(response)
+        }).catch((err) => {
+          console.log(err)
+        })
+    },
+    CopyTEXT(value) {
+      navigator.clipboard.writeText(value)
+        .then(() => {
+          // alert('Данные скопированы')
+        })
+
+      this.loader = true
+      let data = {
+        dir_path: value
+      }
+      let path
+      api.getFilesToPath(data)
+        .then(res => {
+          path = res.data[0].path
+        }).then(() => {
+          let data = {
+            file_path: path
+          }
+          console.log(path)
+          api.getFilesToPath2(data)
+            .then(response => {
+              this.loader = false
+              console.log(response)
+              let a = document.createElement('a')
+              a.href = response.data.link
+              a.click()
+            }).catch((er) => {
+              this.loader = false
+            })
+        }).catch((er) => {
+          this.loader = false
+        })
+
+    },
+
+    updateSelectedCountries(selected) {
+      this.selectedCountriesIds = selected
+    },
+    removeselectedCountries(id) {
+      this.selectedCountriesIds.splice(this.selectedCountriesIds?.indexOf(id), 1)
+    },
+
+
+  }
+}
 </script>
     
     
 <style  scoped>
-div::-webkit-scrollbar {
-  transform: translateY(-1);
-}
-
-.flex_block_button {
+.section_category,
+.section_date,
+.inn_ogrn,
+.income_expense {
+  padding: 10px;
+  width: 65%;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  flex-direction: row-reverse;
-  margin-top: 2%;
 }
 
-.flex_block_button button {
-  width: 30%;
+.right_section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.flex_block_button button:nth-child(2) {
-  border-radius: 5px;
+label {
+  font-weight: 18px;
+  font-weight: bold;
 }
 
-.red {
-  display: none;
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
 }
 
-.amount {
+.air_block {
+  width: 80%;
+  height: auto;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  background: #ffffff;
+  box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #e4e4e4;
+  position: relative;
+  left: 50%;
+  padding: 1%;
+  transform: translate(-50%, 0);
+  box-sizing: border-box;
+}
+
+.air_block_header {
+  padding: 1% 0 0 2%;
+  color: #cacaca;
+}
+
+.long_search {
+  position: relative;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.long_search {
+  position: relative;
+  width: 100%;
+  height: 5vh;
+}
+
+.long_search input {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #007BFF !important;
+  border-radius: 10px;
+  text-align: left !important;
+  padding-left: 2% !important;
+}
+
+::-webkit-input-placeholder {
   text-align: left;
 }
 
-.td-btr {
-  padding: 0 !important;
-  vertical-align: middle !important;
+:-moz-placeholder {
+  /* Firefox 18- */
+  text-align: left;
 }
 
-.annexes {
-  display: none;
+::-moz-placeholder {
+  /* Firefox 19+ */
+  text-align: left;
+}
+
+:-ms-input-placeholder {
+  text-align: left;
+}
+
+.long_search button {
+  width: 10%;
+  height: 80%;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  bottom: 1%;
+  border-radius: 8px;
+}
+
+.advanced_settings {
+  width: 100%;
+  margin: 0 auto;
+  background: rgb(243, 243, 243);
+  border-radius: 8px;
+  margin-top: 1%;
+}
+
+.advanced_settings_block button {
+  min-width: 10vw;
+  height: 40px;
+  width: auto;
+  margin: 2% 0 0 auto;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.left_section p {
+  font-size: 18px;
+  font-weight: 600;
 }
 </style>
     

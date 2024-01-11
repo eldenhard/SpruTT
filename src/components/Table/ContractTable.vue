@@ -1,7 +1,8 @@
 <template>
 
   <div>
-    <b-card no-body >
+    <farmsContract />
+    <!-- <b-card no-body >
       <b-tabs  align="center" style="width: 100%">
         <b-tab title="Общехозяйственные" active style="color: black !important"  title-item-class="w-30" @click="setCurrentTab('economic')">
           <b-card-text >
@@ -40,7 +41,7 @@
         </b-tab>
         
       </b-tabs>
-    </b-card>
+    </b-card> -->
   </div>
 
 </template>

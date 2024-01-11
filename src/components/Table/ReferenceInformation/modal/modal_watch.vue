@@ -8,44 +8,44 @@
 
                 <div class="img_block">
        
-                    <img :src="imagePreview" v-show="showPreview" :data-image="info[0].photo" />
+                    <img :src="imagePreview" v-show="showPreview" :data-image="info?.photo" />
                 </div>
                 <div class="data_block">
                     <div class="creat_block__first">
                         <label for="last_name">Фамилия <br>
-                            <input type="text" name="" id="" v-model="info[0].last_name">
+                            <input type="text" name="" id="" v-model="info.last_name">
                         </label>
                         <label for="first_name">Имя <br>
-                            <input type="text" name="" id="" v-model="info[0].first_name">
+                            <input type="text" name="" id="" v-model="info.first_name">
                         </label>
                         <label for="middle_name">Отчетство <br>
-                            <input type="text" name="" id="" v-model="info[0].middle_name">
+                            <input type="text" name="" id="" v-model="info.middle_name">
                         </label>
                     </div>
                     <div class="creat_block__first">
                         <label for="">Тел. внутрен <br>
-                            <input type="text" name="phone_corp" id="" v-model="info[0].phone_corp">
+                            <input type="text" name="phone_corp" id="" v-model="info.phone_corp">
                         </label>
                         <label for="">Тел. личный <br>
-                            <input type="text" name="phone_personal" id="" v-model="info[0].phone_personal">
+                            <input type="text" name="phone_personal" id="" v-model="info.phone_personal">
                         </label>
                         <label for="">Почта<br>
-                            <input type="email" name="email" id="" v-model="info[0].email" required>
+                            <input type="email" name="email" id="" v-model="info.email" required>
                         </label>
                     </div>
                     <div class="creat_block__first">
                         <label for="">Должность<br>
-                            <input type="text" name="post" id="" v-model="info[0].post">
+                            <input type="text" name="post" id="" v-model="info.post">
                         </label>
                         <label for="">Отдел <br>
-                            <select v-model="info[0].groups[0]">
+                            <select v-model="info.groups">
                                 <option v-for="userGroup in allGroups" :key="userGroup.id" :value="userGroup.id">
                                     {{ userGroup.name }}
                                 </option>
                             </select>
                         </label>
                         <label for="">Начальник<br>
-                            <select type="text" name="manager" v-model="info[0].manager">
+                            <select type="text" name="manager" v-model="info.manager">
                                 <option v-for="manager in allManagerStaff" :key="manager.id" :value="manager.id">
                                     {{ manager.last_name }} {{ manager.first_name }}
                                 </option>
@@ -54,10 +54,10 @@
                     </div>
                     <div class="creat_block__first">
                         <label for="">Время работы <br>
-                            <input type="text" name="schedule" id="" v-model="info[0].schedule">
+                            <input type="text" name="schedule" id="" v-model="info.schedule">
                         </label>
                         <label for="">Внутр. номер<br>
-                            <input type="text" name="inner_number" id="" v-model="info[0].inner_number">
+                            <input type="text" name="inner_number" id="" v-model="info.inner_number">
                         </label>
                       
                     </div>
@@ -98,7 +98,7 @@ export default {
 
     },
     mounted() {
-        this.imagePreview = this.info[0]['photo']
+        this.imagePreview = this.info['photo']
         this.miniloader = true;
         api
             .getAllManager()

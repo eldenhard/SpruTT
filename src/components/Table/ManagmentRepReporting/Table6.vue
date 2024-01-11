@@ -26,7 +26,7 @@
       <table style="margin: 0 auto !important;">
 
 
-        <tbody>
+        <tbody v-if="Object.keys(dataReport6).length > 1">
           <template v-for="(valueClient, client) in dataReport6" >
             <tr :key="valueClient.id">
               <tr >
@@ -87,10 +87,19 @@
             </template>
 
             </tr>
-
           </template>
-
-
+          <tr style="background: lightgrey;">
+            <td style="font-weight: 700;">Общий итог</td>
+            <td style="font-weight: 500;">Вес</td>
+            <td style="font-weight: 500;">Ставка за тонну</td>
+            <td style="font-weight: 500;">Выручка</td>
+          </tr>
+          <tr style="background: lightgrey;">
+            <td></td>
+            <td style="font-weight: 700;">{{ dataReport6['weight']?.toFixed(2) | format }}</td>
+            <td style="font-weight: 700;">{{ dataReport6['stavka_per_ton']?.toFixed(2) | format }}</td>
+            <td style="font-weight: 700;">{{ dataReport6['revenue']?.toFixed(2) | format }}</td>
+          </tr>
         </tbody>
 
       </table>

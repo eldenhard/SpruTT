@@ -33,6 +33,10 @@ const createStuff = (form) => {
     })
 }
 
+
+const searchUser = (data) => {
+    return api.get(`${resource}/users/?search=${data}`)
+}
 export default {
     staffGlobal,
     getAllStaff,
@@ -41,5 +45,6 @@ export default {
     changeUserData,
     getStaffGroup,
     getAllManager,
-    createStuff
+    createStuff,
+    searchUser
 }

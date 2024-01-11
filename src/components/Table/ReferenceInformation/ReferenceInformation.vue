@@ -3,45 +3,60 @@
         <Loader :loader="loader"></Loader>
         <modal_window :what_is_ref="currentModal" :title_modal="title_currentModal" :info="info_user_modal"
             @getData="getInformationEmployee(filter_staff)" />
-        <div class="main_block">
-            <div class="main_block__filter">
-                <FilterStaff @updateFiltersStaff="updateFiltersStaff"></FilterStaff>
-                <div class="action_group">
-                    <div style="width: 25vw; margin-left: -1%;">
-                        <MultiSelectUni @change="updateSelectedTAbleCells" :placeholder="'Поля таблицы'" :variants="UserObj"
-                            :variant-title="'value'">
-                        </MultiSelectUni>
-                    </div>
-                    <div class="btn_group">
-                        <div v-if="user_name.length > 0">
-                            <button class="Action button"
-                                @click="ModalWindow('change_user', 'Редактирование сотрудника', user_name)">Редатировать
-                                сотрудника</button>
-                            <button class="Delete button" style="margin-top: 6%;"
-                                @click="ModalWindow('delete_user', 'Удаление сотрудника', user_name)">Удалить
-                                сотрудника</button>
-                        </div>
-                        <div>
-                            <button class="Accept button" @click="getInformationEmployee(filter_staff)">Запросить
-                                данные</button>
-                            <button class="Request button"
-                                @click="ModalWindow('add_user', 'Добавление сотрудника')">Добавить сотрудника</button>
-                        </div>
 
-                    </div>
+        <div class="air_block">
+            <Loader :loader="loader" />
+            <div class="air_block_header">
+                <h5>Справочник сотрудники</h5>
+            </div>
+            <hr>
+
+            <section class="search_bloc">
+                <div class="long_search">
+                    <input type="text" placeholder="Поиск..." v-model="search" @input="IputProcessing(search)">
+                    <button class="Request" @click="InputTable(search)"> 
+                        <span v-if="isSearch">Найти</span> 
+                        <b-icon v-if="!isSearch" icon="three-dots" animation="cylon" font-scale="3"></b-icon>
+                    </button>
                 </div>
-            </div>
-            <div style="display: flex; justify-content: start; flex-wrap: wrap; width: 90%; margin-left: 5%;">
-                <p style="padding-left: 1%;">Выбранные столбцы :</p> <br>
-                <template>
+                <div class="answer_block" v-show="isAnswerBlock">
+                    <ul>
+                        <li v-for="item, index in responseSearchData" 
+                            :key="index" 
+                            @click="open_watch_modal('Просмотр сотрудника', item)"> 
+                            <b-icon icon="search" variant="secondary"></b-icon>
+                            <span> {{ item?.last_name }} {{ item?.first_name }} {{ item?.middle_name }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
 
-                    <span class="option_select_block_check" v-for="cell in selectedTableCells" :key="cell.id"
-                        @click="removeSelectedCells(cell.id)">
-                        <span style="color: black; font-size: 15px"> &#43;</span>
-                        {{ cell.value }}
-                    </span>
-                </template>
-            </div>
+
+            <section class="advanced_settings_block">
+                <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">Настройки таблицы</button>
+                <Transition name="fade">
+                    <div v-if="isAdvancedSettings" class="advanced_settings">
+
+                        <div style="width: 15vw; padding-top: 2%;">
+                            <MultiSelectUni @change="updateSelectedTAbleCells" :placeholder="'Поля таблицы'"
+                                :variants="UserObj" :variant-title="'value'">
+                            </MultiSelectUni>
+                        </div>
+                        <div style="display: flex; justify-content: start; flex-wrap: wrap; width: 90%; margin-left: 5%;">
+                            <p style="padding-left: 1%;">Выбранные столбцы :</p> <br>
+                            <template>
+
+                                <span class="option_select_block_check" v-for="cell in selectedTableCells" :key="cell.id"
+                                    @click="removeSelectedCells(cell.id)">
+                                    <span style="color: black; font-size: 15px"> &#43;</span>
+                                    {{ cell.value }}
+                                </span>
+                            </template>
+                        </div>
+
+                    </div>
+                </Transition>
+            </section>
             <div class="main_block__content">
                 <table>
                     <thead>
@@ -58,22 +73,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <tr>
-                            <td v-if="user_name.length == 0" colspan="6">Данные не найдены</td>
-                        </tr> -->
-                        <tr @click="open_watch_modal('Просмотр сотрудника', user_name)">
+                        <tr @click="open_watch_modal('Просмотр сотрудника', user)" v-for="user, index in dataForTable" :key="index">
                             <td>
-                                <img v-if="user_name[0] && user_name[0].photo" :src="user_name[0].photo"
+                                <img v-if="user && user.photo" :src="user.photo"
                                     alt="фото пользователя">
                             </td>
-                            <td>{{ user_name[0]?.last_name }}</td>
-                            <td>{{ user_name[0]?.first_name }}</td>
-                            <td>{{ user_name[0]?.middle_name }}</td>
-                            <td>{{ user_name[0]?.phone_corp }}</td>
-                            <td>{{ user_name[0]?.email }}</td>
+                            <td>{{ user?.last_name }}</td>
+                            <td>{{ user?.first_name }}</td>
+                            <td>{{ user?.middle_name }}</td>
+                            <td>{{ user?.phone_corp }}</td>
+                            <td>{{ user?.email }}</td>
                             <template v-for="cell in selectedTableCells">
                                 <td :key="cell.id">
-                                    {{ WhatTheData(user_name[0][cell?.valen], cell?.valen) }}
+                                    {{ WhatTheData(user[cell?.valen], cell?.valen) }}
                                 </td>
 
                             </template>
@@ -82,9 +94,9 @@
                 </table>
             </div>
 
-
-
         </div>
+
+
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
 
     </div>
@@ -103,6 +115,14 @@ export default {
     components: { FilterStaff, Notifications, Loader, MultiSelectUni, modal_window },
     data() {
         return {
+            isAdvancedSettings: false,
+            isAnswerBlock: true,
+            responseSearchData: null,
+            intervalResponse: null,
+            isSearch: true,
+            search: "",
+            dataForTable: null,
+
             filter_staff: "",
             loader: false,
             user_name: "",
@@ -145,37 +165,16 @@ export default {
             return this.UserObj.filter(el => this.selectedTableCellsIds.includes(el.id))
         },
     },
+
+    watch: {
+        search(){
+           return this.search.length <= 1 ? this.responseSearchData = null : this.responseSearchData
+        }
+    },
     methods: {
-        updateFiltersStaff(filter_staff) {
-            this.filter_staff = filter_staff;
-        },
-        getInformationEmployee(name_employee = null) {
-            if (!name_employee || name_employee.search == "") {
-                this.notifyHead = "Ошибка";
-                this.notifyMessage = "Введите пользователя";
-                this.notifyClass = "wrapper-error";
-                this.showNotify = true;
-                setTimeout(() => this.showNotify = false, 2500)
-                return
-            }
-            this.loader = true
-            api.getAllStaff(name_employee)
-                .then(response => {
-                    let regex = 'http://10.1.5.20/'
-                    this.user_name = response.data.data
-                    // this.user_name[0]['photo'] =  data[0].photo.replace(regex, 'https')
-                    this.user_name.forEach((element) => {
-                        if (element.photo != null) {
-                            element.photo = element.photo.replace(regex, "");
-                        }
-                    });
-                    console.log(this.user_name)
-                    this.loader = false
-                }).catch((error) => {
-                    this.loader = false
-                    console.error(error)
-                })
-        },
+       closeBlock(){
+        this.isAnswerBlock = false
+       },
         updateSelectedTAbleCells(selected) {
             this.selectedTableCellsIds = selected
         },
@@ -201,17 +200,41 @@ export default {
             });
         },
         open_watch_modal(refs, val) {
-            if (this.user_name.length == 0) {
-                return
-            }
+       
             this.currentModal = refs
             this.title_currentModal = refs
             this.info_user_modal = val
             this.$nextTick(() => {
                 this.$bvModal.show(refs);
             });
-        }
+        },
 
+        IputProcessing(val) {
+            clearInterval(this.intervalResponse)
+            this.intervalResponse = setTimeout(() => {
+                this.sendRequestToServerData(val)
+            }, 500)
+        },
+        sendRequestToServerData(val){
+           if(this.search == "" || this.search.length <= 1) return
+           this.isSearch = false
+            api.searchUser(val)
+            .then(response => {
+                this.isSearch = true
+                this.responseSearchData = response.data.data
+                this.isAnswerBlock = true
+            }).catch((err) => {
+                this.isSearch = true
+                console.log(err)
+            })
+        },
+        // При нажатии на Найти
+       async InputTable(val){
+            if(val){
+                this.isAnswerBlock = false
+                this.dataForTable = this.responseSearchData
+            }
+        }
     }
 }
 </script>
@@ -224,59 +247,132 @@ img {
     padding: 1%;
 }
 
-.main_block {
+.main_block__content{
+    margin-top: 4%;
+}
+
+
+
+.air_block {
     width: 100%;
     height: auto;
-    min-height: 40vh;
-    border-radius: 15px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
     background: #ffffff;
-    box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
+    box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #e4e4e4;
     position: relative;
     left: 50%;
-    transform: translate(-50%, 0);
     padding: 1%;
+    transform: translate(-50%, 0);
+    box-sizing: border-box;
 }
 
-.main_block .main_block__filter {
-    width: 100%;
+.air_block_header {
+    padding: 1% 0 0 2%;
+    color: #cacaca;
 }
 
-.main_block .main_block__filter .action_group {
+.long_search {
+    position: relative;
     width: 90%;
-    margin-left: 5%;
-    display: flex;
-    justify-content: space-evenly;
+    margin: 0 auto;
 }
 
-.main_block .main_block__filter .btn_group {
-    width: 90%;
-    margin-left: 5%;
-    display: flex;
-    justify-content: flex-end;
-    gap: 5%;
-}
-
-.main_block .main_block__filter .btn_group button {
-    margin-left: auto;
+.long_search {
+    position: relative;
     width: 100%;
-    height: 45px;
-    margin-top: 8%;
+    height: 5vh;
 }
 
-.main_block .main_block__content {
-    display: flex;
-    justify-content: center;
-    max-width: 90%;
-    overflow: auto;
-    margin-left: 5%;
-    overflow: auto;
-    /* Добавьте прокрутку */
+.long_search input {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #007BFF !important;
+    border-radius: 10px;
+    text-align: left !important;
+    padding-left: 2% !important;
 }
 
-.main_block .main_block__content table {
-    margin-top: 2%;
+::-webkit-input-placeholder {
+    text-align: left;
 }
 
-.main_block .main_block__content table th {
-    background: lightgray;
-}</style>
+:-moz-placeholder {
+    /* Firefox 18- */
+    text-align: left;
+}
+
+::-moz-placeholder {
+    /* Firefox 19+ */
+    text-align: left;
+}
+
+:-ms-input-placeholder {
+    text-align: left;
+}
+
+.long_search button {
+    width: 10%;
+    height: 80%;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    bottom: 1%;
+    border-radius: 8px;
+}
+
+.advanced_settings {
+    width: 100%;
+    margin: 0 auto;
+    background: rgb(243, 243, 243);
+    border-radius: 8px;
+    margin-top: 1%;
+}
+
+.advanced_settings_block button {
+    min-width: 10vw;
+    height: 40px;
+    width: auto;
+    margin: 2% 0 0 auto;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.left_section p {
+    font-size: 18px;
+    font-weight: 600;
+}
+.answer_block{
+    width: 100%;
+    height: auto;
+    background: rgb(238, 238, 238);
+    margin-top: 1%;
+    border-radius: 8px;
+}
+ul{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style-type: none;
+    padding: 1% 2%;
+}
+li:hover{
+    background: rgb(255, 255, 255);
+}
+li span{
+    padding-left: 3%;
+}
+tr:hover{
+    background: lightblue;
+}
+</style>

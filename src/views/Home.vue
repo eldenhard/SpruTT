@@ -7,13 +7,14 @@
             <partnerTable />
           </b-card-text>
         </b-tab>
-        <b-tab title="Справочник договоры">
+      </b-container>
+        <b-tab title="Справочник договоры" active>
           <b-card-text  >
             <contractTable />
           </b-card-text>
         </b-tab>
 
-
+        <b-container>
         <b-tab title="Справочник станции" >
           <b-card-text>
             <StationsDirectory />
@@ -80,7 +81,7 @@
         </b-card-text>
       </b-tab>
 
-      <b-tab title="Загрузка актов" active>
+      <b-tab title="Загрузка актов" >
         <b-card-text>
           <LoadingActs />
         </b-card-text>
