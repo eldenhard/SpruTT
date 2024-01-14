@@ -229,7 +229,7 @@ export default {
             })
         },
         // При нажатии на Найти
-       async InputTable(val){
+        InputTable(val){
             if(val){
                 this.isAnswerBlock = false
                 this.dataForTable = this.responseSearchData

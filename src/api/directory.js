@@ -12,7 +12,7 @@ const putCounterparties = (id, data) => {
 }
 
 const getAllDocumentsNotType = (data) => {
-    return api.get(`${documents}/contact/?search=${data}`)
+    return api.get(`${documents}/contract/?search=${data}`)
 }
 
 // типы договоров
@@ -198,6 +198,13 @@ const patchActs = (id, data) => {
 const deleteActs = (id, data) => {
     return api.patch(`${finance}/acts/${id}/`, data)
 }
+
+const fullSearchDirectory = (data) => {
+    return api.get(`${documents}/contract?created_at_gte=${data.on_date}&category=${data.category}&counterparty_like=${data.counterparty}`)
+// &counterparty=${data.counterparty}
+}
+
+
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -270,5 +277,6 @@ export default {
 
     // новая загрузка документов
     getAllDocumentsNotType,
+    fullSearchDirectory,
 }
 

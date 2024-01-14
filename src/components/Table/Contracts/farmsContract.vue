@@ -1,169 +1,143 @@
 <template>
-  <div class="air_block">
-    <Loader :loader="loader" />
-    <div class="air_block_header">
-      <h5>Справочник договоры</h5>
-    </div>
-    <hr>
+  <div>
 
-
-
-    <section class="search_bloc">
-      <div class="long_search">
-        <input type="text" placeholder="Поиск..." @input="IputProcessing($event.target.value)">
-        <button class="Request" @click="sendRequestToServerData()">Найти</button>
+    <div class="air_block">
+      <Loader :loader="loader" />
+      <div class="air_block_header">
+        <h5>Справочник договоры</h5>
       </div>
-    </section>
-
-    <section class="advanced_settings_block">
-      <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">Расширенный поиск</button>
-      <Transition name="fade">
-        <div v-if="isAdvancedSettings" class="advanced_settings">
-          <div class="section_category">
-            <div class="left_section">
-              <p>Категория:</p>
-            </div>
-
-            <div class="right_section">
-              <select name="" id="">
-                <option value="">Не выбрано</option>
-                <option value="economic">Общехозяйственные</option>
-                <option value="repair">Ремонтные</option>
-                <option value="financial">Финансовые</option>
-                <option value="buyer">С покупателем</option>
-                <option value="supply">С поставщиками</option>
-                <option value="other">Прочие</option>
-              </select>
-
-            </div>
-          </div>
-          <hr>
-          <div class="section_date">
-            <div class="left_section">
-              <p>Дата создания документа от:</p>
-            </div>
-            <div class="right_section">
-              <input type="date" class="textarea">
-            </div>
-          </div>
-          <hr>
-          <div class="inn_ogrn">
-            <div class="left_section">
-              <p>ИНН/ОГРН</p>
-            </div>
-            <div class="right_section">
-              <input type="number" class="textarea" placeholder="ИНН">
-              <input type="number" class="textarea" placeholder="ОГРН">
-            </div>
-          </div>
-          <hr>
-          <div class="income_expense">
-            <div class="left_section">
-              <p>Вариант документа:</p>
-            </div>
-            <div class="right_section">
-              <label for="income"><input type="checkbox" id="income"> Доходный </label>
-              <label for="expenses"><input type="checkbox" id="expenses"> Расходный </label>
-            </div>
-          </div>
-          <hr>
+      <hr>
+      <p class="explanation">
+        При выборе определенного варианта из выпадающего меню. Будет выбран только этот вариант. <br>
+        Если нажать на кнопку "Найти" будут выведены все варианты подходящие под Ваш запрос
+      </p>
+      <section class="search_bloc">
+        <div class="long_search">
+          <input type="text" placeholder="Поиск..." v-model="search" @input="IputProcessing(search)">
+          <button class="Request" @click="InputTable(search)">
+            <span v-if="isSearch">Найти</span>
+            <b-icon v-if="!isSearch" icon="three-dots" animation="cylon" font-scale="3"></b-icon>
+          </button>
         </div>
-      </Transition>
-    </section>
+
+        <div class="answer_block" v-show="isAnswerBlock">
+          <ul>
+            <li v-for="item, index in responseSearchData" :key="index" @click="InputTable(item)">
+              <b-icon icon="search" variant="secondary"></b-icon>
+              <span>{{ item?.counterparty }} / Договор № {{ item?.number }}</span>
+            </li>
+          </ul>
+        </div>
+
+      </section>
 
 
-    <!-- <button class="Accept" @click="getFarmContract()"> Запросить договора </button> -->
+      <section class="advanced_settings_block">
+        <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">Расширенный поиск</button>
+        <Transition name="fade">
+          <div v-if="isAdvancedSettings" class="advanced_settings">
+            <div class="section_category">
+              <div class="left_section">
+                <p>Категория:</p>
+              </div>
+
+              <div class="right_section">
+                <select v-model="searchFullSetting.category">
+                  <option value="">Не выбрано</option>
+                  <option value="economic">Общехозяйственные</option>
+                  <option value="repair">Ремонтные</option>
+                  <option value="financial">Финансовые</option>
+                  <option value="buyer">С покупателем</option>
+                  <option value="supply">С поставщиками</option>
+                  <option value="other">Прочие</option>
+                </select>
+
+              </div>
+            </div>
+            <hr>
+            <div class="section_date">
+              <div class="left_section">
+                <p>Дата создания документа от:</p>
+              </div>
+              <div class="right_section">
+                <input type="date" class="textarea" v-model="searchFullSetting.on_date">
+              </div>
+            </div>
+            <hr>
+            <div class="inn_ogrn">
+              <div class="left_section">
+                <p>ИНН/ОГРН</p>
+              </div>
+              <div class="right_section">
+                <input type="number" class="textarea" placeholder="ИНН" v-model="searchFullSetting.inn">
+                <input type="number" class="textarea" placeholder="ОГРН" v-model="searchFullSetting.ogrn">
+                <button class="Request" @click="sendFullDescriptionSearch(searchFullSetting)"
+                  style="width: 100%; border-radius: 8px;">
+                  <span>Найти контрагента</span>
+                </button>
+                <div v-if="Counterparty">
+                    {{ Counterparty?.work_name }}<b-icon icon="x-lg" @click="deleteCurrentCounterparty()" variant="danger"></b-icon>
+                </div>
+              </div>
+            </div>
+
+           
+
+            <div class="answer_block" v-if="answerBlock">
+              <ul>
+                <li v-for="item, index in arrInnOgrn" :key="index" @click="checkCounterparty(item)">
+                  <b-icon icon="search" variant="secondary"></b-icon>
+                  <span>{{ item?.work_name }} / ИНН {{ item?.inn }} / ОГРН {{ item?.ogrn }}</span>
+                </li>
+              </ul>
+            </div>
+            <hr>
+            <div class="income_expense">
+              <div class="left_section">
+                <p>Вариант документа:</p>
+              </div>
+              <div class="right_section">
+                <label for="income"><input type="checkbox" id="income" v-model="searchFullSetting.income"> Доходный
+                </label>
+                <label for="expenses"><input type="checkbox" id="expenses" v-model="searchFullSetting.expenses"> Расходный
+                </label>
+              </div>
+            </div>
+            <hr>
+
+            <button class="Request" style="border-radius: 8px; margin-left: auto;" @click="sendToServerFullDecription()">
+              <b-icon icon="search"></b-icon><span>&nbsp;&nbsp;Найти</span>
+            </button>
+
+          </div>
+        </Transition>
+      </section>
+
+      <br>
+
+      <div
+        style=" width: 100%; overflow: auto; position: relative; left: 50%; transform: translate(-50%, 0); max-height: 70vh;">
+        <ul>
+          <li class="responseListItem" v-for="item, index in dataForTable" :key="index" style="margin-top: 2%;">
+            <b-icon icon="file-earmark-medical" variant="success"></b-icon>
+            <b style="font-weight: 500; font-size: 14px;"> Договор:</b> {{ item?.number }} <b
+              style="font-weight: 500; font-size: 14px;">Тип:</b> {{
+                item?.contract_type }} <b style="font-weight: 500; font-size: 14px;">Дата создания: </b> {{ item?.created_at ?
+    item?.created_at : ' —' }}
+            <br>
+            <b style="font-weight: 500; font-size: 14px;">Предмет договора</b> {{ item?.contract_object }} <br>
+            <b style="font-weight: 500; font-size: 14px;">Контрагент: </b> {{ item?.counterparty }} <br>
+            <b style="font-weight: 500; font-size: 14px;">Категория: </b> {{ TranslateTypeCategory(item?.category) }} <br>
+            <div @click="CopyTEXT(item?.scan_path)">
+              <b style="font-weight: 500; font-size: 14px;">Ссылка: </b>
+              <b-icon icon="link" variant="primary" font-scale="1.4"></b-icon>
+            </div>
+          </li>
+        </ul>
+      </div>
 
 
-    <div style=" width: 15vw;">
-      <MultiSelectUni @change="updateSelectedCountries" :placeholder="'Поля таблицы'" :variants="CountrieObj"
-        :variant-title="'value'">
-      </MultiSelectUni>
     </div>
-
-
-    <div style="display: flex; justify-content: start; flex-wrap: wrap;">
-      <p style="padding-left: 1%;">Выбранные поля :</p> <br>
-      <!-- <template v-if="selectedCountries"> -->
-      <template>
-
-        <span class="option_select_block_check" v-for="countrie in selectedCountries" :key="countrie.id"
-          @click="removeselectedCountries(countrie.id)">
-          <span style="color: black; font-size: 15px"> &#43;</span>
-          {{ countrie.value }}
-        </span>
-      </template>
-    </div>
-    <br /><br />
-    <p class="amount">всего записей: {{ total_objects }}</p>
-    <p class="amount">всего на странице: {{ amount }}</p>
-
-    <br>
-
-    <div style="
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: auto;
-        position: relative;
-        left: 50%;
-        transform: translate(-50%, 0);
-        max-height: 70vh;      
-      ">
-      <table class="table table-sm table-bordered table-hover" id="table"
-        style="margin: 0; border: 1px solid black; width: 100%; border-collapse: collapse;">
-        <thead>
-          <tr
-            style="position: sticky; top: 0; margin-top: -10px; padding-top: -5%; background: rgb(150, 150, 150); z-index: 5;">
-            <th style="background: rgb(150, 150, 150) !important;">Контрагент</th>
-            <th style="background: rgb(150, 150, 150) !important;">Номер договора</th>
-            <th style="background: rgb(150, 150, 150) !important;">Срок действия договора</th>
-            <th style="background: rgb(150, 150, 150) !important;">Файл</th>
-            <template v-for="countrie in selectedCountries">
-              <th :key="countrie.id" style="background: rgb(150, 150, 150) !important;">{{ countrie.value }}</th>
-            </template>
-          </tr>
-
-        </thead>
-        <tbody id="tableMain">
-          <template v-for=" el in this.farmDirecory">
-            <tr :key="el.id" style="border-top: 2px solid black;">
-              <td>{{ el.counterparty }} </td>
-              <td>{{ el.number }}</td>
-              <td>{{ el?.expiration_date?.split(" ")[0].split('-').reverse().join(".") }}</td>
-
-              <td>
-                <a @click="CopyTEXT(el.scan_path)">
-                  <img src="../../../assets/word.png" alt="" height="30">
-                </a>
-              </td>
-              <template v-for="countrie in selectedCountries">
-                <td :key="countrie.id">
-                  {{ CustomerRow(el[countrie.valen]) }}
-                </td>
-
-              </template>
-            </tr>
-            <template>
-              <tr style="background: lightgray;">
-                <th>Приложение</th>
-                <th>Номер приложения</th>
-                <th>Дата приложения</th>
-              </tr>
-              <tr style="border-bottom: 2px solid black;">
-                <td>{{ el.annex }}</td>
-                <td>{{ el.annex_number }}</td>
-                <td>{{ el?.annex_date?.split(" ")[0].split('-').reverse().join(".") }}</td>
-              </tr>
-            </template>
-
-          </template>
-        </tbody>
-      </table>
-
-
-    </div>
-
-
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
       id="notif" />
   </div>
@@ -184,7 +158,26 @@ export default {
   data() {
     return {
       isAdvancedSettings: false,
-      intervalresponse: null,
+      isAnswerBlock: true,
+      responseSearchData: null,
+      intervalResponse: null,
+      isSearch: true,
+      search: "",
+      dataForTable: null,
+      searchFullSetting: {
+        income: "",
+        expenses: "",
+        category: "",
+        inn: "",
+        ogrn: "",
+        on_date: "",
+        counterparty: "",
+        tags: [],
+      },
+      arrInnOgrn: [],
+      Counterparty: null,
+      answerBlock: true,
+
 
       nextLink: null,
       prevLink: null,
@@ -209,12 +202,19 @@ export default {
 
     };
   },
+  watch: {
+
+    search() {
+      return this.search.length <= 1 ? this.responseSearchData = null : this.responseSearchData
+    }
+  },
   computed: {
     ...mapState({
       user: (state) => state.auth.user,
       uid: (state) => state.auth.uid,
       allGroups: (state) => state.auth.groups,
       staffGlobal: (state) => state.auth.users,
+      counterparties: (state) => state.counterparties.counterparties
     }),
     CountrieObj() { //1
       const result = [
@@ -245,6 +245,30 @@ export default {
 
   },
   methods: {
+    TranslateTypeCategory(val) {
+      switch (val) {
+        case 'economic':
+          return 'Общехозяйственные'
+          break
+        case 'repair':
+          return 'Ремонтные'
+          break
+        case 'financial':
+          return 'Финансовые'
+          break
+        case 'buyer':
+          return 'С покупателем'
+          break
+        case 'supply':
+          return 'С поставщиками'
+          break
+        case 'other':
+          return 'Прочие'
+          break
+
+
+      }
+    },
     IputProcessing(val) {
       clearTimeout(this.intervalresponse);
 
@@ -255,47 +279,27 @@ export default {
       }, 1000);
     },
     sendRequestToServerData(val) {
-      if(!val) return
+      if (this.search == "" || this.search.length <= 1) return
+      this.isSearch = false
       api.getAllDocumentsNotType(val)
         .then(response => {
-          console.log(response)
+          this.isSearch = true
+          this.responseSearchData = response.data.data
+          this.isAnswerBlock = true
         }).catch((err) => {
+          this.isSearch = true
           console.log(err)
         })
     },
     CopyTEXT(value) {
       navigator.clipboard.writeText(value)
         .then(() => {
-          // alert('Данные скопированы')
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Ссылка скопирована";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(() => (this.showNotify = false), 2000);
         })
-
-      this.loader = true
-      let data = {
-        dir_path: value
-      }
-      let path
-      api.getFilesToPath(data)
-        .then(res => {
-          path = res.data[0].path
-        }).then(() => {
-          let data = {
-            file_path: path
-          }
-          console.log(path)
-          api.getFilesToPath2(data)
-            .then(response => {
-              this.loader = false
-              console.log(response)
-              let a = document.createElement('a')
-              a.href = response.data.link
-              a.click()
-            }).catch((er) => {
-              this.loader = false
-            })
-        }).catch((er) => {
-          this.loader = false
-        })
-
     },
 
     updateSelectedCountries(selected) {
@@ -304,14 +308,93 @@ export default {
     removeselectedCountries(id) {
       this.selectedCountriesIds.splice(this.selectedCountriesIds?.indexOf(id), 1)
     },
+    InputTable(val) {
+      if (typeof val == 'string') {
+        this.isAnswerBlock = false
+        this.dataForTable = this.responseSearchData
+      } else {
+        this.isAnswerBlock = false
+        this.search = ""
+        this.dataForTable = [val]
+      }
+    },
+    sendFullDescriptionSearch() {
+      this.arrInnOgrn = []
+      this.answerBlock = true
+
+      this.counterparties.filter((item) => {
+        if (item?.inn !== null && item?.ogrn !== null)
+          if (item?.inn.includes(this.searchFullSetting.inn) && item?.ogrn.includes(this.searchFullSetting.ogrn)) {
+            this.arrInnOgrn.push(item)
+          }
+      })
+    },
+    // Заполнение данных по контрагенту в таблице расширенного поиска
+    checkCounterparty(item) {
+      this.Counterparty = item
+      this.searchFullSetting.inn = item.inn
+      this.searchFullSetting.ogrn = item.ogrn
+      this.searchFullSetting.counterparty = item.work_name
+      this.answerBlock = false
+    },
+    // запрос из расширенног поиска
+    sendToServerFullDecription() {
+      // if (this.searchFullSetting.income) {
+      //   // Если income true и 'buyer' еще не в массиве, добавляем 'buyer'
+      //   if (!this.searchFullSetting.tags.includes('buyer')) {
+      //     this.searchFullSetting.tags.push('buyer');
+      //   }
+      // } else {
+      //   // Если income false, удаляем 'buyer' из массива
+      //   const index = this.searchFullSetting.tags.indexOf('buyer');
+      //   if (index !== -1) {
+      //     this.searchFullSetting.tags.splice(index, 1);
+      //   }
+      // }
+
+      // if (this.searchFullSetting.expenses) {
+      //   // Если expenses true и каждого из тегов нет в массиве, добавляем их
+      //   const tagsToAdd = ['supply', 'economic', 'repair', 'financial', 'other'];
+      //   tagsToAdd.forEach(tag => {
+      //     if (!this.searchFullSetting.tags.includes(tag)) {
+      //       this.searchFullSetting.tags.push(tag);
+      //     }
+      //   });
+      // } else {
+      //   // Если expenses false, удаляем все указанные теги из массива
+      //   this.searchFullSetting.tags = this.searchFullSetting.tags.filter(tag => !['supply', 'economic', 'repair', 'financial', 'other'].includes(tag));
+      // }
+
+      // if (this.Counterparty?.work_name === 'undefined') {
+      //   this.searchFullSetting.counterparty = ""
+      // }
+
+      console.log(this.searchFullSetting)
+      api.fullSearchDirectory(this.searchFullSetting)
+        .then(response => {
+          this.dataForTable = response.data.data
+        }).catch((err) => {
+          console.log(err)
+        })
 
 
+    },
+
+    // Удалить выбранного контрагента в широкой фильтрации
+    deleteCurrentCounterparty(){
+      this.searchFullSetting.inn = ""
+      this.searchFullSetting.ogrn = ""
+      this.Counterparty = null
+    }
   }
 }
 </script>
     
     
 <style  scoped>
+.responseListItem:hover{
+  background: rgb(241, 241, 241);
+}
 .section_category,
 .section_date,
 .inn_ogrn,
@@ -437,6 +520,34 @@ input[type="checkbox"] {
 .left_section p {
   font-size: 18px;
   font-weight: 600;
+}
+
+.answer_block {
+  width: 100%;
+  max-height: 65vh;
+  overflow: auto;
+  background: rgb(238, 238, 238);
+  margin-top: 1%;
+  border-radius: 8px;
+}
+
+ul {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+  padding: 1% 2%;
+}
+
+li:hover {
+  background: rgb(255, 255, 255);
+}
+
+li span {
+  padding-left: 3%;
 }
 </style>
     

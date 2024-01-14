@@ -60,7 +60,9 @@ const actions = {
                     group: i.group,
                     id: i.id,
                     short_name: i.short_name,
-                    work_name: i.work_name
+                    work_name: i.work_name,
+                    inn: i.inn,
+                    ogrn: i.ogrn
                    })
                 }
 
