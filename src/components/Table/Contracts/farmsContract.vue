@@ -87,6 +87,7 @@
 
 
             <div class="answer_block" v-if="answerBlock">
+          
               <ul>
                 <li v-for="item, index in arrInnOgrn" :key="index" @click="checkCounterparty(item)">
                   <b-icon icon="search" variant="secondary"></b-icon>
@@ -376,6 +377,8 @@ export default {
       //   this.searchFullSetting.counterparty = ""
       // }
 
+
+    console.log(this.searchFullSetting)
       // Перебор данных когда выбран доходный или расходный документ
       if (this.searchFullSetting.tags.length > 0) {
         let request = this.searchFullSetting.tags.map(category => api.getManyCategoryDate(category, this.searchFullSetting.on_date, this.searchFullSetting.counterparty))
@@ -395,7 +398,7 @@ export default {
             this.isSearchFullSettings = true
           })
       } else {
-        // для случаев без выбора этих данных
+      // для случаев без выбора этих данных
         this.isSearchFullSettings = false
         console.log(this.searchFullSetting)
         api.fullSearchDirectory(this.searchFullSetting)
@@ -422,6 +425,7 @@ export default {
       this.searchFullSetting.inn = ""
       this.searchFullSetting.ogrn = ""
       this.Counterparty = null
+      this.searchFullSetting.counterparty = ""
     }
   }
 }

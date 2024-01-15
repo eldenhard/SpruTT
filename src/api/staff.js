@@ -1,4 +1,4 @@
-import {api} from '@/helpers/axios'
+import { api } from '@/helpers/axios'
 
 export const resource = 'personal'
 const staffGlobal = () => {
@@ -37,6 +37,11 @@ const createStuff = (form) => {
 const searchUser = (data) => {
     return api.get(`${resource}/users/?search=${data}`)
 }
+
+// получение данных по query параметрам
+const getUserByQuery = (data) => {
+    return api.get(`${resource}/users/`, {params: data})
+}
 export default {
     staffGlobal,
     getAllStaff,
@@ -46,5 +51,7 @@ export default {
     getStaffGroup,
     getAllManager,
     createStuff,
-    searchUser
+    searchUser,
+
+    getUserByQuery,
 }
