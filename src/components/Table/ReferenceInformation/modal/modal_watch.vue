@@ -45,11 +45,12 @@
                             </select>
                         </label>
                         <label for="">Начальник<br>
-                            <select type="text" name="manager" v-model="info.manager">
+                            <input type="text" :value="WhatTheData(info?.manager, 'manager')" disabled>
+                            <!-- <select type="text" name="manager" v-model="info.manager">
                                 <option v-for="manager in allManagerStaff" :key="manager.id" :value="manager.id">
                                     {{ manager.last_name }} {{ manager.first_name }}
                                 </option>
-                            </select>
+                            </select> -->
                         </label>
                     </div>
                     <div class="creat_block__first">
@@ -115,7 +116,20 @@ export default {
     computed: {
         ...mapState({
             allGroups: (state) => state.auth.groups,
+            staffGlobal: (state) => state.auth.users,
         })
+    },
+    methods: {
+        WhatTheData(value, type) {
+            if (type == 'groups') {
+                return this.allGroups.filter(item => item.id == value)[0].name
+            } else if (type == 'manager') {
+                let data = this.staffGlobal.filter(item => item.id == value)[0]
+                return `${data?.last_name ?? ""} ${data?.first_name?.slice(0, 1) ?? ""}`
+            } else {
+                return value
+            }
+        },
     },
 
 }

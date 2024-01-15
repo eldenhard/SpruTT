@@ -7,7 +7,7 @@
         <div class="air_block">
             <Loader :loader="loader" />
             <div class="air_block_header">
-                <h5>Справочник сотрудники</h5>
+                <h5>Справочник сотрудников</h5>
             </div>
             <hr>
 
@@ -32,7 +32,7 @@
             </section>
 
 
-            <section class="advanced_settings_block">
+            <!-- <section class="advanced_settings_block">
                 <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">Настройки таблицы</button>
                 <Transition name="fade">
                     <div v-if="isAdvancedSettings" class="advanced_settings">
@@ -56,7 +56,7 @@
 
                     </div>
                 </Transition>
-            </section>
+            </section> -->
             <div class="main_block__content">
                 <table>
                     <thead>
