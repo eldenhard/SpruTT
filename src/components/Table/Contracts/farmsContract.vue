@@ -33,7 +33,8 @@
 
 
       <section class="advanced_settings_block">
-        <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">Расширенный поиск</button>
+        <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">{{ !isAdvancedSettings ?
+          "Расширенный поиск" : 'Закрыть' }}</button>
         <Transition name="fade">
           <div v-if="isAdvancedSettings" class="advanced_settings">
             <div class="section_category">
@@ -42,7 +43,8 @@
               </div>
 
               <div class="right_section">
-                <select v-model="searchFullSetting.category">
+                <select v-model="searchFullSetting.category"
+                  :disabled="searchFullSetting.income != false || searchFullSetting.expenses != false">
                   <option value="">Не выбрано</option>
                   <option value="economic">Общехозяйственные</option>
                   <option value="repair">Ремонтные</option>
@@ -76,12 +78,13 @@
                   <span>Найти контрагента</span>
                 </button>
                 <div v-if="Counterparty">
-                    {{ Counterparty?.work_name }}<b-icon icon="x-lg" @click="deleteCurrentCounterparty()" variant="danger"></b-icon>
+                  {{ Counterparty?.work_name }}<b-icon icon="x-lg" @click="deleteCurrentCounterparty()"
+                    variant="danger"></b-icon>
                 </div>
               </div>
             </div>
 
-           
+
 
             <div class="answer_block" v-if="answerBlock">
               <ul>
@@ -92,7 +95,7 @@
               </ul>
             </div>
             <hr>
-            <div class="income_expense">
+            <div class="income_expense" v-show="searchFullSetting.category == ''">
               <div class="left_section">
                 <p>Вариант документа:</p>
               </div>
@@ -103,10 +106,11 @@
                 </label>
               </div>
             </div>
-            <hr>
+            <hr v-show="searchFullSetting.category == ''">
 
             <button class="Request" style="border-radius: 8px; margin-left: auto;" @click="sendToServerFullDecription()">
-              <b-icon icon="search"></b-icon><span>&nbsp;&nbsp;Найти</span>
+              <span v-if="isSearchFullSettings">Найти</span>
+              <b-icon v-if="!isSearchFullSettings" icon="three-dots" animation="cylon" font-scale="3"></b-icon>
             </button>
 
           </div>
@@ -117,6 +121,7 @@
 
       <div
         style=" width: 100%; overflow: auto; position: relative; left: 50%; transform: translate(-50%, 0); max-height: 70vh;">
+        <h4>{{ commentForResponse }}</h4>
         <ul>
           <li class="responseListItem" v-for="item, index in dataForTable" :key="index" style="margin-top: 2%;">
             <b-icon icon="file-earmark-medical" variant="success"></b-icon>
@@ -162,8 +167,9 @@ export default {
       responseSearchData: null,
       intervalResponse: null,
       isSearch: true,
+      isSearchFullSettings: true,
       search: "",
-      dataForTable: null,
+      dataForTable: [],
       searchFullSetting: {
         income: "",
         expenses: "",
@@ -177,7 +183,7 @@ export default {
       arrInnOgrn: [],
       Counterparty: null,
       answerBlock: true,
-
+      commentForResponse: "",
 
       nextLink: null,
       prevLink: null,
@@ -339,49 +345,80 @@ export default {
     },
     // запрос из расширенног поиска
     sendToServerFullDecription() {
-      // if (this.searchFullSetting.income) {
-      //   // Если income true и 'buyer' еще не в массиве, добавляем 'buyer'
-      //   if (!this.searchFullSetting.tags.includes('buyer')) {
-      //     this.searchFullSetting.tags.push('buyer');
-      //   }
-      // } else {
-      //   // Если income false, удаляем 'buyer' из массива
-      //   const index = this.searchFullSetting.tags.indexOf('buyer');
-      //   if (index !== -1) {
-      //     this.searchFullSetting.tags.splice(index, 1);
-      //   }
-      // }
+      this.commentForResponse = ""
+      if (this.searchFullSetting.income) {
+        // Если income true и 'buyer' еще не в массиве, добавляем 'buyer'
+        if (!this.searchFullSetting.tags.includes('buyer')) {
+          this.searchFullSetting.tags.push('buyer');
+        }
+      } else {
+        // Если income false, удаляем 'buyer' из массива
+        const index = this.searchFullSetting.tags.indexOf('buyer');
+        if (index !== -1) {
+          this.searchFullSetting.tags.splice(index, 1);
+        }
+      }
 
-      // if (this.searchFullSetting.expenses) {
-      //   // Если expenses true и каждого из тегов нет в массиве, добавляем их
-      //   const tagsToAdd = ['supply', 'economic', 'repair', 'financial', 'other'];
-      //   tagsToAdd.forEach(tag => {
-      //     if (!this.searchFullSetting.tags.includes(tag)) {
-      //       this.searchFullSetting.tags.push(tag);
-      //     }
-      //   });
-      // } else {
-      //   // Если expenses false, удаляем все указанные теги из массива
-      //   this.searchFullSetting.tags = this.searchFullSetting.tags.filter(tag => !['supply', 'economic', 'repair', 'financial', 'other'].includes(tag));
-      // }
+      if (this.searchFullSetting.expenses) {
+        // Если expenses true и каждого из тегов нет в массиве, добавляем их
+        const tagsToAdd = ['supply', 'economic', 'repair', 'financial'];
+        tagsToAdd.forEach(tag => {
+          if (!this.searchFullSetting.tags.includes(tag)) {
+            this.searchFullSetting.tags.push(tag);
+          }
+        });
+      } else {
+        // Если expenses false, удаляем все указанные теги из массива
+        this.searchFullSetting.tags = this.searchFullSetting.tags.filter(tag => !['supply', 'economic', 'repair', 'financial'].includes(tag));
+      }
 
       // if (this.Counterparty?.work_name === 'undefined') {
       //   this.searchFullSetting.counterparty = ""
       // }
 
-      console.log(this.searchFullSetting)
-      api.fullSearchDirectory(this.searchFullSetting)
-        .then(response => {
-          this.dataForTable = response.data.data
-        }).catch((err) => {
-          console.log(err)
-        })
+      // Перебор данных когда выбран доходный или расходный документ
+      if (this.searchFullSetting.tags.length > 0) {
+        let request = this.searchFullSetting.tags.map(category => api.getManyCategoryDate(category, this.searchFullSetting.on_date, this.searchFullSetting.counterparty))
+        this.dataForTable = []
+        this.isSearchFullSettings = false
+        Promise.allSettled(request)
+          .then(response => {
+            response.forEach((item) => {
+              this.dataForTable.push(...item.value.data.data)
+              if(this.dataForTable.length == 0){
+                this.commentForResponse = 'Нет данных по вашему запросу'
+              }
+              this.isSearchFullSettings = true
+            })
+          }).catch((err) => {
+            console.log(err)
+            this.isSearchFullSettings = true
+          })
+      } else {
+        // для случаев без выбора этих данных
+        this.isSearchFullSettings = false
+        console.log(this.searchFullSetting)
+        api.fullSearchDirectory(this.searchFullSetting)
+          .then(response => {
+            this.dataForTable = response.data.data
+            if(this.dataForTable.length == 0){
+                this.commentForResponse = 'Нет данных по вашему запросу'
+              }
+            this.isSearchFullSettings = true
+          }).catch((err) => {
+            console.log(err)
+            this.isSearchFullSettings = true
+
+          })
+      }
+
+
 
 
     },
 
     // Удалить выбранного контрагента в широкой фильтрации
-    deleteCurrentCounterparty(){
+    deleteCurrentCounterparty() {
       this.searchFullSetting.inn = ""
       this.searchFullSetting.ogrn = ""
       this.Counterparty = null
@@ -392,9 +429,10 @@ export default {
     
     
 <style  scoped>
-.responseListItem:hover{
+.responseListItem:hover {
   background: rgb(241, 241, 241);
 }
+
 .section_category,
 .section_date,
 .inn_ogrn,
