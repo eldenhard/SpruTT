@@ -36,8 +36,9 @@
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['вес'] | format }}</td>
                     </template>
-
                 </tr>
+
+
                 <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Цистерна' && CheckValue(indication)" >
@@ -61,6 +62,7 @@
                     </template>
                 </template>
 
+
                 <tr class="Total_1">
                     <td>Объем ПВ (тн)</td>
                     <td>{{ calculateSumNotPolygon('Полувагон', 'вес') | format  }}</td>
@@ -68,7 +70,7 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['вес'] | format }}</td>
                     </template>
                 </tr>
-                <template v-for="(item, indication) in file">
+                <!-- <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" >
                             <tr class="Total_grey">
@@ -89,7 +91,7 @@
                             </template>
                         </template>
                     </template>
-                </template>
+                </template> -->
                 <tr class="Total_2">
                     <td>&nbsp;&nbsp;Общий объем перевозок компании (ваг)&nbsp;&nbsp;</td>
                     <td>{{ file['погрузка'] }}</td>
@@ -133,7 +135,7 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['погрузка'] }}</td>
                     </template>
                 </tr>
-                <template v-for="(item, indication) in file">
+                <!-- <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" >
                             <tr class="Total_grey">
@@ -154,7 +156,7 @@
                             </template>
                         </template>
                     </template>
-                </template>
+                </template> -->
                 <tr class="Total_2">
                     <td>&nbsp;&nbsp;Расстояние груж (собств.парк)&nbsp;&nbsp;</td>
                     <td>{{ file['расстояние_груженое'] | format }}</td>
@@ -229,8 +231,9 @@
                         </td>
                     </template>
                 </tr>
-                <tr>
-<!-- Не считал общий -->
+                
+<!-- Не считал общий --> <br><br>
+<tr> 
                     <td class="pre_amount">Производительность ЦС</td>
                     <td></td>
                     <template v-for="(data, index) in file">
@@ -300,7 +303,7 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_выручка_от_оперирования'] | format}}</td>
                     </template>
                 </tr>
-                <template v-for="(item, indication) in file">
+                <!-- <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" >
                             <tr class="Total_grey">
@@ -321,7 +324,7 @@
                             </template>
                         </template>
                     </template>
-                </template>
+                </template> -->
                 <tr>
                     <td class="pre_amount">Штрафы к получению ПВ</td>
                     <td>{{ calculateSumNotPolygon('Полувагон', 'ДППВПД_штрафы_к_получению') | format  }}</td>
@@ -454,7 +457,7 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['тариф_порожний'] | format}}</td>
                     </template>
                 </tr>
-                <template v-for="(item, indication) in file">
+                <!-- <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" >
                             <tr class="Total_grey">
@@ -475,7 +478,7 @@
                             </template>
                         </template>
                     </template>
-                </template>
+                </template> -->
                 <tr class="Total_1">
                     <td>Тариф груженный всего</td>
                     <td>{{ calculateSumNotPolygon('Полувагон', 'тариф_груженый') | format }}</td>
@@ -483,7 +486,7 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['тариф_груженый'] | format}}</td>
                     </template>
                 </tr>
-                <template v-for="(item, indication) in file">
+                <!-- <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" >
                             <tr class="Total_grey">
@@ -504,7 +507,7 @@
                             </template>
                         </template>
                     </template>
-                </template>
+                </template> -->
                 <tr class="Total_1">
                     <td>Тариф по сопредельным государствам всего</td>
                     <td>{{ calculateSumNotPolygon('Полувагон', 'тариф_по_сопредельным_государствам') | format }}</td>
@@ -512,7 +515,7 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['тариф_по_сопредельным_государствам'] | format}}</td>
                     </template>
                 </tr>
-                <template v-for="(item, indication) in file">
+                <!-- <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" >
                             <tr class="Total_grey">
@@ -533,7 +536,7 @@
                             </template>
                         </template>
                     </template>
-                </template>
+                </template> -->
                 <tr class="Total_red">
                     <td>&nbsp;&nbsp;Привлечение&nbsp;&nbsp;</td>
                     <td>{{ file['привлечение'] | format }}</td>
@@ -600,7 +603,7 @@
                     <td>Отстой ЦС</td>
                     <td>{{ calculateSumNotPolygon('Цистерна', 'отстой') | format }}</td>
                     <template v-for="(data, index) in file">
-                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']['отстой'] | format}}</td>
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Цистерна']?.отстой | format}}</td>
                     </template>
                 </tr>
                 <template v-for="(item, indication) in file">
@@ -610,7 +613,7 @@
                                 <td >Объем - полигон {{ polygon.toLowerCase() }}</td>
                                 <td>{{ calculateSum('отстой', polygon, 'Цистерна') | format }}</td>
                                 <template v-for="index in Object.keys(file)">
-                                    <td :key="index" v-if="CheckValue(index)">{{ file[index]['Цистерна'][polygon]['отстой'] | format }}</td>
+                                    <td :key="index" v-if="CheckValue(index)">{{ file[index]['Цистерна'][polygon]?.отстой | format }}</td>
                                 </template>
                             </tr>
                             <template v-for="poligon2 in getNextKey(item[group][polygon])"> 
@@ -618,7 +621,7 @@
                                     <td class="pre_amount">{{ poligon2 }}</td>
                                     <td>{{ calculateSumPolygon2('Цистерна', polygon,poligon2,  'отстой') | format }}</td>
                                     <template v-for="index in Object.keys(file)">
-                                        <td :key="index" v-if="CheckValue(index)">{{ file[index]['Цистерна'][polygon][poligon2]['отстой'] | format }}</td>
+                                        <td :key="index" v-if="CheckValue(index)">{{ file[index]['Цистерна'][polygon][poligon2]?.отстой | format }}</td>
                                     </template>
                                 </tr>
                             </template>
@@ -666,7 +669,7 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ппс'] | format}}</td>
                     </template>
                 </tr>
-                <template v-for="(item, indication) in file">
+                <!-- <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" >
                             <tr class="Total_grey">
@@ -687,22 +690,22 @@
                             </template>
                         </template>
                     </template>
-                </template>
+                </template> -->
                 <tr class="Total_1">
                     <td>Отстой ПВ</td>
                     <td>{{ calculateSumNotPolygon('Полувагон', 'отстой') | format }}</td>
                     <template v-for="(data, index) in file">
-                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['отстой'] | format}}</td>
+                        <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']?.отстой | format}}</td>
                     </template>
                 </tr>
-                <template v-for="(item, indication) in file">
+                <!-- <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" >
                             <tr class="Total_grey">
                                 <td >Объем - полигон {{ polygon.toLowerCase() }}</td>
                                 <td>{{ calculateSum('отстой', polygon, 'Полувагон') | format }}</td>
                                 <template v-for="index in Object.keys(file)">
-                                    <td :key="index" v-if="CheckValue(index)">{{ file[index]['Полувагон'][polygon]['отстой'] | format }}</td>
+                                    <td :key="index" v-if="CheckValue(index)">{{ file[index]['Полувагон'][polygon]?.отстой | format }}</td>
                                 </template>
                             </tr>
                             <template v-for="poligon2 in getNextKey(item[group][polygon])"> 
@@ -710,13 +713,13 @@
                                     <td class="pre_amount">{{ poligon2 }}</td>
                                     <td>{{ calculateSumPolygon2('Полувагон', polygon,poligon2,  'отстой') | format }}</td>
                                     <template v-for="index in Object.keys(file)">
-                                        <td :key="index" v-if="CheckValue(index)">{{ file[index]['Полувагон'][polygon][poligon2]['отстой'] | format }}</td>
+                                        <td :key="index" v-if="CheckValue(index)">{{ file[index]['Полувагон'][polygon][poligon2]?.отстой | format }}</td>
                                     </template>
                                 </tr>
                             </template>
                         </template>
                     </template>
-                </template>
+                </template> -->
                 <tr class="Total_1">
                     <td>Прочие услуги ПВ</td>
                     <td>{{ calculateSumNotPolygon('Полувагон', 'прочие_услуги') | format }}</td>
@@ -724,7 +727,7 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['прочие_услуги'] | format}}</td>
                     </template>
                 </tr>
-                <template v-for="(item, indication) in file">
+                <!-- <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" >
                             <tr class="Total_grey">
@@ -745,7 +748,7 @@
                             </template>
                         </template>
                     </template>
-                </template>
+                </template> -->
                 <tr class="Total_red">
                     <td>&nbsp;&nbsp;Штрафы к уплате&nbsp;&nbsp;</td>
                     <td>{{ file['штрафы_к_уплате'] | format }}</td>
@@ -796,7 +799,7 @@
                         <td :key="index" v-if="CheckValue(index)">{{ data['Полувагон']['ДППВПД_маржинальный_доход'] | format}}</td>
                     </template>
                 </tr>
-                <template v-for="(item, indication) in file">
+                <!-- <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" >
                             <tr class="Total_grey">
@@ -817,7 +820,7 @@
                             </template>
                         </template>
                     </template>
-                </template>
+                </template> -->
                 <tr class="Total_2">
                     <td>Вагонно-сутки</td>
                     <td>{{ file['вагоносутки'] | format }}</td>
@@ -864,7 +867,7 @@
                     </template>
                 </template>
 
-                <template v-for="(item, indication) in file">
+                <!-- <template v-for="(item, indication) in file">
                     <template v-for="group in getNextKey(item)">
                         <template v-for="polygon in getNextKey(item[group])" v-if="group === 'Полувагон' && CheckValue(indication)" >
                             <tr class="Total_1">
@@ -885,47 +888,11 @@
                             </template>
                         </template>
                     </template>
-                </template>
-
-                <!-- <tr class="Total_2">
-                    <td>Доходность в собственном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">Доходность ВЦ</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">Доходность ПВ</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr class="Total_2">
-                    <td>Доходность в привлеченном парке</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">Доходность ВЦ</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="pre_amount">Доходность ПВ</td>
-                    <td></td>
-                    <td></td>
-                </tr> -->
+                </template> -->
 
 
 
-
-
-
-
-
-
+                <!-- снизу все работает --> <br><br><br><br>
                 <tr class="Total_2">
                     <td>Маржинальная рентабельность </td>
                     <td>{{ file['ДППВПД_маржинальная_рентабельность'] | format }}</td>
@@ -949,9 +916,7 @@
                 </tr>
                 <tr class="Total_blue">
                     <td>Условно постоянные расходы</td>
-                    <template v-for="(data, index) in file">
-                        <td :key="index" v-if="CheckValue(index)">{{ file['ДППВПД_условно_постоянные_расходы'] | format}}</td>
-                    </template>
+                    <td :key="index" v-if="CheckValue(index)">{{ file['ДППВПД_условно_постоянные_расходы'] | format}}</td>
                     <template v-for="(data, index) in file">
                         <td :key="index" v-if="CheckValue(index)">{{ data['ДППВПД_условно_постоянные_расходы'] | format}}</td>
                     </template>
@@ -1104,6 +1069,9 @@
                     </template>
                 </tr>
                 <br>
+
+
+
 <!-- НОВЫЙ РАЗДЕЛ -->
                 <tr class="Row_grey">
                     <th :colspan="HowManyNewCells">ДЕЯТЕЛЬНОСТЬ ПО СДАЧЕ ВАГОНОВ В АРЕНДУ</th>
@@ -1429,6 +1397,7 @@ import Periods from "./Periods.vue";
 import api from "@/api/reportUO"
 import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from "@/components/loader/loader.vue";
+import check from './check.json'
 
 export default {
     components: {
@@ -1439,7 +1408,7 @@ export default {
     data() {
         return {
             alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'],
-            file: {},
+            file:check,
             amount_cols: 2,
             loader: false,
             date_begin: "",
@@ -1454,7 +1423,7 @@ export default {
     computed: {
         
         getTh() {
-            return this.alphabet.slice(0, this.amount_cols)
+            return this.alphabet.slice(0, this.amount_cols+1)
         },
         HowManyNewCells() {
             if (this.getCollection) {
@@ -1481,7 +1450,7 @@ export default {
     filters: {
         format(value) {
             if (value != "" && !!value) {
-                let TwoSignNum = value?.toFixed(2)
+                let TwoSignNum = value?.toFixed(2) 
                 return String(TwoSignNum).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
             }
             return value
@@ -1502,7 +1471,9 @@ export default {
             let sum = 0;
             for (const index of Object.keys(this.file)) {
                 if (this.CheckValue(index)) {
-                    sum += parseFloat(this.file[index][wagon_type][polygon][property]) || 0;
+                    console.log(this.file[index][wagon_type][polygon], 'calculateSum')
+                    if(this.file[index][wagon_type][polygon] === 'undefined') continue
+                    sum += (this.file[index][wagon_type][polygon][property]) ?? 0;
                 }
             }
             return sum;
@@ -1511,7 +1482,10 @@ export default {
             let sum = 0;
             for (const index of Object.keys(this.file)) {
                 if (this.CheckValue(index)) {
-                    sum += parseFloat(this.file[index][wagon_type][property]) || 0;
+                    console.log(this.file[index][wagon_type], 'calculateSumNotPolygon')
+                    if(this.file[index][wagon_type] === 'undefined') continue
+
+                    sum += (this.file[index][wagon_type][property]) ?? 0;
                 }
             }
             return sum;
@@ -1520,7 +1494,10 @@ export default {
             let sum = 0;
             for (const index of Object.keys(this.file)) {
                 if (this.CheckValue(index)) {
-                    sum += parseFloat(this.file[index][wagon_type][polygon][polygon2][property]) || 0;
+                    console.log(this.file[index][wagon_type][polygon][polygon2], 'calculateSumPolygon2')
+                    if(this.file[index][wagon_type][polygon][polygon2] === 'undefined') continue
+
+                    sum += (this.file[index][wagon_type][polygon][polygon2][property]) ?? 0;
                 }
             }
             return sum;

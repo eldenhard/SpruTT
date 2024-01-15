@@ -209,7 +209,7 @@ export default {
             this.isSearchFullSettings = false
             let obj = {
               inner_number: this.inner_number,
-              groups: this.subdivision
+              post: [this.subdivision]
             }
             let response =  await api.getUserByQuery(obj)
             this.dataForTable = await response.data.data
