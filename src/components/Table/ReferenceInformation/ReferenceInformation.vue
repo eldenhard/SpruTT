@@ -33,7 +33,7 @@
 
             <section class="advanced_settings_block">
                 <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">{{ !isAdvancedSettings ?
-          "Расширенный поиск" : 'Закрыть' }}</button>
+                    "Расширенный поиск" : 'Закрыть' }}</button>
                 <Transition name="fade">
                     <div v-if="isAdvancedSettings" class="advanced_settings">
                         <div class="section_category">
@@ -44,8 +44,9 @@
                             <div class="right_section">
                                 <select v-model="subdivision">
                                     <option value="">Не выбрано</option>
-                                    <option v-for="group, index in allGroups" :key="index" :value="group.id">{{ group.name }}</option>
-                                    
+                                    <option v-for="group, index in allGroups" :key="index" :value="group.id">{{ group.name
+                                    }}</option>
+
                                 </select>
 
                             </div>
@@ -81,6 +82,7 @@
                             <th>Отчество</th>
                             <th>Тел.внутр</th>
                             <th>Почта</th>
+                            <th>Вн. номер</th>
                             <template v-for="cell in selectedTableCells">
                                 <th :key="cell.id">{{ cell.value }}</th>
                             </template>
@@ -97,6 +99,7 @@
                             <td>{{ user?.middle_name != '[]' ? user?.middle_name : "" }}</td>
                             <td style="white-space: nowrap;">{{ user?.phone_corp }}</td>
                             <td style="white-space: nowrap;">{{ user?.email }}</td>
+                            <td style="white-space: nowrap;">{{ user?.inner_number }}</td>
                             <template v-for="cell in selectedTableCells">
                                 <td :key="cell.id">
                                     {{ WhatTheData(user[cell?.valen], cell?.valen) }}
@@ -174,6 +177,7 @@ export default {
     computed: {
         ...mapState({
             user: (state) => state.auth.user,
+            allUsers: (state) => state.auth.users,
             uid: (state) => state.auth.uid,
             allGroups: (state) => state.auth.groups,
             staffGlobal: (state) => state.auth.users,
@@ -205,16 +209,30 @@ export default {
         }
     },
     methods: {
-        async sendToServerFullDecription(){
-            this.isSearchFullSettings = false
-            let obj = {
-              inner_number: this.inner_number,
-              post: [this.subdivision]
+        sendToServerFullDecription() {
+            if (this.subdivision != "" && this.inner_number == "") {
+                this.dataForTable = this.allUsers.filter((item) => {
+                    return item.groups[0] == this.subdivision
+                });
+            } else if (this.subdivision == "" && this.inner_number != "") {
+                this.dataForTable = this.allUsers.filter((item) => {
+                    return item.inner_number == this.inner_number
+                });
+            } else {
+                this.dataForTable = this.allUsers.filter((item) => {
+                    return item.inner_number == this.inner_number && item.groups[0] == this.subdivision
+                });
             }
-            let response =  await api.getUserByQuery(obj)
-            this.dataForTable = await response.data.data
-            console.log(this.dataForTable)
-            this.isSearchFullSettings = true
+
+            // this.isSearchFullSettings = false
+            // let obj = {
+            //   inner_number: this.inner_number,
+            //   post: [this.subdivision]
+            // }
+            // let response =  await api.getUserByQuery(obj)
+            // this.dataForTable = await response.data.data
+            // console.log(this.dataForTable)
+            // this.isSearchFullSettings = true
         },
         closeBlock() {
             this.isAnswerBlock = false
@@ -432,28 +450,28 @@ tr:hover {
 .section_date,
 .inn_ogrn,
 .income_expense {
-  padding: 10px;
-  width: 65%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
+    padding: 10px;
+    width: 65%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
 }
 
 .right_section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 label {
-  font-weight: 18px;
-  font-weight: bold;
+    font-weight: 18px;
+    font-weight: bold;
 }
 
 input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
+    width: 20px;
+    height: 20px;
 }
 </style>
