@@ -72,7 +72,7 @@
                 </Transition>
             </section>
 
-            <div class="main_block__content">
+            <div class="main_block__content" v-if="dataForTable.length > 0">
                 <table>
                     <thead>
                         <tr>
@@ -154,7 +154,7 @@ export default {
             intervalResponse: null,
             isSearch: true,
             search: "",
-            dataForTable: null,
+            dataForTable: [],
             isSearchFullSettings: true,
             subdivision: "",
             inner_number: "",
@@ -224,15 +224,6 @@ export default {
                 });
             }
 
-            // this.isSearchFullSettings = false
-            // let obj = {
-            //   inner_number: this.inner_number,
-            //   post: [this.subdivision]
-            // }
-            // let response =  await api.getUserByQuery(obj)
-            // this.dataForTable = await response.data.data
-            // console.log(this.dataForTable)
-            // this.isSearchFullSettings = true
         },
         closeBlock() {
             this.isAnswerBlock = false
