@@ -14,9 +14,9 @@
                         <th v-if="CheckValue(month)">Всего в {{ checkMonth(month) }}</th>
                     </template>
                 </tr>
-                <tr class="RowAlphabet">
+                <!-- <tr class="RowAlphabet">
                     <th v-for="item in getTh" :key="item.id">{{ item.toUpperCase() }}</th>
-                </tr>
+                </tr> -->
           
             </thead>
             <tbody v-if="Object.keys(file).length > 1">
@@ -1432,6 +1432,7 @@ export default {
     computed: {
         
         getTh() {
+
             return this.alphabet.slice(0, this.amount_cols+1)
         },
         HowManyNewCells() {
