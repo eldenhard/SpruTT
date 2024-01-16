@@ -205,7 +205,7 @@ const fullSearchDirectory = (data) => {
 }
 
 const getManyCategoryDate = (category, date, counterparty) => {
-    return api.get(`${documents}/contract/?created_at_gte=${date}&category=${category}&counterparty=${counterparty}`)
+    return api.get(`${documents}/contract/?created_at_gte=${date}&category=${category}&counterparty_=${counterparty}`)
 }
 
 export default {
