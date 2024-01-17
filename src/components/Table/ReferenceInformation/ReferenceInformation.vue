@@ -76,13 +76,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Фото</th>
+                            <!-- <th>Фото</th> -->
                             <th>Фамилия</th>
                             <th>Имя</th>
                             <th>Отчество</th>
                             <th>Тел.внутр</th>
                             <th>Почта</th>
-                            <th>Вн. номер</th>
+                          
                             <template v-for="cell in selectedTableCells">
                                 <th :key="cell.id">{{ cell.value }}</th>
                             </template>
@@ -91,15 +91,15 @@
                     <tbody>
                         <tr @click="open_watch_modal('Просмотр сотрудника', user)" v-for="user, index in dataForTable"
                             :key="index">
-                            <td>
+                            <!-- <td>
                                 <img v-if="user && user.photo" :src="user.photo" alt="фото пользователя">
-                            </td>
+                            </td> -->
                             <td>{{ user?.last_name != '[]' ? user?.last_name : "" }}</td>
                             <td>{{ user?.first_name != '[]' ? user?.first_name : "" }}</td>
                             <td>{{ user?.middle_name != '[]' ? user?.middle_name : "" }}</td>
-                            <td style="white-space: nowrap;">{{ user?.phone_corp }}</td>
-                            <td style="white-space: nowrap;">{{ user?.email }}</td>
-                            <td style="white-space: nowrap;">{{ user?.inner_number }}</td>
+                            <td >{{ user?.phone_corp }}</td>
+                            <td >{{ user?.email }}</td>
+                           
                             <template v-for="cell in selectedTableCells">
                                 <td :key="cell.id">
                                     {{ WhatTheData(user[cell?.valen], cell?.valen) }}
