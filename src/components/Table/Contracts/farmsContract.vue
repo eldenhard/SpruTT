@@ -33,13 +33,25 @@
 
 
       <section class="advanced_settings_block">
-        <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">{{ !isAdvancedSettings ?
-          "Расширенный поиск" : 'Закрыть' }}</button>
+        <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">{{ !isAdvancedSettings
+          ? "Расширенный поиск" : 'Закрыть' }}</button>
         <Transition name="fade">
           <div v-if="isAdvancedSettings" class="advanced_settings">
             <div class="section_category">
               <div class="left_section">
-                <p>Категория:</p>
+                <p>Вид документа<sup>*</sup> :</p>
+              </div>
+              <div class="right_section">
+                <select v-model="searchFullSetting.type">
+                  <option value="">Не выбран</option>
+                  <option value="false">Договор</option>
+                  <option value="true">Приложение</option>
+                </select>
+              </div>
+            </div>
+            <div class="section_category" v-if="searchFullSetting.type != ''">
+              <div class="left_section">
+                <p>Вид {{ searchFullSetting.type == 'false' ? 'договора' : 'приложения' }}:</p>
               </div>
 
               <div class="right_section">
@@ -57,16 +69,30 @@
               </div>
             </div>
             <hr>
-            <div class="section_date">
+            <div class="section_date" v-if="searchFullSetting.type != ''">
               <div class="left_section">
-                <p>Дата создания документа от:</p>
+                <p>Дата создания {{ searchFullSetting.type == 'false' ? 'договора' : 'приложения' }} от:</p>
               </div>
               <div class="right_section">
-                <input type="date" class="textarea" v-model="searchFullSetting.on_date">
+                <input type="date" class="textarea" v-if="searchFullSetting.type == 'false'"
+                  v-model="searchFullSetting.on_date">
+                <input type="date" class="textarea" v-else v-model="searchFullSetting.annex_date">
               </div>
             </div>
             <hr>
-            <div class="inn_ogrn">
+            <div class="income_expense" v-show="searchFullSetting.category == ''">
+              <div class="left_section">
+                <p>Статус:</p>
+              </div>
+              <div class="right_section">
+                <label for="income"><input type="checkbox" id="income" v-model="searchFullSetting.income"> Доходный
+                </label>
+                <label for="expenses"><input type="checkbox" id="expenses" v-model="searchFullSetting.expenses"> Расходный
+                </label>
+              </div>
+            </div>
+            <hr v-show="searchFullSetting.category == ''">
+            <!-- <div class="inn_ogrn">
               <div class="left_section">
                 <p>ИНН/ОГРН</p>
               </div>
@@ -87,7 +113,7 @@
 
 
             <div class="answer_block" v-if="answerBlock">
-          
+
               <ul>
                 <li v-for="item, index in arrInnOgrn" :key="index" @click="checkCounterparty(item)">
                   <b-icon icon="search" variant="secondary"></b-icon>
@@ -95,19 +121,8 @@
                 </li>
               </ul>
             </div>
-            <hr>
-            <div class="income_expense" v-show="searchFullSetting.category == ''">
-              <div class="left_section">
-                <p>Вариант документа:</p>
-              </div>
-              <div class="right_section">
-                <label for="income"><input type="checkbox" id="income" v-model="searchFullSetting.income"> Доходный
-                </label>
-                <label for="expenses"><input type="checkbox" id="expenses" v-model="searchFullSetting.expenses"> Расходный
-                </label>
-              </div>
-            </div>
-            <hr v-show="searchFullSetting.category == ''">
+            <hr> -->
+
 
             <button class="Request" style="border-radius: 8px; margin-left: auto;" @click="sendToServerFullDecription()">
               <span v-if="isSearchFullSettings">Найти</span>
@@ -126,22 +141,61 @@
         <ul>
           <li class="responseListItem" v-for="item, index in dataForTable" :key="index" style="margin-top: 2%;">
             <b-icon icon="file-earmark-medical" variant="success"></b-icon>
-            <b style="font-weight: 500; font-size: 14px;"> Договор:</b> {{ item?.number }} <b
-              style="font-weight: 500; font-size: 14px;">Тип:</b> {{
-                item?.contract_type }} <b style="font-weight: 500; font-size: 14px;">Дата создания: </b> {{ item?.created_at ?
-    item?.created_at : ' —' }}
+
+
+            <b class="superB"> {{ searchFullSetting.type == 'false' ? 'Договор' : 'Приложение' }}:</b>
+            {{ searchFullSetting.type == 'false' ? item?.number : item?.annex }}
+            {{ searchFullSetting.type == 'false' ? "" : '№' + ' ' + item?.annex_number }} <br>
+
+            <b v-if="searchFullSetting.type == 'true'" class="superB">К договору</b> {{ searchFullSetting.type == 'false'
+              ? "" : item?.number }}
+
+            <b class="superB">Тип:</b> {{ item?.contract_type }} <br>
+            <b class="superB">Дата создания: </b>
+            {{ searchFullSetting.type == 'false' ? item?.created_at ? item?.created_at : "—" : item?.annex_date?.slice(0,
+              10).split('-').reverse().join(".") }}
             <br>
-            <b style="font-weight: 500; font-size: 14px;">Предмет договора</b> {{ item?.contract_object }} <br>
-            <b style="font-weight: 500; font-size: 14px;">Контрагент: </b> {{ item?.counterparty }} <br>
-            <b style="font-weight: 500; font-size: 14px;">Категория: </b> {{ TranslateTypeCategory(item?.category) }} <br>
+            <b class="superB" v-if="searchFullSetting.type == 'false'">Дата окончания: </b>
+            {{ searchFullSetting.type == 'false' ? item?.expiration_date?.slice(0, 10).split('-').reverse().join(".") :
+              "" }}
+            <br v-if="searchFullSetting.type == 'false'">
+
+            <b class="superB">Предмет договора</b> {{ item?.contract_object }} <br>
+            <b class="superB">Контрагент: </b> {{ item?.counterparty }} <br>
+            <b class="superB">Статус: </b> {{ TranslateTypeCategory(item?.category) }} <br>
+            <b class="superB">Вид: </b> {{ TypeAgr(item?.category) }} <br>
+
             <div @click="CopyTEXT(item?.scan_path)">
-              <b style="font-weight: 500; font-size: 14px;">Ссылка: </b>
+              <b class="superB">Ссылка: </b>
               <b-icon icon="link" variant="primary" font-scale="1.4"></b-icon>
             </div>
           </li>
         </ul>
       </div>
 
+      <div class="filter_new_block">
+        <b-icon icon="funnel-fill" variant="dark" font-scale="1.4" style="margin-left: 95% !important;"
+          @click="isShowFilter = !isShowFilter"></b-icon>
+        <div class="filter" v-if="isShowFilter">
+          <div class="dnr">
+            <p align="center">
+              <b>Статус</b>
+            </p>
+            <label for="f1"> <input type="radio" name="" id="f1" v-model="type_filer1" value="doh"> Доходный
+            </label>
+            <label for="f12"> <input type="radio" name="" id="f12" v-model="type_filer1" value="rash"> Расходный
+            </label>
+          </div>
+          <div class="dnr2">
+            <p align="center">Актуальность</p>
+            <label for="f2"> <input type="radio" name="" id="f2" v-model="type_filer2" value="active"> Действующий
+            </label>
+            <label for="f21"> <input type="radio" name="" id="f21" v-model="type_filer2" value="inactive"> Не действующий
+            </label>
+          </div>
+        </div>
+
+      </div>
 
     </div>
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
@@ -163,6 +217,9 @@ export default {
   components: { Loader, Notifications, MultiSelectUni },
   data() {
     return {
+      type_filer1: "",
+      type_filer2: "",
+      isShowFilter: true,
       isAdvancedSettings: false,
       isAnswerBlock: true,
       responseSearchData: null,
@@ -180,6 +237,8 @@ export default {
         on_date: "",
         counterparty: "",
         tags: [],
+        type: "",
+        annex_date: "",
       },
       arrInnOgrn: [],
       Counterparty: null,
@@ -252,6 +311,13 @@ export default {
 
   },
   methods: {
+    TypeAgr(val) {
+      if (val == 'buyer') {
+        return 'Доходный'
+      } else {
+        return 'Расходный'
+      }
+    },
     TranslateTypeCategory(val) {
       switch (val) {
         case 'economic':
@@ -328,13 +394,14 @@ export default {
     sendFullDescriptionSearch() {
       this.arrInnOgrn = []
       this.answerBlock = true
-
-      this.counterparties.filter((item) => {
-        if (item?.inn !== null && item?.ogrn !== null)
-          if (item?.inn.includes(this.searchFullSetting.inn) && item?.ogrn.includes(this.searchFullSetting.ogrn)) {
-            this.arrInnOgrn.push(item)
-          }
-      })
+      api.testCounterparty()
+        .then((response) => { console.log(response.data) })
+      // this.counterparties.filter((item) => {
+      //   if (item?.inn !== null && item?.ogrn !== null)
+      //     if (item?.inn.includes(this.searchFullSetting.inn) && item?.ogrn.includes(this.searchFullSetting.ogrn)) {
+      //       this.arrInnOgrn.push(item)
+      //     }
+      // })
     },
     // Заполнение данных по контрагенту в таблице расширенного поиска
     checkCounterparty(item) {
@@ -346,6 +413,17 @@ export default {
     },
     // запрос из расширенног поиска
     sendToServerFullDecription() {
+      if (this.searchFullSetting.type == "") {
+        this.searchFullSetting.category = ""
+        this.searchFullSetting.on_date = ""
+        this.searchFullSetting.annex_date = ""
+        this.notifyHead = "Ошибка";
+        this.notifyMessage = "Необходимо выбрать вид документа.";
+        this.notifyClass = "wrapper-error";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
+        return
+      }
       this.commentForResponse = ""
       if (this.searchFullSetting.income) {
         // Если income true и 'buyer' еще не в массиве, добавляем 'buyer'
@@ -373,22 +451,21 @@ export default {
         this.searchFullSetting.tags = this.searchFullSetting.tags.filter(tag => !['supply', 'economic', 'repair', 'financial'].includes(tag));
       }
 
-      // if (this.Counterparty?.work_name === 'undefined') {
-      //   this.searchFullSetting.counterparty = ""
-      // }
-
-
-    console.log(this.searchFullSetting)
       // Перебор данных когда выбран доходный или расходный документ
       if (this.searchFullSetting.tags.length > 0) {
-        let request = this.searchFullSetting.tags.map(category => api.getManyCategoryDate(category, this.searchFullSetting.on_date, this.searchFullSetting.counterparty))
+        let request = this.searchFullSetting.tags.map(category => api.getManyCategoryDate(
+          category,
+          this.searchFullSetting.on_date,
+          this.searchFullSetting.counterparty,
+          this.searchFullSetting.type,
+          this.searchFullSetting.annex_date))
         this.dataForTable = []
         this.isSearchFullSettings = false
         Promise.allSettled(request)
           .then(response => {
             response.forEach((item) => {
               this.dataForTable.push(...item.value.data.data)
-              if(this.dataForTable.length == 0){
+              if (this.dataForTable.length == 0) {
                 this.commentForResponse = 'Нет данных по вашему запросу'
               }
               this.isSearchFullSettings = true
@@ -398,15 +475,16 @@ export default {
             this.isSearchFullSettings = true
           })
       } else {
-      // для случаев без выбора этих данных
-        this.isSearchFullSettings = false
-        console.log(this.searchFullSetting)
+        if (this.searchFullSetting)
+          // для случаев без выбора этих данных
+          this.isSearchFullSettings = false
         api.fullSearchDirectory(this.searchFullSetting)
           .then(response => {
             this.dataForTable = response.data.data
-            if(this.dataForTable.length == 0){
-                this.commentForResponse = 'Нет данных по вашему запросу'
-              }
+            console.log(this.dataForTable)
+            if (this.dataForTable.length == 0) {
+              this.commentForResponse = 'Нет данных по вашему запросу'
+            }
             this.isSearchFullSettings = true
           }).catch((err) => {
             console.log(err)
@@ -433,6 +511,36 @@ export default {
     
     
 <style  scoped>
+.filter {
+  background: rgb(241, 241, 241);
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px
+}
+
+.dnr2,
+.dnr {
+  padding: 1% 2%;
+  background: rgb(233, 233, 233);
+  border-radius: 4px;
+  box-shadow: 2px 5px 10px grey;
+  margin: 1%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.dnr>label,
+.dnr2>label {
+  font-weight: normal;
+}
+
+.superB {
+  font-weight: 500;
+  font-size: 14px;
+}
+
 .responseListItem:hover {
   background: rgb(241, 241, 241);
 }
@@ -590,6 +698,5 @@ li:hover {
 
 li span {
   padding-left: 3%;
-}
-</style>
+}</style>
     

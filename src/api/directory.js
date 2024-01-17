@@ -200,14 +200,17 @@ const deleteActs = (id, data) => {
 }
 
 const fullSearchDirectory = (data) => {
-    return api.get(`${documents}/contract/?created_at_gte=${data.on_date}&category=${data.category}&counterparty=${data.counterparty}`)
+    return api.get(`${documents}/contract/?created_at_gte=${data.on_date}&category=${data.category}&counterparty_like=${data.counterparty}&is_annex=${data.type}&annex_date=${data.annex_date}`)
 // &counterparty=${data.counterparty}
 }
 
-const getManyCategoryDate = (category, date, counterparty) => {
-    return api.get(`${documents}/contract/?created_at_gte=${date}&category=${category}&counterparty_=${counterparty}`)
+const getManyCategoryDate = (category, date, counterparty, typeAgr, annex_date) => {
+    return api.get(`${documents}/contract/?created_at_gte=${date}&category=${category}&counterparty_like=${counterparty}&is_annex=${typeAgr}&annex_date=${annex_date}`)
 }
 
+const testCounterparty = (dataTest) => {
+    return api.get(`${documents}/contract/counterparties`)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -282,5 +285,6 @@ export default {
     getAllDocumentsNotType,
     fullSearchDirectory,
     getManyCategoryDate,
+    testCounterparty,
 }
 
