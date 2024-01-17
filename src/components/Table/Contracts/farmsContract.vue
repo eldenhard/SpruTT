@@ -174,8 +174,8 @@
       </div>
 
       <div class="filter_new_block">
-        <b-icon icon="funnel-fill" variant="dark" font-scale="1.4" style="margin-left: 95% !important;"
-          @click="isShowFilter = !isShowFilter"></b-icon>
+        <b-icon icon="funnel-fill" :variant="isShowFilter ? 'primary' : 'dark'" font-scale="1.4"
+          style="margin-left: 95% !important;" @click="isShowFilter = !isShowFilter"></b-icon>
         <div class="filter" v-if="isShowFilter">
           <div class="dnr">
             <p align="center">
@@ -185,13 +185,19 @@
             </label>
             <label for="f12"> <input type="radio" name="" id="f12" v-model="type_filer1" value="rash"> Расходный
             </label>
+            <br>
+            <button type="button" class="btn btn-secondary" @click="type_filer1 = ''">Очистить</button>
           </div>
           <div class="dnr2">
-            <p align="center">Актуальность</p>
+            <p align="center">
+              <b>Актуальность</b>
+            </p>
             <label for="f2"> <input type="radio" name="" id="f2" v-model="type_filer2" value="active"> Действующий
             </label>
             <label for="f21"> <input type="radio" name="" id="f21" v-model="type_filer2" value="inactive"> Не действующий
             </label>
+            <br>
+            <button type="button" class="btn btn-secondary" @click="type_filer2 = ''">Очистить</button>
           </div>
         </div>
 
@@ -516,7 +522,8 @@ export default {
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  gap: 15px
+  gap: 15px;
+  border-radius: 8px;
 }
 
 .dnr2,
@@ -698,5 +705,6 @@ li:hover {
 
 li span {
   padding-left: 3%;
-}</style>
+}
+</style>
     
