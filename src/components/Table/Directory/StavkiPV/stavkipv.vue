@@ -13,7 +13,23 @@
             </div>
             <hr />
             <br />
-
+            <p class="explanation">
+                АЛГОРИТМ РАБОТЫ: <br>
+            <ol>
+                <li>Создайте шапку требуемой таблицы (!) и нажмите кнопку "Шапка создана"</li>
+                <li>Обратите внимание, что страна назначения добавляется автоматически при выборе поля "станция". <br> Поле
+                    страна заполнять не нужно, оно заполняется автоматически </li>
+                <li>Скопируйте данные из Excel в область загрузки</li>
+                <li>Нажмите загрузить в таблицу ( проверьте данные таблицы )</li>
+            </ol>
+            <br>
+            Требования: <br>
+            <ol>
+                <li>Станция или дорога отправления/назначения всегда должны быть первыми</li>
+                <li>Воспрещается ставить их в середину или иное место !</li>
+                <li></li>
+            </ol>
+            </p>
 
             <div style="display: flex;justify-content: space-between;" v-show="visible">
                 <section style="flex: 1 0 auto;">
@@ -92,7 +108,6 @@
 
                         <br />
 
-
                         <tr>
                             <td></td>
                             <td>
@@ -106,7 +121,7 @@
                 <section style="flex: 2 0 auto;">
                     <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"
                         style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
-                    <button class="Accept" @click="loadFromExcel()"
+                    <button class="Accept" @click="loadFromExcel()" :disabled="active_load_button"
                         style="margin-top: 2%;width: 100%;margin-left: auto;height: 40px;">Загрузить в таблицу</button>
                 </section>
             </div>
@@ -127,22 +142,18 @@
 
 
         <div class="air_block" style="margin-top: 2%;">
-            <section style="display: flex; justify-content: space-between;">
-                <p class="amount">Таблица "Данные из Excel"</p>
-                <button class="Action button" style="width: 15%; height: 40px;">Преобразовать данные</button>
+            <section style="display: flex;align-items: end; gap: 15px; flex-direction: column;">
+                <!-- <button class="Action button" style="width: 15%; height: 40px;">Преобразовать данные</button> -->
+                <button class="Request button" style="width: 15%; height: 40px;"
+                    @click="active_load_button = !active_load_button">Шапка создана</button>
+                <button class="Accept button" style="width: 15%; height: 40px;" @click="saveData()">Отправить
+                    данные</button>
             </section>
             <table>
                 <thead>
                     <tr style="background: #e1e1e2">
                         <th style="border: 1px solid grey;">Действие</th>
-                        <th style="border: 1px solid grey;">Станция отправления</th>
-                        <th style="border: 1px solid grey;">Станция назначения</th>
-                        <!-- <th style="border: 1px solid grey; position: relative;">Груз
-                            <select name="" id="" style="width: 70%">
-                                <option value="nameCargo">Наименование</option>
-                                <option value="classCargo">Класс</option>
-                            </select>
-                        </th> -->
+
                         <template v-for="field in selectedFields">
                             <th :key="field" @click="deleteTH(field)" v-b-tooltip.hover
                                 title="По клику удаление элемента шапки таблицы" class="deleteth"
@@ -152,15 +163,19 @@
                         <th>
                             <b-dropdown id="dropdown-1" text="Добавить поле" class="m-md-2">
                                 <b-dropdown id="dropdown-2" text="Груз" class="m-md-2" dropright style="width: 85%">
-                                    <b-dropdown-item @click="addField('Наименование груза')">Наименование</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Код ЕСТНГ')">Код ЕСТНГ</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Группа позиций по ЕСТНГ')">Группа позиций по ЕСТНГ</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по
+                                        ЕТСНГ</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Класс груза')">Класс груза</b-dropdown-item>
-
                                 </b-dropdown>
-                                <b-dropdown-item @click="addField('Дорога назначения')">Дорога назначения</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Станция отправления')">Станция
+                                    отправления</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Станция назначения')">Станция
+                                    назначения</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Дорога отправления')">Дорога
                                     отправления</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Дорога назначения')">Дорога
+                                    назначения</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Коэффициент')">Коэффициент</b-dropdown-item>
                                 <b-dropdown-item @click="addField('НДС')">НДС</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Оборот, сут')">Оборот, сут</b-dropdown-item>
@@ -169,27 +184,44 @@
                                 <b-dropdown-item @click="addField('Ставка НДС')">Ставка НДС</b-dropdown-item>
 
                                 <b-dropdown id="dropdown-2" text="Грузоподъемность" class="m-md-2" dropright>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Грузоподъемность менее 65,5 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 66 т')">Грузоподъемность менее 66 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 66 т')">Грузоподъемность 66 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 66 т')">Грузоподъемность более 66 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69 т')">Грузоподъемность менее 69 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 69 т')">Грузоподъемность 69 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69,5 т')">Грузоподъемность менее 69,5 т</b-dropdown-item>    
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 69 т')">Грузоподъемность более 69 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 70,3 т')">Грузоподъемность менее 70,3 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 71 т')">Грузоподъемность менее 71 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 71 т')">Грузоподъемность 71 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 71 т')">Грузоподъемность более 71 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 75 т')">Грузоподъемность менее 75 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 75 т')">Грузоподъемность 75 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 75 т')">Грузоподъемность более 75 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Грузоподъемность
+                                        менее 65,5 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 66 т')">Грузоподъемность менее
+                                        66 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 66 т')">Грузоподъемность 66
+                                        т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 66 т')">Грузоподъемность более
+                                        66 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69 т')">Грузоподъемность менее
+                                        69 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 69 т')">Грузоподъемность 69
+                                        т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69,5 т')">Грузоподъемность
+                                        менее 69,5 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 69 т')">Грузоподъемность более
+                                        69 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 70,3 т')">Грузоподъемность
+                                        менее 70,3 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 71 т')">Грузоподъемность менее
+                                        71 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 71 т')">Грузоподъемность 71
+                                        т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 71 т')">Грузоподъемность более
+                                        71 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 75 т')">Грузоподъемность менее
+                                        75 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 75 т')">Грузоподъемность 75
+                                        т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 75 т')">Грузоподъемность более
+                                        75 т</b-dropdown-item>
                                 </b-dropdown>
                                 <b-dropdown id="dropdown-2" text="Тип отправки" class="m-md-2" dropright style="width: 85%">
                                     <b-dropdown-item @click="addField('Вагонная')">Вагонная</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Маршрутная')">Маршрутная</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Групповая: 2-5 ваг')">Групповая: 2-5 ваг</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Групповая: 6-20 ваг')">Групповая: 6-20 ваг</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Групповая: 2-5 ваг')">Групповая: 2-5
+                                        ваг</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Групповая: 6-20 ваг')">Групповая: 6-20
+                                        ваг</b-dropdown-item>
 
                                 </b-dropdown>
                             </b-dropdown>
@@ -198,8 +230,10 @@
                 </thead>
                 <tbody>
                     <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
-                        <td class="deleteRow" @click="deleteRow(rowIndex)">Удалить</td>
-                        <td v-for="(cell, cellIndex) in row" :key="cellIndex" style="position: relative">
+                        <td class="deleteRow" @click="deleteRow(rowIndex)" style="border: 1px solid black !important;">
+                            Удалить</td>
+                        <td v-for="(cell, cellIndex) in row" :key="cellIndex"
+                            style="position: relative; border: 1px solid black !important;">
                             {{ cell }}
                             <!-- <input v-model="tableData[rowIndex][cellIndex]" @click="editCell(rowIndex, cellIndex)"
                             @blur="saveCell()" @keyup.enter="saveCell(rowIndex, cellIndex)"
@@ -212,21 +246,20 @@
                     </tr>
                 </tbody>
             </table>
+
         </div>
 
-
-
-
+        <br><br><br>
 
 
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
     </div>
 </template>
-  <!-- postTarifData -->
 <script>
 import Handsontable from "handsontable";
 import api from "@/api/directory";
+import apiWagon from '@/api/wagonPark';
 import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from '../../../loader/loader.vue';
 import { mapState } from "vuex";
@@ -259,7 +292,8 @@ export default {
             agreement_number_test: "",
             ten_visible: false,
             new_comp: "",
-
+            active_load_button: true,
+            collectionStation: null,
 
             excelData: "",
             tableData: [],
@@ -294,9 +328,6 @@ export default {
 
     },
     computed: {
-        ifIncludeValue() {
-
-        },
         ...mapState({
             name_client: (state) => state.client.name_client,
             name_cargo: (state) => state.cargo_code.cargo_code,
@@ -422,14 +453,47 @@ export default {
                 this.cargo_list = false;
             })
         },
+        // Удалить элемент шапки таблицы
         deleteTH(value) {
-            return this.selectedFields.splice(this.selectedFields.indexOf(value), 1)
+            if (value == 'Станция отправления') {
+                this.selectedFields.splice(this.selectedFields.indexOf(value), 1)
+                this.selectedFields.splice(this.selectedFields.indexOf('Дорога отправления'), 1)
+            }
+            else if (value == 'Станция назначения') {
+                this.selectedFields.splice(this.selectedFields.indexOf(value), 1)
+                this.selectedFields.splice(this.selectedFields.indexOf('Дорога назначения'), 1)
+            } else {
+                return this.selectedFields.splice(this.selectedFields.indexOf(value), 1)
+            }
+
         },
+        // Добавить элемент шапки таблицы
         addField(field) {
-            this.selectedFields.push(field); // Добавляем выбранный элемент в массив
+            if (this.selectedFields.includes(field)) return
+
+            if (field == 'Станция отправления') {
+                this.selectedFields.push(field); // Добавляем выбранный элемент в массив
+                this.selectedFields.push('Дорога отправления');
+            } else if (field == 'Станция назначения') {
+                this.selectedFields.push(field); // Добавляем выбранный элемент в массив
+                this.selectedFields.push('Дорога назначения');
+            } else {
+                this.selectedFields.push(field);
+            }
         },
         // Загрузка из Excel в таблицу
         loadFromExcel() {
+            if (this.selectedFields.length < 1) {
+                this.notifyHead = "Ошибка";
+                this.notifyMessage = "Вы не заполнили шапку таблицы!";
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 3000);
+                this.active_load_button = true
+                return
+            }
             const excelData = this.excelData;
             // Парсим данные из Excel, разделяя их по строкам и столбцам
             const rows = excelData.split("\n");
@@ -462,13 +526,93 @@ export default {
                     data.splice(data.indexOf(i), 1);
                 }
             }
-            // Обновляем tableData
+            // ВЕРНУТЬ КАК ДОДЕЛАЕШЬ
+            // if(data[0].length != this.selectedFields.length){
+            //     this.notifyHead = "Ошибка";
+            //     this.notifyMessage = "Кол-во столбцов шапки не соответствует количеству столбцов загружаемых из источника !";
+            //     this.notifyClass = "wrapper-error";
+            //     this.showNotify = true;
+            //     setTimeout(() => {
+            //         this.showNotify = false;
+            //     }, 4000);
+            //     this.active_load_button = true
+            //     return
+            // }
+            if (this.selectedFields[0].includes('Станция')) {
+                this.tableData = data.map(item => {
+                    const firstElementParts = item[0].match(/^(.*?)([А-Я]{3}[^ ]*)/);
+                    const secondElementParts = item[1].match(/^(.*?)([А-Я]{3}[^ ]*)/);
 
-            this.tableData = data;
+                    return [
+                        firstElementParts ? firstElementParts[1].trim() : '',
+                        firstElementParts ? firstElementParts[2].trim() : '',
+                        // Второй элемент массива
+                        secondElementParts ? secondElementParts[1].trim() : '',
+                        secondElementParts ? secondElementParts[2].trim() : '',
+                        ...item.slice(3)
+                        // ... (остальные элементы оставляем без изменений)
+                    ];
+                });
+            } else if (this.selectedFields[0].includes('Дорога')) {
+                this.tableData = data.map(item => {
+                    const firstElementParts = item[0].match(/^(.*?)([А-Я]{3}[^ ]*)/);
+                    const secondElementParts = item[1].match(/^(.*?)([А-Я]{3}[^ ]*)/);
+
+                    return [
+                        // firstElementParts ? firstElementParts[1].trim() : '',
+                        firstElementParts ? firstElementParts[2].trim() : '',
+                        // Второй элемент массива
+                        // secondElementParts ? secondElementParts[1].trim() : '',
+                        secondElementParts ? secondElementParts[2].trim() : '',
+                        ...item.slice(3)
+                        // ... (остальные элементы оставляем без изменений)
+                    ];
+                });
+            } else {
+                this.tableData = data
+            }
+            // console.log(this.selectedFields)
+
 
             this.excelData = "";
         },
+        // Отправка данных на сервер
+        async saveData() {
 
+            this.collectionStation = new Set()
+            this.tableData.forEach((item) => {
+                this.collectionStation.add(item[0])
+                this.collectionStation.add(item[2])
+            })
+            let response
+            for (let item of Array.from(this.collectionStation)) {
+                let request = await apiWagon.getCurrentStation(item)
+                response = await request.data.data.filter((el) => el.name.toLowerCase() == item.toLowerCase())[0]
+                this.tableData.forEach((rowData) => {
+                    if (rowData[0] === item) {
+                        rowData[0] = response.code
+                    }
+                    if (rowData[2] === item) {
+                        rowData[2] = response.code
+                    }
+                })
+            }
+            console.log(this.tableData)
+
+            // let request = Array.from(collectionStation).map((item) => apiWagon.getCurrentStation(item));
+
+            // Promise.allSettled(request)
+            //     .then(responses => {
+            //         const matchedResponses = responses
+            //             .filter(response => response.status === 'fulfilled' && response.value.data && response.value.data.data)
+            //             .map(response => response.value.data.data.filter(item => item.name?.toLowerCase().trim() === collectionStation[index]?.toLowerCase().trim()))
+            //             .flat();
+
+            //         console.log(matchedResponses);
+            //     });
+            // console.log(Array.from(collectionStation))
+            // console.log(this.tableData)
+        },
 
 
 
@@ -496,6 +640,20 @@ export default {
 </script>
   
 <style  scoped>
+button:disabled {
+    background: lightgray;
+}
+
+.col1 {
+    border: none !important;
+}
+
+tr,
+td,
+th {
+    border: none;
+}
+
 .deleteth {
     background: rgb(139, 144, 148);
 }
@@ -546,11 +704,6 @@ export default {
     cursor: pointer;
 }
 
-td,
-th,
-tr {
-    border: none;
-}
 
 .radio {
     display: flex;
@@ -568,8 +721,13 @@ tr {
 }
 
 .deleteRow {
-    background: #ffb0a2;
-    color: grey !important;
+    background: #ca8b8b;
+    color: rgb(0, 0, 0) !important;
+}
+
+.deleteRow:hover {
+    background: #b94343;
+    color: rgb(0, 0, 0) !important;
 }
 
 table {
