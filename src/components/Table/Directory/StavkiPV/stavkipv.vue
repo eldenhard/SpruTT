@@ -526,18 +526,18 @@ export default {
                     data.splice(data.indexOf(i), 1);
                 }
             }
-            // ВЕРНУТЬ КАК ДОДЕЛАЕШЬ
-            // if(data[0].length != this.selectedFields.length){
-            //     this.notifyHead = "Ошибка";
-            //     this.notifyMessage = "Кол-во столбцов шапки не соответствует количеству столбцов загружаемых из источника !";
-            //     this.notifyClass = "wrapper-error";
-            //     this.showNotify = true;
-            //     setTimeout(() => {
-            //         this.showNotify = false;
-            //     }, 4000);
-            //     this.active_load_button = true
-            //     return
-            // }
+
+            if(data[0].length != this.selectedFields.length){
+                this.notifyHead = "Ошибка";
+                this.notifyMessage = "Кол-во столбцов шапки не соответствует количеству столбцов загружаемых из источника !";
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 4000);
+                this.active_load_button = true
+                return
+            }
             if (this.selectedFields[0].includes('Станция')) {
                 this.tableData = data.map(item => {
                     const firstElementParts = item[0].match(/^(.*?)([А-Я]{3}[^ ]*)/);
@@ -598,20 +598,6 @@ export default {
                 })
             }
             console.log(this.tableData)
-
-            // let request = Array.from(collectionStation).map((item) => apiWagon.getCurrentStation(item));
-
-            // Promise.allSettled(request)
-            //     .then(responses => {
-            //         const matchedResponses = responses
-            //             .filter(response => response.status === 'fulfilled' && response.value.data && response.value.data.data)
-            //             .map(response => response.value.data.data.filter(item => item.name?.toLowerCase().trim() === collectionStation[index]?.toLowerCase().trim()))
-            //             .flat();
-
-            //         console.log(matchedResponses);
-            //     });
-            // console.log(Array.from(collectionStation))
-            // console.log(this.tableData)
         },
 
 
