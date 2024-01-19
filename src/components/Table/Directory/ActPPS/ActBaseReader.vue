@@ -29,7 +29,12 @@
       </label>
       <label for="">
         № вагонов <br />
-        <input type="text" class="textarea mini" v-model="filter.wagon" placeholder="№ вагонов через пробел" />
+        <input type="text" class="textarea mini" v-model="filter.wagons" placeholder="№ вагонов через пробел" />
+      </label>
+
+      <label for="">
+        Дата проведения работ<br />
+        <input type="date" class="textarea mini" v-model="filter.date_work" placeholder="№ вагонов через пробел" />
       </label>
 
       <button class="button Accept mini" style="width: 320px;" @click="getPPS()">
@@ -282,8 +287,9 @@ export default {
       filter: {
         page_size: "",
         for_cargo: "",
-        wagon: "",
+        wagons: "",
         counterparty: "",
+        date_work: "",
       },
       showNotify: false,
       notifyHead: "",
@@ -624,7 +630,7 @@ export default {
     getPPS() {
       this.loader = true;
       this.data = [];
-      this.filter.wagon = this.filter.wagon.replaceAll(" ", ",")
+      this.filter.wagons = this.filter.wagons.replaceAll(" ", ",")
       api
         .getpps(this.filter)
         .then((response) => {
@@ -773,7 +779,7 @@ th {
   margin-top: 4%;
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   border: 1px solid lightgrey;
   padding: 1%;
   gap: 2%;
