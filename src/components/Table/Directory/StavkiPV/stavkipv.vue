@@ -264,6 +264,7 @@ import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from '../../../loader/loader.vue';
 import { mapState } from "vuex";
 import vSelect from "vue-select";
+import { indexOf } from '@amcharts/amcharts5/.internal/core/util/Array';
 
 export default {
     components: {
@@ -298,7 +299,10 @@ export default {
             excelData: "",
             tableData: [],
             TableDataRTS: [],
-            selectedFields: [],
+            selectedFields:
+                ["Дорога отправления", "Станция назначения", "Дорога назначения", "Коэффициент", "Оборот, сут", "НДС", "Ставка НДС", "Грузоподъемность более 69 т"],
+
+            // ["Станция отправления", "Дорога отправления", "Станция назначения", "Дорога назначения", "Коэффициент", "Оборот, сут", "НДС", "Ставка НДС", "Грузоподъемность более 69 т"],
             hot: null,
             activeCell: null,
             loader: false,
@@ -527,50 +531,67 @@ export default {
                 }
             }
 
-            if(data[0].length != this.selectedFields.length){
-                this.notifyHead = "Ошибка";
-                this.notifyMessage = "Кол-во столбцов шапки не соответствует количеству столбцов загружаемых из источника !";
-                this.notifyClass = "wrapper-error";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 4000);
-                this.active_load_button = true
-                return
-            }
-            if (this.selectedFields[0].includes('Станция')) {
-                this.tableData = data.map(item => {
-                    const firstElementParts = item[0].match(/^(.*?)([А-Я]{3}[^ ]*)/);
-                    const secondElementParts = item[1].match(/^(.*?)([А-Я]{3}[^ ]*)/);
 
-                    return [
-                        firstElementParts ? firstElementParts[1].trim() : '',
-                        firstElementParts ? firstElementParts[2].trim() : '',
-                        // Второй элемент массива
-                        secondElementParts ? secondElementParts[1].trim() : '',
-                        secondElementParts ? secondElementParts[2].trim() : '',
-                        ...item.slice(3)
-                        // ... (остальные элементы оставляем без изменений)
-                    ];
-                });
-            } else if (this.selectedFields[0].includes('Дорога')) {
-                this.tableData = data.map(item => {
-                    const firstElementParts = item[0].match(/^(.*?)([А-Я]{3}[^ ]*)/);
-                    const secondElementParts = item[1].match(/^(.*?)([А-Я]{3}[^ ]*)/);
+            this.tableData = data.map(item => {
+                const newItem = [];
+                let stationIndex = -1;
 
-                    return [
-                        // firstElementParts ? firstElementParts[1].trim() : '',
-                        firstElementParts ? firstElementParts[2].trim() : '',
-                        // Второй элемент массива
-                        // secondElementParts ? secondElementParts[1].trim() : '',
-                        secondElementParts ? secondElementParts[2].trim() : '',
-                        ...item.slice(3)
-                        // ... (остальные элементы оставляем без изменений)
-                    ];
-                });
-            } else {
-                this.tableData = data
-            }
+                for (let i = 0; i < this.selectedFields.length; i++) {
+                    const currentField = this.selectedFields[i];
+                    const currentValue = item[i] || '';  // Добавляем проверку на undefined
+                    const parts = currentValue.match(/^(.*?)([А-Я]{3}[^ ]*)/);
+
+                    if (stationIndex !== -1 && currentField.includes('Дорога')) {
+                        // Разделяем по условиям, если после станции идет дорога
+                        newItem.push(parts ? parts[1].trim() : '', parts ? parts[2].trim() : '');
+                    } else if (currentField.includes('Станция')) {
+                        // Если текущее поле - станция, записываем индекс
+                        stationIndex = i;
+                        newItem.push(parts ? parts[1].trim() : '', parts ? parts[2].trim() : '');
+                    } else {
+                        // Если не станция и не дорога, оставляем только три заглавные буквы
+                        newItem.push(parts ? parts[2].trim() : '');
+                    }
+                }
+
+                return newItem;
+            });
+
+
+            // console.log(data)
+            // if (this.selectedFields[0].includes('Станция')) {
+            //     this.tableData = data.map(item => {
+            //         const firstElementParts = item[0].match(/^(.*?)([А-Я]{3}[^ ]*)/);
+            //         const secondElementParts = item[1].match(/^(.*?)([А-Я]{3}[^ ]*)/);
+
+            //         return [
+            //             firstElementParts ? firstElementParts[1].trim() : '',
+            //             firstElementParts ? firstElementParts[2].trim() : '',
+            //             // Второй элемент массива
+            //             secondElementParts ? secondElementParts[1].trim() : '',
+            //             secondElementParts ? secondElementParts[2].trim() : '',
+            //             ...item.slice(2)
+            //             // ... (остальные элементы оставляем без изменений)
+            //         ];
+            //     });
+            // } else if (this.selectedFields[0].includes('Дорога')) {
+            //     this.tableData = data.map(item => {
+            //         const firstElementParts = item[0].match(/^(.*?)([А-Я]{3}[^ ]*)/);
+            //         const secondElementParts = item[1].match(/^(.*?)([А-Я]{3}[^ ]*)/);
+
+            //         return [
+            //             // firstElementParts ? firstElementParts[1].trim() : '',
+            //             firstElementParts ? firstElementParts[2].trim() : '',
+            //             // Второй элемент массива
+            //             // secondElementParts ? secondElementParts[1].trim() : '',
+            //             secondElementParts ? secondElementParts[2].trim() : '',
+            //             ...item.slice(2)
+            //             // ... (остальные элементы оставляем без изменений)
+            //         ];
+            //     });
+            // } else {
+            //     this.tableData = data
+            // }
             // console.log(this.selectedFields)
 
 
@@ -578,26 +599,68 @@ export default {
         },
         // Отправка данных на сервер
         async saveData() {
+            //     if(test[0].length != this.selectedFields.length){
+            //     this.notifyHead = "Ошибка";
+            //     this.notifyMessage = "Кол-во столбцов шапки не соответствует количеству столбцов загружаемых из источника !";
+            //     this.notifyClass = "wrapper-error";
+            //     this.showNotify = true;
+            //     setTimeout(() => {
+            //         this.showNotify = false;
+            //     }, 4000);
+            //     this.active_load_button = true
+            //     return
+            // }
 
+            // Получение индексов столбцов где станция и где дорога с пригнаничными случаями
+            let arrIndexRoad = []
+            let arrIndexStation = []
+            // Обработка состояния когда есть и станция и дорога
+            for (let i = 0; i < this.selectedFields.length; i++) {
+                let currentItem = this.selectedFields[i]
+                let previousItem = this.selectedFields[i - 1]
+                if (currentItem.includes('Дорога') && (!previousItem || !previousItem.includes('Станция'))) {
+                    arrIndexRoad.push(i)
+                    console.log(arrIndexRoad)
+                } else if (currentItem.includes('Станция')) {
+                    arrIndexStation.push(i)
+                    console.log(arrIndexStation)
+
+                }
+            }
+            // Убираем повторные запросы оставляем только уникальные
             this.collectionStation = new Set()
-            this.tableData.forEach((item) => {
-                this.collectionStation.add(item[0])
-                this.collectionStation.add(item[2])
-            })
             let response
+            this.tableData.forEach((row) => {
+                arrIndexStation.forEach((index) => {
+                    this.collectionStation.add(row[index])
+                })
+            })
             for (let item of Array.from(this.collectionStation)) {
                 let request = await apiWagon.getCurrentStation(item)
                 response = await request.data.data.filter((el) => el.name.toLowerCase() == item.toLowerCase())[0]
-                this.tableData.forEach((rowData) => {
-                    if (rowData[0] === item) {
-                        rowData[0] = response.code
-                    }
-                    if (rowData[2] === item) {
-                        rowData[2] = response.code
+                this.tableData.forEach((row) => {
+                    arrIndexStation.forEach((index) => {
+                        if (row[index] === item) {
+                            row[index] = response.code
+                        }
+                    })
+                })
+
+            }
+
+            // Замена кратких наименований на то что есть у меня в localStorage
+            const roads = JSON.parse(localStorage.getItem('road'))
+            this.tableData.forEach((row) => {
+                arrIndexRoad.forEach((index) => {
+                    for (let i in roads) {
+                        if (roads[i] == row[index]) {
+                            row[index] = i
+                        }
                     }
                 })
-            }
-            console.log(this.tableData)
+            });
+
+            console.log(this.tableData);
         },
 
 
