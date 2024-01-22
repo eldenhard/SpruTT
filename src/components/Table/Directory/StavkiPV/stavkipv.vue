@@ -16,7 +16,7 @@
             <p class="explanation" v-if="picked != 'agreement_number'">
                 АЛГОРИТМ РАБОТЫ: <br>
             <ol>
-                <li>Создайте шапку требуемой таблицы (!) и нажмите кнопку "Шапка создана"</li>
+                <li>Создайте шапку требуемой таблицы (!) и нажмите кнопку "Подтвердить создание шапки"</li>
                 <li>Обратите внимание, что страна назначения добавляется автоматически при выборе поля "станция". <br> Поле
                     страна заполнять не нужно, оно заполняется автоматически </li>
                 <li>Скопируйте данные из Excel в область загрузки</li>
@@ -26,7 +26,7 @@
             Требования: <br>
             <ol>
                 <li>Станция или дорога отправления/назначения всегда должны быть первыми</li>
-                <li>Воспрещается ставить их в середину таблицы или иное место !</li>
+                <li>Воспрещается ставить их в середину таблицы или конец !</li>
             </ol>
             </p>
 
@@ -278,7 +278,6 @@ import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from '../../../loader/loader.vue';
 import { mapState } from "vuex";
 import vSelect from "vue-select";
-import { indexOf } from '@amcharts/amcharts5/.internal/core/util/Array';
 
 export default {
     components: {

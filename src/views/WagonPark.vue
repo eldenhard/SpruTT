@@ -2,13 +2,13 @@
 <template>
   <div style="display: flex;">
     <div style="width: 15%;">
-      <WagonNavbar :tabs="tabs" :counter="counter" ></WagonNavbar>
+      <WagonNavbar :tabs="tabs" :counter="counter"></WagonNavbar>
     </div>
     <div style="width: 85%; ">
       <p class="infoNull" v-if="tabs.length === 0">
         Вы не выбрали ещё ни одной таблицы
       </p>
-      <b-card no-body class="leftTable" >
+      <b-card no-body class="leftTable">
         <b-tabs card v-model="tabActive" @changed="onTabChanged">
           <b-tab v-for="i in tabs" :key="i.id">
             <template #title>
@@ -40,8 +40,8 @@
             </b-card-text>
 
             <div v-if="i.name === 'Сотрудники'">
-                <ReferenceInformation />
-              </div>
+              <ReferenceInformation />
+            </div>
             <b-card-text v-if="i.name === 'Отчет брошенные вагоны'">
               <ReportAbandoned />
             </b-card-text>
@@ -62,111 +62,122 @@
               <DropWagonAmount />
             </b-card-text>
 
-       
+
             <b-card-text v-if="i.name === 'Калькулятор ставок'">
               <CallculatorRT />
             </b-card-text>
 
-            
+            <b-card-text v-if="i.name === 'Ввод бюджета'">
+              <enterBudget />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Оперативная справка'">
+              <operationInfo />
+            </b-card-text>
+
 
             <b-card-text v-if="i.name === 'Размещение парка'">
-                <Table2 />
-              </b-card-text>
-              <b-card-text v-if="i.name === 'Формирование парка'">
-                <FormationPark />
-              </b-card-text>
-              <!-- <b-card-text v-if="i.name === 'Формирование парка'">
+              <Table2 />
+            </b-card-text>
+            <b-card-text v-if="i.name === 'Формирование парка'">
+              <FormationPark />
+            </b-card-text>
+            <!-- <b-card-text v-if="i.name === 'Формирование парка'">
                 <Table1 />
               </b-card-text> -->
 
-              <b-card-text v-if="i.name === '3. Арендованный парк'">
-                <Table3 />
-              </b-card-text>
+            <b-card-text v-if="i.name === '3. Арендованный парк'">
+              <Table3 />
+            </b-card-text>
 
-              <b-card-text v-if="i.name === '4. Парк, переданный в аренду'">
-                <Table4 />
-              </b-card-text>
+            <b-card-text v-if="i.name === '4. Парк, переданный в аренду'">
+              <Table4 />
+            </b-card-text>
 
-              <b-card-text v-if="i.name === '5. Справка о выполнении перевозок полувагонами'">
-                <Table5 />
-              </b-card-text>
+            <b-card-text v-if="i.name === '5. Справка о выполнении перевозок полувагонами'">
+              <Table5 />
+            </b-card-text>
 
-              <b-card-text v-if="i.name === '6. Справка о выполнении перевозок вагоно-цистернами'">
-                <Table6 />
-              </b-card-text>
+            <b-card-text v-if="i.name === '6. Справка о выполнении перевозок вагоно-цистернами'">
+              <Table6 />
+            </b-card-text>
 
-              <b-card-text v-if="i.name === '7. Анализ перевозки и выручки по сегменту полувагонов'">
-                <Table7 />
-              </b-card-text>
+            <b-card-text v-if="i.name === '7. Анализ перевозки и выручки по сегменту полувагонов'">
+              <Table7 />
+            </b-card-text>
 
-              <b-card-text v-if="i.name === '8. Производство по универсальным перевозкам (собственный парк)'">
-                <Table8 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '9. Производство по универсальным перевозкам (привлеченный парк)'">
-                <Table9 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '10. Производство по наливным перевозкам (собственный парк)'">
-                <Table10 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '11. Производство по наливным перевозкам (привлеченный парк)'">
-                <Table11 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '12. Доходность по виду перевозок по сегменту полувагонов'">
-                <Table12 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '13. Анализ доходности по сегменту вагоно-цистерн'">
-                <Table13 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '14. Анализ доходности по направлениям по сегменту вагоно-цистерн (собственный парк)'">
-                <Table14 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '15. Анализ доходности по направлениям по сегменту вагоно-цистерн (привлеченный парк)'">
-                <Table15 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '16. Операционные доходы и расходы в детализации «до вагона»'">
-                <Table16 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '17. Свод доходов и расходов по производственной деятельности'">
-                <Table17 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '18. Операционная прибыль от предоставления вагонов под погрузку по сегменту вагоно-цистерн'">
-                <Table18 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '19. Операционная прибыль от предоставления вагонов под погрузку по сегменту полувагонов'">
-                <Table19 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '20. Совокупная операционная прибыль от предоставления вагонов под погрузку'">
-                <Table20 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '21. Анализ маржинального дохода по сегменту вагоно-цистерн'">
-                <Table21 />
-              </b-card-text>
-
-              
-              <b-card-text v-if="i.name === '22. Сводные расходы на ремонт ПС'">
-                <Table22 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '23. Депо плановых ремонтов'">
-                <Table23 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '24. Простои в ремонте'">
-                <Table24 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '25. Сводные показатели деятельности'">
-                <Table25 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '26. Состояние взаиморасчетов с клиентами'">
-                <Table26 />
-              </b-card-text>
+            <b-card-text v-if="i.name === '8. Производство по универсальным перевозкам (собственный парк)'">
+              <Table8 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '9. Производство по универсальным перевозкам (привлеченный парк)'">
+              <Table9 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '10. Производство по наливным перевозкам (собственный парк)'">
+              <Table10 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '11. Производство по наливным перевозкам (привлеченный парк)'">
+              <Table11 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '12. Доходность по виду перевозок по сегменту полувагонов'">
+              <Table12 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '13. Анализ доходности по сегменту вагоно-цистерн'">
+              <Table13 />
+            </b-card-text>
+            <b-card-text
+              v-if="i.name === '14. Анализ доходности по направлениям по сегменту вагоно-цистерн (собственный парк)'">
+              <Table14 />
+            </b-card-text>
+            <b-card-text
+              v-if="i.name === '15. Анализ доходности по направлениям по сегменту вагоно-цистерн (привлеченный парк)'">
+              <Table15 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '16. Операционные доходы и расходы в детализации «до вагона»'">
+              <Table16 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '17. Свод доходов и расходов по производственной деятельности'">
+              <Table17 />
+            </b-card-text>
+            <b-card-text
+              v-if="i.name === '18. Операционная прибыль от предоставления вагонов под погрузку по сегменту вагоно-цистерн'">
+              <Table18 />
+            </b-card-text>
+            <b-card-text
+              v-if="i.name === '19. Операционная прибыль от предоставления вагонов под погрузку по сегменту полувагонов'">
+              <Table19 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '20. Совокупная операционная прибыль от предоставления вагонов под погрузку'">
+              <Table20 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '21. Анализ маржинального дохода по сегменту вагоно-цистерн'">
+              <Table21 />
+            </b-card-text>
 
 
-              <b-card-text v-if="i.name === '27. Состояние взаиморасчетов с экспедиторами по сопредельным территориям'">
-                <Table27 />
-              </b-card-text>
-              <b-card-text v-if="i.name === '28. Детализированное состояние взаиморасчетов с экспедиторами по сопредельным территориям'">
-                <Table28 />
-              </b-card-text>
-              
+            <b-card-text v-if="i.name === '22. Сводные расходы на ремонт ПС'">
+              <Table22 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '23. Депо плановых ремонтов'">
+              <Table23 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '24. Простои в ремонте'">
+              <Table24 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '25. Сводные показатели деятельности'">
+              <Table25 />
+            </b-card-text>
+            <b-card-text v-if="i.name === '26. Состояние взаиморасчетов с клиентами'">
+              <Table26 />
+            </b-card-text>
+
+
+            <b-card-text v-if="i.name === '27. Состояние взаиморасчетов с экспедиторами по сопредельным территориям'">
+              <Table27 />
+            </b-card-text>
+            <b-card-text
+              v-if="i.name === '28. Детализированное состояние взаиморасчетов с экспедиторами по сопредельным территориям'">
+              <Table28 />
+            </b-card-text>
+
             <b-card-text v-if="i.name === 'Фин. отчет №1'">
               <FinanceReport />
             </b-card-text>
@@ -181,25 +192,28 @@
 </template>
   
 <script>
-  import FormationPark from "@/components/Table/ManagmentRepReporting/FormationPark.vue";
-  import ManagemtRepNavbar from "@/components/Navbar/ManagementRepNavbar.vue"
-  import WagonNavbar from "../components/Navbar/WagonNavbar.vue";
-  import WPMainData from "../components/Table/WagonPark/WPMainData.vue";
-  import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
-  import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
-  import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
-  import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
-  import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
-  import ReferenceInformation from "@/components/Table/ReferenceInformation/ReferenceInformation.vue";
-  import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
-  import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
-  import ExtensionPeriod from '../components/Table/WagonPark/ExtensionPeriod.vue'
-  import DataDislocation from '../components/Table/WagonPark/Dislocation/DataDislocation.vue'
-  import GLP from '../components/Table/WagonPark/GLP/GLP.vue'
-  import ImpactDowntimeVue from '../components/Table/WagonPark/ImpactDowntime/ImpactDowntime.vue';
-  import DropWagonAmount from '../components/Table/WagonPark/DropWagonAmount/DropWagonAmount.vue'
+import FormationPark from "@/components/Table/ManagmentRepReporting/FormationPark.vue";
+import ManagemtRepNavbar from "@/components/Navbar/ManagementRepNavbar.vue"
+import WagonNavbar from "../components/Navbar/WagonNavbar.vue";
+import WPMainData from "../components/Table/WagonPark/WPMainData.vue";
+import ReportAbandoned from "../components/Table/ReportAbandoned.vue";
+import WagonTableTelegram from "../components/Table/WagonTelegram/WagonTableTelegram.vue";
+import WPCalculate from "@/components/Table/WagonPark/RailTarif/WPCalculate.vue";
+import WagonRepair from "@/components/Table/WagonPark/WPRepair.vue";
+import BCH from "@/components/Table/WagonPark/ShipmentBCH/BCH.vue";
+import ReferenceInformation from "@/components/Table/ReferenceInformation/ReferenceInformation.vue";
+import AccomodationPark from "@/components/Table/ManagmentRepReporting/AccomodationPark.vue";
+import TerritoryTable from '../components/Table/WagonPark/TerritoryTariff/TerritoryTable.vue';
+import ExtensionPeriod from '../components/Table/WagonPark/ExtensionPeriod.vue'
+import DataDislocation from '../components/Table/WagonPark/Dislocation/DataDislocation.vue'
+import GLP from '../components/Table/WagonPark/GLP/GLP.vue'
+import ImpactDowntimeVue from '../components/Table/WagonPark/ImpactDowntime/ImpactDowntime.vue';
+import DropWagonAmount from '../components/Table/WagonPark/DropWagonAmount/DropWagonAmount.vue'
+import enterBudget from '@/components/Table/WagonPark/EnterBudget/enterBudget.vue'
+import operationInfo from '@/components/Table/WagonPark/OperationInfo/operationInfo'
 
-  import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
+
+import Table1 from "@/components/Table/ManagmentRepReporting/Table1.vue";
 import Table2 from "@/components/Table/ManagmentRepReporting/Table2.vue";
 import Table3 from "@/components/Table/ManagmentRepReporting/Table3.vue";
 import Table4 from "@/components/Table/ManagmentRepReporting/Table4.vue";
@@ -251,35 +265,37 @@ export default {
     ImpactDowntimeVue,
     DropWagonAmount,
     CallculatorRT,
-
+    enterBudget,
+    operationInfo,
+    
     Table1,
-      Table2,
-      Table3,
-      Table4,
-      Table5,
-      Table6,
-      Table7,
-      Table8,
-      Table9,
-      Table10,
-      Table11,
-      Table12,
-      Table13,
-      Table14,
-      Table15,
-      Table16,
-      Table17,
-      Table18,
-      Table19,
-      Table20,
-      Table21,
-      Table22,
-      Table23,
-      Table24,
-      Table25,
-      Table26,
-      Table27,
-      Table28,
+    Table2,
+    Table3,
+    Table4,
+    Table5,
+    Table6,
+    Table7,
+    Table8,
+    Table9,
+    Table10,
+    Table11,
+    Table12,
+    Table13,
+    Table14,
+    Table15,
+    Table16,
+    Table17,
+    Table18,
+    Table19,
+    Table20,
+    Table21,
+    Table22,
+    Table23,
+    Table24,
+    Table25,
+    Table26,
+    Table27,
+    Table28,
 
   },
   data() {
@@ -385,5 +401,4 @@ ul.navbarul li {
   margin-bottom: 0;
   bottom: 0;
   text-align: left;
-}
-</style>
+}</style>
