@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 align="center">Раздел находится в разработке</h1>
+
         <br>
         <Loader :loader="loader" />
         <div class="air_block">
@@ -13,7 +13,7 @@
             </div>
             <hr />
             <br />
-            <p class="explanation">
+            <p class="explanation" v-if="picked != 'agreement_number'">
                 АЛГОРИТМ РАБОТЫ: <br>
             <ol>
                 <li>Создайте шапку требуемой таблицы (!) и нажмите кнопку "Шапка создана"</li>
@@ -26,8 +26,7 @@
             Требования: <br>
             <ol>
                 <li>Станция или дорога отправления/назначения всегда должны быть первыми</li>
-                <li>Воспрещается ставить их в середину или иное место !</li>
-                <li></li>
+                <li>Воспрещается ставить их в середину таблицы или иное место !</li>
             </ol>
             </p>
 
@@ -118,11 +117,14 @@
                     </table>
 
                 </section>
-                <section style="flex: 2 0 auto;">
+                <section style="flex: 2 0 auto;" v-if="picked != 'agreement_number'">
                     <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"
                         style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
                     <button class="Accept" @click="loadFromExcel()" :disabled="active_load_button"
                         style="margin-top: 2%;width: 100%;margin-left: auto;height: 40px;">Загрузить в таблицу</button>
+                        <br>
+                    <button class="Request button" style="width: 100%; height: 40px; "
+                        @click="active_load_button = !active_load_button">Подтвердить создание шапки</button>
                 </section>
             </div>
 
@@ -141,13 +143,17 @@
         </div>
 
 
-        <div class="air_block" style="margin-top: 2%;">
-            <section style="display: flex;align-items: end; gap: 15px; flex-direction: column;">
-                <!-- <button class="Action button" style="width: 15%; height: 40px;">Преобразовать данные</button> -->
-                <button class="Request button" style="width: 15%; height: 40px;"
-                    @click="active_load_button = !active_load_button">Шапка создана</button>
-                <button class="Accept button" style="width: 15%; height: 40px;" @click="saveData()">Отправить
-                    данные</button>
+        <div class="air_block" style="margin-top: 2%;" v-if="picked != 'agreement_number'">
+            <section style="display: flex;justify-content: space-between; gap: 15px;">
+                <button class="Delete button" style="width: 25%; height: 40px; margin-right: auto;"
+                    @click="tableData = []">Очистить таблицу</button>
+
+
+                <br>
+                <button class="Accept button" style="width: 25%; height: 40px;" @click="saveData()">Отправить
+                    данные и создать приложение</button>
+
+
             </section>
             <table>
                 <thead>
@@ -162,7 +168,7 @@
 
                         <th>
                             <b-dropdown id="dropdown-1" text="Добавить поле" class="m-md-2">
-                                <b-dropdown id="dropdown-2" text="Груз" class="m-md-2" dropright style="width: 85%">
+                                <b-dropdown id="dropdown-2" text="Груз" class="m-md-2" dropup style="width: 85%">
                                     <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по
                                         ЕТСНГ</b-dropdown-item>
@@ -183,31 +189,39 @@
 
                                 <b-dropdown-item @click="addField('Ставка НДС')">Ставка НДС</b-dropdown-item>
 
-                                <b-dropdown id="dropdown-2" text="Грузоподъемность" class="m-md-2" dropright>
+                                <b-dropdown id="dropdown-2" text="Грузоподъемность" class="m-md-2" dropup >
                                     <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Грузоподъемность
                                         менее 65,5 т</b-dropdown-item>
+                                        <br>
+                                   
                                     <b-dropdown-item @click="addField('Грузоподъемность менее 66 т')">Грузоподъемность менее
                                         66 т</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Грузоподъемность 66 т')">Грузоподъемность 66
                                         т</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Грузоподъемность более 66 т')">Грузоподъемность более
                                         66 т</b-dropdown-item>
+                                        <br>
                                     <b-dropdown-item @click="addField('Грузоподъемность менее 69 т')">Грузоподъемность менее
                                         69 т</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Грузоподъемность 69 т')">Грузоподъемность 69
                                         т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Грузоподъемность более 69 т')">Грузоподъемность более
+                                        69 т</b-dropdown-item>
+                                        <br>
                                     <b-dropdown-item @click="addField('Грузоподъемность менее 69,5 т')">Грузоподъемность
                                         менее 69,5 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 69 т')">Грузоподъемность более
-                                        69 т</b-dropdown-item>
+                                        <br>
                                     <b-dropdown-item @click="addField('Грузоподъемность менее 70,3 т')">Грузоподъемность
                                         менее 70,3 т</b-dropdown-item>
+                                        <br>
                                     <b-dropdown-item @click="addField('Грузоподъемность менее 71 т')">Грузоподъемность менее
                                         71 т</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Грузоподъемность 71 т')">Грузоподъемность 71
                                         т</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Грузоподъемность более 71 т')">Грузоподъемность более
                                         71 т</b-dropdown-item>
+                                        <br>
+                                   
                                     <b-dropdown-item @click="addField('Грузоподъемность менее 75 т')">Грузоподъемность менее
                                         75 т</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Грузоподъемность 75 т')">Грузоподъемность 75
@@ -215,7 +229,7 @@
                                     <b-dropdown-item @click="addField('Грузоподъемность более 75 т')">Грузоподъемность более
                                         75 т</b-dropdown-item>
                                 </b-dropdown>
-                                <b-dropdown id="dropdown-2" text="Тип отправки" class="m-md-2" dropright style="width: 85%">
+                                <!-- <b-dropdown id="dropdown-2" text="Тип отправки" class="m-md-2" dropright style="width: 85%">
                                     <b-dropdown-item @click="addField('Вагонная')">Вагонная</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Маршрутная')">Маршрутная</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Групповая: 2-5 ваг')">Групповая: 2-5
@@ -223,7 +237,7 @@
                                     <b-dropdown-item @click="addField('Групповая: 6-20 ваг')">Групповая: 6-20
                                         ваг</b-dropdown-item>
 
-                                </b-dropdown>
+                                </b-dropdown> -->
                             </b-dropdown>
                         </th>
                     </tr>
@@ -299,10 +313,7 @@ export default {
             excelData: "",
             tableData: [],
             TableDataRTS: [],
-            selectedFields:
-                ["Дорога отправления", "Станция назначения", "Дорога назначения", "Коэффициент", "Оборот, сут", "НДС", "Ставка НДС", "Грузоподъемность более 69 т"],
-
-            // ["Станция отправления", "Дорога отправления", "Станция назначения", "Дорога назначения", "Коэффициент", "Оборот, сут", "НДС", "Ставка НДС", "Грузоподъемность более 69 т"],
+            selectedFields: [],
             hot: null,
             activeCell: null,
             loader: false,
@@ -387,13 +398,13 @@ export default {
     methods: {
         // Создать договор
         createAgreement() {
-            let agreement = [{
+            let agreement = {
                 agreement_number: this.Standard.agreement_number,
                 on_date: this.Standard.on_date,
                 end_date: this.Standard.end_date,
                 client: this.Standard.client,
-            }]
-            api.postTarifData(agreement)
+            }
+            api.createAgreeemntStivkaPV(agreement)
                 .then(response => {
                     this.notifyHead = "Успешно";
                     this.notifyMessage = "Договор создан";
@@ -531,8 +542,7 @@ export default {
                 }
             }
 
-
-            this.tableData = data.map(item => {
+            let data2 = data.map(item => {
                 const newItem = [];
                 let stationIndex = -1;
 
@@ -555,50 +565,15 @@ export default {
                 }
 
                 return newItem;
-            });
-
-
-            // console.log(data)
-            // if (this.selectedFields[0].includes('Станция')) {
-            //     this.tableData = data.map(item => {
-            //         const firstElementParts = item[0].match(/^(.*?)([А-Я]{3}[^ ]*)/);
-            //         const secondElementParts = item[1].match(/^(.*?)([А-Я]{3}[^ ]*)/);
-
-            //         return [
-            //             firstElementParts ? firstElementParts[1].trim() : '',
-            //             firstElementParts ? firstElementParts[2].trim() : '',
-            //             // Второй элемент массива
-            //             secondElementParts ? secondElementParts[1].trim() : '',
-            //             secondElementParts ? secondElementParts[2].trim() : '',
-            //             ...item.slice(2)
-            //             // ... (остальные элементы оставляем без изменений)
-            //         ];
-            //     });
-            // } else if (this.selectedFields[0].includes('Дорога')) {
-            //     this.tableData = data.map(item => {
-            //         const firstElementParts = item[0].match(/^(.*?)([А-Я]{3}[^ ]*)/);
-            //         const secondElementParts = item[1].match(/^(.*?)([А-Я]{3}[^ ]*)/);
-
-            //         return [
-            //             // firstElementParts ? firstElementParts[1].trim() : '',
-            //             firstElementParts ? firstElementParts[2].trim() : '',
-            //             // Второй элемент массива
-            //             // secondElementParts ? secondElementParts[1].trim() : '',
-            //             secondElementParts ? secondElementParts[2].trim() : '',
-            //             ...item.slice(2)
-            //             // ... (остальные элементы оставляем без изменений)
-            //         ];
-            //     });
-            // } else {
-            //     this.tableData = data
-            // }
-            // console.log(this.selectedFields)
-
-
+            }).map(subArray => subArray.filter(value => value !== ""))
+            console.log(data)
+            this.tableData = data2.map((secondItem, index) => [...secondItem, ...data[index].slice(2)])
+            // КОНЕЦ РАБОЧЕГО КОДА
             this.excelData = "";
         },
         // Отправка данных на сервер
         async saveData() {
+            this.loader = true
             //     if(test[0].length != this.selectedFields.length){
             //     this.notifyHead = "Ошибка";
             //     this.notifyMessage = "Кол-во столбцов шапки не соответствует количеству столбцов загружаемых из источника !";
@@ -610,59 +585,124 @@ export default {
             //     this.active_load_button = true
             //     return
             // }
+            try {
+                // Получение индексов столбцов где станция и где дорога с пригнаничными случаями
+                let arrIndexRoad = []
+                let arrIndexStation = []
+                // Обработка состояния когда есть и станция и дорога
+                for (let i = 0; i < this.selectedFields.length; i++) {
+                    let currentItem = this.selectedFields[i]
+                    let previousItem = this.selectedFields[i - 1]
+                    if (currentItem.includes('Дорога') && (!previousItem || !previousItem.includes('Станция'))) {
+                        arrIndexRoad.push(i)
+                        console.log(arrIndexRoad)
+                    } else if (currentItem.includes('Станция')) {
+                        arrIndexStation.push(i)
+                        console.log(arrIndexStation)
 
-            // Получение индексов столбцов где станция и где дорога с пригнаничными случаями
-            let arrIndexRoad = []
-            let arrIndexStation = []
-            // Обработка состояния когда есть и станция и дорога
-            for (let i = 0; i < this.selectedFields.length; i++) {
-                let currentItem = this.selectedFields[i]
-                let previousItem = this.selectedFields[i - 1]
-                if (currentItem.includes('Дорога') && (!previousItem || !previousItem.includes('Станция'))) {
-                    arrIndexRoad.push(i)
-                    console.log(arrIndexRoad)
-                } else if (currentItem.includes('Станция')) {
-                    arrIndexStation.push(i)
-                    console.log(arrIndexStation)
-
+                    }
                 }
-            }
-            // Убираем повторные запросы оставляем только уникальные
-            this.collectionStation = new Set()
-            let response
-            this.tableData.forEach((row) => {
-                arrIndexStation.forEach((index) => {
-                    this.collectionStation.add(row[index])
-                })
-            })
-            for (let item of Array.from(this.collectionStation)) {
-                let request = await apiWagon.getCurrentStation(item)
-                response = await request.data.data.filter((el) => el.name.toLowerCase() == item.toLowerCase())[0]
+                // Убираем повторные запросы оставляем только уникальные
+                this.collectionStation = new Set()
+                let response
                 this.tableData.forEach((row) => {
                     arrIndexStation.forEach((index) => {
-                        if (row[index] === item) {
-                            row[index] = response.code
-                        }
+                        this.collectionStation.add(row[index])
                     })
                 })
+                for (let item of Array.from(this.collectionStation)) {
+                    let request = await apiWagon.getCurrentStation(item)
+                    response = await request.data.data.filter((el) => el.name.toLowerCase() == item.toLowerCase())[0]
+                    this.tableData.forEach((row) => {
+                        arrIndexStation.forEach((index) => {
+                            if (row[index] === item) {
+                                row[index] = response.code
+                            }
+                        })
+                    })
 
+                }
+
+                // Замена кратких наименований на то что есть у меня в localStorage
+                const roads = JSON.parse(localStorage.getItem('road'))
+                this.tableData.forEach((row) => {
+                    arrIndexRoad.forEach((index) => {
+                        for (let i in roads) {
+                            if (roads[i] == row[index]) {
+                                row[index] = i
+                            }
+                        }
+                    })
+                });
+
+                const translationMap = {
+                    'Станция отправления': 'departure_station',
+                    'Станция назначения': 'destination_station',
+                    'Дорога назначения': '',
+                    'Дорога отправления': '',
+                    'Коэффициент': 'k',
+                    'НДС': 'nds',
+                    'ставка НДС': 'stavka_nds',
+                    'Оборот, сут': 'turnover',
+                    "Группа позиций по ЕТСНГ": "mask",
+                    "Класс груза": 'dangerous_code',
+                    "Код ЕТСНГ": 'etsng'
+                };
+                const capacityIndices = this.selectedFields.reduce((acc, field, index) => {
+                    if (field.includes('Грузоподъемность')) {
+                        acc.push(index);
+                    }
+                    return acc;
+                }, []);
+
+                // Преобразовать данные для каждого индекса
+                const transformedData = this.tableData.map(item => {
+                    const transformedValues = capacityIndices.map(index => {
+                        const capacityField = this.selectedFields[index];
+                        const capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
+                        const capacity_value = item[index].replace(/[^0-9,]/g, ''); // Извлекаем только цифры и запятые
+
+                        // Создаем объект с грузоподъемностью
+                        const capacityObject = { capacity_compare, capacity_value };
+
+                        // Добавляем остальные поля из строки
+                        for (let i = 0; i < item.length; i++) {
+                            if (!capacityIndices.includes(i)) {
+                                const key = this.selectedFields[i];
+                                const newKey = translationMap[key] || key; // Используйте английский эквивалент или оставьте оригинальный ключ
+                                capacityObject[newKey] = item[i];
+                            }
+                        }
+
+                        return capacityObject;
+                    });
+                    return transformedValues;
+                });
+                this.loader = false
+                console.log(this.tableData)
+                // this.tableData = []
+                this.notifyHead = "Успешно";
+                this.notifyMessage = "Данные отправлены!";
+                this.notifyClass = "wrapper-success";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 2000);
+            } catch {
+                this.loader = false
+                this.notifyHead = "Ошибка";
+                this.notifyMessage = "Повторите загрузку повторно!";
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 3500);
             }
 
-            // Замена кратких наименований на то что есть у меня в localStorage
-            const roads = JSON.parse(localStorage.getItem('road'))
-            this.tableData.forEach((row) => {
-                arrIndexRoad.forEach((index) => {
-                    for (let i in roads) {
-                        if (roads[i] == row[index]) {
-                            row[index] = i
-                        }
-                    }
-                })
-            });
 
-            console.log(this.tableData);
+            this.loader = false
+
         },
-
 
 
         editCell(rowIndex, cellIndex) {
