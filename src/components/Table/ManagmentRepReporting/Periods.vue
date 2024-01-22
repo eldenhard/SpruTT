@@ -38,7 +38,7 @@ export default {
       return this.date_begin == ""  ? (this.is_error_start = true) : (this.is_error_start = false);
     },
     date_end() {
-      this.$emit('date_end', this.date_begin)
+      this.$emit('date_end', this.date_end)
       return this.date_end == ""
         ? (this.is_error_end = true)
         : (this.is_error_end = false);
