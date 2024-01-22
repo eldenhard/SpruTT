@@ -22,6 +22,11 @@
                 <li>Скопируйте данные из Excel в область загрузки</li>
                 <li>Нажмите загрузить в таблицу ( проверьте данные таблицы )</li>
             </ol>
+            КАК НАЙТИ ДОГОВОР?
+            <ol>
+                <li>Выбрать контрагента</li>
+                <li>В меню всех договор Вам станут доступны все договора по этому контрагенту</li>
+            </ol>
             <br>
             Требования: <br>
             <ol>
@@ -122,7 +127,7 @@
                         style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
                     <button class="Accept" @click="loadFromExcel()" :disabled="active_load_button"
                         style="margin-top: 2%;width: 100%;margin-left: auto;height: 40px;">Загрузить в таблицу</button>
-                        <br>
+                    <br>
                     <button class="Request button" style="width: 100%; height: 40px; "
                         @click="active_load_button = !active_load_button">Подтвердить создание шапки</button>
                 </section>
@@ -155,7 +160,8 @@
 
 
             </section>
-            <table>
+           
+                <table>
                 <thead>
                     <tr style="background: #e1e1e2">
                         <th style="border: 1px solid grey;">Действие</th>
@@ -174,6 +180,46 @@
                                         ЕТСНГ</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Класс груза')">Класс груза</b-dropdown-item>
                                 </b-dropdown>
+                                <b-dropdown id="dropdown-2" text="Грузоподъемность" dropleft  class="m-md-2" >
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Грузоподъемность
+                                        менее 65,5 т</b-dropdown-item>
+                                    <br>
+
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 66 т')">Грузоподъемность менее
+                                        66 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 66 т')">Грузоподъемность 66
+                                        т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 66 т')">Грузоподъемность более
+                                        66 т</b-dropdown-item>
+                                    <br>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69 т')">Грузоподъемность менее
+                                        69 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 69 т')">Грузоподъемность 69
+                                        т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 69 т')">Грузоподъемность более
+                                        69 т</b-dropdown-item>
+                                    <br>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69,5 т')">Грузоподъемность
+                                        менее 69,5 т</b-dropdown-item>
+                                    <br>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 70,3 т')">Грузоподъемность
+                                        менее 70,3 т</b-dropdown-item>
+                                    <br>
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 71 т')">Грузоподъемность менее
+                                        71 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 71 т')">Грузоподъемность 71
+                                        т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 71 т')">Грузоподъемность более
+                                        71 т</b-dropdown-item>
+                                    <br>
+
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 75 т')">Грузоподъемность менее
+                                        75 т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность 75 т')">Грузоподъемность 75
+                                        т</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Грузоподъемность более 75 т')">Грузоподъемность более
+                                        75 т</b-dropdown-item>
+                                </b-dropdown>
                                 <b-dropdown-item @click="addField('Станция отправления')">Станция
                                     отправления</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Станция назначения')">Станция
@@ -189,46 +235,7 @@
 
                                 <b-dropdown-item @click="addField('Ставка НДС')">Ставка НДС</b-dropdown-item>
 
-                                <b-dropdown id="dropdown-2" text="Грузоподъемность" class="m-md-2" dropup >
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Грузоподъемность
-                                        менее 65,5 т</b-dropdown-item>
-                                        <br>
-                                   
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 66 т')">Грузоподъемность менее
-                                        66 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 66 т')">Грузоподъемность 66
-                                        т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 66 т')">Грузоподъемность более
-                                        66 т</b-dropdown-item>
-                                        <br>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69 т')">Грузоподъемность менее
-                                        69 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 69 т')">Грузоподъемность 69
-                                        т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Грузоподъемность более 69 т')">Грузоподъемность более
-                                        69 т</b-dropdown-item>
-                                        <br>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69,5 т')">Грузоподъемность
-                                        менее 69,5 т</b-dropdown-item>
-                                        <br>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 70,3 т')">Грузоподъемность
-                                        менее 70,3 т</b-dropdown-item>
-                                        <br>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 71 т')">Грузоподъемность менее
-                                        71 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 71 т')">Грузоподъемность 71
-                                        т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 71 т')">Грузоподъемность более
-                                        71 т</b-dropdown-item>
-                                        <br>
-                                   
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 75 т')">Грузоподъемность менее
-                                        75 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 75 т')">Грузоподъемность 75
-                                        т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 75 т')">Грузоподъемность более
-                                        75 т</b-dropdown-item>
-                                </b-dropdown>
+                               
                                 <!-- <b-dropdown id="dropdown-2" text="Тип отправки" class="m-md-2" dropright style="width: 85%">
                                     <b-dropdown-item @click="addField('Вагонная')">Вагонная</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Маршрутная')">Маршрутная</b-dropdown-item>
@@ -260,6 +267,8 @@
                     </tr>
                 </tbody>
             </table>
+         
+        
 
         </div>
 
@@ -273,6 +282,7 @@
 <script>
 import Handsontable from "handsontable";
 import api from "@/api/directory";
+import api2 from "@/api/wagonPark";
 import apiWagon from '@/api/wagonPark';
 import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from '../../../loader/loader.vue';
@@ -340,6 +350,10 @@ export default {
             }
         })
 
+        api2.getAllRoads()
+        .then(res => console.log(res))
+        .catch((err) => console.log(err))
+
     },
     computed: {
         ...mapState({
@@ -397,13 +411,14 @@ export default {
     methods: {
         // Создать договор
         createAgreement() {
-            let agreement = {
+            let agreement = [{
                 agreement_number: this.Standard.agreement_number,
                 on_date: this.Standard.on_date,
                 end_date: this.Standard.end_date,
                 client: this.Standard.client,
-            }
-            api.createAgreeemntStivkaPV(agreement)
+                cargo_var: 1
+            }]
+            api.postTarifData(agreement)
                 .then(response => {
                     this.notifyHead = "Успешно";
                     this.notifyMessage = "Договор создан";
@@ -430,6 +445,7 @@ export default {
                     this.loader = false
 
                     this.all_agreement_number = response.data.data
+                    console.log(this.all_agreement_number)
                     this.notifyHead = "Успешно";
                     this.notifyMessage = "Договора получены";
                     this.notifyClass = "wrapper-success";
@@ -641,7 +657,7 @@ export default {
                     'Дорога отправления': '',
                     'Коэффициент': 'k',
                     'НДС': 'nds',
-                    'ставка НДС': 'stavka_nds',
+                    'Cтавка НДС': 'stavka_nds',
                     'Оборот, сут': 'turnover',
                     "Группа позиций по ЕТСНГ": "mask",
                     "Класс груза": 'dangerous_code',
@@ -672,13 +688,27 @@ export default {
                                 capacityObject[newKey] = item[i];
                             }
                         }
-
+                        // capacityObject.client = this.Standard.base
+                        // capacityObject.agreement_number = this.Standard.agreement_number
+                        // capacityObject.on_date = this.Standard.on_date
+                        // capacityObject.end_date = this.Standard.end_date
                         return capacityObject;
                     });
                     return transformedValues;
                 });
+      
+
+
+
                 this.loader = false
-                console.log(this.tableData)
+          
+                transformedData.forEach((item) => {
+                    item[0].client = this.Standard?.client
+                    item[0].agreement_number = this.Standard.annex_number
+                    item[0].on_date = this.Standard.on_date
+                    item[0].end_date = this.Standard.end_date
+                })
+                console.log(transformedData)
                 // this.tableData = []
                 this.notifyHead = "Успешно";
                 this.notifyMessage = "Данные отправлены!";
@@ -690,7 +720,7 @@ export default {
             } catch {
                 this.loader = false
                 this.notifyHead = "Ошибка";
-                this.notifyMessage = "Повторите загрузку повторно!";
+                this.notifyMessage = "Очистите таблицу и повторите загрузку повторно!";
                 this.notifyClass = "wrapper-error";
                 this.showNotify = true;
                 setTimeout(() => {
