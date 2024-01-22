@@ -4,7 +4,7 @@
       <label for="dateStart" :class="{ Error: is_error_start }"
       style="width: 100%" >Начало периода
         <br />
-        <input type="date" id="dateStart" v-model="date_begin" min="2022-01-01"  @keyup.enter="getData()"/>
+        <input type="date" id="dateStart" v-model="date_begin" min="2022-01-01"  @keyup.enter="getData()" />
       </label>
 
       <label for="dateEnd" :class="{ Error: is_error_end }"
@@ -34,11 +34,11 @@ export default {
 
   watch: {
     date_begin() {
-      return this.date_begin == ""
-        ? (this.is_error_start = true)
-        : (this.is_error_start = false);
+      this.$emit('date_begin', this.date_begin)
+      return this.date_begin == ""  ? (this.is_error_start = true) : (this.is_error_start = false);
     },
     date_end() {
+      this.$emit('date_end', this.date_begin)
       return this.date_end == ""
         ? (this.is_error_end = true)
         : (this.is_error_end = false);

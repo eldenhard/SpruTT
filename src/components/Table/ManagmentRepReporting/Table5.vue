@@ -2,7 +2,7 @@
   <div>
     <!-- <pre>{{normalized}}</pre> -->
     <Loader :loader="loader" />
-    <Periods @Action="Actioned" @data="getCurrentData">
+    <Periods @Action="Actioned" @data="getCurrentData" @date_begin="checkDateBegin" @date_end="checkDateEnd">
       <label for="">
         Тип вагона
         <br />
@@ -12,6 +12,8 @@
         </select>
       </label>
     </Periods>
+    <br>
+    <button class="Accept button" style="width: 30%; height: 40px;" @click="unloadingFilgts()">Выгрузка рейсов</button>
     <br />
 
     <!-- <pre>{{ normalized }}</pre> -->
@@ -38,26 +40,31 @@
             </tr>
 
             <template v-for="road in getNextKey(responseObject[client])" :data-attr='client' class="block_element">
-              <template v-for="clientRoad in getNextKey(responseObject[client][road])" :data-attr='client' lass="block_element">
-                  <template v-for="cargo in getNextKey(responseObject[client][road][clientRoad])" :data-attr='client' class="block_element"> 
+              <template v-for="clientRoad in getNextKey(responseObject[client][road])" :data-attr='client'
+                lass="block_element">
+                <template v-for="cargo in getNextKey(responseObject[client][road][clientRoad])" :data-attr='client'
+                  class="block_element">
 
-                    <tr :key="road.id" class="block_element" :data-attr='client'>
-                      <td>{{ road }}</td>
-                      <td>{{ clientRoad }}</td>
-                      <td>&nbsp;{{ cargo }}&nbsp;</td>
-                      <td>&nbsp;{{ responseObject[client][road][clientRoad][cargo]['weight']?.toFixed(2) | format}}&nbsp;</td>
-                      <td>&nbsp;{{ responseObject[client][road][clientRoad][cargo]['aid'] }}&nbsp;</td>
-                      <td>&nbsp;{{ responseObject[client][road][clientRoad][cargo]['revenue'] }}&nbsp;</td>
-                    </tr>
+                  <tr :key="road.id" class="block_element" :data-attr='client'>
+                    <td>{{ road }}</td>
+                    <td>{{ clientRoad }}</td>
+                    <td>&nbsp;{{ cargo }}&nbsp;</td>
+                    <td>&nbsp;{{ responseObject[client][road][clientRoad][cargo]['weight']?.toFixed(2) | format }}&nbsp;
+                    </td>
+                    <td>&nbsp;{{ responseObject[client][road][clientRoad][cargo]['aid'] }}&nbsp;</td>
+                    <td>&nbsp;{{ responseObject[client][road][clientRoad][cargo]['revenue'] }}&nbsp;</td>
+                  </tr>
 
 
                 </template>
                 <tr style="background:#FDFFDA" class="block_element" :data-attr='client'>
 
                   <td colspan="3">ИТОГО {{ clientRoad }}</td>
-                  <td style="font-weight: 500;">{{ responseObject[client][road][clientRoad]['weight']?.toFixed(2) | format }}</td>
+                  <td style="font-weight: 500;">{{ responseObject[client][road][clientRoad]['weight']?.toFixed(2) | format
+                  }}</td>
                   <td style="font-weight: 500;">{{ responseObject[client][road][clientRoad]['aid'] }}</td>
-                  <td style="font-weight: 500;">{{ responseObject[client][road][clientRoad]['revenue']?.toFixed(2) | format }}
+                  <td style="font-weight: 500;">{{ responseObject[client][road][clientRoad]['revenue']?.toFixed(2) |
+                    format }}
                   </td>
                 </tr>
               </template>
@@ -68,36 +75,45 @@
                 <td style="font-weight: 700;">{{ responseObject[client][road]['revenue']?.toFixed(2) | format }}</td>
               </tr>
             </template>
-        
+
             </tr>
           </template>
           <tr style="background: #F0F0F0;">
             <td colspan="3" style="font-weight: bold; ">Общий</td>
-              <th>Вес</th>
-              <th>Кол-во погрузок</th>
-              <th>Выручка руб, без НДС</th>
+            <th>Вес</th>
+            <th>Кол-во погрузок</th>
+            <th>Выручка руб, без НДС</th>
           </tr>
-              <tr class="GrandTotal" >
+          <tr class="GrandTotal">
 
-                <td colspan="3"> итог </td>
-                <td style="font-weight: 700;">{{ responseObject['weight']?.toFixed(2) | format }}</td>
-                <td style="font-weight: 00;">{{ responseObject['aid'] }}</td>
-                <td style="font-weight: 700;">{{ responseObject['revenue']?.toFixed(2) | format }}</td>
-              </tr>
-           
+            <td colspan="3"> итог </td>
+            <td style="font-weight: 700;">{{ responseObject['weight']?.toFixed(2) | format }}</td>
+            <td style="font-weight: 00;">{{ responseObject['aid'] }}</td>
+            <td style="font-weight: 700;">{{ responseObject['revenue']?.toFixed(2) | format }}</td>
+          </tr>
+
         </tbody>
       </table>
     </div>
+    <Notifications
+      :show="showNotify"
+      :header="notifyHead"
+      :message="notifyMessage"
+      :block-class="notifyClass"
+    />
   </div>
 </template>
 
 
 <script>
 import api from "@/api/reportUO";
+import apiWagonPark from "@/api/wagonPark";
+import Notifications from "@/components/notifications/Notifications.vue";
+
 import Periods from "./Periods.vue";
 import Loader from "@/components/loader/loader.vue";
 export default {
-  components: { Periods, Loader },
+  components: { Periods, Loader, Notifications },
   data() {
     return {
       normalized: [],
@@ -107,6 +123,12 @@ export default {
       wag_type: "Полувагон",
 
 
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
+
+
       responseObject: {}
 
     };
@@ -114,13 +136,13 @@ export default {
 
   filters: {
     format(value) {
-            if (value != "") {
-                let TwoSignNum = value?.toFixed(2)
-                return String(TwoSignNum).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
-            }
-            return value
+      if (value != "") {
+        let TwoSignNum = value?.toFixed(2)
+        return String(TwoSignNum).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+      }
+      return value
 
-        },
+    },
     ifNull(value) {
       if (value == null || value == 'null') {
         return 'Неопределенно'
@@ -129,13 +151,39 @@ export default {
     }
   },
   methods: {
-    CheckClientOpen(val, event){
+    checkDateEnd(val) {
+      this.date_end = val
+    },
+    checkDateBegin(val) {
+      this.date_begin = val
+    },
+    unloadingFilgts() {
+      this.loader = true
+      apiWagonPark.getFileFlights2(this.date_begin, this.date_end, this.wag_type, "")
+        .then(response => {
+          this.loader = false
+          // let link = document.createElement('a')
+          // link.href = response.data.share_storage
+          // link.click()
+          // link.remove()
+          navigator.clipboard.writeText(response.data.share_storage)
+            this.notifyHead = "Успешно";
+            this.notifyMessage = "Ссылка на файл скопирована.";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => this.showNotify = false, 2500);
+        }).catch((err) => {
+          console.log(err)
+          this.loader = false
+        })
+    },
+    CheckClientOpen(val, event) {
       event.target.classList.toggle('check_element')
       let trs = document.getElementsByTagName('tr')
       console.log(event.target)
-      for(let tr of trs){
-        if(tr.getAttribute('data-attr') == val){
-         tr.classList.toggle('block_element')
+      for (let tr of trs) {
+        if (tr.getAttribute('data-attr') == val) {
+          tr.classList.toggle('block_element')
         } else {
           continue
         }
@@ -206,15 +254,7 @@ export default {
   },
 };
 </script>
-<!-- 
-<style lang="scss" scoped>
-tr{
-    background : red;
-    &:hover {
-      background: green;
-    } 
-  }
-</style> -->
+
 <style scoped>
 .check_element {
   background: rgb(142, 182, 182);
@@ -233,5 +273,4 @@ th {
 
 tr:hover {
   background: lightcyan;
-}
-</style>
+}</style>

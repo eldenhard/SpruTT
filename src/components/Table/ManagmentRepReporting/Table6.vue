@@ -8,7 +8,7 @@
     <!-- {{ object }} -->
 
     <Loader :loader="loader" />
-    <Periods @Action="Actioned" @data="getCurrentData">
+    <Periods @Action="Actioned" @data="getCurrentData" @date_begin="checkDateBegin" @date_end="checkDateEnd">
       <label for="">
         Тип вагона
         <br />
@@ -18,6 +18,8 @@
         </select>
       </label>
     </Periods>
+    <br>
+    <button class="Accept button" style="width: 30%; height: 40px;" @click="unloadingFilgts()">Выгрузка рейсов</button>
     <br />
 
     <p>Форма 4.6. "Справка о выполнении перевозок {{ wag_type == 'Цистерна'  ?  wag_type.toLowerCase() + 'ми' : wag_type.toLowerCase() + 'ами'}}"</p>
@@ -104,6 +106,13 @@
 
       </table>
     </div>
+    <Notifications
+      :show="showNotify"
+      :header="notifyHead"
+      :message="notifyMessage"
+      :block-class="notifyClass"
+   
+    />
   </div>
 </template>
   
@@ -112,8 +121,11 @@
 import api from "@/api/reportUO";
 import Periods from "./Periods.vue";
 import Loader from "@/components/loader/loader.vue";
+import Notifications from "@/components/notifications/Notifications.vue";
+import apiWagonPark from "@/api/wagonPark";
+
 export default {
-  components: { Periods, Loader },
+  components: { Periods, Loader, Notifications },
   data() {
     return {
       id_page: new Date(),
@@ -126,12 +138,44 @@ export default {
       date_end: "",
       wag_type: "Полувагон",
 
+      showNotify: false,
+      notifyHead: "",
+      notifyMessage: "",
+      notifyClass: "",
       dataReport6: "",
     };
   },
   mounted() {
   },
   methods: {
+    checkDateEnd(val) {
+      this.date_end = val
+    },
+    checkDateBegin(val) {
+      this.date_begin = val
+    },
+    unloadingFilgts() {
+      this.loader = true
+      apiWagonPark.getFileFlights2(this.date_begin, this.date_end, this.wag_type, "")
+        .then(response => {
+          this.loader = false
+          navigator.clipboard.writeText(response.data.share_storage)
+            this.notifyHead = "Успешно";
+            this.notifyMessage = "Ссылка на файл скопирована.";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => this.showNotify = false, 2500);
+
+          // let link = document.createElement('a')
+          // link.href = response.data.share_storage
+          // link.click()
+          // link.remove()
+      
+        }).catch((err) => {
+          console.log(err)
+          this.loader = false
+        })
+    },
     CheckClientOpen(val, event){
       event.target.classList.toggle('check_element')
       let trs = document.getElementsByTagName('tr')
