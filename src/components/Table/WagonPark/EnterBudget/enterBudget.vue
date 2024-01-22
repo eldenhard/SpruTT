@@ -11,6 +11,14 @@
         * Нажмите "Сохранить данные в таблицу"
         * Для редактирования полей таблице кликните на интересующее поле, чтобы сохранить нажмите Enter
       </p>
+      <label for="">
+        Тип вагона <br>
+        <select v-model="wag_type">
+          <option value="Полувагон">Полувагон</option>
+          <option value="Цистерна">Цистерна</option>
+        </select>
+      </label>
+    
       <textarea class="textarea" placeholder="Вставьте данные из Excel сюда" v-model.trim="excelData"></textarea>
       <button class="Accept button" @click="loadFromExcel()">Сохранить данные в таблицу</button>
       <button class="Action button" @click="ClearTable()" v-show="isShowClearButton">Очистить данные таблицы</button>
@@ -24,22 +32,18 @@
             </tr>
           </thead>
           <tbody>
-            <!-- <tr v-for="(row, index) in dataFromExcelData" :key="index">
-              <td @click="deleteRow(index)">Удалить</td>
-              <td>{{ row.client }}</td>
-              <td>{{ row.volume }}</td>
-            </tr> -->
             <tr v-for="(row, rowIndex) in dataFromExcelData" :key="rowIndex">
-          <td class="deleteRow" @click="deleteRow(rowIndex)">Удалить</td>
-          <td v-for="(cell, cellIndex) in row" :key="cellIndex" style="position: relative">
-            <input v-model="dataFromExcelData[rowIndex][cellIndex]" @click="editCell(rowIndex, cellIndex)" @blur="saveCell()"
-              @keyup.enter="saveCell(rowIndex, cellIndex)" v-if="activeCell === `${rowIndex}-${cellIndex}`"
-              ref="editableInput[rowIndex][cellIndex]" class="editable-input" />
-            <div style="width: 100%" v-else @click="editCell(rowIndex, cellIndex)">
-              <span class="editable-text">{{ cell }}</span>
-            </div>
-          </td>
-        </tr>
+              <td class="deleteRow" @click="deleteRow(rowIndex)">Удалить</td>
+              <td v-for="(cell, cellIndex) in row" :key="cellIndex" style="position: relative">
+                <input v-model="dataFromExcelData[rowIndex][cellIndex]" @click="editCell(rowIndex, cellIndex)"
+                  @blur="saveCell()" @keyup.enter="saveCell(rowIndex, cellIndex)"
+                  v-if="activeCell === `${rowIndex}-${cellIndex}`" ref="editableInput[rowIndex][cellIndex]"
+                  class="editable-input" />
+                <div style="width: 100%" v-else @click="editCell(rowIndex, cellIndex)">
+                  <span class="editable-text">{{ cell }}</span>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </Transition>
@@ -57,22 +61,33 @@ export default {
       isShowClearButton: false,
       hot: null,
       activeCell: null,
+      wag_type: 'Полувагон'
     };
   },
   methods: {
+
     loadFromExcel() {
       const excelData = this.excelData;
       const rows = excelData.split("\n");
       const data = rows.map((row) => row.split("\t"));
 
-      const newDataStructure = data.map((row) => {
+      // Фильтруем строки, исключая те, где "Клиент" пустой или содержит слово "Итог"
+      const filteredData = data.filter(row => {
+        const clientColumnIndex = 0; // Индекс столбца "Клиент"
+        const clientValue = row[clientColumnIndex].trim().toLowerCase();
+        return clientValue !== '' && !clientValue.includes('итог');
+      });
+
+      const newDataStructure = filteredData.map((row) => {
         return { client: row[0], volume: row[1] || "0" };
       });
-      this.excelData = []
-      this.show = true
-      this.isShowClearButton = true
+
+      this.excelData = [];
+      this.show = true;
+      this.isShowClearButton = true;
       this.dataFromExcelData = newDataStructure;
     },
+
     editCell(rowIndex, cellIndex) {
       this.activeCell = `${rowIndex}-${cellIndex}`;
       //  Этот блок кода выполняется в следующем такте рендера Vue, что позволяет убедиться, что DOM-элементы обновлены после изменения activeCell.
@@ -86,7 +101,7 @@ export default {
     deleteRow(rowIndex) {
       this.dataFromExcelData.splice(rowIndex, 1);
     },
-    ClearTable(){
+    ClearTable() {
       this.dataFromExcelData = []
       this.isShowClearButton = false
       this.show = false
@@ -112,10 +127,12 @@ export default {
   {
   opacity: 0;
 }
-input{
+
+input {
   width: 100%;
   text-align: center;
 }
+
 table {
   width: 100%;
   margin-top: 2%;
@@ -141,7 +158,8 @@ td:not(:first-child) {
 
 
 
-.Accept, .Action {
+.Accept,
+.Action {
   min-width: 20%;
   margin-top: 2%;
   width: auto;
@@ -154,7 +172,7 @@ td:not(:first-child) {
 }
 
 .air_block {
-  width: 80%;
+  width: 70%;
   height: auto;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -174,4 +192,5 @@ textarea {
 .air_block_header {
   padding: 1% 0 0 2%;
   color: #cacaca;
-}</style>
+}
+</style>
