@@ -986,7 +986,8 @@ export default {
             for(let i of which_cargo_check){
               allCheckCompleteData.push(...this.checkCompleteData.map((item) => ({
                 ...item,
-                cargo: i
+                cargo: i,
+                wagon_type: 'Цистерна'
               })))
             }
             this.checkCompleteData = allCheckCompleteData

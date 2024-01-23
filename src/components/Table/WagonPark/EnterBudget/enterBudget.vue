@@ -23,7 +23,7 @@
       <textarea class="textarea" placeholder="Вставьте данные из Excel сюда" v-model.trim="excelData"></textarea>
       <button class="Request button" @click="loadFromExcel()">Сохранить данные в таблицу</button>
       <button class="Delete button" @click="ClearTable()" v-show="isShowClearButton">Очистить данные таблицы</button>
-      <button class="Accept button" @click="sendDataToServer()">Отправить данные&nbsp;&nbsp;<b-icon icon="cursor-fill"
+      <button class="Accept button" @click="sendDataToServer()"  v-show="isShowClearButton">Отправить данные&nbsp;&nbsp;<b-icon icon="cursor-fill"
           aria-hidden="true"></b-icon></button>
       <Transition name="fade">
         <table v-if="show">
