@@ -160,8 +160,8 @@
 
 
             </section>
-           
-                <table>
+
+            <table>
                 <thead>
                     <tr style="background: #e1e1e2">
                         <th style="border: 1px solid grey;">Действие</th>
@@ -173,13 +173,17 @@
                         </template>
 
                         <th>
-                            <b-dropdown id="dropdown-1" text="Добавить поле" class="m-md-2">
+                            <b-dropdown id="dropdown-1" text="Добавить поле" class="m-md-2" dropup>
                                 <b-dropdown id="dropdown-2" text="Груз" class="m-md-2" dropup style="width: 85%">
-                                    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти значный)</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ (123*)</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или 3)</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
+                                        значный)</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                                        (123*)</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                                        3)</b-dropdown-item>
                                 </b-dropdown>
-                                <b-dropdown id="dropdown-2" text="Грузоподъемность" dropleft  class="m-md-2" >
+                                <b-dropdown id="dropdown-2" text="Грузоподъемность" dropup class="m-md-2"
+                                    style="z-index: 5000 !important;">
                                     <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Грузоподъемность
                                         менее 65,5 т</b-dropdown-item>
                                     <br>
@@ -234,7 +238,7 @@
 
                                 <b-dropdown-item @click="addField('Ставка НДС')">Ставка НДС</b-dropdown-item>
 
-                               
+
                                 <!-- <b-dropdown id="dropdown-2" text="Тип отправки" class="m-md-2" dropright style="width: 85%">
                                     <b-dropdown-item @click="addField('Вагонная')">Вагонная</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Маршрутная')">Маршрутная</b-dropdown-item>
@@ -266,12 +270,12 @@
                     </tr>
                 </tbody>
             </table>
-         
-        
+
+
 
         </div>
 
-        <br><br>
+        <br><br> <br><br> <br><br>
 
         <stavkipvWatchDB></stavkipvWatchDB>
 
@@ -388,6 +392,9 @@ export default {
         },
     },
     watch: {
+        new_comp() {
+            console.log(this.new_comp)
+        },
         picked() {
             if (this.picked == "agreement_number") {
                 this.placeholderAgreement = "введите номер договора";
@@ -417,7 +424,7 @@ export default {
                 on_date: this.Standard.on_date,
                 end_date: this.Standard.end_date,
                 client: this.Standard.client,
-                cargo_var: 1
+                cargo_var: 0,
             }]
             api.postTarifData(agreement)
                 .then(response => {
@@ -590,17 +597,6 @@ export default {
         // Отправка данных на сервер
         async saveData() {
             this.loader = true
-            //     if(test[0].length != this.selectedFields.length){
-            //     this.notifyHead = "Ошибка";
-            //     this.notifyMessage = "Кол-во столбцов шапки не соответствует количеству столбцов загружаемых из источника !";
-            //     this.notifyClass = "wrapper-error";
-            //     this.showNotify = true;
-            //     setTimeout(() => {
-            //         this.showNotify = false;
-            //     }, 4000);
-            //     this.active_load_button = true
-            //     return
-            // }
             try {
                 // Получение индексов столбцов где станция и где дорога с пригнаничными случаями
                 let arrIndexRoad = []
@@ -626,36 +622,40 @@ export default {
                         this.collectionStation.add(row[index])
                     })
                 })
+
+                // Обработка станций
                 for (let item of Array.from(this.collectionStation)) {
-                    let request = await apiWagon.getCurrentStation(item)
-                    response = await request.data.data.filter((el) => el.name.toLowerCase() == item.toLowerCase())[0]
+                    let request = await apiWagon.getCurrentStation(item);
+                    response = await request.data.data.filter((el) => el.name.toLowerCase() == item.toLowerCase())[0];
+
+                    // Заменяем значения в таблице
                     this.tableData.forEach((row) => {
                         arrIndexStation.forEach((index) => {
                             if (row[index] === item) {
-                                row[index] = response.code
+                                row[index] = response.code;
                             }
-                        })
-                    })
-
+                        });
+                    });
                 }
 
-                // Замена кратких наименований на то что есть у меня в localStorage
-                const roads = JSON.parse(localStorage.getItem('road'))
+                // Замена кратких наименований дорог на те, что есть в localStorage
+                const roads = JSON.parse(localStorage.getItem('road'));
                 this.tableData.forEach((row) => {
                     arrIndexRoad.forEach((index) => {
                         for (let i in roads) {
                             if (roads[i] == row[index]) {
-                                row[index] = i
+                                row[index] = i;
                             }
                         }
-                    })
+                    });
                 });
 
+                // Добавление данных о грузоподъемности
                 const translationMap = {
                     'Станция отправления': 'departure_station',
                     'Станция назначения': 'destination_station',
-                    'Дорога назначения': '',
-                    'Дорога отправления': '',
+                    'Дорога назначения': 'destination_road',
+                    'Дорога отправления': 'departure_road',
                     'Коэффициент': 'k',
                     'НДС': 'nds',
                     'Cтавка НДС': 'stavka_nds',
@@ -664,60 +664,128 @@ export default {
                     "Класс груза": 'dangerous_code',
                     "Код ЕТСНГ": 'etsng'
                 };
+
                 const capacityIndices = this.selectedFields.reduce((acc, field, index) => {
                     if (field.includes('Грузоподъемность')) {
                         acc.push(index);
                     }
                     return acc;
                 }, []);
+                // Преобразовать данные для каждого индекса
+                // const transformedData = this.tableData.map(item => {
+                //     const transformedValues = capacityIndices.map(index => {
+                //         const capacityField = this.selectedFields[index];
+                //         const capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
+                //         const capacity_value = parseFloat(item[index].replace(/[^0-9,]/g, '').replace(',', '.')) || 0; // Извлекаем только цифры и запятые
+
+                //         // Создаем объект с грузоподъемностью
+                //         const capacityObject = { capacity_compare, capacity_value };
+
+                //         // Обработка станций и дорог
+                //         for (let i = 0; i < item.length; i++) {
+                //             if (!capacityIndices.includes(i)) {
+                //                 const key = this.selectedFields[i];
+                //                 if (key === 'Станция отправления' || key === 'Станция назначения') {
+                //                     const translatedKey = translationMap[key] || key;
+                //                     capacityObject[translatedKey] = item[i];
+                //                 } else if (key.includes('Дорога') && (i === 0 || !this.selectedFields[i - 1].includes('Станция'))) {
+                //                     capacityObject[translationMap[key]] = item[i];
+                //                 } else if (key.includes('Дорога') && this.selectedFields[i - 1].includes('Станция')) {
+                //                     // Пропускаем вывод дороги после станции
+                //                 } else if (['Группа позиций по ЕТСНГ', 'Класс груза', 'Код ЕТСНГ'].includes(key)) {
+                //                     capacityObject['cargo_type'] = translationMap[key];
+                //                     capacityObject['cargo_var'] = item[i];
+                //                 } else {
+                //                     const newKey = translationMap[key] || key;
+                //                     capacityObject[newKey] = item[i];
+                //                 }
+                //             }
+                //         }
+
+                //         return capacityObject;
+                //     });
+                //     return transformedValues;
+                // });
+
 
                 // Преобразовать данные для каждого индекса
                 const transformedData = this.tableData.map(item => {
                     const transformedValues = capacityIndices.map(index => {
                         const capacityField = this.selectedFields[index];
                         const capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
-                        const capacity_value = item[index].replace(/[^0-9,]/g, ''); // Извлекаем только цифры и запятые
+                        const capacity_value_match = capacityField.match(/[0-9]+/); // Извлекаем первое число из capacityField с помощью регулярного выражения
+                        const capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0); // Парсим найденное число или устанавливаем 0
+
+                        const stavka = parseFloat(item[index].replace(/[^0-9,]/g, '').replace(',', '.')) || 0; // Извлекаем только цифры и запятые
 
                         // Создаем объект с грузоподъемностью
-                        const capacityObject = { capacity_compare, capacity_value };
+                        const capacityObject = { capacity_compare, stavka, capacity_value };
 
-                        // Добавляем остальные поля из строки
+                        // Обработка станций и дорог
                         for (let i = 0; i < item.length; i++) {
                             if (!capacityIndices.includes(i)) {
                                 const key = this.selectedFields[i];
-                                const newKey = translationMap[key] || key; // Используйте английский эквивалент или оставьте оригинальный ключ
-                                capacityObject[newKey] = item[i];
+                                if (key === 'Станция отправления' || key === 'Станция назначения') {
+                                    const translatedKey = translationMap[key] || key;
+                                    capacityObject[translatedKey] = item[i];
+                                } else if (key.includes('Дорога') && (i === 0 || !this.selectedFields[i - 1].includes('Станция'))) {
+                                    capacityObject[translationMap[key]] = item[i];
+                                } else if (key.includes('Дорога') && this.selectedFields[i - 1].includes('Станция')) {
+                                    // Пропускаем вывод дороги после станции
+                                } else if (['Группа позиций по ЕТСНГ', 'Класс груза', 'Код ЕТСНГ'].includes(key)) {
+                                    capacityObject['cargo_type'] = translationMap[key];
+                                    capacityObject['cargo_var'] = item[i];
+                                } else if (key === 'Cтавка НДС') {
+                                    capacityObject['stavka'] = capacity_value;
+                                } else {
+                                    const newKey = translationMap[key] || key;
+                                    capacityObject[newKey] = item[i];
+                                }
                             }
                         }
-                        // capacityObject.client = this.Standard.base
-                        // capacityObject.agreement_number = this.Standard.agreement_number
-                        // capacityObject.on_date = this.Standard.on_date
-                        // capacityObject.end_date = this.Standard.end_date
+
                         return capacityObject;
                     });
                     return transformedValues;
                 });
-      
 
-
-
-                this.loader = false
-          
-                transformedData.forEach((item) => {
-                    item[0].client = this.Standard?.client
-                    item[0].agreement_number = this.Standard.annex_number
-                    item[0].on_date = this.Standard.on_date
-                    item[0].end_date = this.Standard.end_date
-                })
-                console.log(transformedData)
-                // this.tableData = []
-                this.notifyHead = "Успешно";
-                this.notifyMessage = "Данные отправлены!";
-                this.notifyClass = "wrapper-success";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 2000);
+    
+                // Собираем все данные в огдин массив объектов
+                let finallyDataToSend = transformedData.flat().map(item => ({
+                    ...item,
+                    k: parseFloat(item.k?.replace(',', '.')) || 0,
+                    nds: parseFloat(item.nds?.replace(',', '.')) || 0,
+                    stavka_nds: parseFloat(item.stavka_nds?.replace(',', '.')) || 0,
+                    client: this.Standard?.client,
+                    agreement_number: this.Standard.annex_number,
+                    on_date: this.Standard.on_date,
+                    end_date: this.Standard.end_date,
+                    base: this.new_comp?.id,
+                    responsible: this.uid
+                }));
+                console.log(finallyDataToSend)
+                api.postTarifData(finallyDataToSend)
+                    .then(response => {
+                        console.log(response)
+                        this.loader = false
+                        this.tableData = []
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = "Данные отправлены!";
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 2000);
+                    }).catch((err) => {
+                        console.log(err)
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = err.response.data;
+                        this.notifyClass = "wrapper-error";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 2500);
+                    })
             } catch {
                 this.loader = false
                 this.notifyHead = "Ошибка";

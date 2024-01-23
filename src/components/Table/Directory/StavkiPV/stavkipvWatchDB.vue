@@ -675,6 +675,7 @@ export default {
 }
 .air_block {
     width: 100%;
+    margin-top: 6%;
     height: auto;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;

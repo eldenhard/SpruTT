@@ -65,7 +65,7 @@
           <Fin_headerVue />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по ставкам" >
+      <b-tab title="Данные по ставкам ЦС" >
         <b-card-text>
           <TarifDirectory />
         </b-card-text>

@@ -214,6 +214,13 @@ const getManyCategoryDate = (category, date, counterparty, typeAgr, annex_date) 
 const testCounterparty = (dataTest) => {
     return api.get(`${documents}/contract/counterparties`)
 }
+
+const getAllDocumentsByCounterparty = (data) => {
+    return api.post(`${documents}/contract/`, data)
+}
+const getAllDocumentsByCounterparty2 = (data) => {
+    return api.get(`${documents}/contract/?counterparty_like=${data}`)
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -290,5 +297,8 @@ export default {
     fullSearchDirectory,
     getManyCategoryDate,
     testCounterparty,
+
+    getAllDocumentsByCounterparty,
+    getAllDocumentsByCounterparty2,
 }
 
