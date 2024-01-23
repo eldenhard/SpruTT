@@ -175,10 +175,9 @@
                         <th>
                             <b-dropdown id="dropdown-1" text="Добавить поле" class="m-md-2">
                                 <b-dropdown id="dropdown-2" text="Груз" class="m-md-2" dropup style="width: 85%">
-                                    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по
-                                        ЕТСНГ</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Класс груза')">Класс груза</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти значный)</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ (123*)</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или 3)</b-dropdown-item>
                                 </b-dropdown>
                                 <b-dropdown id="dropdown-2" text="Грузоподъемность" dropleft  class="m-md-2" >
                                     <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Грузоподъемность
@@ -272,8 +271,11 @@
 
         </div>
 
-        <br><br><br>
+        <br><br>
 
+        <stavkipvWatchDB></stavkipvWatchDB>
+
+        <br><br>
 
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
@@ -288,12 +290,13 @@ import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from '../../../loader/loader.vue';
 import { mapState } from "vuex";
 import vSelect from "vue-select";
-
+import stavkipvWatchDB from "./stavkipvWatchDB.vue";
 export default {
     components: {
         Loader,
         Notifications,
         vSelect,
+        stavkipvWatchDB,
     },
     data() {
         return {
@@ -350,9 +353,7 @@ export default {
             }
         })
 
-        api2.getAllRoads()
-        .then(res => console.log(res))
-        .catch((err) => console.log(err))
+
 
     },
     computed: {
