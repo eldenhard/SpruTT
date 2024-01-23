@@ -920,7 +920,8 @@ export default {
         this.loader = true;
         if (this.checkCompleteData.length == 0) {
           this.loader = true
-
+            this.Standard.wagon_type = 'Цистерна'
+       
           api
             .postTarifData([this.Standard])
             .then((response) => {
@@ -987,12 +988,14 @@ export default {
               allCheckCompleteData.push(...this.checkCompleteData.map((item) => ({
                 ...item,
                 cargo: i,
-                wagon_type: 'Цистерна'
               })))
             }
             this.checkCompleteData = allCheckCompleteData
           }
-
+          this.checkCompleteData.forEach((item) => {
+           item.wagon_type = 'Цистерна'
+          })
+          console.log( this.checkCompleteData)
           api
             .postTarifData(this.checkCompleteData)
             .then((response) => {

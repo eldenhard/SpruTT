@@ -78,13 +78,13 @@
                     <th>Дата</th>
                     <th>Дата оконч.</th>
                     <th>Клиент</th>
-                    <th>Расстояние от</th>
+                    <!-- <th>Расстояние от</th>
                     <th>Расстояние до</th>
                     <th>Ставка</th>
                     <th>НДС</th>
                     <th>Груз</th>
                     <th>Станция отпр.</th>
-                    <th>Станция назн.</th>
+                    <th>Станция назн.</th> -->
                     <th>Ответственный</th>
                 </thead>
 
@@ -163,7 +163,7 @@
                                 </div>
                             </td>
 
-                            <td>
+                            <!-- <td>
                                 <div class="inputcontainer">
                                     <input :id="`distance_min` + item.id" v-model="item.distance_min"
                                         v-on:keyup.enter="submitData(item.distance_min, item.id, 'distance_min', 'distance_min_load')" />
@@ -191,9 +191,9 @@
                                         <i class="loader"></i>
                                     </div>
                                 </div>
-                            </td>
+                            </td> -->
                             <!-- СТАВКА ПРЕ -->
-                            <td>
+                            <!-- <td>
                                 <div class="inputcontainer">
                                     <input :id="`nds` + item.id" v-model="item.nds" type="number"
                                         v-on:keyup.enter="submitData(item.nds, item.id, 'nds', 'nds_load')" />
@@ -202,9 +202,9 @@
                                     </div>
                                 </div>
 
-                            </td>
+                            </td> -->
                             <!-- ГРУЗ -->
-                            <td>
+                            <!-- <td>
                                 <div class="inputcontainer">
                                     <input :id="`cargo` + item.id" v-model="item.cargo_id" type="number"
                                         v-on:keyup.enter="submitData(item.cargo_id, item.id, 'cargo', 'cargo_load')" />
@@ -213,9 +213,9 @@
                                     </div>
                                 </div>
 
-                            </td>
+                            </td> -->
                             <!-- СТанция отправления -->
-                            <td>
+                            <!-- <td>
                                 <div class="inputcontainer">
                                     <input :id="`departure_station` + item.id" v-model="item.departure_station_id"
                                         v-on:keyup.enter="submitData(item.departure_station_id, item.id, 'departure_station', 'departure_station_load')" />
@@ -224,10 +224,10 @@
                                         <i class="loader"></i>
                                     </div>
                                 </div>
-                            </td>
+                            </td> -->
 
                             <!-- destination_station -->
-                            <td>
+                            <!-- <td>
                                 <div class="inputcontainer">
                                     <input :id="`destination_station` + item.id" v-model="item.destination_station_id"
                                         v-on:keyup.enter="submitData(item.destination_station_id, item.id, 'destination_station', 'destination_station_load')" />
@@ -235,9 +235,9 @@
                                         style="display: none">
                                         <i class="loader"></i>
                                     </div>
-detailstr
+
                                 </div>
-                            </td>
+                            </td> -->
                             <!-- Ответственный -->
                             <td>
                                 <div class="inputcontainer">
