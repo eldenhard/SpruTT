@@ -189,9 +189,10 @@ const getFileFlights2 = (date_begin, date_end, wagon_types, belongs) => {
 const test = () => {
     return api.get(`${resource}/flights/belongs`)
 }
-const getAllRoads = () => {
-    return api.get(`${resource}/road/`)
+const getAllRoads = (road_name) => {
+    return api.get(`${resource}/roads/?name=${road_name}`)
 }
+// Получить все
 export default {
     getWagons,
     getWagon,

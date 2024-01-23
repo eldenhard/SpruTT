@@ -221,6 +221,10 @@ const getAllDocumentsByCounterparty = (data) => {
 const getAllDocumentsByCounterparty2 = (data) => {
     return api.get(`${documents}/contract/?counterparty_like=${data}`)
 }
+// Оперативная справка
+const sendDataForOperSpravka = (data) => {
+    return api.post(`${finance}/operativnaya-spravka/`,  data )
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -300,5 +304,9 @@ export default {
 
     getAllDocumentsByCounterparty,
     getAllDocumentsByCounterparty2,
+
+
+    // Оперативная справка
+    sendDataForOperSpravka,
 }
 

@@ -128,7 +128,7 @@
                         <tr v-for="att in item.attachments" :key="att.id">
                             <!-- <td>Приложение {{ att.agreement_number }}</td> -->
                             <details>
-                                <summary style="width: 78.5vw;  text-align: center !important;">
+                                <summary style="width: 70vw;  text-align: center !important;">
                                     Приложение {{ att.agreement_number }} <span v-if="att.attachments[0]?.on_date">от</span>
                                     {{ att.attachments[0]?.on_date?.split('-').reverse().join('.') }}
                                 </summary>
@@ -139,6 +139,9 @@
                             <th>Станция отпр.</th>
                             <th>Станция назн.</th>
                             <th>Груз</th>
+                            <th>Ставка</th>
+                            <th>Более/Менее</th>
+                            <th>Грузоподъем т</th>
                             <th>НДС</th>
                             <th>Коэффициент</th>
                             <th>Ответственный</th>
@@ -184,7 +187,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    {{ childr?.cargo_name }}
+                                    {{ childr?.cargo_var }}
                                     <!-- <div class="inputcontainer">
                                         <input :id="`cargo_name` + childr.id" type="text" v-model="childr.cargo_name"
                                             v-on:keyup.enter="
@@ -194,6 +197,18 @@
                                         </div>
                                     </div> -->
                                 </td>
+                                <td>
+                                    <div class="inputcontainer">
+                                        <input :id="`stavka` + childr.id" type="text" v-model="childr.stavka" v-on:keyup.enter="
+                                            submitData(childr.stavka, childr.id, 'stavka', 'stavka_load')
+                                            " />
+                                        <div class="icon-container" :id="`stavka_load` + childr.id" style="display: none">
+                                            <i class="loader"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ childr.capacity_compare == 'less' ? 'Менее' : 'Более' }}</td>
+                                <td>{{ childr.capacity_value}} </td>
                                 <td>
                                     <div class="inputcontainer">
                                         <input :id="`nds` + childr.id" type="text" v-model="childr.nds" v-on:keyup.enter="
@@ -610,11 +625,11 @@ export default {
         },
 
 
-        open_modal(id) {
-            // console.log(id)
-            this.selected_record = id
-            this.$bvModal.show('standard_directory_created')
-        },
+        // open_modal(id) {
+        //     // console.log(id)
+        //     this.selected_record = id
+        //     this.$bvModal.show('standard_directory_created')
+        // },
         deleteTarifData(id) {
             // console.log(id)
             this.loader = true
@@ -704,7 +719,5 @@ export default {
 input{
     width: 100%;
 }
-table{
-    width: 100%;
-}
+
 </style>

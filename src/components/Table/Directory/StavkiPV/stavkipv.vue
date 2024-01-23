@@ -161,6 +161,7 @@
 
             </section>
 
+
             <table>
                 <thead>
                     <tr style="background: #e1e1e2">
@@ -182,45 +183,60 @@
                                     <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
                                         3)</b-dropdown-item>
                                 </b-dropdown>
-                                <b-dropdown id="dropdown-2" text="Грузоподъемность" dropup class="m-md-2"
-                                    style="z-index: 5000 !important;">
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Грузоподъемность
+                                <b-dropdown id="dropdown-2" dropleft text="Грузоподъемность" class="m-md-2"
+                                    style="z-index: 50000000000 !important;">
+                                    <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Ставка при:
+                                        Грузоподъемность
                                         менее 65,5 т</b-dropdown-item>
-                                    <br>
+                                    <hr>
 
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 66 т')">Грузоподъемность менее
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 66 т')">Ставка
+                                        при: Грузоподъемность менее
                                         66 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 66 т')">Грузоподъемность 66
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 66 т')">Ставка при:
+                                        Грузоподъемность 66
                                         т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 66 т')">Грузоподъемность более
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 66 т')">Ставка
+                                        при: Грузоподъемность более
                                         66 т</b-dropdown-item>
-                                    <br>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69 т')">Грузоподъемность менее
+                                    <hr>
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 69 т')">Ставка
+                                        при: Грузоподъемность менее
                                         69 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 69 т')">Грузоподъемность 69
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 69 т')">Ставка при:
+                                        Грузоподъемность 69
                                         т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 69 т')">Грузоподъемность более
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 69 т')">Ставка
+                                        при: Грузоподъемность более
                                         69 т</b-dropdown-item>
-                                    <br>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 69,5 т')">Грузоподъемность
+                                    <hr>
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 69,5 т')">Ставка
+                                        при: Грузоподъемность
                                         менее 69,5 т</b-dropdown-item>
-                                    <br>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 70,3 т')">Грузоподъемность
+                                    <hr>
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 70,3 т')">Ставка
+                                        при: Грузоподъемность
                                         менее 70,3 т</b-dropdown-item>
-                                    <br>
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 71 т')">Грузоподъемность менее
+                                    <hr>
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 71 т')">Ставка
+                                        при: Грузоподъемность менее
                                         71 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 71 т')">Грузоподъемность 71
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 71 т')">Ставка при:
+                                        Грузоподъемность 71
                                         т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 71 т')">Грузоподъемность более
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 71 т')">Ставка
+                                        при: Грузоподъемность более
                                         71 т</b-dropdown-item>
-                                    <br>
+                                    <hr>
 
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 75 т')">Грузоподъемность менее
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 75 т')">Ставка
+                                        при: Грузоподъемность менее
                                         75 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность 75 т')">Грузоподъемность 75
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 75 т')">Ставка при:
+                                        Грузоподъемность 75
                                         т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Грузоподъемность более 75 т')">Грузоподъемность более
+                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 75 т')">Ставка
+                                        при: Грузоподъемность более
                                         75 т</b-dropdown-item>
                                 </b-dropdown>
                                 <b-dropdown-item @click="addField('Станция отправления')">Станция
@@ -305,7 +321,7 @@ export default {
     data() {
         return {
             visible: true,
-            picked: "agreement_number",
+            picked: "annex_number",
             placeholderAgreement: "введите номер договора",
             Standard: {
                 agreement_number: null,
@@ -356,7 +372,10 @@ export default {
                 bvEvent.preventDefault()
             }
         })
-
+        // apiWagon.getAllRoads(getAllRoads)
+        // .then(response => {
+        //     console.log(response.data.data)
+        // })
 
 
     },
@@ -564,6 +583,33 @@ export default {
                     data.splice(data.indexOf(i), 1);
                 }
             }
+            ////////////////////////
+            // let data2 = data.map(item => {
+            //     const newItem = [];
+            //     let stationIndex = -1;
+
+            //     for (let i = 0; i < this.selectedFields.length; i++) {
+            //         const currentField = this.selectedFields[i];
+            //         const currentValue = item[i] || '';  // Добавляем проверку на undefined
+            //         const parts = currentValue.match(/^(.*?)([А-Я]{3}[^ ]*)/);
+
+            //         if (stationIndex !== -1 && currentField.includes('Дорога')) {
+            //             // Разделяем по условиям, если после станции идет дорога
+            //             newItem.push(parts ? parts[1].trim() : '', parts ? parts[2].trim() : '');
+            //         } else if (currentField.includes('Станция')) {
+            //             // Если текущее поле - станция, записываем индекс
+            //             stationIndex = i;
+            //             newItem.push(parts ? parts[1].trim() : '', parts ? parts[2].trim() : '');
+            //         } else {
+            //             // Если не станция и не дорога, оставляем только три заглавные буквы
+            //             newItem.push(parts ? parts[2].trim() : '');
+            //         }
+            //     }
+
+            //     return newItem;
+            // }).map(subArray => subArray.filter(value => value !== ""))
+            // this.tableData = data2.map((secondItem, index) => [...secondItem, ...data[index].slice(2)])
+            ///////////////////
 
             let data2 = data.map(item => {
                 const newItem = [];
@@ -576,21 +622,24 @@ export default {
 
                     if (stationIndex !== -1 && currentField.includes('Дорога')) {
                         // Разделяем по условиям, если после станции идет дорога
-                        newItem.push(parts ? parts[1].trim() : '', parts ? parts[2].trim() : '');
+                        newItem.push(parts ? parts[1].trim() : '', parts ? (stationIndex !== -1 ? parts[2].trim().slice(0, 3) : parts[2].trim()) : '');
                     } else if (currentField.includes('Станция')) {
                         // Если текущее поле - станция, записываем индекс
                         stationIndex = i;
                         newItem.push(parts ? parts[1].trim() : '', parts ? parts[2].trim() : '');
+                    } else if (currentField.includes('Дорога') && i > 0 && this.selectedFields[i - 1].includes('Дорога')) {
+                        // Если текущее и предыдущее поля - дорога, оставляем только три заглавные буквы
+                        newItem.push(parts ? parts[2].trim().slice(0, 3) : '');
                     } else {
                         // Если не станция и не дорога, оставляем только три заглавные буквы
-                        newItem.push(parts ? parts[2].trim() : '');
+                        newItem.push(parts ? (stationIndex === -1 ? parts[2].trim().slice(0, 3) : parts[2].trim()) : '');
                     }
                 }
 
                 return newItem;
-            }).map(subArray => subArray.filter(value => value !== ""))
-            console.log(data)
+            }).map(subArray => subArray.filter(value => value !== ""));
             this.tableData = data2.map((secondItem, index) => [...secondItem, ...data[index].slice(2)])
+
             // КОНЕЦ РАБОЧЕГО КОДА
             this.excelData = "";
         },
@@ -607,11 +656,8 @@ export default {
                     let previousItem = this.selectedFields[i - 1]
                     if (currentItem.includes('Дорога') && (!previousItem || !previousItem.includes('Станция'))) {
                         arrIndexRoad.push(i)
-                        console.log(arrIndexRoad)
                     } else if (currentItem.includes('Станция')) {
                         arrIndexStation.push(i)
-                        console.log(arrIndexStation)
-
                     }
                 }
                 // Убираем повторные запросы оставляем только уникальные
@@ -671,42 +717,6 @@ export default {
                     }
                     return acc;
                 }, []);
-                // Преобразовать данные для каждого индекса
-                // const transformedData = this.tableData.map(item => {
-                //     const transformedValues = capacityIndices.map(index => {
-                //         const capacityField = this.selectedFields[index];
-                //         const capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
-                //         const capacity_value = parseFloat(item[index].replace(/[^0-9,]/g, '').replace(',', '.')) || 0; // Извлекаем только цифры и запятые
-
-                //         // Создаем объект с грузоподъемностью
-                //         const capacityObject = { capacity_compare, capacity_value };
-
-                //         // Обработка станций и дорог
-                //         for (let i = 0; i < item.length; i++) {
-                //             if (!capacityIndices.includes(i)) {
-                //                 const key = this.selectedFields[i];
-                //                 if (key === 'Станция отправления' || key === 'Станция назначения') {
-                //                     const translatedKey = translationMap[key] || key;
-                //                     capacityObject[translatedKey] = item[i];
-                //                 } else if (key.includes('Дорога') && (i === 0 || !this.selectedFields[i - 1].includes('Станция'))) {
-                //                     capacityObject[translationMap[key]] = item[i];
-                //                 } else if (key.includes('Дорога') && this.selectedFields[i - 1].includes('Станция')) {
-                //                     // Пропускаем вывод дороги после станции
-                //                 } else if (['Группа позиций по ЕТСНГ', 'Класс груза', 'Код ЕТСНГ'].includes(key)) {
-                //                     capacityObject['cargo_type'] = translationMap[key];
-                //                     capacityObject['cargo_var'] = item[i];
-                //                 } else {
-                //                     const newKey = translationMap[key] || key;
-                //                     capacityObject[newKey] = item[i];
-                //                 }
-                //             }
-                //         }
-
-                //         return capacityObject;
-                //     });
-                //     return transformedValues;
-                // });
-
 
                 // Преобразовать данные для каждого индекса
                 const transformedData = this.tableData.map(item => {
@@ -728,11 +738,15 @@ export default {
                                 if (key === 'Станция отправления' || key === 'Станция назначения') {
                                     const translatedKey = translationMap[key] || key;
                                     capacityObject[translatedKey] = item[i];
-                                } else if (key.includes('Дорога') && (i === 0 || !this.selectedFields[i - 1].includes('Станция'))) {
+                                }
+                                else if (key.includes('Дорога') && (i === 0 || !this.selectedFields[i - 1].includes('Станция'))) {
                                     capacityObject[translationMap[key]] = item[i];
-                                } else if (key.includes('Дорога') && this.selectedFields[i - 1].includes('Станция')) {
+                                }
+                                else if (key.includes('Дорога') && this.selectedFields[i - 1].includes('Станция')) {
                                     // Пропускаем вывод дороги после станции
-                                } else if (['Группа позиций по ЕТСНГ', 'Класс груза', 'Код ЕТСНГ'].includes(key)) {
+                                    // capacityObject[translationMap[key]] = 'УРААААА'
+                                }
+                                else if (['Группа позиций по ЕТСНГ', 'Класс груза', 'Код ЕТСНГ'].includes(key)) {
                                     capacityObject['cargo_type'] = translationMap[key];
                                     capacityObject['cargo_var'] = item[i];
                                 } else if (key === 'Cтавка НДС') {
@@ -749,7 +763,8 @@ export default {
                     return transformedValues;
                 });
 
-    
+
+
                 // Собираем все данные в огдин массив объектов
                 let finallyDataToSend = transformedData.flat().map(item => ({
                     ...item,
@@ -761,7 +776,8 @@ export default {
                     on_date: this.Standard.on_date,
                     end_date: this.Standard.end_date,
                     base: this.new_comp?.id,
-                    responsible: this.uid
+                    responsible: this.uid,
+                    wagon_type: 'Полувагон'
                 }));
                 console.log(finallyDataToSend)
                 api.postTarifData(finallyDataToSend)
@@ -784,7 +800,7 @@ export default {
                         this.showNotify = true;
                         setTimeout(() => {
                             this.showNotify = false;
-                        }, 2500);
+                        }, 5500);
                     })
             } catch {
                 this.loader = false
