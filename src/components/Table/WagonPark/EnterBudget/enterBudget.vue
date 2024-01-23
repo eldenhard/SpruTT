@@ -86,6 +86,7 @@ export default {
   },
   methods: {
     async sendDataToServer() {
+     
       this.loader = true;
       let allClientFlights = [];
       let request = await apiWagon.getClient();
@@ -142,6 +143,7 @@ export default {
    
     },
     loadFromExcel() {
+      this.hasError = false
       this.isDisabled = true
       const excelData = this.excelData;
       const rows = excelData.split("\n");
