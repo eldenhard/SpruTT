@@ -126,7 +126,7 @@ export default {
         .then(response => {
           console.log(response)
           matchedClients = []
-          // this.loader = false;
+          this.loader = false;
           // this.notifyHead = "Успешно";
           // this.notifyMessage = "Все данные загружены!";
           // this.notifyClass = "wrapper-success";
