@@ -126,12 +126,11 @@ export default {
         .then(response => {
           console.log(response)
           matchedClients = []
-          this.loader = false;
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Все данные загружены!";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          this.ClearTable() 
+          // this.loader = false;
+          // this.notifyHead = "Успешно";
+          // this.notifyMessage = "Все данные загружены!";
+          // this.notifyClass = "wrapper-success";
+          // this.showNotify = true;
           setTimeout(() => {
             this.showNotify = false;
           }, 3500);
