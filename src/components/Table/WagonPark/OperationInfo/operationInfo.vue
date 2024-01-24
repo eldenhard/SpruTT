@@ -21,7 +21,7 @@
                   
                 </label>
                 <br>
-                    <button class="Accept button" @click="Action" style="width:20vw !important; height: 40px;">Загрузить данные</button>
+                    <button class="Accept button" @click="Actioned()" style="width:20vw !important; height: 40px;">Загрузить данные</button>
             </div>
           
             <table>

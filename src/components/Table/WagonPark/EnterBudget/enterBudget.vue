@@ -86,13 +86,7 @@ export default {
       notifyClass: "",
     };
   },
- async mounted(){
-    let request = await apiWagon.getClient();
-    console.log(request.data)
-    for(let i of request.data){
-      console.log(i.client)
-    }
-  },
+
   methods: {
 
     async sendDataToServer() {
