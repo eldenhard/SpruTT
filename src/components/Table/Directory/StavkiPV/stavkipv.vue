@@ -821,29 +821,29 @@ export default {
 
                 console.log(finallyDataToSend, 'tetst');
 
-                // console.log(finallyDataToSend, 'tetst');
-                // api.postTarifData(finallyDataToSend)
-                //     .then(response => {
-                //         console.log(response)
-                //         this.loader = false
-                //         this.tableData = []
-                //         this.notifyHead = "Успешно";
-                //         this.notifyMessage = "Данные отправлены!";
-                //         this.notifyClass = "wrapper-success";
-                //         this.showNotify = true;
-                //         setTimeout(() => {
-                //             this.showNotify = false;
-                //         }, 2000);
-                //     }).catch((err) => {
-                //         console.log(err)
-                //         this.notifyHead = "Ошибка";
-                //         this.notifyMessage = err.response.data;
-                //         this.notifyClass = "wrapper-error";
-                //         this.showNotify = true;
-                //         setTimeout(() => {
-                //             this.showNotify = false;
-                //         }, 5500);
-                //     })
+                console.log(finallyDataToSend, 'tetst');
+                api.postTarifData(finallyDataToSend)
+                    .then(response => {
+                        console.log(response)
+                        this.loader = false
+                        this.tableData = []
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = "Данные отправлены!";
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 2000);
+                    }).catch((err) => {
+                        console.log(err)
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = err.response.data;
+                        this.notifyClass = "wrapper-error";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 5500);
+                    })
             } catch {
                 this.loader = false
                 this.notifyHead = "Ошибка";

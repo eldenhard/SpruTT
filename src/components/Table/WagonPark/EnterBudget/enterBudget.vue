@@ -23,14 +23,16 @@
       <textarea class="textarea" placeholder="Вставьте данные из Excel сюда" v-model.trim="excelData"></textarea>
       <button class="Request button" @click="loadFromExcel()">Сохранить данные в таблицу</button>
       <button class="Delete button" @click="ClearTable()" v-show="isShowClearButton">Очистить данные таблицы</button>
-      <button class="Accept button" @click="sendDataToServer()"  v-show="isShowClearButton">Отправить данные&nbsp;&nbsp;<b-icon icon="cursor-fill"
-          aria-hidden="true"></b-icon></button>
+      <button class="Accept button" @click="sendDataToServer()" v-show="isShowClearButton">Отправить
+        данные&nbsp;&nbsp;<b-icon icon="cursor-fill" aria-hidden="true"></b-icon></button>
       <Transition name="fade">
         <table v-if="show">
           <thead>
             <tr>
               <th>Действие</th>
               <th>Клиент</th>
+              <th>Станция отправления</th>
+              <th>Станция назначения</th>
               <th>Объемы, тн</th>
             </tr>
           </thead>
@@ -84,64 +86,113 @@ export default {
       notifyClass: "",
     };
   },
+ async mounted(){
+    let request = await apiWagon.getClient();
+    console.log(request.data)
+    for(let i of request.data){
+      console.log(i.client)
+    }
+  },
   methods: {
+
     async sendDataToServer() {
-     
-      this.loader = true;
+      this.loader = true
       let allClientFlights = [];
       let request = await apiWagon.getClient();
       allClientFlights.push(request.data);
 
+      let roadMemoize = {};
+      let roadSetCollection = new Set();
+
       // Создаем новый массив для совпадающих клиентов и их данных
       let matchedClients = [];
 
-      this.dataFromExcelData = this.dataFromExcelData.filter((item, index) => {
-        const matchingClient = allClientFlights[0].find((el) => item.client?.toLowerCase() === el.client?.toLowerCase());
+      // Собираем уникальные станции в коллекцию roadSetCollection
+      for (let item of this.dataFromExcelData) {
+        if (item.departure_station) {
+          roadSetCollection.add(item.departure_station);
+        }
+        if (item.destination_station) {
+          roadSetCollection.add(item.destination_station);
+        }
+      }
 
-        if (matchingClient) {
-          // Если найдено совпадение, добавляем в новый массив
-          const mergedItem = { ...item, ...matchingClient };
-          matchedClients.push(mergedItem);
-          return false; // Удаляем из текущего массива
-        } else {
-          // Если совпадение не найдено, заменяем значение контрагента
-          item.client = `Некорректный клиент. (тек. ${item.client})`;
+      // Запрос кодов для станций и запись в roadMemoize
+      let responsePromises = Array.from(roadSetCollection).map(async (station) => {
+        try {
+          const response = await apiWagon.getCurrentStation(station);
+          // Поиск объекта в массиве, сравнение в нижнем регистре
+          const matchingObject = response.data.data.find(obj =>
+            obj.name && obj.name.toLowerCase() === station?.toLowerCase()
+          );
 
-          return true; // Оставляем в текущем массиве
+          if (matchingObject) {
+            roadMemoize[station] = String(matchingObject.code);
+          } else {
+            roadMemoize[station] = `Некорректная станция: ${station}`;
+          }
+        } catch (error) {
+          console.error("Ошибка при запросе кода станции", error);
+          roadMemoize[station] = "Некорректная станция";
         }
       });
+
+      // Дожидаемся выполнения всех запросов
+      await Promise.allSettled(responsePromises);
+
+      this.dataFromExcelData = this.dataFromExcelData.map((item) => {
+        const matchingClient = allClientFlights[0].find((el) => item.client?.toLowerCase() === el.client?.toLowerCase());
+
+        // Проверка наличия станции в roadMemoize и ее корректности
+        const departureCode = roadMemoize[item.departure_station];
+        const destinationCode = roadMemoize[item.destination_station];
+
+        // Проверка корректности станций
+        const isDepartureStationCorrect = departureCode && !departureCode.includes("Некорректная");
+        const isDestinationStationCorrect = destinationCode && !destinationCode.includes("Некорректная");
+
+        if (matchingClient && isDepartureStationCorrect && isDestinationStationCorrect) {
+          // Если найдено совпадение и станции корректны, добавляем в новый массив
+          const mergedItem = {
+            ...item,
+            ...matchingClient,
+            departure_station: departureCode,
+            destination_station: destinationCode
+          };
+          matchedClients.push(mergedItem);
+          return null; // Удаляем из текущего массива
+        } else {
+          // Если совпадение не найдено или станции не корректны, заменяем значения
+          item.client = !item.client?.includes("Некорректный клиент") ? `Некорректный клиент: ${item.client}` : item.client;
+          item.departure_station = !isDepartureStationCorrect ? `Некорректная станция: ${item.departure_station}` : item.departure_station;
+          item.destination_station = !isDestinationStationCorrect ? `Некорректная станция: ${item.destination_station}` : item.destination_station;
+          return item; // Оставляем в текущем массиве
+        }
+      }).filter(Boolean);
+
       if (this.dataFromExcelData.length > 0) {
-        this.hasError = true
-      }
-      if (this.dataFromExcelData.length > 0) {
+        this.hasError = true;
         this.notifyHead = "Ошибка";
-        this.notifyMessage = "Корректные данные были отправлен. Пожалуйста исправьте ошибки и повторите попытку";
+        this.notifyMessage = "Корректные данные были отправлены. Пожалуйста, исправьте ошибки и повторите попытку";
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
         setTimeout(() => {
           this.showNotify = false;
         }, 3500);
       }
-      matchedClients.forEach((item) => item.wagon_type = this.wag_type)
+
+      matchedClients.forEach((item) => (item.wagon_type = this.wag_type));
       api.sendDataForOperSpravka(matchedClients)
         .then(response => {
           console.log(response)
           matchedClients = []
           this.loader = false;
-          // this.notifyHead = "Успешно";
-          // this.notifyMessage = "Все данные загружены!";
-          // this.notifyClass = "wrapper-success";
-          // this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3500);
         }).catch((err) => {
           console.log(err)
         })
-      // matchedClients содержит объекты, где совпали клиенты и соответствующие данные
-
-   
     },
+
+
     loadFromExcel() {
       this.hasError = false
       this.isDisabled = true
@@ -157,10 +208,22 @@ export default {
       });
 
       const newDataStructure = filteredData.map((row) => {
-        return this.wag_type == 'Полувагон' ? { client: row[0], loading_amount: Number(row[1]?.replace(" ", "")) }
-          : { client: row[0], volume: Number(row[1]?.replace(" ", "")) }
+        return this.wag_type == 'Полувагон' ? { client: row[0], departure_station: row[1], destination_station: row[2], loading_amount: Number(row[3]?.replace(" ", "")) }
+          : { client: row[0], departure_station: row[1], destination_station: row[2], volume: Number(row[3]?.replace(" ", "")) }
       });
+      for (let item of newDataStructure) {
+        // Обрезаем departure_station
+        if (item.departure_station) {
+          const match = item.departure_station.match(/^(.*?)[А-Я]{3}/);
+          item.departure_station = match ? match[1].replace(/,/g, '').trim() : item.departure_station.trim();
+        }
 
+        // Обрезаем destination_station
+        if (item.destination_station) {
+          const match = item.destination_station.match(/^(.*?)[А-Я]{3}/);
+          item.destination_station = match ? match[1].replace(/,/g, '').trim() : item.destination_station.trim();
+        }
+      }
       this.excelData = [];
       this.show = true;
       this.isShowClearButton = true;

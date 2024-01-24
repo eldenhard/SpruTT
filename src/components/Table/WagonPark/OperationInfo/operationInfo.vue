@@ -1,21 +1,29 @@
 <template>
     <div>
+        <Loader :loader="loader" />
         <div class="air_block">
             <div class="air_block_header">
                 <h5>Оперативная справка</h5>
             </div>
             <hr />
             <br />
-            <Periods @Action="Actioned" @data="getCurrentData">
-                <label for="">
+            <div class="filter_block" style="width: 35%; display: flex; flex-direction: column; position: relative;">
+                <label for="">Дата <br>
+                    <input type="date" class="textarea" style="width: 20vw !important;" v-model="date_begin" :min="'2024-01-01'">
+                </label>
+                <label for="" >
                     Тип вагона
                     <br />
-                    <select name="" id="" v-model="wag_type" style="width: 100%">
+                    <select name="" id="" v-model="wag_type" class="textarea" style="width:20vw !important;">
                         <option value="Полувагон">Полувагон</option>
                         <option value="Цистерна">Цистерна</option>
                     </select>
+                  
                 </label>
-            </Periods>
+                <br>
+                    <button class="Accept button" @click="Action" style="width:20vw !important; height: 40px;">Загрузить данные</button>
+            </div>
+          
             <table>
                 <thead>
                     <tr>
@@ -43,21 +51,30 @@
 
 <script>
 import Periods from "../../ManagmentRepReporting/Periods.vue";
+import api from '@/api/directory'
+import Loader from "@/components/loader/loader.vue";
 export default {
-    components: { Periods },
+    components: { Periods, Loader },
     data() {
         return {
             wag_type: "Полувагон",
-            date_begin: "",
+            date_begin: new Date().toISOString().slice(0,10),
             date_end: "",
+            loader: false,
         }
     }, methods: {
-        getCurrentData(data) {
-            this.date_begin = data.date_begin;
-            this.date_end = data.date_end;
-        },
+   
         Actioned() {
-
+            this.loader = true
+            api.getDataForOperSpravka(this.wag_type, this.date_begin)
+            .then(response => {
+                this.loader = false
+                console.log(response)
+            }).catch((err) => {
+                this.loader = false
+                console.log(err)
+              
+            })
         },
     }
 }

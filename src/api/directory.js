@@ -225,6 +225,9 @@ const getAllDocumentsByCounterparty2 = (data) => {
 const sendDataForOperSpravka = (data) => {
     return api.post(`${finance}/operativnaya-spravka/`,  data )
 }
+const getDataForOperSpravka = (wag_type, date) => {
+    return api.get(`${finance}/operativnaya-spravka/report/?wagon_type=${wag_type}&report_date=2024-01-23` )
+}
 export default {
     getAllcounterparties,
     putCounterparties,
@@ -308,5 +311,6 @@ export default {
 
     // Оперативная справка
     sendDataForOperSpravka,
+    getDataForOperSpravka,
 }
 
