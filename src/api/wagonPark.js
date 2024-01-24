@@ -190,7 +190,7 @@ const test = () => {
     return api.get(`${resource}/flights/belongs`)
 }
 const getAllRoads = (road_name) => {
-    return api.get(`${resource}/roads/?name=${road_name}`)
+    return api.get(`${resource}/roads/?page_size=500`)
 }
 // Получить все
 export default {

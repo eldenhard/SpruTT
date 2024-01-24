@@ -174,8 +174,8 @@
                         </template>
 
                         <th>
-                            <b-dropdown id="dropdown-1" text="Добавить поле" class="m-md-2" dropup>
-                                <b-dropdown id="dropdown-2" text="Груз" class="m-md-2" dropup style="width: 85%">
+                            <b-dropdown id="dropdown-1" text="Добавить поле" dropup class="m-md-2">
+                                <b-dropdown id="dropdown-2" text="Груз" class="m-md-2" dropleft style="width: 85%">
                                     <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
                                         значный)</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
@@ -185,60 +185,68 @@
                                 </b-dropdown>
                                 <b-dropdown id="dropdown-2" dropleft text="Грузоподъемность" class="m-md-2"
                                     style="z-index: 50000000000 !important;">
-                                    <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Ставка при:
-                                        Грузоподъемность
-                                        менее 65,5 т</b-dropdown-item>
-                                    <hr>
+                                    <div style="height: 30vh; overflow-y: auto;">
 
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 66 т')">Ставка
-                                        при: Грузоподъемность менее
-                                        66 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 66 т')">Ставка при:
-                                        Грузоподъемность 66
-                                        т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 66 т')">Ставка
-                                        при: Грузоподъемность более
-                                        66 т</b-dropdown-item>
-                                    <hr>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 69 т')">Ставка
-                                        при: Грузоподъемность менее
-                                        69 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 69 т')">Ставка при:
-                                        Грузоподъемность 69
-                                        т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 69 т')">Ставка
-                                        при: Грузоподъемность более
-                                        69 т</b-dropdown-item>
-                                    <hr>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 69,5 т')">Ставка
-                                        при: Грузоподъемность
-                                        менее 69,5 т</b-dropdown-item>
-                                    <hr>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 70,3 т')">Ставка
-                                        при: Грузоподъемность
-                                        менее 70,3 т</b-dropdown-item>
-                                    <hr>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 71 т')">Ставка
-                                        при: Грузоподъемность менее
-                                        71 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 71 т')">Ставка при:
-                                        Грузоподъемность 71
-                                        т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 71 т')">Ставка
-                                        при: Грузоподъемность более
-                                        71 т</b-dropdown-item>
-                                    <hr>
 
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 75 т')">Ставка
-                                        при: Грузоподъемность менее
-                                        75 т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 75 т')">Ставка при:
-                                        Грузоподъемность 75
-                                        т</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 75 т')">Ставка
-                                        при: Грузоподъемность более
-                                        75 т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Ставка при:
+                                            Грузоподъемность
+                                            менее 65,5 т</b-dropdown-item>
+                                        <hr>
+
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 66 т')">Ставка
+                                            при: Грузоподъемность менее
+                                            66 т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 66 т')">Ставка при:
+                                            Грузоподъемность 66
+                                            т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 66 т')">Ставка
+                                            при: Грузоподъемность более
+                                            66 т</b-dropdown-item>
+                                        <hr>
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 69 т')">Ставка
+                                            при: Грузоподъемность менее
+                                            69 т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 69 т')">Ставка при:
+                                            Грузоподъемность 69
+                                            т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 69 т')">Ставка
+                                            при: Грузоподъемность более
+                                            69 т</b-dropdown-item>
+                                        <hr>
+                                        <b-dropdown-item
+                                            @click="addField('Ставка при: Грузоподъемность менее 69,5 т')">Ставка
+                                            при: Грузоподъемность
+                                            менее 69,5 т</b-dropdown-item>
+                                        <hr>
+                                        <b-dropdown-item
+                                            @click="addField('Ставка при: Грузоподъемность менее 70,3 т')">Ставка
+                                            при: Грузоподъемность
+                                            менее 70,3 т</b-dropdown-item>
+                                        <hr>
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 71 т')">Ставка
+                                            при: Грузоподъемность менее
+                                            71 т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 71 т')">Ставка при:
+                                            Грузоподъемность 71
+                                            т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 71 т')">Ставка
+                                            при: Грузоподъемность более
+                                            71 т</b-dropdown-item>
+                                        <hr>
+
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 75 т')">Ставка
+                                            при: Грузоподъемность менее
+                                            75 т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 75 т')">Ставка при:
+                                            Грузоподъемность 75
+                                            т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 75 т')">Ставка
+                                            при: Грузоподъемность более
+                                            75 т</b-dropdown-item>
+                                    </div>
                                 </b-dropdown>
+
+
                                 <b-dropdown-item @click="addField('Станция отправления')">Станция
                                     отправления</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Станция назначения')">Станция
@@ -304,7 +312,6 @@
 <script>
 import Handsontable from "handsontable";
 import api from "@/api/directory";
-import api2 from "@/api/wagonPark";
 import apiWagon from '@/api/wagonPark';
 import Notifications from "@/components/notifications/Notifications.vue";
 import Loader from '../../../loader/loader.vue';
@@ -355,6 +362,7 @@ export default {
             notifyMessage: "",
             notifyClass: "",
 
+            allRoads: [],
             isDropdown2Visible: false,
         };
     },
@@ -372,10 +380,10 @@ export default {
                 bvEvent.preventDefault()
             }
         })
-        // apiWagon.getAllRoads(getAllRoads)
-        // .then(response => {
-        //     console.log(response.data.data)
-        // })
+        apiWagon.getAllRoads()
+            .then(response => {
+                this.allRoads.push(response.data.data)
+            })
 
 
     },
@@ -685,16 +693,16 @@ export default {
                 }
 
                 // Замена кратких наименований дорог на те, что есть в localStorage
-                const roads = JSON.parse(localStorage.getItem('road'));
-                this.tableData.forEach((row) => {
-                    arrIndexRoad.forEach((index) => {
-                        for (let i in roads) {
-                            if (roads[i] == row[index]) {
-                                row[index] = i;
-                            }
-                        }
-                    });
-                });
+                // const roads = JSON.parse(localStorage.getItem('road'));
+                // this.tableData.forEach((row) => {
+                //     arrIndexRoad.forEach((index) => {
+                //         for (let i in roads) {
+                //             if (roads[i] == row[index]) {
+                //                 row[index] = i;
+                //             }
+                //         }
+                //     });
+                // });
 
                 // Добавление данных о грузоподъемности
                 const translationMap = {
@@ -739,8 +747,13 @@ export default {
                                     const translatedKey = translationMap[key] || key;
                                     capacityObject[translatedKey] = item[i];
                                 }
-                                else if (key.includes('Дорога') && (i === 0 || !this.selectedFields[i - 1].includes('Станция'))) {
-                                    capacityObject[translationMap[key]] = item[i];
+                                // else if (key.includes('Дорога') && (i === 0 || !this.selectedFields[i - 1].includes('Станция'))) {
+                                //     capacityObject[translationMap[key]] = item[i];
+                                // }
+                                else if (key.includes('Дорога')) {
+                                    const isStationBeforeRoad = i > 0 && this.selectedFields[i - 1].includes('Станция');
+                                    const roadValue = isStationBeforeRoad ? '' : item[i].slice(0, 3);
+                                    capacityObject[translationMap[key]] = roadValue;
                                 }
                                 else if (key.includes('Дорога') && this.selectedFields[i - 1].includes('Станция')) {
                                     // Пропускаем вывод дороги после станции
@@ -779,29 +792,57 @@ export default {
                     responsible: this.uid,
                     wagon_type: 'Полувагон'
                 }));
-                console.log(finallyDataToSend)
-                api.postTarifData(finallyDataToSend)
-                    .then(response => {
-                        console.log(response)
-                        this.loader = false
-                        this.tableData = []
-                        this.notifyHead = "Успешно";
-                        this.notifyMessage = "Данные отправлены!";
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 2000);
-                    }).catch((err) => {
-                        console.log(err)
-                        this.notifyHead = "Ошибка";
-                        this.notifyMessage = err.response.data;
-                        this.notifyClass = "wrapper-error";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 5500);
-                    })
+
+                // const roads = JSON.parse(localStorage.getItem('road'));
+                // finallyDataToSend.forEach((row) => {
+                //     for (let i in roads) {
+                //         if (roads[i] == row[index]) {
+                //             row[index] = i;
+                //         }
+                //     }
+                // });
+
+
+                const roads = JSON.parse(localStorage.getItem('road'));
+                finallyDataToSend.forEach((row) => {
+                    arrIndexRoad.forEach((index) => {
+                        for (let i in roads) {
+                            if (row.departure_road && roads[i] == row.departure_road) {
+                                row.departure_road = this.allRoads[0].filter((item) => item?.name.toLowerCase().includes(i?.toLowerCase()))[0].id
+                            } else if (row.destination_road && roads[i] == row.destination_road) {
+                                row.destination_road = row.destination_road = this.allRoads[0].filter((item) => item?.name.toLowerCase().includes(i?.toLowerCase()))[0].id
+                            }
+                        }
+                    });
+                });
+
+
+
+                console.log(finallyDataToSend, 'tetst');
+
+                // console.log(finallyDataToSend, 'tetst');
+                // api.postTarifData(finallyDataToSend)
+                //     .then(response => {
+                //         console.log(response)
+                //         this.loader = false
+                //         this.tableData = []
+                //         this.notifyHead = "Успешно";
+                //         this.notifyMessage = "Данные отправлены!";
+                //         this.notifyClass = "wrapper-success";
+                //         this.showNotify = true;
+                //         setTimeout(() => {
+                //             this.showNotify = false;
+                //         }, 2000);
+                //     }).catch((err) => {
+                //         console.log(err)
+                //         this.notifyHead = "Ошибка";
+                //         this.notifyMessage = err.response.data;
+                //         this.notifyClass = "wrapper-error";
+                //         this.showNotify = true;
+                //         setTimeout(() => {
+                //             this.showNotify = false;
+                //         }, 5500);
+                //     })
             } catch {
                 this.loader = false
                 this.notifyHead = "Ошибка";
