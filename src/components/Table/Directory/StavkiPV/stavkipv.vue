@@ -619,6 +619,8 @@ export default {
             // this.tableData = data2.map((secondItem, index) => [...secondItem, ...data[index].slice(2)])
             ///////////////////
 
+
+
             let data2 = data.map(item => {
                 const newItem = [];
                 let stationIndex = -1;
@@ -635,10 +637,12 @@ export default {
                         // Если текущее поле - станция, записываем индекс
                         stationIndex = i;
                         newItem.push(parts ? parts[1].trim() : '', parts ? parts[2].trim() : '');
-                    } else if (currentField.includes('Дорога') && i > 0 && this.selectedFields[i - 1].includes('Дорога')) {
-                        // Если текущее и предыдущее поля - дорога, оставляем только три заглавные буквы
-                        newItem.push(parts ? parts[2].trim().slice(0, 3) : '');
-                    } else {
+                    } 
+                    // else if (currentField.includes('Дорога') && i > 0 && this.selectedFields[i - 1].includes('Дорога')) {
+                    //     // Если текущее и предыдущее поля - дорога, оставляем только три заглавные буквы
+                    //     newItem.push(parts ? parts[2].trim().slice(0, 3) : '');
+                    // } 
+                    else {
                         // Если не станция и не дорога, оставляем только три заглавные буквы
                         newItem.push(parts ? (stationIndex === -1 ? parts[2].trim().slice(0, 3) : parts[2].trim()) : '');
                     }
@@ -647,7 +651,13 @@ export default {
                 return newItem;
             }).map(subArray => subArray.filter(value => value !== ""));
             this.tableData = data2.map((secondItem, index) => [...secondItem, ...data[index].slice(2)])
-
+            console.log(this.selectedFields)
+            if(this.selectedFields[0] == 'Станция отправления' && this.selectedFields[1] == 'Дорога отправления' && this.selectedFields[2] == 'Дорога назначения'){
+               for(let i of this.tableData){
+                    i.splice(2, 1)
+               }
+            }
+            console.log(this.tableData)
             // КОНЕЦ РАБОЧЕГО КОДА
             this.excelData = "";
         },
@@ -793,16 +803,8 @@ export default {
                     wagon_type: 'Полувагон'
                 }));
 
-                // const roads = JSON.parse(localStorage.getItem('road'));
-                // finallyDataToSend.forEach((row) => {
-                //     for (let i in roads) {
-                //         if (roads[i] == row[index]) {
-                //             row[index] = i;
-                //         }
-                //     }
-                // });
 
-
+                // приведение дорог
                 const roads = JSON.parse(localStorage.getItem('road'));
                 finallyDataToSend.forEach((row) => {
                     arrIndexRoad.forEach((index) => {
@@ -815,7 +817,6 @@ export default {
                         }
                     });
                 });
-
 
 
                 console.log(finallyDataToSend, 'tetst');
