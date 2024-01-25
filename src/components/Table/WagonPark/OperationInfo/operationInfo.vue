@@ -48,16 +48,16 @@
                     </tr>
                     <tr v-for="item, index in responseServerData" :key="index">
                         <td>{{ item.client }}</td>
-                        <td>{{ item.metric?.toFixed(2) }}</td>
-                        <td>{{ item.metric_current_plan?.toFixed(2) }}</td>
-                        <td>{{ item.metric_current_fact?.toFixed(2) }}</td>
-                        <td>{{ item.metric_complete_abs?.toFixed(2) }}</td>
-                        <td>{{ item.metric_complete_rel?.toFixed(2) }}</td>
-                        <td>{{ item.revenue_wo_nds?.toFixed(2) }}</td>
-                        <td>{{ item.revenue_current_plan?.toFixed(2) }}</td>
-                        <td>{{ item.revenue_current_fact?.toFixed(2) }}</td>
-                        <td>{{ item.revenue_complete_abs?.toFixed(2) }}</td>
-                        <td>{{ item.revenue_complete_rel?.toFixed(2) }}</td>
+                        <td>{{ item.metric?.toFixed(0) }}</td>
+                        <td>{{ item.metric_current_plan?.toFixed(0) }}</td>
+                        <td>{{ item.metric_current_fact?.toFixed(0) }}</td>
+                        <td>{{ item.metric_complete_abs?.toFixed(0) }}</td>
+                        <td>{{ item.metric_complete_rel?.toFixed(0) }}</td>
+                        <td>{{ item.revenue_wo_nds?.toFixed(0) }}</td>
+                        <td>{{ item.revenue_current_plan?.toFixed(0) }}</td>
+                        <td>{{ item.revenue_current_fact?.toFixed(0) }}</td>
+                        <td>{{ item.revenue_complete_abs?.toFixed(0) }}</td>
+                        <td>{{ item.revenue_complete_rel?.toFixed(0) }}</td>
                     </tr>
                 </tbody>
             </table>
