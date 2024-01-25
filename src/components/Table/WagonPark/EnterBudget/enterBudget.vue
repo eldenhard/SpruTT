@@ -9,8 +9,11 @@
       <br />
       <p class="explanation">
         * Скопируйте данные из Excel и вставьте их в поле ввода <br />
-        * Нажмите "Сохранить данные в таблицу"
-        * Для редактирования полей таблице кликните на интересующее поле, чтобы сохранить нажмите Enter
+        * Нажмите "Сохранить данные в таблицу" <br>
+        * Для редактирования полей таблице кликните на интересующее поле, чтобы сохранить нажмите Enter <br>
+        <br>
+        * Если Вам была выдана ошибка - некорректный клиент, и Вам необходимо его корректное название, <br>
+        найдите его в выпадающем списке, при клике на клиента который Вам необходим, он скопируется в Ваш буфер обмена
       </p>
       <label for="">
         Тип вагона <br>
@@ -23,9 +26,16 @@
       <textarea class="textarea" placeholder="Вставьте данные из Excel сюда" v-model.trim="excelData"></textarea>
       <button class="Request button" @click="loadFromExcel()">Сохранить данные в таблицу</button>
       <button class="Delete button" @click="ClearTable()" v-show="isShowClearButton">Очистить данные таблицы</button>
-      <button class="Accept button" @click="sendDataToServer()" v-show="isShowClearButton">Отправить
-        данные&nbsp;&nbsp;<b-icon icon="cursor-fill" aria-hidden="true"></b-icon></button>
+      <button class="Accept button" @click="sendDataToServer()" v-show="isShowClearButton">Отправить данные&nbsp;&nbsp;
+        <b-icon icon="cursor-fill" aria-hidden="true"></b-icon></button>
+      <label for="" style="margin-left: 62% !important; margin-top: 4%;" v-show="isShowClearButton">Все клиенты <br>
+        <v-select v-model="curentClient" :options="allClientsResponse" label="client"
+          style="width: 20vw !important;"></v-select>
+      </label>
       <Transition name="fade">
+        <div style="width: 100%; overflow: auto;">  
+
+        
         <table v-if="show">
           <thead>
             <tr>
@@ -52,6 +62,7 @@
             </tr>
           </tbody>
         </table>
+      </div>
       </Transition>
     </div>
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
@@ -64,9 +75,10 @@ import api from '@/api/directory'
 import apiWagon from '@/api/wagonPark'
 import Loader from '@/components/loader/loader.vue';
 import Notifications from "@/components/notifications/Notifications.vue";
+import vSelect from "vue-select";
 
 export default {
-  components: { Loader, Notifications },
+  components: { Loader, Notifications, vSelect },
   data() {
     return {
       loader: false,
@@ -84,9 +96,28 @@ export default {
       notifyHead: "",
       notifyMessage: "",
       notifyClass: "",
+      allClientsResponse: [],
+      curentClient: "",
     };
   },
-
+  watch: {
+    curentClient() {
+      navigator.clipboard.writeText(this.curentClient.client)
+        .then(response => {
+          this.notifyHead = "Успешно!";
+          this.notifyMessage = "Корректный клиент скопирован";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 2500);
+        })
+    }
+  },
+  async mounted() {
+    let request = await apiWagon.getClient();
+    this.allClientsResponse = request.data
+  },
   methods: {
 
     async sendDataToServer() {
@@ -94,7 +125,7 @@ export default {
       let allClientFlights = [];
       let request = await apiWagon.getClient();
       allClientFlights.push(request.data);
-      console.log(allClientFlights)
+
       let roadMemoize = {};
       let roadSetCollection = new Set();
 
@@ -161,9 +192,9 @@ export default {
           return null; // Удаляем из текущего массива
         } else {
           // Если совпадение не найдено или станции не корректны, заменяем значения
-          item.client = !isClientCorrect ? `Некорректный клиент: ${ item.client }` : item.client;
-          item.departure_station = !isDepartureStationCorrect ? `Некорректная станция: ${ item.departure_station }` : item.departure_station;
-          item.destination_station = !isDestinationStationCorrect ? `Некорректная станция: ${ item.destination_station }` : item.destination_station;
+          item.client = !isClientCorrect ? `Некорректный клиент: ${item.client}` : item.client;
+          item.departure_station = !isDepartureStationCorrect ? `Некорректная станция: ${item.departure_station}` : item.departure_station;
+          item.destination_station = !isDestinationStationCorrect ? `Некорректная станция: ${item.destination_station}` : item.destination_station;
           return item; // Оставляем в текущем массиве
         }
       }).filter(Boolean);
