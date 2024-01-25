@@ -208,16 +208,19 @@ export default {
       for (let item of newDataStructure) {
         // Обрезаем departure_station
         if (item.departure_station) {
-          const match = item.departure_station.match(/^(.*?)[А-Я]{3}/);
+          const match = item.departure_station.match(/^(.*?)\s+[А-Я]{3}/);
           item.departure_station = match ? match[1].replace(/,/g, '').trim() : item.departure_station.trim();
         }
 
         // Обрезаем destination_station
         if (item.destination_station) {
-          const match = item.destination_station.match(/^(.*?)[А-Я]{3}/);
+          const match = item.destination_station.match(/^(.*?)\s+[А-Я]{3}/);
           item.destination_station = match ? match[1].replace(/,/g, '').trim() : item.destination_station.trim();
         }
       }
+
+
+      
       this.excelData = [];
       this.show = true;
       this.isShowClearButton = true;
