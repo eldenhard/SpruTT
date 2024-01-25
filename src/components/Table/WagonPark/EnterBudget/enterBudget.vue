@@ -24,45 +24,52 @@
       </label>
 
       <textarea class="textarea" placeholder="Вставьте данные из Excel сюда" v-model.trim="excelData"></textarea>
-      <button class="Request button" @click="loadFromExcel()">Сохранить данные в таблицу</button>
-      <button class="Delete button" @click="ClearTable()" v-show="isShowClearButton">Очистить данные таблицы</button>
-      <button class="Accept button" @click="sendDataToServer()" v-show="isShowClearButton">Отправить данные&nbsp;&nbsp;
-        <b-icon icon="cursor-fill" aria-hidden="true"></b-icon></button>
-      <label for="" style="margin-left: 62% !important; margin-top: 4%;" v-show="isShowClearButton">Все клиенты <br>
-        <v-select v-model="curentClient" :options="allClientsResponse" label="client"
-          style="width: 20vw !important;"></v-select>
-      </label>
-      <Transition name="fade">
-        <div style="width: 100%; overflow: auto;">  
-
-        
-        <table v-if="show">
-          <thead>
-            <tr>
-              <th>Действие</th>
-              <th>Клиент</th>
-              <th>Станция отправления</th>
-              <th>Станция назначения</th>
-              <th>Объемы, тн</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(row, rowIndex) in dataFromExcelData" :key="rowIndex" :class="{ errorText: hasError }">
-              <td class="deleteRow" @click="deleteRow(rowIndex)">Удалить</td>
-              <td v-for="(cell, cellIndex) in row" :key="cellIndex" style="position: relative"
-                :class="{ errorText: hasError }">
-                <input v-model="dataFromExcelData[rowIndex][cellIndex]" @click="editCell(rowIndex, cellIndex)"
-                  @blur="saveCell()" @keyup.enter="saveCell(rowIndex, cellIndex)"
-                  v-if="activeCell === `${rowIndex}-${cellIndex}`" ref="editableInput[rowIndex][cellIndex]"
-                  :class="{ errorText: hasError }" />
-                <div style="width: 100%" v-else @click="editCell(rowIndex, cellIndex)">
-                  <span class="editable-text">{{ cell }}</span>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="action_block">
+        <label for="" v-show="isShowClearButton">Все клиенты <br>
+          <v-select v-model="curentClient" :options="allClientsResponse" label="client"
+            style="width: 20vw !important;"></v-select>
+        </label>
+        <div class="btn_block">
+          <button class="Request button" @click="loadFromExcel()" style="margin-left: auto;">Сохранить данные в таблицу</button>
+          <button class="Delete button" @click="ClearTable()" v-show="isShowClearButton">Очистить данные таблицы</button>
+          <button class="Accept button" @click="sendDataToServer()" v-show="isShowClearButton">Отправить
+            данные&nbsp;&nbsp;
+            <b-icon icon="cursor-fill" aria-hidden="true"></b-icon></button>
+        </div>
       </div>
+
+
+      <Transition name="fade">
+        <div style="width: 100%; overflow: auto;">
+
+
+          <table v-if="show">
+            <thead>
+              <tr>
+                <th>Действие</th>
+                <th>Клиент</th>
+                <th>Станция отправления</th>
+                <th>Станция назначения</th>
+                <th>Объемы, тн</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, rowIndex) in dataFromExcelData" :key="rowIndex" :class="{ errorText: hasError }">
+                <td class="deleteRow" @click="deleteRow(rowIndex)">Удалить</td>
+                <td v-for="(cell, cellIndex) in row" :key="cellIndex" style="position: relative"
+                  :class="{ errorText: hasError }">
+                  <input v-model="dataFromExcelData[rowIndex][cellIndex]" @click="editCell(rowIndex, cellIndex)"
+                    @blur="saveCell()" @keyup.enter="saveCell(rowIndex, cellIndex)"
+                    v-if="activeCell === `${rowIndex}-${cellIndex}`" ref="editableInput[rowIndex][cellIndex]"
+                    :class="{ errorText: hasError }" />
+                  <div style="width: 100%" v-else @click="editCell(rowIndex, cellIndex)">
+                    <span class="editable-text">{{ cell }}</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </Transition>
     </div>
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
@@ -351,6 +358,15 @@ td:not(:first-child) {
   background: rgb(250, 228, 231);
 }
 
+.action_block {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn_block {
+  display: flex;
+  flex-direction: column;
+}
 
 .Accept,
 .Request,
@@ -359,7 +375,6 @@ td:not(:first-child) {
   margin-top: 2%;
   width: auto;
   height: 40px;
-  margin-left: auto;
 }
 
 .hot-display-license-info {
