@@ -94,7 +94,7 @@ export default {
       let allClientFlights = [];
       let request = await apiWagon.getClient();
       allClientFlights.push(request.data);
-
+      console.log(allClientFlights)
       let roadMemoize = {};
       let roadSetCollection = new Set();
 
@@ -134,6 +134,7 @@ export default {
       // Дожидаемся выполнения всех запросов
       await Promise.allSettled(responsePromises);
 
+
       this.dataFromExcelData = this.dataFromExcelData.map((item) => {
         const matchingClient = allClientFlights[0].find((el) => item.client?.toLowerCase() === el.client?.toLowerCase());
 
@@ -145,7 +146,10 @@ export default {
         const isDepartureStationCorrect = departureCode && !departureCode.includes("Некорректная");
         const isDestinationStationCorrect = destinationCode && !destinationCode.includes("Некорректная");
 
-        if (matchingClient && isDepartureStationCorrect && isDestinationStationCorrect) {
+        // Проверка на корректность клиента
+        const isClientCorrect = matchingClient && !item.client?.includes("Некорректный клиент");
+
+        if (isClientCorrect && isDepartureStationCorrect && isDestinationStationCorrect) {
           // Если найдено совпадение и станции корректны, добавляем в новый массив
           const mergedItem = {
             ...item,
@@ -157,9 +161,9 @@ export default {
           return null; // Удаляем из текущего массива
         } else {
           // Если совпадение не найдено или станции не корректны, заменяем значения
-          item.client = !item.client?.includes("Некорректный клиент") ? `Некорректный клиент: ${item.client}` : item.client;
-          item.departure_station = !isDepartureStationCorrect ? `Некорректная станция: ${item.departure_station}` : item.departure_station;
-          item.destination_station = !isDestinationStationCorrect ? `Некорректная станция: ${item.destination_station}` : item.destination_station;
+          item.client = !isClientCorrect ? `Некорректный клиент: ${ item.client }` : item.client;
+          item.departure_station = !isDepartureStationCorrect ? `Некорректная станция: ${ item.departure_station }` : item.departure_station;
+          item.destination_station = !isDestinationStationCorrect ? `Некорректная станция: ${ item.destination_station }` : item.destination_station;
           return item; // Оставляем в текущем массиве
         }
       }).filter(Boolean);
@@ -172,17 +176,29 @@ export default {
         this.showNotify = true;
         setTimeout(() => {
           this.showNotify = false;
-        }, 3500);
+        }, 5500);
+      } else {
+        this.notifyHead = "Успешно!";
+        this.notifyMessage = "Данные отправлены!";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => {
+          this.showNotify = false;
+        }, 2500);
       }
 
       matchedClients.forEach((item) => (item.wagon_type = this.wag_type));
+      this.loader = false
+      console.log(matchedClients)
       api.sendDataForOperSpravka(matchedClients)
         .then(response => {
           console.log(response)
           matchedClients = []
+
           this.loader = false;
         }).catch((err) => {
           console.log(err)
+          this.loader = false;
         })
     },
 
@@ -220,7 +236,7 @@ export default {
       }
 
 
-      
+
       this.excelData = [];
       this.show = true;
       this.isShowClearButton = true;
