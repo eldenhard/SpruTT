@@ -48,16 +48,16 @@
                     </tr>
                     <tr v-for="item, index in responseServerData" :key="index">
                         <td>{{ item.client }}</td>
-                        <td>{{ item.metric?.toFixed(0) }}</td>
-                        <td>{{ item.metric_current_plan?.toFixed(0) }}</td>
-                        <td>{{ item.metric_current_fact?.toFixed(0) }}</td>
-                        <td>{{ item.metric_complete_abs?.toFixed(0) }}</td>
-                        <td>{{ item.metric_complete_rel?.toFixed(0) }}</td>
-                        <td>{{ item.revenue_wo_nds?.toFixed(0) }}</td>
-                        <td>{{ item.revenue_current_plan?.toFixed(0) }}</td>
-                        <td>{{ item.revenue_current_fact?.toFixed(0) }}</td>
-                        <td>{{ item.revenue_complete_abs?.toFixed(0) }}</td>
-                        <td>{{ item.revenue_complete_rel?.toFixed(0) }}</td>
+                        <td>{{ item.metric | format }}</td>
+                        <td>{{ item.metric_current_plan | format }}</td>
+                        <td>{{ item.metric_current_fact | format }}</td>
+                        <td>{{ item.metric_complete_abs | format }}</td>
+                        <td>{{ item.metric_complete_rel | format }}</td>
+                        <td>{{ item.revenue_wo_nds | format }}</td>
+                        <td>{{ item.revenue_current_plan | format }}</td>
+                        <td>{{ item.revenue_current_fact | format }}</td>
+                        <td>{{ item.revenue_complete_abs | format }}</td>
+                        <td>{{ item.revenue_complete_rel | format }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -81,6 +81,16 @@ export default {
             loader: false,
             responseServerData: ""
         }
+    },
+    filters: {
+        format(value) {
+            if (value != "" && !!value) {
+                let TwoSignNum = value?.toFixed(0)
+                return String(TwoSignNum).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+            }
+            return value
+
+        },
     },
     watch:{
         wag_type(){
