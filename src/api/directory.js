@@ -226,7 +226,7 @@ const sendDataForOperSpravka = (data) => {
     return api.post(`${finance}/operativnaya-spravka/`,  data )
 }
 const getDataForOperSpravka = (wag_type, date) => {
-    return api.get(`${finance}/operativnaya-spravka/report/?wagon_type=${wag_type}&report_date=2024-01-23` )
+    return api.get(`${finance}/operativnaya-spravka/report/?wagon_type=${wag_type}&report_date=${date}` )
 }
 export default {
     getAllcounterparties,

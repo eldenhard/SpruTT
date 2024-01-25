@@ -42,6 +42,24 @@
                         <th :class="[ wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell' ]">{{ wag_type == 'Полувагон' ? ' Выполнение отн.' : '% выполнения'}}  </th>
                     </tr>
                 </thead>
+                <tbody>
+                    <tr v-if="Array.isArray(responseServerData) && responseServerData.length == 0">
+                        <td colspan="11">По выбранным параметрам нет данных</td>
+                    </tr>
+                    <tr v-for="item, index in responseServerData" :key="index">
+                        <td>{{ item.client }}</td>
+                        <td>{{ item.metric?.toFixed(2) }}</td>
+                        <td>{{ item.metric_current_plan?.toFixed(2) }}</td>
+                        <td>{{ item.metric_current_fact?.toFixed(2) }}</td>
+                        <td>{{ item.metric_complete_abs?.toFixed(2) }}</td>
+                        <td>{{ item.metric_complete_rel?.toFixed(2) }}</td>
+                        <td>{{ item.revenue_wo_nds?.toFixed(2) }}</td>
+                        <td>{{ item.revenue_current_plan?.toFixed(2) }}</td>
+                        <td>{{ item.revenue_current_fact?.toFixed(2) }}</td>
+                        <td>{{ item.revenue_complete_abs?.toFixed(2) }}</td>
+                        <td>{{ item.revenue_complete_rel?.toFixed(2) }}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
 
@@ -61,15 +79,22 @@ export default {
             date_begin: new Date().toISOString().slice(0,10),
             date_end: "",
             loader: false,
+            responseServerData: ""
         }
-    }, methods: {
+    },
+    watch:{
+        wag_type(){
+            this.responseServerData = ""
+        }
+    },
+    methods: {
    
         Actioned() {
             this.loader = true
             api.getDataForOperSpravka(this.wag_type, this.date_begin)
             .then(response => {
                 this.loader = false
-                console.log(response)
+               this.responseServerData = response.data
             }).catch((err) => {
                 this.loader = false
                 console.log(err)
