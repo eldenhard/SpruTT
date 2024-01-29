@@ -178,11 +178,35 @@
                                 </td>
                                 <td>
                                     <div class="inputcontainer">
+                                        <input :id="`departure_road_id` + childr.id" type="text"
+                                            v-model="childr.departure_road_id_name" v-on:keyup.enter="
+                                                submitData(childr.departure_road_id_name, childr.id, 'departure_road_id', 'departure_road_id_load', $event)
+                                                " />
+                                        <div class="icon-container" :id="`departure_road_id_load` + childr.id"
+                                            style="display: none">
+                                            <i class="loader"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="inputcontainer">
                                         <input :id="`destination_station` + childr.id" type="text"
                                             v-model="childr.destination_station_name" v-on:keyup.enter="
                                                 submitData(childr.destination_station_name, childr.id, 'destination_station', 'destination_station_load', $event)
                                                 " />
                                         <div class="icon-container" :id="`destination_station_load` + childr.id"
+                                            style="display: none">
+                                            <i class="loader"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="inputcontainer">
+                                        <input :id="`destination_road_id` + childr.id" type="text"
+                                            v-model="childr.destination_road_id_name" v-on:keyup.enter="
+                                                submitData(childr.destination_road_id_name, childr.id, 'destination_road_id', 'destination_road_id_load', $event)
+                                                " />
+                                        <div class="icon-container" :id="`destination_road_id_load` + childr.id"
                                             style="display: none">
                                             <i class="loader"></i>
                                         </div>
@@ -282,6 +306,7 @@ export default {
                 page_size: "100",
                 client: "",
                 cargo: "",
+                wagon_type: "Полувагон"
             },
             showNotify: false,
             notifyHead: "",

@@ -78,7 +78,7 @@
                             </td>
                         </tr>
                         <br />
-                        <tr v-show="visible_agreement">
+                        <tr v-if="visible_agreement">
                             <td class="col1">Все договора <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
                             <td>
                                 <v-select v-model="new_comp" :options="all_agreement_number"
@@ -328,7 +328,7 @@ export default {
     data() {
         return {
             visible: true,
-            picked: "annex_number",
+            picked: "agreement_number",
             placeholderAgreement: "введите номер договора",
             Standard: {
                 agreement_number: null,

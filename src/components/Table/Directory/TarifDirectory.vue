@@ -79,10 +79,11 @@
       окончили ввод <br />
       &nbsp;(если индикация зеленая - все хорошо, в противном случае
       ознакомьтесь с ошибкой)
-      <br /> 
+      <br />
       * Наименования станций при редактировании должны вбиваться в таком формате: Тобольск СВР, Парто Цкали ГРЗ <br>
       &nbsp;То есть обязательно краткое наименование дороги<br>
-      * При выборе груза отличного от знака "—" вводить код не нужно, данные подгрузятся автоматическиб=, и поле ввода будет заблокировано
+      * При выборе груза отличного от знака "—" вводить код не нужно, данные подгрузятся автоматическиб=, и поле ввода
+      будет заблокировано
 
 
       <br />
@@ -146,12 +147,13 @@
         <tr v-show="visible_agreement">
           <td class="col1">Все договора</td>
           <td>
-            <select name="" id="" v-model="agreement_number_test" @change="test()">
+            <v-select v-model="agreement_number_test" :options="all_agreement_number" label="agreement_number" ></v-select>
+            <!-- <select name="" id="" v-model="agreement_number_test" @change="test()">
               <option :value="[item.agreement_number, item.client, item.id]" v-for="item in all_agreement_number"
                 :key="item.id">
                 {{ item.agreement_number }} {{ item.client }} {{ item.on_date }}
               </option>
-            </select>
+            </select> -->
           </td>
         </tr>
         <br />
@@ -208,7 +210,7 @@
       <table border="1" class="table_stavka" v-show="visible">
 
         <tr>
-          <td ></td>
+          <td></td>
           <td style="border: 1px solid black">
             <input type="text" name="" id="departure_station" @keyup.enter="saveTarif($event)"
               placeholder="скопируйте и вставьте данные" />
@@ -219,7 +221,7 @@
           </td>
           <td style="border: 1px solid black">
             <input type="text" name="" id="cargo" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" :disabled="disabled_cargo"/>
+              placeholder="скопируйте и вставьте данные" :disabled="disabled_cargo" />
           </td>
           <td style="border: 1px solid black">
             <input type="text" name="" id="stavka" @keyup.enter="saveTarif($event)"
@@ -239,7 +241,7 @@
           <th style="border: 1px solid black">Станция отпр.</th>
           <th style="border: 1px solid black">Станция назн.</th>
           <th style="border: 1px solid black">Груз(ЕСТНГ)<select name="" id="" v-model="which_cargo" style="width: 60%">
-            <option value="">—</option>
+              <option value="">—</option>
               <option value="top_diz">Топ.диз</option>
               <option value="anothertop">Отд.виды топ.</option>
               <option value="benz">Бензины</option>
@@ -248,8 +250,8 @@
 
             </select></th>
           <th style="border: 1px solid black">Ставка без НДС</th>
-          <th style="border: 1px solid black; position: relative;">
-            НДС <select name="" id="" v-model="which_nds" style="width: 70%">
+          <th style="border: 1px solid black; position: relative;">НДС
+            <select name="" id="" v-model="which_nds" style="width: 70%">
               <option value="percent">%</option>
               <option value="value">Сумма</option>
             </select>
@@ -312,6 +314,7 @@ import Notifications from "@/components/notifications/Notifications.vue";
 import api from "@/api/directory";
 import api_wagon from "@/api/wagonPark";
 import TarifDirectoryCreated from "./TarifDirectoryCreated.vue";
+import vSelect from "vue-select";
 
 class Stavki {
   constructor() {
@@ -338,7 +341,7 @@ class Stavki {
   // }
 }
 export default {
-  components: { Loader, Notifications, TarifDirectoryCreated },
+  components: { Loader, Notifications, TarifDirectoryCreated, vSelect },
   data() {
     return {
       disabled_cargo: false,
@@ -398,10 +401,10 @@ export default {
 
       return this.Standard.client.length > 1
         ? this.name_client.filter((item) =>
-            item.client
-              .toLowerCase()
-              .includes(this.Standard.client.toLowerCase())
-          )
+          item.client
+            .toLowerCase()
+            .includes(this.Standard.client.toLowerCase())
+        )
         : "";
     },
     filter_cargo() {
@@ -410,8 +413,8 @@ export default {
       }
       return this.cargo_user.length > 1
         ? this.name_cargo.filter((item) =>
-            item.name.toLowerCase().includes(this.cargo_user.toLowerCase())
-          )
+          item.name.toLowerCase().includes(this.cargo_user.toLowerCase())
+        )
         : "";
     },
   },
@@ -421,10 +424,10 @@ export default {
     this.getAllAgreement();
   },
   watch: {
-    which_cargo(){
-      if(this.which_cargo == ""){
+    which_cargo() {
+      if (this.which_cargo == "") {
         this.disabled_cargo = false
-      }else {
+      } else {
         this.disabled_cargo = true
       }
     },
@@ -445,15 +448,16 @@ export default {
       }
     },
     agreement_number_test() {
-      console.log(this.agreement_number_test);
+      this.Standard.agreement_number = this.agreement_number_test.agreement_number;
+      this.Standard.client = this.agreement_number_test.client;
+      this.Standard.base = this.agreement_number_test.id;
       this.flagCheck = false;
     },
   },
   methods: {
     getAllAgreement() {
       api
-        .getAllDocuments()
-        .then((response) => {
+        .getAllDocuments().then((response) => {
           let data = response.data.data;
           // console.log(data);
           let arr = [];
@@ -474,7 +478,7 @@ export default {
             ) {
               acc.push(item);
             }
-            return acc;
+            return acc.sort();
           }, []);
 
           this.loader = false;
@@ -485,9 +489,15 @@ export default {
         });
     },
     test() {
-      this.Standard.agreement_number = this.agreement_number_test[0];
-      this.Standard.client = this.agreement_number_test[1];
-      this.Standard.base = this.agreement_number_test[2];
+      // console.log(this.agreement_number_test)
+      // this.Standard.agreement_number = this.agreement_number_test[0];
+      // this.Standard.client = this.agreement_number_test[1];
+      // this.Standard.base = this.agreement_number_test[2];
+
+      this.Standard.agreement_number = this.agreement_number_test.agreement_number;
+      this.Standard.client = this.agreement_number_test.client;
+      this.Standard.base = this.agreement_number_test.id;
+
       // console.log(this.agreement_number_test)
     },
     saveDistance(event) {
@@ -717,8 +727,7 @@ export default {
               !res.data.data[0].code
             ) {
               throw new Error(
-                `Ошибка: Не удалось получить код станции "${station_name}" (код) на строке ${
-                  index + 1
+                `Ошибка: Не удалось получить код станции "${station_name}" (код) на строке ${index + 1
                 }`
               );
             }
@@ -734,8 +743,7 @@ export default {
             return stationCode6;
           } else {
             throw new Error(
-              `Совпадений для станции "${station_name}" (код) не найдено на строке ${
-                index + 1
+              `Совпадений для станции "${station_name}" (код) не найдено на строке ${index + 1
               }`
             );
           }
@@ -920,8 +928,8 @@ export default {
         this.loader = true;
         if (this.checkCompleteData.length == 0) {
           this.loader = true
-            this.Standard.wagon_type = 'Цистерна'
-       
+          this.Standard.wagon_type = 'Цистерна'
+
           api
             .postTarifData([this.Standard])
             .then((response) => {
@@ -984,7 +992,7 @@ export default {
                 break;
             }
             const allCheckCompleteData = []
-            for(let i of which_cargo_check){
+            for (let i of which_cargo_check) {
               allCheckCompleteData.push(...this.checkCompleteData.map((item) => ({
                 ...item,
                 cargo: i,
@@ -993,9 +1001,9 @@ export default {
             this.checkCompleteData = allCheckCompleteData
           }
           this.checkCompleteData.forEach((item) => {
-           item.wagon_type = 'Цистерна'
+            item.wagon_type = 'Цистерна'
           })
-          console.log( this.checkCompleteData)
+          console.log(this.checkCompleteData)
           api
             .postTarifData(this.checkCompleteData)
             .then((response) => {

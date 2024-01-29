@@ -133,7 +133,7 @@ const getAllTarifDataPagination = (filter_arendaData, page_size, page_number) =>
     return api.get(`${finance}/stavki-revenue/?page_size=${page_size}&page=${page_number}`,   {params: filter_arendaData})
 }
 const getAllDocuments = () => {
-    return api.get(`${finance}/stavki-revenue/?page_size=1_000_000`, )
+    return api.get(`${finance}/stavki-revenue/?page_size=1_000_000&wagon_type=Цистерна`, )
 }
 const getAllDocumentsByClient = (client) => {
     return api.get(`${finance}/stavki-revenue/?page_size=1_000_000&client=${client}`, )

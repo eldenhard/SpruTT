@@ -389,7 +389,7 @@
                                             v-model="childr.departure_station_name" v-on:keyup.enter="
                                                 submitData(childr.departure_station_name, childr.id, 'departure_station', 'departure_station_load', $event)
                                                 " 
-                                               
+                                               @contextmenu.prevent="getFullInformationByRequest(childr.departure_station_name)"
                                                  />
                                         <div class="icon-container" :id="`departure_station_load` + childr.id"
                                             style="display: none">
@@ -403,7 +403,7 @@
                                             v-model="childr.destination_station_name" v-on:keyup.enter="
                                                 submitData(childr.destination_station_name, childr.id, 'destination_station', 'destination_station_load', $event)
                                                 "
-                                            
+                                               @contextmenu.prevent="getFullInformationByRequest(childr.destination_station_name)"
                                                  />
                                         <div class="icon-container" :id="`destination_station_load` + childr.id"
                                             style="display: none">
@@ -466,7 +466,7 @@ export default {
             loader: false,
             loader_mini: false,
             data: "",
-            interval: 1,
+            interval: 3,
             pagination: "",
             total_pages: "",
             total_objects: 0,
@@ -478,6 +478,8 @@ export default {
                 page_size: "100",
                 client: "",
                 cargo: "",
+                wagon_type: "Цистерна"
+
             },
             showNotify: false,
             notifyHead: "",
@@ -525,6 +527,28 @@ export default {
         },
     },
     methods: {
+        getFullInformationByRequest(val){
+            this.loader = true
+            apiStations.getCurrentStation(val)
+            .then((response => {
+                let fullInformationBySation = response.data.data.filter(item => item.name.toLowerCase() == val.toLowerCase())[0]
+                console.log(fullInformationBySation)
+                this.loader = false;
+                this.notifyHead = "Успешно";
+                this.notifyMessage = `Станция: ${fullInformationBySation.name} <br>
+                                        Дорога: ${fullInformationBySation.road.name}`;
+                this.notifyClass = "wrapper-success";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 4000);
+
+            })).catch((err) => {
+                console.log(err)
+                this.loader = false
+            })
+            
+        },
         deleteRow(index) {
             this.data.splice(index, 1);
         },
