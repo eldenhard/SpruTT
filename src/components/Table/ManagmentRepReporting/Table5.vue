@@ -159,6 +159,12 @@ export default {
     },
     unloadingFilgts() {
       this.loader = true
+      if(!this.date_begin.includes('00:00')){
+        this.date_begin = this.date_begin + " 00:00:00"
+      } 
+      if(!this.date_end.includes('23:59')){
+        this.date_end = this.date_end + " 23:59:59"
+      }
       apiWagonPark.getFileFlights2(this.date_begin, this.date_end, this.wag_type, "")
         .then(response => {
           this.loader = false

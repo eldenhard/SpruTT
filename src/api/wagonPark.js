@@ -184,7 +184,7 @@ const getFileFlights = (date_begin, date_end, wagon_types, belongs) => {
     return api.get(`${resource}/flights/export-to-file?date_begin=${date_begin} 00:00:00&date_end=${date_end} 00:00:00&wagon_types=${wagon_types}&belongs=${belongs}`)
 }
 const getFileFlights2 = (date_begin, date_end, wagon_types, belongs) => {
-    return api.get(`${resource}/flights/export-to-file/?date_begin=${date_begin} 00:00:00&date_end=${date_end} 00:00:00&wagon_types=${wagon_types}&belongs=${belongs}`)
+    return api.get(`${resource}/flights/export-to-file/?date_begin=${date_begin}&date_end=${date_end}&wagon_types=${wagon_types}&belongs=${belongs}`)
 }
 const test = () => {
     return api.get(`${resource}/flights/belongs`)
