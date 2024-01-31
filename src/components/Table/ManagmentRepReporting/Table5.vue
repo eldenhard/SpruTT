@@ -168,16 +168,10 @@ export default {
       apiWagonPark.getFileFlights2(this.date_begin, this.date_end, this.wag_type, "")
         .then(response => {
           this.loader = false
-          // let link = document.createElement('a')
-          // link.href = response.data.share_storage
-          // link.click()
-          // link.remove()
-          navigator.clipboard.writeText(response.data.share_storage)
-            this.notifyHead = "Успешно";
-            this.notifyMessage = "Ссылка на файл скопирована.";
-            this.notifyClass = "wrapper-success";
-            this.showNotify = true;
-            setTimeout(() => this.showNotify = false, 2500);
+    
+          let link = document.createElement('a')
+          link.href = response.data.local_storage
+          link.click()
         }).catch((err) => {
           console.log(err)
           this.loader = false
