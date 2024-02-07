@@ -33,8 +33,8 @@
 
 
       <section class="advanced_settings_block">
-        <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">{{ !isAdvancedSettings
-          ? "Расширенный поиск" : 'Закрыть' }}</button>
+        <button class="Action button" @click="isAdvancedSettings = !isAdvancedSettings">{{ !isAdvancedSettings ?
+          "Расширенный поиск" : 'Закрыть' }}</button>
         <Transition name="fade">
           <div v-if="isAdvancedSettings" class="advanced_settings">
             <div class="section_category">
@@ -92,36 +92,6 @@
               </div>
             </div>
             <hr v-show="searchFullSetting.category == ''">
-            <!-- <div class="inn_ogrn">
-              <div class="left_section">
-                <p>ИНН/ОГРН</p>
-              </div>
-              <div class="right_section">
-                <input type="number" class="textarea" placeholder="ИНН" v-model="searchFullSetting.inn">
-                <input type="number" class="textarea" placeholder="ОГРН" v-model="searchFullSetting.ogrn">
-                <button class="Request" @click="sendFullDescriptionSearch(searchFullSetting)"
-                  style="width: 100%; border-radius: 8px;">
-                  <span>Найти контрагента</span>
-                </button>
-                <div v-if="Counterparty">
-                  {{ Counterparty?.work_name }}<b-icon icon="x-lg" @click="deleteCurrentCounterparty()"
-                    variant="danger"></b-icon>
-                </div>
-              </div>
-            </div>
-
-
-
-            <div class="answer_block" v-if="answerBlock">
-
-              <ul>
-                <li v-for="item, index in arrInnOgrn" :key="index" @click="checkCounterparty(item)">
-                  <b-icon icon="search" variant="secondary"></b-icon>
-                  <span>{{ item?.work_name }} / ИНН {{ item?.inn }} / ОГРН {{ item?.ogrn }}</span>
-                </li>
-              </ul>
-            </div>
-            <hr> -->
 
 
             <button class="Request" style="border-radius: 8px; margin-left: auto;" @click="sendToServerFullDecription()">
@@ -135,74 +105,7 @@
 
       <br>
 
-      <div
-        style=" width: 100%; overflow: auto; position: relative; left: 50%; transform: translate(-50%, 0); max-height: 70vh;">
-        <h4>{{ commentForResponse }}</h4>
-        <ul>
-          <li class="responseListItem" v-for="item, index in dataForTable" :key="index" style="margin-top: 2%;">
-            <b-icon icon="file-earmark-medical" variant="success"></b-icon>
-
-
-            <b class="superB"> {{ searchFullSetting.type == 'false' ? 'Договор' : 'Приложение' }}:</b>
-            {{ searchFullSetting.type == 'false' ? item?.number : item?.annex }}
-            {{ searchFullSetting.type == 'false' ? "" : '№' + ' ' + item?.annex_number }} <br>
-
-            <b v-if="searchFullSetting.type == 'true'" class="superB">К договору</b> {{ searchFullSetting.type == 'false'
-              ? "" : item?.number }}
-
-            <b class="superB">Тип:</b> {{ item?.contract_type }} <br>
-            <b class="superB">Дата создания: </b>
-            {{ searchFullSetting.type == 'false' ? item?.created_at ? item?.created_at : "—" : item?.annex_date?.slice(0,
-              10).split('-').reverse().join(".") }}
-            <br>
-            <b class="superB" v-if="searchFullSetting.type == 'false'">Дата окончания: </b>
-            {{ searchFullSetting.type == 'false' ? item?.expiration_date?.slice(0, 10).split('-').reverse().join(".") :
-              "" }}
-            <br v-if="searchFullSetting.type == 'false'">
-
-            <b class="superB">Предмет договора</b> {{ item?.contract_object }} <br>
-            <b class="superB">Контрагент: </b> {{ item?.counterparty }} <br>
-            <b class="superB">Статус: </b> {{ TranslateTypeCategory(item?.category) }} <br>
-            <b class="superB">Вид: </b> {{ TypeAgr(item?.category) }} <br>
-
-            <div @click="CopyTEXT(item?.scan_path)">
-              <b class="superB">Ссылка: </b>
-              <b-icon icon="link" variant="primary" font-scale="1.4"></b-icon>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="filter_new_block">
-        <b-icon icon="funnel-fill" :variant="isShowFilter ? 'primary' : 'dark'" font-scale="1.4"
-          style="margin-left: 95% !important;" @click="isShowFilter = !isShowFilter"></b-icon>
-        <div class="filter" v-if="isShowFilter">
-          <div class="dnr">
-            <p align="center">
-              <b>Статус</b>
-            </p>
-            <label for="f1"> <input type="radio" name="" id="f1" v-model="type_filer1" value="doh"> Доходный
-            </label>
-            <label for="f12"> <input type="radio" name="" id="f12" v-model="type_filer1" value="rash"> Расходный
-            </label>
-            <br>
-            <button type="button" class="btn btn-secondary" @click="type_filer1 = ''">Очистить</button>
-          </div>
-          <div class="dnr2">
-            <p align="center">
-              <b>Актуальность</b>
-            </p>
-            <label for="f2"> <input type="radio" name="" id="f2" v-model="type_filer2" value="active"> Действующий
-            </label>
-            <label for="f21"> <input type="radio" name="" id="f21" v-model="type_filer2" value="inactive"> Не действующий
-            </label>
-            <br>
-            <button type="button" class="btn btn-secondary" @click="type_filer2 = ''">Очистить</button>
-          </div>
-        </div>
-
-      </div>
-
+      <viewData :infoFromSmartSearch="infoFromSmartSearch" :searchFullSetting="searchFullSetting" :commentForResponse="commentForResponse" @openNotif="openNotifications()" :isFilterBlock="isFilterBlock"/>
     </div>
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
       id="notif" />
@@ -216,16 +119,14 @@ import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import groups from "@/helpers/groups";
 import MultiSelectUni from '@/components/ui/MultiSelectUni.vue'
-
+import viewData from "./viewData.vue";
 export default {
   name: "PartnerTable",
 
-  components: { Loader, Notifications, MultiSelectUni },
+  components: { Loader, Notifications, MultiSelectUni, viewData },
   data() {
     return {
-      type_filer1: "",
-      type_filer2: "",
-      isShowFilter: true,
+      isFilterBlock: false,
       isAdvancedSettings: false,
       isAnswerBlock: true,
       responseSearchData: null,
@@ -234,6 +135,7 @@ export default {
       isSearchFullSettings: true,
       search: "",
       dataForTable: [],
+      infoFromSmartSearch: [],
       searchFullSetting: {
         income: "",
         expenses: "",
@@ -317,36 +219,13 @@ export default {
 
   },
   methods: {
-    TypeAgr(val) {
-      if (val == 'buyer') {
-        return 'Доходный'
-      } else {
-        return 'Расходный'
-      }
-    },
-    TranslateTypeCategory(val) {
-      switch (val) {
-        case 'economic':
-          return 'Общехозяйственные'
-          break
-        case 'repair':
-          return 'Ремонтные'
-          break
-        case 'financial':
-          return 'Финансовые'
-          break
-        case 'buyer':
-          return 'С покупателем'
-          break
-        case 'supply':
-          return 'С поставщиками'
-          break
-        case 'other':
-          return 'Прочие'
-          break
 
-
-      }
+    openNotifications(data){
+      this.notifyHead = "Успешно";
+        this.notifyMessage = "Данные скопированы";
+        this.notifyClass = "wrapper-success";
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 2000);
     },
     IputProcessing(val) {
       clearTimeout(this.intervalresponse);
@@ -370,16 +249,7 @@ export default {
           console.log(err)
         })
     },
-    CopyTEXT(value) {
-      navigator.clipboard.writeText(value)
-        .then(() => {
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Ссылка скопирована";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(() => (this.showNotify = false), 2000);
-        })
-    },
+
 
     updateSelectedCountries(selected) {
       this.selectedCountriesIds = selected
@@ -391,10 +261,14 @@ export default {
       if (typeof val == 'string') {
         this.isAnswerBlock = false
         this.dataForTable = this.responseSearchData
+        this.infoFromSmartSearch = this.responseSearchData
+        this.isFilterBlock = true
       } else {
+        this.isFilterBlock = true
         this.isAnswerBlock = false
         this.search = ""
         this.dataForTable = [val]
+        this.infoFromSmartSearch = [val]
       }
     },
     sendFullDescriptionSearch() {
@@ -543,14 +417,8 @@ export default {
   font-weight: normal;
 }
 
-.superB {
-  font-weight: 500;
-  font-size: 14px;
-}
 
-.responseListItem:hover {
-  background: rgb(241, 241, 241);
-}
+
 
 .section_category,
 .section_date,
