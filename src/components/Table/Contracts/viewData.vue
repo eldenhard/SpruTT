@@ -76,8 +76,17 @@
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="30">30</option>
+                    <option value="100">100</option>
                 </select>
             </label>
+            <div id="wrapper">
+                <ul id="pagination">
+                    <li v-for="btn in total_pages" :key="btn.id">
+                        <!-- filter_arendaData.page_size, btn -->
+                        <a @click="getPagination(elInPage, btn)" :class="{ active123: Truefalse(btn), active_new: pageNumber == btn}">{{ btn }}</a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="view_info">
             <h4>{{ commentForResponse }}</h4>
@@ -87,13 +96,16 @@
                     <section class="element_list">
                         <div>
                             <b class="superB">Договор:</b> № {{ item?.number }} <br>
-                            <b class="superB" v-if="item?.annex_number">Приложение : № {{ item?.annex_number.split("-").reverse().join('.') }}<br></b>
+                            <b class="superB" v-if="item?.annex_number">Приложение : № {{
+                                item?.annex_number.split("-").reverse().join('.') }}<br></b>
 
                             <b class="superB">Тип:</b> {{ item?.contract_type }} <br>
-                            <b class="superB">Дата заключения договора: </b>{{ item.created_at ? item.created_at.split('-').reverse().join('.') : "—" }}
+                            <b class="superB">Дата заключения договора: </b>{{ item.created_at ?
+                                item.created_at.split('-').reverse().join('.') : "—" }}
                             <br>
                             <b class="superB" v-if="item?.annex_number">Дата заключения приложения: </b>
-                            <span v-if="item?.annex_number">{{ item.annex_date ? item?.annex_date?.slice(0,10).split('-').reverse().join(".") : "—" }}</span>
+                            <span v-if="item?.annex_number">{{ item.annex_date ?
+                                item?.annex_date?.slice(0, 10).split('-').reverse().join(".") : "—" }}</span>
                             <br v-if="item?.annex_number">
 
                             <b class="superB">Предмет договора</b> {{ item?.contract_object }} <br>
@@ -123,12 +135,11 @@
 
 
 <script>
-import { getTime } from '@amcharts/amcharts5/.internal/core/util/Time'
-
 export default {
-
     props: {
         infoFromSmartSearch: {
+            type: Array,
+            variant: String,
             default: []
         },
         searchFullSetting: {
@@ -139,43 +150,84 @@ export default {
         },
         isFilterBlock: {
             type: Boolean
+        },
+        dataForSearchByUser: {
+            type: String
+        },
+        total_pages: {
+            type: Number,
+          
         }
+
     },
     data() {
         return {
             isShowFilter: false,
-            elInPage: 5,
+            elInPage: 100,
             sortElement: 'sort-up',
             sort_params: "",
-
+            loader: false,
+            pageNumber: 1,
+            interval: 2,
         }
     },
     watch: {
-        infoFromSmartSearch() {
-            console.log(this.infoFromSmartSearch)
+        elInPage(){
+            this.$emit('getDataFromChildComponent', this.dataForSearchByUser , this.elInPage)
         },
-        isFilterBlock(){
-            return this.isFilterBlock == true ?  this.sortElement = 'sort-up' : this.sortElement =  ""
+        isFilterBlock() {
+            return this.isFilterBlock == true ? this.sortElement = 'sort-up' : this.sortElement = ""
         },
         sortElement(newValue) {
-            if (newValue == 'sort-up') {
-                console.log('1')
+            if (newValue == "sort-up" && this.sort_params == "year") {
+                console.log('year sort-up')
                 this.infoFromSmartSearch.sort((a, b) => {
                     let dateA = this.getComparisonDate(a)
                     let dateB = this.getComparisonDate(b)
                     return this.compareDates(dateA, dateB)
                 })
-            } else if(newValue == "sort-down") {
-                console.log('2')
+            } else if (newValue == "sort-down" && this.sort_params == "year") {
+                console.log('year sort-down')
                 this.infoFromSmartSearch.sort((a, b) => {
                     let dateA = this.getComparisonDate(a)
                     let dateB = this.getComparisonDate(b)
                     return this.compareDates(dateB, dateA)
                 })
             }
+            else if (newValue == "sort-up" && this.sort_params == "counterparty") {
+                console.log('counterparty sort-up')
+                return this.infoFromSmartSearch.sort((a, b) => a.counterparty > b.counterparty ? 1 : -1)
+            }
+            else if (newValue == "sort-down" && this.sort_params == "counterparty") {
+                console.log('counterparty sort-down')
+                return this.infoFromSmartSearch.sort((a, b) => b.counterparty > a.counterparty ? 1 : -1)
+            }
         }
     },
     methods: {
+        getPagination(page_size, page){
+            this.$emit('getDataFromChildComponent', this.dataForSearchByUser , page_size, page)
+            this.pageNumber = page;
+        },
+        Truefalse(btn) {
+            if (btn == this.pageNumber) {
+                return true;
+            }
+            if (btn == 1) {
+                return true;
+            }
+            if (btn == this.total_pages) {
+                return true;
+            }
+            if (btn > this.pageNumber && btn < this.pageNumber + this.interval) {
+                return true;
+            }
+            if (btn < this.pageNumber && btn > this.pageNumber - this.interval) {
+                return true;
+            }
+
+            return false;
+        },
         getComparisonDate(item) {
             return item.created_at || item.annex_date
 
@@ -184,9 +236,9 @@ export default {
             if (dateA === null && dateB === null) {
                 return 0;
             } else if (dateA === null) {
-                return 1; // dateA равен null, поэтому dateB должна быть выше
+                return 1; // dateA равен null, поэтому dateB должна быть выше (правее)
             } else if (dateB === null) {
-                return -1; // dateB равен null, поэтому dateA должна быть выше
+                return -1; // dateB равен null, поэтому dateA должна быть выше (левее)
             } else {
                 return dateA.localeCompare(dateB);
             }
@@ -218,6 +270,119 @@ export default {
 
 
 <style scoped>
+.pagination_page_element {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#wrapper {
+    margin-left:  auto;
+    display: block;
+    margin-top: 2%;
+    /* max-width: 80%; */
+    width: auto;
+}
+
+.page-header {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: normal;
+    border-bottom: 1px solid #ddd;
+    margin: 30px 0;
+}
+
+#pagination {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+
+}
+
+#pagination li {
+    display: inline;
+    margin-left: auto;
+}
+
+#pagination li a {
+    display: inline-block;
+    text-decoration: none;
+    padding: 5px 10px;
+    color: #000;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+/* Active and Hoverable Pagination */
+#pagination li a {
+    border-radius: 5px;
+    -webkit-transition: background-color 0.3s;
+    transition: background-color 0.3s;
+}
+
+#pagination li a.active_new {
+    background-color:#007BFF;
+    color: #fff;
+}
+
+#pagination li a:hover:not(.active_new) {
+    background-color: #ddd;
+}
+
+#pagination li a:not(.active123) {
+    display: none;
+}
+
+/* border-pagination */
+.b-pagination-outer {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+}
+
+#border-pagination {
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+}
+
+#border-pagination li {
+    display: inline;
+}
+
+#border-pagination li a {
+    display: block;
+    text-decoration: none;
+    color: #000;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    float: left;
+}
+
+#border-pagination li a {
+    -webkit-transition: background-color 0.4s;
+    transition: background-color 0.4s;
+}
+
+#border-pagination li a.active_new {
+    background-color:#007BFF;
+    color: #fff;
+}
+
+#border-pagination li a:hover:not(.active_new) {
+    background: #ddd;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+
 .Accept {
     height: 30px;
     width: 20%;
@@ -300,13 +465,7 @@ ul {
 
 
 
-/* li:hover {
-    background: rgb(255, 255, 255);
-} */
 
-li span {
-    padding-left: 3%;
-}
 
 .element_list {
     display: flex;
@@ -336,5 +495,4 @@ label {
 select {
     max-width: 15vw;
     width: auto;
-}
-</style>
+}</style>

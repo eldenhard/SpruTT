@@ -1,8 +1,8 @@
 <template>
   <div>
-
+    <Loader :loader="loader" />
     <div class="air_block">
-      <Loader :loader="loader" />
+    
       <div class="air_block_header">
         <h5>Справочник договоры</h5>
       </div>
@@ -105,7 +105,11 @@
 
       <br>
 
-      <viewData :infoFromSmartSearch="infoFromSmartSearch" :searchFullSetting="searchFullSetting" :commentForResponse="commentForResponse" @openNotif="openNotifications()" :isFilterBlock="isFilterBlock"/>
+      <viewData :infoFromSmartSearch="infoFromSmartSearch" :searchFullSetting="searchFullSetting"
+        :commentForResponse="commentForResponse" @openNotif="openNotifications()" :isFilterBlock="isFilterBlock"
+        :dataForSearchByUser="dataForSearchByUser" @startLoader="loader = true" @stopLoader="loader = false"
+        @getDataFromChildComponent="getDataFromChildComponent"
+        :total_pages="totalPagesForChildComponent"/>
     </div>
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
       id="notif" />
@@ -126,6 +130,8 @@ export default {
   components: { Loader, Notifications, MultiSelectUni, viewData },
   data() {
     return {
+      dataForSearchByUser: "", // передача в дочерний компонент данных введенных пользователем в поиск до поиска
+      totalPagesForChildComponent: 0, // кол-во страниц запроса для дочернего компонента
       isFilterBlock: false,
       isAdvancedSettings: false,
       isAnswerBlock: true,
@@ -220,12 +226,12 @@ export default {
   },
   methods: {
 
-    openNotifications(data){
+    openNotifications(data) {
       this.notifyHead = "Успешно";
-        this.notifyMessage = "Данные скопированы";
-        this.notifyClass = "wrapper-success";
-        this.showNotify = true;
-        setTimeout(() => (this.showNotify = false), 2000);
+      this.notifyMessage = "Данные скопированы";
+      this.notifyClass = "wrapper-success";
+      this.showNotify = true;
+      setTimeout(() => (this.showNotify = false), 2000);
     },
     IputProcessing(val) {
       clearTimeout(this.intervalresponse);
@@ -236,6 +242,19 @@ export default {
         this.sendRequestToServerData(val);
       }, 1000);
     },
+    // Получение данных для дочернего компонента (пагинация, кол-во элементов на странице)
+    getDataFromChildComponent(search, page_size, page ) {
+      this.loader = true
+      api.getAllDocumentsNotType(search, page_size, page)
+        .then(response => {
+         this.infoFromSmartSearch = response.data.data
+         this.totalPagesForChildComponent = response.data.total_pages
+          this.loader = false
+        }).catch((err) => {
+          console.log(err)
+          this.loader = false
+        })
+    },
     sendRequestToServerData(val) {
       if (this.search == "" || this.search.length <= 1) return
       this.isSearch = false
@@ -243,6 +262,7 @@ export default {
         .then(response => {
           this.isSearch = true
           this.responseSearchData = response.data.data
+          this.totalPagesForChildComponent = response.data.total_pages // получение всех страниц для доч компонента
           this.isAnswerBlock = true
         }).catch((err) => {
           this.isSearch = true
@@ -263,12 +283,17 @@ export default {
         this.dataForTable = this.responseSearchData
         this.infoFromSmartSearch = this.responseSearchData
         this.isFilterBlock = true
+        this.dataForSearchByUser = this.search
+       
+        this.search = ""
       } else {
         this.isFilterBlock = true
         this.isAnswerBlock = false
+        this.dataForSearchByUser = this.search
         this.search = ""
         this.dataForTable = [val]
         this.infoFromSmartSearch = [val]
+        console.log(this.infoFromSmartSearch, '[val]')
       }
     },
     sendFullDescriptionSearch() {
@@ -452,6 +477,7 @@ input[type="checkbox"] {
 .air_block {
   width: 80%;
   height: auto;
+  max-height: 90vh;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   background: #ffffff;
@@ -461,6 +487,7 @@ input[type="checkbox"] {
   padding: 1%;
   transform: translate(-50%, 0);
   box-sizing: border-box;
+  overflow: auto;
 }
 
 .air_block_header {

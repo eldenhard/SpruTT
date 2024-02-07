@@ -1171,9 +1171,8 @@ input {
   display: flex;
   justify-content: space-between;
   width: 100%;
-
-  
 }
+
 .btn-group button {
     width: 30%;
     margin-top: 5%;
