@@ -12,7 +12,6 @@ RUN npm install select2
 RUN npm install -save vue-xlsx
 RUN npm install @handsontable/vue
 RUN npm install vue-select
-RUN npm install --save vue-toastification
 COPY ./ .
 RUN npm run build
 
