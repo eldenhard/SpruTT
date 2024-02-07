@@ -26,9 +26,10 @@
                     class="mini">
                     <option value="" disabled>кол-во строк на странице</option>
                     <option value="1">1</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
                     <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="500">500</option>
+
                 </select>
             </label>
 
@@ -69,6 +70,8 @@
             <span> Всего записей: {{ total_objects }} </span>
             <loader_mini :loader="loader_mini">по наименованиям станций</loader_mini>
         </p>
+        <button class="Delete button" style="width: 15%; white-space: nowrap; margin: 2% 0; height: 30px"
+      @click="open_modal(selectedItems)">Удалить выбранное</button>
         <div style="max-width: 100%; overflow: auto; margin-bottom: 5%">
             <table border="1" v-show="visible">
                 <thead>
@@ -114,21 +117,6 @@
 
 
 
-                            <!-- <td></td> -->
-                            <!-- <td>
-                                <div class="inputcontainer">
-                                    <input :id="`annex_number` + item.id" type="text" v-model="item.annex_number"
-                                        v-on:keyup.enter="
-                                            submitData(item.annex_number, item.id, 'annex_number', 'annex_number_load')
-                                            " />
-                                    <div class="icon-container" :id="`annex_number_load` + item.id" style="display: none">
-                                        <i class="loader"></i>
-                                    </div>
-                                </div>
-                            </td> -->
-
-
-
                             <!-- ДАТА -->
                             <td>
                                 <div class="inputcontainer">
@@ -163,81 +151,7 @@
                                 </div>
                             </td>
 
-                            <!-- <td>
-                                <div class="inputcontainer">
-                                    <input :id="`distance_min` + item.id" v-model="item.distance_min"
-                                        v-on:keyup.enter="submitData(item.distance_min, item.id, 'distance_min', 'distance_min_load')" />
-                                    <div class="icon-container" :id="`distance_min_load` + item.id" style="display: none">
-                                        <i class="loader"></i>
-                                    </div>
-                                </div>
-                            </td>
 
-                            <td>
-                                <div class="inputcontainer">
-                                    <input :id="`distance_max` + item.id" type="number" v-model="item.distance_max"
-                                        v-on:keyup.enter="submitData(item.distance_max, item.id, 'distance_max', 'distance_max_load')" />
-                                    <div class="icon-container" :id="`distance_max_load` + item.id" style="display: none">
-                                        <i class="loader"></i>
-                                    </div>
-                                </div>
-                            </td>
-
-                            <td>
-                                <div class="inputcontainer">
-                                    <input :id="`stavka` + item.id" v-model="item.stavka" type="number"
-                                        v-on:keyup.enter="submitData(item.stavka, item.id, 'stavka', 'stavka_load')" />
-                                    <div class="icon-container" :id="`stavka_load` + item.id" style="display: none">
-                                        <i class="loader"></i>
-                                    </div>
-                                </div>
-                            </td> -->
-                            <!-- СТАВКА ПРЕ -->
-                            <!-- <td>
-                                <div class="inputcontainer">
-                                    <input :id="`nds` + item.id" v-model="item.nds" type="number"
-                                        v-on:keyup.enter="submitData(item.nds, item.id, 'nds', 'nds_load')" />
-                                    <div class="icon-container" :id="`nds_load` + item.id" style="display: none">
-                                        <i class="loader"></i>
-                                    </div>
-                                </div>
-
-                            </td> -->
-                            <!-- ГРУЗ -->
-                            <!-- <td>
-                                <div class="inputcontainer">
-                                    <input :id="`cargo` + item.id" v-model="item.cargo_id" type="number"
-                                        v-on:keyup.enter="submitData(item.cargo_id, item.id, 'cargo', 'cargo_load')" />
-                                    <div class="icon-container" :id="`cargo_load` + item.id" style="display: none">
-                                        <i class="loader"></i>
-                                    </div>
-                                </div>
-
-                            </td> -->
-                            <!-- СТанция отправления -->
-                            <!-- <td>
-                                <div class="inputcontainer">
-                                    <input :id="`departure_station` + item.id" v-model="item.departure_station_id"
-                                        v-on:keyup.enter="submitData(item.departure_station_id, item.id, 'departure_station', 'departure_station_load')" />
-                                    <div class="icon-container" :id="`departure_station_load` + item.id"
-                                        style="display: none">
-                                        <i class="loader"></i>
-                                    </div>
-                                </div>
-                            </td> -->
-
-                            <!-- destination_station -->
-                            <!-- <td>
-                                <div class="inputcontainer">
-                                    <input :id="`destination_station` + item.id" v-model="item.destination_station_id"
-                                        v-on:keyup.enter="submitData(item.destination_station_id, item.id, 'destination_station', 'destination_station_load')" />
-                                    <div class="icon-container" :id="`destination_station_load` + item.id"
-                                        style="display: none">
-                                        <i class="loader"></i>
-                                    </div>
-
-                                </div>
-                            </td> -->
                             <!-- Ответственный -->
                             <td>
                                 <div class="inputcontainer">
@@ -264,7 +178,14 @@
                                     {{ att.attachments[0]?.on_date?.split('-').reverse().join('.') }}
                                 </summary>
                         <tr>
-                            <th>Дейст</th>
+
+                            <!-- <th style="border-left: 1px solid white; border-top: 1px solid white;">
+                                <label for="all"
+                                    style="display: flex; align-items: center; justify-content: center">Все&nbsp;
+                                    <input id="all" type="checkbox" :checked="selectAll" @change="toggleSelectAll">
+                                </label>
+                            </th> -->
+                            <th>Действие</th>
                             <!-- <th>Дата</th> -->
                             <th>Дата оконч.</th>
                             <!-- <th>Клиент</th> -->
@@ -279,31 +200,12 @@
                         </tr>
                         <template v-for="childr in att.attachments">
                             <tr :key="childr.id" colspan="13">
-                                <!-- <td @click="open_modal(childr.id)" class="delete">Удалить</td>
-                                            <td>{{ childr.on_date?.split('-')?.reverse()?.join('.') }}</td>
-                                            <td>{{ childr.end_date?.split('-')?.reverse()?.join('.') }}</td>
-                                            <td>{{ childr.client }}</td>
-                                            <td>{{ childr.distance_min }}</td>
-                                            <td>{{ childr.distance_max }}</td>
-                                            <td>{{ childr.stavka }}</td>
-                                            <td>{{ childr.nds }}</td>
-                                            <td>{{ childr.cargo_id }}</td>
-                                            <td>{{ childr.departure_station_id }}</td>
-                                            <td>{{ childr.destination_station_id }}</td>
-                                            <td>{{ IdToName(childr.responsible_id) }}</td> -->
-                                <td @click="open_modal(childr.id)" class="delete">Удалить</td>
-                                <!-- <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`on_date` + childr.id" type="date"
-                                            v-model="childr.on_date" v-on:keyup.enter="
-                                                submitData(childr.on_date, childr.id, 'on_date', 'on_date_load')
-                                                " />
-                                        <div class="icon-container" :id="`on_date_load` + childr.id"
-                                            style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
-                                    </div>
-                                </td> -->
+
+                                <!-- <td @click="open_modal(childr.id)" class="delete">Удалить 123</td> -->
+                                <td>
+                                    <input type="checkbox" :checked="isSelected(childr.id)"
+                                        @change="toggleItemSelection(childr.id)">
+                                </td>
                                 <td>
                                     <div class="inputcontainer">
                                         <input :id="`end_date` + childr.id" type="date" v-model="childr.end_date"
@@ -376,8 +278,7 @@
                                     <div class="inputcontainer">
                                         <input :id="`cargo` + childr.id" type="text" v-model="childr.cargo_name"
                                             v-on:keyup.enter="
-                                                submitData(childr.cargo_name, childr.id, 'cargo', 'cargo_load')"
-                                             />
+                                                submitData(childr.cargo_name, childr.id, 'cargo', 'cargo_load')" />
                                         <div class="icon-container" :id="`cargo_load` + childr.id" style="display: none">
                                             <i class="loader"></i>
                                         </div>
@@ -388,9 +289,8 @@
                                         <input :id="`departure_station` + childr.id" type="text"
                                             v-model="childr.departure_station_name" v-on:keyup.enter="
                                                 submitData(childr.departure_station_name, childr.id, 'departure_station', 'departure_station_load', $event)
-                                                " 
-                                               @contextmenu.prevent="getFullInformationByRequest(childr.departure_station_name)"
-                                                 />
+                                                "
+                                            @contextmenu.prevent="getFullInformationByRequest(childr.departure_station_name)" />
                                         <div class="icon-container" :id="`departure_station_load` + childr.id"
                                             style="display: none">
                                             <i class="loader"></i>
@@ -403,8 +303,7 @@
                                             v-model="childr.destination_station_name" v-on:keyup.enter="
                                                 submitData(childr.destination_station_name, childr.id, 'destination_station', 'destination_station_load', $event)
                                                 "
-                                               @contextmenu.prevent="getFullInformationByRequest(childr.destination_station_name)"
-                                                 />
+                                            @contextmenu.prevent="getFullInformationByRequest(childr.destination_station_name)" />
                                         <div class="icon-container" :id="`destination_station_load` + childr.id"
                                             style="display: none">
                                             <i class="loader"></i>
@@ -456,6 +355,10 @@ export default {
     components: { Loader, Notifications, loader_mini },
     data() {
         return {
+            all_checkbox: [],
+            selectAll: false,
+            selectedItems: [],
+
             cache: new Map(),
             watchAnnex: true,
             cargo_search_visible: false,
@@ -475,7 +378,7 @@ export default {
 
             ten_visible: false,
             filter_arendaData: {
-                page_size: "100",
+                page_size: "25",
                 client: "",
                 cargo: "",
                 wagon_type: "Цистерна"
@@ -499,7 +402,6 @@ export default {
             user: (state) => state.users.users,
             cargo_code: (state) => state.cargo_code.cargo_code
         }),
-
 
         filter_client() {
             if (this.filter_arendaData.client.length > 1) {
@@ -527,27 +429,47 @@ export default {
         },
     },
     methods: {
-        getFullInformationByRequest(val){
+        toggleSelectAll() {
+            this.selectAll = !this.selectAll
+            if (this.selectAll) {
+                this.selectedItems = this.data.map(item => item.id)
+            } else {
+                this.selectedItems = []
+            }
+        },
+        toggleItemSelection(itemId) {
+            if (this.isSelected(itemId)) {
+                this.selectedItems = this.selectedItems.filter(id => id !== itemId)
+            } else {
+                this.selectedItems.push(itemId)
+            }
+
+            console.log(this.selectedItems)
+        },
+        isSelected(itemId) {
+            return this.selectedItems.includes(itemId)
+        },
+        getFullInformationByRequest(val) {
             this.loader = true
             apiStations.getCurrentStation(val)
-            .then((response => {
-                let fullInformationBySation = response.data.data.filter(item => item.name.toLowerCase() == val.toLowerCase())[0]
-                console.log(fullInformationBySation)
-                this.loader = false;
-                this.notifyHead = "Успешно";
-                this.notifyMessage = `Станция: ${fullInformationBySation.name} <br>
+                .then((response => {
+                    let fullInformationBySation = response.data.data.filter(item => item.name.toLowerCase() == val.toLowerCase())[0]
+                    console.log(fullInformationBySation)
+                    this.loader = false;
+                    this.notifyHead = "Успешно";
+                    this.notifyMessage = `Станция: ${fullInformationBySation.name} <br>
                                         Дорога: ${fullInformationBySation.road.name}`;
-                this.notifyClass = "wrapper-success";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 4000);
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 4000);
 
-            })).catch((err) => {
-                console.log(err)
-                this.loader = false
-            })
-            
+                })).catch((err) => {
+                    console.log(err)
+                    this.loader = false
+                })
+
         },
         deleteRow(index) {
             this.data.splice(index, 1);
@@ -624,57 +546,57 @@ export default {
                     }, 2000);
                 })
         },
-        getStationNameByCode(value){
+        getStationNameByCode(value) {
             event.preventDefault()
             this.loader = true
-            if(typeof value == 'number'){
+            if (typeof value == 'number') {
                 apiStations.getCurrentStationByCode(value)
-                .then(response => {
-                    this.loader = false
-                    this.notifyHead = "Успешно";
-                    this.notifyMessage = response?.data.data[0]?.road?.name;
-                    this.notifyClass = "wrapper-success";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 3000);
-                }).catch((error) => {
-                    this.notifyHead = "Ошибка";
-                    this.notifyMessage = 'Железная дорога не найдена';
-                    this.notifyClass = "wrapper-error";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 2000);
-                    console.error(error)
-                })
+                    .then(response => {
+                        this.loader = false
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = response?.data.data[0]?.road?.name;
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 3000);
+                    }).catch((error) => {
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = 'Железная дорога не найдена';
+                        this.notifyClass = "wrapper-error";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 2000);
+                        console.error(error)
+                    })
             }
-            else{
+            else {
                 console.log('1')
                 apiStations.getCurrentStation(value)
-                .then( response => {
-                    let all_res = response.data.data.filter(station_name => value.toLowerCase() === station_name.name.toLowerCase())
-                    this.loader = false
-                    this.notifyHead = "Успешно";
-                    this.notifyMessage = all_res[0]?.road.name;
-                    this.notifyClass = "wrapper-success";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 3000);
+                    .then(response => {
+                        let all_res = response.data.data.filter(station_name => value.toLowerCase() === station_name.name.toLowerCase())
+                        this.loader = false
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = all_res[0]?.road.name;
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 3000);
 
-                }).catch((error) => {
-                    this.loader = false
-                    console.error(error)
-                    this.notifyHead = "Ошибка";
-                    this.notifyMessage = 'Железная дорога не найдена';
-                    this.notifyClass = "wrapper-error";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 2000);
-                    console.error(error)
-                })
+                    }).catch((error) => {
+                        this.loader = false
+                        console.error(error)
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = 'Железная дорога не найдена';
+                        this.notifyClass = "wrapper-error";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 2000);
+                        console.error(error)
+                    })
             }
         },
 
@@ -779,14 +701,14 @@ export default {
             this.ten_visible = false;
             this.cargo_search_visible = false;
         },
-       async submitData(element, id, frst, lst, event) {
+        async submitData(element, id, frst, lst, event) {
             document.getElementById(`${lst}${id}`).style.display = "block";
             let operationBuffer
             if (frst == 'departure_station' || frst == 'destination_station') {
                 operationBuffer = element.replace(/ [А-Я]{2}[^ ]*/g, "  ").split("  ")[0];
-                try{
+                try {
                     let result = await apiStations.getCurrentStation(operationBuffer)
-                    if(result.data.data.length == 0){
+                    if (result.data.data.length == 0) {
                         document.getElementById(`${lst}${id}`).style.display = "none"
                         this.notifyHead = "Ошибка";
                         this.notifyMessage = 'Станция с таким наименованием не найдена';
@@ -803,7 +725,7 @@ export default {
                     })
                     // console.log(findStation)
                     element = findStation[0]?.code
-                }catch (error){
+                } catch (error) {
                     this.notifyHead = "Ошибка";
                     this.notifyMessage = error;
                     this.notifyClass = "wrapper-error";
@@ -812,8 +734,8 @@ export default {
                         this.showNotify = false;
                     }, 3500);
                 }
-         
-            } 
+
+            }
             let name = frst;
             let data = [];
             data.push({ [name]: element, responsible: this.uid });
@@ -828,7 +750,7 @@ export default {
                         wagon_DOM.classList.remove("success");
                     }, 1000);
                     // document.getElementById(`${lst}${id}`).value = operationBuffer
-                    if(event){
+                    if (event) {
                         event.target.value = operationBuffer
                     }
 
@@ -852,41 +774,104 @@ export default {
 
 
         open_modal(id) {
-            // console.log(id)
             this.selected_record = id
             this.$bvModal.show('standard_directory_created')
         },
-        deleteTarifData(id) {
-            // console.log(id)
-            this.loader = true
-            api.deleteTarifData(id)
-                .then((response) => {
-                    this.loader = false;
-                    this.getStandardData()
-                    this.$bvModal.hide('standard_directory_created')
-                    this.notifyHead = "Успешно";
-                    this.notifyMessage = "Данные удалены";
-                    this.notifyClass = "wrapper-success";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 2500);
-                })
-                .catch((error) => {
-                    this.loader = false;
-                    this.$bvModal.hide('standard_directory_created')
-                    this.notifyHead = "Ошибка";
-                    this.notifyMessage = "Данные не удалены";
-                    this.notifyClass = "wrapper-error";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 2500);
-                    console.log(error);
-                });
-            // let row = document.getElementById(id);
-            // row.parentNode.removeChild(row);
-        },
+
+// Удаление множества элементов
+deleteTarifData(id) {
+      if (Array.isArray(id)) {
+        this.loader = true
+        let requests = id.map(url => api.deleteTarifData(url))
+        Promise.all(requests)
+          .then(res => {
+            this.loader = false
+            this.notifyHead = "Успешно";
+            this.notifyMessage = "Данные удалены";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
+            this.getStandardData()
+            this.$bvModal.hide("standard_directory_created");
+          }).catch((err) => {
+            this.loader = false
+            this.getStandardData()
+            // this.notifyHead = "Ошибка";
+            // this.notifyMessage = "Данные не удалены";
+            // this.notifyClass = "wrapper-error";
+            // this.showNotify = true;
+            // setTimeout(() => {
+            //   this.showNotify = false;
+            // }, 2500);
+            this.$bvModal.hide("standard_directory_created");
+          })
+
+        return
+      }
+      this.loader = true;
+
+      api
+        .deleteTarifData(id)
+        .then((response) => {
+          this.loader = false;
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Данные удалены";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 2500);
+          this.$bvModal.hide("AcTDelete");
+        })
+        .catch((error) => {
+          this.loader = false;
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = "Данные не удалены";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 2500);
+          console.log(error);
+          this.$bvModal.hide("standard_directory_created");
+        });
+
+    },
+
+
+        // deleteTarifData(id) {
+        //     // console.log(id)
+        //     this.loader = true
+        //     api.deleteTarifData(id)
+        //         .then((response) => {
+        //             this.loader = false;
+        //             this.getStandardData()
+        //             this.$bvModal.hide('standard_directory_created')
+        //             this.notifyHead = "Успешно";
+        //             this.notifyMessage = "Данные удалены";
+        //             this.notifyClass = "wrapper-success";
+        //             this.showNotify = true;
+        //             setTimeout(() => {
+        //                 this.showNotify = false;
+        //             }, 2500);
+        //         })
+        //         .catch((error) => {
+        //             this.loader = false;
+        //             this.$bvModal.hide('standard_directory_created')
+        //             this.notifyHead = "Ошибка";
+        //             this.notifyMessage = "Данные не удалены";
+        //             this.notifyClass = "wrapper-error";
+        //             this.showNotify = true;
+        //             setTimeout(() => {
+        //                 this.showNotify = false;
+        //             }, 2500);
+        //             console.log(error);
+        //         });
+        //     // let row = document.getElementById(id);
+        //     // row.parentNode.removeChild(row);
+        // },
     },
 };
 </script>
@@ -895,233 +880,235 @@ export default {
   
 <style scoped>
 td input {
-  text-align: center;
+    text-align: center;
 }
 
 tr,
 td,
 th {
-  border: 1px solid black;
+    border: 1px solid black;
 }
 
 #wrapper {
-  margin: 0 auto;
-  display: block;
-  margin-top: 2%;
-  max-width: 80%;
-  width: 80%;
+    margin: 0 auto;
+    display: block;
+    margin-top: 2%;
+    max-width: 80%;
+    width: 80%;
 }
 
 .page-header {
-  text-align: center;
-  font-size: 1.5em;
-  font-weight: normal;
-  border-bottom: 1px solid #ddd;
-  margin: 30px 0;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: normal;
+    border-bottom: 1px solid #ddd;
+    margin: 30px 0;
 }
 
 #pagination {
-  margin: 0;
-  padding: 0;
-  text-align: center;
+    margin: 0;
+    padding: 0;
+    text-align: center;
 }
 
 #pagination li {
-  display: inline;
+    display: inline;
 }
 
 #pagination li a {
-  display: inline-block;
-  text-decoration: none;
-  padding: 5px 10px;
-  color: #000;
-  cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    padding: 5px 10px;
+    color: #000;
+    cursor: pointer;
 }
 
 /* Active and Hoverable Pagination */
 #pagination li a {
-  border-radius: 5px;
-  -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
+    border-radius: 5px;
+    -webkit-transition: background-color 0.3s;
+    transition: background-color 0.3s;
 }
 
 #pagination li a.active_new {
-  background-color: #18842a;
-  color: #fff;
+    background-color: #18842a;
+    color: #fff;
 }
 
 #pagination li a:hover:not(.active_new) {
-  background-color: #ddd;
+    background-color: #ddd;
 }
 
 #pagination li a:not(.active123) {
-  display: none;
+    display: none;
 }
 
 /* border-pagination */
 .b-pagination-outer {
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  overflow: hidden;
-  display: flex;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
 }
 
 #border-pagination {
-  margin: 0 auto;
-  padding: 0;
-  text-align: center;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
 }
 
 #border-pagination li {
-  display: inline;
+    display: inline;
 }
 
 #border-pagination li a {
-  display: block;
-  text-decoration: none;
-  color: #000;
-  padding: 5px 10px;
-  border: 1px solid #ddd;
-  float: left;
+    display: block;
+    text-decoration: none;
+    color: #000;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    float: left;
 }
 
 #border-pagination li a {
-  -webkit-transition: background-color 0.4s;
-  transition: background-color 0.4s;
+    -webkit-transition: background-color 0.4s;
+    transition: background-color 0.4s;
 }
 
 #border-pagination li a.active_new {
-  background-color: #18842a;
-  color: #fff;
+    background-color: #18842a;
+    color: #fff;
 }
 
 #border-pagination li a:hover:not(.active_new) {
-  background: #ddd;
+    background: #ddd;
 }
 
 .delete:hover {
-  background: lightcoral;
-  color: white;
+    background: lightcoral;
+    color: white;
 }
 
 .success {
-  transition: 0.5s ease-in-out;
-  background: rgba(42, 190, 67, 0.4);
-  color: black;
+    transition: 0.5s ease-in-out;
+    background: rgba(42, 190, 67, 0.4);
+    color: black;
 }
 
 .error {
-  transition: 0.5 ease-in-out;
-  background: lightcoral;
-  color: black;
+    transition: 0.5 ease-in-out;
+    background: lightcoral;
+    color: black;
 }
 
 .WatchAllArenda {
-  color: #929292;
-  margin-top: 20%;
-  font-size: 25px;
-  cursor: pointer;
+    color: #929292;
+    margin-top: 20%;
+    font-size: 25px;
+    cursor: pointer;
 }
 
 .inputcontainer {
-  position: relative;
+    position: relative;
 }
 
 input,
 select {
-  border: 1px solid grey !important;
-  width: 100%;
-  max-height: 35px !important;
-  margin: 0 !important;
-  box-sizing: border-box;
+    border: 1px solid grey !important;
+    width: 100%;
+    max-height: 35px !important;
+    margin: 0 !important;
+    box-sizing: border-box;
 }
 
 .mini {
-  height: 40px;
+    height: 40px;
 }
 
 .icon-container {
-  position: absolute;
-  right: 10px;
-  top: calc(50% - 10px);
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 10px);
 }
 
 .loader {
-  position: relative;
-  height: 20px;
-  width: 20px;
-  display: inline-block;
-  animation: around 5.4s infinite;
+    position: relative;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    animation: around 5.4s infinite;
 }
 
 @keyframes around {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
+
 .loader::after,
 .loader::before {
-  content: "";
-  background: white;
-  position: absolute;
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  border-width: 2px;
-  border-color: #333 #333 transparent transparent;
-  border-style: solid;
-  border-radius: 20px;
-  box-sizing: border-box;
-  top: 0;
-  left: 0;
-  animation: around 0.7s ease-in-out infinite;
+    content: "";
+    background: white;
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    border-width: 2px;
+    border-color: #333 #333 transparent transparent;
+    border-style: solid;
+    border-radius: 20px;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    animation: around 0.7s ease-in-out infinite;
 }
 
 .loader::after {
-  animation: around 0.7s ease-in-out 0.1s infinite;
-  background: transparent;
+    animation: around 0.7s ease-in-out 0.1s infinite;
+    background: transparent;
 }
 
 .mini {
-  height: 40px;
+    height: 40px;
 }
 
 .table-content {
-  margin-top: 4%;
-  display: flex;
-  justify-content: space-between;
-  gap: 5%;
-  flex-wrap: wrap;
-  border: 1px solid lightgrey;
-  padding: 1%;
+    margin-top: 4%;
+    display: flex;
+    justify-content: space-between;
+    gap: 5%;
+    flex-wrap: wrap;
+    border: 1px solid lightgrey;
+    padding: 1%;
 }
 
 .table-content label {
-  color: #929292;
+    color: #929292;
 }
 
 .table-content button {
-  height: 40px;
-  width: 20%;
-  margin-top: 1%;
-  float: right !important;
-  margin-left: auto;
+    height: 40px;
+    width: 20%;
+    margin-top: 1%;
+    float: right !important;
+    margin-left: auto;
 }
 
 table {
-  margin-top: 1%;
+    margin-top: 1%;
 }
 
 thead th {
-  background: #ececec;
-  font-family: "Montserrat", sans-serif;
+    background: #ececec;
+    font-family: "Montserrat", sans-serif;
 }
 
 li {
-  cursor: pointer;
+    cursor: pointer;
 }
 </style>
