@@ -1,4 +1,3 @@
-
 <template>
     <div v-if="isFilterBlock">
         <div class="filter_new_block">
@@ -24,15 +23,15 @@
         </div>
         <div class="filter" v-if="isShowFilter">
             <div class="filter-row">
-                <label for="">Статус <br>
+                <label for="">Статус договора<br>
                     <select style="height: 30px; width: 10vw">
                         <option value=""></option>
-                        <option value="">Дейсвительный</option>
-                        <option value="">Недействительный</option>
+                        <option value="" disabled>Дейсвительный</option>
+                        <option value="" disabled>Недействительный</option>
                     </select>
                 </label>
                 <label for="">Тип <br>
-                    <select style="height: 30px; width: 10vw">
+                    <select style="height: 30px; width: 10vw" v-model="contract_type">
                         <option value=""></option>
                         <option value="Абонентский">Абонентский</option>
                         <option value="Аренда">Аренда</option>
@@ -60,14 +59,14 @@
                         <option value="" disabled>Прочие соглашения</option>
                     </select>
                 </label>
-                <label>Дата заключения от <br>
-                    <input type="date" style="height: 30px; width: 10vw">
+                <label>Дата заключения договора от <br>
+                    <input type="date" style="height: 30px; width: 10vw" v-model="created_at_gte">
                 </label>
             </div>
             <br>
 
         </div>
-        <button class="Accept" v-if="isShowFilter">Применить</button>
+        <button class="Accept" v-if="isShowFilter" @click="applyChanges()">Применить</button>
         <hr style="border: 1px solid rgb(184, 184, 184);">
         <div class="pagination_page_element">
             <label for="">Отображение на странице<br>
@@ -83,7 +82,8 @@
                 <ul id="pagination">
                     <li v-for="btn in total_pages" :key="btn.id">
                         <!-- filter_arendaData.page_size, btn -->
-                        <a @click="getPagination(elInPage, btn)" :class="{ active123: Truefalse(btn), active_new: pageNumber == btn}">{{ btn }}</a>
+                        <a @click="getPagination(elInPage, btn)"
+                            :class="{ active123: Truefalse(btn), active_new: pageNumber == btn }">{{ btn }}</a>
                     </li>
                 </ul>
             </div>
@@ -92,7 +92,6 @@
             <h4>{{ commentForResponse }}</h4>
             <ul>
                 <li class="responseListItem" v-for="item, index in infoFromSmartSearch" :key="index">
-
                     <section class="element_list">
                         <div>
                             <b class="superB">Договор:</b> № {{ item?.number }} <br>
@@ -125,11 +124,6 @@
             </ul>
         </div>
 
-
-
-
-
-
     </div>
 </template>
 
@@ -156,7 +150,7 @@ export default {
         },
         total_pages: {
             type: Number,
-          
+
         }
 
     },
@@ -169,11 +163,13 @@ export default {
             loader: false,
             pageNumber: 1,
             interval: 2,
+            contract_type: "",
+            annex_date_gte: "",
         }
     },
     watch: {
-        elInPage(){
-            this.$emit('getDataFromChildComponent', this.dataForSearchByUser , this.elInPage)
+        elInPage() {
+            this.$emit('getDataFromChildComponent', this.dataForSearchByUser, this.elInPage)
         },
         isFilterBlock() {
             return this.isFilterBlock == true ? this.sortElement = 'sort-up' : this.sortElement = ""
@@ -205,8 +201,12 @@ export default {
         }
     },
     methods: {
-        getPagination(page_size, page){
-            this.$emit('getDataFromChildComponent', this.dataForSearchByUser , page_size, page)
+        // Подтверждение фильтраци
+        applyChanges() {
+            this.$emit('getDataFromChildComponent', this.dataForSearchByUser, this.elInPage, this.pageNumber, this.contract_type, this.created_at_gte, this.annex_date_gte)
+        },
+        getPagination(page_size, page) {
+            this.$emit('getDataFromChildComponent', this.dataForSearchByUser, page_size, page)
             this.pageNumber = page;
         },
         Truefalse(btn) {
@@ -274,12 +274,13 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    vertical-align: baseline;
 }
 
 #wrapper {
-    margin-left:  auto;
+    margin-left: auto;
     display: block;
-    margin-top: 2%;
+    margin-top: 1% !important;
     /* max-width: 80%; */
     width: auto;
 }
@@ -321,7 +322,7 @@ export default {
 }
 
 #pagination li a.active_new {
-    background-color:#007BFF;
+    background-color: #007BFF;
     color: #fff;
 }
 
@@ -367,7 +368,7 @@ export default {
 }
 
 #border-pagination li a.active_new {
-    background-color:#007BFF;
+    background-color: #007BFF;
     color: #fff;
 }
 
@@ -421,6 +422,8 @@ export default {
     padding: 10px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
     /* Тень блока */
 }
 
@@ -428,6 +431,7 @@ export default {
     display: flex;
     width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
     /* margin-bottom: 15px;
     flex-wrap: wrap; */
     /* Отступ между строками */
@@ -490,9 +494,11 @@ label {
     font-family: 'Montserrar', sans-serif;
     color: grey;
     font-weight: 400;
+    font-size: 12px;
 }
 
 select {
     max-width: 15vw;
     width: auto;
-}</style>
+}
+</style>

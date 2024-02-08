@@ -11,8 +11,8 @@ const putCounterparties = (id, data) => {
     return api.patch(`${resource}/counterparties/update/` + `${id}`, data)
 }
 
-const getAllDocumentsNotType = (data, page_size, page = 1) => {
-    return api.get(`${documents}/contract/?search=${data}&page_size=${page_size}&page=${page}`)
+const getAllDocumentsNotType = (data, page_size, page = 1, contract_type = "", created_at_gte = "") => {
+    return api.get(`${documents}/contract/?search=${data}&contract_type=${contract_type}&created_at_gte=${created_at_gte}&page_size=${page_size}&page=${page}`)
 }
 
 // типы договоров

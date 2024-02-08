@@ -242,10 +242,10 @@ export default {
         this.sendRequestToServerData(val);
       }, 1000);
     },
-    // Получение данных для дочернего компонента (пагинация, кол-во элементов на странице)
-    getDataFromChildComponent(search, page_size, page ) {
+    // Получение данных для дочернего компонента (пагинация, кол-во элементов на странице, фильтр уже выведенных данных)
+    getDataFromChildComponent(search, page_size, page, contract_type, created_at_gte ) {
       this.loader = true
-      api.getAllDocumentsNotType(search, page_size, page)
+      api.getAllDocumentsNotType(search, page_size, page, contract_type, created_at_gte)
         .then(response => {
          this.infoFromSmartSearch = response.data.data
          this.totalPagesForChildComponent = response.data.total_pages
