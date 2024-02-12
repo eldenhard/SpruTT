@@ -2,7 +2,7 @@
   <div>
     <Loader :loader="loader" />
     <div class="air_block">
-    
+
       <div class="air_block_header">
         <h5>Справочник договоры</h5>
       </div>
@@ -49,49 +49,177 @@
                 </select>
               </div>
             </div>
+            <hr>
             <div class="section_category" v-if="searchFullSetting.type != ''">
               <div class="left_section">
-                <p>Вид {{ searchFullSetting.type == 'false' ? 'договора' : 'приложения' }}:</p>
+                <p> {{ searchFullSetting.type == 'false' ? 'Тип договора' : 'Вид приложения' }}:</p>
               </div>
 
-              <div class="right_section">
-                <select v-model="searchFullSetting.category"
-                  :disabled="searchFullSetting.income != false || searchFullSetting.expenses != false">
+              <div class="right_section" v-if="searchFullSetting.type == 'false'">
+                <select v-model="searchFullSetting.category">
                   <option value="">Не выбрано</option>
-                  <option value="economic">Общехозяйственные</option>
-                  <option value="repair">Ремонтные</option>
-                  <option value="financial">Финансовые</option>
-                  <option value="buyer">С покупателем</option>
-                  <option value="supply">С поставщиками</option>
-                  <option value="other">Прочие</option>
+                  <option value="Абонентский">Абонентский</option>
+                  <option value="Аренда">Аренда</option>
+                  <option value="Возмещение расходов">Возмещение расходов</option>
+                  <option value="Комиссия">Комиссия</option>
+                  <option value="Купля-продажа">Купля-продажа</option>
+                  <option value="Оказание услуг">Оказание услуг</option>
+                  <option value="Организация расчетов">Организация расчетов</option>
+                  <option value="Перевозка">Перевозка</option>
+                  <option value="Поставка">Поставка</option>
+                  <option value="Субаренда">Субаренда</option>
+                  <option value="Цессия">Цессия</option>
+                  <option value="ЭДО">ЭДО</option>
+                  <option value="Экспедиция">Экспедиция</option>
                 </select>
+              </div>
 
+              <div class="right_section" v-else>
+                <select v-model="searchFullSetting.category">
+                  <option value="">Не выбрано</option>
+                  <option value="Акт">Акт</option>
+                  <option value="Акт приема-передачи">Акт приема-передачи</option>
+                  <option value="Акт выполненных работ/оказанных услуг">Акт выполненных работ/оказанных услуг</option>
+                  <option value="Доп. соглашение">Доп. соглашение</option>
+                  <option value="Заявка">Заявка</option>
+                  <option value="Перечень вагонов">Перечень вагонов</option>
+                  <option value="Прейскурант цен">Прейскурант цен</option>
+                  <option value="Приложение к Дс №82">Приложение к Дс №82</option>
+                  <option value="Протокол разногласий">Протокол разногласий</option>
+                  <option value="Приложение">Приложение</option>
+                  <option value="Протокол условий предоставления вагонов">Протокол условий предоставления вагонов</option>
+                  <option value="Протокол согласования разногласий">Протокол согласования разногласий</option>
+                  <option value="Регламент взаимодействия">Регламент взаимодействия</option>
+                  <option value="Соглашение">Соглашение</option>
+                  <option value="Соглашение о расторжении">Соглашение о расторжении</option>
+                  <option value="Соглашение об ЭДО">Соглашение об ЭДО</option>
+                  <option value="Спецификация">Спецификация</option>
+
+                </select>
               </div>
             </div>
-            <hr>
-            <div class="section_date" v-if="searchFullSetting.type != ''">
+            <div class="income_expense" v-if="searchFullSetting.type == 'false'">
               <div class="left_section">
-                <p>Дата создания {{ searchFullSetting.type == 'false' ? 'договора' : 'приложения' }} от:</p>
+                <p>Вид договора:</p>
               </div>
+
               <div class="right_section">
-                <input type="date" class="textarea" v-if="searchFullSetting.type == 'false'"
-                  v-model="searchFullSetting.on_date">
-                <input type="date" class="textarea" v-else v-model="searchFullSetting.annex_date">
-              </div>
-            </div>
-            <hr>
-            <div class="income_expense" v-show="searchFullSetting.category == ''">
-              <div class="left_section">
-                <p>Статус:</p>
-              </div>
-              <div class="right_section">
-                <label for="income"><input type="checkbox" id="income" v-model="searchFullSetting.income"> Доходный
+                <select v-model="searchFullSetting.kind">
+                  <option value=""></option>
+                  <option value="income">Доходный</option>
+                  <option value="expenses">Расходный</option>
+                </select>
+                <!-- <label for="income"><input type="checkbox" id="income" v-model="searchFullSetting.income"> Доходный
                 </label>
                 <label for="expenses"><input type="checkbox" id="expenses" v-model="searchFullSetting.expenses"> Расходный
-                </label>
+                </label> -->
               </div>
             </div>
-            <hr v-show="searchFullSetting.category == ''">
+
+
+
+            <div class="section_category" v-if="searchFullSetting.type != '' && searchFullSetting.type == 'false'">
+              <div class="left_section">
+                <p>Наименование контрагента:</p>
+              </div>
+              <div class="right_section" style="margin-left: auto;">
+                <input type="text" v-model="searchFullSetting.counterparty" class="textarea"
+                  @input="IputProcessingCounterparty()">
+
+              </div>
+            </div>
+            <div class="section_category" v-if="isVisibleAnswerBlockCounterparty">
+              <div class="left_section">
+              </div>
+              <div class="right_section answer_block"
+                style="width:100%; max-height: 20vh; margin-left: auto; border: 1px solid grey;">
+                <ul>
+                  <li v-for="counterparty, index in listCounterparty" :key="index"
+                    @click="checkCounterpartyAdvancedFilter(counterparty)">
+                    <b-icon icon="search" variant="secondary"></b-icon>
+                    &nbsp;&nbsp;{{ counterparty }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+
+            <!-- Для приложения -->
+            <div class="section_category" v-if="searchFullSetting.type != '' && searchFullSetting.type == 'true'">
+              <div class="left_section">
+                <p>Наименование контрагента (прил):</p>
+              </div>
+              <div class="right_section" style="margin-left: auto;">
+                <input type="text" v-model="searchFullSetting.counterparty_annex" class="textarea"
+                  @input="IputProcessingCounterpartyForAnnex()">
+
+              </div>
+            </div>
+            <div class="section_category" v-if="isVisibleCounterpartyAnnex">
+              <div class="left_section">
+              </div>
+              <div class="right_section answer_block"
+                style="width:100%; max-height: 20vh; margin-left: auto; border: 1px solid grey;">
+                <ul>
+                  <li v-for="counterparty, index in listCounterpartyAnnex" :key="index"
+                    @click="checkCounetrpartForSearchAgreementNumber(counterparty.counterparty)">
+                    <b-icon icon="search" variant="secondary"></b-icon>
+                    &nbsp;&nbsp;{{ counterparty.counterparty }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+
+
+            <!-- Для договора -->
+            <div class="section_category" v-if="searchFullSetting.type != '' && searchFullSetting.type == 'false'">
+              <div class="left_section">
+                <p>№ договора:</p>
+              </div>
+              <div class="right_section" style="margin-left: auto;">
+                <input type="text" v-model="searchFullSetting.number" class="textarea" @input="IputProcessingNumber()">
+
+              </div>
+            </div>
+            <div class="section_category" v-if="isVisibleAnswerBlockAgreementNumber">
+              <div class="left_section">
+              </div>
+              <div class="right_section answer_block"
+                style="width:100%; max-height: 20vh; margin-left: auto; border: 1px solid grey;">
+                <ul>
+                  <li v-for="agr, index in AgreementNumber" :key="index"
+                    @click="checkAgreementNumberAdvancedFilter(agr.number)">
+                    <b-icon icon="search" variant="secondary"></b-icon>
+                    &nbsp;&nbsp;{{ agr.number }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Для приложения -->
+            <div class="section_category" v-if="searchFullSetting.type != '' && searchFullSetting.type == 'true'">
+              <div class="left_section">
+                <p>№ договора:</p>
+              </div>
+              <div class="right_section"  style="width: 35%">
+                <v-select v-model="searchFullSetting.annex_number" :options="all_annex_number" label="number"
+                  style="width: 100%"></v-select>
+              </div>
+            </div>
+
+            <div class="section_category" v-if="searchFullSetting.type != ''">
+              <div class="left_section">
+                <p style="color: grey">Статус договора:</p>
+              </div>
+              <div class="right_section">
+                <select v-model="searchFullSetting.status" disabled>
+                  <option value="">Не выбран</option>
+                  <option value="false">Действующий</option>
+                  <option value="true">Недействующий</option>
+                </select>
+              </div>
+            </div>
 
 
             <button class="Request" style="border-radius: 8px; margin-left: auto;" @click="sendToServerFullDecription()">
@@ -108,8 +236,7 @@
       <viewData :infoFromSmartSearch="infoFromSmartSearch" :searchFullSetting="searchFullSetting"
         :commentForResponse="commentForResponse" @openNotif="openNotifications()" :isFilterBlock="isFilterBlock"
         :dataForSearchByUser="dataForSearchByUser" @startLoader="loader = true" @stopLoader="loader = false"
-        @getDataFromChildComponent="getDataFromChildComponent"
-        :total_pages="totalPagesForChildComponent"/>
+        @getDataFromChildComponent="getDataFromChildComponent" :total_pages="totalPagesForChildComponent" />
     </div>
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
       id="notif" />
@@ -124,10 +251,12 @@ import Notifications from "@/components/notifications/Notifications.vue";
 import groups from "@/helpers/groups";
 import MultiSelectUni from '@/components/ui/MultiSelectUni.vue'
 import viewData from "./viewData.vue";
+import vSelect from "vue-select";
+
 export default {
   name: "PartnerTable",
 
-  components: { Loader, Notifications, MultiSelectUni, viewData },
+  components: { Loader, Notifications, MultiSelectUni, viewData, vSelect },
   data() {
     return {
       dataForSearchByUser: "", // передача в дочерний компонент данных введенных пользователем в поиск до поиска
@@ -143,8 +272,8 @@ export default {
       dataForTable: [],
       infoFromSmartSearch: [],
       searchFullSetting: {
-        income: "",
-        expenses: "",
+        kind: "",
+        status: "",
         category: "",
         inn: "",
         ogrn: "",
@@ -153,6 +282,9 @@ export default {
         tags: [],
         type: "",
         annex_date: "",
+        number: "", // номер договора
+        annex_number: "", // номер приложения
+        counterparty_annex: "",
       },
       arrInnOgrn: [],
       Counterparty: null,
@@ -179,6 +311,21 @@ export default {
       },
       selectedCountriesIds: [],
       dislocation: "",
+      // интервал для контрагента
+      intervalCounterparty: null,
+      listCounterparty: [],
+      isVisibleAnswerBlockCounterparty: false,
+      // интервал для договора
+      intervalAgreementNumber: null,
+      isVisibleAnswerBlockAgreementNumber: false,
+      AgreementNumber: "",
+      all_annex_number: [],
+
+      // приложения
+      intervalAnnexNumber: null,
+      listCounterpartyAnnex: "",
+      isVisibleCounterpartyAnnex: false,
+      agreementBycounterpary: "",
 
     };
   },
@@ -225,7 +372,132 @@ export default {
 
   },
   methods: {
+    // получение клиентов, для дальнейшего нахождения договоров по выбранному клиенту
+    IputProcessingCounterpartyForAnnex() {
+      clearInterval(this.intervalAnnexNumber)
 
+      this.intervalAnnexNumber = setTimeout(() => {
+        this.getAnnexNumber()
+      }, 1000)
+    },
+    async getAnnexNumber() {
+      if (this.searchFullSetting.counterparty_annex == "" || this.searchFullSetting.counterparty_annex.length <= 1) return
+      this.loader = true
+      try {
+        let response = await api.getOnlyAgreementNumber(this.searchFullSetting.counterparty_annex)
+        // оставить в массиве объектов, в ответе от сервера только уникальные объекты по полю counterparty
+        let counterparties = response.data.data.reduce((acc, item) => {
+          if (acc.map[item.counterparty]) // если данный контрагент уже был
+            return acc; // ничего не делаем, возвращаем уже собранное
+
+          acc.map[item.counterparty] = true; // помечаем контрагент, как обработанный
+          acc.counterparties.push(item); // добавляем объект в массив контрагентов
+          return acc; // возвращаем собранное
+        }, {
+          map: {}, // здесь будут отмечаться обработанные контрагента
+          counterparties: [] // здесь конечный массив уникальных контрагентов
+        }).counterparties; // получаем конечный массив
+        this.listCounterpartyAnnex = counterparties
+        this.isVisibleCounterpartyAnnex = true
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loader = false
+      }
+    },
+    async checkCounetrpartForSearchAgreementNumber(val) {
+      console.log(val)
+      this.searchFullSetting.counterparty_annex = val
+      this.isVisibleCounterpartyAnnex = false
+      try {
+        this.loader = true
+        let response = await api.getAgreementNumberForCounterparty(val)
+        this.all_annex_number = response.data.data
+        console.log(this.all_annex_number)
+      } catch (err) {
+
+      } finally {
+        this.loader = false
+      }
+
+    },
+    // Получение договора по клиенту
+    getAgreementByClient() {
+      this.loader = true
+      api.getOnlyAgreementNumber(this.searchFullSetting.client)
+        .then(response => {
+          this.loader = false
+
+          this.all_agreement_number = response.data.data
+          console.log(this.all_agreement_number)
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Договора получены";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 3000);
+        }).catch((error) => {
+          this.loader = false
+          this.notifyHead = "Ошибка";
+          this.notifyMessage = "Договора не получены! Повторите попытку позже";
+          this.notifyClass = "wrapper-error";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 3000);
+          console.error(error)
+        })
+    },
+    // получение всех договоров
+    IputProcessingNumber() {
+      clearInterval(this.intervalAgreementNumber)
+
+      this.intervalAgreementNumber = setTimeout(() => {
+        this.getAgreementNumber()
+      }, 1000)
+    },
+    async getAgreementNumber() {
+      if (this.searchFullSetting.counterparty == "" || this.searchFullSetting.counterparty.length <= 1) return
+      this.loader = true
+      try {
+        let response = await api.searchCounterparties(this.searchFullSetting.counterparty)
+        this.listCounterparty = response.data.filter((item) => item?.toLowerCase().includes(this.searchFullSetting.counterparty.toLowerCase()))
+        this.isVisibleAnswerBlockCounterparty = true
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loader = false
+      }
+    },
+    checkAgreementNumberAdvancedFilter(val) {
+      this.searchFullSetting.number = val
+      this.isVisibleAnswerBlockAgreementNumber = false
+    },
+    IputProcessingCounterparty() {
+      clearInterval(this.intervalCounterparty)
+
+      this.intervalCounterparty = setTimeout(() => {
+        this.getAllCounterparty()
+      }, 1000)
+    },
+    async getAllCounterparty() {
+      if (this.searchFullSetting.counterparty == "" || this.searchFullSetting.counterparty.length <= 1) return
+      this.loader = true
+      try {
+        let response = await api.searchCounterparties(this.searchFullSetting.counterparty)
+        this.listCounterparty = response.data.filter((item) => item?.toLowerCase().includes(this.searchFullSetting.counterparty.toLowerCase()))
+        this.isVisibleAnswerBlockCounterparty = true
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loader = false
+      }
+    },
+    checkCounterpartyAdvancedFilter(val) {
+      this.searchFullSetting.counterparty = val
+      this.isVisibleAnswerBlockCounterparty = false
+    },
     openNotifications(data) {
       this.notifyHead = "Успешно";
       this.notifyMessage = "Данные скопированы";
@@ -242,19 +514,6 @@ export default {
         this.sendRequestToServerData(val);
       }, 1000);
     },
-    // Получение данных для дочернего компонента (пагинация, кол-во элементов на странице, фильтр уже выведенных данных)
-    getDataFromChildComponent(search, page_size, page, contract_type, created_at_gte ) {
-      this.loader = true
-      api.getAllDocumentsNotType(search, page_size, page, contract_type, created_at_gte)
-        .then(response => {
-         this.infoFromSmartSearch = response.data.data
-         this.totalPagesForChildComponent = response.data.total_pages
-          this.loader = false
-        }).catch((err) => {
-          console.log(err)
-          this.loader = false
-        })
-    },
     sendRequestToServerData(val) {
       if (this.search == "" || this.search.length <= 1) return
       this.isSearch = false
@@ -270,6 +529,20 @@ export default {
         })
     },
 
+    async getDataFromChildComponent(search, page_size, page, contract_type, created_at_gte) {
+      this.loader = true
+      try {
+        const response = await api.getAllDocumentsNotType(search, page_size, page, contract_type, created_at_gte);
+        this.infoFromSmartSearch = response.data.data;
+        this.totalPagesForChildComponent = response.data.total_pages;
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.loader = false;
+      }
+    },
+
+
 
     updateSelectedCountries(selected) {
       this.selectedCountriesIds = selected
@@ -284,7 +557,7 @@ export default {
         this.infoFromSmartSearch = this.responseSearchData
         this.isFilterBlock = true
         this.dataForSearchByUser = this.search
-       
+
         this.search = ""
       } else {
         this.isFilterBlock = true
@@ -330,73 +603,75 @@ export default {
         return
       }
       this.commentForResponse = ""
-      if (this.searchFullSetting.income) {
-        // Если income true и 'buyer' еще не в массиве, добавляем 'buyer'
-        if (!this.searchFullSetting.tags.includes('buyer')) {
-          this.searchFullSetting.tags.push('buyer');
-        }
-      } else {
-        // Если income false, удаляем 'buyer' из массива
-        const index = this.searchFullSetting.tags.indexOf('buyer');
-        if (index !== -1) {
-          this.searchFullSetting.tags.splice(index, 1);
-        }
-      }
 
-      if (this.searchFullSetting.expenses) {
-        // Если expenses true и каждого из тегов нет в массиве, добавляем их
-        const tagsToAdd = ['supply', 'economic', 'repair', 'financial'];
-        tagsToAdd.forEach(tag => {
-          if (!this.searchFullSetting.tags.includes(tag)) {
-            this.searchFullSetting.tags.push(tag);
-          }
-        });
-      } else {
-        // Если expenses false, удаляем все указанные теги из массива
-        this.searchFullSetting.tags = this.searchFullSetting.tags.filter(tag => !['supply', 'economic', 'repair', 'financial'].includes(tag));
-      }
 
-      // Перебор данных когда выбран доходный или расходный документ
-      if (this.searchFullSetting.tags.length > 0) {
-        let request = this.searchFullSetting.tags.map(category => api.getManyCategoryDate(
-          category,
-          this.searchFullSetting.on_date,
-          this.searchFullSetting.counterparty,
-          this.searchFullSetting.type,
-          this.searchFullSetting.annex_date))
-        this.dataForTable = []
-        this.isSearchFullSettings = false
-        Promise.allSettled(request)
-          .then(response => {
-            response.forEach((item) => {
-              this.dataForTable.push(...item.value.data.data)
-              if (this.dataForTable.length == 0) {
-                this.commentForResponse = 'Нет данных по вашему запросу'
-              }
-              this.isSearchFullSettings = true
-            })
-          }).catch((err) => {
-            console.log(err)
-            this.isSearchFullSettings = true
-          })
-      } else {
-        if (this.searchFullSetting)
-          // для случаев без выбора этих данных
-          this.isSearchFullSettings = false
-        api.fullSearchDirectory(this.searchFullSetting)
-          .then(response => {
-            this.dataForTable = response.data.data
-            console.log(this.dataForTable)
-            if (this.dataForTable.length == 0) {
-              this.commentForResponse = 'Нет данных по вашему запросу'
-            }
-            this.isSearchFullSettings = true
-          }).catch((err) => {
-            console.log(err)
-            this.isSearchFullSettings = true
+      // if (this.searchFullSetting.income) {
+      //   // Если income true и 'buyer' еще не в массиве, добавляем 'buyer'
+      //   if (!this.searchFullSetting.tags.includes('buyer')) {
+      //     this.searchFullSetting.tags.push('buyer');
+      //   }
+      // } else {
+      //   // Если income false, удаляем 'buyer' из массива
+      //   const index = this.searchFullSetting.tags.indexOf('buyer');
+      //   if (index !== -1) {
+      //     this.searchFullSetting.tags.splice(index, 1);
+      //   }
+      // }
 
-          })
-      }
+      // if (this.searchFullSetting.expenses) {
+      //   // Если expenses true и каждого из тегов нет в массиве, добавляем их
+      //   const tagsToAdd = ['supply', 'economic', 'repair', 'financial'];
+      //   tagsToAdd.forEach(tag => {
+      //     if (!this.searchFullSetting.tags.includes(tag)) {
+      //       this.searchFullSetting.tags.push(tag);
+      //     }
+      //   });
+      // } else {
+      //   // Если expenses false, удаляем все указанные теги из массива
+      //   this.searchFullSetting.tags = this.searchFullSetting.tags.filter(tag => !['supply', 'economic', 'repair', 'financial'].includes(tag));
+      // }
+
+      // // Перебор данных когда выбран доходный или расходный документ
+      // if (this.searchFullSetting.tags.length > 0) {
+      //   let request = this.searchFullSetting.tags.map(category => api.getManyCategoryDate(
+      //     category,
+      //     this.searchFullSetting.on_date,
+      //     this.searchFullSetting.counterparty,
+      //     this.searchFullSetting.type,
+      //     this.searchFullSetting.annex_date))
+      //   this.dataForTable = []
+      //   this.isSearchFullSettings = false
+      //   Promise.allSettled(request)
+      //     .then(response => {
+      //       response.forEach((item) => {
+      //         this.dataForTable.push(...item.value.data.data)
+      //         if (this.dataForTable.length == 0) {
+      //           this.commentForResponse = 'Нет данных по вашему запросу'
+      //         }
+      //         this.isSearchFullSettings = true
+      //       })
+      //     }).catch((err) => {
+      //       console.log(err)
+      //       this.isSearchFullSettings = true
+      //     })
+      // } else {
+      //   if (this.searchFullSetting)
+      //     // для случаев без выбора этих данных
+      //     this.isSearchFullSettings = false
+      //   api.fullSearchDirectory(this.searchFullSetting)
+      //     .then(response => {
+      //       this.dataForTable = response.data.data
+      //       console.log(this.dataForTable)
+      //       if (this.dataForTable.length == 0) {
+      //         this.commentForResponse = 'Нет данных по вашему запросу'
+      //       }
+      //       this.isSearchFullSettings = true
+      //     }).catch((err) => {
+      //       console.log(err)
+      //       this.isSearchFullSettings = true
+
+      //     })
+      // }
 
 
 
@@ -416,6 +691,10 @@ export default {
     
     
 <style  scoped>
+.textarea {
+  border: 1px solid #A0A0A0 !important;
+}
+
 .filter {
   background: rgb(241, 241, 241);
   width: 100%;
@@ -450,7 +729,7 @@ export default {
 .inn_ogrn,
 .income_expense {
   padding: 10px;
-  width: 65%;
+  width: 80%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -578,7 +857,6 @@ input[type="checkbox"] {
   width: 100%;
   max-height: 65vh;
   overflow: auto;
-  background: rgb(238, 238, 238);
   margin-top: 1%;
   border-radius: 8px;
 }
@@ -595,7 +873,7 @@ li {
 }
 
 li:hover {
-  background: rgb(255, 255, 255);
+  background: rgb(235, 235, 235);
 }
 
 li span {

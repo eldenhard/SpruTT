@@ -15,6 +15,12 @@ const getAllDocumentsNotType = (data, page_size, page = 1, contract_type = "", c
     return api.get(`${documents}/contract/?search=${data}&contract_type=${contract_type}&created_at_gte=${created_at_gte}&page_size=${page_size}&page=${page}`)
 }
 
+const getOnlyAgreementNumber = (data) => {
+    return api.get(`${documents}/contract/?counterparty_like=${data}`)
+}
+const getAgreementNumberForCounterparty = (counterparty, data) => {
+    return api.get(`${documents}/contract/?counterparty=${counterparty}`)
+}
 // типы договоров
 const getDirectoryFarm = (category, filter_farms) => {
     return api.get(`${documents}/contract/?category=${category}`,  {params: filter_farms})
@@ -211,8 +217,8 @@ const getManyCategoryDate = (category, date, counterparty, typeAgr, annex_date) 
     return api.get(`${documents}/contract/?created_at_gte=${date}&category=${category}&counterparty_like=${counterparty}&is_annex=${typeAgr}&annex_date=${annex_date}`)
 }
 
-const testCounterparty = (dataTest) => {
-    return api.get(`${documents}/contract/counterparties`)
+const searchCounterparties = (val) => {
+    return api.get(`${documents}/contract/counterparties/?counterparty_like=${val}`)
 }
 
 const getAllDocumentsByCounterparty = (data) => {
@@ -242,6 +248,9 @@ export default {
     ChangeCurrentAnnex,
     getCurrentContract,
     getIncompleteOccurrence,
+    searchCounterparties,
+    getOnlyAgreementNumber,
+    getAgreementNumberForCounterparty,
     // Телеграммы
     getNumberDog,
 
@@ -303,7 +312,6 @@ export default {
     getAllDocumentsNotType,
     fullSearchDirectory,
     getManyCategoryDate,
-    testCounterparty,
 
     getAllDocumentsByCounterparty,
     getAllDocumentsByCounterparty2,

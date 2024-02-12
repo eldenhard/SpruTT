@@ -26,8 +26,8 @@
                 <label for="">Статус договора<br>
                     <select style="height: 30px; width: 10vw">
                         <option value=""></option>
-                        <option value="" disabled>Дейсвительный</option>
-                        <option value="" disabled>Недействительный</option>
+                        <option value="" disabled>Дейсвитвующий</option>
+                        <option value="" disabled>Недействующий</option>
                     </select>
                 </label>
                 <label for="">Тип <br>
