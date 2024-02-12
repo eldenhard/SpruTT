@@ -234,7 +234,21 @@ const sendDataForOperSpravka = (data) => {
 const getDataForOperSpravka = (wag_type, date) => {
     return api.get(`${finance}/operativnaya-spravka/report/?wagon_type=${wag_type}&report_date=${date}` )
 }
+
+
+// Получение  договора по параметрам расширенного поиска
+const getAgreementAdvancedFilter = (contract_type, counterparty, number) => {
+    return api.get(`${documents}/contract/?contract_type=${contract_type}&counterparty=${counterparty}&number=${number}` )
+}
+// Получение  приложения и договора по параметрам расширенного поиска
+const getAnnexesAgreementAdvancedFilter = (annex, counterparty, number) => {
+    return api.get(`${documents}/contract/?annex=${annex}&counterparty=${counterparty}&number=${number}` )
+}
 export default {
+    getAgreementAdvancedFilter,
+    getAnnexesAgreementAdvancedFilter,
+
+
     getAllcounterparties,
     putCounterparties,
     getDirectoryFarm,

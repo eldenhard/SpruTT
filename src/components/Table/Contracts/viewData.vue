@@ -1,5 +1,8 @@
 <template>
-    <div v-if="isFilterBlock">
+    <div >
+        <div v-if="isVisibleFilterElementsTest">
+
+    
         <div class="filter_new_block">
             <div class="sortage">
                 <span> Сортировка по: </span>
@@ -88,6 +91,9 @@
                 </ul>
             </div>
         </div>
+    </div>
+
+
         <div class="view_info">
             <h4>{{ commentForResponse }}</h4>
             <ul>
@@ -151,7 +157,10 @@ export default {
         total_pages: {
             type: Number,
 
-        }
+        },
+        isVisibleFilterElementsTest:{
+            type: Boolean
+        },
 
     },
     data() {

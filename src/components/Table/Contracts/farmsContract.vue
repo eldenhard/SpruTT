@@ -75,7 +75,7 @@
               </div>
 
               <div class="right_section" v-else>
-                <select v-model="searchFullSetting.category">
+                <select v-model="searchFullSetting.category_annex">
                   <option value="">Не выбрано</option>
                   <option value="Акт">Акт</option>
                   <option value="Акт приема-передачи">Акт приема-передачи</option>
@@ -100,12 +100,12 @@
             </div>
             <div class="income_expense" v-if="searchFullSetting.type == 'false'">
               <div class="left_section">
-                <p>Вид договора:</p>
+                <p style="color: grey">Вид договора:</p>
               </div>
 
               <div class="right_section">
-                <select v-model="searchFullSetting.kind">
-                  <option value=""></option>
+                <select v-model="searchFullSetting.kind" disabled>
+                  <option value="">Не выбран</option>
                   <option value="income">Доходный</option>
                   <option value="expenses">Расходный</option>
                 </select>
@@ -202,9 +202,9 @@
               <div class="left_section">
                 <p>№ договора:</p>
               </div>
-              <div class="right_section"  style="width: 35%">
+              <div class="right_section"  style="width: 70%">
                 <v-select v-model="searchFullSetting.annex_number" :options="all_annex_number" label="number"
-                  style="width: 100%"></v-select>
+                  style="width:50%; margin-left: auto;"></v-select>
               </div>
             </div>
 
@@ -236,7 +236,8 @@
       <viewData :infoFromSmartSearch="infoFromSmartSearch" :searchFullSetting="searchFullSetting"
         :commentForResponse="commentForResponse" @openNotif="openNotifications()" :isFilterBlock="isFilterBlock"
         :dataForSearchByUser="dataForSearchByUser" @startLoader="loader = true" @stopLoader="loader = false"
-        @getDataFromChildComponent="getDataFromChildComponent" :total_pages="totalPagesForChildComponent" />
+        @getDataFromChildComponent="getDataFromChildComponent" :total_pages="totalPagesForChildComponent" 
+        :isVisibleFilterElementsTest="isVisibleFilterElementsTest"/>
     </div>
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
       id="notif" />
@@ -275,6 +276,7 @@ export default {
         kind: "",
         status: "",
         category: "",
+        category_annex: "",
         inn: "",
         ogrn: "",
         on_date: "",
@@ -326,7 +328,7 @@ export default {
       listCounterpartyAnnex: "",
       isVisibleCounterpartyAnnex: false,
       agreementBycounterpary: "",
-
+      isVisibleFilterElementsTest: false,
     };
   },
   watch: {
@@ -457,23 +459,27 @@ export default {
         this.getAgreementNumber()
       }, 1000)
     },
+    // получение всех договоров для договора
     async getAgreementNumber() {
-      if (this.searchFullSetting.counterparty == "" || this.searchFullSetting.counterparty.length <= 1) return
+      if (this.searchFullSetting.number == "" || this.searchFullSetting.number.length <= 1) return
       this.loader = true
       try {
-        let response = await api.searchCounterparties(this.searchFullSetting.counterparty)
-        this.listCounterparty = response.data.filter((item) => item?.toLowerCase().includes(this.searchFullSetting.counterparty.toLowerCase()))
-        this.isVisibleAnswerBlockCounterparty = true
+
+        let response = await api.getAllDocumentsNotType(this.searchFullSetting.number)
+        this.AgreementNumber = response.data.data
+        this.isVisibleAnswerBlockAgreementNumber = true
       } catch (err) {
         console.log(err)
       } finally {
         this.loader = false
       }
-    },
+    },   // получение всех договоров
     checkAgreementNumberAdvancedFilter(val) {
       this.searchFullSetting.number = val
       this.isVisibleAnswerBlockAgreementNumber = false
     },
+
+
     IputProcessingCounterparty() {
       clearInterval(this.intervalCounterparty)
 
@@ -590,7 +596,7 @@ export default {
       this.answerBlock = false
     },
     // запрос из расширенног поиска
-    sendToServerFullDecription() {
+    async sendToServerFullDecription() {
       if (this.searchFullSetting.type == "") {
         this.searchFullSetting.category = ""
         this.searchFullSetting.on_date = ""
@@ -603,7 +609,36 @@ export default {
         return
       }
       this.commentForResponse = ""
+      // если договор
+      if (this.searchFullSetting.type == 'false') {
+        this.loader = true
+        try {
+          let response = await api.getAgreementAdvancedFilter(this.searchFullSetting.category, this.searchFullSetting.counterparty, this.searchFullSetting.number)
+          this.dataForTable = response.data.data
+          this.infoFromSmartSearch = response.data.data
+          this.isFilterBlock = true
 
+        } catch (err) {
+          console.err(err, 'ОШИБКА')
+        }
+        finally {
+          this.loader = false
+        }
+      } else if(this.searchFullSetting.type == 'true'){
+        this.loader = true
+        try {
+          let response = await api.getAnnexesAgreementAdvancedFilter(this.searchFullSetting.category_annex, this.searchFullSetting.counterparty_annex, this.searchFullSetting.annex_number.number)
+          this.dataForTable = response.data.data
+          this.infoFromSmartSearch = response.data.data
+          // this.isFilterBlock = true
+
+        } catch (err) {
+          console.err(err, 'ОШИБКА')
+        }
+        finally {
+          this.loader = false
+        }
+      }
 
       // if (this.searchFullSetting.income) {
       //   // Если income true и 'buyer' еще не в массиве, добавляем 'buyer'
