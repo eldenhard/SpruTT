@@ -511,6 +511,7 @@ export default {
       this.showNotify = true;
       setTimeout(() => (this.showNotify = false), 2000);
     },
+    // Поиск по кнопке найти умный поиск
     IputProcessing(val) {
       clearTimeout(this.intervalresponse);
 
@@ -528,6 +529,7 @@ export default {
           this.isSearch = true
           this.responseSearchData = response.data.data
           this.totalPagesForChildComponent = response.data.total_pages // получение всех страниц для доч компонента
+          this.isVisibleFilterElementsTest = true
           this.isAnswerBlock = true
         }).catch((err) => {
           this.isSearch = true
@@ -557,22 +559,24 @@ export default {
       this.selectedCountriesIds.splice(this.selectedCountriesIds?.indexOf(id), 1)
     },
     InputTable(val) {
+      // когда выбран 1 элемент
       if (typeof val == 'string') {
         this.isAnswerBlock = false
         this.dataForTable = this.responseSearchData
         this.infoFromSmartSearch = this.responseSearchData
         this.isFilterBlock = true
         this.dataForSearchByUser = this.search
-
+        this.totalPagesForChildComponent = 1
         this.search = ""
       } else {
+        // когда нажали найти в умном поиске и выдались все
         this.isFilterBlock = true
         this.isAnswerBlock = false
         this.dataForSearchByUser = this.search
         this.search = ""
         this.dataForTable = [val]
         this.infoFromSmartSearch = [val]
-        console.log(this.infoFromSmartSearch, '[val]')
+ 
       }
     },
     sendFullDescriptionSearch() {
@@ -617,6 +621,7 @@ export default {
           this.dataForTable = response.data.data
           this.infoFromSmartSearch = response.data.data
           this.isFilterBlock = true
+          this.isVisibleFilterElementsTest = false
 
         } catch (err) {
           console.err(err, 'ОШИБКА')
