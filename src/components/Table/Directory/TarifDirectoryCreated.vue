@@ -21,7 +21,7 @@
             }}
         </a>
         <div class="table-content" v-show="visible">
-            <label for="amount">Количество договоров <br />
+            <label for="amount">Количество договоров<br />
                 <select name="amount_row" id="amount" style="width: 100%" v-model="filter_arendaData.page_size"
                     class="mini">
                     <option value="" disabled>кол-во строк на странице</option>

@@ -170,7 +170,7 @@
 
     </div>
     <transition name="fade">
-      <div style="display: flex; justify-content: flex-end;" v-show="info_block">
+      <div style="display: flex; justify-content: flex-end;" v-if="info_block">
         <table>
           <tr>
             <th>Старое наименование</th>
@@ -400,7 +400,9 @@ export default {
     info_btn() {
       if (this.info_block == false) {
         return require(`@/assets/info.png`)
-      } return require(`@/assets/cross.png`)
+      } else {
+        return require(`@/assets/cross.png`)
+      } 
     },
     filter_tenant() {
       if (this.tenant.length > 1) {
@@ -450,9 +452,7 @@ export default {
       this.selected_record = id
       this.$bvModal.show('bv-modal-example')
     },
-    inf_block() {
-      this.info_block = true
-    },
+
     onClick() {
       this.ten_visible = false;
       this.ten_visible2 = false;
