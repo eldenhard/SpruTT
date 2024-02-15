@@ -1,106 +1,110 @@
 <template>
-    <div >
-        <div v-if="isVisibleFilterElementsTest">
+    <div>
+        <div v-if="isVisibleFilterElementsExtended">
 
-    
-        <div class="filter_new_block">
-            <div class="sortage">
-                <span> Сортировка по: </span>
-                <select v-model="sort_params" style="height: 30px; width: 25%;">
-                    <option value=""></option>
-                    <option value="year">Годам</option>
-                    <option value="counterparty">Контрагентам</option>
-                </select>
 
-                <span @click="changeSortDirection()" style="font-weight: 600; margin-left: 2%;"
-                    v-if="sort_params != ''"><b-icon :icon="sortElement" variant="dark" font-scale="1.7"></b-icon>
-                    {{ sortElement == 'sort-up' ? 'По возрастанию' : 'По убыванию' }}</span>
+            <div class="filter_new_block">
+                <div class="sortage">
+                    <span>(РП) Сортировка по: </span>
+                    <select v-model="sort_paramsExtended" style="height: 30px; width: 25%;">
+                        <option value=""></option>
+                        <option value="year">Годам</option>
+                        <option value="counterparty">Контрагентам</option>
+                    </select>
+
+                    <span @click="changeSortDirection()" style="font-weight: 600; margin-left: 2%;"
+                        v-if="sort_paramsExtended != ''"><b-icon :icon="sortElement" variant="dark"
+                            font-scale="1.7"></b-icon>
+                        {{ sortElement == 'sort-up' ? 'По возрастанию' : 'По убыванию' }}</span>
+                </div>
+                <!-- <div class="filter_main">
+                    <span @click="isShowFilterExtended = !isShowFilterExtended">
+                        <b-icon icon="funnel-fill" :variant="isShowFilterExtended ? 'primary' : 'dark'"
+                            font-scale="1.4"></b-icon>Фильтр
+                    </span>
+                    <br>
+                </div> -->
+
             </div>
-            <div class="filter_main">
-                <span @click="isShowFilter = !isShowFilter">
-                    <b-icon icon="funnel-fill" :variant="isShowFilter ? 'primary' : 'dark'" font-scale="1.4"></b-icon>Фильтр
-                </span>
+            <div class="filter" v-if="isShowFilterExtended">
+                <div class="filter-row">
+                    <label for="">Статус договора<br>
+                        <select style="height: 30px; width: 10vw">
+                            <option value=""></option>
+                            <option value="" disabled>Действующий</option>
+                            <option value="" disabled>Недействующий</option>
+                        </select>
+                    </label>
+                    <label for="">Тип <br>
+                        <select style="height: 30px; width: 10vw" v-model="contract_type">
+                            <option value=""></option>
+                            <option value="Абонентский">Абонентский</option>
+                            <option value="Аренда">Аренда</option>
+                            <option value="Возмещение расходов">Возмещение расходов</option>
+                            <option value="Комиссия">Комиссия</option>
+                            <option value="Купля-продажа">Купля-продажа</option>
+                            <option value="Оказание услуг">Оказание услуг</option>
+                            <option value="Организация расчетов">Организация расчетов</option>
+                            <option value="Перевозка">Перевозка</option>
+                            <option value="Поставка">Поставка</option>
+                            <option value="Субаренда">Субаренда</option>
+                            <option value="Цессия">Цессия</option>
+                            <option value="ЭДО">ЭДО</option>
+                            <option value="Экспедиция">Экспедиция</option>
+                        </select>
+                    </label>
+                    <label for="">Вид <br>
+                        <select style="height: 30px; width: 10vw">
+                            <option value=""></option>
+                            <option value="" disabled>Доп. соглашение</option>
+                            <option value="" disabled>Протокол согласования</option>
+                            <option value="" disabled>Соглашение</option>
+                            <option value="" disabled>Соглашение об урегулировании (погашении задолженности)</option>
+                            <option value="" disabled>Приложение</option>
+                            <option value="" disabled>Прочие соглашения</option>
+                        </select>
+                    </label>
+                    <label>Дата заключения договора от <br>
+                        <input type="date" style="height: 30px; width: 10vw" v-model="created_at_gte">
+                    </label>
+                </div>
                 <br>
-            </div>
 
-        </div>
-        <div class="filter" v-if="isShowFilter">
-            <div class="filter-row">
-                <label for="">Статус договора<br>
-                    <select style="height: 30px; width: 10vw">
-                        <option value=""></option>
-                        <option value="" disabled>Действующий</option>
-                        <option value="" disabled>Недействующий</option>
-                    </select>
-                </label>
-                <label for="">Тип <br>
-                    <select style="height: 30px; width: 10vw" v-model="contract_type">
-                        <option value=""></option>
-                        <option value="Абонентский">Абонентский</option>
-                        <option value="Аренда">Аренда</option>
-                        <option value="Возмещение расходов">Возмещение расходов</option>
-                        <option value="Комиссия">Комиссия</option>
-                        <option value="Купля-продажа">Купля-продажа</option>
-                        <option value="Оказание услуг">Оказание услуг</option>
-                        <option value="Организация расчетов">Организация расчетов</option>
-                        <option value="Перевозка">Перевозка</option>
-                        <option value="Поставка">Поставка</option>
-                        <option value="Субаренда">Субаренда</option>
-                        <option value="Цессия">Цессия</option>
-                        <option value="ЭДО">ЭДО</option>
-                        <option value="Экспедиция">Экспедиция</option>
-                    </select>
-                </label>
-                <label for="">Вид <br>
-                    <select style="height: 30px; width: 10vw">
-                        <option value=""></option>
-                        <option value="" disabled>Доп. соглашение</option>
-                        <option value="" disabled>Протокол согласования</option>
-                        <option value="" disabled>Соглашение</option>
-                        <option value="" disabled>Соглашение об урегулировании (погашении задолженности)</option>
-                        <option value="" disabled>Приложение</option>
-                        <option value="" disabled>Прочие соглашения</option>
-                    </select>
-                </label>
-                <label>Дата заключения договора от <br>
-                    <input type="date" style="height: 30px; width: 10vw" v-model="created_at_gte">
-                </label>
             </div>
-            <br>
+            <button class="Accept" v-if="isShowFilterExtended" @click="applyChanges()">Применить</button>
+            <hr style="border: 1px solid rgb(184, 184, 184);">
+            <div class="pagination_page_element">
+                <label for="">Отображение на странице<br>
+                    <select v-model="elInPage" style="width: 12vw; height: 30px;">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="100">100</option>
+                    </select>
+                </label>
+                <div id="wrapper">
+                    <ul id="pagination">
+                        <li v-for="btn in total_pages" :key="btn.id">
 
-        </div>
-        <button class="Accept" v-if="isShowFilter" @click="applyChanges()">Применить</button>
-        <hr style="border: 1px solid rgb(184, 184, 184);">
-        <div class="pagination_page_element">
-            <label for="">Отображение на странице<br>
-                <select v-model="elInPage" style="width: 12vw; height: 30px;">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="100">100</option>
-                </select>
-            </label>
-            <div id="wrapper">
-                <ul id="pagination">
-                    <li v-for="btn in total_pages" :key="btn.id">
-                        <!-- filter_arendaData.page_size, btn -->
-                        <a @click="getPagination(elInPage, btn)"
-                            :class="{ active123: Truefalse(btn), active_new: pageNumber == btn }">{{ btn }}</a>
-                    </li>
-                </ul>
+                            <a @click="getPagination(elInPage, btn)"
+                                :class="{ active123: Truefalse(btn), active_new: pageNumber == btn }">{{ btn }}</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
 
 
         <div class="view_info">
-            <h4>{{ commentForResponse }}</h4>
+
             <ul>
-                <li class="responseListItem" v-for="item, index in infoFromSmartSearch" :key="index">
+                <li class="responseListItem" v-for="item, index in infoFromSmartSearchExtended" :key="index">
                     <section class="element_list">
                         <div>
-                            <b class="superB">Договор:</b> № {{ item?.number }} <br>
+                            (РП)
+                            <br>
+                            <b class="superB">Договор :</b> № {{ item?.number }} <br>
                             <b class="superB" v-if="item?.annex_number">Приложение : № {{
                                 item?.annex_number.split("-").reverse().join('.') }}<br></b>
 
@@ -135,92 +139,98 @@
 
 
 <script>
+import api from "@/api/directory";
+
 export default {
     props: {
-        infoFromSmartSearch: {
+        infoFromSmartSearchExtended: {
             type: Array,
             variant: String,
             default: []
         },
-        searchFullSetting: {
-            type: Object
+        objectElementFilter: {
+            type: Array
         },
-        commentForResponse: {
-            type: String
-        },
-        isFilterBlock: {
+
+        isVisibleFilterElementsExtended: {
             type: Boolean
-        },
-        dataForSearchByUser: {
-            type: String
         },
         total_pages: {
-            type: Number,
-
-        },
-        isVisibleFilterElementsTest:{
-            type: Boolean
-        },
+            type: Number
+        }
 
     },
     data() {
         return {
-            isShowFilter: false,
+            isShowFilterExtended: false,
             elInPage: 100,
             sortElement: 'sort-up',
-            sort_params: "",
+            sort_paramsExtended: "",
             loader: false,
             pageNumber: 1,
             interval: 2,
             contract_type: "",
             annex_date_gte: "",
+           
         }
     },
+
     watch: {
-        infoFromSmartSearch() {
-           if(this.infoFromSmartSearch.length == 1){
-                this.total_pages = 1
-           }
-        },
+
+        // infoFromSmartSearch() {
+        //    if(this.infoFromSmartSearch.length == 1){
+        //         this.total_pages = 1
+        //    }
+        // },
         elInPage() {
-            this.$emit('getDataFromChildComponent', this.dataForSearchByUser, this.elInPage)
-        },
-        isFilterBlock() {
-            return this.isFilterBlock == true ? this.sortElement = 'sort-up' : this.sortElement = ""
-        },
+            this.$emit('getDataFromChildComponentExtended',  this.objectElementFilter, this.elInPage, this.pageNumber) },
+        // isFilterBlock() {
+        //     return this.isFilterBlock == true ? this.sortElement = 'sort-up' : this.sortElement = ""
+        // },
         sortElement(newValue) {
-            if (newValue == "sort-up" && this.sort_params == "year") {
+            if (newValue == "sort-up" && this.sort_paramsExtended == "year") {
                 console.log('year sort-up')
-                this.infoFromSmartSearch.sort((a, b) => {
+                this.infoFromSmartSearchExtended.sort((a, b) => {
                     let dateA = this.getComparisonDate(a)
                     let dateB = this.getComparisonDate(b)
                     return this.compareDates(dateA, dateB)
                 })
-            } else if (newValue == "sort-down" && this.sort_params == "year") {
+            } else if (newValue == "sort-down" && this.sort_paramsExtended == "year") {
                 console.log('year sort-down')
-                this.infoFromSmartSearch.sort((a, b) => {
+                this.infoFromSmartSearchExtended.sort((a, b) => {
                     let dateA = this.getComparisonDate(a)
                     let dateB = this.getComparisonDate(b)
                     return this.compareDates(dateB, dateA)
                 })
             }
-            else if (newValue == "sort-up" && this.sort_params == "counterparty") {
+            else if (newValue == "sort-up" && this.sort_paramsExtended == "counterparty") {
                 console.log('counterparty sort-up')
-                return this.infoFromSmartSearch.sort((a, b) => a.counterparty > b.counterparty ? 1 : -1)
+                return this.infoFromSmartSearchExtended.sort((a, b) => a.counterparty > b.counterparty ? 1 : -1)
             }
-            else if (newValue == "sort-down" && this.sort_params == "counterparty") {
+            else if (newValue == "sort-down" && this.sort_paramsExtended == "counterparty") {
                 console.log('counterparty sort-down')
-                return this.infoFromSmartSearch.sort((a, b) => b.counterparty > a.counterparty ? 1 : -1)
+                return this.infoFromSmartSearchExtended.sort((a, b) => b.counterparty > a.counterparty ? 1 : -1)
             }
         }
     },
     methods: {
         // Подтверждение фильтраци
-        applyChanges() {
-            this.$emit('getDataFromChildComponent', this.dataForSearchByUser, this.elInPage, this.pageNumber, this.contract_type, this.created_at_gte, this.annex_date_gte)
+        async applyChanges() {
+            this.$emit('startLoader')
+            try {
+                  let response = await api.getAgreementAdvancedFilter(this.searchFullSetting.category, this.searchFullSetting.counterparty, this.searchFullSetting.number)
+                  this.infoFromSmartSearchExtended = response.data.data
+                    this.total_pages = response.data.total_pages
+                } catch (err) {
+                  console.err(err, 'ОШИБКА')
+                }
+                finally {
+                    this.$emit('stopLoader')
+                }
+            // this.$emit('getDataFromChildComponent', this.dataForSearchByUser, this.elInPage, this.pageNumber, this.contract_type, this.created_at_gte, this.annex_date_gte)
         },
         getPagination(page_size, page) {
-            this.$emit('getDataFromChildComponent', this.dataForSearchByUser, page_size, page)
+            this.$emit('getDataFromChildComponentExtended', this.objectElementFilter, page_size, page)
             this.pageNumber = page;
         },
         Truefalse(btn) {
@@ -239,7 +249,6 @@ export default {
             if (btn < this.pageNumber && btn > this.pageNumber - this.interval) {
                 return true;
             }
-
             return false;
         },
         getComparisonDate(item) {

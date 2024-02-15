@@ -202,7 +202,7 @@
               <div class="left_section">
                 <p>№ договора:</p>
               </div>
-              <div class="right_section"  style="width: 70%">
+              <div class="right_section" style="width: 70%">
                 <v-select v-model="searchFullSetting.annex_number" :options="all_annex_number" label="number"
                   style="width:50%; margin-left: auto;"></v-select>
               </div>
@@ -221,7 +221,7 @@
               </div>
             </div>
 
-
+            <!-- Поиск в расширенном поиске! -->
             <button class="Request" style="border-radius: 8px; margin-left: auto;" @click="sendToServerFullDecription()">
               <span v-if="isSearchFullSettings">Найти</span>
               <b-icon v-if="!isSearchFullSettings" icon="three-dots" animation="cylon" font-scale="3"></b-icon>
@@ -232,12 +232,17 @@
       </section>
 
       <br>
+      <viewDataFullSearch :isVisibleFilterElementsExtended="isVisibleFilterElementsExtended"
+        :infoFromSmartSearchExtended="infoFromSmartSearchExtended" @openNotif="openNotifications()"
+        :objectElementFilter="objectElementFilter" @startLoader="loader = true" @stopLoader="loader = false"
+        :total_pages="totalPagesFilterExtended" @getDataFromChildComponentExtended="getDataFromChildComponentExtended" />
 
       <viewData :infoFromSmartSearch="infoFromSmartSearch" :searchFullSetting="searchFullSetting"
         :commentForResponse="commentForResponse" @openNotif="openNotifications()" :isFilterBlock="isFilterBlock"
         :dataForSearchByUser="dataForSearchByUser" @startLoader="loader = true" @stopLoader="loader = false"
-        @getDataFromChildComponent="getDataFromChildComponent" :total_pages="totalPagesForChildComponent" 
-        :isVisibleFilterElementsTest="isVisibleFilterElementsTest"/>
+        @getDataFromChildComponent="getDataFromChildComponent" :total_pages="totalPagesForChildComponent"
+        :isVisibleFilterElementsTest="isVisibleFilterElementsTest" />
+
     </div>
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
       id="notif" />
@@ -253,13 +258,19 @@ import groups from "@/helpers/groups";
 import MultiSelectUni from '@/components/ui/MultiSelectUni.vue'
 import viewData from "./viewData.vue";
 import vSelect from "vue-select";
-
+import viewDataFullSearch from "./viewDataFullSearch.vue";
 export default {
   name: "PartnerTable",
 
-  components: { Loader, Notifications, MultiSelectUni, viewData, vSelect },
+  components: { Loader, Notifications, MultiSelectUni, viewData, vSelect, viewDataFullSearch },
   data() {
     return {
+      //  для фильтра расширенного поиска
+      isVisibleFilterElementsExtended: false,
+      infoFromSmartSearchExtended: [],
+      objectElementFilter: [],
+      totalPagesFilterExtended: 0,
+      // 
       dataForSearchByUser: "", // передача в дочерний компонент данных введенных пользователем в поиск до поиска
       totalPagesForChildComponent: 0, // кол-во страниц запроса для дочернего компонента
       isFilterBlock: false,
@@ -530,6 +541,9 @@ export default {
           this.responseSearchData = response.data.data
           this.totalPagesForChildComponent = response.data.total_pages // получение всех страниц для доч компонента
           this.isVisibleFilterElementsTest = true
+          this.isVisibleFilterElementsExtended = false
+          this.infoFromSmartSearchExtended = []
+          // скрыл фильтр для расширенного поиска
           this.isAnswerBlock = true
         }).catch((err) => {
           this.isSearch = true
@@ -543,13 +557,30 @@ export default {
         const response = await api.getAllDocumentsNotType(search, page_size, page, contract_type, created_at_gte);
         this.infoFromSmartSearch = response.data.data;
         this.totalPagesForChildComponent = response.data.total_pages;
+
       } catch (err) {
         console.log(err);
       } finally {
         this.loader = false;
       }
     },
+    async getDataFromChildComponentExtended(data, page_size, page) {
+      console.log('1')
 
+      if (data[0] == 'false') {
+        try {
+          this.loader = true
+          let response = await api.getAgreementAdvancedFilter2(data[1], data[2], data[3], page_size, page)
+          this.infoFromSmartSearchExtended = response.data.data
+          this.totalPagesFilterExtended = response.data.total_pages
+        } catch (err) {
+
+        } finally {
+          this.loader = false
+        }
+      } 
+     
+    },
 
 
     updateSelectedCountries(selected) {
@@ -566,17 +597,19 @@ export default {
         this.infoFromSmartSearch = this.responseSearchData
         this.isFilterBlock = true
         this.dataForSearchByUser = this.search
-        this.totalPagesForChildComponent = 1
+        this.isVisibleFilterElementsExtended = false
         this.search = ""
       } else {
         // когда нажали найти в умном поиске и выдались все
         this.isFilterBlock = true
         this.isAnswerBlock = false
+        this.isVisibleFilterElementsExtended = false
+
         this.dataForSearchByUser = this.search
         this.search = ""
         this.dataForTable = [val]
         this.infoFromSmartSearch = [val]
- 
+
       }
     },
     sendFullDescriptionSearch() {
@@ -613,15 +646,21 @@ export default {
         return
       }
       this.commentForResponse = ""
+      this.isVisibleFilterElementsTest = false
+      this.infoFromSmartSearch = []
       // если договор
       if (this.searchFullSetting.type == 'false') {
         this.loader = true
         try {
           let response = await api.getAgreementAdvancedFilter(this.searchFullSetting.category, this.searchFullSetting.counterparty, this.searchFullSetting.number)
           this.dataForTable = response.data.data
-          this.infoFromSmartSearch = response.data.data
+          // this.infoFromSmartSearch = response.data.data
+          this.infoFromSmartSearchExtended = response.data.data
           this.isFilterBlock = true
-          this.isVisibleFilterElementsTest = false
+          this.isVisibleFilterElementsExtended = true
+          this.objectElementFilter = [this.searchFullSetting.type, this.searchFullSetting.category, this.searchFullSetting.counterparty, this.searchFullSetting.number]
+          this.totalPagesFilterExtended = response.data.total_pages
+
 
         } catch (err) {
           console.err(err, 'ОШИБКА')
@@ -629,12 +668,17 @@ export default {
         finally {
           this.loader = false
         }
-      } else if(this.searchFullSetting.type == 'true'){
+      } else if (this.searchFullSetting.type == 'true') {
         this.loader = true
         try {
           let response = await api.getAnnexesAgreementAdvancedFilter(this.searchFullSetting.category_annex, this.searchFullSetting.counterparty_annex, this.searchFullSetting.annex_number.number)
           this.dataForTable = response.data.data
-          this.infoFromSmartSearch = response.data.data
+          // this.infoFromSmartSearch = response.data.data
+          this.infoFromSmartSearchExtended = response.data.data
+          this.objectElementFilter = [this.searchFullSetting.type, this.searchFullSetting.category, this.searchFullSetting.counterparty, this.searchFullSetting.number]
+          this.totalPagesFilterExtended = response.data.total_pages
+          this.isVisibleFilterElementsExtended = true
+
           // this.isFilterBlock = true
 
         } catch (err) {

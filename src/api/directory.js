@@ -244,6 +244,15 @@ const getAgreementAdvancedFilter = (contract_type, counterparty, number) => {
 const getAnnexesAgreementAdvancedFilter = (annex, counterparty, number) => {
     return api.get(`${documents}/contract/?annex=${annex}&counterparty=${counterparty}&number=${number}` )
 }
+
+
+const getAgreementAdvancedFilter2 = (contract_type, counterparty, number, page_size, page) => {
+    return api.get(`${documents}/contract/?contract_type=${contract_type}&counterparty=${counterparty}&number=${number}&page_size=${page_size}&page=${page}` )
+}
+
+const getAnnexesAgreementAdvancedFilter2 = (annex, counterparty, number, page_size, page) => {
+    return api.get(`${documents}/contract/?annex=${annex}&counterparty=${counterparty}&number=${number}&page_size=${page_size}&page=${page}` )
+}
 export default {
     getAgreementAdvancedFilter,
     getAnnexesAgreementAdvancedFilter,
@@ -334,5 +343,9 @@ export default {
     // Оперативная справка
     sendDataForOperSpravka,
     getDataForOperSpravka,
+
+
+    getAgreementAdvancedFilter2,
+    getAnnexesAgreementAdvancedFilter2,
 }
 
