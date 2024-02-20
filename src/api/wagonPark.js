@@ -6,7 +6,7 @@ const getWagons = (filters) => {
     return api.get(`${resource}/wagons`, { params: filters })
 }
 const getWagon = (number) => {
-    return api.get(`${resource}/wagons/${number}`)
+    return api.get(`${resource}/wagons/${number}/`)
 }
 const getPassport = (filter) => {
     return api.get(`${resource}/wagon-passport/`, { params: filter })

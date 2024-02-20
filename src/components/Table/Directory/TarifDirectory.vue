@@ -935,7 +935,7 @@ export default {
     //   return newData;
     // },
     // // Преобразование данных через меммоизацию
-    async getStationCode(station_name, index) {
+    async getStationCode(station_name, index, name_cells) {
       try {
         if (this.stationCache[station_name]) {
           return this.stationCache[station_name];
@@ -962,7 +962,8 @@ export default {
           }
           if (stationNameMatch) {
             const stationIndex = server_response.indexOf(stationNameMatch);
-            const stationCode6 = response.data.data[stationIndex].code; // Получаем код подходящего варианта
+            const stationCode6 = response.data.data[stationIndex]; // Получаем все данные по станациям
+
             this.$set(this.stationCache, station_name, stationCode6);
             return stationCode6;
           } else {
@@ -1085,7 +1086,7 @@ export default {
 
         if (item.next_loading_stations_list) {
           try {
-            const code = await this.getStationCode(item.next_loading_stations_list, index);
+            const code = await this.getStationCode(item.next_loading_stations_list, index, 'next_loading_stations_list');
             if (code !== null) {
               newItem.next_loading_stations_list = code;
             }
@@ -1098,7 +1099,7 @@ export default {
           newItem.departure_stations_list = []; // Инициализируем массив для станций погрузки
           for (const station of item.departure_stations_list) {
             try {
-              const code = await this.getStationCode(station, index);
+              const code = await this.getStationCode(station, index, 'departure_stations_list');
               if (code !== null) {
                 newItem.departure_stations_list.push(code);
               }
@@ -1112,7 +1113,7 @@ export default {
           newItem.exclude_next_loading_stations_list = []; // Инициализируем массив для исключений следующей погрузки
           for (const station of item.exclude_next_loading_stations_list) {
             try {
-              const code = await this.getStationCode(station, index);
+              const code = await this.getStationCode(station, index, 'exclude_next_loading_stations_list');
               if (code !== null) {
                 newItem.exclude_next_loading_stations_list.push(code);
               }
@@ -1132,6 +1133,28 @@ export default {
             console.error(`Ошибка при обработке страны "${item.country}" на индексе ${index}:`, error);
             this.errorp.push(`Ошибка при обработке страны "${item.country}" на индексе ${index}: ${error.message}`);
           }
+        }
+
+        if (item.wagons) {
+          newItem.wagons = []; // Инициализируем массив для исключений следующей погрузки
+          for (const wagon of item.wagons) {
+            try {
+              const wagon_id = await this.getWagonData(wagon, index);
+              if (wagon_id !== null) {
+                newItem.wagons.push(wagon_id);
+              }
+            } catch (error) {
+              console.error(`Ошибка при обработке вагона "${item.wagons}" на индексе ${index}`, error);
+            }
+          }
+          // try {
+          //     const wagonData = await this.getWagonData(item.wagons, index);
+
+          //     newItem.wagons = wagonData.id;
+          // } catch (error) {
+          //     console.error(`Ошибка при обработке вагона "${item.wagons}" на индексе ${index}:`, error);
+          //     this.errorp.push(`Ошибка при обработке вагона "${item.wagons}" на индексе ${index}: ${error.message}`);
+          // }
         }
         newData.push(newItem);
       }
@@ -1158,7 +1181,21 @@ export default {
 
       return newData;
     },
-
+    // Получение данных по номерам вагонов
+    async getWagonData(wagonNumber, index) {
+      try {
+        const response = await api_wagon.getWagon(wagonNumber);
+        console.log(response.data)
+        // Проверяем, получены ли данные о вагоне
+        if (!response.data || response.data.length === 0) {
+          throw new Error(`Данные о вагоне "${wagonNumber}" не найдены`);
+        }
+        // Возвращаем данные о вагоне
+        return response.data.id
+      } catch (error) {
+        throw new Error(`Ошибка при получении данных о вагоне "${wagonNumber}" на индексе ${index + 1}: ${error.message}`);
+      }
+    },
 
 
 
@@ -1287,22 +1324,37 @@ export default {
           this.checkCompleteData.forEach((item) => {
             item.wagon_type = 'Цистерна'
           })
-          // Заменить если departure_stations_list == null на []
-          for(let i in this.checkCompleteData) {
-            if(this.checkCompleteData[i].departure_stations_list == null) {
-              this.checkCompleteData[i].departure_stations_list = [0]
+
+          for (let i in this.checkCompleteData) {
+            // Много станции
+            if (this.checkCompleteData[i].departure_stations_list == null) {
+              this.checkCompleteData[i].departure_stations_list = [ ]
+            } else {
+              this.checkCompleteData[i].departure_stations_list = this.checkCompleteData[i].departure_stations_list.map((item) => item.id)
             }
-            if(this.checkCompleteData[i].next_loading_stations_list == null) {
-              this.checkCompleteData[i].next_loading_stations_list = [0]
+            // 1 станция
+            if (this.checkCompleteData[i].next_loading_stations_list == null) {
+              this.checkCompleteData[i].next_loading_stations_list = [ ]
+            } else {
+              this.checkCompleteData[i].next_loading_stations_list = this.checkCompleteData[i].next_loading_stations_list.id
             }
-            if(this.checkCompleteData[i].exclude_next_loading_stations_list == null) {
-              this.checkCompleteData[i].exclude_next_loading_stations_list = [0]
+            // Много станций
+            if (this.checkCompleteData[i].exclude_next_loading_stations_list == null) {
+              this.checkCompleteData[i].exclude_next_loading_stations_list = [ ]
+            } else {
+              this.checkCompleteData[i].exclude_next_loading_stations_list = this.checkCompleteData[i].exclude_next_loading_stations_list.map((item) => item.id)
             }
-            if(this.checkCompleteData[i].wagons == null) {
-              this.checkCompleteData[i].wagons = [0]
+            if (this.checkCompleteData[i].wagons == null) {
+              this.checkCompleteData[i].wagons = [ ]
             }
-            if(this.checkCompleteData[i].cargos_list == null) {
-              this.checkCompleteData[i].cargos_list = [0]
+            if (this.checkCompleteData[i].cargos_list == null) {
+              this.checkCompleteData[i].cargos_list = [ ]
+            }
+            if (this.checkCompleteData[i].departure_station) {
+              this.checkCompleteData[i].departure_station = this.checkCompleteData[i].departure_station.code
+            }
+            if (this.checkCompleteData[i].destination_station) {
+              this.checkCompleteData[i].destination_station = this.checkCompleteData[i].destination_station.code
             }
           }
 
