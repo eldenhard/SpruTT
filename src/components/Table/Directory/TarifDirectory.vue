@@ -307,7 +307,7 @@
             </td>
             <!-- новый столб от 20.02.2024 -->
             <td style="border: 1px solid black">
-              <input style="width: 100%" type="text" v-model="item.departure_stations_list" />
+              <input style="width: 100%" type="text" v-model="item.departure_stations_list" disabled />
             </td>
             <td style="border: 1px solid black">
               <input style="width: 100%" type="text" v-model="item.destination_station" />
@@ -337,13 +337,13 @@
               <input style="width: 100%" type="text" v-model="item.next_loading_stations_list" />
             </td>
             <td style="border: 1px solid black">
-              <input style="width: 100%" type="text" v-model="item.exclude_next_loading_stations_list" />
+              <input style="width: 100%" type="text" v-model="item.exclude_next_loading_stations_list" disabled />
             </td>
             <td style="border: 1px solid black">
               <input style="width: 100%" type="text" v-model="item.country" />
             </td>
             <td style="border: 1px solid black">
-              <input style="width: 100%" type="text" v-model="item.wagons" />
+              <input style="width: 100%" type="text" v-model="item.wagons" required />
             </td>
           </tr>
         </table>
@@ -452,6 +452,7 @@ export default {
       name_client: (state) => state.client.name_client,
       name_cargo: (state) => state.cargo_code.cargo_code,
       uid: (state) => state.auth.uid,
+      road: (state) => state.road.roadAsCountries
     }),
 
     filter_client() {
@@ -482,6 +483,7 @@ export default {
     document.body.addEventListener("click", this.closeWindow);
     // Получаю все приложения для договора
     this.getAllAgreement();
+
   },
   watch: {
     which_cargo() {
@@ -771,7 +773,17 @@ export default {
           this.data.push(newObj);
           console.log(this.data, 'новые данные массивом')
         } else {
-          this.data[i][event.target.id] = operationBuffer[i];
+          if (
+            event.target.id === "departure_stations_list" ||
+            // event.target.id === "next_loading_stations_list" ||
+            event.target.id === "exclude_next_loading_stations_list" ||
+            event.target.id === "wagons"
+          ) {
+            this.data[i][event.target.id] = operationBuffer[i].split(",");
+          } else {
+            this.data[i][event.target.id] = operationBuffer[i];
+          }
+
         }
       }
     },
@@ -1010,6 +1022,7 @@ export default {
                 stationNameSet.add(station);
               });
             }
+
           });
           await Promise.all(
             Array.from(stationNameSet).map(async (stationName) => {
@@ -1038,6 +1051,7 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        this.loader = false;
       }
     },
 
@@ -1089,7 +1103,7 @@ export default {
                 newItem.departure_stations_list.push(code);
               }
             } catch (error) {
-              console.error(`Ошибка при получении  кода для станции "${station}" в массиве departure_stations_list на индексе ${index}`, error);
+              console.error(`Ошибка при получении  кода для станции "${station}" в группе "Мн. станций отправки	" на индексе ${index}`, error);
             }
           }
         }
@@ -1103,11 +1117,22 @@ export default {
                 newItem.exclude_next_loading_stations_list.push(code);
               }
             } catch (error) {
-              console.error(`Ошибка при получении кода для станции "${station}" в массиве exclude_next_loading_stations_list на индексе ${index}`, error);
+              console.error(`Ошибка при получении кода для станции "${station}" в группе "Станции исключения следующей погрузки" на индексе ${index}`, error);
             }
           }
         }
-
+        if (item.country) {
+          try {
+            const country = this.road.find(roadItem => roadItem.name === item.country);
+            if (!country) {
+              throw new Error(`Страна "${item.country}" не найдена`);
+            }
+            newItem.country = Number(country.id); //  ID страны в новый элемент
+          } catch (error) {
+            console.error(`Ошибка при обработке страны "${item.country}" на индексе ${index}:`, error);
+            this.errorp.push(`Ошибка при обработке страны "${item.country}" на индексе ${index}: ${error.message}`);
+          }
+        }
         newData.push(newItem);
       }
       if (this.errorp.length > 0) {
@@ -1188,7 +1213,7 @@ export default {
         if (this.checkCompleteData.length == 0) {
           this.loader = true
           this.Standard.wagon_type = 'Цистерна'
-
+          console.log(this.Standard, 'this.Standard')
           api
             .postTarifData([this.Standard])
             .then((response) => {
@@ -1262,7 +1287,26 @@ export default {
           this.checkCompleteData.forEach((item) => {
             item.wagon_type = 'Цистерна'
           })
-          console.log(this.checkCompleteData)
+          // Заменить если departure_stations_list == null на []
+          for(let i in this.checkCompleteData) {
+            if(this.checkCompleteData[i].departure_stations_list == null) {
+              this.checkCompleteData[i].departure_stations_list = [0]
+            }
+            if(this.checkCompleteData[i].next_loading_stations_list == null) {
+              this.checkCompleteData[i].next_loading_stations_list = [0]
+            }
+            if(this.checkCompleteData[i].exclude_next_loading_stations_list == null) {
+              this.checkCompleteData[i].exclude_next_loading_stations_list = [0]
+            }
+            if(this.checkCompleteData[i].wagons == null) {
+              this.checkCompleteData[i].wagons = [0]
+            }
+            if(this.checkCompleteData[i].cargos_list == null) {
+              this.checkCompleteData[i].cargos_list = [0]
+            }
+          }
+
+          console.log(this.checkCompleteData, 'checkCompleteData')
           api
             .postTarifData(this.checkCompleteData)
             .then((response) => {
