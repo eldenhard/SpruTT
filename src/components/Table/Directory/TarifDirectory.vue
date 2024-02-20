@@ -147,7 +147,7 @@
         <tr v-show="visible_agreement">
           <td class="col1">Все договора</td>
           <td>
-            <v-select v-model="agreement_number_test" :options="all_agreement_number" label="agreement_number" ></v-select>
+            <v-select v-model="agreement_number_test" :options="all_agreement_number" label="agreement_number"></v-select>
             <!-- <select name="" id="" v-model="agreement_number_test" @change="test()">
               <option :value="[item.agreement_number, item.client, item.id]" v-for="item in all_agreement_number"
                 :key="item.id">
@@ -206,88 +206,148 @@
       <button class="button Action" style="height: 30px" @click="checkingData()">
         Проверка введеных данных
       </button>
+      <div style="width: 100%; overflow: auto;">
 
-      <table border="1" class="table_stavka" v-show="visible">
+        <table border="1" class="table_stavka" v-show="visible">
+          <tr>
+            <td></td>
+            <td style="border: 1px solid black">
+              <input type="text" name="" id="departure_station" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" />
+            </td>
+            <td style="border: 1px solid black">
+              <input type="text" id="departure_stations_list" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" />
+            </td>
+            <td style="border: 1px solid black">
+              <input type="text" name="" id="destination_station" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" />
+            </td>
+            <td style="border: 1px solid black">
+              <input type="text" name="" id="cargo" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" :disabled="disabled_cargo" />
+            </td>
+            <td style="border: 1px solid black">
+              <input type="text" name="" id="stavka" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" />
+            </td>
+            <td style="border: 1px solid black">
+              <input type="text" name="" id="nds" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" />
+            </td>
 
-        <tr>
-          <td></td>
-          <td style="border: 1px solid black">
-            <input type="text" name="" id="departure_station" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" />
-          </td>
-          <td style="border: 1px solid black">
-            <input type="text" name="" id="destination_station" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" />
-          </td>
-          <td style="border: 1px solid black">
-            <input type="text" name="" id="cargo" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" :disabled="disabled_cargo" />
-          </td>
-          <td style="border: 1px solid black">
-            <input type="text" name="" id="stavka" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" />
-          </td>
-          <td style="border: 1px solid black">
-            <input type="text" name="" id="nds" @keyup.enter="saveTarif($event)"
-              placeholder="скопируйте и вставьте данные" />
-          </td>
-          <td style="border: 1px solid black" colspan="2">
-            <input type="text" id="distance" @keyup.enter="saveDistance($event)"
-              placeholder="скопируйте и вставьте данные" />
-          </td>
-        </tr>
-        <tr>
-          <th>№</th>
-          <th style="border: 1px solid black">Станция отпр.</th>
-          <th style="border: 1px solid black">Станция назн.</th>
-          <th style="border: 1px solid black">Груз(ЕСТНГ)<select name="" id="" v-model="which_cargo" style="width: 60%">
-              <option value="">—</option>
-              <option value="top_diz">Топ.диз</option>
-              <option value="anothertop">Отд.виды топ.</option>
-              <option value="benz">Бензины</option>
-              <option value="bgs">БГС</option>
-              <option value="masla">Масла</option>
+            <!-- Дистанция диапозон -->
+            <td style="border: 1px solid black" colspan="2">
+              <input type="text" id="distance" @keyup.enter="saveDistance($event)"
+                placeholder="скопируйте и вставьте данные" />
+            </td>
+            <td style="border: 1px solid black">
+              <input type="text" id="distance_num" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" />
+            </td>
+            <td style="border: 1px solid black">
+              <input type="text" id="next_loading_stations_list" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" />
+            </td>
+            <td style="border: 1px solid black">
+              <input type="text" id="exclude_next_loading_stations_list" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" />
+            </td>
+            <td style="border: 1px solid black">
+              <input type="text" id="country" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" />
+            </td>
+            <td style="border: 1px solid black">
+              <input type="text" id="wagons" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" />
+            </td>
 
-            </select></th>
-          <th style="border: 1px solid black">Ставка без НДС</th>
-          <th style="border: 1px solid black; position: relative;">НДС
-            <select name="" id="" v-model="which_nds" style="width: 70%">
-              <option value="percent">%</option>
-              <option value="value">Сумма</option>
-            </select>
-          </th>
-          <th style="border: 1px solid black" colspan="2">Дистанция</th>
-        </tr>
-        <tr v-for="(item, index) in data" :key="index">
-          <td style="border: 1px solid black" @click="data.splice(index, 1)" class="delete"
-            :class="{ error: item.error != null }">
-            {{ item.error != null ? item?.error : index + 1 }}
-          </td>
-          <td style="border: 1px solid black">
-            <input style="width: 100%" type="text" v-model="item.departure_station" />
-          </td>
-          <td style="border: 1px solid black">
-            <input style="width: 100%" type="text" v-model="item.destination_station" />
-          </td>
-          <td style="border: 1px solid black">
-            <input style="width: 100%" type="number" v-model="item.cargo" />
-          </td>
-          <td style="border: 1px solid black">
-            <input style="width: 100%" type="number" v-model="item.stavka" />
-          </td>
-          <td style="border: 1px solid black">
-            <input style="width: 100%" type="number" v-model="item.nds" />
-          </td>
+          </tr>
+          <tr>
+            <th>№</th>
+            <th style="border: 1px solid black; font-size: 12px !important;">Станция отпр.</th>
+            <!-- Новые поля от 20.02.2024 -->
+            <th style="border: 1px solid black; font-size: 12px !important;">Мн. станций отправки</th>
+            <th style="border: 1px solid black; font-size: 12px !important;">Станция назн.</th>
+            <th style="border: 1px solid black; font-size: 12px !important;">Груз(ЕСТНГ)
+              <select name="" id="" v-model="which_cargo" style="width: 60%">
+                <option value="">—</option>
+                <option value="top_diz">Топ.диз</option>
+                <option value="anothertop">Отд.виды топ.</option>
+                <option value="benz">Бензины</option>
+                <option value="bgs">БГС</option>
+                <option value="masla">Масла</option>
 
-          <td style="border: 1px solid black">
-            <input style="width: 100%" type="number" v-model="item.distance_min" />
-          </td>
+              </select>
+            </th>
+            <th style="border: 1px solid black; font-size: 12px !important;">Ставка без НДС</th>
+            <th style="border: 1px solid black; position: relative;; font-size: 12px !important;">НДС
+              <select name="" id="" v-model="which_nds" style="width: 70%">
+                <option value="percent">%</option>
+                <option value="value">Сумма</option>
+              </select>
+            </th>
 
-          <td style="border: 1px solid black">
-            <input style="width: 100%" type="number" v-model="item.distance_max" />
-          </td>
-        </tr>
-      </table>
+            <th style="border: 1px solid black; font-size: 12px !important;" colspan="2">Дистанция (диапозон)</th>
+            <!-- Новые поля от 20.02.2024 -->
+            <th style="border: 1px solid black; font-size: 12px !important;">Расстояние</th>
+            <th style="border: 1px solid black; font-size: 12px !important;">Станция следующей погрузки</th>
+            <th style="border: 1px solid black; font-size: 12px !important;">Станции исключения следующей погрузки</th>
+            <th style="border: 1px solid black; font-size: 12px !important;">Страна</th>
+            <th style="border: 1px solid black; font-size: 12px !important;">Вагоны</th>
+
+          </tr>
+          <tr v-for="(item, index) in data" :key="index">
+            <td style="border: 1px solid black" @click="data.splice(index, 1)" class="delete"
+              :class="{ error: item.error != null }">
+              {{ item.error != null ? item?.error : index + 1 }}
+            </td>
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="text" v-model="item.departure_station" />
+            </td>
+            <!-- новый столб от 20.02.2024 -->
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="text" v-model="item.departure_stations_list" />
+            </td>
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="text" v-model="item.destination_station" />
+            </td>
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="number" v-model="item.cargo" />
+            </td>
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="number" v-model="item.stavka" />
+            </td>
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="number" v-model="item.nds" />
+            </td>
+
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="number" v-model="item.distance_min" />
+            </td>
+
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="number" v-model="item.distance_max" />
+            </td>
+            <!-- новые поля от 20.02.2024 -->
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="number" v-model="item.distance_num" />
+            </td>
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="text" v-model="item.next_loading_stations_list" />
+            </td>
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="text" v-model="item.exclude_next_loading_stations_list" />
+            </td>
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="text" v-model="item.country" />
+            </td>
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="text" v-model="item.wagons" />
+            </td>
+          </tr>
+        </table>
+      </div>
       <br />
 
       <br />
@@ -327,18 +387,18 @@ class Stavki {
     this.distance_min = null;
     this.distance_max = null;
     this.error = null;
+
+    // Новые поля от 20.02.2024
+    this.departure_stations_list = null // Множество станций погрузки
+    this.distance_num = null
+    this.next_loading_stations_list = null; // Станция следующей погрузки
+
+    this.exclude_next_loading_stations_list = null; // Станции исключения следующей погрузки
+    this.country = null;
+    this.wagons = null;
+
   }
 
-  // set destination_station(value) {
-  //   console.log(value)
-
-  //   let modefiedString = value.replace(/ [А-Я]{2}/g, '')
-  //   console.log(modefiedString)
-  //   this._destination_station = modefiedString
-  // }
-  // get destination_station(){
-  //   return this.destination_station = this._destination_station
-  // }
 }
 export default {
   components: { Loader, Notifications, TarifDirectoryCreated, vSelect },
@@ -455,6 +515,7 @@ export default {
     },
   },
   methods: {
+    // Получить список все договоров которые есть для ЦС
     getAllAgreement() {
       api
         .getAllDocuments().then((response) => {
@@ -500,6 +561,7 @@ export default {
 
       // console.log(this.agreement_number_test)
     },
+    // Обработка данных приходящих в формате диаозона
     saveDistance(event) {
       navigator.clipboard.readText().then((response) => {
         this.distance = response.split("\r\n");
@@ -553,7 +615,8 @@ export default {
       console.log(event);
       if (
         event.target.id == "destination_station" ||
-        event.target.id == "departure_station"
+        event.target.id == "departure_station" ||
+        event.target.id == 'next_loading_stations_list'
       ) {
         let operationBuffer = event.target.value
           .replace(/ [А-Я]{2}[^ ]*/g, "  ")
@@ -572,6 +635,61 @@ export default {
 
         event.target.value = "";
         return;
+      } else if (event.target.id == "departure_stations_list" || event.target.id == 'exclude_next_loading_stations_list') {
+        // Если 3 заглавные буквы, то разделяю на 2 элемента
+        let operationBuffer = event.target.value
+          .replace(/[А-Я]{3}\s/g, "/")  // Удаление трех заглавных букв и пробела
+          .split("/")
+          .map(item => item.replace(/[А-Я]{3}/g, "").replace(/ +/g, "").trim());  // Удаление пробелов из каждой строки
+        let clear_buffer = [];
+        for (let i of operationBuffer) {
+          clear_buffer.push(i.trim());
+        }
+        if (clear_buffer.at(-1) == "") {
+          clear_buffer.pop();
+        }
+        if (clear_buffer[0] == "") {
+          return;
+        }
+        this.WorkInClass(clear_buffer, event);
+
+        event.target.value = "";
+        return;
+      } else if (event.target.id == "wagons") {
+        // Если 3 заглавные буквы, то разделяю на 2 элемента
+        let operationBuffer = event.target.value.split(/(?<=\d)\s+/);
+        let clear_buffer = [];
+        for (let i of operationBuffer) {
+          clear_buffer.push(i.trim());
+        }
+        if (clear_buffer.at(-1) == "") {
+          clear_buffer.pop();
+        }
+        if (clear_buffer[0] == "") {
+          return;
+        }
+        this.WorkInClass(clear_buffer, event);
+
+        event.target.value = "";
+        return;
+      } else if (event.target.id == 'distance_num' || event.target.id == "country") {
+        // Разделение по любому количеству пробелов
+        let operationBuffer = event.target.value.split(/\s+/);;
+        let clear_buffer = [];
+        for (let i of operationBuffer) {
+          clear_buffer.push(i.trim());
+        }
+        if (clear_buffer.at(-1) == "") {
+          clear_buffer.pop();
+        }
+        if (clear_buffer[0] == "") {
+          return;
+        }
+        this.WorkInClass(clear_buffer, event);
+
+        event.target.value = "";
+        return;
+
       } else if (event.target.id == "cargo") {
         let data = event.target.value.match(/\d+/g);
         if (data) {
@@ -635,74 +753,176 @@ export default {
         }
       }
     },
+
     WorkInClass(operationBuffer, event) {
       for (let i in operationBuffer) {
         if (this.data[i] == undefined) {
           let newObj = new Stavki();
-          newObj[event.target.id] = operationBuffer[i];
+          if (
+            event.target.id === "departure_stations_list" ||
+            // event.target.id === "next_loading_stations_list" ||
+            event.target.id === "exclude_next_loading_stations_list" ||
+            event.target.id === "wagons"
+          ) {
+            newObj[event.target.id] = operationBuffer[i].split(",");
+          } else {
+            newObj[event.target.id] = operationBuffer[i];
+          }
           this.data.push(newObj);
+          console.log(this.data, 'новые данные массивом')
         } else {
           this.data[i][event.target.id] = operationBuffer[i];
         }
-        // this.data = table_data
       }
     },
-    // async getStationCode(station_name) {
-    //   if (this.stationCache[station_name]) {
-    //     return this.stationCache[station_name];
-    //   } else {
-    //     try {
-    //       const response = await api_wagon.getCurrentStation(station_name);
-    //       const server_response = response.data.data[0].code6;
-    //       this.$set(this.stationCache, station_name, server_response);
-    //       return server_response;
-    //     } catch (error) {
-    //       console.error("Ошибка при получении данных с сервера:", error);
-    //       throw error; // Пробрасываем ошибку дальше, чтобы её можно было обработать
-    //     }
-    //   }
-    // },
 
-    // РАБОЧИЙ
-    // async getStationCode(station_name, index) {
+
+
+    // // Проверка введенных данных, приведение станций к формату кодов
+    // async checkingData() {
+    //   this.flagCheck = false;
+    //   this.loader = true;
+    //   this.errorp = [];
     //   try {
-    //     if (this.stationCache[station_name]) {
-    //       return this.stationCache[station_name];
+    //     this.Standard.responsible = this.uid;
+    //     let parametrs;
+    //     if (this.data.length == 0) {
+    //       parametrs = [this.Standard];
+    //       parametrs.distance_min = [];
+    //       parametrs.distance_max = [];
+    //       parametrs.stavka = [];
+    //       parametrs.nds = [];
+    //       parametrs.distance = [];
+    //       parametrs.departure_station = [];
+    //       parametrs.destination_station = [];
+    //       parametrs.departure_stations_list = []; // Множество станций погрузки
+    //       parametrs.distance_num = [];
+    //       parametrs.next_loading_stations_list = []; // Станция следующей погрузки
+    //       parametrs.exclude_next_loading_stations_list = [];; // Станции исключения следующей погрузки
+    //       parametrs.country = [];;
+    //       parametrs.wagons = [];
     //     } else {
-    //       const response = await api_wagon.getCurrentStation(station_name);
-    //       const server_response = response.data.data.map(item => item.name.toLowerCase()); // Получаем все имена станций в нижнем регистре
-    //       const lowerStationName = station_name.toLowerCase(); // Приводим ввод пользователя к нижнему регистру
-    //       const stationNameMatch = server_response.find(name => name === lowerStationName); // Ищем точное совпадение имени станции
-    //       if (stationNameMatch == undefined) {
-    //         const res = await api_wagon.getCurrentStationByName(station_name)
-    //         try{
-    //           server_response2 = res.data.data[0].code
-    //           let server_response2 = res.data.data[0]?.code
-    //         console.log(server_response2, '!!!!!!!!!')
-    //         this.$set(this.stationCache, station_name, server_response2);
-
-    //         return server_response2
+    //       let stationNameSet = new Set();
+    //       this.data.forEach((item) => {
+    //         if (item.destination_station) {
+    //           stationNameSet.add(item.destination_station);
     //         }
-    //         catch{
-    //           throw new Error(`Совпадений для станции "${station_name}" (код) не найдено на строке ${index + 1}`);
+    //         if (item.departure_station) {
+    //           stationNameSet.add(item.departure_station);
     //         }
+    //         // Станция следующей погрузки
+    //         if (item.next_loading_stations_list) {
+    //           stationNameSet.add(item.next_loading_stations_list);
+    //         }
+    //       });
+    //       await Promise.all(
+    //         Array.from(stationNameSet).map(async (stationName) => {
+    //           await this.getStationCode(stationName);
+    //         })
+    //       );
+    //       for (let i in this.data) {
+    //         // this.Standard.agreement_number = this.Standard.annex_number
+    //         Object.assign(this.data[i], this.Standard);
+    //       }
+    //       parametrs = this.data;
+    //     }
 
-    //       }
-    //       if (stationNameMatch) {
-    //         const stationIndex = server_response.indexOf(stationNameMatch);
-    //         const stationCode6 = response.data.data[stationIndex].code; // Получаем код подходящего варианта
-    //         this.$set(this.stationCache, station_name, stationCode6);
-    //         return stationCode6;
-    //       } else {
-    //         throw new Error(`Совпадений для станции "${station_name}" (код) не найдено на строке ${index + 1}`);
-    //       }
+    //     let new_data = await this.createNewData();
+    //     this.loader = false;
+    //     console.log(this.flagCheck);
+    //     if (this.errorp.length == 0) {
+    //       this.flagCheck = true;
+    //       this.checkCompleteData = new_data;
+    //       console.log(new_data, "я итоговые значения");
+    //       this.notifyHead = "Успешно";
+    //       this.notifyMessage = "Данные проверку прошли!";
+    //       this.notifyClass = "wrapper-success";
+    //       this.showNotify = true;
+    //       setTimeout(() => {
+    //         this.showNotify = false;
+    //       }, 3000);
     //     }
     //   } catch (error) {
-    //     this.errorp.push(error.message);
-    //     return null; // Возвращаем null в случае ошибки
+    //     console.log(error);
     //   }
     // },
+    // // Первый этап проверки введенных данных
+    // async createNewData() {
+    //   const newData = [];
 
+    //   for (const [index, item] of this.data.entries()) {
+    //     const newItem = { ...item };
+
+    //     if (item.destination_station) {
+    //       try {
+    //         const code = await this.getStationCode(item.destination_station, index );
+    //         if (code !== null) {
+    //           newItem.destination_station = code;
+    //         }
+    //       } catch (error) {
+    //         console.error(
+    //           `Ошибка при получении кода6 для станции "${item.destination_station}" на индексе ${index}`,
+    //           error
+    //         );
+    //       }
+    //     }
+
+    //     if (item.departure_station) {
+    //       try {
+    //         const code = await this.getStationCode( item.departure_station,index);
+    //         if (code !== null) {
+    //           newItem.departure_station = code;
+    //         }
+    //       } catch (error) {
+    //         console.error(
+    //           `Ошибка при получении кода6 для станции "${item.departure_station}" на индексе ${index}`,
+    //           error
+    //         );
+    //       }
+    //     }
+
+
+    //     if (item.next_loading_stations_list) {
+    //       try {
+    //         const code = await this.getStationCode( item.next_loading_stations_list,index);
+    //         if (code !== null) {
+    //           newItem.next_loading_stations_list = code;
+    //         }
+    //       } catch (error) {
+    //         console.error(
+    //           `Ошибка при получении кода6 для станции "${item.next_loading_stations_list}" на индексе ${index}`,
+    //           error
+    //         );
+    //       }
+    //     }
+
+    //     newData.push(newItem);
+    //   }
+    //   if (this.errorp.length > 0) {
+    //     this.flagCheck = false;
+    //     this.notifyHead = "Ошибка";
+    //     this.notifyMessage = this.errorp.filter(
+    //       (item) => !item.includes("NaN")
+    //     );
+    //     this.notifyClass = "wrapper-error";
+    //     this.showNotify = true;
+    //     setTimeout(() => {
+    //       this.showNotify = false;
+    //     }, 10000);
+    //   } else {
+    //     // this.flagCheck = true
+    //     this.notifyHead = "Успешно";
+    //     this.notifyMessage = "Ошибок нет, отправка данных возможна";
+    //     this.notifyClass = "wrapper-succes";
+    //     this.showNotify = true;
+    //     setTimeout(() => {
+    //       this.showNotify = false;
+    //     }, 10000);
+    //   }
+
+    //   return newData;
+    // },
+    // // Преобразование данных через меммоизацию
     async getStationCode(station_name, index) {
       try {
         if (this.stationCache[station_name]) {
@@ -720,16 +940,8 @@ export default {
             const res = await api_wagon.getCurrentStationByName(station_name);
 
             // Добавьте проверку на наличие данных и кода в ответе
-            if (
-              !res.data ||
-              !res.data.data ||
-              res.data.data.length === 0 ||
-              !res.data.data[0].code
-            ) {
-              throw new Error(
-                `Ошибка: Не удалось получить код станции "${station_name}" (код) на строке ${index + 1
-                }`
-              );
+            if (!res.data || !res.data.data || res.data.data.length === 0 || !res.data.data[0].code) {
+              throw new Error(`Ошибка: Не удалось получить код станции "${station_name}" (код) на строке ${index + 1}`);
             }
 
             const stationCode2 = res.data.data[0].code;
@@ -754,6 +966,81 @@ export default {
       }
     },
 
+    async checkingData() {
+      this.flagCheck = false;
+      this.loader = true;
+      this.errorp = [];
+      try {
+        this.Standard.responsible = this.uid;
+        let parametrs;
+        if (this.data.length == 0) {
+          parametrs = [this.Standard];
+          parametrs.distance_min = [];
+          parametrs.distance_max = [];
+          parametrs.stavka = [];
+          parametrs.nds = [];
+          parametrs.distance = [];
+          parametrs.departure_station = [];
+          parametrs.destination_station = [];
+          parametrs.departure_stations_list = []; // Множество станций погрузки
+          parametrs.distance_num = [];
+          parametrs.next_loading_stations_list = []; // Станция следующей погрузки
+          parametrs.exclude_next_loading_stations_list = []; // Станции исключения следующей погрузки
+          parametrs.country = [];;
+          parametrs.wagons = [];
+        } else {
+          let stationNameSet = new Set();
+          this.data.forEach((item) => {
+            if (item.destination_station) {
+              stationNameSet.add(item.destination_station);
+            }
+            if (item.departure_station) {
+              stationNameSet.add(item.departure_station);
+            }
+            if (item.next_loading_stations_list) {
+              stationNameSet.add(item.next_loading_stations_list);
+            }
+            if (item.departure_stations_list) { // Добавляем станции погрузки из массива
+              item.departure_stations_list.forEach(station => {
+                stationNameSet.add(station);
+              });
+            }
+            if (item.exclude_next_loading_stations_list) { // Добавляем исключения следующей погрузки из массива
+              item.exclude_next_loading_stations_list.forEach(station => {
+                stationNameSet.add(station);
+              });
+            }
+          });
+          await Promise.all(
+            Array.from(stationNameSet).map(async (stationName) => {
+              await this.getStationCode(stationName);
+            })
+          );
+          for (let i in this.data) {
+            Object.assign(this.data[i], this.Standard);
+          }
+          parametrs = this.data;
+        }
+
+        let new_data = await this.createNewData();
+        console.log(new_data)
+        this.loader = false;
+        if (this.errorp.length == 0) {
+          this.flagCheck = true;
+          this.checkCompleteData = new_data;
+          this.notifyHead = "Успешно";
+          this.notifyMessage = "Данные проверку прошли!";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 3000);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async createNewData() {
       const newData = [];
 
@@ -762,35 +1049,62 @@ export default {
 
         if (item.destination_station) {
           try {
-            const code = await this.getStationCode(
-              item.destination_station,
-              index
-            );
+            const code = await this.getStationCode(item.destination_station, index);
             if (code !== null) {
               newItem.destination_station = code;
             }
           } catch (error) {
-            console.error(
-              `Ошибка при получении кода6 для станции "${item.destination_station}" на индексе ${index}`,
-              error
-            );
+            console.error(`Ошибка при получении кода для станции "${item.destination_station}" на индексе ${index}`, error);
           }
         }
 
         if (item.departure_station) {
           try {
-            const code = await this.getStationCode(
-              item.departure_station,
-              index
-            );
+            const code = await this.getStationCode(item.departure_station, index);
             if (code !== null) {
               newItem.departure_station = code;
             }
           } catch (error) {
-            console.error(
-              `Ошибка при получении кода6 для станции "${item.departure_station}" на индексе ${index}`,
-              error
-            );
+            console.error(`Ошибка при получении кода для станции "${item.departure_station}" на индексе ${index}`, error);
+          }
+        }
+
+        if (item.next_loading_stations_list) {
+          try {
+            const code = await this.getStationCode(item.next_loading_stations_list, index);
+            if (code !== null) {
+              newItem.next_loading_stations_list = code;
+            }
+          } catch (error) {
+            console.error(`Ошибка при получении кода для станции "${item.next_loading_stations_list}" на индексе ${index}`, error);
+          }
+        }
+
+        if (item.departure_stations_list) {
+          newItem.departure_stations_list = []; // Инициализируем массив для станций погрузки
+          for (const station of item.departure_stations_list) {
+            try {
+              const code = await this.getStationCode(station, index);
+              if (code !== null) {
+                newItem.departure_stations_list.push(code);
+              }
+            } catch (error) {
+              console.error(`Ошибка при получении  кода для станции "${station}" в массиве departure_stations_list на индексе ${index}`, error);
+            }
+          }
+        }
+
+        if (item.exclude_next_loading_stations_list) {
+          newItem.exclude_next_loading_stations_list = []; // Инициализируем массив для исключений следующей погрузки
+          for (const station of item.exclude_next_loading_stations_list) {
+            try {
+              const code = await this.getStationCode(station, index);
+              if (code !== null) {
+                newItem.exclude_next_loading_stations_list.push(code);
+              }
+            } catch (error) {
+              console.error(`Ошибка при получении кода для станции "${station}" в массиве exclude_next_loading_stations_list на индексе ${index}`, error);
+            }
           }
         }
 
@@ -808,10 +1122,9 @@ export default {
           this.showNotify = false;
         }, 10000);
       } else {
-        // this.flagCheck = true
         this.notifyHead = "Успешно";
         this.notifyMessage = "Ошибок нет, отправка данных возможна";
-        this.notifyClass = "wrapper-succes";
+        this.notifyClass = "wrapper-success";
         this.showNotify = true;
         setTimeout(() => {
           this.showNotify = false;
@@ -821,62 +1134,8 @@ export default {
       return newData;
     },
 
-    async checkingData() {
-      this.flagCheck = false;
-      this.loader = true;
-      this.errorp = [];
-      try {
-        this.Standard.responsible = this.uid;
-        let parametrs;
-        if (this.data.length == 0) {
-          parametrs = [this.Standard];
-          parametrs.distance_min = [];
-          parametrs.distance_max = [];
-          parametrs.stavka = [];
-          parametrs.nds = [];
-          parametrs.distance = [];
-          parametrs.departure_station = [];
-          parametrs.destination_station = [];
-        } else {
-          let stationNameSet = new Set();
-          this.data.forEach((item) => {
-            if (item.destination_station) {
-              stationNameSet.add(item.destination_station);
-            }
-            if (item.departure_station) {
-              stationNameSet.add(item.departure_station);
-            }
-          });
-          await Promise.all(
-            Array.from(stationNameSet).map(async (stationName) => {
-              await this.getStationCode(stationName);
-            })
-          );
-          for (let i in this.data) {
-            // this.Standard.agreement_number = this.Standard.annex_number
-            Object.assign(this.data[i], this.Standard);
-          }
-          parametrs = this.data;
-        }
-        let new_data = await this.createNewData();
-        this.loader = false;
-        console.log(this.flagCheck);
-        if (this.errorp.length == 0) {
-          this.flagCheck = true;
-          this.checkCompleteData = new_data;
-          console.log(new_data, "я итоговые значения");
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Данные проверку прошли!";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3000);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
+
+
 
     closeWindow() {
       this.ten_visible = false;
@@ -1073,13 +1332,14 @@ tr,
 td,
 th {
   border: none;
+  font-size: 12px;
 }
 
-.table_stavka {
+/* .table_stavka {
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
-}
+} */
 
 .delete:hover {
   background: lightcoral;

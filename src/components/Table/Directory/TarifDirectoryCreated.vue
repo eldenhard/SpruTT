@@ -42,7 +42,9 @@
                 <br />
                 <input type="text" class="textarea mini" v-model="cargo" />
             </label>
-
+            <label for="tenant" >Действующее приложение
+                <input type="checkbox" style="height: 20px;" v-model="filter_arendaData.is_active" />
+            </label>
 
             <div class="textarea" style="height: auto; width: 100%; margin-top: 2%" v-show="ten_visible">
                 <ul id="root_tenant">
@@ -71,7 +73,7 @@
             <loader_mini :loader="loader_mini">по наименованиям станций</loader_mini>
         </p>
         <button class="Delete button" style="width: 15%; white-space: nowrap; margin: 2% 0; height: 30px"
-      @click="open_modal(selectedItems)">Удалить выбранное</button>
+            @click="open_modal(selectedItems)">Удалить выбранное</button>
         <div style="max-width: 100%; overflow: auto; margin-bottom: 5%">
             <table border="1" v-show="visible">
                 <thead>
@@ -381,7 +383,8 @@ export default {
                 page_size: "25",
                 client: "",
                 cargo: "",
-                wagon_type: "Цистерна"
+                wagon_type: "Цистерна",
+                is_active: true,
 
             },
             showNotify: false,
@@ -616,7 +619,7 @@ export default {
                 }
             }
         },
-        //   Получение данных в таблицу
+        //   Получение данных в таблицу для просмотра и редактировния
         async getStandardData() {
             this.loader = true;
             this.loader_mini = true
@@ -629,7 +632,7 @@ export default {
                 this.total_pages = response.data.total_pages;
                 this.total_objects = response.data.total_objects;
                 this.data = response.data.data;
-
+                // Так как с сервера приходят в виде мало сгруппированном, здесь происходить грппировка приложений
                 function groupAttachments(attachments) {
                     const groupedAttachments = {};
 
@@ -778,67 +781,67 @@ export default {
             this.$bvModal.show('standard_directory_created')
         },
 
-// Удаление множества элементов
-deleteTarifData(id) {
-      if (Array.isArray(id)) {
-        this.loader = true
-        let requests = id.map(url => api.deleteTarifData(url))
-        Promise.all(requests)
-          .then(res => {
-            this.loader = false
-            this.notifyHead = "Успешно";
-            this.notifyMessage = "Данные удалены";
-            this.notifyClass = "wrapper-success";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 2500);
-            this.getStandardData()
-            this.$bvModal.hide("standard_directory_created");
-          }).catch((err) => {
-            this.loader = false
-            this.getStandardData()
-            // this.notifyHead = "Ошибка";
-            // this.notifyMessage = "Данные не удалены";
-            // this.notifyClass = "wrapper-error";
-            // this.showNotify = true;
-            // setTimeout(() => {
-            //   this.showNotify = false;
-            // }, 2500);
-            this.$bvModal.hide("standard_directory_created");
-          })
+        // Удаление множества элементов
+        deleteTarifData(id) {
+            if (Array.isArray(id)) {
+                this.loader = true
+                let requests = id.map(url => api.deleteTarifData(url))
+                Promise.all(requests)
+                    .then(res => {
+                        this.loader = false
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = "Данные удалены";
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 2500);
+                        this.getStandardData()
+                        this.$bvModal.hide("standard_directory_created");
+                    }).catch((err) => {
+                        this.loader = false
+                        this.getStandardData()
+                        // this.notifyHead = "Ошибка";
+                        // this.notifyMessage = "Данные не удалены";
+                        // this.notifyClass = "wrapper-error";
+                        // this.showNotify = true;
+                        // setTimeout(() => {
+                        //   this.showNotify = false;
+                        // }, 2500);
+                        this.$bvModal.hide("standard_directory_created");
+                    })
 
-        return
-      }
-      this.loader = true;
+                return
+            }
+            this.loader = true;
 
-      api
-        .deleteTarifData(id)
-        .then((response) => {
-          this.loader = false;
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Данные удалены";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2500);
-          this.$bvModal.hide("AcTDelete");
-        })
-        .catch((error) => {
-          this.loader = false;
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Данные не удалены";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2500);
-          console.log(error);
-          this.$bvModal.hide("standard_directory_created");
-        });
+            api
+                .deleteTarifData(id)
+                .then((response) => {
+                    this.loader = false;
+                    this.notifyHead = "Успешно";
+                    this.notifyMessage = "Данные удалены";
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 2500);
+                    this.$bvModal.hide("AcTDelete");
+                })
+                .catch((error) => {
+                    this.loader = false;
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = "Данные не удалены";
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 2500);
+                    console.log(error);
+                    this.$bvModal.hide("standard_directory_created");
+                });
 
-    },
+        },
 
 
         // deleteTarifData(id) {

@@ -36,6 +36,7 @@
             </p>
 
             <div style="display: flex;justify-content: space-between;" v-show="visible">
+                <!-- Выбран договор -->
                 <section style="flex: 1 0 auto;">
                     <table>
                         <tr>
@@ -101,7 +102,6 @@
                             </td>
                         </tr>
                         <br />
-
                         <tr>
                             <td class="col1">Дата окончания</td>
                             <td>
@@ -109,7 +109,17 @@
                             </td>
                         </tr>
                         <br />
-
+                        <tr v-if="picked !== 'agreement_number'">
+                            <td class="col1">Дата начала действия ставки</td>
+                            <td>
+                                <label for="dateEqual">
+                                    <input type="checkbox" id="dateEqual" v-model="checkEqualDate"> Дата действия = дате
+                                    приложения</label>
+                                <input type="date" id="a" class="textarea" v-model="Standard.stavka_date_begin"
+                                    placeholder="Дата" :disabled="checkEqualDate" />
+                            </td>
+                        </tr>
+                        <br />
                         <br />
 
                         <tr>
@@ -119,9 +129,11 @@
                                     @click="createAgreement()">Создать договор</button>
                             </td>
                         </tr>
+
                     </table>
 
                 </section>
+                <!-- Выбрано приложение -->
                 <section style="flex: 2 0 auto;" v-if="picked != 'agreement_number'">
                     <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"
                         style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
@@ -157,8 +169,6 @@
                 <br>
                 <button class="Accept button" style="width: 25%; height: 40px;" @click="saveData()">Отправить
                     данные и создать приложение</button>
-
-
             </section>
 
 
@@ -247,14 +257,11 @@
                                 </b-dropdown>
 
 
-                                <b-dropdown-item @click="addField('Станция отправления')">Станция
+                                <b-dropdown-item @click="addField('Станция/Дорога/Страна отправления')">Станция/Дорога/Страна
                                     отправления</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Станция назначения')">Станция
+                                <b-dropdown-item @click="addField('Станция/Дорога/Страна назначения')">Станция/Дорога/Страна
                                     назначения</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Дорога отправления')">Дорога
-                                    отправления</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Дорога назначения')">Дорога
-                                    назначения</b-dropdown-item>
+
                                 <b-dropdown-item @click="addField('Коэффициент')">Коэффициент</b-dropdown-item>
                                 <b-dropdown-item @click="addField('НДС')">НДС</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Оборот, сут')">Оборот, сут</b-dropdown-item>
@@ -327,6 +334,7 @@ export default {
     },
     data() {
         return {
+            checkEqualDate: null,
             visible: true,
             picked: "agreement_number",
             placeholderAgreement: "введите номер договора",
@@ -338,6 +346,7 @@ export default {
                 client: "",
                 base: null,
                 responsible: null,
+                stavka_date_begin: null,
             },
             visible_inp_an: false,
             visible_inp_ag: true,
@@ -419,8 +428,13 @@ export default {
         },
     },
     watch: {
-        new_comp() {
-            console.log(this.new_comp)
+        checkEqualDate() {
+            if (this.checkEqualDate == true) {
+                this.Standard.stavka_date_begin = this.Standard.on_date
+            } else {
+                this.Standard.stavka_date_begin = null
+            }
+
         },
         picked() {
             if (this.picked == "agreement_number") {
@@ -444,6 +458,7 @@ export default {
         },
     },
     methods: {
+
         // Создать договор
         createAgreement() {
             let agreement = [{
@@ -520,31 +535,12 @@ export default {
         },
         // Удалить элемент шапки таблицы
         deleteTH(value) {
-            if (value == 'Станция отправления') {
-                this.selectedFields.splice(this.selectedFields.indexOf(value), 1)
-                this.selectedFields.splice(this.selectedFields.indexOf('Дорога отправления'), 1)
-            }
-            else if (value == 'Станция назначения') {
-                this.selectedFields.splice(this.selectedFields.indexOf(value), 1)
-                this.selectedFields.splice(this.selectedFields.indexOf('Дорога назначения'), 1)
-            } else {
-                return this.selectedFields.splice(this.selectedFields.indexOf(value), 1)
-            }
-
+            return this.selectedFields.splice(this.selectedFields.indexOf(value), 1)
         },
         // Добавить элемент шапки таблицы
         addField(field) {
             if (this.selectedFields.includes(field)) return
-
-            if (field == 'Станция отправления') {
-                this.selectedFields.push(field); // Добавляем выбранный элемент в массив
-                this.selectedFields.push('Дорога отправления');
-            } else if (field == 'Станция назначения') {
-                this.selectedFields.push(field); // Добавляем выбранный элемент в массив
-                this.selectedFields.push('Дорога назначения');
-            } else {
-                this.selectedFields.push(field);
-            }
+            this.selectedFields.push(field);
         },
         // Загрузка из Excel в таблицу
         loadFromExcel() {
@@ -591,73 +587,8 @@ export default {
                     data.splice(data.indexOf(i), 1);
                 }
             }
-            ////////////////////////
-            // let data2 = data.map(item => {
-            //     const newItem = [];
-            //     let stationIndex = -1;
-
-            //     for (let i = 0; i < this.selectedFields.length; i++) {
-            //         const currentField = this.selectedFields[i];
-            //         const currentValue = item[i] || '';  // Добавляем проверку на undefined
-            //         const parts = currentValue.match(/^(.*?)([А-Я]{3}[^ ]*)/);
-
-            //         if (stationIndex !== -1 && currentField.includes('Дорога')) {
-            //             // Разделяем по условиям, если после станции идет дорога
-            //             newItem.push(parts ? parts[1].trim() : '', parts ? parts[2].trim() : '');
-            //         } else if (currentField.includes('Станция')) {
-            //             // Если текущее поле - станция, записываем индекс
-            //             stationIndex = i;
-            //             newItem.push(parts ? parts[1].trim() : '', parts ? parts[2].trim() : '');
-            //         } else {
-            //             // Если не станция и не дорога, оставляем только три заглавные буквы
-            //             newItem.push(parts ? parts[2].trim() : '');
-            //         }
-            //     }
-
-            //     return newItem;
-            // }).map(subArray => subArray.filter(value => value !== ""))
-            // this.tableData = data2.map((secondItem, index) => [...secondItem, ...data[index].slice(2)])
-            ///////////////////
 
 
-
-            let data2 = data.map(item => {
-                const newItem = [];
-                let stationIndex = -1;
-
-                for (let i = 0; i < this.selectedFields.length; i++) {
-                    const currentField = this.selectedFields[i];
-                    const currentValue = item[i] || '';  // Добавляем проверку на undefined
-                    const parts = currentValue.match(/^(.*?)([А-Я]{3}[^ ]*)/);
-
-                    if (stationIndex !== -1 && currentField.includes('Дорога')) {
-                        // Разделяем по условиям, если после станции идет дорога
-                        newItem.push(parts ? parts[1].trim() : '', parts ? (stationIndex !== -1 ? parts[2].trim().slice(0, 3) : parts[2].trim()) : '');
-                    } else if (currentField.includes('Станция')) {
-                        // Если текущее поле - станция, записываем индекс
-                        stationIndex = i;
-                        newItem.push(parts ? parts[1].trim() : '', parts ? parts[2].trim() : '');
-                    } 
-                    // else if (currentField.includes('Дорога') && i > 0 && this.selectedFields[i - 1].includes('Дорога')) {
-                    //     // Если текущее и предыдущее поля - дорога, оставляем только три заглавные буквы
-                    //     newItem.push(parts ? parts[2].trim().slice(0, 3) : '');
-                    // } 
-                    else {
-                        // Если не станция и не дорога, оставляем только три заглавные буквы
-                        newItem.push(parts ? (stationIndex === -1 ? parts[2].trim().slice(0, 3) : parts[2].trim()) : '');
-                    }
-                }
-
-                return newItem;
-            }).map(subArray => subArray.filter(value => value !== ""));
-            this.tableData = data2.map((secondItem, index) => [...secondItem, ...data[index].slice(2)])
-            console.log(this.selectedFields)
-            if(this.selectedFields[0] == 'Станция отправления' && this.selectedFields[1] == 'Дорога отправления' && this.selectedFields[2] == 'Дорога назначения'){
-               for(let i of this.tableData){
-                    i.splice(2, 1)
-               }
-            }
-            console.log(this.tableData)
             // КОНЕЦ РАБОЧЕГО КОДА
             this.excelData = "";
         },
@@ -688,19 +619,20 @@ export default {
                 })
 
                 // Обработка станций
-                for (let item of Array.from(this.collectionStation)) {
-                    let request = await apiWagon.getCurrentStation(item);
-                    response = await request.data.data.filter((el) => el.name.toLowerCase() == item.toLowerCase())[0];
+                // !TODO Необходимо передалать, так как на вход может поступить и станция и  дорога и страна
+                // for (let item of Array.from(this.collectionStation)) {
+                //     let request = await apiWagon.getCurrentStation(item);
+                //     response = await request.data.data.filter((el) => el.name.toLowerCase() == item.toLowerCase())[0];
 
-                    // Заменяем значения в таблице
-                    this.tableData.forEach((row) => {
-                        arrIndexStation.forEach((index) => {
-                            if (row[index] === item) {
-                                row[index] = response.code;
-                            }
-                        });
-                    });
-                }
+                //     // Заменяем значения в таблице
+                //     this.tableData.forEach((row) => {
+                //         arrIndexStation.forEach((index) => {
+                //             if (row[index] === item) {
+                //                 row[index] = response.code;
+                //             }
+                //         });
+                //     });
+                // }
 
                 // Замена кратких наименований дорог на те, что есть в localStorage
                 // const roads = JSON.parse(localStorage.getItem('road'));
@@ -819,9 +751,6 @@ export default {
                 });
 
 
-                console.log(finallyDataToSend, 'tetst');
-
-                console.log(finallyDataToSend, 'tetst');
                 api.postTarifData(finallyDataToSend)
                     .then(response => {
                         console.log(response)

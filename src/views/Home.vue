@@ -8,7 +8,7 @@
           </b-card-text>
         </b-tab>
       </b-container>
-        <b-tab title="Справочник договоры" active>
+        <b-tab title="Справочник договоры" >
           <b-card-text  >
             <contractTable />
           </b-card-text>
@@ -65,7 +65,7 @@
           <Fin_headerVue />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по ставкам ЦС" >
+      <b-tab title="Данные по ставкам ЦС" active>
         <b-card-text>
           <TarifDirectory />
         </b-card-text>
