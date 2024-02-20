@@ -59,22 +59,28 @@
     </div>
     <p class="explanation">
       * Копирование и ввод данных в таблицу 1 должен осуществляться из
-      <b>WORD</b> или <b>Excel</b>, после вставки значения в ячейку нажмите
+    <b>Excel</b>, после вставки значения в ячейку нажмите
       Enter чтобы значения были занесены в таблицу<br />
       * После ввода данных в таблицу, Вы можете отредактировать в ней любое
-      поле, нажатие Enter Не требуется <br />
-      * Для удаления строки таблицы нажмите на порядковый номер строки
-      <br />
+      поле, нажатие Enter Не требуется, редактирование невозможно в полях
+      <ul>
+        <li>Мн. станций отправки</li>
+        <li>Станции исключения следующей погрузки</li>
+      </ul> 
+      Для редактирования этих полей перегрузите данные в этот столбец <br />
+
+      * Для удаления строки таблицы нажмите на порядковый номер строки<br />
 
       *
-      <b>Данные по ставкам должны загружаться из WORD или Excel, числа должны
-        быть в строгом формате. Пример: 1 599,00 <em>(два числа после запятой обязательны!)</em></b><br />
+      Данные по ставкам должны загружаться Excel, числа должны
+        быть в строгом формате.<br> 
+        <b>Пример: 1 599,00 <em>(два числа после запятой обязательны, для загрузки в поля "Ставка без НДС" или НДС при выбранном селекторе сумма!)</em></b><br />
       *
-      <b>Данные по дистанциям должны быть скопированы и вставлены из WORD или
-        Excel в формате 0 - 5 6 - 8</b><br />
+     Данные по дистанциям должны быть скопированы и вставлены из  Excel в формате  <b>0 - 5 6 - 8 </b><br />
       * Чтобы узнать название груза, нажмите
       правой кнопкой мыши на интересующее поле, и подождите несколько секунд
       <br />
+      <br>
       * Для сохранения отредатированных данных нажмите на Enter после того как
       окончили ввод <br />
       &nbsp;(если индикация зеленая - все хорошо, в противном случае
@@ -82,12 +88,16 @@
       <br />
       * Наименования станций при редактировании должны вбиваться в таком формате: Тобольск СВР, Парто Цкали ГРЗ <br>
       &nbsp;То есть обязательно краткое наименование дороги<br>
-      * При выборе груза отличного от знака "—" вводить код не нужно, данные подгрузятся автоматическиб=, и поле ввода
+      * При выборе груза отличного от знака "—" вводить код не нужно, данные подгрузятся автоматически, и поле ввода
       будет заблокировано
-
-
       <br />
-
+      * Поля включащие в себя возможность загрузки нескольких значений в одном поле:
+        <ul>
+          <li>Мн. станций отправки (формат: Тобольск СВР, Парто Цкали ГРЗ)</li>
+          <li>Станции исключения следующей погрузки (формат: Тобольск СВР, Парто Цкали ГРЗ)</li>
+          <li>Вагоны (формат: 52568300, 55908677)</li>
+        </ul>
+        
       <br><br>
       * АЛГОРИТМ ДОБАВЛЕНИЯ ДОГОВОРА:
     <ul>
@@ -108,6 +118,7 @@
       <li>После получения уведомления о проверке данных, нажать на кнопку "Отправить данные"</li>
     </ul>
     </p>
+
     <div class="air_block">
       <div class="air_block_header" style="
           display: flex !important;
@@ -1328,27 +1339,27 @@ export default {
           for (let i in this.checkCompleteData) {
             // Много станции
             if (this.checkCompleteData[i].departure_stations_list == null) {
-              this.checkCompleteData[i].departure_stations_list = [ ]
+              this.checkCompleteData[i].departure_stations_list = []
             } else {
               this.checkCompleteData[i].departure_stations_list = this.checkCompleteData[i].departure_stations_list.map((item) => item.id)
             }
             // 1 станция
             if (this.checkCompleteData[i].next_loading_stations_list == null) {
-              this.checkCompleteData[i].next_loading_stations_list = [ ]
+              this.checkCompleteData[i].next_loading_stations_list = []
             } else {
               this.checkCompleteData[i].next_loading_stations_list = this.checkCompleteData[i].next_loading_stations_list.id
             }
             // Много станций
             if (this.checkCompleteData[i].exclude_next_loading_stations_list == null) {
-              this.checkCompleteData[i].exclude_next_loading_stations_list = [ ]
+              this.checkCompleteData[i].exclude_next_loading_stations_list = []
             } else {
               this.checkCompleteData[i].exclude_next_loading_stations_list = this.checkCompleteData[i].exclude_next_loading_stations_list.map((item) => item.id)
             }
             if (this.checkCompleteData[i].wagons == null) {
-              this.checkCompleteData[i].wagons = [ ]
+              this.checkCompleteData[i].wagons = []
             }
             if (this.checkCompleteData[i].cargos_list == null) {
-              this.checkCompleteData[i].cargos_list = [ ]
+              this.checkCompleteData[i].cargos_list = []
             }
             if (this.checkCompleteData[i].departure_station) {
               this.checkCompleteData[i].departure_station = this.checkCompleteData[i].departure_station.code
@@ -1356,7 +1367,10 @@ export default {
             if (this.checkCompleteData[i].destination_station) {
               this.checkCompleteData[i].destination_station = this.checkCompleteData[i].destination_station.code
             }
+            // Подмена настоящей дистанции на обработанные данные
+            this.checkCompleteData[i].distance = Number(this.checkCompleteData[i]?.distance_num)
           }
+
 
           console.log(this.checkCompleteData, 'checkCompleteData')
           api
@@ -1492,5 +1506,4 @@ input[type="checkbox"] {
 
 li {
   cursor: pointer;
-}
-</style>
+}</style>
