@@ -66,7 +66,7 @@
         </b-card-text>
       </b-tab>
       <b-tab title="Данные по ставкам ЦС" active>
-        <b-card-text>
+        <b-card-text style="width: 75vw !important;">
           <TarifDirectory />
         </b-card-text>
       </b-tab>

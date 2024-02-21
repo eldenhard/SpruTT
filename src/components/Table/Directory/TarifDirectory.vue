@@ -445,7 +445,7 @@ export default {
       picked: "agreement_number",
       placeholderAgreement: "введите номер договора",
       distance: [],
-      all_agreement_number: "",
+      all_agreement_number: [],
       agreement_number_test: "",
       Standard: {
         agreement_number: null,
@@ -1347,7 +1347,7 @@ export default {
             if (this.checkCompleteData[i].next_loading_stations_list == null) {
               this.checkCompleteData[i].next_loading_stations_list = []
             } else {
-              this.checkCompleteData[i].next_loading_stations_list = this.checkCompleteData[i].next_loading_stations_list.id
+              this.checkCompleteData[i].next_loading_stations_list = [this.checkCompleteData[i].next_loading_stations_list.id]
             }
             // Много станций
             if (this.checkCompleteData[i].exclude_next_loading_stations_list == null) {
@@ -1367,6 +1367,7 @@ export default {
             if (this.checkCompleteData[i].destination_station) {
               this.checkCompleteData[i].destination_station = this.checkCompleteData[i].destination_station.code
             }
+    
             // Подмена настоящей дистанции на обработанные данные
             this.checkCompleteData[i].distance = Number(this.checkCompleteData[i]?.distance_num)
           }

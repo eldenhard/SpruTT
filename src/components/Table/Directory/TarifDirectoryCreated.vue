@@ -42,7 +42,7 @@
                 <br />
                 <input type="text" class="textarea mini" v-model="cargo" />
             </label>
-            <label for="tenant" >Действующее приложение
+            <label for="tenant">Действующее приложение
                 <input type="checkbox" style="height: 20px;" v-model="filter_arendaData.is_active" />
             </label>
 
@@ -198,6 +198,13 @@
                             <th>Груз</th>
                             <th>Станция отпр.</th>
                             <th>Станция назн.</th>
+
+                            <th>Мн. станций отправки</th>
+                            <th>Расстояние</th>
+                            <th>Станция следующей погрузки</th>
+                            <th>Станции исключения следующей погрузки</th>
+                            <th>Страна</th>
+                            <th>Вагоны</th>
                             <th>Ответственный</th>
                         </tr>
                         <template v-for="childr in att.attachments">
@@ -312,6 +319,12 @@
                                         </div>
                                     </div>
                                 </td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>{{ road.find((item) => item.id == childr.country_id)?.name }}</td>
+                                <td>—</td>
                                 <td>{{ childr.responsible_name }}</td>
                             </tr>
                         </template>
@@ -403,7 +416,9 @@ export default {
         ...mapState({
             uid: (state) => state.auth.uid,
             user: (state) => state.users.users,
-            cargo_code: (state) => state.cargo_code.cargo_code
+            cargo_code: (state) => state.cargo_code.cargo_code,
+            road: (state) => state.road.roadAsCountries
+
         }),
 
         filter_client() {
