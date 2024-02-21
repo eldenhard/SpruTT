@@ -59,48 +59,54 @@
     </div>
     <p class="explanation">
       * Копирование и ввод данных в таблицу 1 должен осуществляться из
-    <b>Excel</b>, после вставки значения в ячейку нажмите
+      <b>Excel</b>, после вставки значения в ячейку нажмите
       Enter чтобы значения были занесены в таблицу<br />
       * После ввода данных в таблицу, Вы можете отредактировать в ней любое
       поле, нажатие Enter Не требуется, редактирование невозможно в полях
-      <ul>
-        <li>Мн. станций отправки</li>
-        <li>Станции исключения следующей погрузки</li>
-      </ul> 
-      Для редактирования этих полей перегрузите данные в этот столбец <br />
+    <ul>
+      <li>Мн. станций отправки</li>
+      <li>Станции исключения следующей погрузки</li>
+    </ul>
+    Для редактирования этих полей перегрузите данные в этот столбец <br />
 
-      * Для удаления строки таблицы нажмите на порядковый номер строки<br />
+    * Для удаления строки таблицы нажмите на порядковый номер строки<br />
 
-      *
-      Данные по ставкам должны загружаться Excel, числа должны
-        быть в строгом формате.<br> 
-        <b>Пример: 1 599,00 <em>(два числа после запятой обязательны, для загрузки в поля "Ставка без НДС" или НДС при выбранном селекторе сумма!)</em></b><br />
-      *
-     Данные по дистанциям должны быть скопированы и вставлены из  Excel в формате  <b>0 - 5 6 - 8 </b><br />
-      * Чтобы узнать название груза, нажмите
-      правой кнопкой мыши на интересующее поле, и подождите несколько секунд
-      <br />
-      <br>
-      * Для сохранения отредатированных данных нажмите на Enter после того как
-      окончили ввод <br />
-      &nbsp;(если индикация зеленая - все хорошо, в противном случае
-      ознакомьтесь с ошибкой)
-      <br />
-      * Наименования станций при редактировании должны вбиваться в таком формате: Тобольск СВР, Парто Цкали ГРЗ <br>
-      &nbsp;То есть обязательно краткое наименование дороги (пробел и 3 заглавные буквы)<br>
-      * При выборе груза отличного от знака "—" вводить код не нужно, данные подгрузятся автоматически, и поле ввода
-      будет заблокировано
-      <br />
-      * Поля включащие в себя возможность загрузки нескольких значений в одном поле:
-        <ul>
-          <li>Мн. станций отправки (формат: Тобольск СВР, Парто Цкали ГРЗ)</li>
-          <li>Станции исключения следующей погрузки (формат: Тобольск СВР, Парто Цкали ГРЗ)</li>
-          <li>Вагоны (формат: 52568300, 55908677)</li>
-        </ul>
-      <br>
-      * Поле "Страна" заполняется <b>полным наименованием страны</b>. Пример: Россия
-      <br><br>
-      * АЛГОРИТМ ДОБАВЛЕНИЯ ДОГОВОРА:
+    *
+    Данные по ставкам должны загружаться Excel, числа должны
+    быть в строгом формате.<br>
+    <b>Пример: 1 599,00 <em>(два числа после запятой обязательны, для загрузки в поля "Ставка без НДС" или НДС при
+        выбранном селекторе сумма!)</em></b><br />
+    *
+    Данные по дистанциям должны быть скопированы и вставлены из Excel в формате <b>0 - 5 6 - 8 </b><br />
+    * Чтобы узнать название груза, нажмите
+    правой кнопкой мыши на интересующее поле, и подождите несколько секунд
+    <br />
+    <br>
+    * Для сохранения отредатированных данных нажмите на Enter после того как
+    окончили ввод <br />
+    &nbsp;(если индикация зеленая - все хорошо, в противном случае
+    ознакомьтесь с ошибкой)
+    <br />
+    * Наименования станций при редактировании должны вбиваться в таком формате: Тобольск СВР, Парто Цкали ГРЗ <br>
+    &nbsp;То есть обязательно краткое наименование дороги (пробел и 3 заглавные буквы)<br>
+    * При выборе груза отличного от знака "—" вводить код не нужно, данные подгрузятся автоматически, и поле ввода
+    будет заблокировано
+    <br />
+    * Поля включащие в себя возможность загрузки нескольких значений в одном поле:
+    <ul>
+      <li>Мн. станций отправки (формат: Тобольск СВР, Парто Цкали ГРЗ)</li>
+      <li>Станции исключения следующей погрузки (формат: Тобольск СВР, Парто Цкали ГРЗ)</li>
+      <li>Вагоны (формат: 52568300, 55908677)</li>
+    </ul>
+    <br>
+    * Поле "Страна" заполняется <b>полным наименованием страны</b>. Пример: Россия <br>
+    * Поле "Груз наим" подразумевает загрузку грузов по наименованию и может включать в себя загрузку множества элменетов,
+    маска ввода строгая. <br>
+    <b>Пример: Уголь,Сера,Нефть (раздление через запятую и между словами нет пробелов, пробел приведет к раздлению груза
+      на 2 строки)</b>
+
+    <br><br>
+    * АЛГОРИТМ ДОБАВЛЕНИЯ ДОГОВОРА:
     <ul>
       <li>Для создания договора необходимо ввести номер договора</li>
       <li>Выбрать дату и клиента (если при выборе клиента у вас не появляется выпадающий список, <br>
@@ -222,9 +228,10 @@
       </button>
 
 
-      <button id="tooltip-target-1" style="background: transparent; border: none;  width: auto; padding: 0; margin-left: auto"
-          v-b-tooltip.hover.lefttop="'Список доступных стран'" @click="info_block = !info_block">
-          <img :src="info_btn" alt="" style="width: 25px; height:25px; margin-top: 1%;">
+      <button id="tooltip-target-1"
+        style="background: transparent; border: none;  width: auto; padding: 0; margin-left: auto"
+        v-b-tooltip.hover.lefttop="'Список доступных стран'" @click="info_block = !info_block">
+        <img :src="info_btn" alt="" style="width: 25px; height:25px; margin-top: 1%;">
       </button>
       <div style="max-height: 20vh; overflow: auto; width: 25%; margin-left: auto" v-if="info_block">
         <table>
@@ -232,13 +239,13 @@
             <th style="border: 1px solid black">Наименование станции</th>
             <th style="border: 1px solid black">Сокращение</th>
           </tr>
-          <tr v-for="name in road.sort((a, b) => (a.name > b.name ? 1 : -1))" :key="name.id">
+          <tr v-for="name in road_hadrcode.sort((a, b) => (a.name > b.name ? 1 : -1))" :key="name.id">
             <td style="border: 1px solid black">{{ name?.name }}</td>
             <td style="border: 1px solid black">{{ name?.short_name }}</td>
           </tr>
         </table>
       </div>
-<br>
+      <br>
 
       <div style="width: 100%; overflow: auto;">
 
@@ -257,6 +264,16 @@
               <input type="text" name="" id="destination_station" @keyup.enter="saveTarif($event)"
                 placeholder="скопируйте и вставьте данные" />
             </td>
+            <!-- Для чекбокса -->
+            <td style="border: 1px solid black">
+              <input type="text" name="" id="for_paired_flights" placeholder="выберите рейс" disabled />
+            </td>
+            <!-- Грузы много -->
+            <td style="border: 1px solid black">
+              <input type="text" name="" id="cargo_name" @keyup.enter="saveTarif($event)"
+                placeholder="скопируйте и вставьте данные" :disabled="disabled_cargo" />
+            </td>
+
             <td style="border: 1px solid black">
               <input type="text" name="" id="cargo" @keyup.enter="saveTarif($event)"
                 placeholder="скопируйте и вставьте данные" :disabled="disabled_cargo" />
@@ -303,6 +320,8 @@
             <!-- Новые поля от 20.02.2024 -->
             <th style="border: 1px solid black; font-size: 12px !important;">Мн. станций отправки</th>
             <th style="border: 1px solid black; font-size: 12px !important;">Станция назн.</th>
+            <th style="border: 1px solid black; font-size: 12px !important;">Сдвоенн. рейс</th>
+            <th style="border: 1px solid black; font-size: 12px !important;">Груз наимен.</th>
             <th style="border: 1px solid black; font-size: 12px !important;">Груз(ЕСТНГ)
               <select name="" id="" v-model="which_cargo" style="width: 60%">
                 <option value="">—</option>
@@ -345,6 +364,12 @@
             </td>
             <td style="border: 1px solid black">
               <input style="width: 100%" type="text" v-model="item.destination_station" />
+            </td>
+            <td style="border: 1px solid black">
+              <input style="width: 50%" type="checkbox" v-model="item.for_paired_flights" />
+            </td>
+            <td style="border: 1px solid black">
+              <input style="width: 100%" type="text" v-model="item.cargo_name" disabled/>
             </td>
             <td style="border: 1px solid black">
               <input style="width: 100%" type="number" v-model="item.cargo" />
@@ -431,6 +456,8 @@ class Stavki {
     this.country = null;
     this.wagons = null;
 
+    this.for_paired_flights = null
+    this.cargo_name = null
   }
 
 }
@@ -438,7 +465,7 @@ export default {
   components: { Loader, Notifications, TarifDirectoryCreated, vSelect },
   data() {
     return {
-      info_block: true,
+      info_block: false,
       disabled_cargo: false,
       which_nds: "value",
       which_cargo: "",
@@ -480,6 +507,10 @@ export default {
         base: null,
         responsible: null,
       },
+      road_hadrcode: [
+        { "id": 2, "code": 81, "name": "Австрия", "short_name": null }, { "id": 3, "code": 57, "name": "Азербайджан", "short_name": "АЗ" }, { "id": 4, "code": 41, "name": "Албания", "short_name": null }, { "id": 5, "code": 92, "name": "Алжир", "short_name": null }, { "id": 6, "code": 135, "name": "Андорра", "short_name": null }, { "id": 7, "code": 58, "name": "Армения", "short_name": "АРМ" }, { "id": 8, "code": 39, "name": "Афганистан", "short_name": "АРА" }, { "id": 16, "code": 139, "name": "Бангладеш", "short_name": null }, { "id": 20, "code": 21, "name": "Беларусь", "short_name": "БЧ" }, { "id": 74, "code": 88, "name": "Бельгия", "short_name": null }, { "id": 42, "code": 52, "name": "Болгария", "short_name": "БДЖ" }, { "id": 40, "code": 50, "name": "Босния и Герцеговина, Мусульманско-Хорватская Федерация", "short_name": null }, { "id": 38, "code": 44, "name": "Босния и Герцеговина, Сербская Республика", "short_name": null }, { "id": 57, "code": 70, "name": "Великобритания", "short_name": null }, { "id": 45, "code": 55, "name": "Венгрия", "short_name": "МАВ" }, { "id": 32, "code": 32, "name": "Вьетнам", "short_name": "ВЖД" }, { "id": 66, "code": 80, "name": "Германия", "short_name": null }, { "id": 60, "code": 73, "name": "Греция", "short_name": null }, { "id": 28, "code": 28, "name": "Грузия", "short_name": "ГР" }, { "id": 72, "code": 86, "name": "Дания", "short_name": null }, { "id": 1, "code": 99, "name": "Другие третьи страны", "short_name": null }, { "id": 75, "code": 90, "name": "Египет", "short_name": null }, { "id": 80, "code": 95, "name": "Израиль", "short_name": null }, { "id": 17, "code": 166, "name": "Индия", "short_name": null }, { "id": 18, "code": 167, "name": "Индонезия", "short_name": null }, { "id": 34, "code": 36, "name": "Ирак", "short_name": null }, { "id": 81, "code": 96, "name": "Иран", "short_name": "РАИ" }, { "id": 51, "code": 60, "name": "Ирландия", "short_name": null }, { "id": 58, "code": 71, "name": "Испания", "short_name": null }, { "id": 69, "code": 83, "name": "Италия", "short_name": null }, { "id": 30, "code": 30, "name": "КНДР", "short_name": "ЗЧ" }, { "id": 27, "code": 27, "name": "Казахстан", "short_name": "КЗХ" }, { "id": 50, "code": 59, "name": "Киргизия", "short_name": "КРГ" }, { "id": 33, "code": 33, "name": "Китай", "short_name": "КЖД" }, { "id": 24, "code": 25, "name": "Латвия", "short_name": "ЛДЗ" }, { "id": 83, "code": 98, "name": "Ливан", "short_name": null }, { "id": 23, "code": 24, "name": "Литва", "short_name": "ЛГ" }, { "id": 68, "code": 82, "name": "Люксембург", "short_name": null }, { "id": 53, "code": 65, "name": "Македония", "short_name": null }, { "id": 14, "code": 134, "name": "Мальта", "short_name": null }, { "id": 78, "code": 93, "name": "Марокко", "short_name": null }, { "id": 22, "code": 23, "name": "Молдова", "short_name": "ЧФМ" }, { "id": 13, "code": 129, "name": "Монако", "short_name": null }, { "id": 31, "code": 31, "name": "Монголия", "short_name": "УБЖД" }, { "id": 70, "code": 84, "name": "Нидерланды", "short_name": null }, { "id": 63, "code": 76, "name": "Норвегия", "short_name": null }, { "id": 41, "code": 51, "name": "Польша", "short_name": "ПКП" }, { "id": 79, "code": 94, "name": "Португалия", "short_name": null }, { "id": 52, "code": 61, "name": "Республика Корея", "short_name": "КОРЕЙЛ" }, { "id": 19, "code": 20, "name": "Россия", "short_name": "РЖД" }, { "id": 43, "code": 53, "name": "Румыния", "short_name": "ЧФР-Марфа" }, { "id": 56, "code": 68, "name": "Сербия", "short_name": null }, { "id": 82, "code": 97, "name": "Сирия", "short_name": null }, { "id": 46, "code": 56, "name": "Словакия", "short_name": "ЗССК" }, { "id": 65, "code": 79, "name": "Словения", "short_name": null }, { "id": 54, "code": 66, "name": "Таджикистан", "short_name": "ТДЖ" }, { "id": 11, "code": 118, "name": "Таиланд", "short_name": null }, { "id": 12, "code": 119, "name": "Тайвань", "short_name": null }, { "id": 76, "code": 91, "name": "Тунис", "short_name": null }, { "id": 55, "code": 67, "name": "Туркмения", "short_name": "ТРК" }, { "id": 62, "code": 75, "name": "Турция", "short_name": null }, { "id": 29, "code": 29, "name": "Узбекистан", "short_name": "УТЙ" }, { "id": 21, "code": 22, "name": "Украина", "short_name": "УЗ" }, { "id": 10, "code": 10, "name": "Финляндия", "short_name": null }, { "id": 73, "code": 87, "name": "Франция", "short_name": null }, { "id": 64, "code": 78, "name": "Хорватия", "short_name": null }, { "id": 39, "code": 49, "name": "Черногория", "short_name": null }, { "id": 44, "code": 54, "name": "Чехия", "short_name": "ЧД" }, { "id": 71, "code": 85, "name": "Швейцария", "short_name": null }, { "id": 61, "code": 74, "name": "Швеция", "short_name": null }, { "id": 26, "code": 26, "name": "Эстония", "short_name": "ЭВР" }, { "id": 59, "code": 72, "name": "Югославия", "short_name": "ЮЖ" }, { "id": 37, "code": 42, "name": "Япония", "short_name": null }
+      ],
+
     };
   },
   computed: {
@@ -494,7 +525,7 @@ export default {
         return require(`@/assets/info.png`)
       } else {
         return require(`@/assets/cross.png`)
-      } 
+      }
     },
     filter_client() {
       if (this.Standard.client.length > 1) {
@@ -794,6 +825,23 @@ export default {
           event.target.value = "";
           return;
         }
+      } else if (event.target.id == "cargo_name") {
+        // Если 3 заглавные буквы, то разделяю на 2 элемента
+        let operationBuffer = event.target.value.split(" ");
+        let clear_buffer = [];
+        for (let i of operationBuffer) {
+          clear_buffer.push(i.trim());
+        }
+        if (clear_buffer.at(-1) == "") {
+          clear_buffer.pop();
+        }
+        if (clear_buffer[0] == "") {
+          return;
+        }
+        this.WorkInClass(clear_buffer, event);
+
+        event.target.value = "";
+        return;
       }
     },
 
@@ -803,7 +851,7 @@ export default {
           let newObj = new Stavki();
           if (
             event.target.id === "departure_stations_list" ||
-            // event.target.id === "next_loading_stations_list" ||
+            event.target.id === "cargo_name" ||
             event.target.id === "exclude_next_loading_stations_list" ||
             event.target.id === "wagons"
           ) {
@@ -816,7 +864,7 @@ export default {
         } else {
           if (
             event.target.id === "departure_stations_list" ||
-            // event.target.id === "next_loading_stations_list" ||
+            event.target.id === "cargo_name" ||
             event.target.id === "exclude_next_loading_stations_list" ||
             event.target.id === "wagons"
           ) {
@@ -982,13 +1030,9 @@ export default {
           return this.stationCache[station_name];
         } else {
           const response = await api_wagon.getCurrentStation(station_name);
-          const server_response = response.data.data.map((item) =>
-            item.name.toLowerCase()
-          ); // Получаем все имена станций в нижнем регистре
+          const server_response = response.data.data.map((item) => item.name.toLowerCase()); // Получаем все имена станций в нижнем регистре
           const lowerStationName = station_name.toLowerCase(); // Приводим ввод пользователя к нижнему регистру
-          const stationNameMatch = server_response.find(
-            (name) => name === lowerStationName
-          ); // Ищем точное совпадение имени станции
+          const stationNameMatch = server_response.find((name) => name === lowerStationName); // Ищем точное совпадение имени станции
           if (stationNameMatch == undefined) {
             const res = await api_wagon.getCurrentStationByName(station_name);
 
@@ -1042,6 +1086,8 @@ export default {
           parametrs.exclude_next_loading_stations_list = []; // Станции исключения следующей погрузки
           parametrs.country = [];;
           parametrs.wagons = [];
+          parametrs.for_paired_flights = []
+          parametrs.cargo_name = []
         } else {
           let stationNameSet = new Set();
           this.data.forEach((item) => {
@@ -1188,14 +1234,20 @@ export default {
               console.error(`Ошибка при обработке вагона "${item.wagons}" на индексе ${index}`, error);
             }
           }
-          // try {
-          //     const wagonData = await this.getWagonData(item.wagons, index);
+        }
 
-          //     newItem.wagons = wagonData.id;
-          // } catch (error) {
-          //     console.error(`Ошибка при обработке вагона "${item.wagons}" на индексе ${index}:`, error);
-          //     this.errorp.push(`Ошибка при обработке вагона "${item.wagons}" на индексе ${index}: ${error.message}`);
-          // }
+        if (item.cargo_name) {
+          newItem.cargo_name = []; // Инициализируем массив для исключений следующей погрузки
+          for (const cargo of item.cargo_name) {
+            try {
+              const wagon_id = await this.getCargoCode(cargo, index);
+              if (wagon_id !== null) {
+                newItem.cargo_name.push(wagon_id);
+              }
+            } catch (error) {
+              console.error(`Ошибка при обработке вагона "${item.cargo_name}" на индексе ${index}`, error);
+            }
+          }
         }
         newData.push(newItem);
       }
@@ -1222,6 +1274,22 @@ export default {
 
       return newData;
     },
+
+    async getCargoCode(cargo_name, index) {
+      try {
+        const response = await api_wagon.getCargoCodeSearch(cargo_name);
+        // Проверяем, есть ли данные в ответе от сервера
+        if (!response.data || !response.data.data || response.data.data.length === 0) {
+          throw new Error(`Ошибка: Не удалось найти груз: "${cargo_name}" на строке ${index + 1}`);
+        }
+        // Возвращаем первый найденный код груза из ответа
+        return cargo_name
+      } catch (error) {
+        this.errorp.push(error.message);
+        return null;
+      }
+    },
+
     // Получение данных по номерам вагонов
     async getWagonData(wagonNumber, index) {
       try {
@@ -1277,7 +1345,6 @@ export default {
         this.picked == "annex_number" &&
         this.Standard.annex_number == null
       ) {
-        console.log("123");
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Заполните номер приложения";
         this.notifyClass = "wrapper-error";
@@ -1287,11 +1354,10 @@ export default {
         }, 3000);
         return;
       } else {
-        this.loader = true;
+        // this.loader = true;
         if (this.checkCompleteData.length == 0) {
           this.loader = true
           this.Standard.wagon_type = 'Цистерна'
-          console.log(this.Standard, 'this.Standard')
           api
             .postTarifData([this.Standard])
             .then((response) => {
@@ -1326,7 +1392,6 @@ export default {
           });
 
           if (this.which_cargo != "") {
-            console.log("я тут");
             let which_cargo_check;
             switch (this.which_cargo) {
               case "top_diz":
@@ -1397,54 +1462,56 @@ export default {
             if (this.checkCompleteData[i].destination_station) {
               this.checkCompleteData[i].destination_station = this.checkCompleteData[i].destination_station.code
             }
-    
+
             // Подмена настоящей дистанции на обработанные данные
             this.checkCompleteData[i].distance = Number(this.checkCompleteData[i]?.distance_num)
+            this.checkCompleteData[i].cargo_name = this.checkCompleteData[i]?.cargo_name.join(';')
           }
 
 
           console.log(this.checkCompleteData, 'checkCompleteData')
-          api
-            .postTarifData(this.checkCompleteData)
-            .then((response) => {
-              //Получаю все приложения для договора
+          // api
+          //   .postTarifData(this.checkCompleteData)
+          //   .then((response) => {
+          //     //Получаю все приложения для договора
 
-              this.getAllAgreement();
-              this.flagCheck = false;
+          //     this.getAllAgreement();
+          //     this.flagCheck = false;
 
-              this.loader = false;
-              this.notifyHead = "Успешно";
-              this.notifyMessage = "Данные загружены";
-              this.notifyClass = "wrapper-success";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 2000);
-              this.data = [];
-            })
-            .catch((error) => {
-              this.loader = false;
-              this.notifyHead = "Ошибка";
-              this.notifyMessage = "Проверьте поле с ошибками";
-              this.notifyClass = "wrapper-error";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 3000);
+          //     this.loader = false;
+          //     this.notifyHead = "Успешно";
+          //     this.notifyMessage = "Данные загружены";
+          //     this.notifyClass = "wrapper-success";
+          //     this.showNotify = true;
+          //     setTimeout(() => {
+          //       this.showNotify = false;
+          //     }, 2000);
+          //     this.data = [];
+          //   })
+          //   .catch((error) => {
+          //     this.loader = false;
+          //     this.notifyHead = "Ошибка";
+          //     this.notifyMessage = "Проверьте поле с ошибками";
+          //     this.notifyClass = "wrapper-error";
+          //     this.showNotify = true;
+          //     setTimeout(() => {
+          //       this.showNotify = false;
+          //     }, 3000);
 
-              for (let i in this.data) {
-                this.data[i]["error"] = null;
-              }
-              for (let i in error.response.data) {
-                this.data[error.response.data[i][0] - 1].error =
-                  error.response.data[i][1];
-              }
+          //     for (let i in this.data) {
+          //       this.data[i]["error"] = null;
+          //     }
+          //     for (let i in error.response.data) {
+          //       this.data[error.response.data[i][0] - 1].error =
+          //         error.response.data[i][1];
+          //     }
 
-              let filter_arr = [...this.data];
-              this.data = filter_arr.filter((item) => {
-                return item.error != null;
-              });
-            });
+          //     let filter_arr = [...this.data];
+          //     this.data = filter_arr.filter((item) => {
+          //       return item.error != null;
+          //     });
+          //   });
+
         }
       }
     },
