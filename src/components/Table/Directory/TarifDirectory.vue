@@ -100,7 +100,8 @@
     </ul>
     <br>
     * Поле "Страна" заполняется <b>полным наименованием страны</b>. Пример: Россия <br>
-    * Поле "Груз наимен." подразумевает загрузку грузов по наименованию и может включать в себя загрузку множества элменетов,
+    * Поле "Груз наимен." подразумевает загрузку грузов по наименованию и может включать в себя загрузку множества
+    элменетов,
     маска ввода строгая. <br>
     <b>Пример: Уголь,Сера,Нефть (раздление через запятую и между словами нет пробелов, пробел приведет к раздлению груза
       на 2 строки)</b>
@@ -369,7 +370,7 @@
               <input style="width: 50%" type="checkbox" v-model="item.for_paired_flights" />
             </td>
             <td style="border: 1px solid black">
-              <input style="width: 100%" type="text" v-model="item.cargos_list" disabled/>
+              <input style="width: 100%" type="text" v-model="item.cargos_list" disabled />
             </td>
             <td style="border: 1px solid black">
               <input style="width: 100%" type="number" v-model="item.cargo" />
@@ -1455,6 +1456,8 @@ export default {
             }
             if (this.checkCompleteData[i].cargos_list == null) {
               this.checkCompleteData[i].cargos_list = ""
+            } else if (Array.isArray(this.checkCompleteData[i].cargos_list) && this.checkCompleteData[i].cargos_list.length > 0) {
+              this.checkCompleteData[i].cargos_list = this.checkCompleteData[i]?.cargos_list.join(';')
             }
             if (this.checkCompleteData[i].departure_station) {
               this.checkCompleteData[i].departure_station = this.checkCompleteData[i].departure_station.code
@@ -1465,7 +1468,7 @@ export default {
 
             // Подмена настоящей дистанции на обработанные данные
             this.checkCompleteData[i].distance = Number(this.checkCompleteData[i]?.distance_num)
-            this.checkCompleteData[i].cargos_list = this.checkCompleteData[i]?.cargos_list.join(';')
+
           }
 
           api
@@ -1602,4 +1605,5 @@ input[type="checkbox"] {
 
 li {
   cursor: pointer;
-}</style>
+}
+</style>

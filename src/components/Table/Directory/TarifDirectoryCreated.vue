@@ -321,17 +321,21 @@
                                         </div>
                                     </div>
                                 </td>
-             <td>
+                                <td>
                                     <input type="checkbox" v-model="childr.for_paired_flights" disabled>
-                                </td>  <!--Сдвоенный рейс-->
-                                <td>{{ childr.cargos_list  }}</td>  <!--Груз наимен-->
-                                <td>{{ childr.departure_stations ? childr?.departure_stations.join(",") : ""  }}</td> <!-- Мн. станций отправки-->
-                                <td>{{ childr.distance  }}</td> <!-- Расстояние-->
-                                <td>{{  childr.next_loading_stations ? childr.next_loading_stations.join(",") : ""  }}</td> <!-- Станция следующей погрузки-->
-                                <td>{{ childr.exclude_next_loading_stations ? childr.exclude_next_loading_stations.join(",") : "" }}</td> <!-- Станции исключения следующей погрузки-->
+                                </td> <!--Сдвоенный рейс-->
+                                <td>{{ childr?.cargos_list ?? "" }}</td> <!--Груз наимен-->
+                                <td>{{ childr?.departure_stations ? childr?.departure_stations.join(",") : "" }}</td>
+                                <!-- Мн. станций отправки-->
+                                <td>{{ childr?.distance }}</td> <!-- Расстояние-->
+                                <td>{{ childr?.next_loading_stations ? childr.next_loading_stations.join(",") : "" }}</td>
+                                <!-- Станция следующей погрузки-->
+                                <td>{{ childr?.exclude_next_loading_stations ?
+                                    childr.exclude_next_loading_stations.join(",") : "" }}</td>
+                                <!-- Станции исключения следующей погрузки-->
                                 <td>{{ road.find((item) => item.id == childr.country_id)?.name }}</td> <!-- Страна-->
-                                <td>{{ childr.wagons_list? childr.wagons_list.join(",") : ""  }}</td> <!-- Вагоны-->
-                                <td>{{ childr.responsible_name }}</td> <!-- Ответственный--> 
+                                <td>{{ childr?.wagons_list ? childr.wagons_list.join(",") : "" }}</td> <!-- Вагоны-->
+                                <td>{{ childr?.responsible_name }}</td> <!-- Ответственный-->
                             </tr>
                         </template>
                         </details>
@@ -1134,5 +1138,4 @@ thead th {
 
 li {
     cursor: pointer;
-}
-</style>
+}</style>
