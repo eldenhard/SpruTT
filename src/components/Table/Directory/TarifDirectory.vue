@@ -1320,7 +1320,7 @@ export default {
       this.Standard.cargo = code6;
       this.cargo_user = value;
     },
-    postData() {
+    async postData() {
       if (this.flagCheck == false) {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Пройдите проверку введенных";
@@ -1342,10 +1342,7 @@ export default {
           this.showNotify = false;
         }, 3000);
         return;
-      } else if (
-        this.picked == "annex_number" &&
-        this.Standard.annex_number == null
-      ) {
+      } else if (this.picked == "annex_number" && this.Standard.annex_number == null) {
         this.notifyHead = "Ошибка";
         this.notifyMessage = "Заполните номер приложения";
         this.notifyClass = "wrapper-error";
@@ -1356,6 +1353,7 @@ export default {
         return;
       } else {
         this.loader = true;
+        // ПРиложение
         if (this.checkCompleteData.length == 0) {
           this.loader = true
           this.Standard.wagon_type = 'Цистерна'
@@ -1431,45 +1429,58 @@ export default {
           this.checkCompleteData.forEach((item) => {
             item.wagon_type = 'Цистерна'
           })
+          try {
+            for (let i in this.checkCompleteData) {
+              // Много станции
+              if (this.checkCompleteData[i].departure_stations_list == null) {
+                this.checkCompleteData[i].departure_stations_list = []
+              } else {
+                this.checkCompleteData[i].departure_stations_list = this.checkCompleteData[i].departure_stations_list.map((item) => item.id)
+              }
+              // 1 станция
+              if (this.checkCompleteData[i].next_loading_stations_list == null) {
+                this.checkCompleteData[i].next_loading_stations_list = []
+              } else {
+                this.checkCompleteData[i].next_loading_stations_list = [this.checkCompleteData[i].next_loading_stations_list.id]
+              }
+              // Много станций
+              if (this.checkCompleteData[i].exclude_next_loading_stations_list == null) {
+                this.checkCompleteData[i].exclude_next_loading_stations_list = []
+              } else {
+                this.checkCompleteData[i].exclude_next_loading_stations_list = this.checkCompleteData[i].exclude_next_loading_stations_list.map((item) => item.id)
+              }
+              if (this.checkCompleteData[i].wagons == null) {
+                this.checkCompleteData[i].wagons = []
+              }
+              if (this.checkCompleteData[i].cargos_list == null) {
+                this.checkCompleteData[i].cargos_list = ""
+              } else if (Array.isArray(this.checkCompleteData[i].cargos_list) && this.checkCompleteData[i].cargos_list.length > 0) {
+                this.checkCompleteData[i].cargos_list = this.checkCompleteData[i]?.cargos_list.join(';')
+              }
+              if (this.checkCompleteData[i].departure_station) {
+                this.checkCompleteData[i].departure_station = this.checkCompleteData[i].departure_station.code
+              }
+              if (this.checkCompleteData[i].destination_station) {
+                this.checkCompleteData[i].destination_station = this.checkCompleteData[i].destination_station.code
+              }
 
-          for (let i in this.checkCompleteData) {
-            // Много станции
-            if (this.checkCompleteData[i].departure_stations_list == null) {
-              this.checkCompleteData[i].departure_stations_list = []
-            } else {
-              this.checkCompleteData[i].departure_stations_list = this.checkCompleteData[i].departure_stations_list.map((item) => item.id)
-            }
-            // 1 станция
-            if (this.checkCompleteData[i].next_loading_stations_list == null) {
-              this.checkCompleteData[i].next_loading_stations_list = []
-            } else {
-              this.checkCompleteData[i].next_loading_stations_list = [this.checkCompleteData[i].next_loading_stations_list.id]
-            }
-            // Много станций
-            if (this.checkCompleteData[i].exclude_next_loading_stations_list == null) {
-              this.checkCompleteData[i].exclude_next_loading_stations_list = []
-            } else {
-              this.checkCompleteData[i].exclude_next_loading_stations_list = this.checkCompleteData[i].exclude_next_loading_stations_list.map((item) => item.id)
-            }
-            if (this.checkCompleteData[i].wagons == null) {
-              this.checkCompleteData[i].wagons = []
-            }
-            if (this.checkCompleteData[i].cargos_list == null) {
-              this.checkCompleteData[i].cargos_list = ""
-            } else if (Array.isArray(this.checkCompleteData[i].cargos_list) && this.checkCompleteData[i].cargos_list.length > 0) {
-              this.checkCompleteData[i].cargos_list = this.checkCompleteData[i]?.cargos_list.join(';')
-            }
-            if (this.checkCompleteData[i].departure_station) {
-              this.checkCompleteData[i].departure_station = this.checkCompleteData[i].departure_station.code
-            }
-            if (this.checkCompleteData[i].destination_station) {
-              this.checkCompleteData[i].destination_station = this.checkCompleteData[i].destination_station.code
-            }
+              // Подмена настоящей дистанции на обработанные данные
+              this.checkCompleteData[i].distance = Number(this.checkCompleteData[i]?.distance_num)
 
-            // Подмена настоящей дистанции на обработанные данные
-            this.checkCompleteData[i].distance = Number(this.checkCompleteData[i]?.distance_num)
-
+            }
+          } catch (error) {
+            console.log(error)
+            this.loader = false;
+            this.notifyHead = "Ошибка";
+            this.notifyMessage = `${error}<br> Что-то пошло не так. Сообщите в отдел разработки`;
+            this.notifyClass = "wrapper-error";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 3500);
+            return
           }
+
 
           api
             .postTarifData(this.checkCompleteData)
