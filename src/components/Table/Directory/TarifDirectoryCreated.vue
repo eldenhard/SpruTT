@@ -199,6 +199,7 @@
                             <th>Станция отпр.</th>
                             <th>Станция назн.</th>
 
+                            <th>Сдвоенный рейс</th>
                             <th>Груз наимен</th>
                             <th>Мн. станций отправки</th>
                             <th>Расстояние</th>
@@ -374,7 +375,9 @@
     52568300
   ],
   "attachments": []
-} -->
+} -->                           <td>
+                                    <input type="checkbox" v-model="childr.for_paired_flights" disabled>
+                                </td>  <!--Сдвоенный рейс-->
                                 <td>{{ childr.cargos_list  }}</td>  <!--Груз наимен-->
                                 <td>{{ childr.departure_stations ? childr?.departure_stations.join(",") : ""  }}</td> <!-- Мн. станций отправки-->
                                 <td>{{ childr.distance  }}</td> <!-- Расстояние-->
