@@ -403,7 +403,7 @@
               <input style="width: 100%" type="text" v-model="item.country" />
             </td>
             <td style="border: 1px solid black">
-              <input style="width: 100%" type="text" v-model="item.wagons" required />
+              <input style="width: 100%" type="text" v-model="item.wagons" disabled />
             </td>
           </tr>
         </table>
