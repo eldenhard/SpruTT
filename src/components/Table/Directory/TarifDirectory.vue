@@ -87,7 +87,7 @@
       ознакомьтесь с ошибкой)
       <br />
       * Наименования станций при редактировании должны вбиваться в таком формате: Тобольск СВР, Парто Цкали ГРЗ <br>
-      &nbsp;То есть обязательно краткое наименование дороги<br>
+      &nbsp;То есть обязательно краткое наименование дороги (пробел и 3 заглавные буквы)<br>
       * При выборе груза отличного от знака "—" вводить код не нужно, данные подгрузятся автоматически, и поле ввода
       будет заблокировано
       <br />
@@ -97,7 +97,8 @@
           <li>Станции исключения следующей погрузки (формат: Тобольск СВР, Парто Цкали ГРЗ)</li>
           <li>Вагоны (формат: 52568300, 55908677)</li>
         </ul>
-        
+      <br>
+      * Поле "Страна" заполняется <b>полным наименованием страны</b>. Пример: Россия
       <br><br>
       * АЛГОРИТМ ДОБАВЛЕНИЯ ДОГОВОРА:
     <ul>
@@ -132,6 +133,8 @@
       </div>
       <hr />
       <br />
+
+
 
       <table v-show="visible">
         <tr>
@@ -217,6 +220,26 @@
       <button class="button Action" style="height: 30px" @click="checkingData()">
         Проверка введеных данных
       </button>
+
+
+      <button id="tooltip-target-1" style="background: transparent; border: none;  width: auto; padding: 0; margin-left: auto"
+          v-b-tooltip.hover.lefttop="'Список доступных стран'" @click="info_block = !info_block">
+          <img :src="info_btn" alt="" style="width: 25px; height:25px; margin-top: 1%;">
+      </button>
+      <div style="max-height: 20vh; overflow: auto; width: 25%; margin-left: auto" v-if="info_block">
+        <table>
+          <tr>
+            <th style="border: 1px solid black">Наименование станции</th>
+            <th style="border: 1px solid black">Сокращение</th>
+          </tr>
+          <tr v-for="name in road.sort((a, b) => (a.name > b.name ? 1 : -1))" :key="name.id">
+            <td style="border: 1px solid black">{{ name?.name }}</td>
+            <td style="border: 1px solid black">{{ name?.short_name }}</td>
+          </tr>
+        </table>
+      </div>
+<br>
+
       <div style="width: 100%; overflow: auto;">
 
         <table border="1" class="table_stavka" v-show="visible">
@@ -415,6 +438,7 @@ export default {
   components: { Loader, Notifications, TarifDirectoryCreated, vSelect },
   data() {
     return {
+      info_block: true,
       disabled_cargo: false,
       which_nds: "value",
       which_cargo: "",
@@ -465,7 +489,13 @@ export default {
       uid: (state) => state.auth.uid,
       road: (state) => state.road.roadAsCountries
     }),
-
+    info_btn() {
+      if (this.info_block == false) {
+        return require(`@/assets/info.png`)
+      } else {
+        return require(`@/assets/cross.png`)
+      } 
+    },
     filter_client() {
       if (this.Standard.client.length > 1) {
         this.ten_visible = true;
