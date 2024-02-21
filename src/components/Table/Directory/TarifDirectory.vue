@@ -1354,7 +1354,7 @@ export default {
         }, 3000);
         return;
       } else {
-        // this.loader = true;
+        this.loader = true;
         if (this.checkCompleteData.length == 0) {
           this.loader = true
           this.Standard.wagon_type = 'Цистерна'
