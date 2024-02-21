@@ -100,7 +100,7 @@
     </ul>
     <br>
     * Поле "Страна" заполняется <b>полным наименованием страны</b>. Пример: Россия <br>
-    * Поле "Груз наим" подразумевает загрузку грузов по наименованию и может включать в себя загрузку множества элменетов,
+    * Поле "Груз наимен." подразумевает загрузку грузов по наименованию и может включать в себя загрузку множества элменетов,
     маска ввода строгая. <br>
     <b>Пример: Уголь,Сера,Нефть (раздление через запятую и между словами нет пробелов, пробел приведет к раздлению груза
       на 2 строки)</b>
@@ -270,7 +270,7 @@
             </td>
             <!-- Грузы много -->
             <td style="border: 1px solid black">
-              <input type="text" name="" id="cargo_name" @keyup.enter="saveTarif($event)"
+              <input type="text" name="" id="cargos_list" @keyup.enter="saveTarif($event)"
                 placeholder="скопируйте и вставьте данные" :disabled="disabled_cargo" />
             </td>
 
@@ -369,7 +369,7 @@
               <input style="width: 50%" type="checkbox" v-model="item.for_paired_flights" />
             </td>
             <td style="border: 1px solid black">
-              <input style="width: 100%" type="text" v-model="item.cargo_name" disabled/>
+              <input style="width: 100%" type="text" v-model="item.cargos_list" disabled/>
             </td>
             <td style="border: 1px solid black">
               <input style="width: 100%" type="number" v-model="item.cargo" />
@@ -457,7 +457,7 @@ class Stavki {
     this.wagons = null;
 
     this.for_paired_flights = null
-    this.cargo_name = null
+    this.cargos_list = null
   }
 
 }
@@ -825,7 +825,7 @@ export default {
           event.target.value = "";
           return;
         }
-      } else if (event.target.id == "cargo_name") {
+      } else if (event.target.id == "cargos_list") {
         // Если 3 заглавные буквы, то разделяю на 2 элемента
         let operationBuffer = event.target.value.split(" ");
         let clear_buffer = [];
@@ -851,7 +851,7 @@ export default {
           let newObj = new Stavki();
           if (
             event.target.id === "departure_stations_list" ||
-            event.target.id === "cargo_name" ||
+            event.target.id === "cargos_list" ||
             event.target.id === "exclude_next_loading_stations_list" ||
             event.target.id === "wagons"
           ) {
@@ -864,7 +864,7 @@ export default {
         } else {
           if (
             event.target.id === "departure_stations_list" ||
-            event.target.id === "cargo_name" ||
+            event.target.id === "cargos_list" ||
             event.target.id === "exclude_next_loading_stations_list" ||
             event.target.id === "wagons"
           ) {
@@ -1087,7 +1087,7 @@ export default {
           parametrs.country = [];;
           parametrs.wagons = [];
           parametrs.for_paired_flights = []
-          parametrs.cargo_name = []
+          parametrs.cargos_list = []
         } else {
           let stationNameSet = new Set();
           this.data.forEach((item) => {
@@ -1236,16 +1236,16 @@ export default {
           }
         }
 
-        if (item.cargo_name) {
-          newItem.cargo_name = []; // Инициализируем массив для исключений следующей погрузки
-          for (const cargo of item.cargo_name) {
+        if (item.cargos_list) {
+          newItem.cargos_list = []; // Инициализируем массив для исключений следующей погрузки
+          for (const cargo of item.cargos_list) {
             try {
               const wagon_id = await this.getCargoCode(cargo, index);
               if (wagon_id !== null) {
-                newItem.cargo_name.push(wagon_id);
+                newItem.cargos_list.push(wagon_id);
               }
             } catch (error) {
-              console.error(`Ошибка при обработке вагона "${item.cargo_name}" на индексе ${index}`, error);
+              console.error(`Ошибка при обработке вагона "${item.cargos_list}" на индексе ${index}`, error);
             }
           }
         }
@@ -1275,15 +1275,15 @@ export default {
       return newData;
     },
 
-    async getCargoCode(cargo_name, index) {
+    async getCargoCode(cargos_list, index) {
       try {
-        const response = await api_wagon.getCargoCodeSearch(cargo_name);
+        const response = await api_wagon.getCargoCodeSearch(cargos_list);
         // Проверяем, есть ли данные в ответе от сервера
         if (!response.data || !response.data.data || response.data.data.length === 0) {
-          throw new Error(`Ошибка: Не удалось найти груз: "${cargo_name}" на строке ${index + 1}`);
+          throw new Error(`Ошибка: Не удалось найти груз: "${cargos_list}" на строке ${index + 1}`);
         }
         // Возвращаем первый найденный код груза из ответа
-        return cargo_name
+        return cargos_list
       } catch (error) {
         this.errorp.push(error.message);
         return null;
@@ -1454,7 +1454,7 @@ export default {
               this.checkCompleteData[i].wagons = []
             }
             if (this.checkCompleteData[i].cargos_list == null) {
-              this.checkCompleteData[i].cargos_list = []
+              this.checkCompleteData[i].cargos_list = ""
             }
             if (this.checkCompleteData[i].departure_station) {
               this.checkCompleteData[i].departure_station = this.checkCompleteData[i].departure_station.code
@@ -1465,52 +1465,50 @@ export default {
 
             // Подмена настоящей дистанции на обработанные данные
             this.checkCompleteData[i].distance = Number(this.checkCompleteData[i]?.distance_num)
-            this.checkCompleteData[i].cargo_name = this.checkCompleteData[i]?.cargo_name.join(';')
+            this.checkCompleteData[i].cargos_list = this.checkCompleteData[i]?.cargos_list.join(';')
           }
 
+          api
+            .postTarifData(this.checkCompleteData)
+            .then((response) => {
+              //Получаю все приложения для договора
 
-          console.log(this.checkCompleteData, 'checkCompleteData')
-          // api
-          //   .postTarifData(this.checkCompleteData)
-          //   .then((response) => {
-          //     //Получаю все приложения для договора
+              this.getAllAgreement();
+              this.flagCheck = false;
 
-          //     this.getAllAgreement();
-          //     this.flagCheck = false;
+              this.loader = false;
+              this.notifyHead = "Успешно";
+              this.notifyMessage = "Данные загружены";
+              this.notifyClass = "wrapper-success";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false;
+              }, 2000);
+              this.data = [];
+            })
+            .catch((error) => {
+              this.loader = false;
+              this.notifyHead = "Ошибка";
+              this.notifyMessage = "Проверьте поле с ошибками";
+              this.notifyClass = "wrapper-error";
+              this.showNotify = true;
+              setTimeout(() => {
+                this.showNotify = false;
+              }, 3000);
 
-          //     this.loader = false;
-          //     this.notifyHead = "Успешно";
-          //     this.notifyMessage = "Данные загружены";
-          //     this.notifyClass = "wrapper-success";
-          //     this.showNotify = true;
-          //     setTimeout(() => {
-          //       this.showNotify = false;
-          //     }, 2000);
-          //     this.data = [];
-          //   })
-          //   .catch((error) => {
-          //     this.loader = false;
-          //     this.notifyHead = "Ошибка";
-          //     this.notifyMessage = "Проверьте поле с ошибками";
-          //     this.notifyClass = "wrapper-error";
-          //     this.showNotify = true;
-          //     setTimeout(() => {
-          //       this.showNotify = false;
-          //     }, 3000);
+              for (let i in this.data) {
+                this.data[i]["error"] = null;
+              }
+              for (let i in error.response.data) {
+                this.data[error.response.data[i][0] - 1].error =
+                  error.response.data[i][1];
+              }
 
-          //     for (let i in this.data) {
-          //       this.data[i]["error"] = null;
-          //     }
-          //     for (let i in error.response.data) {
-          //       this.data[error.response.data[i][0] - 1].error =
-          //         error.response.data[i][1];
-          //     }
-
-          //     let filter_arr = [...this.data];
-          //     this.data = filter_arr.filter((item) => {
-          //       return item.error != null;
-          //     });
-          //   });
+              let filter_arr = [...this.data];
+              this.data = filter_arr.filter((item) => {
+                return item.error != null;
+              });
+            });
 
         }
       }

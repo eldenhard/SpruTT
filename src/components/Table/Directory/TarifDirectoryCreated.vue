@@ -199,6 +199,7 @@
                             <th>Станция отпр.</th>
                             <th>Станция назн.</th>
 
+                            <th>Груз наимен</th>
                             <th>Мн. станций отправки</th>
                             <th>Расстояние</th>
                             <th>Станция следующей погрузки</th>
@@ -319,13 +320,69 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>—</td>
-                                <td>—</td>
-                                <td>—</td>
-                                <td>—</td>
-                                <td>{{ road.find((item) => item.id == childr.country_id)?.name }}</td>
-                                <td>—</td>
-                                <td>{{ childr.responsible_name }}</td>
+<!-- {
+  "id": 11487,
+  "agreement_number": "полный фарш",
+  "base_id": 915,
+  "on_date": "2024-02-21",
+  "end_date": null,
+  "client": "ПРОМУГОЛЬСЕРВИС, ООО",
+  "cargo_id": null,
+  "distance": 0,
+  "distance_min": null,
+  "distance_max": null,
+  "departure_station_id": null,
+  "destination_station_id": null,
+  "stavka": null,
+  "stavka_pre": null,
+  "nds": null,
+  "responsible_id": 102,
+  "cargo_var": null,
+  "cargo_type": null,
+  "k": 0,
+  "turnover": 0,
+  "stavka_nds": 0,
+  "capacity_compare": null,
+  "capacity_value": 0,
+  "shipment_type": null,
+  "departure_road_id": null,
+  "destination_road_id": null,
+  "wagon_type_id": "Цистерна",
+  "stavka_date_begin": null,
+  "is_active": true,
+  "for_paired_flights": false,
+  "cargos_list": "Уголь;Сера;Нефть",
+  "country_id": 19,
+  "cargo_name": null,
+  "departure_station_name": null,
+  "destination_station_name": null,
+  "responsible_name": "Решетило",
+  "country_name": "Россия",
+  "departure_stations": [
+    "Каучук",
+    "Нягань"
+  ],
+  "next_loading_stations": [
+    "Нягань"
+  ],
+  "exclude_next_loading_stations": [
+    "Каучук",
+    "Нягань"
+  ],
+  "wagons_list": [
+    52458502,
+    52568300
+  ],
+  "attachments": []
+} -->
+                                <td>{{ childr.cargos_list  }}</td>  <!--Груз наимен-->
+                                <td>{{ childr.departure_stations ? childr?.departure_stations.join(",") : ""  }}</td> <!-- Мн. станций отправки-->
+                                <td>{{ childr.distance  }}</td> <!-- Расстояние-->
+                                <td>{{  childr.next_loading_stations ? childr.next_loading_stations.join(",") : ""  }}</td> <!-- Станция следующей погрузки-->
+                                <td>{{ childr.exclude_next_loading_stations ? childr.exclude_next_loading_stations.join(",") : "" }}</td> <!-- Станции исключения следующей погрузки-->
+                                <td>{{ road.find((item) => item.id == childr.country_id)?.name }}</td> <!-- Страна-->
+                                <td>{{ childr.wagons_list? childr.wagons_list.join(",") : ""  }}</td> <!-- Вагоны-->
+                                <td>{{ childr.responsible_name }}</td> <!-- Ответственный--> 
                             </tr>
                         </template>
                         </details>
