@@ -164,11 +164,11 @@
             <section style="display: flex;justify-content: space-between; gap: 15px;">
                 <button class="Delete button" style="width: 25%; height: 40px; margin-right: auto;"
                     @click="tableData = []">Очистить таблицу</button>
-
-
                 <br>
-                <button class="Accept button" style="width: 25%; height: 40px;" @click="saveData()">Отправить
-                    данные и создать приложение</button>
+                <button class="button Action" style="width: 25%; height: 40px;" @click="checkingData()">Проверка введеных
+                    данных</button>
+                <button class="Accept button" style="width: 25%; height: 40px;" @click="saveData()">Отправить данные и
+                    создать приложение</button>
             </section>
 
 
@@ -257,7 +257,8 @@
                                 </b-dropdown>
 
 
-                                <b-dropdown-item @click="addField('Станция/Дорога/Страна отправления')">Станция/Дорога/Страна
+                                <b-dropdown-item
+                                    @click="addField('Станция/Дорога/Страна отправления')">Станция/Дорога/Страна
                                     отправления</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Станция/Дорога/Страна назначения')">Станция/Дорога/Страна
                                     назначения</b-dropdown-item>
@@ -334,9 +335,14 @@ export default {
     },
     data() {
         return {
+            flagCheck: false,
+            stationCache: {},
+            checkCompleteData: [], // данные для отпарвки на сервер
+
+
             checkEqualDate: null,
             visible: true,
-            picked: "agreement_number",
+            picked: "annex_number",
             placeholderAgreement: "введите номер договора",
             Standard: {
                 agreement_number: null,
@@ -458,6 +464,334 @@ export default {
         },
     },
     methods: {
+        // Проверка введенных пользователем данных
+        // async checkingData() {
+        //     this.flagCheck = false;
+        //     this.loader = true;
+        //     let stationNameSet = new Set();
+        //     let parametrs = ""
+        //     this.errorp = [];
+        //     let regex = / [А-Я]{2}[^ ]*/g
+        //     let DataValueFRomChange = [...this.tableData]
+        //     console.log(this.selectedFields)
+        //     try {
+        //         if (DataValueFRomChange.length == 0) {
+        //             parametrs = [this.Standard];
+        //             parametrs.distance_min = [];
+        //             parametrs.distance_max = [];
+        //             parametrs.stavka = [];
+        //             parametrs.nds = [];
+        //             parametrs.distance = [];
+        //             parametrs.departure_station = [];
+        //             parametrs.destination_station = [];
+        //             parametrs.departure_stations_list = []; // Множество станций погрузки
+        //             parametrs.distance_num = [];
+        //             parametrs.next_loading_stations_list = []; // Станция следующей погрузки
+        //             parametrs.exclude_next_loading_stations_list = []; // Станции исключения следующей погрузки
+        //             parametrs.country = [];;
+        //             parametrs.wagons = [];
+        //             parametrs.for_paired_flights = []
+        //             parametrs.cargos_list = []
+        //         } else {
+        //             for (let i = 0; i < DataValueFRomChange.length; i++) {
+        //                 // Если в строке 3 заглавные 
+        //                 if (DataValueFRomChange[i][0].match(regex) && !DataValueFRomChange[i][0].includes('Станции')) {
+        //                     try {
+        //                         DataValueFRomChange[i] = [{
+        //                             destination_station: DataValueFRomChange[i][0].split(regex)[0],
+        //                             ...DataValueFRomChange[i]
+        //                         }]
+        //                         stationNameSet.add(DataValueFRomChange[i][0].split(regex)[0])
+        //                     }
+        //                     catch {
+        //                         this.loader = false
+        //                     }
+        //                 } else if (DataValueFRomChange[i][0].match(regex) && DataValueFRomChange[i][0].includes('Станции')) {
+        //                     // Для обработки станций
+        //                 } else {
+        //                     // Для обработки стран
+        //                 }
+        //             }
+        //             await Promise.all(
+        //                 Array.from(stationNameSet).map(async (stationName) => {
+        //                     await this.getStationCode(stationName);
+        //                 }))
+        //             for (let i in DataValueFRomChange) {
+        //                 Object.assign(DataValueFRomChange[i], this.Standard);
+        //             }
+        //             parametrs = DataValueFRomChange;
+        //         }
+        //         console.log(parametrs)
+        //         let new_data = await this.createNewData(DataValueFRomChange);
+        //         this.loader = false;
+        //         // Вывод сообщения при отсутствии ошибок
+        //         if (this.errorp.length == 0) {
+        //             this.flagCheck = true;
+        //             this.checkCompleteData = new_data;
+        //             this.notifyHead = "Успешно";
+        //             this.notifyMessage = "Данные проверку прошли!";
+        //             this.notifyClass = "wrapper-success";
+        //             this.showNotify = true;
+        //             setTimeout(() => {
+        //                 this.showNotify = false;
+        //             }, 3000);
+        //         }
+        //     } catch (error) {
+        //         console.log(error, 'Ошибка при проверке данных');
+        //         this.loader = false;
+        //     }
+
+
+        // },
+
+        async checkingData() {
+            this.flagCheck = false;
+            // this.loader = true;
+            let stationNameSet = new Set();
+            this.errorp = [];
+            let regex = / [А-Я]{2}[^ ]*/g;
+            let DataValueFrom = [...this.tableData]
+            // Сделать каждый массив из массива массивов объектом
+            try {
+                let newData = [];
+                for (let i = 0; i < DataValueFrom.length; i++) {
+                    const newObj = {};
+                    const currentItem = DataValueFrom[i];
+                    for (let j = 0; j < this.selectedFields.length; j++) {
+                        let key = this.selectedFields[j];
+                        let value = currentItem[j];
+                        if (key === 'Станция/Дорога/Страна отправления') {
+                            // Обработка для отправления
+                            if (value.match(/[А-Я]{3}/) && !value.includes('Станции')) {
+                                key = 'departure_station';
+                            } else if (value.match(/[А-Я]{3}/) && value.includes('Станции')) {
+                                key = 'departure_road';
+                                value = value.replace('Станции', '').trim().substring(0, 3).toUpperCase();
+                            } else if (key === 'Станция/Дорога/Страна отправления') {
+                                key = 'country_from';
+                            }
+                        } else if (key === 'Станция/Дорога/Страна назначения') {
+                            // Обработка для назначения
+                            if (value.match(/[А-Я]{3}/) && !value.includes('Станции')) {
+                                key = 'destination_station';
+                            } else if (value.match(/[А-Я]{3}/) && value.includes('Станции')) {
+                                key = 'destination_road';
+                                value = value.replace('Станции', '').trim().substring(0, 3).toUpperCase();
+                            } else if (key === 'Станция/Дорога/Страна назначения') {
+                                key = 'country_to';
+                            }
+                        }
+                        newObj[key] = value;
+                    }
+                    newData.push(newObj);
+                }
+                DataValueFrom = newData;
+            } catch (error) {
+                console.error(error);
+            }
+            console.log(DataValueFrom)
+            // Асинхронное получение кодов станций
+            // await Promise.all(
+            //     Array.from(stationNameSet).map(async (stationName) => {
+            //         await this.getStationCode(stationName);
+            //     })
+            // );
+            // // Добавление стандартных параметров к данным
+            // for (let i in DataValueCreateObject) {
+            //     Object.assign(DataValueCreateObject[i], this.Standard);
+            // }
+
+            // Создание новых данных на основе преобразованных данных
+            // let new_data = await this.createNewData(DataValueCreateObject);
+            // this.loader = false;
+            // // Вывод сообщения при отсутствии ошибок
+            // if (this.errorp.length == 0) {
+            //     this.flagCheck = true;
+            //     this.checkCompleteData = new_data;
+            //     this.notifyHead = "Успешно";
+            //     this.notifyMessage = "Данные проверку прошли!";
+            //     this.notifyClass = "wrapper-success";
+            //     this.showNotify = true;
+            //     setTimeout(() => {
+            //         this.showNotify = false;
+            //     }, 3000);
+            // }
+        },
+
+
+
+
+        // Занесение данных в New_data Для отдачи н7а сервер данных приведенных, но не измененных на клиенте
+        async createNewData(DataValueFRomChange) {
+            const newData = [];
+            for (const [index, item] of DataValueFRomChange.entries()) {
+                const newItem = { ...item };
+                if (item.destination_station) {
+                    try {
+                        const code = await this.getStationCode(item, index);
+                        if (code !== null) {
+                            newItem.destination_station = code;
+                        }
+                    } catch (error) {
+                        console.error(`Ошибка при получении кода для станции "${item.destination_station}" на индексе ${index} `, error);
+                    }
+                }
+
+                // if (item.departure_station) {
+                //     try {
+                //         const code = await this.getStationCode(item.departure_station, index);
+                //         if (code !== null) {
+                //             newItem.departure_station = code;
+                //         }
+                //     } catch (error) {
+                //         console.error(`Ошибка при получении кода для станции "${item.departure_station}" на индексе ${ index } `, error);
+                //     }
+                // }
+
+                // if (item.next_loading_stations_list) {
+                //     try {
+                //         const code = await this.getStationCode(item.next_loading_stations_list, index, 'next_loading_stations_list');
+                //         if (code !== null) {
+                //             newItem.next_loading_stations_list = code;
+                //         }
+                //     } catch (error) {
+                //         console.error(`Ошибка при получении кода для станции "${item.next_loading_stations_list}" на индексе ${ index } `, error);
+                //     }
+                // }
+
+                // if (item.departure_stations_list) {
+                //     newItem.departure_stations_list = []; // Инициализируем массив для станций погрузки
+                //     for (const station of item.departure_stations_list) {
+                //         try {
+                //             const code = await this.getStationCode(station, index, 'departure_stations_list');
+                //             if (code !== null) {
+                //                 newItem.departure_stations_list.push(code);
+                //             }
+                //         } catch (error) {
+                //             console.error(`Ошибка при получении  кода для станции "${station}" в группе "Мн. станций отправки	" на индексе ${ index } `, error);
+                //         }
+                //     }
+                // }
+
+                // if (item.exclude_next_loading_stations_list) {
+                //     newItem.exclude_next_loading_stations_list = []; // Инициализируем массив для исключений следующей погрузки
+                //     for (const station of item.exclude_next_loading_stations_list) {
+                //         try {
+                //             const code = await this.getStationCode(station, index, 'exclude_next_loading_stations_list');
+                //             if (code !== null) {
+                //                 newItem.exclude_next_loading_stations_list.push(code);
+                //             }
+                //         } catch (error) {
+                //             console.error(`Ошибка при получении кода для станции "${station}" в группе "Станции исключения следующей погрузки" на индексе ${ index } `, error);
+                //         }
+                //     }
+                // }
+                // if (item.country) {
+                //     try {
+                //         const country = this.road.find(roadItem => roadItem.name === item.country);
+                //         if (!country) {
+                //             throw new Error(`Страна "${item.country}" не найдена`);
+                //         }
+                //         newItem.country = Number(country.id); //  ID страны в новый элемент
+                //     } catch (error) {
+                //         console.error(`Ошибка при обработке страны "${item.country}" на индексе ${ index }: `, error);
+                //         this.errorp.push(`Ошибка при обработке страны "${item.country}" на индексе ${ index }: ${ error.message } `);
+                //     }
+                // }
+
+                // if (item.wagons) {
+                //     newItem.wagons = []; // Инициализируем массив для исключений следующей погрузки
+                //     for (const wagon of item.wagons) {
+                //         try {
+                //             const wagon_id = await this.getWagonData(wagon, index);
+                //             if (wagon_id !== null) {
+                //                 newItem.wagons.push(wagon_id);
+                //             }
+                //         } catch (error) {
+                //             console.error(`Ошибка при обработке вагона "${item.wagons}" на индексе ${ index } `, error);
+                //         }
+                //     }
+                // }
+
+                // if (item.cargos_list) {
+                //     newItem.cargos_list = []; // Инициализируем массив для исключений следующей погрузки
+                //     for (const cargo of item.cargos_list) {
+                //         try {
+                //             const wagon_id = await this.getCargoCode(cargo, index);
+                //             if (wagon_id !== null) {
+                //                 newItem.cargos_list.push(wagon_id);
+                //             }
+                //         } catch (error) {
+                //             console.error(`Ошибка при обработке вагона "${item.cargos_list}" на индексе ${ index } `, error);
+                //         }
+                //     }
+                // }
+                newData.push(newItem);
+                // console.log(newData)
+            }
+            if (this.errorp.length > 0) {
+                this.flagCheck = false;
+                this.notifyHead = "Ошибка";
+                this.notifyMessage = this.errorp.filter(
+                    (item) => !item.includes("NaN")
+                );
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 10000);
+            } else {
+                this.notifyHead = "Успешно";
+                this.notifyMessage = "Ошибок нет, отправка данных возможна";
+                this.notifyClass = "wrapper-success";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 10000);
+            }
+
+            return newData;
+        },
+        // Функция меммоизации
+        async getStationCode(station_name, index, name_cells) {
+            try {
+                if (this.stationCache[station_name]) {
+                    return this.stationCache[station_name];
+                } else {
+                    const response = await apiWagon.getCurrentStation(station_name);
+                    const server_response = response.data.data.map((item) => item.name.toLowerCase()); // Получаем все имена станций в нижнем регистре
+                    const lowerStationName = station_name.toLowerCase(); // Приводим ввод пользователя к нижнему регистру
+                    const stationNameMatch = server_response.find((name) => name === lowerStationName); // Ищем точное совпадение имени станции
+                    if (stationNameMatch == undefined) {
+                        const res = await apiWagon.getCurrentStationByName(station_name);
+
+                        // Добавьте проверку на наличие данных и кода в ответе
+                        if (!res.data || !res.data.data || res.data.data.length === 0 || !res.data.data[0].code) {
+                            throw new Error(`Ошибка: Не удалось получить код станции "${station_name}"(код) на строке ${index + 1} `);
+                        }
+
+                        const stationCode2 = res.data.data[0].code;
+                        this.$set(this.stationCache, station_name, stationCode2);
+                        return stationCode2;
+                    }
+                    if (stationNameMatch) {
+                        const stationIndex = server_response.indexOf(stationNameMatch);
+                        const stationCode6 = response.data.data[stationIndex]; // Получаем все данные по станациям
+
+                        this.$set(this.stationCache, station_name, stationCode6);
+                        return stationCode6;
+                    } else {
+                        throw new Error(
+                            `Совпадений для станции "${station_name}"(код) не найдено на строке ${index + 1
+                            } `
+                        );
+                    }
+                }
+            } catch (error) {
+                this.errorp.push(error.message);
+                return null; // Возвращаем null в случае ошибки
+            }
+        },
 
         // Создать договор
         createAgreement() {
@@ -588,6 +922,7 @@ export default {
                 }
             }
 
+            this.tableData = data;
 
             // КОНЕЦ РАБОЧЕГО КОДА
             this.excelData = "";
@@ -791,7 +1126,7 @@ export default {
 
 
         editCell(rowIndex, cellIndex) {
-            this.activeCell = `${rowIndex}-${cellIndex}`;
+            this.activeCell = `${rowIndex} -${cellIndex} `;
             //  Этот блок кода выполняется в следующем такте рендера Vue, что позволяет убедиться, что DOM-элементы обновлены после изменения activeCell.
             this.$nextTick(() => {
                 const input = this.$refs.editableInput;

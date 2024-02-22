@@ -65,12 +65,12 @@
           <Fin_headerVue />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по ставкам ЦС" active>
+      <b-tab title="Данные по ставкам ЦС">
         <b-card-text style="width: 75vw !important;">
           <TarifDirectory />
         </b-card-text>
       </b-tab>
-      <b-tab title="Данные по ставкам ПВ"  >
+      <b-tab title="Данные по ставкам ПВ"  active>
         <b-card-text>
           <stavkipvVue />
         </b-card-text>

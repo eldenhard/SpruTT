@@ -1065,6 +1065,7 @@ export default {
       }
     },
 
+    // Проверка введеннхы данных
     async checkingData() {
       this.flagCheck = false;
       this.loader = true;
@@ -1308,7 +1309,7 @@ export default {
     },
 
 
-
+// Закрыть окно подсказок
     closeWindow() {
       this.ten_visible = false;
       this.cargo_list = false;
@@ -1320,6 +1321,7 @@ export default {
       this.Standard.cargo = code6;
       this.cargo_user = value;
     },
+    // ОТправка обработанных данных в таблицу БД
     async postData() {
       if (this.flagCheck == false) {
         this.notifyHead = "Ошибка";
