@@ -526,6 +526,9 @@ export default {
                         else if (key === 'Станции искл. след.погр') {
                             key = 'exclude_next_loading_stations_list'
                             value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
+                        } else if (key === 'Мн. станций отпр.') {
+                            key = 'departure_stations_list'
+                            value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
 
                         }
                         newObj[key] = value;
@@ -672,6 +675,26 @@ export default {
                         console.error(`Ошибка при получении кода для станции "${item.exclude_next_loading_stations_list}" на индексе ${index}: ${error}`);
                     }
                 }
+                if (item.departure_stations_list) {
+                    try {
+                        let dataForResponse = item.departure_stations_list.map((station) => this.getStationCode(station, index));
+                        let promiseResults = await Promise.allSettled(dataForResponse);
+                        console.log(promiseResults)
+                        // Фильтруем только успешные промисы и получаем коды станций
+                        let codes = promiseResults
+                            .filter((result) => result.status === "fulfilled" && result.value && result.value.id)
+                            .map((result) => result.value.id);
+
+                        console.log(codes, 'codes')
+                        if (codes.length > 0) {
+
+                            newItem.departure_stations_list = codes;
+                        }
+                    } catch (error) {
+                        console.error(`Ошибка при получении кода для станции "${item.departure_stations_list}" на индексе ${index}: ${error}`);
+                    }
+                }
+                departure_stations_list
                 newData.push(newItem);
                 // console.log(newData)
             }
