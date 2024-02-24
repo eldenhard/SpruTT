@@ -145,17 +145,6 @@
                 </section>
             </div>
 
-            <!-- <div class="btn-group_tarif" v-show="visible">
-                <button class="button Action" @click="checkingData()">
-                    Проверка введеных данных
-                </button>
-                <button class="button Request" @click="data = []" v-show="visible">
-                    Очистить таблицу
-                </button>
-                <button class="button Accept" @click="postData()" v-show="visible">
-                    Отправить данные
-                </button>
-            </div> -->
             <br />
         </div>
 
@@ -163,7 +152,7 @@
         <div class="air_block" style="margin-top: 2%;" v-if="picked != 'agreement_number'">
             <section style="display: flex;justify-content: space-between; gap: 15px;">
                 <button class="Delete button" style="width: 25%; height: 40px; margin-right: auto;"
-                    @click="tableData = []">Очистить таблицу</button>
+                    @click="clearTable()">Очистить таблицу</button>
                 <br>
                 <button class="button Action" style="width: 25%; height: 40px;" @click="checkingData()">Проверка введеных
                     данных</button>
@@ -477,7 +466,11 @@ export default {
         },
     },
     methods: {
-
+        clearTable() {
+            this.tableData = []
+            this.selectedFields = []
+            this.checkCompleteData = []
+        },
         async checkingData() {
             this.flagCheck = false;
             this.loader = true;
@@ -505,7 +498,8 @@ export default {
                             } else if (key === 'Станция/Дорога/Страна отправления') {
                                 key = 'country_from';
                             }
-                        } else if (key === 'Станция/Дорога/Страна назначения') {
+                        } 
+                        else if (key === 'Станция/Дорога/Страна назначения') {
                             // Обработка для назначения
                             if (value.match(/[А-Я]{3}/) && !value.includes('Станции')) {
                                 key = 'destination_station';
@@ -519,17 +513,46 @@ export default {
                                 key = 'country_to';
                             }
 
-                        } else if (key === 'Станция след.погр.') {
+                        } 
+                        else if (key === 'Станция след.погр.') {
                             key = 'next_loading_stations_list'
                             value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
                         }
                         else if (key === 'Станции искл. след.погр') {
                             key = 'exclude_next_loading_stations_list'
                             value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
-                        } else if (key === 'Мн. станций отпр.') {
+                        } 
+                        else if (key === 'Мн. станций отпр.') {
                             key = 'departure_stations_list'
                             value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
-
+                        }
+                        else if (key === 'Коэффициент') {
+                            key = 'k'
+                            value = Number(value.replace(',','.'))
+                        }
+                        else if (key === 'НДС') {
+                            key = 'nds'
+                            value = value
+                        }
+                        else if (key === 'Cтавка НДС') {
+                            key = 'stavka_nds'
+                            value = value
+                        }
+                        else if (key === 'Оборот, сут') {
+                            key = 'turnover'
+                            value = value
+                        }
+                        else if (key === 'Группа позиций по ЕТСНГ') {
+                            key = 'mask'
+                            value = value
+                        }
+                        else if (key === 'Класс груза') {
+                            key = 'dangerous_code'
+                            value = value
+                        }
+                        else if (key === 'Код ЕТСНГ') {
+                            key = 'etsng'
+                            value = value
                         }
                         newObj[key] = value;
                     }
@@ -539,12 +562,7 @@ export default {
             } catch (error) {
                 console.error(error);
             }
-            // // Асинхронное получение кодов станций
-            // await Promise.all(
-            //     Array.from(stationNameSet).map(async (stationName) => {
-            //         await this.getStationCode(stationName);
-            //     })
-            // );
+
             // Добавление стандартных параметров к данным
             for (let i in DataValueFrom) {
                 Object.assign(DataValueFrom[i], this.Standard);
@@ -585,7 +603,6 @@ export default {
                         console.error(`Ошибка при получении кода для станции "${item.destination_station}" на индексе ${index}`, error);
                     }
                 }
-
                 if (item.departure_station) {
                     try {
                         const code = await this.getStationCode(item.departure_station, index);
@@ -596,7 +613,6 @@ export default {
                         console.error(`Ошибка при получении кода для станции "${item.departure_station}" на индексе ${index}`, error);
                     }
                 }
-
                 if (item.departure_road) {
                     try {
                         const code = await this.getRoadMiniName(item.departure_road, index);
@@ -607,7 +623,6 @@ export default {
                         console.error(`Ошибка при получении дороги отпарвления "${item.departure_road}" на индексе ${index}`, error);
                     }
                 }
-
                 if (item.destination_road) {
                     try {
                         const code = await this.getRoadMiniName(item.destination_road, index);
