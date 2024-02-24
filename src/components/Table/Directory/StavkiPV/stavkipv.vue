@@ -518,6 +518,15 @@ export default {
                             } else if (key === 'Станция/Дорога/Страна назначения') {
                                 key = 'country_to';
                             }
+
+                        } else if (key === 'Станция след.погр.') {
+                            key = 'next_loading_stations_list'
+                            value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
+                        }
+                        else if (key === 'Станции искл. след.погр') {
+                            key = 'exclude_next_loading_stations_list'
+                            value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
+
                         }
                         newObj[key] = value;
                     }
@@ -609,7 +618,7 @@ export default {
                 }
                 if (item.country_from) {
                     try {
-                        const code =  await this.getCountryId(item.country_from, index);
+                        const code = await this.getCountryId(item.country_from, index);
                         if (code !== null) {
                             newItem.country_from = code;
                         }
@@ -617,16 +626,52 @@ export default {
                         console.error(`Ошибка при получении страны"${item.country_from}" на индексе ${index}`, error);
                     }
                 }
-                // if (item.country_to) {
-                //     try {
-                //         const code = await this.getCountryId(item.country_to, index);
-                //         if (code !== null) {
-                //             newItem.country_to = code.id;
-                //         }
-                //     } catch (error) {
-                //         console.error(`Ошибка при получении страны"${item.country_to}" на индексе ${index}`, error);
-                //     }
-                // }
+                if (item.country_to) {
+                    try {
+                        const code = await this.getCountryId(item.country_to, index);
+                        if (code !== null) {
+                            newItem.country_to = code;
+                        }
+                    } catch (error) {
+                        console.error(`Ошибка при получении страны"${item.country_to}" на индексе ${index}`, error);
+                    }
+                }
+                if (item.next_loading_stations_list) {
+                    try {
+                        let dataForResponse = item.next_loading_stations_list.map((station) => this.getStationCode(station, index));
+                        let promiseResults = await Promise.allSettled(dataForResponse);
+
+                        // Фильтруем только успешные промисы и получаем коды станций
+                        let codes = promiseResults
+                            .filter((result) => result.status === "fulfilled" && result.value && result.value.id)
+                            .map((result) => result.value.id);
+
+                        if (codes.length > 0) {
+                            newItem.next_loading_stations_list = codes;
+                        }
+                    } catch (error) {
+                        console.error(`Ошибка при получении кода для станции "${item.next_loading_stations_list}" на индексе ${index}: ${error}`);
+                    }
+                }
+                if (item.exclude_next_loading_stations_list) {
+                    try {
+                        let dataForResponse = item.exclude_next_loading_stations_list.map((station) => this.getStationCode(station, index));
+                        let promiseResults = await Promise.allSettled(dataForResponse);
+                        console.log(promiseResults)
+                        // Фильтруем только успешные промисы и получаем коды станций
+                        let codes = promiseResults
+                            .filter((result) => result.status === "fulfilled" && result.value && result.value.id)
+                            .map((result) => result.value.id);
+
+                        console.log(codes, 'codes')
+                        if (codes.length > 0) {
+
+                            newItem.exclude_next_loading_stations_list = codes;
+                        }
+                    } catch (error) {
+                        console.error(`Ошибка при получении кода для станции "${item.exclude_next_loading_stations_list}" на индексе ${index}: ${error}`);
+                    }
+                }
                 newData.push(newItem);
                 // console.log(newData)
             }
@@ -711,7 +756,7 @@ export default {
                             throw new Error(`Ошибка: Не удалось получить код станции "${station_name}"(код) на строке ${index + 1} `);
                         }
 
-                        const stationCode2 = res.data.data[0].code;
+                        const stationCode2 = res.data.data[0];
                         this.$set(this.stationCache, station_name, stationCode2);
                         return stationCode2;
                     }
