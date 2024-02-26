@@ -159,8 +159,13 @@
                 <button class="Accept button" style="width: 25%; height: 40px;" @click="saveData()">Отправить данные и
                     создать приложение</button>
             </section>
-
-
+            <br>
+            <label for="">Маски шапки таблицы <br>
+                <select v-model="maskHeadTable">
+                    <option style="font-size: 14px;" :value="1">(Станция/Дорога/Страна отправления) - (Станция/Дорога/Страна
+                        назначения)- (Груз наименование)</option>
+                </select>
+            </label>
             <table>
                 <thead>
                     <tr style="background: #e1e1e2">
@@ -335,8 +340,9 @@ export default {
             flagCheck: false,
             stationCache: {},
             countryCashe: {},
+            cargoCashe: {},
             checkCompleteData: [], // данные для отпарвки на сервер
-
+            maskHeadTable: "",
 
             checkEqualDate: null,
             visible: true,
@@ -436,6 +442,23 @@ export default {
         },
     },
     watch: {
+        maskHeadTable() {
+            if (this.maskHeadTable == 1) {
+                if (this.selectedFields.length > 0) {
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = "Нельзя создать маску, при созданной шапке таблицы <br> Очистите таблицу и повторите попытку снова";
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                    this.maskHeadTable = ""
+                    return
+                }
+                this.selectedFields.push('Станция/Дорога/Страна отправления', 'Станция/Дорога/Страна назначения', 'Груз наимен')
+                this.maskHeadTable = ""
+            }
+        },
         checkEqualDate() {
             if (this.checkEqualDate == true) {
                 this.Standard.stavka_date_begin = this.Standard.on_date
@@ -498,7 +521,7 @@ export default {
                             } else if (key === 'Станция/Дорога/Страна отправления') {
                                 key = 'country_from';
                             }
-                        } 
+                        }
                         else if (key === 'Станция/Дорога/Страна назначения') {
                             // Обработка для назначения
                             if (value.match(/[А-Я]{3}/) && !value.includes('Станции')) {
@@ -513,7 +536,7 @@ export default {
                                 key = 'country_to';
                             }
 
-                        } 
+                        }
                         else if (key === 'Станция след.погр.') {
                             key = 'next_loading_stations_list'
                             value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
@@ -521,38 +544,52 @@ export default {
                         else if (key === 'Станции искл. след.погр') {
                             key = 'exclude_next_loading_stations_list'
                             value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
-                        } 
+                        }
                         else if (key === 'Мн. станций отпр.') {
                             key = 'departure_stations_list'
                             value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
                         }
                         else if (key === 'Коэффициент') {
                             key = 'k'
-                            value = Number(value.replace(',','.'))
+                            value = Number(value.replace(',', '.'))
                         }
                         else if (key === 'НДС') {
                             key = 'nds'
-                            value = value
+                            value = Number(value)
                         }
                         else if (key === 'Cтавка НДС') {
                             key = 'stavka_nds'
-                            value = value
+                            value = Number(value)
                         }
                         else if (key === 'Оборот, сут') {
                             key = 'turnover'
                             value = value
                         }
                         else if (key === 'Группа позиций по ЕТСНГ') {
-                            key = 'mask'
-                            value = value
+                            key = 'cargo_type'
+                            value = 'mask'
+                            newObj['cargo'] = currentItem[j].replace(/[^0-9]/g,"").slice(0, 3)
                         }
                         else if (key === 'Класс груза') {
-                            key = 'dangerous_code'
-                            value = value
+                            key = 'cargo_type'
+                            value = 'dangerous_code'
+                            // получить из строки только числа
+                            newObj['cargo'] = currentItem[j].replace(/[^0-9]/g,"").slice(0, 1)
                         }
                         else if (key === 'Код ЕТСНГ') {
-                            key = 'etsng'
-                            value = value
+                            key = 'cargo_type'
+                            value = 'etsng'
+                            newObj['cargo'] = currentItem[j]
+                        }
+                        else if (key === 'Расстояние') {
+                            key = 'distance'
+                            value = Number(value?.replace(',', '.'))
+                        }
+                        else if (key === 'Груз наимен') {
+                            key = 'cargos_list'
+                            value = String(value.replaceAll(',', ';'))
+                        } else if (key === 'Вагоны') {
+                            key = 'wagons'
                         }
                         newObj[key] = value;
                     }
@@ -575,7 +612,6 @@ export default {
             if (this.errorp.length == 0) {
                 this.flagCheck = true;
                 this.checkCompleteData = new_data;
-
                 console.log(this.checkCompleteData)
                 this.notifyHead = "Успешно";
                 this.notifyMessage = "Данные проверку прошли!";
@@ -709,7 +745,33 @@ export default {
                         console.error(`Ошибка при получении кода для станции "${item.departure_stations_list}" на индексе ${index}: ${error}`);
                     }
                 }
-                departure_stations_list
+                if (item.cargos_list) {
+                    newItem.cargos_list = []; // Инициализируем массив для исключений следующей погрузки
+                    for (const cargo of item.cargos_list.split(";")) {
+                        try {
+                            const cargo_name = await this.getCargoCode(cargo, index);
+                            if (cargo_name !== null) {
+                                newItem.cargos_list.push(cargo_name);
+                            }
+                        } catch (error) {
+                            console.error(`Ошибка при обработке груза "${item.cargos_list}" на индексе ${index}`, error);
+                        }
+                    }
+                }
+                if (item.wagons) {
+                    newItem.wagons = []; // Инициализируем массив для исключений следующей погрузки
+                    for (const wagon of item.wagons.split(',')) {
+
+                        try {
+                            const wagon_id = await this.getWagonData(wagon, index);
+                            if (wagon_id !== null) {
+                                newItem.wagons.push(wagon_id);
+                            }
+                        } catch (error) {
+                            console.error(`Ошибка при обработке вагона "${item.wagons}" на индексе ${index}`, error);
+                        }
+                    }
+                }
                 newData.push(newItem);
                 // console.log(newData)
             }
@@ -728,6 +790,7 @@ export default {
                 this.notifyHead = "Успешно";
                 this.notifyMessage = "Ошибок нет, отправка данных возможна";
                 this.notifyClass = "wrapper-success";
+
                 this.showNotify = true;
                 setTimeout(() => {
                     this.showNotify = false;
@@ -757,19 +820,22 @@ export default {
             }
         },
         // Функция для поиска сокращений стран по LocalStorage
-        getRoadMiniName(station_name, index) {
+        async getRoadMiniName(station_name, index) {
             try {
                 const roads = JSON.parse(localStorage.getItem('road'));
                 let road = null;
                 for (const key in roads) {
                     if (roads[key] === station_name) {
-                        road = roads[key];
+                        road = key
                         break; // Прерываем цикл после нахождения соответствия
                     }
                 }
                 if (road === null) {
-                    throw new Error(`Ошибка при нахождении дороги "${station_name}" на строке ${index + 1}. Обратитесь к справочнику дорог на этой станции.`);
+                    throw new Error(`Ошибка при нахождении дороги "${station_name}" на строке ${index + 1}.`);
                 }
+                let response = await apiWagon.getAllRoads(road);
+                road = response.data.data.filter((item) => item.name.toLowerCase() === road.toLowerCase() + ' ж. д.')[0]?.id;
+                console.log(road, 'Дорога')
                 return road;
             } catch (error) {
                 this.errorp.push(error.message);
@@ -816,7 +882,63 @@ export default {
                 return null; // Возвращаем null в случае ошибки
             }
         },
+        // Получение данных по номерам вагонов
+        async getWagonData(wagonNumber, index) {
+            try {
+                const response = await apiWagon.getWagon(wagonNumber);
+                console.log(response.data, response.status)
+                // Проверяем, получены ли данные о вагоне
+                if (!response.data || response.data.length === 0 || response.status == '404') {
+                    throw new Error(`Данные о вагоне "${wagonNumber}" не найдены`);
+                }
+                // Возвращаем данные о вагоне
+                return response.data.id
+            } catch (error) {
+                if (error.response.status == '404') {
+                    this.errorp.push(`Данные о вагоне "${wagonNumber}" не найдены`);
+                }
+                return null; // Возвращаем null в случае ошибки
+            }
+        },
+        // Функция для обработки грузов введеных как наименование
+        async getCargoCode(cargos_list, index) {
+            try {
+                if (this.cargoCashe[cargos_list]) {
+                    return this.cargoCashe[cargos_list];
+                } else {
+                    const response = await apiWagon.getCargoCodeSearch(cargos_list);
+                    const server_response = response.data.data.map((item) => item.name.toLowerCase()); // Получаем все имена грузов в нижнем регистре
+                    const lowerCargoName = cargos_list.toLowerCase(); // Приводим ввод пользователя к нижнему регистру
+                    const cargoNameMatch = server_response.find((name) => name === lowerCargoName); // Ищем точное совпадение имени груза
+                    if (cargoNameMatch == undefined) {
+                        const res = await apiWagon.getCargoCodeSearch(cargos_list);
 
+                        // Добавьте проверку на наличие данных и кода в ответе
+                        if (!res.data || !res.data.data || res.data.data.length === 0) {
+                            throw new Error(`Ошибка: Не удалось найти груз: "${cargos_list}" на строке ${index + 1}`);
+                        }
+
+                        const cargoCode2 = cargos_list
+                        this.$set(this.cargoCashe, cargos_list);
+                        return cargos_list;
+                    }
+                    if (cargoNameMatch) {
+                        const cargoIndex = server_response.indexOf(cargoNameMatch);
+                        const cargoCode6 = response.data.data[cargoIndex]; // Получаем все данные по станациям
+
+                        this.$set(this.cargoCashe, cargos_list);
+                        return cargos_list;
+                    } else {
+                        throw new Error(
+                            `Совпадений для груза "${cargos_list}" не найдено на строке ${index + 1} `
+                        );
+                    }
+                }
+            } catch (error) {
+                this.errorp.push(error.message);
+                return null; // Возвращаем null в случае ошибки
+            }
+        },
         // Создать договор
         createAgreement() {
             let agreement = [{
@@ -951,60 +1073,100 @@ export default {
             // КОНЕЦ РАБОЧЕГО КОДА
             this.excelData = "";
         },
+        // !!!!!!!!!!!!!!!РАБОЧИЙ!!!!!!!!!!!!!
         // Отправка данных на сервер
+        // async saveData() {
+        //     this.loader = true
+        //     try {
+        //         // Добавление данных о грузоподъемности
+        //         const translationMap = {
+        //             'Станция отправления': 'departure_station',
+        //             'Станция назначения': 'destination_station',
+        //             'Дорога назначения': 'destination_road',
+        //             'Дорога отправления': 'departure_road',
+        //             'Коэффициент': 'k',
+        //             'НДС': 'nds',
+        //             'Cтавка НДС': 'stavka_nds',
+        //             'Оборот, сут': 'turnover',
+        //             "Группа позиций по ЕТСНГ": "mask",
+        //             "Класс груза": 'dangerous_code',
+        //             "Код ЕТСНГ": 'etsng'
+        //         };
+
+        //         const capacityIndices = this.selectedFields.reduce((acc, field, index) => {
+        //             if (field.includes('Грузоподъемность')) {
+        //                 acc.push(index);
+        //             }
+        //             return acc;
+        //         }, []);
+        //         if(capacityIndices.length > 1) {
+
+        //         }
+        //         // Преобразовать данные для каждого индекса
+        //         const transformedData = this.checkCompleteData.map(item => {
+        //             const capacityField = Object.keys(item).find(key => key.includes('Грузоподъемность'));
+        //             const stavkaField = Object.keys(item).find(key => this.selectedFields.includes(key));
+        //             let capacity_compare;
+        //             let capacity_value_match;
+        //             let capacity_value;
+        //             let stavka;
+
+        //             if (capacityField) {
+        //                 capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
+        //                 capacity_value_match = capacityField.match(/[0-9]+/);
+        //                 capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
+        //                 stavka = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
+        //             }
+
+        //             const stavka_nds = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
+        //             const cargos_list = item.cargos_list ? item.cargos_list.join(';') : '';
+
+        //             const capacityObject = { capacity_compare, stavka_nds, capacity_value, stavka, cargos_list };
+
+        //             for (const key in item) {
+        //                 const newKey = translationMap[key] || key;
+        //                 capacityObject[newKey] = item[key] || '';
+        //             }
+
+        //             return capacityObject;
+        //         });
+        //         // Собираем все данные в огдин массив объектов
+        //         let finallyDataToSend = transformedData.flat().map(item => ({
+        //             ...item,
+        //             // k: parseFloat(item.k?.replace(',', '.')) || 0,
+        //             nds: parseFloat((item && item.nds ? item.nds.replace(',', '.') : 0) || 0),
+        //             // stavka_nds: parseFloat(item.stavka_nds?.replace(',', '.')) || 0,
+        //             client: this.Standard?.client,
+        //             agreement_number: this.Standard.annex_number,
+        //             on_date: this.Standard.on_date,
+        //             end_date: this.Standard.end_date,
+        //             base: this.new_comp?.id,
+        //             responsible: this.uid,
+        //             wagon_type: 'Полувагон',
+        //             cargos_list: item.cargos_list.join(';')
+        //         }));
+        //         console.log(finallyDataToSend)
+
+        //     } catch (error) {
+        //         console.error("Ошибка в блоке try:", error);
+        //         this.loader = false;
+        //         this.notifyHead = "Ошибка";
+        //         this.notifyMessage = "Очистите таблицу и повторите загрузку повторно! " + error.message;
+        //         this.notifyClass = "wrapper-error";
+        //         this.showNotify = true;
+        //         setTimeout(() => {
+        //             this.showNotify = false;
+        //         }, 3500);
+        //     }
+
+
+        //     this.loader = false
+
+        // },
+
         async saveData() {
-            this.loader = true
+            this.loader = true;
             try {
-                // Получение индексов столбцов где станция и где дорога с пригнаничными случаями
-                let arrIndexRoad = []
-                let arrIndexStation = []
-                // Обработка состояния когда есть и станция и дорога
-                for (let i = 0; i < this.selectedFields.length; i++) {
-                    let currentItem = this.selectedFields[i]
-                    let previousItem = this.selectedFields[i - 1]
-                    if (currentItem.includes('Дорога') && (!previousItem || !previousItem.includes('Станция'))) {
-                        arrIndexRoad.push(i)
-                    } else if (currentItem.includes('Станция')) {
-                        arrIndexStation.push(i)
-                    }
-                }
-                // Убираем повторные запросы оставляем только уникальные
-                this.collectionStation = new Set()
-                let response
-                this.tableData.forEach((row) => {
-                    arrIndexStation.forEach((index) => {
-                        this.collectionStation.add(row[index])
-                    })
-                })
-
-                // Обработка станций
-                // !TODO Необходимо передалать, так как на вход может поступить и станция и  дорога и страна
-                // for (let item of Array.from(this.collectionStation)) {
-                //     let request = await apiWagon.getCurrentStation(item);
-                //     response = await request.data.data.filter((el) => el.name.toLowerCase() == item.toLowerCase())[0];
-
-                //     // Заменяем значения в таблице
-                //     this.tableData.forEach((row) => {
-                //         arrIndexStation.forEach((index) => {
-                //             if (row[index] === item) {
-                //                 row[index] = response.code;
-                //             }
-                //         });
-                //     });
-                // }
-
-                // Замена кратких наименований дорог на те, что есть в localStorage
-                // const roads = JSON.parse(localStorage.getItem('road'));
-                // this.tableData.forEach((row) => {
-                //     arrIndexRoad.forEach((index) => {
-                //         for (let i in roads) {
-                //             if (roads[i] == row[index]) {
-                //                 row[index] = i;
-                //             }
-                //         }
-                //     });
-                // });
-
                 // Добавление данных о грузоподъемности
                 const translationMap = {
                     'Станция отправления': 'departure_station',
@@ -1027,115 +1189,105 @@ export default {
                     return acc;
                 }, []);
 
-                // Преобразовать данные для каждого индекса
-                const transformedData = this.tableData.map(item => {
-                    const transformedValues = capacityIndices.map(index => {
-                        const capacityField = this.selectedFields[index];
-                        const capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
-                        const capacity_value_match = capacityField.match(/[0-9]+/); // Извлекаем первое число из capacityField с помощью регулярного выражения
-                        const capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0); // Парсим найденное число или устанавливаем 0
+                if (capacityIndices.length > 1) {
+                    const transformedData = this.checkCompleteData.map(item => {
+                        const capacityFields = Object.keys(item).filter(key => key.includes('Грузоподъемность'));
+                        const stavkaField = Object.keys(item).find(key => this.selectedFields.includes(key));
+                        const data = [];
 
-                        const stavka = parseFloat(item[index].replace(/[^0-9,]/g, '').replace(',', '.')) || 0; // Извлекаем только цифры и запятые
+                        capacityFields.forEach(capacityField => {
+                            let capacity_compare;
+                            let capacity_value_match;
+                            let capacity_value;
+                            let stavka;
 
-                        // Создаем объект с грузоподъемностью
-                        const capacityObject = { capacity_compare, stavka, capacity_value };
-
-                        // Обработка станций и дорог
-                        for (let i = 0; i < item.length; i++) {
-                            if (!capacityIndices.includes(i)) {
-                                const key = this.selectedFields[i];
-                                if (key === 'Станция отправления' || key === 'Станция назначения') {
-                                    const translatedKey = translationMap[key] || key;
-                                    capacityObject[translatedKey] = item[i];
-                                }
-                                // else if (key.includes('Дорога') && (i === 0 || !this.selectedFields[i - 1].includes('Станция'))) {
-                                //     capacityObject[translationMap[key]] = item[i];
-                                // }
-                                else if (key.includes('Дорога')) {
-                                    const isStationBeforeRoad = i > 0 && this.selectedFields[i - 1].includes('Станция');
-                                    const roadValue = isStationBeforeRoad ? '' : item[i].slice(0, 3);
-                                    capacityObject[translationMap[key]] = roadValue;
-                                }
-                                else if (key.includes('Дорога') && this.selectedFields[i - 1].includes('Станция')) {
-                                    // Пропускаем вывод дороги после станции
-                                    // capacityObject[translationMap[key]] = 'УРААААА'
-                                }
-                                else if (['Группа позиций по ЕТСНГ', 'Класс груза', 'Код ЕТСНГ'].includes(key)) {
-                                    capacityObject['cargo_type'] = translationMap[key];
-                                    capacityObject['cargo_var'] = item[i];
-                                } else if (key === 'Cтавка НДС') {
-                                    capacityObject['stavka'] = capacity_value;
-                                } else {
-                                    const newKey = translationMap[key] || key;
-                                    capacityObject[newKey] = item[i];
-                                }
+                            if (capacityField) {
+                                capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
+                                capacity_value_match = capacityField.match(/[0-9]+/);
+                                capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
+                                stavka = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
                             }
+
+                            const stavka_nds = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
+                            const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
+
+                            const capacityObject = { capacity_compare, stavka_nds, capacity_value, stavka, cargos_list };
+
+                            for (const key in item) {
+                                const newKey = translationMap[key] || key;
+                                capacityObject[newKey] = item[key] || '';
+                            }
+
+                            data.push(capacityObject);
+                        });
+
+                        return data;
+                    });
+
+                    // Собираем все данные в один массив объектов
+                    let finallyDataToSend = transformedData.flat().map(item => ({
+                        ...item,
+                        nds: parseFloat((item && item.nds ? item.nds.replace(',', '.') : 0) || 0),
+                        client: this.Standard?.client,
+                        agreement_number: this.Standard.annex_number,
+                        on_date: this.Standard.on_date,
+                        end_date: this.Standard.end_date,
+                        base: this.new_comp?.id,
+                        responsible: this.uid,
+                        wagon_type: 'Полувагон',
+                        cargos_list: item.cargos_list.join(';')
+                    }));
+
+                    console.log(finallyDataToSend, 'if');
+                } else {
+                    const transformedData = this.checkCompleteData.map(item => {
+                        const capacityField = Object.keys(item).find(key => key.includes('Грузоподъемность'));
+                        const stavkaField = Object.keys(item).find(key => this.selectedFields.includes(key));
+                        let capacity_compare;
+                        let capacity_value_match;
+                        let capacity_value;
+                        let stavka;
+
+                        if (capacityField) {
+                            capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
+                            capacity_value_match = capacityField.match(/[0-9]+/);
+                            capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
+                            stavka = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
+                        }
+
+                        const stavka_nds = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
+                        const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
+
+                        const capacityObject = { capacity_compare, stavka_nds, capacity_value, stavka, cargos_list };
+
+                        for (const key in item) {
+                            const newKey = translationMap[key] || key;
+                            capacityObject[newKey] = item[key] || '';
                         }
 
                         return capacityObject;
                     });
-                    return transformedValues;
-                });
+                    // Собираем все данные в огдин массив объектов
+                    let finallyDataToSend = transformedData.flat().map(item => ({
+                        ...item,
+                        nds: parseFloat((item && item.nds ? item.nds.replace(',', '.') : 0) || 0),
+                        client: this.Standard?.client,
+                        agreement_number: this.Standard.annex_number,
+                        on_date: this.Standard.on_date,
+                        end_date: this.Standard.end_date,
+                        base: this.new_comp?.id,
+                        responsible: this.uid,
+                        wagon_type: 'Полувагон',
+                        cargos_list: item.cargos_list.join(';')
+                    }));
+                    console.log(finallyDataToSend, 'else')
+                }
 
-
-
-                // Собираем все данные в огдин массив объектов
-                let finallyDataToSend = transformedData.flat().map(item => ({
-                    ...item,
-                    k: parseFloat(item.k?.replace(',', '.')) || 0,
-                    nds: parseFloat(item.nds?.replace(',', '.')) || 0,
-                    stavka_nds: parseFloat(item.stavka_nds?.replace(',', '.')) || 0,
-                    client: this.Standard?.client,
-                    agreement_number: this.Standard.annex_number,
-                    on_date: this.Standard.on_date,
-                    end_date: this.Standard.end_date,
-                    base: this.new_comp?.id,
-                    responsible: this.uid,
-                    wagon_type: 'Полувагон'
-                }));
-
-
-                // приведение дорог
-                const roads = JSON.parse(localStorage.getItem('road'));
-                finallyDataToSend.forEach((row) => {
-                    arrIndexRoad.forEach((index) => {
-                        for (let i in roads) {
-                            if (row.departure_road && roads[i] == row.departure_road) {
-                                row.departure_road = this.allRoads[0].filter((item) => item?.name.toLowerCase().includes(i?.toLowerCase()))[0].id
-                            } else if (row.destination_road && roads[i] == row.destination_road) {
-                                row.destination_road = row.destination_road = this.allRoads[0].filter((item) => item?.name.toLowerCase().includes(i?.toLowerCase()))[0].id
-                            }
-                        }
-                    });
-                });
-
-
-                api.postTarifData(finallyDataToSend)
-                    .then(response => {
-                        console.log(response)
-                        this.loader = false
-                        this.tableData = []
-                        this.notifyHead = "Успешно";
-                        this.notifyMessage = "Данные отправлены!";
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 2000);
-                    }).catch((err) => {
-                        console.log(err)
-                        this.notifyHead = "Ошибка";
-                        this.notifyMessage = err.response.data;
-                        this.notifyClass = "wrapper-error";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 5500);
-                    })
-            } catch {
-                this.loader = false
+            } catch (error) {
+                console.error("Ошибка в блоке try:", error);
+                this.loader = false;
                 this.notifyHead = "Ошибка";
-                this.notifyMessage = "Очистите таблицу и повторите загрузку повторно!";
+                this.notifyMessage = "Очистите таблицу и повторите загрузку повторно! " + error.message;
                 this.notifyClass = "wrapper-error";
                 this.showNotify = true;
                 setTimeout(() => {
@@ -1143,12 +1295,30 @@ export default {
                 }, 3500);
             }
 
-
-            this.loader = false
-
+            this.loader = false;
         },
-
-
+        // api.postTarifData(finallyDataToSend)
+        //     .then(response => {
+        //         console.log(response)
+        //         this.loader = false
+        //         this.tableData = []
+        //         this.notifyHead = "Успешно";
+        //         this.notifyMessage = "Данные отправлены!";
+        //         this.notifyClass = "wrapper-success";
+        //         this.showNotify = true;
+        //         setTimeout(() => {
+        //             this.showNotify = false;
+        //         }, 2000);
+        //     }).catch((err) => {
+        //         console.log(err)
+        //         this.notifyHead = "Ошибка";
+        //         this.notifyMessage = err.response.data;
+        //         this.notifyClass = "wrapper-error";
+        //         this.showNotify = true;
+        //         setTimeout(() => {
+        //             this.showNotify = false;
+        //         }, 5500);
+        //     })
         editCell(rowIndex, cellIndex) {
             this.activeCell = `${rowIndex} -${cellIndex} `;
             //  Этот блок кода выполняется в следующем такте рендера Vue, что позволяет убедиться, что DOM-элементы обновлены после изменения activeCell.

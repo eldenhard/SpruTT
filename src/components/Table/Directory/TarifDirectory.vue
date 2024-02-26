@@ -846,6 +846,7 @@ export default {
       }
     },
 
+    // Создание экземпляра класса
     WorkInClass(operationBuffer, event) {
       for (let i in operationBuffer) {
         if (this.data[i] == undefined) {
@@ -1242,12 +1243,12 @@ export default {
           newItem.cargos_list = []; // Инициализируем массив для исключений следующей погрузки
           for (const cargo of item.cargos_list) {
             try {
-              const wagon_id = await this.getCargoCode(cargo, index);
-              if (wagon_id !== null) {
-                newItem.cargos_list.push(wagon_id);
+              const cargo_name = await this.getCargoCode(cargo, index);
+              if (cargo_name !== null) {
+                newItem.cargos_list.push(cargo_name);
               }
             } catch (error) {
-              console.error(`Ошибка при обработке вагона "${item.cargos_list}" на индексе ${index}`, error);
+              console.error(`Ошибка при обработке груза "${item.cargos_list}" на индексе ${index}`, error);
             }
           }
         }
@@ -1304,12 +1305,15 @@ export default {
         // Возвращаем данные о вагоне
         return response.data.id
       } catch (error) {
-        throw new Error(`Ошибка при получении данных о вагоне "${wagonNumber}" на индексе ${index + 1}: ${error.message}`);
+        if (error.response.status == '404') {
+          this.errorp.push(`Данные о вагоне "${wagonNumber}" не найдены`);
+        }
+        return null; // Возвращаем null в случае ошибки
       }
     },
 
 
-// Закрыть окно подсказок
+    // Закрыть окно подсказок
     closeWindow() {
       this.ten_visible = false;
       this.cargo_list = false;
