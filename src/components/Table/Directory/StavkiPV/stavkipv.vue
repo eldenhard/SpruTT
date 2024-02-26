@@ -1209,7 +1209,7 @@ export default {
                             }
 
                             const stavka_nds = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
-                            const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
+                           const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
 
                             const capacityObject = { capacity_compare, stavka_nds, capacity_value, stavka, cargos_list };
 
@@ -1235,7 +1235,7 @@ export default {
                         base: this.new_comp?.id,
                         responsible: this.uid,
                         wagon_type: 'Полувагон',
-                        cargos_list: item.cargos_list.join(';')
+                        // cargos_list: item.cargos_list.join(';')
                     }));
 
                     console.log(finallyDataToSend, 'if');
@@ -1278,7 +1278,7 @@ export default {
                         base: this.new_comp?.id,
                         responsible: this.uid,
                         wagon_type: 'Полувагон',
-                        cargos_list: item.cargos_list.join(';')
+                        // cargos_list: item.cargos_list.join(';')
                     }));
                     console.log(finallyDataToSend, 'else')
                 }
