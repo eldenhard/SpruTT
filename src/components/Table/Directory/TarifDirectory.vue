@@ -1156,9 +1156,14 @@ export default {
     async getCargoCode(cargos_list, index) {
       try {
         const response = await api_wagon.getCargoCodeSearch(cargos_list);
+        let startElement
         // Проверяем, есть ли данные в ответе от сервера
         if (!response.data || !response.data.data || response.data.data.length === 0) {
           throw new Error(`Ошибка: Не удалось найти груз: "${cargos_list}" на строке ${index + 1}`);
+        }
+        if(cargos_list.length === 3){
+          startElement = response.data.data.filter(element => element.code6.startsWith(cargos_list))[0].code6;
+          return startElement
         }
         // Возвращаем первый найденный код груза из ответа
         return response.data.data[0].code6
