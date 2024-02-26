@@ -146,6 +146,13 @@
                             <th>Грузоподъем т</th>
                             <th>НДС</th>
                             <th>Коэффициент</th>
+                            <th>Груз наимен</th>
+                            <th>Мн. станций отправки</th>
+                            <th>Расстояние</th>
+                            <th>Станция следующей погрузки</th>
+                            <th>Станции исключения следующей погрузки</th>
+                            <th>Страна</th>
+                            <th>Вагоны</th>
                             <th>Ответственный</th>
                         </tr>
                         <template v-for="childr in att.attachments">
@@ -256,6 +263,17 @@
                                         </div>
                                     </div>
                                 </td>
+                                <td>{{ childr?.cargos_list ?? "" }}</td> <!--Груз наимен-->
+                                <td>{{ childr?.departure_stations ? childr?.departure_stations.join(",") : "" }}</td>
+                                <!-- Мн. станций отправки-->
+                                <td>{{ childr?.distance }}</td> <!-- Расстояние-->
+                                <td>{{ childr?.next_loading_stations ? childr.next_loading_stations.join(",") : "" }}</td>
+                                <!-- Станция следующей погрузки-->
+                                <td>{{ childr?.exclude_next_loading_stations ?
+                                    childr.exclude_next_loading_stations.join(",") : "" }}</td>
+                                <!-- Станции исключения следующей погрузки-->
+                                <td>{{ childr?.country_id }}</td> <!-- Страна-->
+                                <td>{{ childr?.wagons_list ? childr.wagons_list.join(",") : "" }}</td> <!-- Вагоны-->
                                 <td>{{ childr.responsible_name }}</td>
                             </tr>
                         </template>

@@ -814,6 +814,7 @@ export default {
                 Promise.all(requests)
                     .then(res => {
                         this.loader = false
+                        this.$bvModal.hide("standard_directory_created");
                         this.notifyHead = "Успешно";
                         this.notifyMessage = "Данные удалены";
                         this.notifyClass = "wrapper-success";
@@ -822,7 +823,7 @@ export default {
                             this.showNotify = false;
                         }, 2500);
                         this.getStandardData()
-                        this.$bvModal.hide("standard_directory_created");
+                       
                     }).catch((err) => {
                         this.loader = false
                         this.getStandardData()
@@ -852,6 +853,7 @@ export default {
                         this.showNotify = false;
                     }, 2500);
                     this.$bvModal.hide("AcTDelete");
+                    this.$bvModal.hide("standard_directory_created");
                 })
                 .catch((error) => {
                     this.loader = false;

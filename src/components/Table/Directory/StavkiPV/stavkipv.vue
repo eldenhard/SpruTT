@@ -568,13 +568,13 @@ export default {
                         else if (key === 'Группа позиций по ЕТСНГ') {
                             key = 'cargo_type'
                             value = 'mask'
-                            newObj['cargo'] = currentItem[j].replace(/[^0-9]/g,"").slice(0, 3)
+                            newObj['cargo'] = currentItem[j].replace(/[^0-9]/g, "").slice(0, 3)
                         }
                         else if (key === 'Класс груза') {
                             key = 'cargo_type'
                             value = 'dangerous_code'
                             // получить из строки только числа
-                            newObj['cargo'] = currentItem[j].replace(/[^0-9]/g,"").slice(0, 1)
+                            newObj['cargo'] = currentItem[j].replace(/[^0-9]/g, "").slice(0, 1)
                         }
                         else if (key === 'Код ЕТСНГ') {
                             key = 'cargo_type'
@@ -939,6 +939,18 @@ export default {
                 return null; // Возвращаем null в случае ошибки
             }
         },
+//         Глянь завтра пожалуйста, почему нельзя запрос отправить по этому пути
+// http://10.1.5.20/api/finance/stavki-revenue/save-many/
+// Ответ: 500 Internal Server Error
+// Response: [[1,"'NoneType' object has no attribute 'name'"]]
+// body: [
+//   {
+//     "agreement_number": "123",
+//     "on_date": "2024-02-19",
+//     "end_date": null,
+//     "client": "Евросиб",
+//   }
+// ]
         // Создать договор
         createAgreement() {
             let agreement = [{
@@ -946,7 +958,7 @@ export default {
                 on_date: this.Standard.on_date,
                 end_date: this.Standard.end_date,
                 client: this.Standard.client,
-                cargo_var: 0,
+                wagon_type: 'Полувагон'
             }]
             api.postTarifData(agreement)
                 .then(response => {
@@ -1188,7 +1200,7 @@ export default {
                     }
                     return acc;
                 }, []);
-
+                let finallyDataToSend
                 if (capacityIndices.length > 1) {
                     const transformedData = this.checkCompleteData.map(item => {
                         const capacityFields = Object.keys(item).filter(key => key.includes('Грузоподъемность'));
@@ -1209,7 +1221,7 @@ export default {
                             }
 
                             const stavka_nds = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
-                           const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
+                            const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
 
                             const capacityObject = { capacity_compare, stavka_nds, capacity_value, stavka, cargos_list };
 
@@ -1225,7 +1237,7 @@ export default {
                     });
 
                     // Собираем все данные в один массив объектов
-                    let finallyDataToSend = transformedData.flat().map(item => ({
+                    finallyDataToSend = transformedData.flat().map(item => ({
                         ...item,
                         nds: parseFloat((item && item.nds ? item.nds.replace(',', '.') : 0) || 0),
                         client: this.Standard?.client,
@@ -1268,7 +1280,7 @@ export default {
                         return capacityObject;
                     });
                     // Собираем все данные в огдин массив объектов
-                    let finallyDataToSend = transformedData.flat().map(item => ({
+                    finallyDataToSend = transformedData.flat().map(item => ({
                         ...item,
                         nds: parseFloat((item && item.nds ? item.nds.replace(',', '.') : 0) || 0),
                         client: this.Standard?.client,
@@ -1282,6 +1294,35 @@ export default {
                     }));
                     console.log(finallyDataToSend, 'else')
                 }
+                for(let i in finallyDataToSend){
+                    if(finallyDataToSend[i].cargos_list){
+                        finallyDataToSend[i].cargos_list = finallyDataToSend[i].cargos_list.join(';');
+                    }else {
+                        finallyDataToSend[i].cargos_list = ""
+                    }
+                }
+                api.postTarifData(finallyDataToSend)
+                    .then(response => {
+                        console.log(response)
+                        this.loader = false
+                        this.tableData = []
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = "Данные отправлены!";
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 2000);
+                    }).catch((err) => {
+                        console.log(err)
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = err.response.data;
+                        this.notifyClass = "wrapper-error";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 5500);
+                    })
 
             } catch (error) {
                 console.error("Ошибка в блоке try:", error);
@@ -1297,28 +1338,7 @@ export default {
 
             this.loader = false;
         },
-        // api.postTarifData(finallyDataToSend)
-        //     .then(response => {
-        //         console.log(response)
-        //         this.loader = false
-        //         this.tableData = []
-        //         this.notifyHead = "Успешно";
-        //         this.notifyMessage = "Данные отправлены!";
-        //         this.notifyClass = "wrapper-success";
-        //         this.showNotify = true;
-        //         setTimeout(() => {
-        //             this.showNotify = false;
-        //         }, 2000);
-        //     }).catch((err) => {
-        //         console.log(err)
-        //         this.notifyHead = "Ошибка";
-        //         this.notifyMessage = err.response.data;
-        //         this.notifyClass = "wrapper-error";
-        //         this.showNotify = true;
-        //         setTimeout(() => {
-        //             this.showNotify = false;
-        //         }, 5500);
-        //     })
+
         editCell(rowIndex, cellIndex) {
             this.activeCell = `${rowIndex} -${cellIndex} `;
             //  Этот блок кода выполняется в следующем такте рендера Vue, что позволяет убедиться, что DOM-элементы обновлены после изменения activeCell.

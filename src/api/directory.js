@@ -123,6 +123,7 @@ const patchIncomes = (data) => {
 const postTarifData = (data) => {
     return api.post(`${finance}/stavki-revenue/save-many/`, data)
 }
+
 const createAgreeemntStivkaPV = (data) => {
     return api.post(`${finance}/stavki-revenue/`, data)
 }
