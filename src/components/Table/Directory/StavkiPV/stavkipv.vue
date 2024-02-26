@@ -547,7 +547,7 @@ export default {
                         }
                         else if (key === 'Мн. станций отпр.') {
                             key = 'departure_stations_list'
-                            value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
+                            value = value.replace(/[А-Я]{3}(?=\s)/g, "/").split("/").map(item => item.replace(/\s[А-Я]{3}/g, "").trim()).split(',')
                         }
                         else if (key === 'Коэффициент') {
                             key = 'k'

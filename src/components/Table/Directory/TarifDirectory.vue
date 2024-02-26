@@ -716,9 +716,10 @@ export default {
       } else if (event.target.id == "departure_stations_list" || event.target.id == 'exclude_next_loading_stations_list') {
         // Если 3 заглавные буквы, то разделяю на 2 элемента
         let operationBuffer = event.target.value
-          .replace(/[А-Я]{3}(?=\s)/g, "/")
+         .replace(/[А-Я]{3}(?=\s)/g, "/")
           .split("/")
-          .map(item => item.replace(/[А-Я]{3}/g, "").trim());  // Удаление пробелов из каждой строки
+        .map(item => item.replace(/\s[А-Я]{3}/g, "").trim());  // Удаление пробелов из каждой строки
+
         // .replace(/ +/g, "")
         // .replace(/[А-Я]{3}(?=\s)/g, "/")
         //   .split("/")
@@ -888,30 +889,40 @@ export default {
     // // Преобразование данных через меммоизацию
     async getStationCode(station_name, index, name_cells) {
       try {
-        // Проверяем наличие станции в кэше
         if (this.stationCache[station_name]) {
           return this.stationCache[station_name];
+        } else if (this.errorp.includes(station_name)) {
+          throw new Error(`Предыдущая попытка запроса для станции "${station_name}" не удалась`);
         } else {
-          // Выполняем запрос к API, чтобы получить данные по станции по ее точному имени
-          const response = await api_wagon.getCurrentStationByName(station_name);
+          const response = await api_wagon.getCurrentStation(station_name);
+          const server_response = response.data.data.map((item) => item.name.toLowerCase()); // Получаем все имена станций в нижнем регистре
+          const lowerStationName = station_name.toLowerCase(); // Приводим ввод пользователя к нижнему регистру
+          const stationNameMatch = server_response.find((name) => name === lowerStationName); // Ищем точное совпадение имени станции
+          if (stationNameMatch == undefined) {
+            const res = await api_wagon.getCurrentStationByName(station_name);
 
-          // Проверяем наличие данных и кода станции в ответе
-          if (!response.data || !response.data.data ||  response.data.data.length === 0 || !response.data.data[0].code) {
-            throw new Error(`Ошибка: Не удалось получить код станции "${station_name}" на строке ${index + 1}`);
+            // Добавьте проверку на наличие данных и кода в ответе
+            if (!res.data || !res.data.data || res.data.data.length === 0 || !res.data.data[0].code) {
+              throw new Error(`Ошибка: Не удалось получить код станции "${station_name}" (код) на строке ${index + 1}`);
+            }
+
+            const stationCode2 = res.data.data[0].code;
+            this.$set(this.stationCache, station_name, stationCode2);
+            return stationCode2;
           }
+          if (stationNameMatch) {
+            const stationIndex = server_response.indexOf(stationNameMatch);
+            const stationCode6 = response.data.data[stationIndex]; // Получаем все данные по станациям
 
-          // Получаем код станции из ответа
-          const stationCode = response.data.data[0].code;
-
-          // Сохраняем код станции в кэше
-          this.$set(this.stationCache, station_name, stationCode);
-
-          // Возвращаем код станции
-          return stationCode;
+            this.$set(this.stationCache, station_name, stationCode6);
+            return stationCode6;
+          } else {
+            throw new Error(`Совпадений для станции "${station_name}" (код) не найдено на строке ${index + 1}`);
+          }
         }
       } catch (error) {
-        // Обрабатываем ошибку
-        this.errorp.push(error.message);
+        console.log('its me')
+        this.errorp.push(station_name);
         return null; // Возвращаем null в случае ошибки
       }
     },
@@ -1106,7 +1117,7 @@ export default {
       }
       if (this.errorp.length > 0) {
         this.flagCheck = false;
-        this.notifyHead = "Ошибка";
+        this.notifyHead = "Ошибка. Не найдены данные";
         this.notifyMessage = this.errorp.filter(
           (item) => !item.includes("NaN")
         );
