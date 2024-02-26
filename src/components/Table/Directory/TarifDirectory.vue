@@ -231,7 +231,7 @@
 
       <button id="tooltip-target-1"
         style="background: transparent; border: none;  width: auto; padding: 0; margin-left: auto"
-        v-b-tooltip.hover.lefttop="'Список доступных стран'" @click="info_block = !info_block">
+        @click="info_block = !info_block">
         <img :src="info_btn" alt="" style="width: 25px; height:25px; margin-top: 1%;">
       </button>
       <div style="max-height: 20vh; overflow: auto; width: 25%; margin-left: auto" v-if="info_block">
@@ -240,7 +240,7 @@
             <th style="border: 1px solid black">Наименование станции</th>
             <th style="border: 1px solid black">Сокращение</th>
           </tr>
-          <tr v-for="name in road_hadrcode.sort((a, b) => (a.name > b.name ? 1 : -1))" :key="name.id">
+          <tr v-for="name in all_roads" :key="name.id">
             <td style="border: 1px solid black">{{ name?.name }}</td>
             <td style="border: 1px solid black">{{ name?.short_name }}</td>
           </tr>
@@ -521,6 +521,9 @@ export default {
       uid: (state) => state.auth.uid,
       road: (state) => state.road.roadAsCountries
     }),
+    all_roads() {
+      return this.road_hadrcode.sort((a, b) => (a.name > b.name ? 1 : -1))
+    },
     info_btn() {
       if (this.info_block == false) {
         return require(`@/assets/info.png`)
@@ -685,7 +688,7 @@ export default {
         return;
       });
     },
-
+    // Обработка ввода из инпутов
     saveTarif(event) {
       console.log(event);
       if (
@@ -694,7 +697,7 @@ export default {
         event.target.id == 'next_loading_stations_list'
       ) {
         let operationBuffer = event.target.value
-          .replace(/ [А-Я]{2}[^ ]*/g, "  ")
+          .replaceAll(/[А-Я]{3}/g, " ")
           .split("  ");
         let clear_buffer = [];
         for (let i of operationBuffer) {
@@ -713,9 +716,12 @@ export default {
       } else if (event.target.id == "departure_stations_list" || event.target.id == 'exclude_next_loading_stations_list') {
         // Если 3 заглавные буквы, то разделяю на 2 элемента
         let operationBuffer = event.target.value
-          .replace(/[А-Я]{3}\s/g, "/")  // Удаление трех заглавных букв и пробела
+          .replace(/[А-Я]{3}(?=\s)/g, "/")
           .split("/")
-          .map(item => item.replace(/[А-Я]{3}/g, "").replace(/ +/g, "").trim());  // Удаление пробелов из каждой строки
+          .map(item => item.replace(/[А-Я]{3}/g, "").trim());  // Удаление пробелов из каждой строки
+        // .replace(/ +/g, "")
+        // .replace(/[А-Я]{3}(?=\s)/g, "/")
+        //   .split("/")
         let clear_buffer = [];
         for (let i of operationBuffer) {
           clear_buffer.push(i.trim());
@@ -862,7 +868,6 @@ export default {
             newObj[event.target.id] = operationBuffer[i];
           }
           this.data.push(newObj);
-          console.log(this.data, 'новые данные массивом')
         } else {
           if (
             event.target.id === "departure_stations_list" ||
@@ -880,187 +885,32 @@ export default {
     },
 
 
-
-    // // Проверка введенных данных, приведение станций к формату кодов
-    // async checkingData() {
-    //   this.flagCheck = false;
-    //   this.loader = true;
-    //   this.errorp = [];
-    //   try {
-    //     this.Standard.responsible = this.uid;
-    //     let parametrs;
-    //     if (this.data.length == 0) {
-    //       parametrs = [this.Standard];
-    //       parametrs.distance_min = [];
-    //       parametrs.distance_max = [];
-    //       parametrs.stavka = [];
-    //       parametrs.nds = [];
-    //       parametrs.distance = [];
-    //       parametrs.departure_station = [];
-    //       parametrs.destination_station = [];
-    //       parametrs.departure_stations_list = []; // Множество станций погрузки
-    //       parametrs.distance_num = [];
-    //       parametrs.next_loading_stations_list = []; // Станция следующей погрузки
-    //       parametrs.exclude_next_loading_stations_list = [];; // Станции исключения следующей погрузки
-    //       parametrs.country = [];;
-    //       parametrs.wagons = [];
-    //     } else {
-    //       let stationNameSet = new Set();
-    //       this.data.forEach((item) => {
-    //         if (item.destination_station) {
-    //           stationNameSet.add(item.destination_station);
-    //         }
-    //         if (item.departure_station) {
-    //           stationNameSet.add(item.departure_station);
-    //         }
-    //         // Станция следующей погрузки
-    //         if (item.next_loading_stations_list) {
-    //           stationNameSet.add(item.next_loading_stations_list);
-    //         }
-    //       });
-    //       await Promise.all(
-    //         Array.from(stationNameSet).map(async (stationName) => {
-    //           await this.getStationCode(stationName);
-    //         })
-    //       );
-    //       for (let i in this.data) {
-    //         // this.Standard.agreement_number = this.Standard.annex_number
-    //         Object.assign(this.data[i], this.Standard);
-    //       }
-    //       parametrs = this.data;
-    //     }
-
-    //     let new_data = await this.createNewData();
-    //     this.loader = false;
-    //     console.log(this.flagCheck);
-    //     if (this.errorp.length == 0) {
-    //       this.flagCheck = true;
-    //       this.checkCompleteData = new_data;
-    //       console.log(new_data, "я итоговые значения");
-    //       this.notifyHead = "Успешно";
-    //       this.notifyMessage = "Данные проверку прошли!";
-    //       this.notifyClass = "wrapper-success";
-    //       this.showNotify = true;
-    //       setTimeout(() => {
-    //         this.showNotify = false;
-    //       }, 3000);
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
-    // // Первый этап проверки введенных данных
-    // async createNewData() {
-    //   const newData = [];
-
-    //   for (const [index, item] of this.data.entries()) {
-    //     const newItem = { ...item };
-
-    //     if (item.destination_station) {
-    //       try {
-    //         const code = await this.getStationCode(item.destination_station, index );
-    //         if (code !== null) {
-    //           newItem.destination_station = code;
-    //         }
-    //       } catch (error) {
-    //         console.error(
-    //           `Ошибка при получении кода6 для станции "${item.destination_station}" на индексе ${index}`,
-    //           error
-    //         );
-    //       }
-    //     }
-
-    //     if (item.departure_station) {
-    //       try {
-    //         const code = await this.getStationCode( item.departure_station,index);
-    //         if (code !== null) {
-    //           newItem.departure_station = code;
-    //         }
-    //       } catch (error) {
-    //         console.error(
-    //           `Ошибка при получении кода6 для станции "${item.departure_station}" на индексе ${index}`,
-    //           error
-    //         );
-    //       }
-    //     }
-
-
-    //     if (item.next_loading_stations_list) {
-    //       try {
-    //         const code = await this.getStationCode( item.next_loading_stations_list,index);
-    //         if (code !== null) {
-    //           newItem.next_loading_stations_list = code;
-    //         }
-    //       } catch (error) {
-    //         console.error(
-    //           `Ошибка при получении кода6 для станции "${item.next_loading_stations_list}" на индексе ${index}`,
-    //           error
-    //         );
-    //       }
-    //     }
-
-    //     newData.push(newItem);
-    //   }
-    //   if (this.errorp.length > 0) {
-    //     this.flagCheck = false;
-    //     this.notifyHead = "Ошибка";
-    //     this.notifyMessage = this.errorp.filter(
-    //       (item) => !item.includes("NaN")
-    //     );
-    //     this.notifyClass = "wrapper-error";
-    //     this.showNotify = true;
-    //     setTimeout(() => {
-    //       this.showNotify = false;
-    //     }, 10000);
-    //   } else {
-    //     // this.flagCheck = true
-    //     this.notifyHead = "Успешно";
-    //     this.notifyMessage = "Ошибок нет, отправка данных возможна";
-    //     this.notifyClass = "wrapper-succes";
-    //     this.showNotify = true;
-    //     setTimeout(() => {
-    //       this.showNotify = false;
-    //     }, 10000);
-    //   }
-
-    //   return newData;
-    // },
     // // Преобразование данных через меммоизацию
     async getStationCode(station_name, index, name_cells) {
       try {
+        // Проверяем наличие станции в кэше
         if (this.stationCache[station_name]) {
           return this.stationCache[station_name];
         } else {
-          const response = await api_wagon.getCurrentStation(station_name);
-          const server_response = response.data.data.map((item) => item.name.toLowerCase()); // Получаем все имена станций в нижнем регистре
-          const lowerStationName = station_name.toLowerCase(); // Приводим ввод пользователя к нижнему регистру
-          const stationNameMatch = server_response.find((name) => name === lowerStationName); // Ищем точное совпадение имени станции
-          if (stationNameMatch == undefined) {
-            const res = await api_wagon.getCurrentStationByName(station_name);
+          // Выполняем запрос к API, чтобы получить данные по станции по ее точному имени
+          const response = await api_wagon.getCurrentStationByName(station_name);
 
-            // Добавьте проверку на наличие данных и кода в ответе
-            if (!res.data || !res.data.data || res.data.data.length === 0 || !res.data.data[0].code) {
-              throw new Error(`Ошибка: Не удалось получить код станции "${station_name}" (код) на строке ${index + 1}`);
-            }
-
-            const stationCode2 = res.data.data[0].code;
-            this.$set(this.stationCache, station_name, stationCode2);
-            return stationCode2;
+          // Проверяем наличие данных и кода станции в ответе
+          if (!response.data || !response.data.data ||  response.data.data.length === 0 || !response.data.data[0].code) {
+            throw new Error(`Ошибка: Не удалось получить код станции "${station_name}" на строке ${index + 1}`);
           }
-          if (stationNameMatch) {
-            const stationIndex = server_response.indexOf(stationNameMatch);
-            const stationCode6 = response.data.data[stationIndex]; // Получаем все данные по станациям
 
-            this.$set(this.stationCache, station_name, stationCode6);
-            return stationCode6;
-          } else {
-            throw new Error(
-              `Совпадений для станции "${station_name}" (код) не найдено на строке ${index + 1
-              }`
-            );
-          }
+          // Получаем код станции из ответа
+          const stationCode = response.data.data[0].code;
+
+          // Сохраняем код станции в кэше
+          this.$set(this.stationCache, station_name, stationCode);
+
+          // Возвращаем код станции
+          return stationCode;
         }
       } catch (error) {
+        // Обрабатываем ошибку
         this.errorp.push(error.message);
         return null; // Возвращаем null в случае ошибки
       }
@@ -1115,11 +965,11 @@ export default {
             }
 
           });
-          await Promise.all(
-            Array.from(stationNameSet).map(async (stationName) => {
-              await this.getStationCode(stationName);
-            })
-          );
+          // await Promise.all(
+          //   Array.from(stationNameSet).map(async (stationName) => {
+          //     await this.getStationCode(stationName);
+          //   })
+          // );
           for (let i in this.data) {
             Object.assign(this.data[i], this.Standard);
           }

@@ -346,7 +346,7 @@ export default {
 
             checkEqualDate: null,
             visible: true,
-            picked: "annex_number",
+            picked: "agreement_number",
             placeholderAgreement: "введите номер договора",
             Standard: {
                 agreement_number: null,
