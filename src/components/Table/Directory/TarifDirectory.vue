@@ -511,7 +511,7 @@ export default {
       road_hadrcode: [
         { "id": 2, "code": 81, "name": "Австрия", "short_name": null }, { "id": 3, "code": 57, "name": "Азербайджан", "short_name": "АЗ" }, { "id": 4, "code": 41, "name": "Албания", "short_name": null }, { "id": 5, "code": 92, "name": "Алжир", "short_name": null }, { "id": 6, "code": 135, "name": "Андорра", "short_name": null }, { "id": 7, "code": 58, "name": "Армения", "short_name": "АРМ" }, { "id": 8, "code": 39, "name": "Афганистан", "short_name": "АРА" }, { "id": 16, "code": 139, "name": "Бангладеш", "short_name": null }, { "id": 20, "code": 21, "name": "Беларусь", "short_name": "БЧ" }, { "id": 74, "code": 88, "name": "Бельгия", "short_name": null }, { "id": 42, "code": 52, "name": "Болгария", "short_name": "БДЖ" }, { "id": 40, "code": 50, "name": "Босния и Герцеговина, Мусульманско-Хорватская Федерация", "short_name": null }, { "id": 38, "code": 44, "name": "Босния и Герцеговина, Сербская Республика", "short_name": null }, { "id": 57, "code": 70, "name": "Великобритания", "short_name": null }, { "id": 45, "code": 55, "name": "Венгрия", "short_name": "МАВ" }, { "id": 32, "code": 32, "name": "Вьетнам", "short_name": "ВЖД" }, { "id": 66, "code": 80, "name": "Германия", "short_name": null }, { "id": 60, "code": 73, "name": "Греция", "short_name": null }, { "id": 28, "code": 28, "name": "Грузия", "short_name": "ГР" }, { "id": 72, "code": 86, "name": "Дания", "short_name": null }, { "id": 1, "code": 99, "name": "Другие третьи страны", "short_name": null }, { "id": 75, "code": 90, "name": "Египет", "short_name": null }, { "id": 80, "code": 95, "name": "Израиль", "short_name": null }, { "id": 17, "code": 166, "name": "Индия", "short_name": null }, { "id": 18, "code": 167, "name": "Индонезия", "short_name": null }, { "id": 34, "code": 36, "name": "Ирак", "short_name": null }, { "id": 81, "code": 96, "name": "Иран", "short_name": "РАИ" }, { "id": 51, "code": 60, "name": "Ирландия", "short_name": null }, { "id": 58, "code": 71, "name": "Испания", "short_name": null }, { "id": 69, "code": 83, "name": "Италия", "short_name": null }, { "id": 30, "code": 30, "name": "КНДР", "short_name": "ЗЧ" }, { "id": 27, "code": 27, "name": "Казахстан", "short_name": "КЗХ" }, { "id": 50, "code": 59, "name": "Киргизия", "short_name": "КРГ" }, { "id": 33, "code": 33, "name": "Китай", "short_name": "КЖД" }, { "id": 24, "code": 25, "name": "Латвия", "short_name": "ЛДЗ" }, { "id": 83, "code": 98, "name": "Ливан", "short_name": null }, { "id": 23, "code": 24, "name": "Литва", "short_name": "ЛГ" }, { "id": 68, "code": 82, "name": "Люксембург", "short_name": null }, { "id": 53, "code": 65, "name": "Македония", "short_name": null }, { "id": 14, "code": 134, "name": "Мальта", "short_name": null }, { "id": 78, "code": 93, "name": "Марокко", "short_name": null }, { "id": 22, "code": 23, "name": "Молдова", "short_name": "ЧФМ" }, { "id": 13, "code": 129, "name": "Монако", "short_name": null }, { "id": 31, "code": 31, "name": "Монголия", "short_name": "УБЖД" }, { "id": 70, "code": 84, "name": "Нидерланды", "short_name": null }, { "id": 63, "code": 76, "name": "Норвегия", "short_name": null }, { "id": 41, "code": 51, "name": "Польша", "short_name": "ПКП" }, { "id": 79, "code": 94, "name": "Португалия", "short_name": null }, { "id": 52, "code": 61, "name": "Республика Корея", "short_name": "КОРЕЙЛ" }, { "id": 19, "code": 20, "name": "Россия", "short_name": "РЖД" }, { "id": 43, "code": 53, "name": "Румыния", "short_name": "ЧФР-Марфа" }, { "id": 56, "code": 68, "name": "Сербия", "short_name": null }, { "id": 82, "code": 97, "name": "Сирия", "short_name": null }, { "id": 46, "code": 56, "name": "Словакия", "short_name": "ЗССК" }, { "id": 65, "code": 79, "name": "Словения", "short_name": null }, { "id": 54, "code": 66, "name": "Таджикистан", "short_name": "ТДЖ" }, { "id": 11, "code": 118, "name": "Таиланд", "short_name": null }, { "id": 12, "code": 119, "name": "Тайвань", "short_name": null }, { "id": 76, "code": 91, "name": "Тунис", "short_name": null }, { "id": 55, "code": 67, "name": "Туркмения", "short_name": "ТРК" }, { "id": 62, "code": 75, "name": "Турция", "short_name": null }, { "id": 29, "code": 29, "name": "Узбекистан", "short_name": "УТЙ" }, { "id": 21, "code": 22, "name": "Украина", "short_name": "УЗ" }, { "id": 10, "code": 10, "name": "Финляндия", "short_name": null }, { "id": 73, "code": 87, "name": "Франция", "short_name": null }, { "id": 64, "code": 78, "name": "Хорватия", "short_name": null }, { "id": 39, "code": 49, "name": "Черногория", "short_name": null }, { "id": 44, "code": 54, "name": "Чехия", "short_name": "ЧД" }, { "id": 71, "code": 85, "name": "Швейцария", "short_name": null }, { "id": 61, "code": 74, "name": "Швеция", "short_name": null }, { "id": 26, "code": 26, "name": "Эстония", "short_name": "ЭВР" }, { "id": 59, "code": 72, "name": "Югославия", "short_name": "ЮЖ" }, { "id": 37, "code": 42, "name": "Япония", "short_name": null }
       ],
-
+      cargoCashe: {},
     };
   },
   computed: {
@@ -1154,19 +1154,28 @@ export default {
     },
 
     async getCargoCode(cargos_list, index) {
+
       try {
-        const response = await api_wagon.getCargoCodeSearch(cargos_list);
-        let startElement
-        // Проверяем, есть ли данные в ответе от сервера
-        if (!response.data || !response.data.data || response.data.data.length === 0) {
-          throw new Error(`Ошибка: Не удалось найти груз: "${cargos_list}" на строке ${index + 1}`);
+        if (this.cargoCashe[cargos_list]) {
+          return this.cargoCashe[cargos_list]
+        } else {
+          const response = await api_wagon.getCargoCodeSearch(cargos_list);
+          let startElement
+          // Проверяем, есть ли данные в ответе от сервера
+          if (!response.data || !response.data.data || response.data.data.length === 0) {
+            throw new Error(`Ошибка: Не удалось найти груз: "${cargos_list}" на строке ${index + 1}`);
+          }
+          if (cargos_list.length === 3) {
+            startElement = response.data.data.filter(element => element.code6.startsWith(cargos_list))[0].code6;
+            this.$set(this.cargoCashe, cargos_list, startElement);
+            return startElement
+          }
+          // Возвращаем первый найденный код груза из ответа
+          this.$set(this.cargoCashe, cargos_list, response.data.data[0].code6);
+
+          return response.data.data[0].code6
         }
-        if(cargos_list.length === 3){
-          startElement = response.data.data.filter(element => element.code6.startsWith(cargos_list))[0].code6;
-          return startElement
-        }
-        // Возвращаем первый найденный код груза из ответа
-        return response.data.data[0].code6
+
       } catch (error) {
         this.errorp.push(error.message);
         return null;
