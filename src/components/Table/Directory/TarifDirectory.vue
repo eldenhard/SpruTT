@@ -373,7 +373,7 @@
               <input style="width: 100%" type="text" v-model="item.cargos_list" disabled />
             </td>
             <td style="border: 1px solid black">
-              <input style="width: 100%" type="number" v-model="item.cargo" />
+              <input style="width: 100%" type="text" v-model="item.cargo" />
             </td>
             <td style="border: 1px solid black">
               <input style="width: 100%" type="number" v-model="item.stavka" />
@@ -690,7 +690,6 @@ export default {
     },
     // Обработка ввода из инпутов
     saveTarif(event) {
-      console.log(event);
       if (
         event.target.id == "destination_station" ||
         event.target.id == "departure_station" ||
@@ -716,9 +715,9 @@ export default {
       } else if (event.target.id == "departure_stations_list" || event.target.id == 'exclude_next_loading_stations_list') {
         // Если 3 заглавные буквы, то разделяю на 2 элемента
         let operationBuffer = event.target.value
-         .replace(/[А-Я]{3}(?=\s)/g, "/")
+          .replace(/[А-Я]{3}(?=\s)/g, "/")
           .split("/")
-        .map(item => item.replace(/\s[А-Я]{3}/g, "").trim());  // Удаление пробелов из каждой строки
+          .map(item => item.replace(/\s[А-Я]{3}/g, "").trim());  // Удаление пробелов из каждой строки
 
         // .replace(/ +/g, "")
         // .replace(/[А-Я]{3}(?=\s)/g, "/")
@@ -773,9 +772,11 @@ export default {
         return;
 
       } else if (event.target.id == "cargo") {
-        let data = event.target.value.match(/\d+/g);
+        // let data = event.target.value.match(/\d+/g);
+        let data = event.target.value.split(' ')
         if (data) {
-          let operationBuffer = data.map(Number);
+          let operationBuffer = data
+          // let operationBuffer = data.map(Number);
 
           if (operationBuffer.at(-1) == "") {
             operationBuffer.pop();
@@ -1113,6 +1114,19 @@ export default {
             }
           }
         }
+        if (item.cargo) {
+          newItem.cargo = []
+          for (const cargo of item.cargo.split(',')) {
+            try {
+              const cargo_name = await this.getCargoCode(cargo, index);
+              if (cargo_name !== null) {
+                newItem.cargo.push(cargo_name);
+              }
+            } catch (error) {
+              console.error(`Ошибка при обработке груза "${item.cargos_list}" на индексе ${index}`, error);
+            }
+          }
+        }
         newData.push(newItem);
       }
       if (this.errorp.length > 0) {
@@ -1147,7 +1161,7 @@ export default {
           throw new Error(`Ошибка: Не удалось найти груз: "${cargos_list}" на строке ${index + 1}`);
         }
         // Возвращаем первый найденный код груза из ответа
-        return cargos_list
+        return response.data.data[0].code6
       } catch (error) {
         this.errorp.push(error.message);
         return null;
@@ -1348,9 +1362,28 @@ export default {
             return
           }
 
+          // Создание массива объектов
+          let arrayOfObjects = this.checkCompleteData.flatMap(obj => {
+            // Проверяем наличие поля cargo в текущем объекте
+            if (obj.hasOwnProperty('cargo') && Array.isArray(obj.cargo)) {
+              // Получаем значение cargo из текущего объекта
+              let cargoValues = obj.cargo;
+              // Создаем новый массив объектов для каждого значения cargo
+              return cargoValues.map(cargo => {
+                // Клонируем текущий объект
+                let newObj = Object.assign({}, obj);
+                // Присваиваем новое значение cargo для каждого объекта
+                newObj.cargo = cargo;
+                return newObj;
+              });
+            } else {
+              // Если поле cargo отсутствует или не является массивом, клонируем текущий объект и добавляем его в массив объектов без изменений
+              return [Object.assign({}, obj)];
+            }
+          });
 
           api
-            .postTarifData(this.checkCompleteData)
+            .postTarifData(arrayOfObjects)
             .then((response) => {
               //Получаю все приложения для договора
 
