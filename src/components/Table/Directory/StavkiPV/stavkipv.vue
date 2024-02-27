@@ -167,7 +167,7 @@
                 </select>
             </label>
 
-            <div class="info_block" style="display: flex; justify-content: start; gap: 15px">
+            <div class="info_block" style="display: flex; justify-content: start; gap: 15px; margin-top: 2%">
                 <div>
                     <button
                         style="background: lightblue;  width: 10vw; padding: 1%; color: black; font-size: 14px; white-space: nowrap"
@@ -409,7 +409,7 @@ export default {
 
             checkEqualDate: null,
             visible: true,
-            picked: "annex_number",
+            picked: "agreement_number",
             placeholderAgreement: "введите номер договора",
             Standard: {
                 agreement_number: null,
