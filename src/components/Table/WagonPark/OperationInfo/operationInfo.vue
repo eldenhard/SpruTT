@@ -9,37 +9,48 @@
             <br />
             <div class="filter_block" style="width: 35%; display: flex; flex-direction: column; position: relative;">
                 <label for="">Дата <br>
-                    <input type="date" class="textarea" style="width: 20vw !important;" v-model="date_begin" :min="'2024-01-01'">
+                    <input type="date" class="textarea" style="width: 20vw !important;" v-model="date_begin"
+                        :min="'2024-01-01'">
                 </label>
-                <label for="" >
+                <label for="">
                     Тип вагона
                     <br />
                     <select name="" id="" v-model="wag_type" class="textarea" style="width:20vw !important;">
                         <option value="Полувагон">Полувагон</option>
                         <option value="Цистерна">Цистерна</option>
                     </select>
-                  
+
                 </label>
                 <br>
-                    <button class="Accept button" @click="Actioned()" style="width:20vw !important; height: 40px;">Загрузить данные</button>
+                <button class="Accept button" @click="Actioned()" style="width:20vw !important; height: 40px;">Загрузить
+                    данные</button>
             </div>
-          
+
             <table>
                 <thead>
                     <tr>
-                        <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Клиент' : 'Клиент'}}</th>
-                        <th  class="greenCell">{{ wag_type == 'Полувагон' ? 'Объемы, тн' : "Кол-во погрузок"}} </th>
+                        <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Клиент' : 'Клиент' }}</th>
+                        <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Объемы, тн' : "Кол-во погрузок" }} </th>
 
-                        <th :class="[ wag_type == 'Полувагон' ? 'greyCell' : 'redCell' ]">{{ wag_type == 'Полувагон' ? 'Объем на тек дату План' : 'Кол-во погр План на тек дату'}} </th>
-                        <th :class="[ wag_type == 'Полувагон' ? 'greyCell' : 'redCell' ]">{{ wag_type == 'Полувагон' ? 'Объем на тек дату Факт' : 'Кол-во погр факт на тек дату'}} </th>
-                        <th :class="[ wag_type == 'Полувагон' ? 'greyCell' : 'redCell' ]">{{ wag_type == 'Полувагон' ? 'Выполнение абсл.' :  'Отклонение кол-ва ваг'}} </th>
-                        <th :class="[ wag_type == 'Полувагон' ? 'greyCell' : 'redCell' ]">{{ wag_type == 'Полувагон' ? ' Выполнение отн.' : '% выполнения плана'}}  </th>
+                        <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type == 'Полувагон' ?
+                            'Объем на тек дату План' : 'Кол-во погр План на тек дату' }} </th>
+                        <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type == 'Полувагон' ?
+                            'Объем на тек дату Факт' : 'Кол-во погр факт на тек дату' }} </th>
+                        <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type == 'Полувагон' ?
+                            'Выполнение абсл.' : 'Отклонение кол-ва ваг' }} </th>
+                        <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type == 'Полувагон' ? '
+                                                    Выполнение отн.' : ' % выполнения плана'}} </th>
 
-                        <th :class="[ wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell' ]">{{ wag_type == 'Полувагон' ? 'Выручка  без НДС, руб' : "Выручка без НДС, руб ПЛАН"}} </th>
-                        <th :class="[ wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell' ]">{{ wag_type == 'Полувагон' ? 'Объем на тек дату План' : 'Выручка без НДС, руб на тек дату ПЛАН'}} </th>
-                        <th :class="[ wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell' ]">{{ wag_type == 'Полувагон' ? 'Объем на тек дату Факт' : 'Выручка без НДС, руб на тек дату факт'}} </th>
-                        <th :class="[ wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell' ]">{{ wag_type == 'Полувагон' ? 'Выполнение абсл.' :  'отклонения в выручке'}} </th>
-                        <th :class="[ wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell' ]">{{ wag_type == 'Полувагон' ? ' Выполнение отн.' : '% выполнения'}}  </th>
+                        <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ?
+                            'Выручка без НДС, руб' : "Выручка без НДС, руб ПЛАН" }} </th>
+                        <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ?
+                            'Объем на тек дату План' : 'Выручка без НДС, руб на тек дату ПЛАН' }} </th>
+                        <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ?
+                            'Объем на тек дату Факт' : 'Выручка без НДС, руб на тек дату факт' }} </th>
+                        <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ?
+                            'Выполнение абсл.' : 'отклонения в выручке' }} </th>
+                        <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? '
+                                                    Выполнение отн.' : ' % выполнения'}} </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,7 +87,7 @@ export default {
     data() {
         return {
             wag_type: "Полувагон",
-            date_begin: new Date().toISOString().slice(0,10),
+            date_begin: new Date().toISOString().slice(0, 10),
             date_end: "",
             loader: false,
             responseServerData: ""
@@ -92,50 +103,57 @@ export default {
 
         },
     },
-    watch:{
-        wag_type(){
+    watch: {
+        wag_type() {
             this.responseServerData = ""
         }
     },
     methods: {
-   
+
         Actioned() {
             this.loader = true
             api.getDataForOperSpravka(this.wag_type, this.date_begin)
-            .then(response => {
-                this.loader = false
-               this.responseServerData = response.data
-            }).catch((err) => {
-                this.loader = false
-                console.log(err)
-              
-            })
+                .then(response => {
+                    this.loader = false
+                    this.responseServerData = response.data.report
+                    console.log(this.responseServerData)
+                }).catch((err) => {
+                    this.loader = false
+                    console.log(err)
+
+                })
         },
     }
 }
 </script>
 <style scoped>
-table{
+table {
     margin-top: 2%;
 }
-.greenCell{
+
+.greenCell {
     background: #C6E0B4;
 }
-.greyCell{
+
+.greyCell {
     background: #808080;
     color: white
 }
-.orangeCell{
+
+.orangeCell {
     background: #FFCC99;
 }
-.redCell{
+
+.redCell {
     background: #F0C4B9;
- 
+
 }
-.blueCell{
+
+.blueCell {
     background: #DBCFC3;
- 
+
 }
+
 .air_block {
     width: 100%;
     height: auto;
@@ -158,5 +176,4 @@ select {
 .air_block_header {
     padding: 1% 0 0 2%;
     color: #cacaca;
-}
-</style>
+}</style>
