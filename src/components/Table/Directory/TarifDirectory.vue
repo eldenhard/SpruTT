@@ -57,7 +57,8 @@
         {{ instruction ? "Свернуть инструкцию" : "Смотреть инструкцию" }}
       </h5>
     </div>
-    <p class="explanation">
+    <button class="Accept button" style="margin-right: auto; background: #BFEEC5 !important; color: black;" @click="instruction2 = !instruction2">Инструкция по работе с разделом</button>
+    <p class="explanation" v-if="instruction2">
       * Копирование и ввод данных в таблицу 1 должен осуществляться из
       <b>Excel</b>, после вставки значения в ячейку нажмите
       Enter чтобы значения были занесены в таблицу<br />
@@ -127,7 +128,7 @@
     </ul>
     </p>
 
-    <div class="air_block">
+    <div class="air_block" style="margin-top: 4%;">
       <div class="air_block_header" style="
           display: flex !important;
           justify-content: space-between !important;
@@ -466,6 +467,7 @@ export default {
   components: { Loader, Notifications, TarifDirectoryCreated, vSelect },
   data() {
     return {
+      instruction2: false,
       info_block: false,
       disabled_cargo: false,
       which_nds: "value",

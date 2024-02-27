@@ -166,6 +166,60 @@
                         назначения)- (Груз наименование)</option>
                 </select>
             </label>
+
+            <div class="info_block" style="display: flex; justify-content: start; gap: 15px">
+                <div>
+                    <button  style="background: lightblue;  width: 10vw; padding: 1%; color: black; font-size: 14px; white-space: nowrap"
+                        @click="info_block = !info_block">
+                        Справочник стран
+                    </button>
+                    <br>
+                    <div  v-if="info_block">
+                        <input type="search"
+                            style="width: 100%; border: none; outline: none; border: 1px solid black; border-radius: 4px;"
+                            placeholder="Поиск..." v-model="search_country">
+                        <div style="max-height: 20vh; width: 100%; overflow: auto;">
+                            <table>
+                                <tr>
+                                    <th style="border: 1px solid black">Наименование станции</th>
+                                    <th style="border: 1px solid black">Сокращение</th>
+                                </tr>
+                                <tr v-for="name in all_roads" class="hover_tr" :key="name.id"
+                                    @click="saveToCashUserData(name?.name)">
+                                    <td style="border: 1px solid black">{{ name?.name }}</td>
+                                    <td style="border: 1px solid black">{{ name?.short_name }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+            
+                </div>
+                <div>
+                    <button  style="background: lightblue;  width: 10vw; padding: 1%; color: black; font-size: 14px; white-space: nowrap"
+                        @click="info_block = !info_block">
+                        Справочник дорог
+                    </button>
+                    <br>
+                    <div  v-if="info_block">
+                        <input type="search"
+                            style="width: 100%; border: none; outline: none; border: 1px solid black; border-radius: 4px;"
+                            placeholder="Поиск..." >
+                        <div style="max-height: 20vh; width: 100%; overflow: auto;">
+                            <table>
+                                <tr>
+                                    <th style="border: 1px solid black">Наименование станции</th>
+                                    <th style="border: 1px solid black">Сокращение</th>
+                                </tr>
+                               
+                            </table>
+                        </div>
+                    </div>
+            
+                </div>
+        </div>
+
+
+
             <table>
                 <thead>
                     <tr style="background: #e1e1e2">
@@ -318,6 +372,7 @@
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
     </div>
+
 </template>
 <script>
 import Handsontable from "handsontable";
@@ -337,6 +392,8 @@ export default {
     },
     data() {
         return {
+            search_country: "",
+            info_block: false,
             flagCheck: false,
             stationCache: {},
             countryCashe: {},
@@ -346,7 +403,7 @@ export default {
 
             checkEqualDate: null,
             visible: true,
-            picked: "agreement_number",
+            picked: "annex_number",
             placeholderAgreement: "введите номер договора",
             Standard: {
                 agreement_number: null,
@@ -385,6 +442,9 @@ export default {
 
             allRoads: [],
             isDropdown2Visible: false,
+            road_hadrcode: [
+                { "id": 2, "code": 81, "name": "Австрия", "short_name": null }, { "id": 3, "code": 57, "name": "Азербайджан", "short_name": "АЗ" }, { "id": 4, "code": 41, "name": "Албания", "short_name": null }, { "id": 5, "code": 92, "name": "Алжир", "short_name": null }, { "id": 6, "code": 135, "name": "Андорра", "short_name": null }, { "id": 7, "code": 58, "name": "Армения", "short_name": "АРМ" }, { "id": 8, "code": 39, "name": "Афганистан", "short_name": "АРА" }, { "id": 16, "code": 139, "name": "Бангладеш", "short_name": null }, { "id": 20, "code": 21, "name": "Беларусь", "short_name": "БЧ" }, { "id": 74, "code": 88, "name": "Бельгия", "short_name": null }, { "id": 42, "code": 52, "name": "Болгария", "short_name": "БДЖ" }, { "id": 40, "code": 50, "name": "Босния и Герцеговина, Мусульманско-Хорватская Федерация", "short_name": null }, { "id": 38, "code": 44, "name": "Босния и Герцеговина, Сербская Республика", "short_name": null }, { "id": 57, "code": 70, "name": "Великобритания", "short_name": null }, { "id": 45, "code": 55, "name": "Венгрия", "short_name": "МАВ" }, { "id": 32, "code": 32, "name": "Вьетнам", "short_name": "ВЖД" }, { "id": 66, "code": 80, "name": "Германия", "short_name": null }, { "id": 60, "code": 73, "name": "Греция", "short_name": null }, { "id": 28, "code": 28, "name": "Грузия", "short_name": "ГР" }, { "id": 72, "code": 86, "name": "Дания", "short_name": null }, { "id": 1, "code": 99, "name": "Другие третьи страны", "short_name": null }, { "id": 75, "code": 90, "name": "Египет", "short_name": null }, { "id": 80, "code": 95, "name": "Израиль", "short_name": null }, { "id": 17, "code": 166, "name": "Индия", "short_name": null }, { "id": 18, "code": 167, "name": "Индонезия", "short_name": null }, { "id": 34, "code": 36, "name": "Ирак", "short_name": null }, { "id": 81, "code": 96, "name": "Иран", "short_name": "РАИ" }, { "id": 51, "code": 60, "name": "Ирландия", "short_name": null }, { "id": 58, "code": 71, "name": "Испания", "short_name": null }, { "id": 69, "code": 83, "name": "Италия", "short_name": null }, { "id": 30, "code": 30, "name": "КНДР", "short_name": "ЗЧ" }, { "id": 27, "code": 27, "name": "Казахстан", "short_name": "КЗХ" }, { "id": 50, "code": 59, "name": "Киргизия", "short_name": "КРГ" }, { "id": 33, "code": 33, "name": "Китай", "short_name": "КЖД" }, { "id": 24, "code": 25, "name": "Латвия", "short_name": "ЛДЗ" }, { "id": 83, "code": 98, "name": "Ливан", "short_name": null }, { "id": 23, "code": 24, "name": "Литва", "short_name": "ЛГ" }, { "id": 68, "code": 82, "name": "Люксембург", "short_name": null }, { "id": 53, "code": 65, "name": "Македония", "short_name": null }, { "id": 14, "code": 134, "name": "Мальта", "short_name": null }, { "id": 78, "code": 93, "name": "Марокко", "short_name": null }, { "id": 22, "code": 23, "name": "Молдова", "short_name": "ЧФМ" }, { "id": 13, "code": 129, "name": "Монако", "short_name": null }, { "id": 31, "code": 31, "name": "Монголия", "short_name": "УБЖД" }, { "id": 70, "code": 84, "name": "Нидерланды", "short_name": null }, { "id": 63, "code": 76, "name": "Норвегия", "short_name": null }, { "id": 41, "code": 51, "name": "Польша", "short_name": "ПКП" }, { "id": 79, "code": 94, "name": "Португалия", "short_name": null }, { "id": 52, "code": 61, "name": "Республика Корея", "short_name": "КОРЕЙЛ" }, { "id": 19, "code": 20, "name": "Россия", "short_name": "РЖД" }, { "id": 43, "code": 53, "name": "Румыния", "short_name": "ЧФР-Марфа" }, { "id": 56, "code": 68, "name": "Сербия", "short_name": null }, { "id": 82, "code": 97, "name": "Сирия", "short_name": null }, { "id": 46, "code": 56, "name": "Словакия", "short_name": "ЗССК" }, { "id": 65, "code": 79, "name": "Словения", "short_name": null }, { "id": 54, "code": 66, "name": "Таджикистан", "short_name": "ТДЖ" }, { "id": 11, "code": 118, "name": "Таиланд", "short_name": null }, { "id": 12, "code": 119, "name": "Тайвань", "short_name": null }, { "id": 76, "code": 91, "name": "Тунис", "short_name": null }, { "id": 55, "code": 67, "name": "Туркмения", "short_name": "ТРК" }, { "id": 62, "code": 75, "name": "Турция", "short_name": null }, { "id": 29, "code": 29, "name": "Узбекистан", "short_name": "УТЙ" }, { "id": 21, "code": 22, "name": "Украина", "short_name": "УЗ" }, { "id": 10, "code": 10, "name": "Финляндия", "short_name": null }, { "id": 73, "code": 87, "name": "Франция", "short_name": null }, { "id": 64, "code": 78, "name": "Хорватия", "short_name": null }, { "id": 39, "code": 49, "name": "Черногория", "short_name": null }, { "id": 44, "code": 54, "name": "Чехия", "short_name": "ЧД" }, { "id": 71, "code": 85, "name": "Швейцария", "short_name": null }, { "id": 61, "code": 74, "name": "Швеция", "short_name": null }, { "id": 26, "code": 26, "name": "Эстония", "short_name": "ЭВР" }, { "id": 59, "code": 72, "name": "Югославия", "short_name": "ЮЖ" }, { "id": 37, "code": 42, "name": "Япония", "short_name": null }
+            ],
         };
     },
     mounted() {
@@ -416,7 +476,22 @@ export default {
             road: (state) => state.road.roadAsCountries
 
         }),
+        // Поиск по all_roads
 
+        all_roads() {
+            if (this.search_country.length <= 1) {
+                return this.road_hadrcode.sort((a, b) => (a.name > b.name ? 1 : -1))
+            } else {
+                return this.road_hadrcode.filter((road) => road.name.toLowerCase().includes(this.search_country.toLowerCase()))
+            }
+        },
+        info_btn() {
+            if (this.info_block == false) {
+                return require(`@/assets/info.png`)
+            } else {
+                return require(`@/assets/cross.png`)
+            }
+        },
         filter_client() {
             if (this.Standard.client.length > 1) {
                 this.ten_visible = true;
@@ -442,6 +517,7 @@ export default {
         },
     },
     watch: {
+
         maskHeadTable() {
             if (this.maskHeadTable == 1) {
                 if (this.selectedFields.length > 0) {
@@ -489,6 +565,19 @@ export default {
         },
     },
     methods: {
+        // Сохранить в кэш юзера
+        saveToCashUserData(data) {
+            navigator.clipboard.writeText(data)
+                .then((res) => {
+                    this.notifyHead = "Успешно";
+                    this.notifyMessage = `Страна: ${data} скопирована в буфер обмена`;
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 4000);
+                })
+        },
         clearTable() {
             this.tableData = []
             this.selectedFields = []
@@ -777,15 +866,6 @@ export default {
             }
             if (this.errorp.length > 0) {
                 this.flagCheck = false;
-                this.notifyHead = "Ошибка";
-                this.notifyMessage = this.errorp.filter(
-                    (item) => !item.includes("NaN")
-                );
-                this.notifyClass = "wrapper-error";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 10000);
             } else {
                 this.notifyHead = "Успешно";
                 this.notifyMessage = "Ошибок нет, отправка данных возможна";
@@ -939,18 +1019,18 @@ export default {
                 return null; // Возвращаем null в случае ошибки
             }
         },
-//         Глянь завтра пожалуйста, почему нельзя запрос отправить по этому пути
-// http://10.1.5.20/api/finance/stavki-revenue/save-many/
-// Ответ: 500 Internal Server Error
-// Response: [[1,"'NoneType' object has no attribute 'name'"]]
-// body: [
-//   {
-//     "agreement_number": "123",
-//     "on_date": "2024-02-19",
-//     "end_date": null,
-//     "client": "Евросиб",
-//   }
-// ]
+        //         Глянь завтра пожалуйста, почему нельзя запрос отправить по этому пути
+        // http://10.1.5.20/api/finance/stavki-revenue/save-many/
+        // Ответ: 500 Internal Server Error
+        // Response: [[1,"'NoneType' object has no attribute 'name'"]]
+        // body: [
+        //   {
+        //     "agreement_number": "123",
+        //     "on_date": "2024-02-19",
+        //     "end_date": null,
+        //     "client": "Евросиб",
+        //   }
+        // ]
         // Создать договор
         createAgreement() {
             let agreement = [{
@@ -1294,10 +1374,10 @@ export default {
                     }));
                     console.log(finallyDataToSend, 'else')
                 }
-                for(let i in finallyDataToSend){
-                    if(finallyDataToSend[i].cargos_list){
+                for (let i in finallyDataToSend) {
+                    if (finallyDataToSend[i].cargos_list) {
                         finallyDataToSend[i].cargos_list = finallyDataToSend[i].cargos_list.join(';');
-                    }else {
+                    } else {
                         finallyDataToSend[i].cargos_list = ""
                     }
                 }
@@ -1375,6 +1455,10 @@ tr,
 td,
 th {
     border: none;
+}
+
+.hover_tr:hover {
+    background: #cfcfcf !important;
 }
 
 .deleteth {
@@ -1473,5 +1557,4 @@ table {
 .air_block_header {
     padding: 1% 0 0 2%;
     color: #cacaca;
-}
-</style>
+}</style>
