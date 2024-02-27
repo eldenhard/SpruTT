@@ -169,54 +169,59 @@
 
             <div class="info_block" style="display: flex; justify-content: start; gap: 15px">
                 <div>
-                    <button  style="background: lightblue;  width: 10vw; padding: 1%; color: black; font-size: 14px; white-space: nowrap"
+                    <button
+                        style="background: lightblue;  width: 10vw; padding: 1%; color: black; font-size: 14px; white-space: nowrap"
                         @click="info_block = !info_block">
                         Справочник стран
                     </button>
                     <br>
-                    <div  v-if="info_block">
+                    <div v-if="info_block">
                         <input type="search"
                             style="width: 100%; border: none; outline: none; border: 1px solid black; border-radius: 4px;"
                             placeholder="Поиск..." v-model="search_country">
                         <div style="max-height: 20vh; width: 100%; overflow: auto;">
                             <table>
                                 <tr>
-                                    <th style="border: 1px solid black">Наименование станции</th>
+                                    <th style="border: 1px solid black">Наименование страны</th>
                                     <th style="border: 1px solid black">Сокращение</th>
                                 </tr>
                                 <tr v-for="name in all_roads" class="hover_tr" :key="name.id"
-                                    @click="saveToCashUserData(name?.name)">
+                                    @click="saveToCashUserData(name?.name, 'Страна')">
                                     <td style="border: 1px solid black">{{ name?.name }}</td>
                                     <td style="border: 1px solid black">{{ name?.short_name }}</td>
                                 </tr>
                             </table>
                         </div>
                     </div>
-            
+
                 </div>
                 <div>
-                    <button  style="background: lightblue;  width: 10vw; padding: 1%; color: black; font-size: 14px; white-space: nowrap"
-                        @click="info_block = !info_block">
+                    <button
+                        style="background: lightblue;  width: 10vw; padding: 1%; color: black; font-size: 14px; white-space: nowrap"
+                        @click="info_block2 = !info_block2">
                         Справочник дорог
                     </button>
                     <br>
-                    <div  v-if="info_block">
+                    <div v-if="info_block2">
                         <input type="search"
                             style="width: 100%; border: none; outline: none; border: 1px solid black; border-radius: 4px;"
-                            placeholder="Поиск..." >
+                            placeholder="Поиск..." v-model="search_road">
                         <div style="max-height: 20vh; width: 100%; overflow: auto;">
                             <table>
                                 <tr>
-                                    <th style="border: 1px solid black">Наименование станции</th>
+                                    <th style="border: 1px solid black">Наименование дороги</th>
                                     <th style="border: 1px solid black">Сокращение</th>
                                 </tr>
-                               
+                                <tr v-for="item, index in road_dictionary" :key="index" class="hover_tr"  @click="saveToCashUserData(item, 'Дорога')">
+                                    <th style="border: 1px solid black">{{ index }}</th>
+                                    <th style="border: 1px solid black">{{ item }}</th>
+                                </tr>
                             </table>
                         </div>
                     </div>
-            
+
                 </div>
-        </div>
+            </div>
 
 
 
@@ -372,7 +377,6 @@
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
     </div>
-
 </template>
 <script>
 import Handsontable from "handsontable";
@@ -393,7 +397,9 @@ export default {
     data() {
         return {
             search_country: "",
+            search_road: "",
             info_block: false,
+            info_block2: false,
             flagCheck: false,
             stationCache: {},
             countryCashe: {},
@@ -485,6 +491,24 @@ export default {
                 return this.road_hadrcode.filter((road) => road.name.toLowerCase().includes(this.search_country.toLowerCase()))
             }
         },
+        road_dictionary() {
+            let directory = JSON.parse(localStorage.getItem('road'))
+            if (this.search_road.length <= 1) {
+                return directory
+            } else {
+                // Найти в объекте по ключу
+                for(let i in directory){
+                    if(directory[i].toLowerCase().includes(this.search_road.toLowerCase())){
+                        return {
+                            [i]: directory[i]
+                        }
+                    } else {
+                        return directory
+                    }
+                }
+                // return Object.keys(directory).filter((key) => directory[key].toLowerCase().includes(this.search_road.toLowerCase()))
+            }
+        },
         info_btn() {
             if (this.info_block == false) {
                 return require(`@/assets/info.png`)
@@ -549,14 +573,21 @@ export default {
                 this.visible_agreement = false;
                 this.visible_inp_ag = true;
                 this.visible_inp_an = false;
-                this.Standard.annex_number = "";
+                // this.Standard.annex_number = "";
                 this.agreement_number_test = "";
+                for (let i in this.Standard) {
+                    this.Standard[i] = ""
+                }
             } else {
                 this.placeholderAgreement = "введите номер приложения";
                 this.visible_agreement = true;
                 this.visible_inp_ag = false;
                 this.visible_inp_an = true;
-                this.Standard.agreement_number = "";
+                // this.Standard.agreement_number = "";
+                for (let i in this.Standard) {
+                    this.Standard[i] = ""
+                }
+
             }
         },
         agreement_number_test() {
@@ -566,11 +597,11 @@ export default {
     },
     methods: {
         // Сохранить в кэш юзера
-        saveToCashUserData(data) {
+        saveToCashUserData(data, typeRoad) {
             navigator.clipboard.writeText(data)
                 .then((res) => {
                     this.notifyHead = "Успешно";
-                    this.notifyMessage = `Страна: ${data} скопирована в буфер обмена`;
+                    this.notifyMessage = `${typeRoad}: ${data} скопирована в буфер обмена`;
                     this.notifyClass = "wrapper-success";
                     this.showNotify = true;
                     setTimeout(() => {
@@ -657,18 +688,18 @@ export default {
                         else if (key === 'Группа позиций по ЕТСНГ') {
                             key = 'cargo_type'
                             value = 'mask'
-                            newObj['cargo'] = currentItem[j].replace(/[^0-9]/g, "").slice(0, 3)
+                            newObj['cargo_var'] = currentItem[j].replace(/[^0-9]/g, "").slice(0, 3)
                         }
                         else if (key === 'Класс груза') {
                             key = 'cargo_type'
                             value = 'dangerous_code'
                             // получить из строки только числа
-                            newObj['cargo'] = currentItem[j].replace(/[^0-9]/g, "").slice(0, 1)
+                            newObj['cargo_var'] = currentItem[j].replace(/[^0-9]/g, "").slice(0, 1)
                         }
                         else if (key === 'Код ЕТСНГ') {
                             key = 'cargo_type'
                             value = 'etsng'
-                            newObj['cargo'] = currentItem[j]
+                            newObj['cargo_var'] = currentItem[j]
                         }
                         else if (key === 'Расстояние') {
                             key = 'distance'
@@ -1019,20 +1050,9 @@ export default {
                 return null; // Возвращаем null в случае ошибки
             }
         },
-        //         Глянь завтра пожалуйста, почему нельзя запрос отправить по этому пути
-        // http://10.1.5.20/api/finance/stavki-revenue/save-many/
-        // Ответ: 500 Internal Server Error
-        // Response: [[1,"'NoneType' object has no attribute 'name'"]]
-        // body: [
-        //   {
-        //     "agreement_number": "123",
-        //     "on_date": "2024-02-19",
-        //     "end_date": null,
-        //     "client": "Евросиб",
-        //   }
-        // ]
-        // Создать договор
+
         createAgreement() {
+            this.loader = true
             let agreement = [{
                 agreement_number: this.Standard.agreement_number,
                 on_date: this.Standard.on_date,
@@ -1042,6 +1062,7 @@ export default {
             }]
             api.postTarifData(agreement)
                 .then(response => {
+                    this.loader = false
                     this.notifyHead = "Успешно";
                     this.notifyMessage = "Договор создан";
                     this.notifyClass = "wrapper-success";
@@ -1050,6 +1071,7 @@ export default {
                         this.showNotify = false;
                     }, 3000);
                 }).catch((error) => {
+                    this.loader = false
                     this.notifyHead = "Ошибка";
                     this.notifyMessage = `Договор не создан! Повторите попытку позже`;
                     this.notifyClass = "wrapper-error";
@@ -1380,7 +1402,14 @@ export default {
                     } else {
                         finallyDataToSend[i].cargos_list = ""
                     }
+                    if (finallyDataToSend[i].stavka_date_begin == "") {
+                        finallyDataToSend[i].stavka_date_begin = null
+                    }
+                    if (finallyDataToSend[i].on_date == "") {
+                        finallyDataToSend[i].on_date = null
+                    }
                 }
+                console.log(finallyDataToSend, 'finallyDataToSend')
                 api.postTarifData(finallyDataToSend)
                     .then(response => {
                         console.log(response)
@@ -1416,7 +1445,6 @@ export default {
                 }, 3500);
             }
 
-            this.loader = false;
         },
 
         editCell(rowIndex, cellIndex) {
@@ -1557,4 +1585,5 @@ table {
 .air_block_header {
     padding: 1% 0 0 2%;
     color: #cacaca;
-}</style>
+}
+</style>
