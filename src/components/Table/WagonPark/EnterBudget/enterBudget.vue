@@ -30,7 +30,8 @@
             style="width: 20vw !important;"></v-select>
         </label>
         <div class="btn_block">
-          <button class="Request button" @click="loadFromExcel()" style="margin-left: auto;">Сохранить данные в таблицу</button>
+          <button class="Request button" @click="loadFromExcel()" style="margin-left: auto;">Сохранить данные в
+            таблицу</button>
           <button class="Delete button" @click="ClearTable()" v-show="isShowClearButton">Очистить данные таблицы</button>
           <button class="Accept button" @click="sendDataToServer()" v-show="isShowClearButton">Отправить
             данные&nbsp;&nbsp;
@@ -138,9 +139,10 @@ export default {
 
       // Создаем новый массив для совпадающих клиентов и их данных
       let matchedClients = [];
-
+      let startValueDestinationStation = []
       // Собираем уникальные станции в коллекцию roadSetCollection
       for (let item of this.dataFromExcelData) {
+        startValueDestinationStation.push(item.destination_station)
         if (item.departure_station) {
           roadSetCollection.add(item.departure_station);
         }
@@ -153,11 +155,15 @@ export default {
       let responsePromises = Array.from(roadSetCollection).map(async (station) => {
         try {
           const response = await apiWagon.getCurrentStation(station);
-          // Поиск объекта в массиве, сравнение в нижнем регистре
-          const matchingObject = response.data.data.find(obj =>
-            obj.name && obj.name.toLowerCase() === station?.toLowerCase()
-          );
 
+          // Поиск объекта в массиве, сравнение в нижнем регистре
+          const matchingObject = response.data.data.find(obj => {
+            if (station == '-') {
+              return obj.name
+            } else {
+              return obj.name && obj.name.toLowerCase() === station?.toLowerCase();
+            }
+          });
           if (matchingObject) {
             roadMemoize[station] = String(matchingObject.code);
           } else {
@@ -227,7 +233,14 @@ export default {
 
       matchedClients.forEach((item) => (item.wagon_type = this.wag_type));
       this.loader = false
-      console.log(matchedClients)
+      matchedClients.forEach((item, index) => {
+        for(let i in startValueDestinationStation){
+            if(index == i && startValueDestinationStation[index] == '-'){
+              item.destination_station = ""
+            }
+        }
+      })
+      // console.log(matchedClients, startValueDestinationStation)
       api.sendDataForOperSpravka(matchedClients)
         .then(response => {
           console.log(response)
