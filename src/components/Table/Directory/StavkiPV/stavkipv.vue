@@ -212,7 +212,8 @@
                                     <th style="border: 1px solid black">Наименование дороги</th>
                                     <th style="border: 1px solid black">Сокращение</th>
                                 </tr>
-                                <tr v-for="item, index in road_dictionary" :key="index" class="hover_tr"  @click="saveToCashUserData(item, 'Дорога')">
+                                <tr v-for="item, index in road_dictionary" :key="index" class="hover_tr"
+                                    @click="saveToCashUserData(item, 'Дорога')">
                                     <th style="border: 1px solid black">{{ index }}</th>
                                     <th style="border: 1px solid black">{{ item }}</th>
                                 </tr>
@@ -497,8 +498,8 @@ export default {
                 return directory
             } else {
                 // Найти в объекте по ключу
-                for(let i in directory){
-                    if(directory[i].toLowerCase().includes(this.search_road.toLowerCase())){
+                for (let i in directory) {
+                    if (directory[i].toLowerCase().includes(this.search_road.toLowerCase())) {
                         return {
                             [i]: directory[i]
                         }
@@ -667,7 +668,11 @@ export default {
                         }
                         else if (key === 'Мн. станций отпр.') {
                             key = 'departure_stations_list'
-                            value = value.replace(/[А-Я]{3}(?=\s)/g, "/").split("/").map(item => item.replace(/\s[А-Я]{3}/g, "").trim()).split(',')
+                            value = value.replace(/\s[А-Я]{3}/g, "/").split("/")
+
+                            value = value.map(item => item.replaceAll(',', "").trim()).filter((item) => item !== "")
+                                // .map(item => item.replace(/\s[А-Я]{3}/g, "").trim()).split(',')
+                            // .map(item => item.replace(/\s[А-Я]{3}/g, "").trim()).split(',')
                         }
                         else if (key === 'Коэффициент') {
                             key = 'k'
@@ -732,7 +737,7 @@ export default {
             if (this.errorp.length == 0) {
                 this.flagCheck = true;
                 this.checkCompleteData = new_data;
-                console.log(this.checkCompleteData)
+                console.log(this.checkCompleteData, this.checkCompleteData)
                 this.notifyHead = "Успешно";
                 this.notifyMessage = "Данные проверку прошли!";
                 this.notifyClass = "wrapper-success";
@@ -1055,7 +1060,7 @@ export default {
             this.loader = true
             let agreement = [{
                 agreement_number: this.Standard.agreement_number,
-                on_date: this.Standard.on_date,
+                on_date: this.Standard.on_date ,
                 end_date: this.Standard.end_date,
                 client: this.Standard.client,
                 wagon_type: 'Полувагон'
@@ -1407,6 +1412,9 @@ export default {
                     }
                     if (finallyDataToSend[i].on_date == "") {
                         finallyDataToSend[i].on_date = null
+                    }
+                    if (finallyDataToSend[i].end_date == "") {
+                        finallyDataToSend[i].end_date = null
                     }
                 }
                 console.log(finallyDataToSend, 'finallyDataToSend')
