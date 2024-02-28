@@ -193,11 +193,11 @@
                             <!-- <th>Клиент</th> -->
                             <th>Расстояние от</th>
                             <th>Расстояние до</th>
-                            <th>Ставка</th>
-                            <th>НДС</th>
-                            <th>Груз</th>
-                            <th>Станция отпр.</th>
-                            <th>Станция назн.</th>
+                            <th style="width: 100px !important;">Ставка</th>
+                            <th style="width: 100px !important;">НДС</th>
+                            <th style="width: 200px !important;">Груз</th>
+                            <th style="width: 200px !important;">Станция отпр.</th>
+                            <th style="width: 200px !important;">Станция назн.</th>
 
                             <th>Сдвоенный рейс</th>
                             <th>Груз наимен</th>
@@ -265,7 +265,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="inputcontainer">
+                                    <div class="inputcontainer" style="width: 100px !important;">
                                         <input :id="`stavka` + childr.id" type="text" v-model="childr.stavka"
                                             v-on:keyup.enter="
                                                 submitData(childr.stavka, childr.id, 'stavka', 'stavka_load')
@@ -276,7 +276,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="inputcontainer">
+                                    <div class="inputcontainer" style="width: 100px !important;">
                                         <input :id="`nds` + childr.id" type="text" v-model="childr.nds" v-on:keyup.enter="
                                             submitData(childr.nds, childr.id, 'nds', 'nds_load')
                                             " />
@@ -286,7 +286,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="inputcontainer">
+                                    <div class="inputcontainer" style="width: 200px !important;">
                                         <input :id="`cargo` + childr.id" type="text" v-model="childr.cargo_name"
                                             v-on:keyup.enter="
                                                 submitData(childr.cargo_name, childr.id, 'cargo', 'cargo_load')" />
@@ -296,7 +296,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="inputcontainer">
+                                    <div class="inputcontainer" style="width: 200px !important;">
                                         <input :id="`departure_station` + childr.id" type="text"
                                             v-model="childr.departure_station_name" v-on:keyup.enter="
                                                 submitData(childr.departure_station_name, childr.id, 'departure_station', 'departure_station_load', $event)
@@ -309,7 +309,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="inputcontainer">
+                                    <div class="inputcontainer" style="width: 200px !important;">
                                         <input :id="`destination_station` + childr.id" type="text"
                                             v-model="childr.destination_station_name" v-on:keyup.enter="
                                                 submitData(childr.destination_station_name, childr.id, 'destination_station', 'destination_station_load', $event)
