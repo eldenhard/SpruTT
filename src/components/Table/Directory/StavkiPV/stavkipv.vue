@@ -1320,15 +1320,17 @@ export default {
                             let capacity_compare;
                             let capacity_value_match;
                             let capacity_value;
+                            let stavka
                             // let stavka_nds
                             if (capacityField) {
                                 capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
                                 capacity_value_match = capacityField.match(/[0-9]+/);
                                 capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
-                                // stavka_nds = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
+                               
+                                stavka = Number(item[capacityField].replace(' ', '')) ; // Получаем значение по ключу capacityField
                             }
 
-                            const stavka = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
+                           
 
                             const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
 
@@ -1367,17 +1369,19 @@ export default {
                         let capacity_compare;
                         let capacity_value_match;
                         let capacity_value;
+                        let stavka
                         // let stavka_nds;
 
                         if (capacityField) {
                             capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
                             capacity_value_match = capacityField.match(/[0-9]+/);
                             capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
+                            stavka = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
+
                             // console.log(capacityField)
                             // stavka_nds = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
                         }
 
-                        const stavka = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
                         const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
 
                         const capacityObject = { capacity_compare, capacity_value, stavka, cargos_list };
