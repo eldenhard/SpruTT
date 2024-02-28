@@ -337,8 +337,7 @@
                                     назначения</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Станция след.погр.')">Станция следующей
                                     погрузки</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Станции искл. след.погр')">Станции исключения слудеющей
-                                    погрузки</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Станции искл.назначения')">Станции исключения назначения</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Коэффициент')">Коэффициент</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Расстояние')">Расстояние</b-dropdown-item>
                                 <b-dropdown-item @click="addField('НДС')">НДС</b-dropdown-item>
@@ -573,12 +572,12 @@ export default {
                 }
                 // Мн. станций отпр.
                 //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
-                    // значный)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
-                    //                     (123*)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
-                    //                     3)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+                // значный)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                //                     (123*)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                //                     3)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
 
                 this.selectedFields.push('Станция/Дорога/Страна отправления', 'Станция/Дорога/Страна назначения', 'Груз наимен', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
                 this.maskHeadTable = ""
@@ -597,12 +596,12 @@ export default {
                 }
                 // Мн. станций отпр.
                 //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
-                    // значный)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
-                    //                     (123*)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
-                    //                     3)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+                // значный)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                //                     (123*)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                //                     3)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
 
                 this.selectedFields.push('Станция/Дорога/Страна отправления', 'Станция/Дорога/Страна назначения', 'Код ЕТСНГ', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
                 this.maskHeadTable = ""
@@ -621,12 +620,12 @@ export default {
                 }
                 // Мн. станций отпр.
                 //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
-                    // значный)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
-                    //                     (123*)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
-                    //                     3)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+                // значный)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                //                     (123*)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                //                     3)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
 
                 this.selectedFields.push('Станция/Дорога/Страна отправления', 'Станция/Дорога/Страна назначения', 'Группа позиций по ЕТСНГ', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
                 this.maskHeadTable = ""
@@ -645,12 +644,12 @@ export default {
                 }
                 // Мн. станций отпр.
                 //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
-                    // значный)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
-                    //                     (123*)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
-                    //                     3)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+                // значный)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                //                     (123*)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                //                     3)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
 
                 this.selectedFields.push('Станция/Дорога/Страна отправления', 'Станция/Дорога/Страна назначения', 'Класс груза', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
                 this.maskHeadTable = ""
@@ -669,12 +668,12 @@ export default {
                 }
                 // Мн. станций отпр.
                 //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
-                    // значный)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
-                    //                     (123*)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
-                    //                     3)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+                // значный)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                //                     (123*)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                //                     3)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
 
                 this.selectedFields.push('Мн. станций отпр.', 'Станция/Дорога/Страна назначения', 'Груз наимен', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
                 this.maskHeadTable = ""
@@ -693,12 +692,12 @@ export default {
                 }
                 // Мн. станций отпр.
                 //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
-                    // значный)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
-                    //                     (123*)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
-                    //                     3)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+                // значный)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                //                     (123*)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                //                     3)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
 
                 this.selectedFields.push('Мн. станций отпр.', 'Станция/Дорога/Страна назначения', 'Код ЕТСНГ', 'Грузоподъемность более 75 т', 'Ставка НДС')
                 this.maskHeadTable = ""
@@ -717,12 +716,12 @@ export default {
                 }
                 // Мн. станций отпр.
                 //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
-                    // значный)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
-                    //                     (123*)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
-                    //                     3)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+                // значный)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                //                     (123*)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                //                     3)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
 
                 this.selectedFields.push('Мн. станций отпр.', 'Станция/Дорога/Страна назначения', 'Группа позиций по ЕТСНГ', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
                 this.maskHeadTable = ""
@@ -741,12 +740,12 @@ export default {
                 }
                 // Мн. станций отпр.
                 //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
-                    // значный)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
-                    //                     (123*)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
-                    //                     3)</b-dropdown-item>
-                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+                // значный)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                //                     (123*)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                //                     3)</b-dropdown-item>
+                //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
 
                 this.selectedFields.push('Мн. станций отпр.', 'Станция/Дорога/Страна назначения', 'Класс груза', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
                 this.maskHeadTable = ""
@@ -854,7 +853,7 @@ export default {
                             key = 'next_loading_stations_list'
                             value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
                         }
-                        else if (key === 'Станции искл. след.погр') {
+                        else if (key === 'Станции искл.назначения') {
                             key = 'exclude_next_loading_stations_list'
                             value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
                         }
@@ -1096,11 +1095,19 @@ export default {
             }
             if (this.errorp.length > 0) {
                 this.flagCheck = false;
+                this.notifyHead = "Ошибка. Не найдены данные";
+                this.notifyMessage = this.errorp.filter(
+                    (item) => !item.includes("NaN")
+                );
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 10000);
             } else {
                 this.notifyHead = "Успешно";
                 this.notifyMessage = "Ошибок нет, отправка данных возможна";
                 this.notifyClass = "wrapper-success";
-
                 this.showNotify = true;
                 setTimeout(() => {
                     this.showNotify = false;
@@ -1478,8 +1485,19 @@ export default {
         // },
 
         async saveData() {
-            // this.loader = true;
+           
+            if(!this.flagCheck) {
+                this.notifyHead = "Ошибка";
+                this.notifyMessage = "Вы не прошли проверку данных!";
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => {
+                    this.showNotify = false;
+                }, 3000);
+                return
+            }
             try {
+                this.loader = true;
                 // Добавление данных о грузоподъемности
                 const translationMap = {
                     'Станция отправления': 'departure_station',

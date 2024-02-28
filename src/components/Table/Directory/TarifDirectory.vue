@@ -347,7 +347,7 @@
             <!-- Новые поля от 20.02.2024 -->
             <th style="border: 1px solid black; font-size: 12px !important;">Расстояние</th>
             <th style="border: 1px solid black; font-size: 12px !important;">Станция следующей погрузки</th>
-            <th style="border: 1px solid black; font-size: 12px !important;">Станции исключения следующей погрузки</th>
+            <th style="border: 1px solid black; font-size: 12px !important;">Станции исключения назначения</th>
             <th style="border: 1px solid black; font-size: 12px !important;">Страна</th>
             <th style="border: 1px solid black; font-size: 12px !important;">Вагоны</th>
 
