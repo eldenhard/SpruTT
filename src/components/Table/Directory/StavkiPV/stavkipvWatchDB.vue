@@ -145,6 +145,7 @@
                             <th>Более/Менее</th>
                             <th>Грузоподъем т</th>
                             <th>НДС</th>
+                            <th>Ставка НДС, %</th>
                             <th>Коэффициент</th>
                             <th>Груз наимен</th>
                             <th>Мн. станций отправки</th>
@@ -240,6 +241,7 @@
                                         </div>
                                     </div>
                                 </td>
+                               
                                 <td>{{ childr.capacity_compare == 'less' ? 'Менее' : 'Более' }}</td>
                                 <td>{{ childr.capacity_value}} </td>
                                 <td>
@@ -252,7 +254,7 @@
                                         </div>
                                     </div>
                                 </td>
-                         
+                                <td>{{ childr.stavka_nds }}</td>
                                 <td>
                                     <div class="inputcontainer">
                                         <input :id="`k` + childr.id" type="text" v-model="childr.k" v-on:keyup.enter="
