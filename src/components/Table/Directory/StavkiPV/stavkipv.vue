@@ -162,8 +162,23 @@
             <br>
             <label for="">Маски шапки таблицы <br>
                 <select v-model="maskHeadTable">
-                    <option style="font-size: 14px;" :value="1">(Станция/Дорога/Страна отправления) - (Станция/Дорога/Страна
-                        назначения)- (Груз наименование)</option>
+                    <option style="font-size: 16px;" value="1">Станция/Дорога/Страна отправления - Станция/Дорога/Страна
+                        назначения- Груз наименование - Ставка менее 75т - Ставка более 75т - Ставка НДС</option>
+                    <option style="font-size: 16px;" value="2">Станция/Дорога/Страна отправления - Станция/Дорога/Страна
+                        назначения- <b>Код ЕТСНГ </b>- Ставка менее 75т - Ставка более 75т - Ставка НДС</option>
+                    <option style="font-size: 16px;" value="3">Станция/Дорога/Страна отправления - Станция/Дорога/Страна
+                        назначения- <b>Группа по ЕТСНГ</b> - Ставка менее 75т - Ставка более 75т - Ставка НДС</option>
+                    <option style="font-size: 16px;" value="4">Станция/Дорога/Страна отправления - Станция/Дорога/Страна
+                        назначения- <b>Класс груза</b> - Ставка менее 75т - Ставка более 75т - Ставка НДС</option>
+                    <br>
+                    <option style="font-size: 16px;" value="5">Множ.станция. - Станция/Дорога/Страна
+                        назначения- Груз наименование - Ставка менее 75т - Ставка более 75т - Ставка НДС</option>
+                    <option style="font-size: 16px;" value="6">Множ.станция. - Станция/Дорога/Страна
+                        назначения- <b>Код ЕТСНГ </b>- Ставка менее 75т - Ставка более 75т - Ставка НДС</option>
+                    <option style="font-size: 16px;" value="7">Множ.станция. - Станция/Дорога/Страна
+                        назначения- <b>Группа по ЕТСНГ</b> - Ставка менее 75т - Ставка более 75т - Ставка НДС</option>
+                    <option style="font-size: 16px;" value="8">Множ.станция. - Станция/Дорога/Страна
+                        назначения- <b>Класс груза</b> - Ставка менее 75т - Ставка более 75т - Ставка НДС</option>
                 </select>
             </label>
 
@@ -556,7 +571,184 @@ export default {
                     this.maskHeadTable = ""
                     return
                 }
-                this.selectedFields.push('Станция/Дорога/Страна отправления', 'Станция/Дорога/Страна назначения', 'Груз наимен')
+                // Мн. станций отпр.
+                //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
+                    // значный)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                    //                     (123*)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                    //                     3)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+
+                this.selectedFields.push('Станция/Дорога/Страна отправления', 'Станция/Дорога/Страна назначения', 'Груз наимен', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
+                this.maskHeadTable = ""
+            }
+            if (this.maskHeadTable == 2) {
+                if (this.selectedFields.length > 0) {
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = "Нельзя создать маску, при созданной шапке таблицы <br> Очистите таблицу и повторите попытку снова";
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                    this.maskHeadTable = ""
+                    return
+                }
+                // Мн. станций отпр.
+                //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
+                    // значный)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                    //                     (123*)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                    //                     3)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+
+                this.selectedFields.push('Станция/Дорога/Страна отправления', 'Станция/Дорога/Страна назначения', 'Код ЕТСНГ', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
+                this.maskHeadTable = ""
+            }
+            if (this.maskHeadTable == 3) {
+                if (this.selectedFields.length > 0) {
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = "Нельзя создать маску, при созданной шапке таблицы <br> Очистите таблицу и повторите попытку снова";
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                    this.maskHeadTable = ""
+                    return
+                }
+                // Мн. станций отпр.
+                //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
+                    // значный)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                    //                     (123*)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                    //                     3)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+
+                this.selectedFields.push('Станция/Дорога/Страна отправления', 'Станция/Дорога/Страна назначения', 'Группа позиций по ЕТСНГ', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
+                this.maskHeadTable = ""
+            }
+            if (this.maskHeadTable == 4) {
+                if (this.selectedFields.length > 0) {
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = "Нельзя создать маску, при созданной шапке таблицы <br> Очистите таблицу и повторите попытку снова";
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                    this.maskHeadTable = ""
+                    return
+                }
+                // Мн. станций отпр.
+                //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
+                    // значный)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                    //                     (123*)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                    //                     3)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+
+                this.selectedFields.push('Станция/Дорога/Страна отправления', 'Станция/Дорога/Страна назначения', 'Класс груза', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
+                this.maskHeadTable = ""
+            }
+            if (this.maskHeadTable == 5) {
+                if (this.selectedFields.length > 0) {
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = "Нельзя создать маску, при созданной шапке таблицы <br> Очистите таблицу и повторите попытку снова";
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                    this.maskHeadTable = ""
+                    return
+                }
+                // Мн. станций отпр.
+                //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
+                    // значный)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                    //                     (123*)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                    //                     3)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+
+                this.selectedFields.push('Мн. станций отпр.', 'Станция/Дорога/Страна назначения', 'Груз наимен', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
+                this.maskHeadTable = ""
+            }
+            if (this.maskHeadTable == 6) {
+                if (this.selectedFields.length > 0) {
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = "Нельзя создать маску, при созданной шапке таблицы <br> Очистите таблицу и повторите попытку снова";
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                    this.maskHeadTable = ""
+                    return
+                }
+                // Мн. станций отпр.
+                //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
+                    // значный)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                    //                     (123*)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                    //                     3)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+
+                this.selectedFields.push('Мн. станций отпр.', 'Станция/Дорога/Страна назначения', 'Код ЕТСНГ', 'Грузоподъемность более 75 т', 'Ставка НДС')
+                this.maskHeadTable = ""
+            }
+            if (this.maskHeadTable == 7) {
+                if (this.selectedFields.length > 0) {
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = "Нельзя создать маску, при созданной шапке таблицы <br> Очистите таблицу и повторите попытку снова";
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                    this.maskHeadTable = ""
+                    return
+                }
+                // Мн. станций отпр.
+                //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
+                    // значный)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                    //                     (123*)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                    //                     3)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+
+                this.selectedFields.push('Мн. станций отпр.', 'Станция/Дорога/Страна назначения', 'Группа позиций по ЕТСНГ', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
+                this.maskHeadTable = ""
+            }
+            if (this.maskHeadTable == 8) {
+                if (this.selectedFields.length > 0) {
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = "Нельзя создать маску, при созданной шапке таблицы <br> Очистите таблицу и повторите попытку снова";
+                    this.notifyClass = "wrapper-error";
+                    this.showNotify = true;
+                    setTimeout(() => {
+                        this.showNotify = false;
+                    }, 3000);
+                    this.maskHeadTable = ""
+                    return
+                }
+                // Мн. станций отпр.
+                //    <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
+                    // значный)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                    //                     (123*)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
+                    //                     3)</b-dropdown-item>
+                    //                 <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+
+                this.selectedFields.push('Мн. станций отпр.', 'Станция/Дорога/Страна назначения', 'Класс груза', 'Грузоподъемность менее 75 т', 'Грузоподъемность более 75 т', 'Ставка НДС')
                 this.maskHeadTable = ""
             }
         },
@@ -671,7 +863,7 @@ export default {
                             value = value.replace(/\s[А-Я]{3}/g, "/").split("/")
 
                             value = value.map(item => item.replaceAll(',', "").trim()).filter((item) => item !== "")
-                                // .map(item => item.replace(/\s[А-Я]{3}/g, "").trim()).split(',')
+                            // .map(item => item.replace(/\s[А-Я]{3}/g, "").trim()).split(',')
                             // .map(item => item.replace(/\s[А-Я]{3}/g, "").trim()).split(',')
                         }
                         else if (key === 'Коэффициент') {
@@ -755,7 +947,7 @@ export default {
             const newData = [];
             for (const [index, item] of DataValueFrom.entries()) {
                 const newItem = { ...item };
-    
+
                 if (item.destination_station) {
                     try {
                         const code = await this.getStationCode(item.destination_station, index);
@@ -1062,7 +1254,7 @@ export default {
             this.loader = true
             let agreement = [{
                 agreement_number: this.Standard.agreement_number,
-                on_date: this.Standard.on_date ,
+                on_date: this.Standard.on_date,
                 end_date: this.Standard.end_date,
                 client: this.Standard.client,
                 wagon_type: 'Полувагон'
@@ -1326,11 +1518,11 @@ export default {
                                 capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
                                 capacity_value_match = capacityField.match(/[0-9]+/);
                                 capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
-                               
-                                stavka = Number(item[capacityField].replace(' ', '')) ; // Получаем значение по ключу capacityField
+
+                                stavka = Number(item[capacityField].replace(' ', '')); // Получаем значение по ключу capacityField
                             }
 
-                           
+
 
                             const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
 
@@ -1422,7 +1614,7 @@ export default {
                     }
                     if (finallyDataToSend[i].end_date == "") {
                         finallyDataToSend[i].end_date = null
-                    }if(finallyDataToSend[i]['Ставка НДС']){
+                    } if (finallyDataToSend[i]['Ставка НДС']) {
                         finallyDataToSend[i].stavka_nds = Number(finallyDataToSend[i]['Ставка НДС']?.replace(',', '.'))
                     }
                 }
