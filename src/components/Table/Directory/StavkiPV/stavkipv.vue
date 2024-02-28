@@ -732,6 +732,7 @@ export default {
 
             // // Создание новых данных на основе преобразованных данных
             let new_data = await this.createNewData(DataValueFrom);
+            console.log(new_data, new_data);
             this.loader = false;
             // Вывод сообщения при отсутствии ошибок
             if (this.errorp.length == 0) {
@@ -754,6 +755,7 @@ export default {
             const newData = [];
             for (const [index, item] of DataValueFrom.entries()) {
                 const newItem = { ...item };
+    
                 if (item.destination_station) {
                     try {
                         const code = await this.getStationCode(item.destination_station, index);
@@ -1284,7 +1286,7 @@ export default {
         // },
 
         async saveData() {
-            this.loader = true;
+            // this.loader = true;
             try {
                 // Добавление данных о грузоподъемности
                 const translationMap = {
@@ -1318,19 +1320,19 @@ export default {
                             let capacity_compare;
                             let capacity_value_match;
                             let capacity_value;
-                            let stavka;
-
+                            // let stavka_nds
                             if (capacityField) {
                                 capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
                                 capacity_value_match = capacityField.match(/[0-9]+/);
                                 capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
-                                stavka = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
+                                // stavka_nds = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
                             }
 
-                            const stavka_nds = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
+                            const stavka = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
+
                             const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
 
-                            const capacityObject = { capacity_compare, stavka_nds, capacity_value, stavka, cargos_list };
+                            const capacityObject = { capacity_compare, capacity_value, stavka, cargos_list };
 
                             for (const key in item) {
                                 const newKey = translationMap[key] || key;
@@ -1365,19 +1367,20 @@ export default {
                         let capacity_compare;
                         let capacity_value_match;
                         let capacity_value;
-                        let stavka;
+                        // let stavka_nds;
 
                         if (capacityField) {
                             capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
                             capacity_value_match = capacityField.match(/[0-9]+/);
                             capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
-                            stavka = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
+                            // console.log(capacityField)
+                            // stavka_nds = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
                         }
 
-                        const stavka_nds = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
+                        const stavka = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
                         const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
 
-                        const capacityObject = { capacity_compare, stavka_nds, capacity_value, stavka, cargos_list };
+                        const capacityObject = { capacity_compare, capacity_value, stavka, cargos_list };
 
                         for (const key in item) {
                             const newKey = translationMap[key] || key;
@@ -1415,6 +1418,8 @@ export default {
                     }
                     if (finallyDataToSend[i].end_date == "") {
                         finallyDataToSend[i].end_date = null
+                    }if(finallyDataToSend[i]['Ставка НДС']){
+                        finallyDataToSend[i].stavka_nds = Number(finallyDataToSend[i]['Ставка НДС']?.replace(',', '.'))
                     }
                 }
                 console.log(finallyDataToSend, 'finallyDataToSend')
