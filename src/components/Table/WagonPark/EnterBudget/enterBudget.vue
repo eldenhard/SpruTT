@@ -147,9 +147,11 @@ export default {
       // Создаем новый массив для совпадающих клиентов и их данных
       let matchedClients = [];
       let startValueDestinationStation = []
+      let startValueDepartureStation = []
       // Собираем уникальные станции в коллекцию roadSetCollection
       for (let item of this.dataFromExcelData) {
         startValueDestinationStation.push(item.destination_station)
+        startValueDepartureStation.push(item.departure_station)
         if (item.departure_station) {
           roadSetCollection.add(item.departure_station);
         }
@@ -225,6 +227,7 @@ export default {
         this.notifyMessage = "Корректные данные были отправлены. Пожалуйста, исправьте ошибки и повторите попытку";
         this.notifyClass = "wrapper-error";
         this.showNotify = true;
+        this.loader = false
         setTimeout(() => {
           this.showNotify = false;
         }, 5500);
@@ -240,27 +243,35 @@ export default {
               item.destination_station = ""
             }
           }
+          for (let i in startValueDepartureStation) {
+            if (index == i && startValueDepartureStation[index] == '-') {
+              item.departure_station = ""
+            }
+          }
+
         })
+        try {
+          await api.sendDataForOperSpravka(matchedClients)
+          matchedClients = []
+          this.notifyHead = "Успешно!";
+          this.notifyMessage = "Данные отправлены!";
+          this.notifyClass = "wrapper-success";
+          this.showNotify = true;
+          setTimeout(() => {
+            this.showNotify = false;
+          }, 2500);
+          this.loader = false;
+
+        } catch {
+          this.loader = false
+        } finally {
+          this.loader = false
+        }
         // console.log(matchedClients, startValueDestinationStation)
-        api.sendDataForOperSpravka(matchedClients)
-          .then(response => {
-            console.log(response)
-            matchedClients = []
-            this.notifyHead = "Успешно!";
-            this.notifyMessage = "Данные отправлены!";
-            this.notifyClass = "wrapper-success";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 2500);
-            this.loader = false;
-          }).catch((err) => {
-            console.log(err)
-            this.loader = false;
-          })
+
 
       }
-
+      // this.loader = false
     },
 
 
