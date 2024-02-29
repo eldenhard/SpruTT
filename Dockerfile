@@ -12,6 +12,7 @@ RUN npm install select2
 RUN npm install -save vue-xlsx
 RUN npm install @handsontable/vue
 RUN npm install vue-select
+RUN npm install vue-multiselect --save
 COPY ./ .
 RUN npm run build
 

@@ -30,61 +30,69 @@
                     <b-tabs card>
                         <b-tab title="Выполнение плана" active>
                             <b-card-text>
-                                    <table style="margin-left: -5%;">
-                                        <thead>
-                                            <tr>
-                                                <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Клиент' : 'Клиент' }}</th>
-                                                <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' : "Объемы,тн" }} </th>
-    
-                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
-                                                    'Полувагон' ?
-                                                    'Объем на тек дату План' : 'Кол-во погр План на тек дату' }} </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
-                                                    'Полувагон' ?
-                                                    'Объем на тек дату Факт' : 'Кол-во погр факт на тек дату' }} </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
-                                                    'Полувагон' ?
-                                                    'Выполнение абсл.' : 'Отклонение кол-ва ваг' }} </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
-                                                    'Полувагон' ?
-                                                    'Выполнение отн.' : ' % выполнения плана' }} </th>
-    
-                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
-                                                    == 'Полувагон' ?
-                                                    'Выручка без НДС, руб' : "Выручка без НДС, руб ПЛАН" }} </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
-                                                    == 'Полувагон' ?
-                                                    'Объем на тек дату План' : 'Выручка без НДС, руб на тек дату ПЛАН' }} </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
-                                                    == 'Полувагон' ?
-                                                    'Объем на тек дату Факт' : 'Выручка без НДС, руб на тек дату факт' }} </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
-                                                    == 'Полувагон' ?
-                                                    'Выполнение абсл.' : 'отклонения в выручке' }} </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
-                                                    == 'Полувагон' ?
-                                                    'Выполнение отн.' : ' % выполнения' }} </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-if="Array.isArray(responseServerData) && responseServerData.length == 0">
-                                                <td colspan="11">По выбранным параметрам нет данных</td>
-                                            </tr>
-                                            <tr v-for="item, index in responseServerData" :key="index">
-                                                <td>{{ item.client }}</td>
-                                                <td>{{ item.metric | format }}</td>
-                                                <td>{{ item.metric_current_plan | format }}</td>
-                                                <td>{{ item.metric_current_fact | format }}</td>
-                                                <td>{{ item.metric_complete_abs | format }}</td>
-                                                <td>{{ item.metric_complete_rel | format }}</td>
-                                                <td>{{ item.revenue_wo_nds | format }}</td>
-                                                <td>{{ item.revenue_current_plan | format }}</td>
-                                                <td>{{ item.revenue_current_fact | format }}</td>
-                                                <td>{{ item.revenue_complete_abs | format }}</td>
-                                                <td>{{ item.revenue_complete_rel | format }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <table style="margin-left: -5%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="greenCell">Клиент
+                                                <v-select v-model="selectedOptions" :options="allClientsInTable" label="label" multiple>
+                                                    <!-- <template #option="{ option }">
+                                                        <span>{{ option.label }}</span>
+                                                    </template> -->
+                                                </v-select>
+                                            </th>
+                                            <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' :
+                                                "Объемы,тн" }} </th>
+
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
+                                                'Полувагон' ?
+                                                'Объем на тек дату План' : 'Кол-во погр План на тек дату' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
+                                                'Полувагон' ?
+                                                'Объем на тек дату Факт' : 'Кол-во погр факт на тек дату' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
+                                                'Полувагон' ?
+                                                'Выполнение абсл.' : 'Отклонение кол-ва ваг' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
+                                                'Полувагон' ?
+                                                'Выполнение отн.' : ' % выполнения плана' }} </th>
+
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
+                                                == 'Полувагон' ?
+                                                'Выручка без НДС, руб' : "Выручка без НДС, руб ПЛАН" }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
+                                                == 'Полувагон' ?
+                                                'Объем на тек дату План' : 'Выручка без НДС, руб на тек дату ПЛАН' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
+                                                == 'Полувагон' ?
+                                                'Объем на тек дату Факт' : 'Выручка без НДС, руб на тек дату факт' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
+                                                == 'Полувагон' ?
+                                                'Выполнение абсл.' : 'отклонения в выручке' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
+                                                == 'Полувагон' ?
+                                                'Выполнение отн.' : ' % выполнения' }} </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            v-if="Array.isArray(responseServerData.report) && responseServerData.report.length == 0">
+                                            <td colspan="11">По выбранным параметрам нет данных</td>
+                                        </tr>
+                                        <tr v-for="item, index in filteredReportData" :key="index">
+                                            <td>{{ item.client }}</td>
+                                            <td>{{ item.metric | format }}</td>
+                                            <td>{{ item.metric_current_plan | format }}</td>
+                                            <td>{{ item.metric_current_fact | format }}</td>
+                                            <td>{{ item.metric_complete_abs | format }}</td>
+                                            <td>{{ item.metric_complete_rel | format }}</td>
+                                            <td>{{ item.revenue_wo_nds | format }}</td>
+                                            <td>{{ item.revenue_current_plan | format }}</td>
+                                            <td>{{ item.revenue_current_fact | format }}</td>
+                                            <td>{{ item.revenue_complete_abs | format }}</td>
+                                            <td>{{ item.revenue_complete_rel | format }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </b-card-text>
                         </b-tab>
                         <b-tab title="Доходность">
@@ -94,17 +102,21 @@
                                         <th>Показатель</th>
                                         <th style="background: lightskyblue;">БП на {{ date_begin }}</th>
                                         <th style="background: lightseagreen;">Бюджет на {{ date_begin }}</th>
-                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на {{ date_begin }}</th>
-                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение бюджета от БП {{ date_begin }}</th>
-                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение факта от БП {{ date_begin }}</th>
-                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение факта от бюджета {{ date_begin }}</th>
+                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на {{
+                                            date_begin }}</th>
+                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение бюджета
+                                            от БП {{ date_begin }}</th>
+                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение факта от
+                                            БП {{ date_begin }}</th>
+                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение факта от
+                                            бюджета {{ date_begin }}</th>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>Выручка</td>
                                             <td></td>
                                             <td></td>
-                                            <td>{{ incomeServerData?.income | format }}</td>
+                                            <td>{{ responseServerData.other_info?.income | format }}</td>
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
@@ -208,8 +220,10 @@
 import Periods from "../../ManagmentRepReporting/Periods.vue";
 import api from '@/api/directory'
 import Loader from "@/components/loader/loader.vue";
+import vSelect from "vue-select";
+
 export default {
-    components: { Periods, Loader },
+    components: { Periods, Loader, vSelect },
     data() {
         return {
             wag_type: "Полувагон",
@@ -217,7 +231,8 @@ export default {
             date_end: "",
             loader: false,
             responseServerData: "",
-            incomeServerData: "",
+            selectedOptions: "",
+            allClientsInTable: [],
         }
     },
     filters: {
@@ -230,6 +245,18 @@ export default {
 
         },
     },
+    computed: {
+        filteredReportData(){
+            if(this.selectedOptions.length == 0){
+                return this.responseServerData.report
+            } else {
+                let array_val = this.selectedOptions.map(item => item.value)
+                return this.responseServerData.report.filter((item) => {
+                    return array_val.includes(item.client)
+                })
+            }
+        }
+    },
     watch: {
         wag_type() {
             this.responseServerData = ""
@@ -237,19 +264,25 @@ export default {
     },
     methods: {
 
-        Actioned() {
-            this.loader = true
-            api.getDataForOperSpravka(this.wag_type, this.date_begin)
-                .then(response => {
-                    this.loader = false
-                    this.responseServerData = response.data.report
-                    this.incomeServerData = response.data.other_info
-                   
-                }).catch((err) => {
-                    this.loader = false
-                    console.log(err)
+        async Actioned() {
+            try {
+                this.loader = true
+                let response = await api.getDataForOperSpravka(this.wag_type, this.date_begin)
+                this.responseServerData = response.data
+                const clients = this.responseServerData.report.map(item => item.client)
 
-                })
+                this.allClientsInTable = clients.reduce((acc, client) => {
+                    if(!acc.find(item => item.value === client)){
+                        acc.push({value: client, label: client})
+                    }
+                    return acc
+                }, []).sort((a, b) => a.value.localeCompare(b.value))
+            } catch {
+                this.loader = false
+            } finally {
+                this.loader = false
+            }
+
         },
     }
 }
@@ -305,7 +338,8 @@ select {
     padding: 1% 0 0 2%;
     color: #cacaca;
 }
- tr td:nth-child(1){
+
+tr td:nth-child(1) {
     text-align: left !important;
     padding-left: 10px !important;
 }
