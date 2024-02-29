@@ -22,7 +22,9 @@
           <option value="Цистерна">Цистерна</option>
         </select>
       </label>
-
+      <label for="">Дата начала
+        <input type="date" class="textarea" >
+      </label>
       <textarea class="textarea" placeholder="Вставьте данные из Excel сюда" v-model.trim="excelData"></textarea>
       <div class="action_block">
         <label for="" v-show="isShowClearButton">Все клиенты <br>

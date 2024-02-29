@@ -337,7 +337,8 @@
                                     назначения</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Станция след.погр.')">Станция следующей
                                     погрузки</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Станции искл.назначения')">Станции исключения назначения</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Станции искл.назначения')">Станции исключения
+                                    назначения</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Коэффициент')">Коэффициент</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Расстояние')">Расстояние</b-dropdown-item>
                                 <b-dropdown-item @click="addField('НДС')">НДС</b-dropdown-item>
@@ -569,7 +570,7 @@ export default {
                 this.new_comp = null
             },
             deep: true
-           
+
         },
         maskHeadTable() {
             if (this.maskHeadTable == 1) {
@@ -1309,14 +1310,24 @@ export default {
                     this.loader = false
 
                     this.all_agreement_number = response.data.data
-                    console.log(this.all_agreement_number)
-                    this.notifyHead = "Успешно";
-                    this.notifyMessage = "Договора получены";
-                    this.notifyClass = "wrapper-success";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 3000);
+                    if (this.all_agreement_number.length == 0) {
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = `Договоры у контрагента ${this.Standard.client} не найдены`;
+                        this.notifyClass = "wrapper-error";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 5000);
+                    } else {
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = "Договоры получены";
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => {
+                            this.showNotify = false;
+                        }, 3000);
+                    }
+
                 }).catch((error) => {
                     this.loader = false
                     this.notifyHead = "Ошибка";
@@ -1409,8 +1420,8 @@ export default {
         },
 
         async saveData() {
-           
-            if(!this.flagCheck) {
+
+            if (!this.flagCheck) {
                 this.notifyHead = "Ошибка";
                 this.notifyMessage = "Вы не прошли проверку данных!";
                 this.notifyClass = "wrapper-error";
@@ -1559,7 +1570,7 @@ export default {
                     } if (finallyDataToSend[i]['Ставка НДС']) {
                         finallyDataToSend[i].stavka_nds = Number(finallyDataToSend[i]['Ставка НДС']?.replace(',', '.'))
                     }
-                    if(isNaN(finallyDataToSend[i].stavka)) {
+                    if (isNaN(finallyDataToSend[i].stavka)) {
                         console.log('ошибка ставки')
                         throw new Error(`<br> Ставка не может быть обработа. Проверьте поле ставок. <br> Строка: ${i}`);
                     }

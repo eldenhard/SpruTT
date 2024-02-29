@@ -57,7 +57,8 @@
         {{ instruction ? "Свернуть инструкцию" : "Смотреть инструкцию" }}
       </h5>
     </div>
-    <button class="Accept button" style="margin-right: auto; background: #BFEEC5 !important; color: black;" @click="instruction2 = !instruction2">Инструкция по работе с разделом</button>
+    <button class="Accept button" style="margin-right: auto; background: #BFEEC5 !important; color: black;"
+      @click="instruction2 = !instruction2">Инструкция по работе с разделом</button>
     <p class="explanation" v-if="instruction2">
       * Копирование и ввод данных в таблицу 1 должен осуществляться из
       <b>Excel</b>, после вставки значения в ячейку нажмите
@@ -142,7 +143,7 @@
       <hr />
       <br />
 
-
+     
 
       <table v-show="visible">
         <tr>
@@ -436,7 +437,6 @@ import api from "@/api/directory";
 import api_wagon from "@/api/wagonPark";
 import TarifDirectoryCreated from "./TarifDirectoryCreated.vue";
 import vSelect from "vue-select";
-
 class Stavki {
   constructor() {
     this.destination_station = null;
@@ -595,6 +595,16 @@ export default {
     },
   },
   methods: {
+
+    CheckValue(value) {
+      let client = value;
+      if (
+        client != 'amount' &&
+        client != 'cost'
+      ) {
+        return true;
+      }
+    },
     // Получить список все договоров которые есть для ЦС
     getAllAgreement() {
       api

@@ -72,10 +72,11 @@
             <span> Всего записей: {{ total_objects }} </span>
             <loader_mini :loader="loader_mini">по наименованиям станций</loader_mini>
         </p>
+        <!-- <button @click="DownloadExcel()">Скачать в Excel</button> -->
         <button class="Delete button" style="width: 15%; white-space: nowrap; margin: 2% 0; height: 30px"
             @click="open_modal(selectedItems)">Удалить выбранное</button>
         <div style="max-width: 100%; overflow: auto; margin-bottom: 5%">
-            <table border="1" v-show="visible">
+            <table border="1" v-show="visible" ref="theTable">
                 <thead>
                     <th>№</th>
                     <th>Номер дог.</th>
@@ -187,7 +188,7 @@
                                     <input id="all" type="checkbox" :checked="selectAll" @change="toggleSelectAll">
                                 </label>
                             </th> -->
-                            <th>Действие</th>
+                            <th>Все&nbsp;<input id="all" type="checkbox" :checked="selectAll" @change="toggleSelectAll(att.agreement_number)"></th>
                             <!-- <th>Дата</th> -->
                             <th>Дата оконч.</th>
                             <!-- <th>Клиент</th> -->
@@ -376,6 +377,8 @@ import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import { mapState } from "vuex";
 import loader_mini from "@/components/loader/loader_mini.vue";
+import * as XLSX from 'xlsx'
+
 export default {
     components: { Loader, Notifications, loader_mini },
     data() {
@@ -457,13 +460,21 @@ export default {
         },
     },
     methods: {
-        toggleSelectAll() {
+
+        toggleSelectAll(annex_number) {
             this.selectAll = !this.selectAll
             if (this.selectAll) {
-                this.selectedItems = this.data.map(item => item.id)
+                console.log(this.data[0].attachments, annex_number, 'Начальные данные')
+                for(let i in this.data[0].attachments){
+                  if(this.data[0].attachments[i].agreement_number == annex_number){
+                    this.selectedItems = this.data[0].attachments[i].attachments.map(item => item.id)
+                  }
+                }
+          
             } else {
                 this.selectedItems = []
             }
+            console.log(this.selectedItems)
         },
         toggleItemSelection(itemId) {
             if (this.isSelected(itemId)) {
@@ -823,7 +834,7 @@ export default {
                             this.showNotify = false;
                         }, 2500);
                         this.getStandardData()
-                       
+
                     }).catch((err) => {
                         this.loader = false
                         this.getStandardData()
@@ -1140,4 +1151,5 @@ thead th {
 
 li {
     cursor: pointer;
-}</style>
+}
+</style>
