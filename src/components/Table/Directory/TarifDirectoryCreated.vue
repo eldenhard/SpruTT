@@ -377,7 +377,6 @@ import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import { mapState } from "vuex";
 import loader_mini from "@/components/loader/loader_mini.vue";
-import * as XLSX from 'xlsx'
 
 export default {
     components: { Loader, Notifications, loader_mini },
