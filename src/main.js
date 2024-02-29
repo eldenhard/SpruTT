@@ -7,7 +7,6 @@ import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 // import * as Sentry from "@sentry/vue";
 
-
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
 // import axios from 'axios'
 import "./helpers/axios"
@@ -18,7 +17,6 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Toast from "vue-toastification";
 // Import the CSS or use your own!
 import "vue-toastification/dist/index.css";
-
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Toast, {
