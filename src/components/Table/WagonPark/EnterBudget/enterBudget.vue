@@ -15,16 +15,20 @@
         * Если Вам была выдана ошибка - некорректный клиент, и Вам необходимо его корректное название, <br>
         найдите его в выпадающем списке, при клике на клиента который Вам необходим, он скопируется в Ваш буфер обмена
       </p>
-      <label for="">
-        Тип вагона <br>
-        <select v-model="wag_type" :disabled="isDisabled">
-          <option value="Полувагон">Полувагон</option>
-          <option value="Цистерна">Цистерна</option>
-        </select>
-      </label>
-      <label for="">Дата начала
-        <input type="date" class="textarea" >
-      </label>
+      <div style="display: flex; width: 60%; gap: 20px">
+        <label for="" style="width: 100%">
+          Тип вагона <br>
+          <select v-model="wag_type" :disabled="isDisabled">
+            <option value="Полувагон">Полувагон</option>
+            <option value="Цистерна">Цистерна</option>
+          </select>
+        </label>
+        <br>
+        <label for="" style="width: 100%">Дата начала
+          <input type="date" class="textarea" style="background: white;" v-model="on_date">
+        </label>
+      </div>
+
       <textarea class="textarea" placeholder="Вставьте данные из Excel сюда" v-model.trim="excelData"></textarea>
       <div class="action_block">
         <label for="" v-show="isShowClearButton">Все клиенты <br>
@@ -108,6 +112,7 @@ export default {
       notifyClass: "",
       allClientsResponse: [],
       curentClient: "",
+      on_date: "",
     };
   },
   watch: {
@@ -224,35 +229,38 @@ export default {
           this.showNotify = false;
         }, 5500);
       } else {
-        this.notifyHead = "Успешно!";
-        this.notifyMessage = "Данные отправлены!";
-        this.notifyClass = "wrapper-success";
-        this.showNotify = true;
-        setTimeout(() => {
-          this.showNotify = false;
-        }, 2500);
-      }
 
-      matchedClients.forEach((item) => (item.wagon_type = this.wag_type));
-      this.loader = false
-      matchedClients.forEach((item, index) => {
-        for(let i in startValueDestinationStation){
-            if(index == i && startValueDestinationStation[index] == '-'){
+        matchedClients.forEach((item) => {
+          item.wagon_type = this.wag_type
+          item.on_date = this.on_date
+        });
+        matchedClients.forEach((item, index) => {
+          for (let i in startValueDestinationStation) {
+            if (index == i && startValueDestinationStation[index] == '-') {
               item.destination_station = ""
             }
-        }
-      })
-      // console.log(matchedClients, startValueDestinationStation)
-      api.sendDataForOperSpravka(matchedClients)
-        .then(response => {
-          console.log(response)
-          matchedClients = []
-
-          this.loader = false;
-        }).catch((err) => {
-          console.log(err)
-          this.loader = false;
+          }
         })
+        // console.log(matchedClients, startValueDestinationStation)
+        api.sendDataForOperSpravka(matchedClients)
+          .then(response => {
+            console.log(response)
+            matchedClients = []
+            this.notifyHead = "Успешно!";
+            this.notifyMessage = "Данные отправлены!";
+            this.notifyClass = "wrapper-success";
+            this.showNotify = true;
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 2500);
+            this.loader = false;
+          }).catch((err) => {
+            console.log(err)
+            this.loader = false;
+          })
+
+      }
+
     },
 
 
