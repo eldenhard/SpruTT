@@ -556,7 +556,21 @@ export default {
         },
     },
     watch: {
-
+        'Standard.client': {
+            handler(newValue, oldValue) {
+                this.Standard.on_date = null
+                this.Standard.agreement_number = null
+                this.Standard.annex_number = null
+                this.Standard.on_date = null
+                this.Standard.end_date = null
+                this.Standard.base = null
+                this.Standard.stavka_date_begin = null
+                this.all_agreement_number = []
+                this.new_comp = null
+            },
+            deep: true
+           
+        },
         maskHeadTable() {
             if (this.maskHeadTable == 1) {
                 if (this.selectedFields.length > 0) {
@@ -1393,96 +1407,6 @@ export default {
             // КОНЕЦ РАБОЧЕГО КОДА
             this.excelData = "";
         },
-        // !!!!!!!!!!!!!!!РАБОЧИЙ!!!!!!!!!!!!!
-        // Отправка данных на сервер
-        // async saveData() {
-        //     this.loader = true
-        //     try {
-        //         // Добавление данных о грузоподъемности
-        //         const translationMap = {
-        //             'Станция отправления': 'departure_station',
-        //             'Станция назначения': 'destination_station',
-        //             'Дорога назначения': 'destination_road',
-        //             'Дорога отправления': 'departure_road',
-        //             'Коэффициент': 'k',
-        //             'НДС': 'nds',
-        //             'Cтавка НДС': 'stavka_nds',
-        //             'Оборот, сут': 'turnover',
-        //             "Группа позиций по ЕТСНГ": "mask",
-        //             "Класс груза": 'dangerous_code',
-        //             "Код ЕТСНГ": 'etsng'
-        //         };
-
-        //         const capacityIndices = this.selectedFields.reduce((acc, field, index) => {
-        //             if (field.includes('Грузоподъемность')) {
-        //                 acc.push(index);
-        //             }
-        //             return acc;
-        //         }, []);
-        //         if(capacityIndices.length > 1) {
-
-        //         }
-        //         // Преобразовать данные для каждого индекса
-        //         const transformedData = this.checkCompleteData.map(item => {
-        //             const capacityField = Object.keys(item).find(key => key.includes('Грузоподъемность'));
-        //             const stavkaField = Object.keys(item).find(key => this.selectedFields.includes(key));
-        //             let capacity_compare;
-        //             let capacity_value_match;
-        //             let capacity_value;
-        //             let stavka;
-
-        //             if (capacityField) {
-        //                 capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
-        //                 capacity_value_match = capacityField.match(/[0-9]+/);
-        //                 capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
-        //                 stavka = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
-        //             }
-
-        //             const stavka_nds = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
-        //             const cargos_list = item.cargos_list ? item.cargos_list.join(';') : '';
-
-        //             const capacityObject = { capacity_compare, stavka_nds, capacity_value, stavka, cargos_list };
-
-        //             for (const key in item) {
-        //                 const newKey = translationMap[key] || key;
-        //                 capacityObject[newKey] = item[key] || '';
-        //             }
-
-        //             return capacityObject;
-        //         });
-        //         // Собираем все данные в огдин массив объектов
-        //         let finallyDataToSend = transformedData.flat().map(item => ({
-        //             ...item,
-        //             // k: parseFloat(item.k?.replace(',', '.')) || 0,
-        //             nds: parseFloat((item && item.nds ? item.nds.replace(',', '.') : 0) || 0),
-        //             // stavka_nds: parseFloat(item.stavka_nds?.replace(',', '.')) || 0,
-        //             client: this.Standard?.client,
-        //             agreement_number: this.Standard.annex_number,
-        //             on_date: this.Standard.on_date,
-        //             end_date: this.Standard.end_date,
-        //             base: this.new_comp?.id,
-        //             responsible: this.uid,
-        //             wagon_type: 'Полувагон',
-        //             cargos_list: item.cargos_list.join(';')
-        //         }));
-        //         console.log(finallyDataToSend)
-
-        //     } catch (error) {
-        //         console.error("Ошибка в блоке try:", error);
-        //         this.loader = false;
-        //         this.notifyHead = "Ошибка";
-        //         this.notifyMessage = "Очистите таблицу и повторите загрузку повторно! " + error.message;
-        //         this.notifyClass = "wrapper-error";
-        //         this.showNotify = true;
-        //         setTimeout(() => {
-        //             this.showNotify = false;
-        //         }, 3500);
-        //     }
-
-
-        //     this.loader = false
-
-        // },
 
         async saveData() {
            
@@ -1537,7 +1461,7 @@ export default {
                                 capacity_value_match = capacityField.match(/[0-9]+/);
                                 capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
 
-                                stavka = Number(item[capacityField].replace(' ', '')); // Получаем значение по ключу capacityField
+                                stavka = Number(item[capacityField].replaceAll(' ', '').replace(',', '.')); // Получаем значение по ключу capacityField
                             }
 
 
@@ -1634,6 +1558,10 @@ export default {
                         finallyDataToSend[i].end_date = null
                     } if (finallyDataToSend[i]['Ставка НДС']) {
                         finallyDataToSend[i].stavka_nds = Number(finallyDataToSend[i]['Ставка НДС']?.replace(',', '.'))
+                    }
+                    if(isNaN(finallyDataToSend[i].stavka)) {
+                        console.log('ошибка ставки')
+                        throw new Error(`<br> Ставка не может быть обработа. Проверьте поле ставок. <br> Строка: ${i}`);
                     }
                 }
                 console.log(finallyDataToSend, 'finallyDataToSend')
