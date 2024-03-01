@@ -7,12 +7,12 @@
             </div>
             <hr />
             <br />
-            <div class="filter_block" style="width: 35%; display: flex; flex-direction: column; position: relative;">
-                <label for="">Дата <br>
+            <div class="filter_block" style="width: 50%; display: flex; flex-direction: column; position: relative; ">
+                <label>Дата <br>
                     <input type="date" class="textarea" style="width: 20vw !important;" v-model="date_begin"
                         :min="'2024-01-01'">
                 </label>
-                <label for="">
+                <label>
                     Тип вагона
                     <br />
                     <select name="" id="" v-model="wag_type" class="textarea" style="width:20vw !important;">
@@ -20,6 +20,9 @@
                         <option value="Цистерна">Цистерна</option>
                     </select>
 
+                </label>
+                <label>Клиент <br>
+                    <v-select v-model="currentClients" :options="clients" label="value" multiple></v-select>
                 </label>
                 <br>
                 <button class="Accept button" @click="Actioned()" style="width:20vw !important; height: 40px;">Загрузить
@@ -36,9 +39,6 @@
                                             <th class="greenCell">Клиент
                                                 <v-select v-model="selectedOptions" :options="allClientsInTable"
                                                     label="label" multiple>
-                                                    <!-- <template #option="{ option }">
-                                                        <span>{{ option.label }}</span>
-                                                    </template> -->
                                                 </v-select>
                                             </th>
                                             <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' :
@@ -248,6 +248,44 @@ export default {
             responseServerData: "",
             selectedOptions: "",
             allClientsInTable: [],
+            currentClients: [],
+            clients: [{ value: "ТАТНЕФТЬ-ТРАНС, ООО" },
+            { value: "ВЕКТОР-ДВИЖЕНИЯ, ООО" },
+            { value: "Энергоресурсы" },
+            { value: "РЕСУРС ТРАНС, ООО" },
+            { value: "Рус-ОйлЭкс" },
+            { value: "НХТК" },
+            { value: "РУСТЭК" },
+            { value: 'Рейл Сервис' },
+            { value: 'ООО "Томская Топливная Компания"' },
+            { value: 'Грифон' },
+            { value: 'ННК-Транс' },
+            { value: 'ООО "БалтТрансСервис"' },
+            { value: 'РТС-ТРАНС, ООО' },
+            { value: 'ГАЗПРОМТРАНС, ООО' },
+            { value: 'Газпромтранс' },
+            { value: 'ГК ТИТАН, АО' },
+            { value: 'НОВАЯ ГОРНАЯ УК, ООО' },
+            { value: 'Трансметкокс' },
+            { value: 'Мечел-Транс' },
+            { value: 'СПО, ООО' },
+            { value: 'ТД УГЛИ КУЗБАССА, ООО' },
+            { value: 'РУК, ООО' },
+            { value: 'НАЦИОНАЛЬНАЯ ТРАНСПОРТНАЯ КОМПАНИЯ, АО' },
+            { value: 'Уголь-Транс' },
+            { value: 'РУССКИЙ УГОЛЬ, АО' },
+            { value: 'ЭЛСИ ЛОГИСТИКА СИБИРЬ, ООО' },
+            { value: 'ПАО "Газпром Нефть"' },
+            { value: 'ППО' },
+            { value: 'ЧЭМК, АО' },
+            { value: 'Алоран' },
+            { value: 'АККЕРМАНН ЦЕМЕНТ, ООО' },
+            { value: 'НЕРУДНАЯ ЛОГИСТИЧЕСКАЯ КОМПАНИЯ, ООО' },
+            { value: 'АО "УРАЛЬСКАЯ СТАЛЬ"' },
+            { value: 'ПЕРВООСНОВА, АО' },
+            { value: 'ДЕЛОВЫЕ ПРОГРАММЫ, ООО' },
+            { value: 'СтройТехно-Урал, ООО' },
+            { value: 'УГПХ, ООО' }]
         }
     },
     filters: {
@@ -353,7 +391,13 @@ export default {
         async Actioned() {
             try {
                 this.loader = true
-                let response = await api.getDataForOperSpravka(this.wag_type, this.date_begin)
+                let data = this.currentClients.map((item) => {
+                    return { client: item.value }
+                })
+                const clientsParams = data.map((item) => `clients=${item.client}`).join('&');
+                // Формируем строку запроса с параметрами clients
+                const queryString = `?wagon_type=${this.wag_type }&report_date=${this.date_begin}&${ clientsParams }`;
+                let response = await api.getDataForOperSpravka(queryString);
                 this.responseServerData = response.data
                 const clients = this.responseServerData.report.map(item => item.client)
 
@@ -429,7 +473,8 @@ tr td:nth-child(1) {
     text-align: left !important;
     padding-left: 10px !important;
 }
-td{
+
+td {
     white-space: nowrap;
 }
 </style>
