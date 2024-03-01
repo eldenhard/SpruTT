@@ -34,7 +34,8 @@
                                     <thead>
                                         <tr>
                                             <th class="greenCell">Клиент
-                                                <v-select v-model="selectedOptions" :options="allClientsInTable" label="label" multiple>
+                                                <v-select v-model="selectedOptions" :options="allClientsInTable"
+                                                    label="label" multiple>
                                                     <!-- <template #option="{ option }">
                                                         <span>{{ option.label }}</span>
                                                     </template> -->
@@ -91,6 +92,19 @@
                                             <td>{{ item.revenue_complete_abs | format }}</td>
                                             <td>{{ item.revenue_complete_rel | format }}</td>
                                         </tr>
+                                        <tr class="Row_grey">
+                                            <td>Итого</td>
+                                            <td>{{ totalMetric | format }}</td>
+                                            <td>{{ totalMetricCurrentPlan | format }}</td>
+                                            <td>{{ totalMetricCurrentFact | format }}</td>
+                                            <td>{{ totalMetricCompleteAbs | format }}</td>
+                                            <td>{{ totalMetricCompleteRel | format }}</td>
+                                            <td>{{ totalRevenueWithoutNDS | format }}</td>
+                                            <td>{{ totalRevenueCurrentPlan | format }}</td>
+                                            <td>{{ totalRevenueCurrentFact | format }}</td>
+                                            <td>{{ totalRevenueCompleteAbs | format }}</td>
+                                            <td>{{ totalRevenueCompleteRel | format }}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </b-card-text>
@@ -116,7 +130,7 @@
                                             <td>Выручка</td>
                                             <td></td>
                                             <td></td>
-                                            <td>{{ responseServerData.other_info?.income | format }}</td>
+                                            <td>{{ responseServerData.other_info?.revenue | format }}</td>
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
@@ -125,7 +139,7 @@
                                             <td>Тариф порож</td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
+                                            <td>{{ responseServerData.other_info?.empty_tariff | format }}</td>
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
@@ -134,7 +148,7 @@
                                             <td>Тариф по сопред порож</td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
+                                            <td>{{ responseServerData.other_info?.inroad_tariff | format }}</td>
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
@@ -152,7 +166,7 @@
                                             <td>Доп. расходы</td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
+                                            <td>{{ responseServerData.other_info?.other_charges | format }}</td>
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
@@ -161,7 +175,7 @@
                                             <td>Маржинальный доход</td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
+                                            <td>{{ responseServerData.other_info?.margin | format }}</td>
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
@@ -170,7 +184,7 @@
                                             <td>Вагоносутки (раб)</td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
+                                            <td>{{ responseServerData.other_info?.vagonosutki_work | format }}</td>
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
@@ -179,7 +193,7 @@
                                             <td>Вагоносутки (общ)</td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>
+                                            <td>{{ responseServerData.other_info?.vagonosutki_calendar | format }}</td>
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
@@ -197,7 +211,8 @@
                                             <td>Доходность (общ в/с)</td>
                                             <td style="background: lightskyblue;"></td>
                                             <td style="background: lightseagreen;"></td>
-                                            <td style="background: rgb(46, 11, 11);  color: white !important;"></td>
+                                            <td style="background: rgb(46, 11, 11);  color: white !important;">{{
+                                                responseServerData.other_info?.income | format }}</td>
                                             <td style="background: darkred;  color: white !important;">-</td>
                                             <td style="background: darkred;  color: white !important;">-</td>
                                             <td style="background: darkred; color: white !important;">-</td>
@@ -246,8 +261,8 @@ export default {
         },
     },
     computed: {
-        filteredReportData(){
-            if(this.selectedOptions.length == 0){
+        filteredReportData() {
+            if (this.selectedOptions.length == 0) {
                 return this.responseServerData.report
             } else {
                 let array_val = this.selectedOptions.map(item => item.value)
@@ -255,7 +270,78 @@ export default {
                     return array_val.includes(item.client)
                 })
             }
-        }
+        },
+        totalMetric() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+
+                return this.filteredReportData.reduce((sum, item) => sum + item.metric, 0);
+            } else {
+                return 0
+            }
+        },
+        totalMetricCurrentPlan() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+                return this.filteredReportData.reduce((sum, item) => sum + item.metric_current_plan, 0);
+            } else {
+                return 0
+            }
+        },
+        totalMetricCurrentFact() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+                return this.filteredReportData.reduce((sum, item) => sum + item.metric_current_fact, 0);
+            } else {
+                return 0
+            }
+        },
+        totalMetricCompleteAbs() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+                return this.filteredReportData.reduce((sum, item) => sum + item.metric_complete_abs, 0);
+            } else {
+                return 0
+            }
+        },
+        totalMetricCompleteRel() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+                return this.filteredReportData.reduce((sum, item) => sum + item.metric_complete_rel, 0);
+            } else {
+                return 0
+            }
+        },
+        totalRevenueWithoutNDS() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_wo_nds, 0);
+            } else {
+                return 0
+            }
+        },
+        totalRevenueCurrentPlan() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_current_plan, 0);
+            } else {
+                return 0
+            }
+        },
+        totalRevenueCurrentFact() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_current_fact, 0);
+            } else {
+                return 0
+            }
+        },
+        totalRevenueCompleteAbs() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_complete_abs, 0);
+            } else {
+                return 0
+            }
+        },
+        totalRevenueCompleteRel() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+                return this.responseServerData.report.reduce((sum, item) => sum + item.revenue_complete_rel, 0);
+            } else {
+                return 0
+            }
+        },
     },
     watch: {
         wag_type() {
@@ -272,8 +358,8 @@ export default {
                 const clients = this.responseServerData.report.map(item => item.client)
 
                 this.allClientsInTable = clients.reduce((acc, client) => {
-                    if(!acc.find(item => item.value === client)){
-                        acc.push({value: client, label: client})
+                    if (!acc.find(item => item.value === client)) {
+                        acc.push({ value: client, label: client })
                     }
                     return acc
                 }, []).sort((a, b) => a.value.localeCompare(b.value))
@@ -342,5 +428,8 @@ select {
 tr td:nth-child(1) {
     text-align: left !important;
     padding-left: 10px !important;
+}
+td{
+    white-space: nowrap;
 }
 </style>
