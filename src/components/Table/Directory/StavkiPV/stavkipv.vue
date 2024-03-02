@@ -269,7 +269,7 @@
                                     <div style="height: 30vh; overflow-y: auto;">
 
 
-                                        <b-dropdown-item @click="addField('Грузоподъемность менее 65,5 т')">Ставка при:
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 65,5 т')">Ставка при:
                                             Грузоподъемность
                                             менее 65,5 т</b-dropdown-item>
                                         <hr>
