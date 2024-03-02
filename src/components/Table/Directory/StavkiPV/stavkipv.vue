@@ -269,7 +269,7 @@
                                     <div style="height: 30vh; overflow-y: auto;">
 
 
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 65,5 т')">Ставка при:
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 65.5 т')">Ставка при:
                                             Грузоподъемность
                                             менее 65,5 т</b-dropdown-item>
                                         <hr>
@@ -295,12 +295,12 @@
                                             69 т</b-dropdown-item>
                                         <hr>
                                         <b-dropdown-item
-                                            @click="addField('Ставка при: Грузоподъемность менее 69,5 т')">Ставка
+                                            @click="addField('Ставка при: Грузоподъемность менее 69.5 т')">Ставка
                                             при: Грузоподъемность
                                             менее 69,5 т</b-dropdown-item>
                                         <hr>
                                         <b-dropdown-item
-                                            @click="addField('Ставка при: Грузоподъемность менее 70,3 т')">Ставка
+                                            @click="addField('Ставка при: Грузоподъемность менее 70.3 т')">Ставка
                                             при: Грузоподъемность
                                             менее 70,3 т</b-dropdown-item>
                                         <hr>
@@ -1432,7 +1432,7 @@ export default {
                 return
             }
             try {
-                this.loader = true;
+                // this.loader = true;
                 // Добавление данных о грузоподъемности
                 const translationMap = {
                     'Станция отправления': 'departure_station',
@@ -1472,7 +1472,7 @@ export default {
                                 capacity_value_match = capacityField.match(/[0-9]+/);
                                 capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
 
-                                stavka = Number(item[capacityField].replaceAll(' ', '').replace(',', '.')); // Получаем значение по ключу capacityField
+                                stavka =  parseFloat(item[capacityField].replace(/[^0-9,]/g, '').replace(',', '.'))
                             }
 
 
@@ -1572,32 +1572,32 @@ export default {
                     }
                     if (isNaN(finallyDataToSend[i].stavka)) {
                         console.log('ошибка ставки')
-                        throw new Error(`<br> Ставка не может быть обработа. Проверьте поле ставок. <br> Строка: ${i}`);
+                        throw new Error(`<br> Ставка не может быть обработа. Проверьте поле ставок. <br> Строка: ${i+1}`);
                     }
                 }
                 console.log(finallyDataToSend, 'finallyDataToSend')
-                api.postTarifData(finallyDataToSend)
-                    .then(response => {
-                        console.log(response)
-                        this.loader = false
-                        this.tableData = []
-                        this.notifyHead = "Успешно";
-                        this.notifyMessage = "Данные отправлены!";
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 2000);
-                    }).catch((err) => {
-                        console.log(err)
-                        this.notifyHead = "Ошибка";
-                        this.notifyMessage = err.response.data;
-                        this.notifyClass = "wrapper-error";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 5500);
-                    })
+                // api.postTarifData(finallyDataToSend)
+                //     .then(response => {
+                //         console.log(response)
+                //         this.loader = false
+                //         this.tableData = []
+                //         this.notifyHead = "Успешно";
+                //         this.notifyMessage = "Данные отправлены!";
+                //         this.notifyClass = "wrapper-success";
+                //         this.showNotify = true;
+                //         setTimeout(() => {
+                //             this.showNotify = false;
+                //         }, 2000);
+                //     }).catch((err) => {
+                //         console.log(err)
+                //         this.notifyHead = "Ошибка";
+                //         this.notifyMessage = err.response.data;
+                //         this.notifyClass = "wrapper-error";
+                //         this.showNotify = true;
+                //         setTimeout(() => {
+                //             this.showNotify = false;
+                //         }, 5500);
+                //     })
 
             } catch (error) {
                 console.error("Ошибка в блоке try:", error);
