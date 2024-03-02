@@ -1432,7 +1432,7 @@ export default {
                 return
             }
             try {
-                this.loader = true;
+                // this.loader = true;
                 // Добавление данных о грузоподъемности
                 const translationMap = {
                     'Станция отправления': 'departure_station',
@@ -1570,34 +1570,37 @@ export default {
                     } if (finallyDataToSend[i]['Ставка НДС']) {
                         finallyDataToSend[i].stavka_nds = Number(finallyDataToSend[i]['Ставка НДС']?.replace(',', '.'))
                     }
+                    if(finallyDataToSend[i].stavka == undefined){
+                        finallyDataToSend[i].stavka = null
+                    }
                     if (isNaN(finallyDataToSend[i].stavka)) {
                         console.log('ошибка ставки')
                         throw new Error(`<br> Ставка не может быть обработа. Проверьте поле ставок. <br> Строка: ${i+1}`);
                     }
                 }
                 console.log(finallyDataToSend, 'finallyDataToSend')
-                api.postTarifData(finallyDataToSend)
-                    .then(response => {
-                        console.log(response)
-                        this.loader = false
-                        this.tableData = []
-                        this.notifyHead = "Успешно";
-                        this.notifyMessage = "Данные отправлены!";
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 2000);
-                    }).catch((err) => {
-                        console.log(err)
-                        this.notifyHead = "Ошибка";
-                        this.notifyMessage = err.response.data;
-                        this.notifyClass = "wrapper-error";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 5500);
-                    })
+                // api.postTarifData(finallyDataToSend)
+                //     .then(response => {
+                //         console.log(response)
+                //         this.loader = false
+                //         this.tableData = []
+                //         this.notifyHead = "Успешно";
+                //         this.notifyMessage = "Данные отправлены!";
+                //         this.notifyClass = "wrapper-success";
+                //         this.showNotify = true;
+                //         setTimeout(() => {
+                //             this.showNotify = false;
+                //         }, 2000);
+                //     }).catch((err) => {
+                //         console.log(err)
+                //         this.notifyHead = "Ошибка";
+                //         this.notifyMessage = err.response.data;
+                //         this.notifyClass = "wrapper-error";
+                //         this.showNotify = true;
+                //         setTimeout(() => {
+                //             this.showNotify = false;
+                //         }, 5500);
+                //     })
 
             } catch (error) {
                 console.error("Ошибка в блоке try:", error);
