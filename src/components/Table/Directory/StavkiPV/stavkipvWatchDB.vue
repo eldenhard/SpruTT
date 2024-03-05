@@ -13,7 +13,7 @@
 
                 <label for="tenant">Клиент
                     <br />
-                    <input type="text" class="textarea mini" v-model="filter_arendaData.client" />
+                    <input type="text" class="textarea mini" v-model="filter_arendaData.client"  @click="filter_arendaData.client = ''"/>
                 </label>
 
 
@@ -218,7 +218,7 @@
                                         </div> -->
                                     </td>
                                     <td  style="padding: 0 5px;">
-                                        {{ childr.destination_road_id_name }}
+                                        {{ childr.destination_road_id }}
                                         <!-- <div class="inputcontainer">
                                             <input :id="`destination_road_id` + childr.id" type="text"
                                                 v-model="childr.destination_road_id_name" v-on:keyup.enter="
@@ -291,7 +291,7 @@
                                     <td  style="padding: 0 5px;">{{ childr?.exclude_next_loading_stations ?
                                         childr.exclude_next_loading_stations.join(",") : "" }}</td>
                                     <!-- Станции исключения следующей погрузки-->
-                                    <td  style="padding: 0 5px;">{{ childr?.country_id }}</td> <!-- Страна-->
+                                    <td  style="padding: 0 5px;">{{ childr?.country_to_name }}</td> <!-- Страна-->
                                     <td  style="padding: 0 5px;">{{ childr?.wagons_list ? childr.wagons_list.join(",") : "" }}</td> <!-- Вагоны-->
                                     <td  style="padding: 0 5px;">{{ childr.responsible_name }}</td>
                                 </tr>
