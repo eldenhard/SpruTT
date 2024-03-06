@@ -46,10 +46,10 @@
 
                                             <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
                                                 'Полувагон' ?
-                                                'Объем на тек дату План' : 'Кол-во погр План на тек дату' }} </th>
+                                                'Кол-во погр План на тек дату' : 'Объем на тек дату План' }} </th>
                                             <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
                                                 'Полувагон' ?
-                                                'Объем на тек дату Факт' : 'Кол-во погр факт на тек дату' }} </th>
+                                                'Кол-во погр факт на тек дату'  : 'Объем на тек дату Факт' }} </th>
                                             <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
                                                 'Полувагон' ?
                                                 'Выполнение абсл.' : 'Отклонение кол-ва ваг' }} </th>
@@ -84,13 +84,13 @@
                                             <td>{{ item.metric | format }}</td>
                                             <td>{{ item.metric_current_plan | format }}</td>
                                             <td>{{ item.metric_current_fact | format }}</td>
-                                            <td>{{ item.metric_complete_abs | format }}</td>
-                                            <td>{{ item.metric_complete_rel | format }}</td>
+                                            <td>{{ (item.metric_current_fact - item.metric_current_plan)  | format }}</td>
+                                            <td>{{ item.metric_complete_rel | format }} %</td>
                                             <td>{{ item.revenue_wo_nds | format }}</td>
                                             <td>{{ item.revenue_current_plan | format }}</td>
                                             <td>{{ item.revenue_current_fact | format }}</td>
-                                            <td>{{ item.revenue_complete_abs | format }}</td>
-                                            <td>{{ item.revenue_complete_rel | format }}</td>
+                                            <td>{{ (item.revenue_current_fact -  item.revenue_current_plan) | format }}</td>
+                                            <td>{{ item.revenue_complete_rel | format }}%</td>
                                         </tr>
                                         <tr class="Row_grey">
                                             <td>Итого</td>
@@ -98,12 +98,12 @@
                                             <td>{{ totalMetricCurrentPlan | format }}</td>
                                             <td>{{ totalMetricCurrentFact | format }}</td>
                                             <td>{{ totalMetricCompleteAbs | format }}</td>
-                                            <td>{{ totalMetricCompleteRel | format }}</td>
+                                            <td>{{ totalMetricCompleteRel  }} %</td>
                                             <td>{{ totalRevenueWithoutNDS | format }}</td>
                                             <td>{{ totalRevenueCurrentPlan | format }}</td>
                                             <td>{{ totalRevenueCurrentFact | format }}</td>
                                             <td>{{ totalRevenueCompleteAbs | format }}</td>
-                                            <td>{{ totalRevenueCompleteRel | format }}</td>
+                                            <td>{{ totalRevenueCompleteRel  }} %</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -340,7 +340,10 @@ export default {
         },
         totalMetricCompleteRel() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
-                return this.filteredReportData.reduce((sum, item) => sum + item.metric_complete_rel, 0);
+                // return this.filteredReportData.reduce((sum, item) => sum + item.metric_complete_rel, 0);
+                let a = this.totalMetricCurrentFact
+                let b = this.totalMetricCurrentPlan
+                return Math.ceil(a/b*100)
             } else {
                 return 0
             }
@@ -375,7 +378,10 @@ export default {
         },
         totalRevenueCompleteRel() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
-                return this.responseServerData.report.reduce((sum, item) => sum + item.revenue_complete_rel, 0);
+                // return this.responseServerData.report.reduce((sum, item) => sum + item.revenue_complete_rel, 0);
+                let a = this.totalRevenueCurrentFact
+                let b = this.totalRevenueCurrentPlan
+                return Math.ceil(a/b*100)
             } else {
                 return 0
             }
