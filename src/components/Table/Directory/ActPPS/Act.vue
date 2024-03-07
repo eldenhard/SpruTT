@@ -2,7 +2,8 @@
   <div style="width: 80vw !important;">
     <Loader :loader="loader" />
     <h3 class="explanation" style="font-size: 17px; margin-top: -1%;">
-      Перед использованием этого раздела обязательно выполнить <a @click="instruction = !instruction">следующие действия с
+      Перед использованием этого раздела обязательно выполнить <a @click="instruction = !instruction">следующие действия
+        с
         браузером</a><br>
     </h3>
     <!-- <h3 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть инструкцию по браузеру' : 'Смотреть инструкцию  по браузеру' }}</h3> -->
@@ -22,20 +23,24 @@
       <p>3. В поле ввода (над подчеркнутым желтым цветом поле) ввести <b>http://portal.tehtrans.com</b>, <br> перевести
         правый селектор в положение Enabled и нажать Relaunch</p>
       <figure class="sign">
-        <p><img src="../../../../assets/Draw4.png" style="width: 80%; height: auto;" alt="Рисунок 3 - сохранение данных">
+        <p><img src="../../../../assets/Draw4.png" style="width: 80%; height: auto;"
+            alt="Рисунок 3 - сохранение данных">
         </p>
       </figure>
       <br>
       <p>4. После нажатия на Relaunch Ваш браузер перезапустится, <br>
         далее когда вы будете копировать данные из Excel и вставлять их в поле <b>Операция</b> браузер запросит у Вас
         разрешение на доступ <br>
-        <b>обязательно нажмите Разрешить</b>, после выполнения этих действий Вы можете пользоваться разделом в полной мере
+        <b>обязательно нажмите Разрешить</b>, после выполнения этих действий Вы можете пользоваться разделом в полной
+        мере
       </p>
       <figure class="sign">
-        <p><img src="../../../../assets/Draw5.png" style="width: 80%; height: auto;" alt="Рисунок 3 - сохранение данных">
+        <p><img src="../../../../assets/Draw5.png" style="width: 80%; height: auto;"
+            alt="Рисунок 3 - сохранение данных">
         </p>
       </figure>
-      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть инструкцию' : 'Смотреть инструкцию' }}</h5>
+      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть
+        инструкцию' : 'Смотреть инструкцию' }}</h5>
 
     </div>
 
@@ -45,6 +50,9 @@
       <br />&nbsp;&nbsp;(при копировании из MS Excel, оставить введенные данные
       неизменными)
       <br />
+      * Ввод станций осуществялется с указанием после наименования станции 3 заглавных букв, это может быть сокращенное название дороги, <br>
+      или любые другие 3 заглавные буквы. <br>
+      Пример: Биклянь ААА Тобольск СВР Парто Цкали ГРЗ <br>
       * Ввод дат осуществлять только в строгом формате <b>12.01.2023</b> <br />
       &nbsp;&nbsp;<u>Другой формат ввода даты не допускается. </u>
       <br />
@@ -62,7 +70,8 @@
       <br>
       &nbsp;&nbsp;( нажатие приведет к удалению строки)
       <br /> <br />
-      * Таблица 2 предназначена для просмотра ранее загруженых пользователем данных, для редактирования ячейки необходимо
+      * Таблица 2 предназначена для просмотра ранее загруженых пользователем данных, для редактирования ячейки
+      необходимо
       :
     <ol>
       <li>Изменить значение ячейки</li>
@@ -135,8 +144,7 @@
         width: 80%;
         position: relative;
         left: 50%;
-        transform: translate(-50%, 0);"
-        v-show="ten_visible3">
+        transform: translate(-50%, 0);" v-show="ten_visible3">
         <ul id="root_tenant">
           <li v-for="item in filter_fromcargo" :key="item.id" @click="checkFromCargo(item.name, item.code6)">
             <span>{{ item.name }}</span>
@@ -188,8 +196,8 @@
                 Вагон
               </th>
               <th>
-                <input type="text" @keyup.enter="save($event)" placeholder="введите дату" id="date_pp_in" class="in_data"
-                  style="border: 1px solid black !important" />
+                <input type="text" @keyup.enter="save($event)" placeholder="введите дату" id="date_pp_in"
+                  class="in_data" style="border: 1px solid black !important" />
                 <br />Дата передачи на подъез. путь
               </th>
               <th>
@@ -198,13 +206,13 @@
                 <br />Дата проведения работ
               </th>
               <th>
-                <input type="text" @keyup.enter="save($event)" placeholder="введите дату" id="date_pp_out" class="in_data"
-                  style="border: 1px solid black !important" />
+                <input type="text" @keyup.enter="save($event)" placeholder="введите дату" id="date_pp_out"
+                  class="in_data" style="border: 1px solid black !important" />
                 <br />Дата вывода с подъез. пути
               </th>
               <th>
-                <input type="text" @keyup.enter="save($event)" placeholder="введите кол-во дней" id="days" class="in_data"
-                  style="border: 1px solid black !important" />
+                <input type="text" @keyup.enter="save($event)" placeholder="введите кол-во дней" id="days"
+                  class="in_data" style="border: 1px solid black !important" />
                 <br />Расчетное время в сутках
               </th>
 
@@ -224,8 +232,8 @@
                 <br />Станция
               </th>
               <th>
-                <input type="text" @keyup.enter="save($event)" placeholder="выбор в таблице" id="currency" class="in_data"
-                  style="border: 1px solid black !important" disabled/>
+                <input type="text" @keyup.enter="save($event)" placeholder="выбор в таблице" id="currency"
+                  class="in_data" style="border: 1px solid black !important" disabled />
                 <br />Валюта
               </th>
               <th>
@@ -260,8 +268,8 @@
               <td><input type="text" v-model="item.station_name" /></td>
               <td>
                 <select v-model="item.currency">
-                  <option value="RUB">RUB</option>  
-                  <option value="USD">USD</option>  
+                  <option value="RUB">RUB</option>
+                  <option value="USD">USD</option>
                 </select>
               </td>
               <td><input type="number" v-model="item.agent_reward" /></td>
@@ -508,7 +516,13 @@ export default {
     },
 
     save(type) {
-      let data_in = type.target.value.split(" ");
+      let data_in
+      if (type.target.id == 'station_name') {
+        data_in = type.target.value.replaceAll(/[А-Я]{3}/g, "///").split('///').filter((item) => item != "")
+        console.log(data_in)
+      } else {
+        data_in = type.target.value.split(" ");
+      }
       if (data_in[0] == "") {
         return;
       }
@@ -589,9 +603,10 @@ export default {
 </script>
 
 <style scoped>
-input{
+input {
   text-align: center;
 }
+
 a:nth-child(1) {
   color: #1D67AC !important;
   cursor: pointer;
@@ -694,4 +709,5 @@ input {
 
 .col3 {
   border: none;
-}</style>
+}
+</style>
