@@ -585,6 +585,8 @@ export default {
         }, 5500);
       } else {
         this.loader = true;
+      
+        this.data.forEach((item) => item.error = null);
         for (let i in this.data) {
           this.data[i].act_date = this.act_date;
           this.data[i].counterparty = this.counterparties;
@@ -605,7 +607,7 @@ export default {
           result.push(arr.splice(0, length))
         }
         let response = result.map((item) => api.postpps(item))
-        Promise.allSettled(response)
+        Promise.all(response)
           .then((response) => {
             this.loader = false;
             this.data = [];
@@ -618,7 +620,6 @@ export default {
             }, 2500);
           }).catch((error) => {
             this.loader = false;
-
             this.notifyHead = "Ошибка";
             this.notifyMessage = "Данные загружены с ошибками";
             this.notifyClass = "wrapper-error";
