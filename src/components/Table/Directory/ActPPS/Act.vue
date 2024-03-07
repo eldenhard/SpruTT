@@ -39,8 +39,9 @@
             alt="Рисунок 3 - сохранение данных">
         </p>
       </figure>
-      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">{{ instruction ? 'Свернуть
-        инструкцию' : 'Смотреть инструкцию' }}</h5>
+      <h5 @click="instruction = !instruction" style="cursor: pointer; text-align: left;">
+        {{ instruction ? 'Свернуть' : 'Развернуть' }}
+      </h5>
 
     </div>
 
@@ -50,7 +51,8 @@
       <br />&nbsp;&nbsp;(при копировании из MS Excel, оставить введенные данные
       неизменными)
       <br />
-      * Ввод станций осуществялется с указанием после наименования станции 3 заглавных букв, это может быть сокращенное название дороги, <br>
+      * Ввод станций осуществялется с указанием после наименования станции 3 заглавных букв, это может быть сокращенное
+      название дороги, <br>
       или любые другие 3 заглавные буквы. <br>
       Пример: Биклянь ААА Тобольск СВР Парто Цкали ГРЗ <br>
       * Ввод дат осуществлять только в строгом формате <b>12.01.2023</b> <br />
@@ -152,7 +154,7 @@
           </li>
         </ul>
       </div>
-      <button class="Delete button" style="width: 15%; white-space: nowrap; margin: 2% 0; height: 30px"
+      <button class="Delete button" style="width: 15%; white-space: nowrap; margin: 2% 5%; height: 30px"
         @click="deleteChecked(selectedItems)">Удалить выбранное</button>
       <div style="overflow:auto; max-width: 99%;">
         <table style="margin-top: 2%;">
@@ -252,7 +254,8 @@
             <tr v-for="(item, index) in data" :key="item.id">
 
               <td>
-                <input type="checkbox" :checked="isSelected(index)" @change="toggleItemSelection(index)">
+                <input type="checkbox" :checked="isSelected(index)" @change="toggleItemSelection(index)"
+                  @click="handleCheckboxClick(index)">
               </td>
 
               <td @click="deleteRow(index)" v-b-tooltip.hover :title="item.error" class="delete"
@@ -383,6 +386,9 @@ export default {
       selectAll: false,
       selectedItems: [],
 
+      shiftPressed: false,
+      lastClickedIndex: null,
+
       instruction: false,
       application_number: "",
       data: [],
@@ -409,7 +415,14 @@ export default {
       this.ten_visible2 = false;
       this.ten_visible3 = false;
     });
+    window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('keyup', this.handleKeyUp);
   },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+    window.removeEventListener('keyup', this.handleKeyUp);
+  },
+
   computed: {
     filter_client() {
       if (this.counterparties.length > 1) {
@@ -453,6 +466,7 @@ export default {
       this.selectAll = !this.selectAll
       if (this.selectAll) {
         this.selectedItems = this.data.map((_, index) => index)
+        console.log(this.selectedItems)
       } else {
         this.selectedItems = []
       }
@@ -465,10 +479,31 @@ export default {
         this.selectedItems.push(itemId)
       }
 
-      console.log(this.selectedItems)
+      console.log(this.selectedItems, 'im here')
     },
     isSelected(itemId) {
       return this.selectedItems.includes(itemId)
+    },
+    handleCheckboxClick(index) {
+      if (this.shiftPressed && this.lastClickedIndex !== null) {
+        const start = Math.min(index, this.lastClickedIndex);
+        const end = Math.max(index, this.lastClickedIndex);
+        for (let i = start + 1; i < end; i++) {
+          this.toggleItemSelection(i);
+        }
+      }
+      this.lastClickedIndex = index;
+    },
+    handleKeyDown(event) {
+      if (event.key === 'Shift') {
+        this.shiftPressed = true;
+      }
+    },
+    handleKeyUp(event) {
+      if (event.key === 'Shift') {
+        this.shiftPressed = false;
+        this.lastClickedIndex = null; // Сброс индекса последнего клика при отпускании Shift
+      }
     },
     delete_col(value) {
       for (let i in this.data) {
@@ -517,7 +552,9 @@ export default {
 
     save(type) {
       let data_in
+
       if (type.target.id == 'station_name') {
+        console.log(type.target.value)
         data_in = type.target.value.replaceAll(/[А-Я]{3}/g, "///").split('///').filter((item) => item != "")
         console.log(data_in)
       } else {
@@ -562,11 +599,15 @@ export default {
           return item.JSON();
         });
         console.log(arr)
-        api
-          .postpps(arr)
+        let result = []
+        let length = 10
+        while (arr.length) {
+          result.push(arr.splice(0, length))
+        }
+        let response = result.map((item) => api.postpps(item))
+        Promise.allSettled(response)
           .then((response) => {
             this.loader = false;
-
             this.data = [];
             this.notifyHead = "Успешно";
             this.notifyMessage = "Данные отправлены";
@@ -575,8 +616,7 @@ export default {
             setTimeout(() => {
               this.showNotify = false;
             }, 2500);
-          })
-          .catch((error) => {
+          }).catch((error) => {
             this.loader = false;
 
             this.notifyHead = "Ошибка";
@@ -705,6 +745,9 @@ input {
 .filter {
   display: flex;
   justify-content: space-between;
+  width: 90%;
+  gap: 2%;
+  margin: 0 auto;
 }
 
 .col3 {
