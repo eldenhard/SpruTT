@@ -645,6 +645,9 @@ export default {
 </script>
 
 <style scoped>
+.vs__selected{
+   
+}
 input {
   text-align: center;
 }

@@ -7,8 +7,8 @@
             </div>
             <hr />
             <br />
-            <div class="filter_block" style="width: 50%; display: flex; flex-direction: column; position: relative; ">
-                <label>Дата <br>
+            <div class="filter_block" style="width: 50%; display: flex; flex-direction: column; position: relative;">
+                <label >Дата <br>
                     <input type="date" class="textarea" style="width: 20vw !important;" v-model="date_begin"
                         :min="'2024-01-01'">
                 </label>
@@ -22,7 +22,7 @@
 
                 </label>
                 <label>Клиент <br>
-                    <v-select v-model="currentClients" :options="clients" label="value" multiple></v-select>
+                    <v-select v-model="currentClients" :options="clients" label="value" multiple style="width:20vw !important;"></v-select>
                 </label>
                 <br>
                 <button class="Accept button" @click="Actioned()" style="width:20vw !important; height: 40px;">Загрузить
