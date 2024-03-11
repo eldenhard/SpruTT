@@ -235,6 +235,9 @@ const sendDataForOperSpravka = (data) => {
 const getDataForOperSpravka = (queryString) => {
     return api.get(`${finance}/operativnaya-spravka/report/${queryString}` )
 }
+const getDataForOperSpravkaOtherClients = (queryString) => {
+    return api.get(`${finance}/operativnaya-spravka/report-other-clients/${queryString}` )
+}
 
 
 // Получение  договора по параметрам расширенного поиска
@@ -344,6 +347,7 @@ export default {
     // Оперативная справка
     sendDataForOperSpravka,
     getDataForOperSpravka,
+    getDataForOperSpravkaOtherClients,
 
 
     getAgreementAdvancedFilter2,

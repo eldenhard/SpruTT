@@ -42,36 +42,47 @@
                                                 </v-select>
                                             </th>
                                             <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' :
-                                                "Объемы,тн" }} </th>
+            "Объемы,тн" }} </th>
 
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
-                                                'Полувагон' ?
-                                                'Кол-во погр План на тек дату' : 'Объем на тек дату План' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
-                                                'Полувагон' ?
-                                                'Кол-во погр факт на тек дату'  : 'Объем на тек дату Факт' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
-                                                'Полувагон' ?
-                                                'Выполнение абсл.' : 'Отклонение кол-ва ваг' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type ==
-                                                'Полувагон' ?
-                                                'Выполнение отн.' : ' % выполнения плана' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type
+            ==
+            'Полувагон' ?
+            'Кол-во погр План на тек дату' : 'Объем на тек дату План' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type
+            ==
+            'Полувагон' ?
+            'Кол-во погр факт на тек дату' : 'Объем на тек дату Факт' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type
+            ==
+            'Полувагон' ?
+            'Выполнение абсл.' : 'Отклонение кол-ва ваг' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type
+            ==
+            'Полувагон' ?
+            'Выполнение отн.' : ' % выполнения плана' }} </th>
 
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
-                                                == 'Полувагон' ?
-                                                'Выручка без НДС, руб' : "Выручка без НДС, руб ПЛАН" }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
-                                                == 'Полувагон' ?
-                                                'Объем на тек дату План' : 'Выручка без НДС, руб на тек дату ПЛАН' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
-                                                == 'Полувагон' ?
-                                                'Объем на тек дату Факт' : 'Выручка без НДС, руб на тек дату факт' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
-                                                == 'Полувагон' ?
-                                                'Выполнение абсл.' : 'отклонения в выручке' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type
-                                                == 'Полувагон' ?
-                                                'Выполнение отн.' : ' % выполнения' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
+            wag_type
+                == 'Полувагон' ?
+                'Выручка без НДС, руб' : "Выручка без НДС, руб ПЛАН" }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
+            wag_type
+                == 'Полувагон' ?
+                'Объем на тек дату План' : 'Выручка без НДС, руб на тек дату ПЛАН' }}
+                                            </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
+            wag_type
+                == 'Полувагон' ?
+                'Объем на тек дату Факт' : 'Выручка без НДС, руб на тек дату факт' }}
+                                            </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
+            wag_type
+                == 'Полувагон' ?
+                'Выполнение абсл.' : 'отклонения в выручке' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
+            wag_type
+                == 'Полувагон' ?
+                'Выполнение отн.' : ' % выполнения' }} </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -84,12 +95,14 @@
                                             <td>{{ item.metric | format }}</td>
                                             <td>{{ item.metric_current_plan | format }}</td>
                                             <td>{{ item.metric_current_fact | format }}</td>
-                                            <td>{{ (item.metric_current_fact - item.metric_current_plan)  | format }}</td>
+                                            <td>{{ (item.metric_current_fact - item.metric_current_plan) | format }}
+                                            </td>
                                             <td>{{ item.metric_complete_rel | format }} %</td>
                                             <td>{{ item.revenue_wo_nds | format }}</td>
                                             <td>{{ item.revenue_current_plan | format }}</td>
                                             <td>{{ item.revenue_current_fact | format }}</td>
-                                            <td>{{ (item.revenue_current_fact -  item.revenue_current_plan) | format }}</td>
+                                            <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format }}
+                                            </td>
                                             <td>{{ item.revenue_complete_rel | format }}%</td>
                                         </tr>
                                         <tr class="Row_grey">
@@ -98,12 +111,12 @@
                                             <td>{{ totalMetricCurrentPlan | format }}</td>
                                             <td>{{ totalMetricCurrentFact | format }}</td>
                                             <td>{{ totalMetricCompleteAbs | format }}</td>
-                                            <td>{{ totalMetricCompleteRel  }} %</td>
+                                            <td>{{ totalMetricCompleteRel }} %</td>
                                             <td>{{ totalRevenueWithoutNDS | format }}</td>
                                             <td>{{ totalRevenueCurrentPlan | format }}</td>
                                             <td>{{ totalRevenueCurrentFact | format }}</td>
                                             <td>{{ totalRevenueCompleteAbs | format }}</td>
-                                            <td>{{ totalRevenueCompleteRel  }} %</td>
+                                            <td>{{ totalRevenueCompleteRel }} %</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -116,13 +129,17 @@
                                         <th>Показатель</th>
                                         <th style="background: lightskyblue;">БП на {{ date_begin }}</th>
                                         <th style="background: lightseagreen;">Бюджет на {{ date_begin }}</th>
-                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на {{
-                                            date_begin }}</th>
-                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение бюджета
+                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на
+                                            {{
+            date_begin }}</th>
+                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение
+                                            бюджета
                                             от БП {{ date_begin }}</th>
-                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение факта от
+                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение
+                                            факта от
                                             БП {{ date_begin }}</th>
-                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение факта от
+                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение
+                                            факта от
                                             бюджета {{ date_begin }}</th>
                                     </thead>
                                     <tbody>
@@ -219,6 +236,124 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <br>
+                                <table style="margin-left: -5%;">
+                                    <thead>
+                                        <th>Показатель</th>
+                                        <th style="background: lightskyblue;">БП на {{ date_begin }}</th>
+                                        <th style="background: lightseagreen;">Бюджет на {{ date_begin }}</th>
+                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на
+                                            {{
+                                            date_begin }}</th>
+                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение
+                                            бюджета
+                                            от БП {{ date_begin }}</th>
+                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение
+                                            факта от
+                                            БП {{ date_begin }}</th>
+                                        <th style="background: darkred; color: white; font-weight: 400;">Отклонение
+                                            факта от
+                                            бюджета {{ date_begin }}</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Выручка</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>{{ responseServerDataOtherClients.other_info?.revenue | format }}</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Тариф порож</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>{{ responseServerDataOtherClients.other_info?.empty_tariff | format }}
+                                            </td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Тариф по сопред порож</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>{{ responseServerDataOtherClients.other_info?.inroad_tariff | format }}
+                                            </td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Тариф груж</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Доп. расходы</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>{{ responseServerDataOtherClients.other_info?.other_charges | format }}
+                                            </td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Маржинальный доход</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>{{ responseServerDataOtherClients.other_info?.margin | format }}</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Вагоносутки (раб)</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>{{ responseServerDataOtherClients.other_info?.vagonosutki_work | format
+                                                }}</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Вагоносутки (общ)</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>{{ responseServerDataOtherClients.other_info?.vagonosutki_calendar |
+                                                format }}</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Доходность (раб в/с)</td>
+                                            <td style="background: lightskyblue;"></td>
+                                            <td style="background: lightseagreen;"></td>
+                                            <td style="background: rgb(46, 11, 11); color: white  !important;;"></td>
+                                            <td style="background: darkred;  color: white !important;">-</td>
+                                            <td style="background: darkred;  color: white !important;">-</td>
+                                            <td style="background: darkred;  color: white !important;">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Доходность (общ в/с)</td>
+                                            <td style="background: lightskyblue;"></td>
+                                            <td style="background: lightseagreen;"></td>
+                                            <td style="background: rgb(46, 11, 11);  color: white !important;">{{
+                                                responseServerDataOtherClients.other_info?.income | format }}</td>
+                                            <td style="background: darkred;  color: white !important;">-</td>
+                                            <td style="background: darkred;  color: white !important;">-</td>
+                                            <td style="background: darkred; color: white !important;">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </b-card-text>
                         </b-tab>
                     </b-tabs>
@@ -246,6 +381,7 @@ export default {
             date_end: "",
             loader: false,
             responseServerData: "",
+            responseServerDataOtherClients: "",
             selectedOptions: "",
             allClientsInTable: [],
             currentClients: [],
@@ -343,7 +479,7 @@ export default {
                 // return this.filteredReportData.reduce((sum, item) => sum + item.metric_complete_rel, 0);
                 let a = this.totalMetricCurrentFact
                 let b = this.totalMetricCurrentPlan
-                return Math.ceil(a/b*100)
+                return Math.ceil(a / b * 100)
             } else {
                 return 0
             }
@@ -381,7 +517,7 @@ export default {
                 // return this.responseServerData.report.reduce((sum, item) => sum + item.revenue_complete_rel, 0);
                 let a = this.totalRevenueCurrentFact
                 let b = this.totalRevenueCurrentPlan
-                return Math.ceil(a/b*100)
+                return Math.ceil(a / b * 100)
             } else {
                 return 0
             }
@@ -394,28 +530,39 @@ export default {
     },
     methods: {
 
-        async Actioned() {
+         Actioned() {
             try {
-                this.loader = true
+              
                 let data = this.currentClients.map((item) => {
                     return { client: item.value }
                 })
                 const clientsParams = data.map((item) => `clients=${item.client}`).join('&');
                 // Формируем строку запроса с параметрами clients
-                const queryString = `?wagon_type=${this.wag_type }&report_date=${this.date_begin}&${ clientsParams }`;
-                let response = await api.getDataForOperSpravka(queryString);
-                this.responseServerData = response.data
-                const clients = this.responseServerData.report.map(item => item.client)
+                const queryString = `?wagon_type=${this.wag_type}&report_date=${this.date_begin}&${clientsParams}`;
+                this.loader = true
+                Promise.all([api.getDataForOperSpravka(queryString), api.getDataForOperSpravkaOtherClients(queryString),])
+                    .then(([response1, response2]) => {
+                        this.loader = false
+                        this.responseServerData = response1.data
+                        this.responseServerDataOtherClients = response2.data
+                        const clients = this.responseServerData.report.map(item => item.client)
 
-                this.allClientsInTable = clients.reduce((acc, client) => {
-                    if (!acc.find(item => item.value === client)) {
-                        acc.push({ value: client, label: client })
-                    }
-                    return acc
-                }, []).sort((a, b) => a.value.localeCompare(b.value))
+                        this.allClientsInTable = clients.reduce((acc, client) => {
+                            if (!acc.find(item => item.value === client)) {
+                                acc.push({ value: client, label: client })
+                            }
+                            return acc
+                        }, []).sort((a, b) => a.value.localeCompare(b.value))
+                    })
+                    .catch(error => {
+                        console.error(error)
+                        this.loader = false
+                    })
+                    .finally(() => {
+                        this.loader = false
+                    })
+
             } catch {
-                this.loader = false
-            } finally {
                 this.loader = false
             }
 
