@@ -127,20 +127,18 @@
                                 <table style="margin-left: -5%;">
                                     <thead>
                                         <th>Показатель</th>
-                                        <th style="background: lightskyblue;">БП на {{ date_begin }}</th>
-                                        <th style="background: lightseagreen;">Бюджет на {{ date_begin }}</th>
-                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на
-                                            {{
-            date_begin }}</th>
+                                        <th style="background: lightskyblue;">БП на<br> {{ date_begin }}</th>
+                                        <th style="background: lightseagreen;">Бюджет на <br>{{ date_begin }}</th>
+                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на <br>{{ date_begin }}</th>
                                         <th style="background: darkred; color: white; font-weight: 400;">Отклонение
                                             бюджета
-                                            от БП {{ date_begin }}</th>
+                                            от БП <br>{{ date_begin }}</th>
                                         <th style="background: darkred; color: white; font-weight: 400;">Отклонение
                                             факта от
-                                            БП {{ date_begin }}</th>
+                                            БП <br>{{ date_begin }}</th>
                                         <th style="background: darkred; color: white; font-weight: 400;">Отклонение
                                             факта от
-                                            бюджета {{ date_begin }}</th>
+                                            бюджета <br>{{ date_begin }}</th>
                                     </thead>
                                     <tbody>
                                         <tr>
@@ -240,17 +238,16 @@
                                 <table style="margin-left: -5%;">
                                     <thead>
                                         <th>Показатель</th>
-                                        <th style="background: lightskyblue;">БП на {{ date_begin }}</th>
-                                        <th style="background: lightseagreen;">Бюджет на {{ date_begin }}</th>
-                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на
-                                            {{
-                                            date_begin }}</th>
+                                        <th style="background: lightskyblue;">БП на<br> {{ date_begin }}</th>
+                                        <th style="background: lightseagreen;">Бюджет на <br>{{ date_begin }}</th>
+                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на <br>
+                                            {{ date_begin }}</th>
                                         <th style="background: darkred; color: white; font-weight: 400;">Отклонение
                                             бюджета
-                                            от БП {{ date_begin }}</th>
+                                            от БП <br> {{ date_begin }}</th>
                                         <th style="background: darkred; color: white; font-weight: 400;">Отклонение
                                             факта от
-                                            БП {{ date_begin }}</th>
+                                            БП <br> {{ date_begin }}</th>
                                         <th style="background: darkred; color: white; font-weight: 400;">Отклонение
                                             факта от
                                             бюджета {{ date_begin }}</th>

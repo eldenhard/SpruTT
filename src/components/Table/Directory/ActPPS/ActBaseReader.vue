@@ -36,7 +36,14 @@
         Дата проведения работ<br />
         <input type="date" class="textarea mini" v-model="filter.date_work" placeholder="№ вагонов через пробел" />
       </label>
-
+      <!-- <label for="">
+        Дата начала проведения работ<br />
+        <input type="date" class="textarea mini" v-model="filter.act_date_gte" />
+      </label>
+      <label for="">
+        Дата окончания проведения работ<br />
+        <input type="date" class="textarea mini" v-model="filter.act_date_lte" />
+      </label> -->
       <button class="button Accept mini" style="width: 320px;" @click="getPPS()">
         Запросить
       </button>
@@ -290,6 +297,8 @@ export default {
         wagons: "",
         counterparty: "",
         date_work: "",
+        // act_date_gte: "",
+        // act_date_lte:""
       },
       showNotify: false,
       notifyHead: "",
@@ -631,6 +640,7 @@ export default {
       this.loader = true;
       this.data = [];
       this.filter.wagons = this.filter.wagons.replaceAll(" ", ",")
+
       api
         .getpps(this.filter)
         .then((response) => {
@@ -778,11 +788,14 @@ th {
 .filter {
   margin-top: 4%;
   display: flex;
+  width: 95%;
   justify-content: space-between;
   /* flex-wrap: wrap; */
   border: 1px solid lightgrey;
   padding: 1%;
   gap: 2%;
+  flex-wrap: wrap;
+  position: relative;
 }
 
 .filter label {

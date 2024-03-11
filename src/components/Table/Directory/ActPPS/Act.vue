@@ -273,6 +273,7 @@
                 <select v-model="item.currency">
                   <option value="RUB">RUB</option>
                   <option value="USD">USD</option>
+                  <option value="KZT">KZT</option>
                 </select>
               </td>
               <td><input type="number" v-model="item.agent_reward" /></td>
@@ -746,9 +747,13 @@ input {
 .filter {
   display: flex;
   justify-content: space-between;
-  width: 90%;
+  width: 95%;
   gap: 2%;
   margin: 0 auto;
+  flex-wrap: wrap;
+  position: relative;
+  border: 1px solid rgb(211,211,211);
+  padding: 1%;
 }
 
 .col3 {
