@@ -8,21 +8,23 @@
             <hr />
             <br />
             <div class="filter_block" style="width: 50%; display: flex; flex-direction: column; position: relative;">
-                <label >Дата <br>
-                    <input type="date" class="textarea" style="width: 20vw !important;" v-model="date_begin"
-                        :min="'2024-01-01'">
+                <label>Дата <br>
+                    <input type="date" class="textarea" style="width: 20vw !important; background: white;"
+                        v-model="date_begin" :min="'2024-01-01'">
                 </label>
                 <label>
                     Тип вагона
                     <br />
-                    <select name="" id="" v-model="wag_type" class="textarea" style="width:20vw !important;">
+                    <select name="" id="" v-model="wag_type" class="textarea"
+                        style="width:20vw !important; background: white;">
                         <option value="Полувагон">Полувагон</option>
                         <option value="Цистерна">Цистерна</option>
                     </select>
 
                 </label>
                 <label>Клиент <br>
-                    <v-select v-model="currentClients" :options="clients" label="value" multiple style="width:20vw !important;"></v-select>
+                    <v-select v-model="currentClients" :options="clients" label="value" multiple
+                        style="width:20vw !important;"></v-select>
                 </label>
                 <br>
                 <button class="Accept button" @click="Actioned()" style="width:20vw !important; height: 40px;">Загрузить
@@ -129,7 +131,9 @@
                                         <th>Показатель</th>
                                         <th style="background: lightskyblue;">БП на<br> {{ date_begin }}</th>
                                         <th style="background: lightseagreen;">Бюджет на <br>{{ date_begin }}</th>
-                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на <br>{{ date_begin }}</th>
+                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на
+                                            <br>{{ date_begin }}
+                                        </th>
                                         <th style="background: darkred; color: white; font-weight: 400;">Отклонение
                                             бюджета
                                             от БП <br>{{ date_begin }}</th>
@@ -227,7 +231,7 @@
                                             <td style="background: lightskyblue;"></td>
                                             <td style="background: lightseagreen;"></td>
                                             <td style="background: rgb(46, 11, 11);  color: white !important;">{{
-                                                responseServerData.other_info?.income | format }}</td>
+            responseServerData.other_info?.income | format }}</td>
                                             <td style="background: darkred;  color: white !important;">-</td>
                                             <td style="background: darkred;  color: white !important;">-</td>
                                             <td style="background: darkred; color: white !important;">-</td>
@@ -240,8 +244,10 @@
                                         <th>Показатель</th>
                                         <th style="background: lightskyblue;">БП на<br> {{ date_begin }}</th>
                                         <th style="background: lightseagreen;">Бюджет на <br>{{ date_begin }}</th>
-                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на <br>
-                                            {{ date_begin }}</th>
+                                        <th style="background: rgb(46, 11, 11); color: white; font-weight: 400;">Факт на
+                                            <br>
+                                            {{ date_begin }}
+                                        </th>
                                         <th style="background: darkred; color: white; font-weight: 400;">Отклонение
                                             бюджета
                                             от БП <br> {{ date_begin }}</th>
@@ -353,12 +359,50 @@
                                 </table>
                             </b-card-text>
                         </b-tab>
+                        <b-tab title="Внесение данных доходности">
+                            <b-card-text>
+                                <div class="date_block">
+                                    <label for="">
+                                        Дата <br>
+                                        <input type="month" v-model="date_begin_create" class="textarea"
+                                            style="background: white;">
+                                    </label>
+                                    <div class="table_block">
+                                        <table>
+                                            <thead>
+                                                <th>Выручка</th>
+                                                <th>Тариф порож </th>
+                                                <th>Тариф по сопред порож</th>
+                                                <th>Тариф груж</th>
+                                                <th>Доп. расходы</th>
+                                                <th>Маржинальный доход</th>
+                                                <th>Вагоносутки (раб)</th>
+                                                <th>Вагоносутки (общ) </th>
+                                                <th>Доходность (раб в/с)</th>
+                                                <th>Доходность (общ в/с)</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td v-for="item, index in createNewProfitability" :key="index"
+                                                        style="padding: 0 !important;">
+                                                        <input type="number" class="input"
+                                                            v-model="createNewProfitability[index]">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button class="Accept special" @click="saveNewProfitability()">Сохранить
+                                        данные</button>
+                                </div>
+                            </b-card-text>
+                        </b-tab>
                     </b-tabs>
                 </b-card>
             </div>
 
         </div>
-
+        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
     </div>
 </template>
 
@@ -368,13 +412,15 @@ import Periods from "../../ManagmentRepReporting/Periods.vue";
 import api from '@/api/directory'
 import Loader from "@/components/loader/loader.vue";
 import vSelect from "vue-select";
+import Notifications from "@/components/notifications/Notifications.vue";
 
 export default {
-    components: { Periods, Loader, vSelect },
+    components: { Periods, Loader, vSelect, Notifications },
     data() {
         return {
             wag_type: "Полувагон",
             date_begin: new Date().toISOString().slice(0, 10),
+            date_begin_create: new Date().toISOString().slice(0, 7),
             date_end: "",
             loader: false,
             responseServerData: "",
@@ -418,7 +464,23 @@ export default {
             { value: 'ПЕРВООСНОВА, АО' },
             { value: 'ДЕЛОВЫЕ ПРОГРАММЫ, ООО' },
             { value: 'СтройТехно-Урал, ООО' },
-            { value: 'УГПХ, ООО' }]
+            { value: 'УГПХ, ООО' }],
+            createNewProfitability: {
+                revenue: 0,
+                tariff_empty: 0,
+                tariff_inroad: 0,
+                tariff_loaded: 0,
+                other_charges: 0,
+                margin: 0,
+                vagonosutki_work: 0,
+                vagonosutki: 0,
+                income_work: 0,
+                income: 0,
+            },
+            showNotify: false,
+            notifyHead: "",
+            notifyMessage: "",
+            notifyClass: "",
         }
     },
     filters: {
@@ -526,10 +588,40 @@ export default {
         }
     },
     methods: {
+        saveNewProfitability() {
+            this.loader = true
+       
+                let filtersData = JSON.parse(JSON.stringify(this.createNewProfitability)); // Копируем объект
+                for (let key in filtersData) { // Итерируемся по свойствам объекта
+                    filtersData[key] = Number(filtersData[key])
+                }
+                filtersData.on_date = this.date_begin_create + "-01"
+                api.createNewProfitability(filtersData)
+                    .then(() => {
+                        this.loader = false
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = "Данные сохранены";
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => (this.showNotify = false), 2000);
+                    })
+                    .catch((err) => {
+                        this.loader = false
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = err.response;
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => (this.showNotify = false), 5000);
+                    })
+                    .finally(() => {
+                        this.loader = false
+                    })
 
-         Actioned() {
+          
+        },
+        Actioned() {
             try {
-              
+
                 let data = this.currentClients.map((item) => {
                     return { client: item.value }
                 })
@@ -571,6 +663,33 @@ export default {
 table {
     margin-top: 2%;
 }
+
+.table_block {
+    overflow: auto;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.input {
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+
+}
+
+.table_block th {
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.Accept.special {
+    width: 20%;
+    height: 40px;
+    margin: 4% 0 0 auto;
+}
+
+
+
 
 .greenCell {
     background: #C6E0B4;

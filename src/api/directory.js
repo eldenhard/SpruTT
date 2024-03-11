@@ -235,6 +235,9 @@ const sendDataForOperSpravka = (data) => {
 const getDataForOperSpravka = (queryString) => {
     return api.get(`${finance}/operativnaya-spravka/report/${queryString}` )
 }
+const createNewProfitability = (data) => {
+    return api.post(`${finance}/operativnaya-srpavka-other-info/`, data)
+}
 const getDataForOperSpravkaOtherClients = (queryString) => {
     return api.get(`${finance}/operativnaya-spravka/report-other-clients/${queryString}` )
 }
@@ -348,6 +351,7 @@ export default {
     sendDataForOperSpravka,
     getDataForOperSpravka,
     getDataForOperSpravkaOtherClients,
+    createNewProfitability,
 
 
     getAgreementAdvancedFilter2,
