@@ -107,17 +107,32 @@
                                             </td>
                                             <td>{{ item.revenue_complete_rel | format }}%</td>
                                         </tr>
+                                        <tr v-for="item in totalResponse2" :key="item.id">
+                                            <td>Прочие</td>
+                                            <td>{{ item.metric | format }}</td>
+                                            <td>{{ item.metric_current_plan | format }}</td>
+                                            <td>{{ item.metric_current_fact | format }}</td>
+                                            <td>{{ (item.metric_current_fact - item.metric_current_plan) | format }}
+                                            </td>
+                                            <td>{{ item.metric_complete_rel | format }} %</td>
+                                            <td>{{ item.revenue_wo_nds | format }}</td>
+                                            <td>{{ item.revenue_current_plan | format }}</td>
+                                            <td>{{ item.revenue_current_fact | format }}</td>
+                                            <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format }}
+                                            </td>
+                                            <td>{{ item.revenue_complete_rel | format }}%</td>
+                                        </tr>
                                         <tr class="Row_grey">
                                             <td>Итого</td>
                                             <td>{{ totalMetric | format }}</td>
                                             <td>{{ totalMetricCurrentPlan | format }}</td>
                                             <td>{{ totalMetricCurrentFact | format }}</td>
-                                            <td>{{ totalMetricCompleteAbs | format }}</td>
+                                            <td>{{ totalMetricCurrentFact - totalMetricCurrentPlan | format }}</td>
                                             <td>{{ totalMetricCompleteRel }} %</td>
                                             <td>{{ totalRevenueWithoutNDS | format }}</td>
                                             <td>{{ totalRevenueCurrentPlan | format }}</td>
                                             <td>{{ totalRevenueCurrentFact | format }}</td>
-                                            <td>{{ totalRevenueCompleteAbs | format }}</td>
+                                            <td>{{ totalRevenueCurrentFact - totalRevenueCurrentPlan | format }}</td>
                                             <td>{{ totalRevenueCompleteRel }} %</td>
                                         </tr>
                                     </tbody>
@@ -493,6 +508,7 @@ export default {
 
         },
     },
+
     computed: {
         filteredReportData() {
             if (this.selectedOptions.length == 0) {
@@ -502,6 +518,29 @@ export default {
                 return this.responseServerData.report.filter((item) => {
                     return array_val.includes(item.client)
                 })
+            }
+        },
+        totalResponse2() {
+            if (this.responseServerDataOtherClients.report && this.responseServerDataOtherClients.report.length > 0) {
+                try {
+                    const sumObject = this.responseServerDataOtherClients.report.reduce((acc, obj) => {
+                        for (let key in obj) {
+                            if (acc.hasOwnProperty(key)) {
+                                acc[key] += obj[key];
+                            } else {
+                                acc[key] = obj[key];
+                            }
+                        }
+                        return acc;
+                    }, {});
+
+                    const resultArray = [sumObject];
+                    return resultArray
+                } catch {
+                    this.loader = false
+                }
+            } else {
+                return 0
             }
         },
         totalMetric() {
@@ -514,21 +553,22 @@ export default {
         },
         totalMetricCurrentPlan() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
-                return this.filteredReportData.reduce((sum, item) => sum + item.metric_current_plan, 0);
+                return this.filteredReportData.reduce((sum, item) => sum + item.metric_current_plan, 0) + this.totalResponse2[0].metric_current_plan
             } else {
                 return 0
             }
         },
         totalMetricCurrentFact() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
-                return this.filteredReportData.reduce((sum, item) => sum + item.metric_current_fact, 0);
+                return this.filteredReportData.reduce((sum, item) => sum + item.metric_current_fact, 0) + this.totalResponse2[0].metric_current_fact
             } else {
                 return 0
             }
         },
         totalMetricCompleteAbs() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
-                return this.filteredReportData.reduce((sum, item) => sum + item.metric_complete_abs, 0);
+                // return this.filteredReportData.reduce((sum, item) => sum + item.metric_complete_abs, 0) + this.totalResponse2[0].metric_complete_abs
+                return 1
             } else {
                 return 0
             }
@@ -545,28 +585,29 @@ export default {
         },
         totalRevenueWithoutNDS() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
-                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_wo_nds, 0);
+                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_wo_nds, 0) + this.totalResponse2[0].revenue_wo_nds
             } else {
                 return 0
             }
         },
         totalRevenueCurrentPlan() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
-                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_current_plan, 0);
+                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_current_plan, 0)  + this.totalResponse2[0].revenue_current_plan
             } else {
                 return 0
             }
         },
         totalRevenueCurrentFact() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
-                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_current_fact, 0);
+                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_current_fact, 0) + this.totalResponse2[0].revenue_current_fact
             } else {
                 return 0
             }
         },
         totalRevenueCompleteAbs() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
-                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_complete_abs, 0);
+                // return this.filteredReportData.reduce((sum, item) => sum + item.revenue_complete_abs, 0)
+                return 1
             } else {
                 return 0
             }
@@ -576,6 +617,9 @@ export default {
                 // return this.responseServerData.report.reduce((sum, item) => sum + item.revenue_complete_rel, 0);
                 let a = this.totalRevenueCurrentFact
                 let b = this.totalRevenueCurrentPlan
+                if(b == 0){
+                    return 100
+                }
                 return Math.ceil(a / b * 100)
             } else {
                 return 0
@@ -590,34 +634,34 @@ export default {
     methods: {
         saveNewProfitability() {
             this.loader = true
-       
-                let filtersData = JSON.parse(JSON.stringify(this.createNewProfitability)); // Копируем объект
-                for (let key in filtersData) { // Итерируемся по свойствам объекта
-                    filtersData[key] = Number(filtersData[key])
-                }
-                filtersData.on_date = this.date_begin_create + "-01"
-                api.createNewProfitability(filtersData)
-                    .then(() => {
-                        this.loader = false
-                        this.notifyHead = "Успешно";
-                        this.notifyMessage = "Данные сохранены";
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => (this.showNotify = false), 2000);
-                    })
-                    .catch((err) => {
-                        this.loader = false
-                        this.notifyHead = "Ошибка";
-                        this.notifyMessage = err.response;
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => (this.showNotify = false), 5000);
-                    })
-                    .finally(() => {
-                        this.loader = false
-                    })
 
-          
+            let filtersData = JSON.parse(JSON.stringify(this.createNewProfitability)); // Копируем объект
+            for (let key in filtersData) { // Итерируемся по свойствам объекта
+                filtersData[key] = Number(filtersData[key])
+            }
+            filtersData.on_date = this.date_begin_create + "-01"
+            api.createNewProfitability(filtersData)
+                .then(() => {
+                    this.loader = false
+                    this.notifyHead = "Успешно";
+                    this.notifyMessage = "Данные сохранены";
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => (this.showNotify = false), 2000);
+                })
+                .catch((err) => {
+                    this.loader = false
+                    this.notifyHead = "Ошибка";
+                    this.notifyMessage = err.response;
+                    this.notifyClass = "wrapper-success";
+                    this.showNotify = true;
+                    setTimeout(() => (this.showNotify = false), 5000);
+                })
+                .finally(() => {
+                    this.loader = false
+                })
+
+
         },
         Actioned() {
             try {
