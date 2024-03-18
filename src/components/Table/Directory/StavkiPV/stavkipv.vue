@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height: 85vh">
 
         <br>
         <Loader :loader="loader" />
@@ -1744,7 +1744,8 @@ table {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     background: #ffffff;
-    box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
+    box-shadow: 2px 2px 5px  #cfcfcf;
+    /* box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff; */
     position: relative;
     left: 50%;
     padding: 1%;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 85vh; overflow: auto; ">
     <Loader :loader="loader" />
     <p class="explanation">
       * Ввод данных по вагонам, датам, дням и ставкам вводить через пробел

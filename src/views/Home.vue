@@ -1,6 +1,6 @@
 <template>
   <b-card no-body>
-    <b-tabs pills card vertical style="height: 100vh">
+    <b-tabs pills card vertical >
       <b-container>
         <b-tab title="Справочник контрагенты">
           <b-card-text>
@@ -35,11 +35,7 @@
             <wagon-directory />
           </b-card-text>
         </b-tab>
-        <b-tab title="Данные по аренде" >
-          <b-card-text>
-            <rentalrateTable />
-          </b-card-text>
-        </b-tab>
+     
         <b-tab title="Данные по ПР" >
           <b-card-text style="width: 55vw !important; margin-left: -5%;" >
             <OtherChargesVue />
@@ -65,13 +61,18 @@
           <Fin_headerVue />
         </b-card-text>
       </b-tab>
+      <b-tab title="Данные по аренде" >
+          <b-card-text  style="width: 100%;overflow: auto !important; ">
+            <rentalrateTable />
+          </b-card-text>
+        </b-tab>
       <b-tab title="Данные по ставкам ЦС " active>
-        <b-card-text style="width: 75vw !important;">
+        <b-card-text style="width: 75vw !important;overflow: auto !important; ">
           <TarifDirectory />
         </b-card-text>
       </b-tab>
       <b-tab title="Данные по ставкам ПВ"  >
-        <b-card-text>
+        <b-card-text style="overflow: auto !important; ">
           <stavkipvVue />
         </b-card-text>
       </b-tab>

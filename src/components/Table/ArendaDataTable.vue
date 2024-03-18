@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <Loader :loader="loader" />
 
     <b-modal id="bv-modal-example" hide-footer>
