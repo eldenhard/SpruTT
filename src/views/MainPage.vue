@@ -85,7 +85,7 @@ export default {
 </script>
 <style scoped>
 .block_main_page {
-  background: url(../assets/back_img.png) no-repeat center center fixed;
+  background: url(../assets/back_img.webp) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
