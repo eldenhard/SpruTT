@@ -27,8 +27,10 @@
                         style="width:20vw !important;"></v-select>
                 </label>
                 <br>
+
                 <button class="Accept button" @click="Actioned()" style="width:20vw !important; height: 40px;">Загрузить
                     данные</button>
+
             </div>
             <div>
                 <b-card no-body>
@@ -377,24 +379,43 @@
                         <b-tab title="Внесение данных доходности">
                             <b-card-text>
                                 <div class="date_block">
-                                    <select v-model="typeData" style="width: 20vw !important">
-                                        <option value="income">Загрузка доходности</option>
-                                        <option value="plan">Загрузка Бизнес-плана</option>
-                                    </select>
-                                    <br>
-                                    <label for="">
-                                        Дата <br>
-                                        <input type="month" v-model="date_begin_create" class="textarea"
-                                            style="background: white;width: 20vw !important ">
-                                    </label>
-                                    <b></b>
-                                    <label for="">
+                                    <div class="filter_b">
+                                        <div>
+                                            <select v-model="typeData" style="width: 20vw !important">
+                                                <option value="income">Загрузка доходности</option>
+                                                <option value="plan">Загрузка Бизнес-плана</option>
+                                            </select>
+                                            <br>
+                                            <label for="">
+                                                Дата <br>
+                                                <input type="month" v-model="date_begin_create" class="textarea"
+                                                    style="background: white;width: 20vw !important ">
+                                            </label>
+                                            <br>
+                                            <label>Клиент <br>
+                                                <v-select v-model="currentClientsForExcelFile" :options="clients"
+                                                    label="value" style="width:20vw !important;"></v-select>
+                                            </label>
+                                        </div>
+                                        <div class="download_excel" v-if="typeData == 'plan'">
+                                            <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда"
+                                                class="textarea" style="width: 45vw; height: 15vh;">
+                                            </textarea>
+                                            <div style="display: flex; margin-top: 2%; gap: 5%">
+                                                <button class="Delete button" @click="tableData = []">Очистить
+                                                    таблицу</button>
+                                                <button class="Accept button" @click="downloadExcel()">Загрузить в
+                                                    таблицу</button>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                    </label>
-                                    <div class="table_block">
+
+                                    <div class="table_block" v-if="typeData == 'income'">
                                         <table>
                                             <thead>
                                                 <th>Выручка</th>
+                                                <th>Вес</th>
                                                 <th>Тариф порож </th>
                                                 <th>Тариф по сопред порож</th>
                                                 <th>Тариф груж</th>
@@ -416,6 +437,31 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div v-else style="overflow: auto">
+                                        <table>
+                                            <thead>
+                                                <th>Выручка</th>
+                                                <th>Вес</th>
+                                                <th>Тариф порож </th>
+                                                <th>Тариф по сопред порож</th>
+                                                <th>Тариф груж</th>
+                                                <th>Доп. расходы</th>
+                                                <th>Маржинальный доход</th>
+                                                <th>Вагоносутки (раб)</th>
+                                                <th>Вагоносутки (общ) </th>
+                                                <th>Доходность (раб в/с)</th>
+                                                <th>Доходность (общ в/с)</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
+                                                    <td v-for="(cell, cellIndex) in row" :key="cellIndex">
+                                                        {{ cell }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                                     <button class="Accept special" @click="saveNewProfitability()">Сохранить
                                         данные</button>
                                 </div>
@@ -437,11 +483,16 @@ import api from '@/api/directory'
 import Loader from "@/components/loader/loader.vue";
 import vSelect from "vue-select";
 import Notifications from "@/components/notifications/Notifications.vue";
+import Handsontable from "handsontable";
 
 export default {
     components: { Periods, Loader, vSelect, Notifications },
     data() {
         return {
+            excelData: "",
+            hot: "",
+            tableData: [],
+            currentClientsForExcelFile: "",
             wag_type: "Полувагон",
             date_begin: new Date().toISOString().slice(0, 10),
             date_begin_create: new Date().toISOString().slice(0, 7),
@@ -492,6 +543,7 @@ export default {
             { value: 'УГПХ, ООО' }],
             createNewProfitability: {
                 revenue: 0,
+                volume: 0,
                 tariff_empty: 0,
                 tariff_inroad: 0,
                 tariff_loaded: 0,
@@ -501,6 +553,7 @@ export default {
                 vagonosutki: 0,
                 income_work: 0,
                 income: 0,
+
             },
             showNotify: false,
             notifyHead: "",
@@ -642,7 +695,64 @@ export default {
         }
     },
     methods: {
+        downloadExcel() {
+
+            const excelData = this.excelData;
+            // Парсим данные из Excel, разделяя их по строкам и столбцам
+            const rows = excelData.split("\n");
+            const data = rows.map((row) => row.split("\t"));
+
+            // Уничтожаем текущий экземпляр Handsontable, если он существует
+            if (this.hot) {
+                this.hot.destroy();
+            }
+            for (let rowIndex = 0; rowIndex < data.length; rowIndex++) {
+                for (
+                    let cellIndex = 0;
+                    cellIndex < data[rowIndex].length;
+                    cellIndex++
+                ) {
+                    if (data[rowIndex][cellIndex].trim() === "") {
+                        data[rowIndex][cellIndex] = "0";
+                    }
+                }
+            }
+            // Инициализируем Handsontable внутри <tbody> и передаем данные
+            const tbody = document.querySelector("tbody");
+            this.hot = new Handsontable(tbody, {
+                data: data,
+                colHeaders: false, // Отключаем заголовки столбцов
+                rowHeaders: false, // Отключаем заголовки строк
+            });
+            for (let i of data) {
+                if (i.length == 1) {
+                    data.splice(data.indexOf(i), 1);
+                }
+            }
+
+            for (let i = 0; i < data.length; i++) {
+                let subArray = data[i];
+                if (subArray.length > Object.keys(this.createNewProfitability).length) {
+                    data[i] = subArray.slice(0, Object.keys(this.createNewProfitability).length);
+                }
+            }
+            console.log(data);
+            this.tableData = data;
+
+            // КОНЕЦ РАБОЧЕГО КОДА
+            this.excelData = "";
+
+        },
         saveNewProfitability() {
+            if (this.currentClientsForExcelFile == "") {
+                this.loader = false
+                this.notifyHead = "Ошибка";
+                this.notifyMessage = "Не выбран клиент";
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => (this.showNotify = false), 2500);
+                return
+            }
             this.loader = true
 
             let filtersData = JSON.parse(JSON.stringify(this.createNewProfitability)); // Копируем объект
@@ -650,6 +760,7 @@ export default {
                 filtersData[key] = Number(filtersData[key])
             }
             filtersData.on_date = this.date_begin_create + "-01"
+            filtersData.client = this.currentClientsForExcelFile.value
             if (this.typeData == "income") {
                 api.createNewProfitability(filtersData)
                     .then(() => {
@@ -672,26 +783,41 @@ export default {
                         this.loader = false
                     })
             } else {
-                api.postNewBusinessPlan(filtersData)
-                    .then(() => {
+                this.loader = true
+                let keys = Object.keys(this.createNewProfitability)
+                let result = []
+                for (let i = 0; i < this.tableData.length; i++) {
+                    let obj = {}
+                    for (let j = 0; j < keys.length; j++) {
+                        obj[keys[j]] = Number(this.tableData[i][j].replace(',', '.')) || 0
+                        obj["on_date"] = this.date_begin_create + "-01"
+                        obj["client"] = this.currentClientsForExcelFile.value
+                    }
+                    result.push(obj)
+                }
+
+                let promises = result.map((item) => { api.postNewBusinessPlan(item) })
+                Promise.all(promises)
+                    .then((result) => {
                         this.loader = false
+                        this.tableData = []
                         this.notifyHead = "Успешно";
                         this.notifyMessage = "Данные Бизнес-плана сохранены";
                         this.notifyClass = "wrapper-success";
                         this.showNotify = true;
                         setTimeout(() => (this.showNotify = false), 2000);
-                    })
-                    .catch((err) => {
-                        this.loader = false
+                    }).catch((err) => {
+                        this.tableData = []
                         this.notifyHead = "Ошибка";
                         this.notifyMessage = err.response;
                         this.notifyClass = "wrapper-success";
                         this.showNotify = true;
                         setTimeout(() => (this.showNotify = false), 5000);
-                    })
-                    .finally(() => {
+                        this.loader = false
+                    }).finally(() => {
                         this.loader = false
                     })
+
             }
 
 
@@ -743,6 +869,15 @@ table {
 
 .date_block {
     display: flex;
+    flex-direction: column;
+}
+
+.filter_b {
+    display: flex;
+    justify-content: space-between;
+}
+
+.download_excel {
     flex-direction: column;
 }
 

@@ -136,7 +136,7 @@
                 <!-- Выбрано приложение -->
                 <section style="flex: 2 0 auto;" v-if="picked != 'agreement_number'">
                     <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"
-                        style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
+                     style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
                     <button class="Accept" @click="loadFromExcel()" :disabled="active_load_button"
                         style="margin-top: 2%;width: 100%;margin-left: auto;height: 40px;">Загрузить в таблицу</button>
                     <br>
