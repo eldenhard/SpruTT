@@ -6,7 +6,6 @@ let config = {
     //  baseURL: 'http://10.1.5.20/api/'
     baseURL: '/api/'
 }
-
 const _axios = axios.create(config)
 // 
 _axios.interceptors.request.use(
@@ -19,7 +18,6 @@ _axios.interceptors.request.use(
         return Promise.reject(error)
     }
 )
-
 _axios.interceptors.response.use(
     function (response) {
         return response
@@ -60,7 +58,6 @@ Plugin.install = function (Vue, options) {
 }
 
 Vue.use(Plugin);
-
 
 export const api = _axios
 export default Plugin
