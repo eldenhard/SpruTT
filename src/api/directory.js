@@ -238,6 +238,9 @@ const getDataForOperSpravka = (queryString) => {
 const createNewProfitability = (data) => {
     return api.post(`${finance}/operativnaya-srpavka-other-info/`, data)
 }
+const postNewBusinessPlan = (data) => {
+    return api.post(`${finance}/business-plan/`, data)
+}
 const getDataForOperSpravkaOtherClients = (queryString) => {
     return api.get(`${finance}/operativnaya-spravka/report-other-clients/${queryString}` )
 }
@@ -292,6 +295,7 @@ export default {
     deleteStavkiArenda,
     postPenaltyStandards,
     createAgreeemntStivkaPV,
+    postNewBusinessPlan,
 
     // Нормативы
     getStandard,
