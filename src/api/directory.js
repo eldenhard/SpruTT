@@ -245,9 +245,7 @@ const getDataForOperSpravkaOtherClients = (queryString) => {
     return api.get(`${finance}/operativnaya-spravka/report-other-clients/${queryString}` )
 }
 
-const postNewBusinessPlan = (data) => {
-    return api.post(`${finance}/business-plan`, data)
-}
+
 
 // Получение  договора по параметрам расширенного поиска
 const getAgreementAdvancedFilter = (contract_type, counterparty, number) => {
@@ -298,7 +296,6 @@ export default {
     deleteStavkiArenda,
     postPenaltyStandards,
     createAgreeemntStivkaPV,
-    postNewBusinessPlan,
 
     // Нормативы
     getStandard,
