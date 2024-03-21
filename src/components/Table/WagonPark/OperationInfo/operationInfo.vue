@@ -377,10 +377,19 @@
                         <b-tab title="Внесение данных доходности">
                             <b-card-text>
                                 <div class="date_block">
+                                    <select v-model="typeData" style="width: 20vw !important">
+                                        <option value="income">Загрузка доходности</option>
+                                        <option value="plan">Загрузка Бизнес-плана</option>
+                                    </select>
+                                    <br>
                                     <label for="">
                                         Дата <br>
                                         <input type="month" v-model="date_begin_create" class="textarea"
-                                            style="background: white;">
+                                            style="background: white;width: 20vw !important ">
+                                    </label>
+                                    <b></b>
+                                    <label for="">
+
                                     </label>
                                     <div class="table_block">
                                         <table>
@@ -443,6 +452,7 @@ export default {
             selectedOptions: "",
             allClientsInTable: [],
             currentClients: [],
+            typeData: 'income',
             clients: [{ value: "ТАТНЕФТЬ-ТРАНС, ООО" },
             { value: "ВЕКТОР-ДВИЖЕНИЯ, ООО" },
             { value: "Энергоресурсы" },
@@ -592,7 +602,7 @@ export default {
         },
         totalRevenueCurrentPlan() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
-                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_current_plan, 0)  + this.totalResponse2[0].revenue_current_plan
+                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_current_plan, 0) + this.totalResponse2[0].revenue_current_plan
             } else {
                 return 0
             }
@@ -617,7 +627,7 @@ export default {
                 // return this.responseServerData.report.reduce((sum, item) => sum + item.revenue_complete_rel, 0);
                 let a = this.totalRevenueCurrentFact
                 let b = this.totalRevenueCurrentPlan
-                if(b == 0){
+                if (b == 0) {
                     return 100
                 }
                 return Math.ceil(a / b * 100)
@@ -640,26 +650,49 @@ export default {
                 filtersData[key] = Number(filtersData[key])
             }
             filtersData.on_date = this.date_begin_create + "-01"
-            api.createNewProfitability(filtersData)
-                .then(() => {
-                    this.loader = false
-                    this.notifyHead = "Успешно";
-                    this.notifyMessage = "Данные сохранены";
-                    this.notifyClass = "wrapper-success";
-                    this.showNotify = true;
-                    setTimeout(() => (this.showNotify = false), 2000);
-                })
-                .catch((err) => {
-                    this.loader = false
-                    this.notifyHead = "Ошибка";
-                    this.notifyMessage = err.response;
-                    this.notifyClass = "wrapper-success";
-                    this.showNotify = true;
-                    setTimeout(() => (this.showNotify = false), 5000);
-                })
-                .finally(() => {
-                    this.loader = false
-                })
+            if (this.typeData == "income") {
+                api.createNewProfitability(filtersData)
+                    .then(() => {
+                        this.loader = false
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = "Данные доходности сохранены";
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => (this.showNotify = false), 2000);
+                    })
+                    .catch((err) => {
+                        this.loader = false
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = err.response;
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => (this.showNotify = false), 5000);
+                    })
+                    .finally(() => {
+                        this.loader = false
+                    })
+            } else {
+                api.postNewBusinessPlan(filtersData)
+                    .then(() => {
+                        this.loader = false
+                        this.notifyHead = "Успешно";
+                        this.notifyMessage = "Данные Бизнес-плана сохранены";
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => (this.showNotify = false), 2000);
+                    })
+                    .catch((err) => {
+                        this.loader = false
+                        this.notifyHead = "Ошибка";
+                        this.notifyMessage = err.response;
+                        this.notifyClass = "wrapper-success";
+                        this.showNotify = true;
+                        setTimeout(() => (this.showNotify = false), 5000);
+                    })
+                    .finally(() => {
+                        this.loader = false
+                    })
+            }
 
 
         },
@@ -706,6 +739,11 @@ export default {
 <style scoped>
 table {
     margin-top: 2%;
+}
+
+.date_block {
+    display: flex;
+    flex-direction: column;
 }
 
 .table_block {
