@@ -19,7 +19,7 @@
       {{ visible ? "Скрыть данные по аренде" : "Отобразить данные по аренде" }}
     </a>
     <div class="table-content" v-show="visible">
-      <label for="amount">Количество строк <br />
+      <label for="amount">Количество строк<br />
         <select name="amount_row" id="amount" v-model="filter_arendaData.page_size" style="width: 100%" class="mini">
           <option value="" disabled>кол-во строк на странице</option>
           <option value="15">15</option>
@@ -61,7 +61,7 @@
       </label>
 
 
-      <div style="display: flex; flex-direction: column;">
+
         <!-- Начало аренды -->
         <label for="tenant">Начало аренды от
           <br />
@@ -72,8 +72,8 @@
           <br />
           <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin_to" />
         </label>
-      </div>
-      <div style="display: flex; flex-direction: column;">
+
+   
         <!-- Конец аренды -->
         <label for="tenant">Конец аренды от
           <br />
@@ -82,8 +82,8 @@
         <label for="tenant">Конец аренды до
           <br />
           <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end_to" /></label>
-      </div>
-      <div style="display: flex; flex-direction: column;">
+ 
+    
         <!-- Начало ставки -->
         <label for="tenant">Начало ставки от
           <br />
@@ -94,8 +94,8 @@
           <br />
           <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_begin_to" />
         </label>
-      </div>
-      <div style="display: flex; flex-direction: column;">
+  
+   
         <!-- Конец ставки -->
         <label for="tenant">Конец ставки от
           <br />
@@ -111,7 +111,7 @@
           <br />
           <input type="number" id="tenant" class="textarea mini" v-model="filter_arendaData.stavka" />
         </label>
-      </div>
+     
 
 
 
@@ -145,9 +145,6 @@
           </ul>
         </div>
       </label>
-      <div></div>
-      <div></div>
-      <div></div>
     </div>
 
 
