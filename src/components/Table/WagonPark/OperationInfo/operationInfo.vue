@@ -37,7 +37,8 @@
                     <b-tabs card>
                         <b-tab title="Выполнение плана" active>
                             <b-card-text>
-                                <table style="margin-left: -5%;">
+                                <div style="overflow: auto;">
+                                    <table style="margin-left: -5%;">
                                     <thead>
                                         <tr>
                                             <th class="greenCell">Клиент
@@ -45,48 +46,25 @@
                                                     label="label" multiple>
                                                 </v-select>
                                             </th>
-                                            <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' :
-            "Объемы,тн" }} </th>
-
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type
-            ==
-            'Полувагон' ?
-            'Кол-во погр План на тек дату' : 'Объем на тек дату План' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type
-            ==
-            'Полувагон' ?
-            'Кол-во погр факт на тек дату' : 'Объем на тек дату Факт' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type
-            ==
-            'Полувагон' ?
-            'Выполнение абсл.' : 'Отклонение кол-ва ваг' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type
-            ==
-            'Полувагон' ?
-            'Выполнение отн.' : ' % выполнения плана' }} </th>
-
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type
-                == 'Полувагон' ?
-                'Выручка без НДС, руб' : "Выручка без НДС, руб ПЛАН" }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type
-                == 'Полувагон' ?
-                'Объем на тек дату План' : 'Выручка без НДС, руб на тек дату ПЛАН' }}
+                                            <th style="background: darkorange">{{ wag_type == 'Полувагон' ? 'Объемы БП, ед' : "Объемы БП, тн" }} </th>
+                                            <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' :  "Объемы,тн" }} </th>
+                                            <th style="background: darkorange">{{ wag_type == 'Полувагон' ? 'Кол-во погр БП на тек дату' : 'Объем БП на тек дату План' }} 
                                             </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type
-                == 'Полувагон' ?
-                'Объем на тек дату Факт' : 'Выручка без НДС, руб на тек дату факт' }}
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type  == 'Полувагон' ? 'Кол-во погр План на тек дату' : 'Объем на тек дату План' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type == 'Полувагон' ? 'Кол-во погр факт на тек дату' : 'Объем на тек дату Факт' }} </th>
+                                            <th style="background: darkorange">{{ wag_type  == 'Полувагон' ? 'Выполнение БП, %' : 'Выполнение БП, %' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type  == 'Полувагон' ? 'Выполнение абсл.' : 'Отклонение кол-ва ваг' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type == 'Полувагон' ? 'Выполнение отн.' : ' % выполнения плана' }} </th>
+                                            <th style="background: darkorange">Выручка без НДС, руб БП</th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Выручка без НДС, руб' : "Выручка без НДС, руб ПЛАН" }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Объем на тек дату План' : 'Выручка без НДС, руб на тек дату ПЛАН' }}
                                             </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type
-                == 'Полувагон' ?
-                'Выполнение абсл.' : 'отклонения в выручке' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type
-                == 'Полувагон' ?
-                'Выполнение отн.' : ' % выполнения' }} </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Объем на тек дату Факт' : 'Выручка без НДС, руб на тек дату факт' }}
+                                            </th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'отклонения в выручке' }} </th>
+                                            <th style="background: darkorange">Выполнение БП, %</th>
+                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Выполнение отн.' : ' % выполнения' }} </th>
+                
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -96,49 +74,64 @@
                                         </tr>
                                         <tr v-for="item, index in filteredReportData" :key="index">
                                             <td>{{ item.client }}</td>
+                                            <td></td>
                                             <td>{{ item.metric | format }}</td>
+                                            <td></td>
                                             <td>{{ item.metric_current_plan | format }}</td>
                                             <td>{{ item.metric_current_fact | format }}</td>
+                                            <td></td>
                                             <td>{{ (item.metric_current_fact - item.metric_current_plan) | format }}
                                             </td>
                                             <td>{{ item.metric_complete_rel | format }} %</td>
+                                            <td></td>
                                             <td>{{ item.revenue_wo_nds | format }}</td>
                                             <td>{{ item.revenue_current_plan | format }}</td>
                                             <td>{{ item.revenue_current_fact | format }}</td>
-                                            <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format }}
-                                            </td>
+                                            <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format }}</td>
+                                            <td></td>
                                             <td>{{ item.revenue_complete_rel | format }}%</td>
                                         </tr>
                                         <tr v-for="item in totalResponse2" :key="item.id">
                                             <td>Прочие</td>
+                                            <td></td>
                                             <td>{{ item.metric | format }}</td>
+                                            <td></td>
                                             <td>{{ item.metric_current_plan | format }}</td>
                                             <td>{{ item.metric_current_fact | format }}</td>
+                                            <td></td>
                                             <td>{{ (item.metric_current_fact - item.metric_current_plan) | format }}
                                             </td>
                                             <td>{{ item.metric_complete_rel | format }} %</td>
+                                            <td></td>
                                             <td>{{ item.revenue_wo_nds | format }}</td>
                                             <td>{{ item.revenue_current_plan | format }}</td>
                                             <td>{{ item.revenue_current_fact | format }}</td>
-                                            <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format }}
-                                            </td>
+                                            <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format }}</td>
+                                            <td></td>
                                             <td>{{ item.revenue_complete_rel | format }}%</td>
                                         </tr>
                                         <tr class="Row_grey">
                                             <td>Итого</td>
+                                            <td></td>
                                             <td>{{ totalMetric | format }}</td>
+                                            <td></td>
                                             <td>{{ totalMetricCurrentPlan | format }}</td>
                                             <td>{{ totalMetricCurrentFact | format }}</td>
+                                            <td></td>
                                             <td>{{ totalMetricCurrentFact - totalMetricCurrentPlan | format }}</td>
                                             <td>{{ totalMetricCompleteRel }} %</td>
+                                            <td></td>
                                             <td>{{ totalRevenueWithoutNDS | format }}</td>
                                             <td>{{ totalRevenueCurrentPlan | format }}</td>
                                             <td>{{ totalRevenueCurrentFact | format }}</td>
                                             <td>{{ totalRevenueCurrentFact - totalRevenueCurrentPlan | format }}</td>
+                                            <td></td>
                                             <td>{{ totalRevenueCompleteRel }} %</td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                </div>
+                             
                             </b-card-text>
                         </b-tab>
                         <b-tab title="Маржинальная доходность">
