@@ -853,11 +853,13 @@ export default {
         }
       } else if (event.target.id == "stavka" || event.target.id == "nds") {
         if (event.target.id == "nds" && this.which_nds == "percent") {
-          let percent_nds = event.target.value.split(" ");
+          let percent_nds = event.target.value.split(" ")
+          console.log('nds', percent_nds)
           if (percent_nds) {
             let operationBuffer = percent_nds.map(Number);
-
-            if (operationBuffer[0] == "") {
+            console.log(operationBuffer)
+            if (operationBuffer[0] === "") {
+              console.log("'i'm here")
               return;
             }
             this.WorkInClass(operationBuffer, event);
@@ -874,14 +876,15 @@ export default {
         const numbers = matches.map((match) =>
           parseFloat(match.replace(/\s/g, "").replace(",", "."))
         );
-
+        console.log(numbers, 'numbers')
         // Разбиваем строку на массив, используя регулярное выражение для чисел с пробелами и запятой
         let all_value = t.match(/\d+(?: \d{3})*(?:,\d{2})?/g);
-        console.log(all_value);
+    
         // Преобразуем каждое число, заменяя пробел на пустую строку и запятую на точку
         all_value = all_value.map((num) =>
           parseFloat(num.replace(/ /g, "").replace(",", "."))
         );
+        console.log(all_value, 'all_value');
         if (numbers) {
           let operationBuffer = numbers.map(Number);
 
