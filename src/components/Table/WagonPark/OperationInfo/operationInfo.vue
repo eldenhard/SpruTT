@@ -141,6 +141,11 @@
                                 </table>
                             </b-card-text>
                         </b-tab>
+                        <b-tab title="Маржинальная доходность">
+                            <b-card-text>
+                                <marginIncomeVue />
+                            </b-card-text>
+                        </b-tab>
                         <b-tab title="Доходность">
                             <b-card-text>
                                 <table style="margin-left: -5%;">
@@ -484,9 +489,10 @@ import Loader from "@/components/loader/loader.vue";
 import vSelect from "vue-select";
 import Notifications from "@/components/notifications/Notifications.vue";
 import Handsontable from "handsontable";
+import marginIncomeVue from './marginIncome.vue';
 
 export default {
-    components: { Periods, Loader, vSelect, Notifications },
+    components: { Periods, Loader, vSelect, Notifications, marginIncomeVue },
     data() {
         return {
             excelData: "",
