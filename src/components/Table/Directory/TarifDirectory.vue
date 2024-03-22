@@ -319,12 +319,24 @@
           </tr>
           <tr>
             <th>№</th>
-            <th style="border: 1px solid black; font-size: 12px !important;">Станция отпр.</th>
+            <th style="border: 1px solid black; font-size: 12px !important;"  
+            @mouseover="checkFunc($event)" 
+            @mouseout="resetText('Станция отпр.')" 
+            @click="handleClick('departure_station')">Станция отпр.</th>
             <!-- Новые поля от 20.02.2024 -->
-            <th style="border: 1px solid black; font-size: 12px !important;">Мн. станций отправки</th>
-            <th style="border: 1px solid black; font-size: 12px !important;">Станция назн.</th>
+            <th style="border: 1px solid black; font-size: 12px !important;"
+            @mouseover="checkFunc($event)" 
+            @mouseout="resetText('Мн. станций отправки')" 
+            @click="handleClick('departure_station_list')">Мн. станций отправки</th>
+            <th style="border: 1px solid black; font-size: 12px !important;"
+            @mouseover="checkFunc($event)" 
+            @mouseout="resetText('Станция назн.')" 
+            @click="handleClick('destination_station')">Станция назн.</th>
             <th style="border: 1px solid black; font-size: 12px !important;">Сдвоенн. рейс</th>
-            <th style="border: 1px solid black; font-size: 12px !important;">Груз наимен.</th>
+            <th style="border: 1px solid black; font-size: 12px !important;"
+            @mouseover="checkFunc($event)" 
+            @mouseout="resetText('Груз наимен.')" 
+            @click="handleClick('cargos_list')">Груз наимен.</th>
             <th style="border: 1px solid black; font-size: 12px !important;">Груз(ЕСТНГ)
               <select name="" id="" v-model="which_cargo" style="width: 60%">
                 <option value="">—</option>
@@ -336,21 +348,45 @@
 
               </select>
             </th>
-            <th style="border: 1px solid black; font-size: 12px !important;">Ставка без НДС</th>
-            <th style="border: 1px solid black; position: relative;; font-size: 12px !important;">НДС
+            <th style="border: 1px solid black; font-size: 12px !important;"
+            @mouseover="checkFunc($event)" 
+            @mouseout="resetText('Ставка без НДС')" 
+            @click="handleClick('stavka')">Ставка без НДС</th>
+            <th style="border: 1px solid black; position: relative;; font-size: 12px !important;"
+            >НДС
               <select name="" id="" v-model="which_nds" style="width: 70%">
                 <option value="percent">%</option>
                 <option value="value">Сумма</option>
               </select>
             </th>
 
-            <th style="border: 1px solid black; font-size: 12px !important;" colspan="2">Дистанция (диапозон)</th>
+            <th style="border: 1px solid black; font-size: 12px !important;" colspan="2"
+            @mouseover="checkFunc($event)" 
+            @mouseout="resetText('Дистанция (диапозон)')" 
+            @click="handleClick('distance')"
+            >Дистанция (диапозон)</th>
             <!-- Новые поля от 20.02.2024 -->
-            <th style="border: 1px solid black; font-size: 12px !important;">Расстояние</th>
-            <th style="border: 1px solid black; font-size: 12px !important;">Станция следующей погрузки</th>
-            <th style="border: 1px solid black; font-size: 12px !important;">Станции исключения назначения</th>
-            <th style="border: 1px solid black; font-size: 12px !important;">Страна</th>
-            <th style="border: 1px solid black; font-size: 12px !important;">Вагоны</th>
+            <th style="border: 1px solid black; font-size: 12px !important;"
+            @mouseover="checkFunc($event)" 
+            @mouseout="resetText('Расстояние')" 
+            @click="handleClick('distance_num')">Расстояние</th>
+            <th style="border: 1px solid black; font-size: 12px !important;"
+            @mouseover="checkFunc($event)" 
+            @mouseout="resetText('Станция следующей погрузки')" 
+            @click="handleClick('next_loading_stations_list')"
+            >Станция следующей погрузки</th>
+            <th style="border: 1px solid black; font-size: 12px !important;"
+            @mouseover="checkFunc($event)" 
+            @mouseout="resetText('Станции исключения назначения')" 
+            @click="handleClick('exclude_next_loading_stations_list')">Станции исключения назначения</th>
+            <th style="border: 1px solid black; font-size: 12px !important;"
+            @mouseover="checkFunc($event)" 
+            @mouseout="resetText('Страна')" 
+            @click="handleClick('country')">Страна</th>
+            <th style="border: 1px solid black; font-size: 12px !important;"
+            @mouseover="checkFunc($event)" 
+            @mouseout="resetText('Вагоны')" 
+            @click="handleClick('wagons')">Вагоны</th>
 
           </tr>
           <tr v-for="(item, index) in data" :key="index">
@@ -595,7 +631,20 @@ export default {
     },
   },
   methods: {
-
+    checkFunc(e){
+      e.target.innerText = 'Удалить'
+      e.target.style.color = 'red'
+    },
+    handleClick(name) {
+      console.log('Удаление столбика', this.data, name)
+     for(let i in this.data){
+      this.data[i][name] = null
+     }
+    },
+    resetText(el) {
+      event.target.innerText = el
+      event.target.style.color = 'black'
+    },
     CheckValue(value) {
       let client = value;
       if (
