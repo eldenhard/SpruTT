@@ -383,6 +383,11 @@
                                                 <option value="income">Загрузка доходности</option>
                                                 <option value="plan">Загрузка Бизнес-плана</option>
                                             </select>
+                                            <select v-model="wagon_type" style="width: 20vw !important">
+                                                <option value="Полувагон">Полувагон</option>
+                                                <option value="Цистерна">Цистерна</option>
+                                            </select>
+                                            <br>
                                             <br>
                                             <label for="">
                                                 Дата <br>
@@ -492,6 +497,7 @@ export default {
             hot: "",
             tableData: [],
             currentClientsForExcelFile: "",
+            wagon_type: "Полувагон",
             wag_type: "Полувагон",
             date_begin: new Date().toISOString().slice(0, 10),
             date_begin_create: new Date().toISOString().slice(0, 7),
@@ -760,6 +766,7 @@ export default {
             }
             filtersData.on_date = this.date_begin_create + "-01"
             filtersData.client = this.currentClientsForExcelFile.value
+            filtersData.wagon_type = this.wagon_type
             if (this.typeData == "income") {
                 api.createNewProfitability(filtersData)
                     .then(() => {
@@ -791,6 +798,7 @@ export default {
                         obj[keys[j]] = Number(this.tableData[i][j].replace(',', '.')) || 0
                         obj["on_date"] = this.date_begin_create + "-01"
                         obj["client"] = this.currentClientsForExcelFile.value
+                        obj["wagon_type"] = this.wagon_type
                     }
                     result.push(obj)
                 }
