@@ -664,6 +664,9 @@ export default {
             let data = [];
             data.push({ [name]: element, responsible: this.uid });
             console.log(id, data[0], 'i am')
+            if(data[0].end_date == ""){
+                data[0].end_date = null
+            }
             api
                 .patchTarifData(id, data[0])
                 .then((response) => {
@@ -738,6 +741,67 @@ export default {
 </script>
 
 <style scoped>
+.success {
+    transition: 0.5s ease-in-out;
+    background: rgba(42, 190, 67, 0.4);
+    color: black;
+}
+
+.error {
+    transition: 0.5 ease-in-out;
+    background: lightcoral;
+    color: black;
+}
+.inputcontainer {
+    position: relative;
+}
+
+.icon-container {
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 10px);
+}
+
+.loader {
+    position: relative;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    animation: around 5.4s infinite;
+}
+
+@keyframes around {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loader::after,
+.loader::before {
+    content: "";
+    background: white;
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    border-width: 2px;
+    border-color: #333 #333 transparent transparent;
+    border-style: solid;
+    border-radius: 20px;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    animation: around 0.7s ease-in-out infinite;
+}
+
+.loader::after {
+    animation: around 0.7s ease-in-out 0.1s infinite;
+    background: transparent;
+}
 .table-content {
     margin-top: 4%;
     display: flex;

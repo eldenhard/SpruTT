@@ -1475,8 +1475,6 @@ export default {
                                 stavka =  parseFloat(item[capacityField].replace(/[^0-9,]/g, '').replace(',', '.'))
                             }
 
-
-
                             const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
 
                             const capacityObject = { capacity_compare, capacity_value, stavka, cargos_list };
