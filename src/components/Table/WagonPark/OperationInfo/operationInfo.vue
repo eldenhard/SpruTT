@@ -466,7 +466,6 @@
                                             @update:tableData="tableData = $event"
                                             :date_begin_create="date_begin_create" 
                                             :wagon_type="wagon_type"
-                                            @showError="showError"
                                             @stateLoader="stateLoader">
                                         </enterDataIncomeVue>
                                     </div>
@@ -479,7 +478,6 @@
             </div>
 
         </div>
-        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
     </div>
 </template>
 
@@ -489,13 +487,12 @@ import Periods from "../../ManagmentRepReporting/Periods.vue";
 import api from '@/api/directory'
 import Loader from "@/components/loader/loader.vue";
 import vSelect from "vue-select";
-import Notifications from "@/components/notifications/Notifications.vue";
 import Handsontable from "handsontable";
 import marginIncomeVue from './marginIncome.vue';
 import enterDataIncomeVue from './enterDataIncome.vue';
 import { mapState } from "vuex";
 export default {
-    components: { Periods, Loader, vSelect, Notifications, marginIncomeVue, enterDataIncomeVue },
+    components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue },
     data() {
         return {
             excelData: "",
@@ -567,10 +564,7 @@ export default {
                 income_w_penalties: 0,
 
             },
-            showNotify: false,
-            notifyHead: "",
-            notifyMessage: "",
-            notifyClass: "",
+
 
            
         }
@@ -585,7 +579,7 @@ export default {
 
         },
     },
-
+   
     computed: {
         ...mapState({
             name_client: (state) => state.client.name_client,
@@ -713,14 +707,7 @@ export default {
         }
     },
     methods: {
-       showError(err) {
-        this.notifyHead = err[0];
-        this.notifyMessage = err[1];
-        this.notifyClass = err[2];
-        this.showNotify = true;
-        setTimeout(() => (this.showNotify = false), 8000);
-        this.loader = false
-       },
+
        stateLoader(val){
             this.loader = val
        },

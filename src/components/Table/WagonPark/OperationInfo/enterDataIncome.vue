@@ -27,18 +27,14 @@
 
         <button class="Request button special" @click="checkEnterData()">Проверка введенных данных</button>
         <button class="Accept special" @click="saveNewBusinessPlan()" :disabled="isFlagError">Сохранить данные</button>
-        <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
     </div>
 </template>
 
 <script>
-import Notifications from "@/components/notifications/Notifications.vue";
 import api from '@/api/directory'
 
 export default {
-    components: {
-        Notifications,
-    },
+
     props: {
         createNewProfitability: {
             type: Object
@@ -58,10 +54,6 @@ export default {
     },
     data() {
         return {
-            showNotify: false,
-            notifyHead: "",
-            notifyMessage: "",
-            notifyClass: "",
              // проверка на прохождение проверки
              isFlagError: true,
         }
@@ -92,14 +84,16 @@ export default {
                 }
             }
             console.log(result, errorList)
-            let notification 
             if (errorList.length > 0) {
-                notification = ["Ошибка", `Не найдены данные по клиентам: <br> ${errorList.join("<br>")}`, "wrapper-error"]
-                this.$emit('showError', notification)
 
+                this.$toast.error(`Ошибка\nНе найдены данные по клиентам!\n${errorList.join('\n')}`, { 
+                    timeout: 3000
+                })
             } else {
-                notification = ["Успешно", `Данные прошли проверку! <br> Разрешено сохранение`, "wrapper-success"]
-                this.$emit('showError', notification)
+                this.$toast.success(`Успешно\nДанные прошли проверку!\nРазрешено сохранение`, { 
+                    timeout: 3000
+                })
+
                 this.isFlagError = false
             }
         },
@@ -123,15 +117,17 @@ export default {
             console.log(result)
             let promises = result.map((item) => api.postNewBusinessPlan(item))
            
-            Promise.allSettled(promises)
+            Promise.all(promises)
                 .then((result) => {
                     this.$emit('stateLoader', false)
-                    let notification = ["Успешно", `Данные Бизнес-плана сохранены`, "wrapper-success"]
-                    this.$emit('showError', notification)
+                    this.$toast.success(`Успешно\nДанные Бизнес-плана сохранены`, { 
+                        timeout: 3000
+                    })
                     this.$emit('update:tableData', [])
                 }).catch((err) => {
-                    let notification = ["Ошибка", `${err.response}`, "wrapper-error"]
-                    this.$emit('showError', notification)
+                    this.$toast.error(`Ошибка\n${err.response}`, { 
+                        timeout: 4000
+                    })
                     this.$emit('stateLoader', false)
 
                 })

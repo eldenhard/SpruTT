@@ -24,10 +24,10 @@ Vue.use(Toast, {
   closeOnClick: true,
   pauseOnFocusLoss: true,
   pauseOnHover: true,
-  draggable: true,
+  draggable: false,
   draggablePercent: 0.6,
   showCloseButtonOnHover: false,
-  hideProgressBar: true,
+  hideProgressBar: false,
   closeButton: "button",
   icon: true,
   rtl: false
