@@ -466,7 +466,7 @@
                                             :date_begin_create="date_begin_create" 
                                             :wagon_type="wagon_type"
                                             @showError="showError"
-                                            @stateLoader="loader = stateLoader">
+                                            @stateLoader="stateLoader">
                                         </enterDataIncomeVue>
                                     </div>
                                       
@@ -714,6 +714,9 @@ export default {
         this.showNotify = true;
         setTimeout(() => (this.showNotify = false), 8000);
         this.loader = false
+       },
+       stateLoader(val){
+            this.loader = val
        },
         downloadExcel() {
 

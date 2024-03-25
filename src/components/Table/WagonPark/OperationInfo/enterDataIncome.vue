@@ -105,13 +105,8 @@ export default {
         },
         saveNewBusinessPlan() {
             this.isFlagError = true
-            if (this.currentClientsForExcelFile == "") {
-                // this.loader = false
-                let notification = ["Ошибка", `Не выбран клиент`, "wrapper-error"]
-                this.$emit('showError', notification)
-                return
-            }
 
+            this.$emit('stateLoader', true)
             // this.loader = true
             let keys = Object.keys(this.createNewProfitability)
             let result = []
@@ -127,23 +122,19 @@ export default {
 
             console.log(result)
             let promises = result.map((item) => { api.postNewBusinessPlan(item) })
-            this.$emit('stateLoader', true)
+           
+
             Promise.all(promises)
                 .then((result) => {
-                    
                     this.$emit('stateLoader', false)
-                    this.tableData = []
                     let notification = ["Успешно", `Данные Бизнес-плана сохранены`, "wrapper-success"]
                     this.$emit('showError', notification)
 
                 }).catch((err) => {
-                    this.tableData = []
                     let notification = ["Ошибка", `${err.response}`, "wrapper-error"]
                     this.$emit('showError', notification)
                     this.$emit('stateLoader', false)
 
-                }).finally(() => {
-                    this.$emit('stateLoader', false)
                 })
 
 
