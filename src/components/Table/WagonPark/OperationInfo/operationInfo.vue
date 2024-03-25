@@ -25,7 +25,7 @@
 
                 </label>
                 <label>Клиент <br>
-                    <v-select v-model="currentClients" :options="clients" label="value" multiple
+                    <v-select v-model="currentClients" :options="name_client" label="client" multiple
                         style="width:20vw !important;"></v-select>
                 </label>
                 <br>
@@ -461,8 +461,9 @@
                                     <div v-else style="overflow: auto">
                                         <enterDataIncomeVue 
                                             :createNewProfitability="createNewProfitability" 
-                                            :clients="clients" 
+                                            :clients="name_client" 
                                             :tableData="tableData"
+                                            @update:tableData="tableData = $event"
                                             :date_begin_create="date_begin_create" 
                                             :wagon_type="wagon_type"
                                             @showError="showError"
@@ -492,6 +493,7 @@ import Notifications from "@/components/notifications/Notifications.vue";
 import Handsontable from "handsontable";
 import marginIncomeVue from './marginIncome.vue';
 import enterDataIncomeVue from './enterDataIncome.vue';
+import { mapState } from "vuex";
 export default {
     components: { Periods, Loader, vSelect, Notifications, marginIncomeVue, enterDataIncomeVue },
     data() {
@@ -585,6 +587,10 @@ export default {
     },
 
     computed: {
+        ...mapState({
+            name_client: (state) => state.client.name_client,
+          
+        }),
         filteredReportData() {
             if (this.selectedOptions.length == 0) {
                 return this.responseServerData.report

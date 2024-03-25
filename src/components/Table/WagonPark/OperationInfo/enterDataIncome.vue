@@ -87,7 +87,7 @@ export default {
             }
             let errorList = []
             for (let i of result) {
-                if (!this.clients.find(client => client.value == i.client)) {
+                if (!this.clients.find(item => item.client == i.client)) {
                     errorList.push(i.client)
                 }
             }
@@ -121,24 +121,20 @@ export default {
             }
 
             console.log(result)
-            let promises = result.map((item) => { api.postNewBusinessPlan(item) })
+            let promises = result.map((item) => api.postNewBusinessPlan(item))
            
-
-            Promise.all(promises)
+            Promise.allSettled(promises)
                 .then((result) => {
                     this.$emit('stateLoader', false)
                     let notification = ["Успешно", `Данные Бизнес-плана сохранены`, "wrapper-success"]
                     this.$emit('showError', notification)
-
+                    this.$emit('update:tableData', [])
                 }).catch((err) => {
                     let notification = ["Ошибка", `${err.response}`, "wrapper-error"]
                     this.$emit('showError', notification)
                     this.$emit('stateLoader', false)
 
                 })
-
-
-
 
         },
     },
