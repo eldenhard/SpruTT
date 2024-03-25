@@ -857,6 +857,9 @@ export default {
       } else if (event.target.id == "cargo") {
         // let data = event.target.value.match(/\d+/g);
         let data = event.target.value.split(' ')
+        data.forEach((item, index) => {
+          item = item.trim()
+        })
         if (data) {
           let operationBuffer = data
           // let operationBuffer = data.map(Number);
@@ -1140,15 +1143,12 @@ export default {
             try {
               const code = await this.getStationCode(station, index, 'departure_stations_list');
               if (code !== null) {
-                console.log(code, 'departure')
                 newItem.departure_stations_list.push(code);
               }
             } catch (error) {
               console.error(`Ошибка при получении  кода для станции "${station}" в группе "Мн. станций отправки	" на индексе ${index}`, error);
             }
           }
-
-          console.log(newItem.departure_stations_list, 'я тут')
         }
 
         if (item.exclude_next_loading_stations_list) {
@@ -1265,7 +1265,7 @@ export default {
           // Возвращаем первый найденный код груза из ответа
           this.$set(this.cargoCashe, cargos_list, response.data.data[0].code6);
 
-          return response.data.data[0].code6
+          return cargos_list
         }
 
       } catch (error) {
@@ -1495,6 +1495,7 @@ export default {
           });
 
           console.log(arrayOfObjects)
+
           api
             .postTarifData(arrayOfObjects)
             .then((response) => {
