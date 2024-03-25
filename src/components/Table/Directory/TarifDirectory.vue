@@ -72,7 +72,8 @@
     Для редактирования этих полей перегрузите данные в этот столбец <br />
 
     * Для удаления строки таблицы нажмите на порядковый номер строки<br />
-    * Для удаления данных в стобце, необходимо навести на требуемый столбец (на его шапку, где написано его наименование) и кликнуть когда загорится слово удалить. <br>
+    * Для удаления данных в стобце, необходимо навести на требуемый столбец (на его шапку, где написано его
+    наименование) и кликнуть когда загорится слово удалить. <br>
     Обратите внимание, что не все столбцы доступны для удаления (Груз ЕСТНГ и НДС не удаляются) <br>
     *
     Данные по ставкам должны загружаться Excel, числа должны
@@ -144,7 +145,7 @@
       <hr />
       <br />
 
-     
+
 
       <table v-show="visible">
         <tr>
@@ -171,7 +172,8 @@
         <tr v-show="visible_agreement">
           <td class="col1">Все договора</td>
           <td>
-            <v-select v-model="agreement_number_test" :options="all_agreement_number" label="agreement_number"></v-select>
+            <v-select v-model="agreement_number_test" :options="all_agreement_number"
+              label="agreement_number"></v-select>
             <!-- <select name="" id="" v-model="agreement_number_test" @change="test()">
               <option :value="[item.agreement_number, item.client, item.id]" v-for="item in all_agreement_number"
                 :key="item.id">
@@ -320,24 +322,17 @@
           </tr>
           <tr>
             <th>№</th>
-            <th style="border: 1px solid black; font-size: 12px !important;"  
-            @mouseover="checkFunc($event)" 
-            @mouseout="resetText('Станция отпр.')" 
-            @click="handleClick('departure_station')">Станция отпр.</th>
+            <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
+              @mouseout="resetText('Станция отпр.')" @click="handleClick('departure_station')">Станция отпр.</th>
             <!-- Новые поля от 20.02.2024 -->
-            <th style="border: 1px solid black; font-size: 12px !important;"
-            @mouseover="checkFunc($event)" 
-            @mouseout="resetText('Мн. станций отправки')" 
-            @click="handleClick('departure_station_list')">Мн. станций отправки</th>
-            <th style="border: 1px solid black; font-size: 12px !important;"
-            @mouseover="checkFunc($event)" 
-            @mouseout="resetText('Станция назн.')" 
-            @click="handleClick('destination_station')">Станция назн.</th>
+            <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
+              @mouseout="resetText('Мн. станций отправки')" @click="handleClick('departure_station_list')">Мн. станций
+              отправки</th>
+            <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
+              @mouseout="resetText('Станция назн.')" @click="handleClick('destination_station')">Станция назн.</th>
             <th style="border: 1px solid black; font-size: 12px !important;">Сдвоенн. рейс</th>
-            <th style="border: 1px solid black; font-size: 12px !important;"
-            @mouseover="checkFunc($event)" 
-            @mouseout="resetText('Груз наимен.')" 
-            @click="handleClick('cargos_list')">Груз наимен.</th>
+            <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
+              @mouseout="resetText('Груз наимен.')" @click="handleClick('cargos_list')">Груз наимен.</th>
             <th style="border: 1px solid black; font-size: 12px !important;">Груз(ЕСТНГ)
               <select name="" id="" v-model="which_cargo" style="width: 60%">
                 <option value="">—</option>
@@ -349,45 +344,30 @@
 
               </select>
             </th>
-            <th style="border: 1px solid black; font-size: 12px !important;"
-            @mouseover="checkFunc($event)" 
-            @mouseout="resetText('Ставка без НДС')" 
-            @click="handleClick('stavka')">Ставка без НДС</th>
-            <th style="border: 1px solid black; position: relative;; font-size: 12px !important;"
-            >НДС
+            <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
+              @mouseout="resetText('Ставка без НДС')" @click="handleClick('stavka')">Ставка без НДС</th>
+            <th style="border: 1px solid black; position: relative;; font-size: 12px !important;">НДС
               <select name="" id="" v-model="which_nds" style="width: 70%">
                 <option value="percent">%</option>
                 <option value="value">Сумма</option>
               </select>
             </th>
 
-            <th style="border: 1px solid black; font-size: 12px !important;" colspan="2"
-            @mouseover="checkFunc($event)" 
-            @mouseout="resetText('Дистанция (диапозон)')" 
-            @click="handleClick('distance')"
-            >Дистанция (диапозон)</th>
+            <th style="border: 1px solid black; font-size: 12px !important;" colspan="2" @mouseover="checkFunc($event)"
+              @mouseout="resetText('Дистанция (диапозон)')" @click="handleClick('distance')">Дистанция (диапозон)</th>
             <!-- Новые поля от 20.02.2024 -->
-            <th style="border: 1px solid black; font-size: 12px !important;"
-            @mouseover="checkFunc($event)" 
-            @mouseout="resetText('Расстояние')" 
-            @click="handleClick('distance_num')">Расстояние</th>
-            <th style="border: 1px solid black; font-size: 12px !important;"
-            @mouseover="checkFunc($event)" 
-            @mouseout="resetText('Станция следующей погрузки')" 
-            @click="handleClick('next_loading_stations_list')"
-            >Станция следующей погрузки</th>
-            <th style="border: 1px solid black; font-size: 12px !important;"
-            @mouseover="checkFunc($event)" 
-            @mouseout="resetText('Станции исключения назначения')" 
-            @click="handleClick('exclude_next_loading_stations_list')">Станции исключения назначения</th>
-            <th style="border: 1px solid black; font-size: 12px !important;"
-            @mouseover="checkFunc($event)" 
-            @mouseout="resetText('Страна')" 
-            @click="handleClick('country')">Страна</th>
-            <th style="border: 1px solid black; font-size: 12px !important;"
-            @mouseover="checkFunc($event)" 
-            @mouseout="resetText('Вагоны')" 
-            @click="handleClick('wagons')">Вагоны</th>
+            <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
+              @mouseout="resetText('Расстояние')" @click="handleClick('distance_num')">Расстояние</th>
+            <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
+              @mouseout="resetText('Станция следующей погрузки')" @click="handleClick('next_loading_stations_list')">
+              Станция следующей погрузки</th>
+            <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
+              @mouseout="resetText('Станции исключения назначения')"
+              @click="handleClick('exclude_next_loading_stations_list')">Станции исключения назначения</th>
+            <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
+              @mouseout="resetText('Страна')" @click="handleClick('country')">Страна</th>
+            <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
+              @mouseout="resetText('Вагоны')" @click="handleClick('wagons')">Вагоны</th>
 
           </tr>
           <tr v-for="(item, index) in data" :key="index">
@@ -632,15 +612,15 @@ export default {
     },
   },
   methods: {
-    checkFunc(e){
+    checkFunc(e) {
       e.target.innerText = 'Удалить'
       e.target.style.color = 'red'
     },
     handleClick(name) {
       console.log('Удаление столбика', this.data, name)
-     for(let i in this.data){
-      this.data[i][name] = null
-     }
+      for (let i in this.data) {
+        this.data[i][name] = null
+      }
     },
     resetText(el) {
       event.target.innerText = el
@@ -798,24 +778,65 @@ export default {
 
         event.target.value = "";
         return;
-      } else if (event.target.id == "wagons") {
-        // Если 3 заглавные буквы, то разделяю на 2 элемента
-        let operationBuffer = event.target.value.split(/(?<=\d)\s+/);
-        let clear_buffer = [];
-        for (let i of operationBuffer) {
-          clear_buffer.push(i.trim());
-        }
-        if (clear_buffer.at(-1) == "") {
-          clear_buffer.pop();
-        }
-        if (clear_buffer[0] == "") {
-          return;
-        }
-        this.WorkInClass(clear_buffer, event);
+      }
+      // else if (event.target.id == "wagons") {
+      //   // Если 3 заглавные буквы, то разделяю на 2 элемента
 
-        event.target.value = "";
-        return;
-      } else if (event.target.id == 'distance_num' || event.target.id == "country") {
+      //   let operationBuffer = event.target.value.split(/(?<=\d)\s+/);
+      //   console.log(operationBuffer)
+      //   let clear_buffer = [];
+      //   for (let i of operationBuffer) {
+      //     clear_buffer.push(i.trim());
+      //   }
+      //   if (clear_buffer.at(-1) == "") {
+      //     clear_buffer.pop();
+      //   }
+      //   if (clear_buffer[0] == "") {
+      //     return;
+      //   }
+      //   this.WorkInClass(clear_buffer, event);
+
+      //   event.target.value = "";
+      //   return;
+      // } 
+  else if (event.target.id == "wagons") {
+    let operationBuffer = []
+    navigator.clipboard.readText().then((response) => {
+       operationBuffer = response.split("\n")
+      if(operationBuffer.at(-1) == "") {
+        operationBuffer.pop()
+      }
+      this.WorkInClass(operationBuffer, event);
+      event.target.value = "";
+
+      return
+    })
+    // let operationBuffer = event.target.value.split(" ")
+    // let result = []
+    // console.log(operationBuffer)
+    // let idx = operationBuffer.indexOf(' ')
+    // while (idx !== -1) {
+    //   if(operationBuffer[idx-1] == ',') {
+    //     idx = operationBuffer.indexOf(' ', idx + 1)
+    //     continue
+    //   } 
+    //   result.push(idx)
+    //   idx = operationBuffer.indexOf(' ', idx + 1)
+    // }
+    // console.log(result)
+    // let parts = []
+
+    // for(let i = 0; i < result.length-1; i++) {
+    //   let startIndex = result[i]
+    //   let endIndex = result[i]+1
+    //   console.log(startIndex, endIndex)
+    //   let part = operationBuffer.substring(startIndex, endIndex)
+    //   parts.push(part)
+    // }
+    // console.log(parts)
+}
+
+      else if (event.target.id == 'distance_num' || event.target.id == "country") {
         // Разделение по любому количеству пробелов
         let operationBuffer = event.target.value.split(/\s+/);;
         let clear_buffer = [];
@@ -879,7 +900,7 @@ export default {
         console.log(numbers, 'numbers')
         // Разбиваем строку на массив, используя регулярное выражение для чисел с пробелами и запятой
         let all_value = t.match(/\d+(?: \d{3})*(?:,\d{2})?/g);
-    
+
         // Преобразуем каждое число, заменяя пробел на пустую строку и запятую на точку
         all_value = all_value.map((num) =>
           parseFloat(num.replace(/ /g, "").replace(",", "."))
@@ -1153,9 +1174,10 @@ export default {
         }
 
         if (item.wagons) {
-          newItem.wagons = []; // Инициализируем массив для исключений следующей погрузки
+          newItem.wagons = []; // Инициализируем массив для вагонов
           for (const wagon of item.wagons) {
             try {
+             if(wagon.length < 8) continue
               const wagon_id = await this.getWagonData(wagon, index);
               if (wagon_id !== null) {
                 newItem.wagons.push(wagon_id);
@@ -1250,14 +1272,19 @@ export default {
     // Получение данных по номерам вагонов
     async getWagonData(wagonNumber, index) {
       try {
-        const response = await api_wagon.getWagon(wagonNumber);
-        console.log(response.data)
-        // Проверяем, получены ли данные о вагоне
-        if (!response.data || response.data.length === 0) {
-          throw new Error(`Данные о вагоне "${wagonNumber}" не найдены`);
+        if (wagonNumber == "") {
+          return null
+        } else {
+          const response = await api_wagon.getWagon(wagonNumber);
+          console.log(response.data)
+          // Проверяем, получены ли данные о вагоне
+          if (!response.data || response.data.length === 0) {
+            throw new Error(`Данные о вагоне "${wagonNumber}" не найдены`);
+          }
+          // Возвращаем данные о вагоне
+          return response.data.id
         }
-        // Возвращаем данные о вагоне
-        return response.data.id
+
       } catch (error) {
         if (error.response.status == '404') {
           this.errorp.push(`Данные о вагоне "${wagonNumber}" не найдены`);
