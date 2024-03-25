@@ -33,6 +33,8 @@
 
 <script>
 import Notifications from "@/components/notifications/Notifications.vue";
+import api from '@/api/directory'
+
 export default {
     components: {
         Notifications,
