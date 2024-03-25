@@ -326,7 +326,7 @@
               @mouseout="resetText('Станция отпр.')" @click="handleClick('departure_station')">Станция отпр.</th>
             <!-- Новые поля от 20.02.2024 -->
             <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
-              @mouseout="resetText('Мн. станций отправки')" @click="handleClick('departure_station_list')">Мн. станций
+              @mouseout="resetText('Мн. станций отправки')" @click="handleClick('departure_stations_list')">Мн. станций
               отправки</th>
             <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
               @mouseout="resetText('Станция назн.')" @click="handleClick('destination_station')">Станция назн.</th>
@@ -510,7 +510,7 @@ export default {
       ten_visible: false,
       visible: true,
       cargo_list: false,
-      departure_station_list: false,
+      departure_stations_list: false,
       destination_station_list: false,
       cargo_user: "",
       picked: "agreement_number",
@@ -993,7 +993,7 @@ export default {
               throw new Error(`Ошибка: Не удалось получить код станции "${station_name}" (код) на строке ${index + 1}`);
             }
 
-            const stationCode2 = res.data.data[0].code;
+            const stationCode2 = res.data.data[0];
             this.$set(this.stationCache, station_name, stationCode2);
             return stationCode2;
           }
@@ -1075,7 +1075,6 @@ export default {
         }
 
         let new_data = await this.createNewData();
-        console.log(new_data)
         this.loader = false;
         if (this.errorp.length == 0) {
           this.flagCheck = true;
@@ -1104,6 +1103,7 @@ export default {
           try {
             const code = await this.getStationCode(item.destination_station, index);
             if (code !== null) {
+              console.log(code)
               newItem.destination_station = code;
             }
           } catch (error) {
@@ -1126,6 +1126,7 @@ export default {
           try {
             const code = await this.getStationCode(item.next_loading_stations_list, index, 'next_loading_stations_list');
             if (code !== null) {
+
               newItem.next_loading_stations_list = code;
             }
           } catch (error) {
@@ -1139,12 +1140,15 @@ export default {
             try {
               const code = await this.getStationCode(station, index, 'departure_stations_list');
               if (code !== null) {
+                console.log(code, 'departure')
                 newItem.departure_stations_list.push(code);
               }
             } catch (error) {
               console.error(`Ошибка при получении  кода для станции "${station}" в группе "Мн. станций отправки	" на индексе ${index}`, error);
             }
           }
+
+          console.log(newItem.departure_stations_list, 'я тут')
         }
 
         if (item.exclude_next_loading_stations_list) {
@@ -1158,6 +1162,7 @@ export default {
             } catch (error) {
               console.error(`Ошибка при получении кода для станции "${station}" в группе "Станции исключения следующей погрузки" на индексе ${index}`, error);
             }
+            console.log(newItem.exclude_next_loading_stations_list, 'я exclude_next_loading_stations_list')
           }
         }
         if (item.country) {
@@ -1428,6 +1433,7 @@ export default {
               if (this.checkCompleteData[i].next_loading_stations_list == null) {
                 this.checkCompleteData[i].next_loading_stations_list = []
               } else {
+
                 this.checkCompleteData[i].next_loading_stations_list = [this.checkCompleteData[i].next_loading_stations_list.id]
               }
               // Много станций
@@ -1488,6 +1494,7 @@ export default {
             }
           });
 
+          console.log(arrayOfObjects)
           api
             .postTarifData(arrayOfObjects)
             .then((response) => {
