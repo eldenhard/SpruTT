@@ -48,42 +48,31 @@
                                                         label="label" multiple>
                                                     </v-select>
                                                 </th>
-                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Объемы БП,
-                                                    ед' : "Объемы БП, тн" }} </th>
-                                                <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' :
-            "Объемы,тн" }} </th>
-                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Кол-во
-                                                    погр БП на тек дату' : 'Объем БП на тек дату План' }}
+                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Объемы БП, ед' : "Объемы БП, тн" }} </th>
+                                                <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' : "Объемы,тн" }} </th>
+                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Кол-во погр БП на тек дату' : 'Объем БП на тек дату План' }}
                                                 </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
-            wag_type == 'Полувагон' ? 'Кол-во погр План на тек дату' : 'Объем на
-                                                    тек дату План' }} </th>
+            wag_type == 'Полувагон' ? 'Кол-во погр План на тек дату' : 'Объем на тек дату План' }} </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
-            wag_type == 'Полувагон' ? 'Кол-во погр факт на тек дату' : 'Объем на
-                                                    тек дату Факт' }} </th>
-                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Выполнение
-                                                    БП, % ' : 'Выполнение БП, % ' }} </th>
+            wag_type == 'Полувагон' ? 'Кол-во погр факт на тек дату' : 'Объем на тек дату Факт' }} </th>
+                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Выполнение  БП, % ' : 'Выполнение БП, % ' }} </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
-            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'Отклонение кол-ва
-                                                    ваг' }} </th>
+            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'Отклонение кол-ва ваг' }} </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
             wag_type == 'Полувагон' ? 'Выполнение отн.' : ' % выполнения плана'
         }} </th>
                                                 <th style="background: #F4CC6E">Выручка без НДС, руб БП</th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Выручка без НДС, руб' : "Выручка без НДС,
-                                                    руб ПЛАН" }} </th>
+            wag_type == 'Полувагон' ? 'Выручка без НДС, руб' : "Выручка без НДС, руб ПЛАН" }} </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Объем на тек дату План' : 'Выручка без
-                                                    НДС, руб на тек дату ПЛАН' }}
+            wag_type == 'Полувагон' ? 'Объем на тек дату План' : 'Выручка без НДС, руб на тек дату ПЛАН' }}
                                                 </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Объем на тек дату Факт' : 'Выручка без
-                                                    НДС, руб на тек дату факт' }}
+            wag_type == 'Полувагон' ? 'Объем на тек дату Факт' : 'Выручка без  НДС, руб на тек дату факт' }}
                                                 </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'отклонения в
-                                                    выручке' }} </th>
+            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'отклонения в выручке' }} </th>
                                                 <th style="background: #F4CC6E">Выполнение БП, %</th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
             wag_type == 'Полувагон' ? 'Выполнение отн.' : ' % выполнения' }}
@@ -470,35 +459,17 @@
                                         </table>
                                     </div>
                                     <div v-else style="overflow: auto">
-                                        <table>
-                                            <thead>
-                                                <th>Клиент</th>
-                                                <th>Выручка</th>
-                                                <th>Вес</th>
-                                                <th>Тариф порож </th>
-                                                <th>Тариф СТ</th>
-                                                <th>Тариф груж</th>
-                                                <th>Доп. услуги</th>
-                                                <th>Прочие услуги</th>
-                                                <th>МД (без штрафа)</th>
-                                                <th>Вагоносутки (раб)</th>
-                                                <th>Вагоносутки (общ) </th>
-                                                <th>Доходность (без штрафа)</th>
-                                                <th>Доходность (с штрафом)</th>
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
-                                                    <td v-for="(cell, cellIndex) in row" :key="cellIndex">
-                                                        {{ cell }}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <enterDataIncomeVue 
+                                            :createNewProfitability="createNewProfitability" 
+                                            :clients="clients" 
+                                            :tableData="tableData"
+                                            :date_begin_create="date_begin_create" 
+                                            :wagon_type="wagon_type"
+                                            @showError="showError"
+                                            @stateLoader="loader = stateLoader">
+                                        </enterDataIncomeVue>
                                     </div>
-                                    <button class="Request button special" @click="checkEnterData()">Проверка введенных
-                                        данных</button>
-                                    <button class="Accept special" @click="saveNewProfitability()">Сохранить
-                                        данные</button>
+                                      
                                 </div>
                             </b-card-text>
                         </b-tab>
@@ -520,9 +491,9 @@ import vSelect from "vue-select";
 import Notifications from "@/components/notifications/Notifications.vue";
 import Handsontable from "handsontable";
 import marginIncomeVue from './marginIncome.vue';
-
+import enterDataIncomeVue from './enterDataIncome.vue';
 export default {
-    components: { Periods, Loader, vSelect, Notifications, marginIncomeVue },
+    components: { Periods, Loader, vSelect, Notifications, marginIncomeVue, enterDataIncomeVue },
     data() {
         return {
             excelData: "",
@@ -589,6 +560,7 @@ export default {
                 other_charges: 0,
                 md_wo_penalties: 0,
                 vagonosutki: 0,
+                vagonosutki_work_test: 0,
                 income_wo_penalties: 0,
                 income_w_penalties: 0,
 
@@ -597,6 +569,8 @@ export default {
             notifyHead: "",
             notifyMessage: "",
             notifyClass: "",
+
+           
         }
     },
     filters: {
@@ -733,39 +707,14 @@ export default {
         }
     },
     methods: {
-        checkEnterData() {
-            let keys = Object.keys(this.createNewProfitability)
-            let result = []
-            for (let i = 0; i < this.tableData.length; i++) {
-                let obj = {}
-                for (let j = 0; j < keys.length; j++) {
-                    if(keys[j] == "client"){
-                        console.log(this.tableData[i][j])
-                        obj[keys[j]] = this.tableData[i][j]
-                    } else {
-                        obj[keys[j]] = Number(this.tableData[i][j].replace(',', '.')) || 0
-                    }
-                   
-                    obj["on_date"] = this.date_begin_create + "-01"
-                    obj["wagon_type"] = this.wagon_type
-                }
-                result.push(obj)
-            }
-            let errorList = []
-            for(let i of result){
-                if(!this.clients.find(client => client.value == i.client)){
-                    errorList.push(i.client)
-                }
-            }
-            if(errorList.length > 0){
-                this.notifyHead = "Ошибка";
-                this.notifyMessage = `Не найдены данные по клиентам: <br> ${errorList.join("<br>")}`;
-                this.notifyClass = "wrapper-error";
-                this.showNotify = true;
-                setTimeout(() => (this.showNotify = false), 5000);
-                this.loader = false
-            }
-        },
+       showError(err) {
+        this.notifyHead = err[0];
+        this.notifyMessage = err[1];
+        this.notifyClass = err[2];
+        this.showNotify = true;
+        setTimeout(() => (this.showNotify = false), 8000);
+        this.loader = false
+       },
         downloadExcel() {
 
             const excelData = this.excelData;
@@ -814,85 +763,7 @@ export default {
             this.excelData = "";
 
         },
-        saveNewProfitability() {
-            if (this.currentClientsForExcelFile == "") {
-                this.loader = false
-                this.notifyHead = "Ошибка";
-                this.notifyMessage = "Не выбран клиент";
-                this.notifyClass = "wrapper-error";
-                this.showNotify = true;
-                setTimeout(() => (this.showNotify = false), 2500);
-                return
-            }
-            this.loader = true
-
-            let filtersData = JSON.parse(JSON.stringify(this.createNewProfitability)); // Копируем объект
-            for (let key in filtersData) { // Итерируемся по свойствам объекта
-                filtersData[key] = Number(filtersData[key])
-            }
-            filtersData.on_date = this.date_begin_create + "-01"
-            filtersData.wagon_type = this.wagon_type
-            if (this.typeData == "income") {
-                api.createNewProfitability(filtersData)
-                    .then(() => {
-                        this.loader = false
-                        this.notifyHead = "Успешно";
-                        this.notifyMessage = "Данные доходности сохранены";
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => (this.showNotify = false), 2000);
-                    })
-                    .catch((err) => {
-                        this.loader = false
-                        this.notifyHead = "Ошибка";
-                        this.notifyMessage = err.response;
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => (this.showNotify = false), 5000);
-                    })
-                    .finally(() => {
-                        this.loader = false
-                    })
-            } else {
-                this.loader = true
-                let keys = Object.keys(this.createNewProfitability)
-                let result = []
-                for (let i = 0; i < this.tableData.length; i++) {
-                    let obj = {}
-                    for (let j = 0; j < keys.length; j++) {
-                        obj[keys[j]] = Number(this.tableData[i][j].replace(',', '.')) || 0
-                        obj["on_date"] = this.date_begin_create + "-01"
-                        obj["wagon_type"] = this.wagon_type
-                    }
-                    result.push(obj)
-                }
-
-                let promises = result.map((item) => { api.postNewBusinessPlan(item) })
-                Promise.all(promises)
-                    .then((result) => {
-                        this.loader = false
-                        this.tableData = []
-                        this.notifyHead = "Успешно";
-                        this.notifyMessage = "Данные Бизнес-плана сохранены";
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => (this.showNotify = false), 2000);
-                    }).catch((err) => {
-                        this.tableData = []
-                        this.notifyHead = "Ошибка";
-                        this.notifyMessage = err.response;
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => (this.showNotify = false), 5000);
-                        this.loader = false
-                    }).finally(() => {
-                        this.loader = false
-                    })
-
-            }
-
-
-        },
+   
         Actioned() {
             try {
 
@@ -971,17 +842,6 @@ table {
     white-space: nowrap;
 }
 
-.Accept.special {
-    width: 20%;
-    height: 40px;
-    margin: 4% 0 0 auto;
-}
-
-.Request.special {
-    width: 20%;
-    height: 40px;
-    margin: 4% 0 0 auto;
-}
 
 
 .greenCell {
