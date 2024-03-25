@@ -536,7 +536,7 @@ export default {
 
             return false;
         },
-        getPagination(pg_size, pg_number) {
+       async getPagination(pg_size, pg_number) {
             this.loader = true;
 
             api
@@ -544,7 +544,50 @@ export default {
                 .then((response) => {
                     this.loader = false;
                     this.data = response.data.data;
-                    console.log(this.data);
+                    // console.log(this.data);
+                    this.data = response.data.data;
+                // Так как с сервера приходят в виде мало сгруппированном, здесь происходить группировка приложений
+                function groupAttachments(attachments) {
+                    const groupedAttachments = {};
+
+                    attachments.forEach((attachment) => {
+                        const agreementNumber = attachment.agreement_number;
+
+                        if (!groupedAttachments[agreementNumber]) {
+                            groupedAttachments[agreementNumber] = [];
+                        }
+
+                        groupedAttachments[agreementNumber].push(attachment);
+                    });
+
+                    return Object.keys(groupedAttachments).map((key) => ({
+                        agreement_number: key,
+                        attachments: groupedAttachments[key],
+                    }));
+                }
+                this.loader = false
+                // Обрабатываем каждый элемент данных
+            
+                const promises = this.data.map(async (item) => {
+                    item.attachments = groupAttachments(item.attachments);
+                    if (item) {
+                        await Promise.all(item.attachments.flatMap(value => value.attachments || []))
+                            .then(async (codes) => {
+                                for (const code of codes) {
+                                    if (code?.departure_station_id !== null) {
+                                        code.departure_station_id = code.departure_station_id;
+                                    }
+                                    if (code?.destination_station_id !== null) {
+                                        code.destination_station_id = code.destination_station_id;
+                                    }
+                                }
+                            });
+                    }
+                    return item;
+                });
+
+                // // Дожидаемся завершения всех промисов и устанавливаем this.loader = false
+        
                     this.pageNumber = response.data.page_number;
                 })
 
@@ -657,7 +700,7 @@ export default {
         //   Получение данных в таблицу для просмотра и редактировния
         async getStandardData() {
             this.loader = true;
-            this.loader_mini = true
+            // this.loader_mini = true
             this.data = [];
 
             try {
@@ -688,6 +731,7 @@ export default {
                 }
                 this.loader = false
                 // Обрабатываем каждый элемент данных
+            
                 const promises = this.data.map(async (item) => {
                     item.attachments = groupAttachments(item.attachments);
                     if (item) {
@@ -706,7 +750,7 @@ export default {
                     return item;
                 });
 
-                // Дожидаемся завершения всех промисов и устанавливаем this.loader = false
+                // // Дожидаемся завершения всех промисов и устанавливаем this.loader = false
                 await Promise.allSettled(promises).then((results) => {
                     this.loader_mini = false;
                 });
