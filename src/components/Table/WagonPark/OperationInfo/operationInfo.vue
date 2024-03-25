@@ -12,6 +12,8 @@
                     <input type="date" class="textarea" style="width: 20vw !important; background: white;"
                         v-model="date_begin" :min="'2024-01-01'">
                 </label>
+
+
                 <label>
                     Тип вагона
                     <br />
@@ -39,99 +41,124 @@
                             <b-card-text>
                                 <div style="overflow: auto; margin-left: -5%;">
                                     <table>
-                                    <thead>
-                                        <tr>
-                                            <th class="greenCell">Клиент
-                                                <v-select v-model="selectedOptions" :options="allClientsInTable"
-                                                    label="label" multiple>
-                                                </v-select>
-                                            </th>
-                                            <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Объемы БП, ед' : "Объемы БП, тн" }} </th>
-                                            <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' :  "Объемы,тн" }} </th>
-                                            <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Кол-во погр БП на тек дату' : 'Объем БП на тек дату План' }} 
-                                            </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type  == 'Полувагон' ? 'Кол-во погр План на тек дату' : 'Объем на тек дату План' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type == 'Полувагон' ? 'Кол-во погр факт на тек дату' : 'Объем на тек дату Факт' }} </th>
-                                            <th style="background: #F4CC6E">{{ wag_type  == 'Полувагон' ? 'Выполнение БП, %' : 'Выполнение БП, %' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type  == 'Полувагон' ? 'Выполнение абсл.' : 'Отклонение кол-ва ваг' }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type == 'Полувагон' ? 'Выполнение отн.' : ' % выполнения плана' }} </th>
-                                            <th style="background: #F4CC6E">Выручка без НДС, руб БП</th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Выручка без НДС, руб' : "Выручка без НДС, руб ПЛАН" }} </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Объем на тек дату План' : 'Выручка без НДС, руб на тек дату ПЛАН' }}
-                                            </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Объем на тек дату Факт' : 'Выручка без НДС, руб на тек дату факт' }}
-                                            </th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'отклонения в выручке' }} </th>
-                                            <th style="background: #F4CC6E">Выполнение БП, %</th>
-                                            <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Выполнение отн.' : ' % выполнения' }} </th>
-                
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr
-                                            v-if="Array.isArray(responseServerData.report) && responseServerData.report.length == 0">
-                                            <td colspan="11">По выбранным параметрам нет данных</td>
-                                        </tr>
-                                        <tr v-for="item, index in filteredReportData" :key="index">
-                                            <td>{{ item.client }}</td>
-                                            <td></td>
-                                            <td>{{ item.metric | format }}</td>
-                                            <td></td>
-                                            <td>{{ item.metric_current_plan | format }}</td>
-                                            <td>{{ item.metric_current_fact | format }}</td>
-                                            <td></td>
-                                            <td>{{ (item.metric_current_fact - item.metric_current_plan) | format }}
-                                            </td>
-                                            <td>{{ item.metric_complete_rel | format }} %</td>
-                                            <td></td>
-                                            <td>{{ item.revenue_wo_nds | format }}</td>
-                                            <td>{{ item.revenue_current_plan | format }}</td>
-                                            <td>{{ item.revenue_current_fact | format }}</td>
-                                            <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format }}</td>
-                                            <td></td>
-                                            <td>{{ item.revenue_complete_rel | format }}%</td>
-                                        </tr>
-                                        <tr v-for="item in totalResponse2" :key="item.id">
-                                            <td>Прочие</td>
-                                            <td></td>
-                                            <td>{{ item.metric | format }}</td>
-                                            <td></td>
-                                            <td>{{ item.metric_current_plan | format }}</td>
-                                            <td>{{ item.metric_current_fact | format }}</td>
-                                            <td></td>
-                                            <td>{{ (item.metric_current_fact - item.metric_current_plan) | format }}
-                                            </td>
-                                            <td>{{ item.metric_complete_rel | format }} %</td>
-                                            <td></td>
-                                            <td>{{ item.revenue_wo_nds | format }}</td>
-                                            <td>{{ item.revenue_current_plan | format }}</td>
-                                            <td>{{ item.revenue_current_fact | format }}</td>
-                                            <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format }}</td>
-                                            <td></td>
-                                            <td>{{ item.revenue_complete_rel | format }}%</td>
-                                        </tr>
-                                        <tr class="Row_grey">
-                                            <td>Итого</td>
-                                            <td></td>
-                                            <td>{{ totalMetric | format }}</td>
-                                            <td></td>
-                                            <td>{{ totalMetricCurrentPlan | format }}</td>
-                                            <td>{{ totalMetricCurrentFact | format }}</td>
-                                            <td></td>
-                                            <td>{{ totalMetricCurrentFact - totalMetricCurrentPlan | format }}</td>
-                                            <td>{{ totalMetricCompleteRel }} %</td>
-                                            <td></td>
-                                            <td>{{ totalRevenueWithoutNDS | format }}</td>
-                                            <td>{{ totalRevenueCurrentPlan | format }}</td>
-                                            <td>{{ totalRevenueCurrentFact | format }}</td>
-                                            <td>{{ totalRevenueCurrentFact - totalRevenueCurrentPlan | format }}</td>
-                                            <td></td>
-                                            <td>{{ totalRevenueCompleteRel }} %</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                        <thead>
+                                            <tr>
+                                                <th class="greenCell">Клиент
+                                                    <v-select v-model="selectedOptions" :options="allClientsInTable"
+                                                        label="label" multiple>
+                                                    </v-select>
+                                                </th>
+                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Объемы БП,
+                                                    ед' : "Объемы БП, тн" }} </th>
+                                                <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' :
+            "Объемы,тн" }} </th>
+                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Кол-во
+                                                    погр БП на тек дату' : 'Объем БП на тек дату План' }}
+                                                </th>
+                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
+            wag_type == 'Полувагон' ? 'Кол-во погр План на тек дату' : 'Объем на
+                                                    тек дату План' }} </th>
+                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
+            wag_type == 'Полувагон' ? 'Кол-во погр факт на тек дату' : 'Объем на
+                                                    тек дату Факт' }} </th>
+                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Выполнение
+                                                    БП, % ' : 'Выполнение БП, % ' }} </th>
+                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
+            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'Отклонение кол-ва
+                                                    ваг' }} </th>
+                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
+            wag_type == 'Полувагон' ? 'Выполнение отн.' : ' % выполнения плана'
+        }} </th>
+                                                <th style="background: #F4CC6E">Выручка без НДС, руб БП</th>
+                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
+            wag_type == 'Полувагон' ? 'Выручка без НДС, руб' : "Выручка без НДС,
+                                                    руб ПЛАН" }} </th>
+                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
+            wag_type == 'Полувагон' ? 'Объем на тек дату План' : 'Выручка без
+                                                    НДС, руб на тек дату ПЛАН' }}
+                                                </th>
+                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
+            wag_type == 'Полувагон' ? 'Объем на тек дату Факт' : 'Выручка без
+                                                    НДС, руб на тек дату факт' }}
+                                                </th>
+                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
+            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'отклонения в
+                                                    выручке' }} </th>
+                                                <th style="background: #F4CC6E">Выполнение БП, %</th>
+                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
+            wag_type == 'Полувагон' ? 'Выполнение отн.' : ' % выполнения' }}
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                v-if="Array.isArray(responseServerData.report) && responseServerData.report.length == 0">
+                                                <td colspan="11">По выбранным параметрам нет данных</td>
+                                            </tr>
+                                            <tr v-for="item, index in filteredReportData" :key="index">
+                                                <td>{{ item.client }}</td>
+                                                <td></td>
+                                                <td>{{ item.metric | format }}</td>
+                                                <td></td>
+                                                <td>{{ item.metric_current_plan | format }}</td>
+                                                <td>{{ item.metric_current_fact | format }}</td>
+                                                <td></td>
+                                                <td>{{ (item.metric_current_fact - item.metric_current_plan) | format }}
+                                                </td>
+                                                <td>{{ item.metric_complete_rel | format }} %</td>
+                                                <td></td>
+                                                <td>{{ item.revenue_wo_nds | format }}</td>
+                                                <td>{{ item.revenue_current_plan | format }}</td>
+                                                <td>{{ item.revenue_current_fact | format }}</td>
+                                                <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format
+                                                    }}</td>
+                                                <td></td>
+                                                <td>{{ item.revenue_complete_rel | format }}%</td>
+                                            </tr>
+                                            <tr v-for="item in totalResponse2" :key="item.id">
+                                                <td>Прочие</td>
+                                                <td></td>
+                                                <td>{{ item.metric | format }}</td>
+                                                <td></td>
+                                                <td>{{ item.metric_current_plan | format }}</td>
+                                                <td>{{ item.metric_current_fact | format }}</td>
+                                                <td></td>
+                                                <td>{{ (item.metric_current_fact - item.metric_current_plan) | format }}
+                                                </td>
+                                                <td>{{ item.metric_complete_rel | format }} %</td>
+                                                <td></td>
+                                                <td>{{ item.revenue_wo_nds | format }}</td>
+                                                <td>{{ item.revenue_current_plan | format }}</td>
+                                                <td>{{ item.revenue_current_fact | format }}</td>
+                                                <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format
+                                                    }}</td>
+                                                <td></td>
+                                                <td>{{ item.revenue_complete_rel | format }}%</td>
+                                            </tr>
+                                            <tr class="Row_grey">
+                                                <td>Итого</td>
+                                                <td></td>
+                                                <td>{{ totalMetric | format }}</td>
+                                                <td></td>
+                                                <td>{{ totalMetricCurrentPlan | format }}</td>
+                                                <td>{{ totalMetricCurrentFact | format }}</td>
+                                                <td></td>
+                                                <td>{{ totalMetricCurrentFact - totalMetricCurrentPlan | format }}</td>
+                                                <td>{{ totalMetricCompleteRel }} %</td>
+                                                <td></td>
+                                                <td>{{ totalRevenueWithoutNDS | format }}</td>
+                                                <td>{{ totalRevenueCurrentPlan | format }}</td>
+                                                <td>{{ totalRevenueCurrentFact | format }}</td>
+                                                <td>{{ totalRevenueCurrentFact - totalRevenueCurrentPlan | format }}
+                                                </td>
+                                                <td></td>
+                                                <td>{{ totalRevenueCompleteRel }} %</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                             
+
                             </b-card-text>
                         </b-tab>
                         <b-tab title="Маржинальная доходность">
@@ -378,11 +405,13 @@
                             <b-card-text>
                                 <div class="date_block">
                                     <div class="filter_b">
-                                        <div>
+                                        <div style="flex-direction: column">
                                             <select v-model="typeData" style="width: 20vw !important">
-                                                <option value="income">Загрузка доходности</option>
+                                                <option value="income" disabled>Загрузка доходности</option>
                                                 <option value="plan">Загрузка Бизнес-плана</option>
                                             </select>
+                                            <br>
+                                            <br>
                                             <select v-model="wagon_type" style="width: 20vw !important">
                                                 <option value="Полувагон">Полувагон</option>
                                                 <option value="Цистерна">Цистерна</option>
@@ -395,10 +424,10 @@
                                                     style="background: white;width: 20vw !important ">
                                             </label>
                                             <br>
-                                            <label>Клиент <br>
+                                            <!-- <label>Клиент <br>
                                                 <v-select v-model="currentClientsForExcelFile" :options="clients"
                                                     label="value" style="width:20vw !important;"></v-select>
-                                            </label>
+                                            </label> -->
                                         </div>
                                         <div class="download_excel" v-if="typeData == 'plan'">
                                             <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда"
@@ -443,17 +472,19 @@
                                     <div v-else style="overflow: auto">
                                         <table>
                                             <thead>
+                                                <th>Клиент</th>
                                                 <th>Выручка</th>
                                                 <th>Вес</th>
                                                 <th>Тариф порож </th>
-                                                <th>Тариф по сопред порож</th>
+                                                <th>Тариф СТ</th>
                                                 <th>Тариф груж</th>
-                                                <th>Доп. расходы</th>
-                                                <th>Маржинальный доход</th>
+                                                <th>Доп. услуги</th>
+                                                <th>Прочие услуги</th>
+                                                <th>МД (без штрафа)</th>
                                                 <th>Вагоносутки (раб)</th>
                                                 <th>Вагоносутки (общ) </th>
-                                                <th>Доходность (раб в/с)</th>
-                                                <th>Доходность (общ в/с)</th>
+                                                <th>Доходность (без штрафа)</th>
+                                                <th>Доходность (с штрафом)</th>
                                             </thead>
                                             <tbody>
                                                 <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
@@ -464,7 +495,8 @@
                                             </tbody>
                                         </table>
                                     </div>
-
+                                    <button class="Request button special" @click="checkEnterData()">Проверка введенных
+                                        данных</button>
                                     <button class="Accept special" @click="saveNewProfitability()">Сохранить
                                         данные</button>
                                 </div>
@@ -508,7 +540,7 @@ export default {
             selectedOptions: "",
             allClientsInTable: [],
             currentClients: [],
-            typeData: 'income',
+            typeData: 'plan',
             clients: [{ value: "ТАТНЕФТЬ-ТРАНС, ООО" },
             { value: "ВЕКТОР-ДВИЖЕНИЯ, ООО" },
             { value: "Энергоресурсы" },
@@ -547,17 +579,18 @@ export default {
             { value: 'СтройТехно-Урал, ООО' },
             { value: 'УГПХ, ООО' }],
             createNewProfitability: {
+                client: "",
                 revenue: 0,
                 volume: 0,
                 tariff_empty: 0,
                 tariff_inroad: 0,
                 tariff_loaded: 0,
+                add_services: 0,
                 other_charges: 0,
-                margin: 0,
-                vagonosutki_work: 0,
+                md_wo_penalties: 0,
                 vagonosutki: 0,
-                income_work: 0,
-                income: 0,
+                income_wo_penalties: 0,
+                income_w_penalties: 0,
 
             },
             showNotify: false,
@@ -700,6 +733,39 @@ export default {
         }
     },
     methods: {
+        checkEnterData() {
+            let keys = Object.keys(this.createNewProfitability)
+            let result = []
+            for (let i = 0; i < this.tableData.length; i++) {
+                let obj = {}
+                for (let j = 0; j < keys.length; j++) {
+                    if(keys[j] == "client"){
+                        console.log(this.tableData[i][j])
+                        obj[keys[j]] = this.tableData[i][j]
+                    } else {
+                        obj[keys[j]] = Number(this.tableData[i][j].replace(',', '.')) || 0
+                    }
+                   
+                    obj["on_date"] = this.date_begin_create + "-01"
+                    obj["wagon_type"] = this.wagon_type
+                }
+                result.push(obj)
+            }
+            let errorList = []
+            for(let i of result){
+                if(!this.clients.find(client => client.value == i.client)){
+                    errorList.push(i.client)
+                }
+            }
+            if(errorList.length > 0){
+                this.notifyHead = "Ошибка";
+                this.notifyMessage = `Не найдены данные по клиентам: <br> ${errorList.join("<br>")}`;
+                this.notifyClass = "wrapper-error";
+                this.showNotify = true;
+                setTimeout(() => (this.showNotify = false), 5000);
+                this.loader = false
+            }
+        },
         downloadExcel() {
 
             const excelData = this.excelData;
@@ -765,7 +831,6 @@ export default {
                 filtersData[key] = Number(filtersData[key])
             }
             filtersData.on_date = this.date_begin_create + "-01"
-            filtersData.client = this.currentClientsForExcelFile.value
             filtersData.wagon_type = this.wagon_type
             if (this.typeData == "income") {
                 api.createNewProfitability(filtersData)
@@ -797,7 +862,6 @@ export default {
                     for (let j = 0; j < keys.length; j++) {
                         obj[keys[j]] = Number(this.tableData[i][j].replace(',', '.')) || 0
                         obj["on_date"] = this.date_begin_create + "-01"
-                        obj["client"] = this.currentClientsForExcelFile.value
                         obj["wagon_type"] = this.wagon_type
                     }
                     result.push(obj)
@@ -882,6 +946,7 @@ table {
 .filter_b {
     display: flex;
     justify-content: space-between;
+
 }
 
 .download_excel {
@@ -912,7 +977,11 @@ table {
     margin: 4% 0 0 auto;
 }
 
-
+.Request.special {
+    width: 20%;
+    height: 40px;
+    margin: 4% 0 0 auto;
+}
 
 
 .greenCell {

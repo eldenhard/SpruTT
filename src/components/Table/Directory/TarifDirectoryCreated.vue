@@ -667,7 +667,7 @@ export default {
                 this.total_pages = response.data.total_pages;
                 this.total_objects = response.data.total_objects;
                 this.data = response.data.data;
-                // Так как с сервера приходят в виде мало сгруппированном, здесь происходить грппировка приложений
+                // Так как с сервера приходят в виде мало сгруппированном, здесь происходить группировка приложений
                 function groupAttachments(attachments) {
                     const groupedAttachments = {};
 
