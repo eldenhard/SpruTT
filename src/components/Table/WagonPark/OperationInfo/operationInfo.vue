@@ -412,7 +412,7 @@
                                                 <input type="month" v-model="date_begin_create" class="textarea"
                                                     style="background: white;width: 20vw !important ">
                                             </label>
-                                            <br>
+                                            <br>  <br>
                                             <!-- <label>Клиент <br>
                                                 <v-select v-model="currentClientsForExcelFile" :options="clients"
                                                     label="value" style="width:20vw !important;"></v-select>
@@ -764,9 +764,10 @@ export default {
             try {
 
                 let data = this.currentClients.map((item) => {
-                    return { client: item.value }
+                    return { client: item.client }
                 })
                 const clientsParams = data.map((item) => `clients=${item.client}`).join('&');
+              
                 // Формируем строку запроса с параметрами clients
                 const queryString = `?wagon_type=${this.wag_type}&report_date=${this.date_begin}&${clientsParams}`;
                 this.loader = true

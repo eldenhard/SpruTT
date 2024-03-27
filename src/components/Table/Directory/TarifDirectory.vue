@@ -235,9 +235,9 @@
 
 
       <button id="tooltip-target-1"
-        style="background: transparent; border: none;  width: auto; padding: 0; margin-left: auto"
+        style="background: transparent; border: none;  width: auto; padding: 0; margin-left: 95%;"
         @click="info_block = !info_block">
-        <img :src="info_btn" alt="" style="width: 25px; height:25px; margin-top: 1%;">
+        <img :src="info_btn" alt="" style="width: 25px; height:25px; margin-top: 1%; ">
       </button>
       <div style="max-height: 20vh; overflow: auto; width: 25%; margin-left: auto" v-if="info_block">
         <table>
