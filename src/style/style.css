@@ -425,3 +425,8 @@ li.nav-item a.nav-link{
   font-family:"Inter var", sans-serif;
   font-weight: 500;
 }
+
+.tabs.row.no-gutters{
+  height: 94vh !important;
+
+}

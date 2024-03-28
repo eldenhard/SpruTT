@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div  >
       <Loader :loader="loader" />
       <div class="air_block" style="margin-top: 15%;">
         <div class="air_block_content">

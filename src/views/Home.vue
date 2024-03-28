@@ -1,20 +1,18 @@
 <template>
-  <b-card no-body>
-    <b-tabs pills card vertical >
+  <b-card no-body >
+    <b-tabs pills card vertical>
+      <b-tab title="Справочник договоры" >
+          <b-card-text  >
+            <contractTable />
+          </b-card-text>
+        </b-tab>
       <b-container>
         <b-tab title="Справочник контрагенты" >
           <b-card-text>
             <partnerTable />
           </b-card-text>
         </b-tab>
-      </b-container>
-        <b-tab title="Справочник договоры" >
-          <b-card-text  >
-            <contractTable />
-          </b-card-text>
-        </b-tab>
 
-        <b-container>
         <b-tab title="Справочник станции" >
           <b-card-text>
             <StationsDirectory />

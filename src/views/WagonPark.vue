@@ -1,7 +1,7 @@
 
 <template>
   <div style="display: flex;">
-    <div style="width: 15%;">
+    <div style="width: 15vw;">
       <WagonNavbar :tabs="tabs" :counter="counter"></WagonNavbar>
     </div>
     <div style="width: 85%; ">
@@ -341,6 +341,11 @@ export default {
 </script>
   
 <style>
+.nav-pills .nav-link.active {
+  background: transparent !important;
+  color: #2e67b1 !important;
+  font-weight: 600;
+}
 .infoNull {
   text-align: center;
   padding-top: 1%;

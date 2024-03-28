@@ -17,17 +17,17 @@
     z-index: 999999 !important;
     top: 6vh !important;
     margin-right: 2%;
-    left: 90%;
     right: 0;
     display: flex;
     align-items: center;
     justify-content: flex-end; 
+
     white-space: nowrap;
   }
   
   .loader {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border: 2px dotted #9b9b9b;
     border-radius: 50%;
     display: inline-block;
@@ -36,7 +36,7 @@
   }
   
   .loader-text {
-    margin-left: 8px; 
+    margin-left: 8px; /* Расстояние между лоадером и текстом */
     font-size: 12px;
   }
   

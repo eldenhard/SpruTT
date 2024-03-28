@@ -1,22 +1,22 @@
 <template>
 
-    <b-card no-body >
-    <b-tabs pills card vertical style="height: 100vh;">
-        <b-container>
-          <b-tab title="Вагоны" @click="newTab('Вагоны')"> </b-tab>
-          <b-tab title="Телеграммы" @click="newTab('Телеграммы')" > </b-tab>
-          <b-tab title="Ремонты" @click="newTab('Ремонты')" > </b-tab>
-          <b-tab title="Расчет" @click="newTab('Расчет')" > </b-tab>
-          <b-tab title="Отправки БЧ" @click="newTab('Отправки БЧ')" > </b-tab>
-          <b-tab title="Тариф по сопр. терр." @click="newTab('Тариф по сопредельным территориям')" >  </b-tab>
-          <b-tab title="Продление срока ввоза" @click="newTab('Продление срока ввоза')" >  </b-tab>
-          <b-tab title="Данные по дислокациям" @click="newTab('Данные по дислокациям')" >  </b-tab>
-          <b-tab title="GLP" @click="newTab('GLP')" >  </b-tab>
-          <b-tab title="Влияние простоя брош. ваг. на просрочку доставки" @click="newTab('Влияние простоя брош. ваг. на просрочку доставки')" >  </b-tab>
-          <b-tab title="Данные по количеству брош.ваг." @click="newTab('Данные по количеству брош.ваг.')" >  </b-tab>
-          <b-tab title="Калькулятор ставок" @click="newTab('Калькулятор ставок')" >  </b-tab>
-          <b-tab title="Ввод бюджета" @click="newTab('Ввод бюджета')" >  </b-tab>
-          <b-tab title="Оперативная справка" @click="newTab('Оперативная справка')" >  </b-tab>
+    <b-card no-body  style="background: #F6F6F7 !important; height: 100%;">
+    <b-tabs pills card vertical  style="background: #F6F6F7 !important;  height: 100%;">
+        <b-container style="background: #F6F6F7 !important;  height: 100%;">
+          <b-tab title="Вагоны" @click="newTab('Вагоны')"></b-tab>
+          <b-tab title="Телеграммы" @click="newTab('Телеграммы')" ></b-tab>
+          <b-tab title="Ремонты" @click="newTab('Ремонты')" ></b-tab>
+          <b-tab title="Расчет" @click="newTab('Расчет')" ></b-tab>
+          <b-tab title="Отправки БЧ" @click="newTab('Отправки БЧ')" ></b-tab>
+          <b-tab title="Тариф по сопр. терр." @click="newTab('Тариф по сопредельным территориям')" > </b-tab>
+          <b-tab title="Продление срока ввоза" @click="newTab('Продление срока ввоза')" > </b-tab>
+          <b-tab title="Данные по дислокациям" @click="newTab('Данные по дислокациям')" > </b-tab>
+          <b-tab title="GLP" @click="newTab('GLP')"> </b-tab>
+          <b-tab title="Влияние простоя брош. ваг. на просрочку доставки" @click="newTab('Влияние простоя брош. ваг. на просрочку доставки')"></b-tab>
+          <b-tab title="Данные по количеству брош.ваг." @click="newTab('Данные по количеству брош.ваг.')"></b-tab>
+          <b-tab title="Калькулятор ставок" @click="newTab('Калькулятор ставок')"></b-tab>
+          <b-tab title="Ввод бюджета" @click="newTab('Ввод бюджета')"></b-tab>
+          <b-tab title="Оперативная справка" @click="newTab('Оперативная справка')">  </b-tab>
         </b-container>
       </b-tabs>
     </b-card>
@@ -50,12 +50,12 @@ select {
   width: 100%;
   box-sizing: border-box;
 }
-
-.btnnav {
-  background: red;
+.nav-pills .nav-link.active {
+  background: transparent !important;
+  color: #2e67b1 !important;
+  font-weight: 600;
 }
-
-.nav .nav-pills {
+/* .nav .nav-pills {
   height: 100vh !important;
 }
 
@@ -66,6 +66,6 @@ select {
 li.nav-item {
   text-align: center !important;
   justify-content: center !important;
-}
+} */
 </style>
   

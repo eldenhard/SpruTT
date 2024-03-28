@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 80vw !important; height: 85vh; overflow: auto;">
+  <div style="width: 78vw !important; height: 85vh; overflow: auto;">
     <Loader :loader="loader" />
     <h3 class="explanation" style="font-size: 17px; margin-top: -1%;">
       Перед использованием этого раздела обязательно выполнить <a @click="instruction = !instruction">следующие действия
@@ -162,27 +162,27 @@
             <tr style="border: none !important">
               <th style="border: none !important"></th>
               <th style="border: none !important"></th>
-              <th style="border: none !important"><button class="delete_col" @click="delete_col('wagon')">Удалить
+              <th style="border: none !important"><button class="delete_col button" @click="delete_col('wagon')">Удалить
                   столб.</button></th>
-              <th style="border: none !important"><button class="delete_col" @click="delete_col('date_pp_in')">Удалить
+              <th style="border: none !important"><button class="delete_col button" @click="delete_col('date_pp_in')">Удалить
                   столб.</button></th>
-              <th style="border: none !important"><button class="delete_col" @click="delete_col('date_work')">Удалить
+              <th style="border: none !important"><button class="delete_col button" @click="delete_col('date_work')">Удалить
                   столб.</button></th>
-              <th style="border: none !important"><button class="delete_col" @click="delete_col('date_pp_out')">Удалить
+              <th style="border: none !important"><button class="delete_col button" @click="delete_col('date_pp_out')">Удалить
                   столб.</button></th>
-              <th style="border: none !important"><button class="delete_col"
+              <th style="border: none !important"><button class="delete_col button"
                   @click="delete_col('application_number')">Удалить столб.</button></th>
-              <th style="border: none !important"><button class="delete_col" @click="delete_col('operation')">Удалить
+              <th style="border: none !important"><button class="delete_col button" @click="delete_col('operation')">Удалить
                   столб.</button></th>
-              <th style="border: none !important"><button class="delete_col" @click="delete_col('price_wo_nds')">Удалить
+              <th style="border: none !important"><button class="delete_col button" @click="delete_col('price_wo_nds')">Удалить
                   столб.</button></th>
-              <th style="border: none !important"><button class="delete_col" @click="delete_col('station_name')">Удалить
+              <th style="border: none !important"><button class="delete_col button" @click="delete_col('station_name')">Удалить
                   столб.</button></th>
-              <th style="border: none !important"><button class="delete_col" @click="delete_col('currency')">Удалить
+              <th style="border: none !important"><button class="delete_col button" @click="delete_col('currency')">Удалить
                   столб.</button></th>
-              <th style="border: none !important"><button class="delete_col" @click="delete_col('agent_reward')">Удалить
+              <th style="border: none !important"><button class="delete_col button" @click="delete_col('agent_reward')">Удалить
                   столб.</button></th>
-              <th style="border: none !important"><button class="delete_col"
+              <th style="border: none !important"><button class="delete_col button"
                   @click="delete_col('fact_wagon_compensation')">Удалить столб.</button></th>
             </tr>
             <tr>
