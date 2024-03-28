@@ -1,4 +1,12 @@
+*{
+  margin: 0;
+  padding: 0;
 
+}
+body{
+  min-height: 100vh !important;
+  height: 100vh !important;
+}
 .button {
   color: white;
   border: none;
@@ -13,10 +21,8 @@
   align-items: center;
   justify-content: center;
   vertical-align: middle;
-  font-family: 'Montserrat', sans-serif;
-
+  font-family: "Montserrat", sans-serif;
 }
-
 
 /* button:hover {
   opacity: 0.8;
@@ -35,7 +41,7 @@
   justify-content: center;
   vertical-align: middle;
 
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .Delete:hover {
@@ -43,17 +49,16 @@
   cursor: pointer;
 }
 .inActive {
-  background: #E5E5E5;
+  background: #e5e5e5;
   cursor: pointer;
   color: #888888;
 }
-.inActive:hover{
-   background: #E5E5E5 !important;
-   border-radius: 7px;
-
+.inActive:hover {
+  background: #e5e5e5 !important;
+  border-radius: 7px;
 }
 .Request {
-  background: #007BFF;
+  background: #007bff;
   color: white;
   padding: 14px 20px;
   border-radius: 7px;
@@ -65,7 +70,7 @@
   justify-content: center;
   vertical-align: middle;
 
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .Request:hover {
@@ -87,15 +92,13 @@
   justify-content: center;
   vertical-align: middle;
 
-  font-family: 'Montserrat', sans-serif;
-
+  font-family: "Montserrat", sans-serif;
 }
 
 .Accept:hover {
   background: #10691f;
   cursor: pointer;
   border-radius: 7px;
-
 }
 
 .Action {
@@ -113,7 +116,7 @@
   justify-content: center;
   vertical-align: middle;
 
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .Action:hover {
@@ -134,7 +137,7 @@
   justify-content: center;
   vertical-align: middle;
 
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .Cancel:hover {
@@ -145,7 +148,6 @@
   height: 105% !important;
   max-height: 35px !important;
   /* width: 35px !important; */
-
 }
 h2 {
   text-align: center;
@@ -268,7 +270,11 @@ select {
   padding: 0 4em 0 1em;
   background: url(../assets//Caret_down_font_awesome_whitevariation.svg.png)
       no-repeat right 0.8em center/1.4em,
-    linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em);
+    linear-gradient(
+      to left,
+      rgba(255, 255, 255, 0.3) 3em,
+      rgba(255, 255, 255, 0.2) 3em
+    );
   /* background: #E6E6E6; */
   color: #000000;
   border-radius: 0.25em;
@@ -356,11 +362,6 @@ td {
   z-index: 0 !important;
 }
 
-/* Цвет выбранного ТАБА */
-.nav-pills .nav-link.active {
-  background: #2c3e50 !important;
-  color: white;
-}
 /* .nav-link{
   background: #2c3e50 !important;
   color: white;
@@ -374,13 +375,53 @@ td {
 .nav-link.active:hover {
 color: white
 } */
-.amount{
-  color:#909092;
+.amount {
+  color: #909092;
   line-height: 10px;
 }
-  .explanation {
-    font-size: 13px;
-    color: grey;
-    text-align: left;
-    padding: 0 0 2% 0%;
-  }
+.explanation {
+  font-size: 13px;
+  color: grey;
+  text-align: left;
+  padding: 0 0 2% 0%;
+}
+
+
+
+/* sidebar */
+/* Цвет выбранного ТАБА */
+.nav-pills .nav-link.active {
+  background: transparent !important;
+  color: #2e67b1 !important;
+  font-weight: 600;
+}
+.h-100{
+  height: 100vh !important;
+}
+.nav-pills {
+  background: #f6f6f7 !important;
+ height: 100vh !important;
+  width: 15vw;
+  box-sizing: border-box;
+  /* border-right: 20px solid #f8f9fd; */
+}
+.nav .nav-pills {
+  height: 100vh !important;
+}
+
+.nav-item {
+  text-align: center !important;
+}
+
+li.nav-item {
+  text-align: left !important;
+  justify-content: center !important;
+  /* background: red !important; */
+}
+li.nav-item a.nav-link{
+  font-size: 15px;
+  line-height: 24px;
+  color: #65656A ;
+  font-family:"Inter var", sans-serif;
+  font-weight: 500;
+}

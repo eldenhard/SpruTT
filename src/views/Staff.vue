@@ -51,22 +51,8 @@ select {
   height: 100vh !important;
 }
 
-.nav .nav-pills {
-  height: 100vh !important;
-}
 
-.nav-item {
-  text-align: center !important;
-}
 
-li.nav-item {
-  text-align: center !important;
-  justify-content: center !important;
-  background: red !important;
-}
-/* .nav-pills{
-  background: red !important;
-} */
 </style>
 
 <script>

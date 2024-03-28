@@ -49,33 +49,36 @@
                                                     </v-select>
                                                 </th>
                                                 <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Объемы БП, ед' : "Объемы БП, тн" }} </th>
-                                                <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' : "Объемы,тн" }} </th>
-                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Кол-во погр БП на тек дату' : 'Объем БП на тек дату План' }}
+                                                <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' : "Объемы Б,тн" }} </th>
+                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Кол-во погр БП на тек дату' : 'Объем БП на тек дату, тн' }}
                                                 </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
-            wag_type == 'Полувагон' ? 'Кол-во погр План на тек дату' : 'Объем на тек дату План' }} </th>
+            wag_type == 'Полувагон' ? 'Кол-во погр План на тек дату' : 'Объем Б на дату, тн' }} </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
-            wag_type == 'Полувагон' ? 'Кол-во погр факт на тек дату' : 'Объем на тек дату Факт' }} </th>
+            wag_type == 'Полувагон' ? 'Кол-во погр факт на тек дату' : 'Объем факт на тек дату, тн' }} </th>
                                                 <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Выполнение  БП, % ' : 'Выполнение БП, % ' }} </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
-            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'Отклонение кол-ва ваг' }} </th>
+            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'Выполнение Б, %' }} </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
-            wag_type == 'Полувагон' ? 'Выполнение отн.' : ' % выполнения плана'
-        }} </th>
-                                                <th style="background: #F4CC6E">Выручка без НДС, руб БП</th>
+            wag_type == 'Полувагон' ? 'Выполнение отн.' : 'Общее выполнение Б, %' }} </th>
+        </th>
+                                                <th style="background: #F4CC6E">Выручка без НДС БП, руб</th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Выручка без НДС, руб' : "Выручка без НДС, руб ПЛАН" }} </th>
+            wag_type == 'Полувагон' ? 'Выручка без НДС, руб' : "Выручка без НДС Б, руб" }} </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Объем на тек дату План' : 'Выручка без НДС, руб на тек дату ПЛАН' }}
+            wag_type == 'Полувагон' ? 'Объем на тек дату План' : 'Выручка на дату БП, руб' }}
                                                 </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Объем на тек дату Факт' : 'Выручка без  НДС, руб на тек дату факт' }}
+            wag_type == 'Полувагон' ? 'Объем на тек дату Факт' : 'Выручка на дату Б, руб' }}
                                                 </th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'отклонения в выручке' }} </th>
+            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'Выручка на дату Факт, руб' }} </th>
                                                 <th style="background: #F4CC6E">Выполнение БП, %</th>
                                                 <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Выполнение отн.' : ' % выполнения' }}
+            wag_type == 'Полувагон' ? 'Выполнение отн.' : 'Выполнение Б, %' }}
+                                                </th>
+                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
+            wag_type == 'Полувагон' ? '% выпонения Б Общий' : '% выпонения Б Общий' }}
                                                 </th>
 
                                             </tr>
@@ -104,6 +107,7 @@
                                                     }}</td>
                                                 <td></td>
                                                 <td>{{ item.revenue_complete_rel | format }}%</td>
+                                                <td></td>
                                             </tr>
                                             <tr v-for="item in totalResponse2" :key="item.id">
                                                 <td>Прочие</td>
@@ -124,6 +128,7 @@
                                                     }}</td>
                                                 <td></td>
                                                 <td>{{ item.revenue_complete_rel | format }}%</td>
+                                                <td></td>
                                             </tr>
                                             <tr class="Row_grey">
                                                 <td>Итого</td>
@@ -143,6 +148,7 @@
                                                 </td>
                                                 <td></td>
                                                 <td>{{ totalRevenueCompleteRel }} %</td>
+                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -805,7 +811,10 @@ export default {
 table {
     margin-top: 2%;
 }
-
+th{
+    /* white-space: nowrap; */
+    font-size: 12px;
+}
 .date_block {
     display: flex;
     flex-direction: column;

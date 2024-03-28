@@ -2,7 +2,7 @@
   <b-card no-body>
     <b-tabs pills card vertical >
       <b-container>
-        <b-tab title="Справочник контрагенты">
+        <b-tab title="Справочник контрагенты" >
           <b-card-text>
             <partnerTable />
           </b-card-text>
@@ -105,22 +105,7 @@ select {
   height: 100vh !important;
 }
 
-.nav .nav-pills {
-  height: 100vh !important;
-}
 
-.nav-item {
-  text-align: center !important;
-}
-
-li.nav-item {
-  text-align: center !important;
-  justify-content: center !important;
-  background: red !important;
-}
-/* .nav-pills{
-  background: red !important;
-} */
 </style>
 
 <script>

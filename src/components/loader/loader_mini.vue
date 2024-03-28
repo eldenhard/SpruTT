@@ -13,21 +13,21 @@
   
   <style scoped>
   .loader-container {
-    position: sticky;
-    z-index: 123;
-    top: 1vh !important;
-    margin-left: auto !important;
+    position: fixed;
+    z-index: 999999 !important;
+    top: 6vh !important;
     margin-right: 2%;
     left: 90%;
     right: 0;
     display: flex;
     align-items: center;
     justify-content: flex-end; 
+    white-space: nowrap;
   }
   
   .loader {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border: 2px dotted #9b9b9b;
     border-radius: 50%;
     display: inline-block;
@@ -36,7 +36,7 @@
   }
   
   .loader-text {
-    margin-left: 8px; /* Расстояние между лоадером и текстом */
+    margin-left: 8px; 
     font-size: 12px;
   }
   

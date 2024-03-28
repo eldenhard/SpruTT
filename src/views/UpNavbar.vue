@@ -2,7 +2,7 @@
   <div v-show="visibleElement" style="z-index: 100;">
     <Modal_Notification :modal_notifications="modal_notifications" @close="close_modal" :data="data"/>
 
-    <b-navbar toggleable="lg" type="light" style="background: #F8F9FA !important;">
+    <b-navbar toggleable="lg" type="light" style="background: #F8F9FA !important;" ref="navbar">
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -192,11 +192,18 @@ export default {
   bottom: 50%;
   transform: translate(-0%, 0); */
 }
-
+.navbar{
+  height: 6vh;
+  /* margin-bottom: 2vh; */
+}
 .router-links {
-  color: black;
+
   text-decoration: none;
   font-size: 15px;
+  line-height: 24px;
+  color: #1a1a1a ;
+  font-family:"Inter var", sans-serif;
+  font-weight: 500;
 }
 
 

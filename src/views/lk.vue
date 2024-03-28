@@ -258,9 +258,7 @@ export default {
   border: none !important;
 }
 
-.nav-pills {
-  border-right: 20px solid #f8f9fd;
-}
+
 
 .card-body {
   background: white;

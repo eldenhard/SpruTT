@@ -69,6 +69,7 @@ export default {
   },
   // Синхронизация
   async mounted() {
+    this.loader_mini = true
     let objStation = {
       'ОКТЯБРЬСКАЯ': 'ОКТ',
       'ЭСТОНСКАЯ': 'ЭСТ',
@@ -137,7 +138,7 @@ export default {
     catch (error) {
       console.error(error)
     } finally {
-      this.loader_mini = false
+      // this.loader_mini = false
     }
 
 
