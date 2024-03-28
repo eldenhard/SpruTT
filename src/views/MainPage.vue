@@ -1,7 +1,7 @@
 <template>
   <div class="block_main_page">
     <div class="main_block_grid">
-      <router-link to="/directory">
+      <router-link to="/directory" @click="test()">
         <div class="main_page__block block_main_page__blocks__directory">
           <img src="../assets//directrory.png" alt="Справочники">
           <span> Справочники</span>

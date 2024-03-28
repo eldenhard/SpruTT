@@ -56,6 +56,7 @@ export default {
         return {
              // проверка на прохождение проверки
              isFlagError: true,
+             resultData: "",
         }
     },
     methods: {
@@ -83,6 +84,7 @@ export default {
                     errorList.push(i.client)
                 }
             }
+            this.resultData = result
             console.log(result, errorList)
             if (errorList.length > 0) {
 
@@ -100,21 +102,23 @@ export default {
         saveNewBusinessPlan() {
             this.isFlagError = true
 
-            this.$emit('stateLoader', true)
+            // this.$emit('stateLoader', true)
             // this.loader = true
             let keys = Object.keys(this.createNewProfitability)
             let result = []
-            for (let i = 0; i < this.tableData.length; i++) {
+            console.log(this.resultData)
+            for (let i = 0; i < this.resultData.length; i++) {
                 let obj = {}
                 for (let j = 0; j < keys.length; j++) {
-                    obj[keys[j]] = Number(this.tableData[i][j].replace(',', '.')) || 0
+                    if( obj[keys[j]] == 'client') continue
+                    obj[keys[j]] = Number(this.resultData[i][j]) || 0
                     obj["on_date"] = this.date_begin_create + "-01"
                     obj["wagon_type"] = this.wagon_type
                 }
                 result.push(obj)
             }
 
-            console.log(result)
+            console.log(this.resultData, 'RESULT')
             let promises = result.map((item) => api.postNewBusinessPlan(item))
            
             Promise.all(promises)

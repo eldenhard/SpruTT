@@ -138,7 +138,7 @@ export default {
     catch (error) {
       console.error(error)
     } finally {
-      // this.loader_mini = false
+      this.loader_mini = false
     }
 
 
