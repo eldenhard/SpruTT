@@ -48,108 +48,123 @@
                                                         label="label" multiple>
                                                     </v-select>
                                                 </th>
-                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Объемы БП, ед' : "Объемы БП, тн" }} </th>
-                                                <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' : "Объемы Б,тн" }} </th>
-                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Кол-во погр БП на тек дату' : 'Объем БП на тек дату, тн' }}
-                                                </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
-            wag_type == 'Полувагон' ? 'Кол-во погр План на тек дату' : 'Объем Б на дату, тн' }} </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
-            wag_type == 'Полувагон' ? 'Кол-во погр факт на тек дату' : 'Объем факт на тек дату, тн' }} </th>
-                                                <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Выполнение  БП, % ' : 'Выполнение БП, % ' }} </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
-            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'Выполнение Б, %' }} </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{
-            wag_type == 'Полувагон' ? 'Выполнение отн.' : 'Общее выполнение Б, %' }} </th>
-        </th>
-                                                <th style="background: #F4CC6E">Выручка без НДС БП, руб</th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Выручка без НДС, руб' : "Выручка без НДС Б, руб" }} </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Объем на тек дату План' : 'Выручка на дату БП, руб' }}
-                                                </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Объем на тек дату Факт' : 'Выручка на дату Б, руб' }}
-                                                </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'Выручка на дату Факт, руб' }} </th>
-                                                <th style="background: #F4CC6E">Выполнение БП, %</th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? 'Выполнение отн.' : 'Выполнение Б, %' }}
-                                                </th>
-                                                <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{
-            wag_type == 'Полувагон' ? '% выпонения Б Общий' : '% выпонения Б Общий' }}
-                                                </th>
+    <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Объемы БП, ед' : "Объемы БП, тн" }} </th>
+    <th class="greenCell">{{ wag_type == 'Полувагон' ? 'Кол-во погрузок' : "Объемы Б,тн" }} </th>
+    <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Кол-во погр БП на тек дату' : 'Объем БП на тек дату, тн' }}</th>
+    <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{wag_type == 'Полувагон' ? 'Кол-во погр План на тек дату' : 'Объем Б на дату, тн' }} </th>
+    <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{wag_type == 'Полувагон' ? 'Кол-во погр факт на тек дату' : 'Объем факт на тек дату, тн' }} </th>
+    <th style="background: #F4CC6E">{{ wag_type == 'Полувагон' ? 'Выполнение БП, % ' : 'Выполнение БП, % ' }} </th>
+    <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'Выполнение Б, %' }}</th>
+    <th :class="[wag_type == 'Полувагон' ? 'greyCell' : 'redCell']">{{ wag_type == 'Полувагон' ? 'Выполнение отн.' : 'Общее выполнение Б, % ' }} </th>
+    <th style="background: #F4CC6E">Выручка без НДС БП, руб</th>
+    <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{wag_type == 'Полувагон' ? 'Выручка без НДС, руб' : "Выручка без НДС Б, руб" }} </th>
+    <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{wag_type == 'Полувагон' ? 'Объем на тек дату План' : 'Выручка на дату БП, руб' }}</th>
+    <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Объем на тек дату Факт' : 'Выручка на дату Б, руб' }}</th>
+    <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Выполнение абсл.' : 'Выручка на дату Факт, руб' }} </th>
+    <th style="background: #F4CC6E">Выполнение БП, %</th>
+    <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? 'Выполнение отн.' : 'Выполнение Б, %' }}</th>
+    <th :class="[wag_type == 'Полувагон' ? 'orangeCell' : 'blueCell']">{{ wag_type == 'Полувагон' ? '% выпонения Б Общий' : '% выпонения Б Общий' }}</th>
 
+                                            </tr>
+                                            <tr class="RowAlphabet">
+                                                <th></th>
+                                                <th>1</th>
+                                                <th>2</th>
+                                                <th>3</th>
+                                                <th>4</th>
+                                                <th>5</th>
+                                                <th>6</th>
+                                                <th>7</th>
+                                                <th>8</th>
+                                                <th>9</th>
+                                                <th>10</th>
+                                                <th>11</th>
+                                                <th>12</th>
+                                                <th>13</th>
+                                                <th>14</th>
+                                                <th>15</th>
+                                                <th>16</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr
-                                                v-if="Array.isArray(responseServerData.report) && responseServerData.report.length == 0">
+                                            <tr v-if="Array.isArray(responseServerData.report) && responseServerData.report.length == 0">
                                                 <td colspan="11">По выбранным параметрам нет данных</td>
                                             </tr>
                                             <tr v-for="item, index in filteredReportData" :key="index">
                                                 <td>{{ item.client }}</td>
-                                                <td></td>
-                                                <td>{{ item.metric | format }}</td>
-                                                <td></td>
+                                                <td>{{ item.volume_bp | format }}</td> 
+                                                <td>{{ item.metric | format }}</td> 
+                                                <td>{{ (item.volume_bp || 0) / getAmountDaysOfCurrentMonth * new Date().getDate() | format }}</td> 
                                                 <td>{{ item.metric_current_plan | format }}</td>
                                                 <td>{{ item.metric_current_fact | format }}</td>
-                                                <td></td>
-                                                <td>{{ (item.metric_current_fact - item.metric_current_plan) | format }}
-                                                </td>
-                                                <td>{{ item.metric_complete_rel | format }} %</td>
-                                                <td></td>
+                                                <td>{{ item.metric_current_fact / item.volume_bp * 100 || 0 | format }}%</td>
+                                                <td>{{ item.metric_current_fact / item.metric_current_plan * 100 || 0 | format }} % </td>
+                                                <td>{{ item.metric_current_fact / item.metric * 100 || 0 | format }} %
+                                                </td> 
+                                                <td>{{ item.revenue_wo_nds_bp | format }}</td> 
                                                 <td>{{ item.revenue_wo_nds | format }}</td>
-                                                <td>{{ item.revenue_current_plan | format }}</td>
-                                                <td>{{ item.revenue_current_fact | format }}</td>
-                                                <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format
-                                                    }}</td>
-                                                <td></td>
-                                                <td>{{ item.revenue_complete_rel | format }}%</td>
-                                                <td></td>
+                                                <td>{{ item.revenue_current_plan | format }}</td> 
+                                                <td>{{ item.revenue_wo_nds / getAmountDaysOfCurrentMonth * new Date().getDate() | format }}</td> 
+                                                <td>{{ item.revenue_current_fact | format }}</td> 
+                                                <td>{{ item.revenue_current_fact / item.revenue_current_plan * 100 || 0 | format }} %</td>
+                                                <td>
+                                                    {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * new Date().getDate()) * 100 | format }}
+                                                    %
+                                                </td> 
+                                                <td>{{ item.revenue_current_fact / item.revenue_wo_nds * 100 || 0 |  format }} %</td>
                                             </tr>
                                             <tr v-for="item in totalResponse2" :key="item.id">
                                                 <td>Прочие</td>
-                                                <td></td>
-                                                <td>{{ item.metric | format }}</td>
-                                                <td></td>
-                                                <td>{{ item.metric_current_plan | format }}</td>
-                                                <td>{{ item.metric_current_fact | format }}</td>
-                                                <td></td>
-                                                <td>{{ (item.metric_current_fact - item.metric_current_plan) | format }}
-                                                </td>
-                                                <td>{{ item.metric_complete_rel | format }} %</td>
-                                                <td></td>
-                                                <td>{{ item.revenue_wo_nds | format }}</td>
-                                                <td>{{ item.revenue_current_plan | format }}</td>
-                                                <td>{{ item.revenue_current_fact | format }}</td>
-                                                <td>{{ (item.revenue_current_fact - item.revenue_current_plan) | format
-                                                    }}</td>
-                                                <td></td>
-                                                <td>{{ item.revenue_complete_rel | format }}%</td>
-                                                <td></td>
+                                                <td>{{ item.volume_bp || 0 | format }}</td> <!-- 1  -->
+                                                <td>{{ item.metric || 0 | format }}</td> <!-- 2
+-->
+                                                <td>{{ item.volume_bp / getAmountDaysOfCurrentMonth * new  Date().getDate() || 0 | format }}</td> <!-- 3
+-->
+                                                <td>{{ item.metric_current_plan || 0 | format }}</td> <!-- 4
+-->
+                                                <td>{{ item.metric_current_fact || 0 | format }}</td> <!-- 5
+-->
+                                                <td>{{ item.metric_current_fact / item.volume_bp * 100 || 0 | format }}
+                                                    %</td> <!-- 6
+-->
+                                                <td>{{ item.metric_current_fact / item.metric_current_plan * 100 || 0 | format }} % <!-- 7
+ --> </td>
+                                                <td>{{ item.metric_current_fact / item.metric * 100 || 0 | format }} %
+                                                </td> <!-- 8
+ -->
+                                                <td>{{ item.revenue_wo_nds_bp || 0 }}</td> <!-- 9
+ -->
+                                                <td>{{ item.revenue_wo_nds || 0 | format }}</td> <!-- 10 -->
+                                                <td>{{ item.revenue_current_plan || 0 | format }}</td> <!-- 11 -->
+                                                <td>{{ item.revenue_wo_nds / getAmountDaysOfCurrentMonth * new Date().getDate() || 0 | format }}</td> <!-- 12 -->
+                                                <td>{{ item.revenue_current_fact || 0 | format }}</td> <!-- 13 -->
+                                                <td>{{ item.revenue_current_fact / item.revenue_current_plan * 100 || 0 | format }} %</td> <!-- 14 -->
+                                                <td>
+                                                    {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * new Date().getDate()) * 100 || 0 |
+            format }} %
+                                                </td> <!-- 15 -->
+                                                <td>{{ item.revenue_current_fact / item.revenue_wo_nds * 100 || 0 | format }} %</td> <!-- 16 -->
                                             </tr>
-                                            <tr class="Row_grey">
-                                                <td>Итого</td>
-                                                <td></td>
-                                                <td>{{ totalMetric | format }}</td>
-                                                <td></td>
-                                                <td>{{ totalMetricCurrentPlan | format }}</td>
-                                                <td>{{ totalMetricCurrentFact | format }}</td>
-                                                <td></td>
-                                                <td>{{ totalMetricCurrentFact - totalMetricCurrentPlan | format }}</td>
-                                                <td>{{ totalMetricCompleteRel }} %</td>
-                                                <td></td>
-                                                <td>{{ totalRevenueWithoutNDS | format }}</td>
-                                                <td>{{ totalRevenueCurrentPlan | format }}</td>
-                                                <td>{{ totalRevenueCurrentFact | format }}</td>
-                                                <td>{{ totalRevenueCurrentFact - totalRevenueCurrentPlan | format }}
-                                                </td>
-                                                <td></td>
-                                                <td>{{ totalRevenueCompleteRel }} %</td>
-                                                <td></td>
-                                            </tr>
+                                            <!--<tr class="Row_grey">
+                                             //     <td>Итого</td>
+                                            //    <td></td>
+                                            //     <td>{{ totalMetric | format }}</td>
+                                            //     <td></td>
+                                            //     <td>{{ totalMetricCurrentPlan | format }}</td>
+                                            //     <td>{{ totalMetricCurrentFact | format }}</td>
+                                            //     <td></td>
+                                            //     <td>{{ totalMetricCurrentFact - totalMetricCurrentPlan | format }}</td>
+                                            //     <td>{{ totalMetricCompleteRel }} %</td>
+                                            //     <td></td>
+                                            //     <td>{{ totalRevenueWithoutNDS | format }}</td>
+                                            //     <td>{{ totalRevenueCurrentPlan | format }}</td>
+                                            //     <td>{{ totalRevenueCurrentFact | format }}</td>
+                                            //     <td>{{ totalRevenueCurrentFact - totalRevenueCurrentPlan | format }}
+                                            //     </td>
+                                            //     <td></td>
+                                            //     <td>{{ totalRevenueCompleteRel }} %</td>
+                                            //     <td></td>
+                                            // </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -268,7 +283,7 @@
                                             <td style="background: lightskyblue;"></td>
                                             <td style="background: lightseagreen;"></td>
                                             <td style="background: rgb(46, 11, 11);  color: white !important;">{{
-            responseServerData.other_info?.income | format }}</td>
+                                                responseServerData.other_info?.income | format }}</td>
                                             <td style="background: darkred;  color: white !important;">-</td>
                                             <td style="background: darkred;  color: white !important;">-</td>
                                             <td style="background: darkred; color: white !important;">-</td>
@@ -418,7 +433,7 @@
                                                 <input type="month" v-model="date_begin_create" class="textarea"
                                                     style="background: white;width: 20vw !important ">
                                             </label>
-                                            <br>  <br>
+                                            <br> <br>
                                             <!-- <label>Клиент <br>
                                                 <v-select v-model="currentClientsForExcelFile" :options="clients"
                                                     label="value" style="width:20vw !important;"></v-select>
@@ -465,17 +480,14 @@
                                         </table>
                                     </div>
                                     <div v-else style="overflow: auto">
-                                        <enterDataIncomeVue 
-                                            :createNewProfitability="createNewProfitability" 
-                                            :clients="name_client" 
-                                            :tableData="tableData"
+                                        <enterDataIncomeVue :createNewProfitability="createNewProfitability"
+                                            :clients="name_client" :tableData="tableData"
                                             @update:tableData="tableData = $event"
-                                            :date_begin_create="date_begin_create" 
-                                            :wagon_type="wagon_type"
+                                            :date_begin_create="date_begin_create" :wagon_type="wagon_type"
                                             @stateLoader="stateLoader">
                                         </enterDataIncomeVue>
                                     </div>
-                                      
+
                                 </div>
                             </b-card-text>
                         </b-tab>
@@ -517,6 +529,7 @@ export default {
             allClientsInTable: [],
             currentClients: [],
             typeData: 'plan',
+            responseServerDataBP: "",
             clients: [{ value: "ТАТНЕФТЬ-ТРАНС, ООО" },
             { value: "ВЕКТОР-ДВИЖЕНИЯ, ООО" },
             { value: "Энергоресурсы" },
@@ -556,7 +569,7 @@ export default {
             { value: 'УГПХ, ООО' }],
             createNewProfitability: {
                 client: "",
-                revenue: 0,
+                revenue_wo_nds: 0,
                 volume: 0,
                 tariff_empty: 0,
                 tariff_inroad: 0,
@@ -572,25 +585,33 @@ export default {
             },
 
 
-           
+
         }
     },
     filters: {
         format(value) {
             if (value != "" && !!value) {
-                let TwoSignNum = value?.toFixed(0)
-                return String(TwoSignNum).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+                if (Number.isFinite(value)) {
+                    let TwoSignNum = value?.toFixed(0)
+                    return String(TwoSignNum).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
+                } else {
+                    return 0;
+                }
+
             }
             return value
 
         },
     },
-   
+
     computed: {
         ...mapState({
             name_client: (state) => state.client.name_client,
-          
+
         }),
+        getAmountDaysOfCurrentMonth() {
+            return new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+        },
         filteredReportData() {
             if (this.selectedOptions.length == 0) {
                 return this.responseServerData.report
@@ -714,9 +735,9 @@ export default {
     },
     methods: {
 
-       stateLoader(val){
+        stateLoader(val) {
             this.loader = val
-       },
+        },
         downloadExcel() {
 
             const excelData = this.excelData;
@@ -765,7 +786,7 @@ export default {
             this.excelData = "";
 
         },
-   
+
         Actioned() {
             try {
 
@@ -773,17 +794,71 @@ export default {
                     return { client: item.client }
                 })
                 const clientsParams = data.map((item) => `clients=${item.client}`).join('&');
-              
+
                 // Формируем строку запроса с параметрами clients
                 const queryString = `?wagon_type=${this.wag_type}&report_date=${this.date_begin}&${clientsParams}`;
                 this.loader = true
-                Promise.all([api.getDataForOperSpravka(queryString), api.getDataForOperSpravkaOtherClients(queryString),])
-                    .then(([response1, response2]) => {
+                Promise.all([api.getDataForOperSpravka(queryString), api.getDataForOperSpravkaOtherClients(queryString), api.getBP(queryString)])
+                    .then(([response1, response2, response3]) => {
                         this.loader = false
                         this.responseServerData = response1.data
+                        // console.log(this.responseServerData)
                         this.responseServerDataOtherClients = response2.data
-                        const clients = this.responseServerData.report.map(item => item.client)
+                        let businessPlanData = response3.data
+                        console.log(businessPlanData)
+                        this.responseServerData.report.forEach(item => {
+                            // Проходимся по ключам первого массива
+                            Object.keys(businessPlanData).forEach(key => {
+                                // Если ключ из первого массива соответствует значению клиента во втором массиве
+                                if (item.client === key) {
+                                    // Добавляем объем и выручку из первого массива, переименовывая их
+                                    item.volume_bp = businessPlanData[key].volume;
+                                    item.revenue_wo_nds_bp = businessPlanData[key].revenue_wo_nds;
 
+                                }
+                            });
+                        });
+
+
+
+                        //     {
+                        //     "client": "ТАТНЕФТЬ-ТРАНС, ООО",
+                        //     "metric": 193680,
+                        //     "metric_current_plan": 174936.7741935484,
+                        //     "metric_current_fact": 155863.91800000015,
+                        //     "metric_complete_abs": 19072.856193548243,
+                        //     "metric_complete_rel": 89.09728598719545,
+                        //     "revenue_wo_nds": 515925246.95,
+                        //     "revenue_current_plan": 449354247.34354836,
+                        //     "revenue_current_fact": 395789558.79599994,
+                        //     "revenue_complete_abs": 53564688.54754841,
+                        //     "revenue_complete_rel": 88.0796300771146,
+                        //     "volume_bp": 193680,
+                        //     "revenue_wo_nds_bp": 0
+                        // }
+
+                        //                         {
+                        //     "volume": 193680,
+                        //     "loadings_amount": 0,
+                        //     "revenue_wo_nds": 0,
+                        //     "tariff_loaded": 0,
+                        //     "tariff_empty": 211368384.4565,
+                        //     "tariff_inroad": 0,
+                        //     "exp_charges": 0,
+                        //     "prepare": 0,
+                        //     "add_services": 2530681.80788,
+                        //     "other_services": 0,
+                        //     "vagonosutki": 96954.536018,
+                        //     "md_wo_penalties": 287935086.9674,
+                        //     "penalties": 0,
+                        //     "md_w_penalties": 0,
+                        //     "income_wo_penalties": 82915.634159,
+                        //     "income_w_penalties": 92587.91296300002,
+                        //     "income_wo_prepre": 0
+                        // }
+                        console.log(this.responseServerData.report);
+                        const clients = this.responseServerData.report.map(item => item.client)
+                        this.responseServerData
                         this.allClientsInTable = clients.reduce((acc, client) => {
                             if (!acc.find(item => item.value === client)) {
                                 acc.push({ value: client, label: client })
@@ -811,10 +886,12 @@ export default {
 table {
     margin-top: 2%;
 }
-th{
+
+th {
     /* white-space: nowrap; */
     font-size: 12px;
 }
+
 .date_block {
     display: flex;
     flex-direction: column;
