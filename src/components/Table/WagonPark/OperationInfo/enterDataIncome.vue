@@ -102,7 +102,7 @@ export default {
         saveNewBusinessPlan() {
             this.isFlagError = true
 
-            // this.$emit('stateLoader', true)
+            this.$emit('stateLoader', true)
             // this.loader = true
             let keys = Object.keys(this.createNewProfitability)
             let result = []
@@ -118,9 +118,9 @@ export default {
                 result.push(obj)
             }
 
-            console.log(this.resultData, 'RESULT')
-            let promises = result.map((item) => api.postNewBusinessPlan(item))
-           
+       
+            let promises = this.resultData.map((item) => api.postNewBusinessPlan(item))
+     
             Promise.all(promises)
                 .then((result) => {
                     this.$emit('stateLoader', false)
