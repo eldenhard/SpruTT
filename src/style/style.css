@@ -423,3 +423,6 @@ li.nav-item a.nav-link{
 
 }
 
+.card-body {
+  background: transparent; 
+}
