@@ -172,7 +172,8 @@
                         </b-tab>
                         <b-tab title="Маржинальная доходность">
                             <b-card-text>
-                                <marginIncomeVue />
+                                <marginIncomeVue
+                                @stateLoader="stateLoader" />
                             </b-card-text>
                         </b-tab>
                         <b-tab title="Доходность">
@@ -568,6 +569,8 @@ export default {
             { value: 'УГПХ, ООО' }],
             createNewProfitability: {
                 client: "",
+                product: "",
+                destination: "",
                 revenue_wo_nds: 0,
                 volume: 0,
                 tariff_empty: 0,

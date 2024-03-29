@@ -247,6 +247,9 @@ const getDataForOperSpravkaOtherClients = (queryString) => {
 const getBP = (queryString) => {
     return api.get(`${finance}/operativnaya-spravka/bp/${queryString}` )
 }
+const  getBusinessPlan = (queryString) => {
+    return api.get(`${finance}/business-plan/?on_date=${queryString}&page_size=1_000_000` )
+}
 
 // Получение  договора по параметрам расширенного поиска
 const getAgreementAdvancedFilter = (contract_type, counterparty, number) => {
@@ -357,6 +360,7 @@ export default {
     getDataForOperSpravka,
     getDataForOperSpravkaOtherClients,
     createNewProfitability,
+    getBusinessPlan,
     postNewBusinessPlan,
     getBP,
 

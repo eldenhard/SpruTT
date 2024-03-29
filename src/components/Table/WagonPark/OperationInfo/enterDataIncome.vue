@@ -1,8 +1,15 @@
 <template>
     <div>
+        <div style="display: flex; flex-direction: column; width: 30%; margin-left: auto; gap: 2vw;">
+            <button class="Request button special" @click="checkEnterData()">Проверка введенных данных</button>
+            <button class="Accept special" @click="saveNewBusinessPlan()" :disabled="isFlagError">Сохранить данные</button>
+        </div>
+        <br>
         <table>
             <thead>
                 <th>Клиент</th>
+                <th>Груз</th>
+                <th>Назначение</th>
                 <th>Выручка</th>
                 <th>Вес</th>
                 <th>Тариф порож </th>
@@ -24,9 +31,6 @@
                 </tr>
             </tbody>
         </table>
-
-        <button class="Request button special" @click="checkEnterData()">Проверка введенных данных</button>
-        <button class="Accept special" @click="saveNewBusinessPlan()" :disabled="isFlagError">Сохранить данные</button>
     </div>
 </template>
 
@@ -67,7 +71,7 @@ export default {
             for (let i = 0; i < this.tableData.length; i++) {
                 let obj = {}
                 for (let j = 0; j < keys.length; j++) {
-                    if (keys[j] == "client") {
+                    if (keys[j] == "client" || keys[j] == "product" || keys[j] == "destination") {
                         obj[keys[j]] = this.tableData[i][j]
                     } else {
                         obj[keys[j]] = Number(this.tableData[i][j].replace(',', '.')) || 0
@@ -143,15 +147,15 @@ export default {
 
 <style scoped>
 .Accept.special {
-    width: 20%;
+    width: 100%;
     height: 40px;
     margin: 2% 0 0 auto;
 }
 
 .Request.special {
-    width: 20%;
+    width: 100%;
     height: 40px;
-    margin: 4% 0 0 auto;
+    margin: 2% 0 0 auto;
 }
 button:disabled{
     background: rgb(184, 184, 184);
