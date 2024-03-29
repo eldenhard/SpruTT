@@ -8,7 +8,7 @@
                     style="background: white;width: 20vw ">
             </label>
             <br>
-            <button class="Accept button" style="width: 20vw" @click="getBPData">Запросить</button>
+            <button class="Accept button" style="width: 20vw; margin-top: 4%;" @click="getBPData">Запросить</button>
         </div>
         <br>
         <div style="overflow: auto; width: 100%">
