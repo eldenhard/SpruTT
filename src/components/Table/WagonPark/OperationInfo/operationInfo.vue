@@ -864,43 +864,6 @@ export default {
                             });
                         });
 
-
-
-                        //     {
-                        //     "client": "ТАТНЕФТЬ-ТРАНС, ООО",
-                        //     "metric": 193680,
-                        //     "metric_current_plan": 174936.7741935484,
-                        //     "metric_current_fact": 155863.91800000015,
-                        //     "metric_complete_abs": 19072.856193548243,
-                        //     "metric_complete_rel": 89.09728598719545,
-                        //     "revenue_wo_nds": 515925246.95,
-                        //     "revenue_current_plan": 449354247.34354836,
-                        //     "revenue_current_fact": 395789558.79599994,
-                        //     "revenue_complete_abs": 53564688.54754841,
-                        //     "revenue_complete_rel": 88.0796300771146,
-                        //     "volume_bp": 193680,
-                        //     "revenue_wo_nds_bp": 0
-                        // }
-
-                        //                         {
-                        //     "volume": 193680,
-                        //     "loadings_amount": 0,
-                        //     "revenue_wo_nds": 0,
-                        //     "tariff_loaded": 0,
-                        //     "tariff_empty": 211368384.4565,
-                        //     "tariff_inroad": 0,
-                        //     "exp_charges": 0,
-                        //     "prepare": 0,
-                        //     "add_services": 2530681.80788,
-                        //     "other_services": 0,
-                        //     "vagonosutki": 96954.536018,
-                        //     "md_wo_penalties": 287935086.9674,
-                        //     "penalties": 0,
-                        //     "md_w_penalties": 0,
-                        //     "income_wo_penalties": 82915.634159,
-                        //     "income_w_penalties": 92587.91296300002,
-                        //     "income_wo_prepre": 0
-                        // }
                         console.log(this.responseServerData.report);
                         const clients = this.responseServerData.report.map(item => item.client)
                         this.responseServerData
@@ -910,9 +873,15 @@ export default {
                             }
                             return acc
                         }, []).sort((a, b) => a.value.localeCompare(b.value))
+                        this.$toast.success(`Успешно\nДанные получены`, {
+                            timeout: 2500
+                        })
                     })
                     .catch(error => {
                         console.error(error)
+                        this.$toast.error(`Ошибка\nДанные не получены\n${error.response.data}`, {
+                            timeout: 2500
+                        })
                         this.loader = false
                     })
                     .finally(() => {
