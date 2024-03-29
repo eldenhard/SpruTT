@@ -869,7 +869,9 @@ export default {
                             value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
                         }
                         else if (key === 'Станции искл.назначения') {
-                            key = 'exclude_next_loading_stations_list'
+                            // key = 'exclude_next_loading_stations_list'
+                            // Смена по причине ошибки ввода
+                            key = 'exclude_destination_stations_list'
                             value = value.replace(/[А-Я]{3}/g, '').trim().split(',')
                         }
                         else if (key === 'Мн. станций отпр.') {
@@ -944,7 +946,7 @@ export default {
             if (this.errorp.length == 0) {
                 this.flagCheck = true;
                 this.checkCompleteData = new_data;
-                console.log(this.checkCompleteData, this.checkCompleteData)
+             
                 this.notifyHead = "Успешно";
                 this.notifyMessage = "Данные проверку прошли!";
                 this.notifyClass = "wrapper-success";

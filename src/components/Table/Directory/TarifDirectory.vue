@@ -307,7 +307,7 @@
                 placeholder="скопируйте и вставьте данные" />
             </td>
             <td style="border: 1px solid black">
-              <input type="text" id="exclude_next_loading_stations_list" @keyup.enter="saveTarif($event)"
+              <input type="text" id="exclude_destination_stations_list" @keyup.enter="saveTarif($event)"
                 placeholder="скопируйте и вставьте данные" />
             </td>
             <td style="border: 1px solid black">
@@ -363,7 +363,7 @@
               Станция следующей погрузки</th>
             <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
               @mouseout="resetText('Станции исключения назначения')"
-              @click="handleClick('exclude_next_loading_stations_list')">Станции исключения назначения</th>
+              @click="handleClick('exclude_destination_stations_list')">Станции исключения назначения</th>
             <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
               @mouseout="resetText('Страна')" @click="handleClick('country')">Страна</th>
             <th style="border: 1px solid black; font-size: 12px !important;" @mouseover="checkFunc($event)"
@@ -416,7 +416,7 @@
               <input style="width: 100%" type="text" v-model="item.next_loading_stations_list" />
             </td>
             <td style="border: 1px solid black">
-              <input style="width: 100%" type="text" v-model="item.exclude_next_loading_stations_list" disabled />
+              <input style="width: 100%" type="text" v-model="item.exclude_destination_stations_list" disabled />
             </td>
             <td style="border: 1px solid black">
               <input style="width: 100%" type="text" v-model="item.country" />
@@ -471,7 +471,7 @@ class Stavki {
     this.distance_num = null
     this.next_loading_stations_list = null; // Станция следующей погрузки
 
-    this.exclude_next_loading_stations_list = null; // Станции исключения следующей погрузки
+    this.exclude_destination_stations_list = null; // Станции исключения следующей погрузки
     this.country = null;
     this.wagons = null;
 
@@ -754,7 +754,7 @@ export default {
 
         event.target.value = "";
         return;
-      } else if (event.target.id == "departure_stations_list" || event.target.id == 'exclude_next_loading_stations_list') {
+      } else if (event.target.id == "departure_stations_list" || event.target.id == 'exclude_destination_stations_list') {
         // Если 3 заглавные буквы, то разделяю на 2 элемента
         let operationBuffer = event.target.value
           .replace(/[А-Я]{3}(?=\s)/g, "/")
@@ -951,7 +951,7 @@ export default {
           if (
             event.target.id === "departure_stations_list" ||
             event.target.id === "cargos_list" ||
-            event.target.id === "exclude_next_loading_stations_list" ||
+            event.target.id === "exclude_destination_stations_list" ||
             event.target.id === "wagons"
           ) {
             newObj[event.target.id] = operationBuffer[i].split(",");
@@ -963,7 +963,7 @@ export default {
           if (
             event.target.id === "departure_stations_list" ||
             event.target.id === "cargos_list" ||
-            event.target.id === "exclude_next_loading_stations_list" ||
+            event.target.id === "exclude_destination_stations_list" ||
             event.target.id === "wagons"
           ) {
             this.data[i][event.target.id] = operationBuffer[i].split(",");
@@ -1037,7 +1037,7 @@ export default {
           parametrs.departure_stations_list = []; // Множество станций погрузки
           parametrs.distance_num = [];
           parametrs.next_loading_stations_list = []; // Станция следующей погрузки
-          parametrs.exclude_next_loading_stations_list = []; // Станции исключения следующей погрузки
+          parametrs.exclude_destination_stations_list = []; // Станции исключения следующей погрузки
           parametrs.country = [];;
           parametrs.wagons = [];
           parametrs.for_paired_flights = []
@@ -1059,8 +1059,8 @@ export default {
                 stationNameSet.add(station);
               });
             }
-            if (item.exclude_next_loading_stations_list) { // Добавляем исключения следующей погрузки из массива
-              item.exclude_next_loading_stations_list.forEach(station => {
+            if (item.exclude_destination_stations_list) { // Добавляем исключения следующей погрузки из массива
+              item.exclude_destination_stations_list.forEach(station => {
                 stationNameSet.add(station);
               });
             }
@@ -1151,18 +1151,18 @@ export default {
           }
         }
 
-        if (item.exclude_next_loading_stations_list) {
-          newItem.exclude_next_loading_stations_list = []; // Инициализируем массив для исключений следующей погрузки
-          for (const station of item.exclude_next_loading_stations_list) {
+        if (item.exclude_destination_stations_list) {
+          newItem.exclude_destination_stations_list = []; // Инициализируем массив для исключений следующей погрузки
+          for (const station of item.exclude_destination_stations_list) {
             try {
-              const code = await this.getStationCode(station, index, 'exclude_next_loading_stations_list');
+              const code = await this.getStationCode(station, index, 'exclude_destination_stations_list');
               if (code !== null) {
-                newItem.exclude_next_loading_stations_list.push(code);
+                newItem.exclude_destination_stations_list.push(code);
               }
             } catch (error) {
               console.error(`Ошибка при получении кода для станции "${station}" в группе "Станции исключения следующей погрузки" на индексе ${index}`, error);
             }
-            console.log(newItem.exclude_next_loading_stations_list, 'я exclude_next_loading_stations_list')
+            console.log(newItem.exclude_destination_stations_list, 'я exclude_destination_stations_list')
           }
         }
         if (item.country) {
@@ -1437,10 +1437,10 @@ export default {
                 this.checkCompleteData[i].next_loading_stations_list = [this.checkCompleteData[i].next_loading_stations_list.id]
               }
               // Много станций
-              if (this.checkCompleteData[i].exclude_next_loading_stations_list == null) {
-                this.checkCompleteData[i].exclude_next_loading_stations_list = []
+              if (this.checkCompleteData[i].exclude_destination_stations_list == null) {
+                this.checkCompleteData[i].exclude_destination_stations_list = []
               } else {
-                this.checkCompleteData[i].exclude_next_loading_stations_list = this.checkCompleteData[i].exclude_next_loading_stations_list.map((item) => item.id)
+                this.checkCompleteData[i].exclude_destination_stations_list = this.checkCompleteData[i].exclude_destination_stations_list.map((item) => item.id)
               }
               if (this.checkCompleteData[i].wagons == null) {
                 this.checkCompleteData[i].wagons = []

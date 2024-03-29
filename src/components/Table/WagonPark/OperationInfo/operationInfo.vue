@@ -92,7 +92,7 @@
                                             </tr>
                                             <tr v-for="item, index in filteredReportData" :key="index">
                                                 <td>{{ item.client }}</td>
-                                                <td>{{ item.volume_bp | format }}</td> 
+                                                <td>{{ item.volume_bp || 0 | format }}</td> 
                                                 <td>{{ item.metric | format }}</td> 
                                                 <td>{{ (item.volume_bp || 0) / getAmountDaysOfCurrentMonth * new Date().getDate() | format }}</td> 
                                                 <td>{{ item.metric_current_plan | format }}</td>
@@ -145,26 +145,25 @@
                                                 </td> <!-- 15 -->
                                                 <td>{{ item.revenue_current_fact / item.revenue_wo_nds * 100 || 0 | format }} %</td> <!-- 16 -->
                                             </tr>
-                                            <!--<tr class="Row_grey">
-                                             //     <td>Итого</td>
-                                            //    <td></td>
-                                            //     <td>{{ totalMetric | format }}</td>
-                                            //     <td></td>
-                                            //     <td>{{ totalMetricCurrentPlan | format }}</td>
-                                            //     <td>{{ totalMetricCurrentFact | format }}</td>
-                                            //     <td></td>
-                                            //     <td>{{ totalMetricCurrentFact - totalMetricCurrentPlan | format }}</td>
-                                            //     <td>{{ totalMetricCompleteRel }} %</td>
-                                            //     <td></td>
-                                            //     <td>{{ totalRevenueWithoutNDS | format }}</td>
-                                            //     <td>{{ totalRevenueCurrentPlan | format }}</td>
-                                            //     <td>{{ totalRevenueCurrentFact | format }}</td>
-                                            //     <td>{{ totalRevenueCurrentFact - totalRevenueCurrentPlan | format }}
-                                            //     </td>
-                                            //     <td></td>
-                                            //     <td>{{ totalRevenueCompleteRel }} %</td>
-                                            //     <td></td>
-                                            // </tr> -->
+                                            <tr class="Row_grey">
+                                                 <td>Итого</td>
+                                                <td>{{ totalVolumeBP | format }}</td>
+                                                <td>{{ totalMetric | format }}</td>
+                                                <td>{{ totalVolumeBP / getAmountDaysOfCurrentMonth * new  Date().getDate() || 0 | format }}</td>
+                                                <td>{{ totalMetricCurrentPlan | format }}</td>
+                                                <td>{{ totalMetricCurrentFact | format }}</td>
+                                                <td>{{ totalMetricCurrentFact / totalVolumeBP * 100  || 0| format }} %</td>
+                                        <!-- 7 --><td>{{ totalMetricCurrentFact / totalMetricCurrentPlan * 100 || 0| format }} %</td>  
+                                                <td>{{ totalMetricCurrentFact / totalMetric * 100 || 0 | format }} %</td>
+                                    <!-- 9-->   <td>{{ totalMetricRevenue_wo_nds_bp | format}}</td>
+                                       <!-- 10-->          <td>{{ totalRevenueWithoutNDS | format }}</td>
+                                       <!-- 11-->          <td>{{ totalRevenueCurrentPlan | format }}</td>
+                                       <!-- 12-->          <td>{{ totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * new  Date().getDate() || 0 | format }}</td>
+                                        <!-- 13-->         <td>{{ totalRevenueCurrentFact  | format }}</td>
+                                       <!-- 14-->          <td>{{ totalRevenueCurrentFact / totalRevenueCurrentPlan * 100 || 0 | format }} %</td>
+                                       <!-- 15-->          <td>{{ totalRevenueCurrentFact / totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * new  Date().getDate() * 100 || 0 | format }} %</td>
+                                    <!-- 16-->         <td>{{totalRevenueCurrentFact / totalRevenueWithoutNDS * 100 || 0 | format }} %</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -645,6 +644,26 @@ export default {
                 return 0
             }
         },
+        totalVolumeBP() {
+    if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+        return this.filteredReportData.reduce((sum, item) => {
+            // Проверяем, есть ли значение volume_bp и не пустое ли оно
+            if (item.volume_bp !== undefined && item.volume_bp !== "") {
+                // Преобразуем значение в число, если оно не пустое
+                const volume = parseFloat(item.volume_bp);
+                // Проверяем, является ли volume числом
+                if (!isNaN(volume)) {
+                    // Если все в порядке, добавляем его к сумме
+                    return sum + volume;
+                }
+            }
+            // Возвращаем текущую сумму без изменений, если volume_bp не существует или пусто
+            return sum;
+        }, 0);
+    } else {
+        return 0;
+    }
+},
         totalMetric() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
 
@@ -653,6 +672,29 @@ export default {
                 return 0
             }
         },
+        totalMetricRevenue_wo_nds_bp() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+        return this.filteredReportData.reduce((sum, item) => {
+            // Проверяем, есть ли значение revenue_wo_nds_bp и не пустое ли оно
+            if (item.revenue_wo_nds_bp !== undefined && item.revenue_wo_nds_bp !== "") {
+                // Преобразуем значение в число, если оно не пустое
+                const volume = parseFloat(item.revenue_wo_nds_bp);
+                // Проверяем, является ли volume числом
+                if (!isNaN(volume)) {
+                    // Если все в порядке, добавляем его к сумме
+                    return sum + volume;
+                }
+            }
+            // Возвращаем текущую сумму без изменений, если volume_bp не существует или пусто
+                    return sum;
+                }, 0);
+            } else {
+                return 0;
+            }
+
+        },
+
+        
         totalMetricCurrentPlan() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
                 return this.filteredReportData.reduce((sum, item) => sum + item.metric_current_plan, 0) + this.totalResponse2[0].metric_current_plan
