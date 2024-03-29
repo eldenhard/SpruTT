@@ -134,7 +134,7 @@ export default {
             this.$emit('stateLoader', true)
             try{
                 let response = await api.getBusinessPlan(this.date_begin_create + '-01')
-                this.businessPlanData = response.data.data
+                this.businessPlanData = response.data.data.sort((a, b) => (a.client > b.client) ? 1 : -1)
                 console.log(response.data)
                 this.$toast.success(`Успешно\nДанные маржинальной доходности получены`, {
                     timeout: 2000
