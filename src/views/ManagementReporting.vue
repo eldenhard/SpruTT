@@ -1,13 +1,13 @@
 <template>
     <div style="display: flex;">
-      <div style="width: 15%;">
+      <div style="width: 15vw;">
           <ManagemtRepNavbar :tabs="tabs" :counter="counter"></ManagemtRepNavbar>
       </div>
-      <div style="width: 80%; ">
+      <div style="width: 80vw; ">
         <p class="infoNull" v-if="tabs.length === 0">
           Вы не выбрали ещё ни одной таблицы
         </p>
-        <b-card no-body class="leftTable">
+        <b-card no-body style="display: flex; flex-direction: column; overflow-x: hidden !important;">
           <b-tabs card v-model="tabActive" @changed="onTabChanged">
             <b-tab v-for="i in tabs" :key="i.id">
               <template #title>
