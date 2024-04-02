@@ -94,7 +94,7 @@
                                                 <td>{{ item.client }}</td>
                                                 <td>{{ item.volume_bp || 0 | format }}</td> 
                                                 <td>{{ item.metric | format }}</td> 
-                                                <td>{{ (item.volume_bp || 0) / getAmountDaysOfCurrentMonth * new Date().getDate() | format }}</td> 
+                                                <td>{{ (item.volume_bp || 0) / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) | format }}</td> 
                                                 <td>{{ item.metric_current_plan | format }}</td>
                                                 <td>{{ item.metric_current_fact | format }}</td>
                                                 <td>{{ item.metric_current_fact / item.volume_bp * 100 || 0 | format }}%</td>
@@ -104,11 +104,11 @@
                                                 <td>{{ item.revenue_wo_nds_bp | format }}</td> 
                                                 <td>{{ item.revenue_wo_nds | format }}</td>
                                                 <td>{{ item.revenue_current_plan | format }}</td> 
-                                                <td>{{ item.revenue_wo_nds / getAmountDaysOfCurrentMonth * new Date().getDate() | format }}</td> 
+                                                <td>{{ item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) | format }}</td> 
                                                 <td>{{ item.revenue_current_fact | format }}</td> 
                                                 <td>{{ item.revenue_current_fact / item.revenue_current_plan * 100 || 0 | format }} %</td>
                                                 <td>
-                                                    {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * new Date().getDate()) * 100 | format }}
+                                                    {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8))) * 100 | format }}
                                                     %
                                                 </td> 
                                                 <td>{{ item.revenue_current_fact / item.revenue_wo_nds * 100 || 0 |  format }} %</td>
@@ -136,11 +136,11 @@
  -->
                                                 <td>{{ item.revenue_wo_nds || 0 | format }}</td> <!-- 10 -->
                                                 <td>{{ item.revenue_current_plan || 0 | format }}</td> <!-- 11 -->
-                                                <td>{{ item.revenue_wo_nds / getAmountDaysOfCurrentMonth * new Date().getDate() || 0 | format }}</td> <!-- 12 -->
+                                                <td>{{ item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) || 0 | format }}</td> <!-- 12 -->
                                                 <td>{{ item.revenue_current_fact || 0 | format }}</td> <!-- 13 -->
                                                 <td>{{ item.revenue_current_fact / item.revenue_current_plan * 100 || 0 | format }} %</td> <!-- 14 -->
                                                 <td>
-                                                    {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * new Date().getDate()) * 100 || 0 |
+                                                    {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8))) * 100 || 0 |
             format }} %
                                                 </td> <!-- 15 -->
                                                 <td>{{ item.revenue_current_fact / item.revenue_wo_nds * 100 || 0 | format }} %</td> <!-- 16 -->
@@ -161,7 +161,7 @@
                                        <!-- 12-->          <td>{{ totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * new  Date().getDate() || 0 | format }}</td>
                                         <!-- 13-->         <td>{{ totalRevenueCurrentFact  | format }}</td>
                                        <!-- 14-->          <td>{{ totalRevenueCurrentFact / totalRevenueCurrentPlan * 100 || 0 | format }} %</td>
-                                       <!-- 15-->          <td>{{ totalRevenueCurrentFact / totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * new  Date().getDate() * 100 || 0 | format }} %</td>
+                                       <!-- 15-->          <td>{{ totalRevenueCurrentFact / totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) * 100 || 0 | format }} %</td>
                                     <!-- 16-->         <td>{{totalRevenueCurrentFact / totalRevenueWithoutNDS * 100 || 0 | format }} %</td>
                                             </tr>
                                         </tbody>
@@ -612,7 +612,16 @@ export default {
 
         }),
         getAmountDaysOfCurrentMonth() {
-            return new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+            const dateString = this.date_begin;
+            // Разбиваем строку даты на год, месяц и день
+            const [year, month] = dateString.split("-").map(Number);
+
+            // Создаем новый объект Date с первым днем следующего месяца и днем 0 текущего месяца
+            const lastDayOfMonth = new Date(year, month, 0);
+            console.log(lastDayOfMonth.getDate())
+            // Получаем день месяца (количество дней в месяце)
+          return lastDayOfMonth.getDate();
+
         },
         filteredReportData() {
             if (this.selectedOptions.length == 0) {
@@ -776,7 +785,8 @@ export default {
     watch: {
         wag_type() {
             this.responseServerData = ""
-        }
+        },
+
     },
     methods: {
 
