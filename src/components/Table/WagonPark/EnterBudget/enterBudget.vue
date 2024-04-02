@@ -58,6 +58,7 @@
                 <th>Станция отправления</th>
                 <th>Станция назначения</th>
                 <th>Объемы, тн</th>
+                <th>Выручка без НДС</th>
               </tr>
             </thead>
             <tbody>
@@ -290,8 +291,10 @@ export default {
       });
 
       const newDataStructure = filteredData.map((row) => {
-        return this.wag_type == 'Полувагон' ? { client: row[0], departure_station: row[1], destination_station: row[2], loading_amount: Number(row[3]?.replace(" ", "")) }
-          : { client: row[0], departure_station: row[1], destination_station: row[2], volume: Number(row[3]?.replace(" ", "")) }
+        return this.wag_type == 'Полувагон' ? 
+        { client: row[0], departure_station: row[1], destination_station: row[2], loading_amount: Number(row[3]?.replace(" ", "")),plan_revenue_wo_nds:  Number(row[4]) }
+          : 
+        { client: row[0], departure_station: row[1], destination_station: row[2], volume: Number(row[3]?.replace(" ", "")), plan_revenue_wo_nds:  Number(row[4]) }
       });
       for (let item of newDataStructure) {
         // Обрезаем departure_station
