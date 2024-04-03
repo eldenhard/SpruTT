@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 85vh">
+    <div style="height: 100vh">
 
         <br>
         <Loader :loader="loader" />

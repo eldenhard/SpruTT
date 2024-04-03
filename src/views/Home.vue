@@ -60,17 +60,17 @@
         </b-card-text>
       </b-tab>
       <b-tab title="Данные по аренде" >
-          <b-card-text  style="width: 100%;overflow: auto !important; ">
+          <b-card-text style="width: 75vw !important; overflow: hidden;">
             <rentalrateTable />
           </b-card-text>
         </b-tab>
       <b-tab title="Данные по ставкам ЦС " active>
-        <b-card-text style="width: 75vw !important;overflow: auto !important; ">
+        <b-card-text style="width: 75vw !important; ">
           <TarifDirectory />
         </b-card-text>
       </b-tab>
       <b-tab title="Данные по ставкам ПВ"  >
-        <b-card-text style="overflow: auto !important; ">
+        <b-card-text >
           <stavkipvVue />
         </b-card-text>
       </b-tab>

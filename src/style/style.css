@@ -398,7 +398,7 @@ color: white
   /* border-right: 20px solid #f8f9fd; */
 }
 .nav .nav-pills {
-  height: 100vh !important;
+  min-height: 100vh !important;
 }
 
 .nav-item {
@@ -418,11 +418,15 @@ li.nav-item a.nav-link{
   font-weight: 500;
 }
 
-.tabs.row.no-gutters{
+/* .tabs.row.no-gutters{
   height: 94vh !important;
 
-}
+} */
 
 .card-body {
   background: transparent; 
 }
+/* .tab-content{
+  background: rgb(255, 216, 216) !important;
+
+} */
