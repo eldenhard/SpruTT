@@ -11,6 +11,8 @@
       <br />
       * Для удаления строки кликните на порядковый номер строки(левый столбец)
       <br />
+      * Для удаления данных в стобце, необходимо навести на требуемый столбец (на его шапку, где написано его
+    наименование) и кликнуть когда загорится слово удалить. <br>
       * Для сохранения изменненого поля кликните на галочку, <br />
       &nbsp;&nbsp;зеленая индикация поля указывает на сохранение внесенных
       изменений
@@ -39,7 +41,7 @@
 
       <label for="">
         <br />
-        <button class="button textarea" @click="dataCollection()">
+        <button class="Accept button textarea" @click="dataCollection()">
           Отправить данные
         </button>
       </label>
@@ -72,7 +74,7 @@
         Отправить данные
       </button>
     </div>
-    <button class="button textarea" @click="deleteTable()">Очистить таблицу</button> <br><br><br>
+    <button class="Delete button textarea" @click="deleteTable()">Очистить таблицу</button> <br><br><br>
     <div class="rent_information_lenght">
       <p class="amount"></p>
       <p class="amount">Всего: {{ wagon_arr.length }}</p>
@@ -84,15 +86,6 @@
     </div>
 
 
-    <div class="rent_information_button">
-      <p class="amount"></p>
-      <button class="delete_col" @click="delete_col(wagon_arr)">Очистить столб.</button>
-      <button class="delete_col" @click="delete_col2(start_date_arr)">Очистить столб.</button>
-      <button class="delete_col" @click="delete_col3(end_date_arr)">Очистить столб.</button>
-      <button class="delete_col" @click="delete_col4(stavka_arr)">Очистить столб.</button>
-      <button class="delete_col" @click="delete_col5(stavka_start_date_arr)">Очистить столб.</button>
-      <button class="delete_col" @click="delete_col6(stavka_end_date_arr)">Очистить столб.</button>
-    </div>
     <table border="1" style="margin-top: 1%;">
       <thead>
         <tr>
@@ -141,13 +134,44 @@
         </tr>
         <tr>
           <th>#</th>
-          <th>№ вагона</th>
-          <th>Дата начала аренды</th>
-          <th>Дата конца аренды</th>
-          <!-- <th>Кол-во дней</th> -->
-          <th>Ставка</th>
-          <th>Дата начала ставки</th>
-          <th>Дата конца ставки</th>
+          <th 
+              @mouseover="checkFunc($event)"
+              @mouseout="resetText('№ вагона')"
+              @click="wagon_arr = []">
+              № вагона
+            </th>
+          <th
+              @mouseover="checkFunc($event)"
+              @mouseout="resetText('Дата начала аренды')"
+              @click="start_date_arr = []">
+              Дата начала аренды
+          </th>
+          <th
+              @mouseover="checkFunc($event)"
+              @mouseout="resetText('Дата конца аренды')"
+              @click="end_date_arr = []">
+              Дата начала аренды
+          </th>
+          <th
+              @mouseover="checkFunc($event)"
+              @mouseout="resetText('Ставка')"
+              @click="stavka_arr = []"
+              >
+              Ставка
+          </th>
+          <th
+              @mouseover="checkFunc($event)"
+              @mouseout="resetText('Дата начала ставки')"
+              @click="stavka_start_date_arr = []">
+              Дата начала ставки
+          </th>
+
+          <th
+              @mouseover="checkFunc($event)"
+              @mouseout="resetText('Дата конца ставки')"
+              @click="stavka_end_date_arr = []">
+              Дата конца ставки
+            </th>
         </tr>
       </thead>
       <tbody>
@@ -642,24 +666,15 @@ export default {
     },
   },
   methods: {
-    delete_col(col) {
-      this.wagon_arr = [];
+    resetText(el) {
+      event.target.innerText = el
+      event.target.style.color = 'black'
     },
-    delete_col2(col) {
-      this.start_date_arr = [];
+    checkFunc(e) {
+      e.target.innerText = 'Удалить'
+      e.target.style.color = 'red'
     },
-    delete_col3(col) {
-      this.end_date_arr = [];
-    },
-    delete_col4(col) {
-      this.stavka_arr = [];
-    },
-    delete_col5(col) {
-      this.stavka_start_date_arr = [];
-    },
-    delete_col6(col) {
-      this.stavka_end_date_arr = [];
-    },
+
     deleteTable() {
       this.wagon_arr = [];
       this.stavka_arr = [];
@@ -924,14 +939,10 @@ export default {
         if (this.tenant == "") {
           this.ErrorPerson = true;
         }
-        this.notifyHead = "Ошибка";
-        this.notifyMessage =
-          "Необходимо указать данные по Арендатору/Арендодателю";
-        this.notifyClass = "wrapper-error";
-        this.showNotify = true;
-        setTimeout(() => {
-          this.showNotify = false;
-        }, 2500);
+        this.$toast.error("Ошибка!\nНеобходимо указать данные по Арендатору/Арендодателю", {
+          timeout: 3000
+        });
+       
       } else {
 
 
@@ -967,31 +978,21 @@ export default {
         console.log(alert_mess)
         if (alert_mess.length !== 0) {
           this.loader = false;
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = alert_mess;
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 6500);
+          this.$toast.error(`Ошибка!\n${alert_mess}`, {
+            timeout: 5000
+          })
           return;
         }
-
-
-
 
 
         api
           .postSaveMany(all_array)
           .then((response) => {
             this.loader = false;
-            this.notifyHead = "Успешно";
-            this.notifyMessage = "Данные отправлены";
-            this.notifyClass = "wrapper-success";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 2500);
+            this.$toast.success("Данные отправлены", {
+              timeout: 3000
+            })
+
             this.wagon_arr = [];
             this.stavka_arr = [];
             this.start_date_arr = [];
@@ -1001,15 +1002,10 @@ export default {
           })
           .catch((error) => {
             this.loader = false;
-            this.notifyHead = "Ошибка";
+            this.$toast.error(`Ошибка!\n${error.response.data}`, {
+              timeout: 5000
+            })
             this.Error = error.response.data;
-            this.notifyMessage = error.response.data;
-
-            this.notifyClass = "wrapper-error";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 5500);
           });
       }
       this.all_length = [];
@@ -1132,7 +1128,6 @@ li:hover {
 
 .button {
   float: right;
-  background: #18842a !important;
 }
 
 .explanation {

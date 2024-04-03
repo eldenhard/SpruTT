@@ -117,7 +117,7 @@
 
       <div style="width: 100%; display: flex; flex-direction: column;">
         <button class="button Accept mini" @click="getArenda()">Запросить</button>
-        <button class="button Accept mini" @click="getExcel()">Экспорт в Excel</button>
+        <button class="button Request mini" @click="getExcel()">Экспорт в Excel</button>
 
       </div>
 

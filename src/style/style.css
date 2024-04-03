@@ -21,7 +21,7 @@
   background: rgb(196, 196, 196);
 } */
 .Delete {
-  background: rgb(231, 76, 60, 0.7);
+  background: rgb(231, 76, 60, 0.7) !important;
   color: white;
   padding: 14px 20px;
   border-radius: 7px;
@@ -50,7 +50,7 @@
   border-radius: 7px;
 }
 .Request {
-  background: #007bff;
+  background: #007bff !important;
   color: white;
   padding: 14px 20px;
   border-radius: 7px;
@@ -66,12 +66,12 @@
 }
 
 .Request:hover {
-  background: #2990ff;
+  background: #2990ff !important;
   cursor: pointer;
 }
 
 .Accept {
-  background: #158127;
+  background: #158127 !important;
   border-radius: 7px;
   color: white;
   padding: 14px 20px;
