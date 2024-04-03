@@ -13,6 +13,8 @@ RUN npm install -save vue-xlsx
 RUN npm install vue-excel-xlsx
 RUN npm install @handsontable/vue
 RUN npm install vue-select
+RUN npm install @amcharts/amcharts5
+RUN npm install @amcharts/amcharts4
 COPY ./ .
 RUN npm run build
 

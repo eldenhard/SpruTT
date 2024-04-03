@@ -153,16 +153,16 @@
                                                 <td>{{ totalMetricCurrentPlan | format }}</td>
                                                 <td>{{ totalMetricCurrentFact | format }}</td>
                                                 <td>{{ totalMetricCurrentFact / totalVolumeBP * 100  || 0| format }} %</td>
-                                        <!-- 7 --><td>{{ totalMetricCurrentFact / totalMetricCurrentPlan * 100 || 0| format }} %</td>  
+                                                <td>{{ totalMetricCurrentFact / totalMetricCurrentPlan * 100 || 0| format }} %</td>  
                                                 <td>{{ totalMetricCurrentFact / totalMetric * 100 || 0 | format }} %</td>
-                                    <!-- 9-->   <td>{{ totalMetricRevenue_wo_nds_bp | format}}</td>
-                                       <!-- 10-->          <td>{{ totalRevenueWithoutNDS | format }}</td>
-                                       <!-- 11-->          <td>{{ totalRevenueCurrentPlan | format }}</td>
-                                       <!-- 12-->          <td>{{ totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) || 0 | format }}</td>
-                                        <!-- 13-->         <td>{{ totalRevenueCurrentFact  | format }}</td>
-                                       <!-- 14-->          <td>{{ totalRevenueCurrentFact / totalRevenueCurrentPlan * 100 || 0 | format }} %</td>
-                                       <!-- 15-->          <td>{{ totalRevenueCurrentFact / totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) * 100 || 0 | format }} %</td>
-                                    <!-- 16-->         <td>{{totalRevenueCurrentFact / totalRevenueWithoutNDS * 100 || 0 | format }} %</td>
+                                       <td>{{ totalMetricRevenue_wo_nds_bp | format}}</td>
+                                                <td>{{ totalRevenueWithoutNDS | format }}</td>
+                                             <td>{{ totalRevenueCurrentPlan | format }}</td>
+                                            <td>{{ totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) || 0 | format }}</td>
+                                              <td>{{ totalRevenueCurrentFact  | format }}</td>
+                                                <td>{{ totalRevenueCurrentFact / totalRevenueCurrentPlan * 100 || 0 | format }} %</td>
+                                            <td>{{ totalRevenueCurrentFact / totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) * 100 || 0 | format }} %</td>
+                                          <td>{{totalRevenueCurrentFact / totalRevenueWithoutNDS * 100 || 0 | format }} %</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -411,6 +411,16 @@
                                 </table>
                             </b-card-text>
                         </b-tab>
+                        <b-tab title="Графики">
+                            <b-card-text>
+                                <chartOperationInfoVue 
+                                :column_chart_data_BP="totalVolumeBP"
+                                :column_chart_data_B="totalMetric"
+                                :column_chart_data_plan="totalMetricCurrentPlan"
+                                :column_chart_pie="filteredReportData"
+                                />
+                            </b-card-text>
+                        </b-tab>
                         <b-tab title="Внесение данных доходности">
                             <b-card-text>
                                 <div class="date_block">
@@ -509,8 +519,11 @@ import Handsontable from "handsontable";
 import marginIncomeVue from './marginIncome.vue';
 import enterDataIncomeVue from './enterDataIncome.vue';
 import { mapState } from "vuex";
+// import chartOperationInfo from './chartOperationInfo.vue';
+
+import chartOperationInfoVue from './chartOperationInfo.vue';
 export default {
-    components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue },
+    components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue, chartOperationInfoVue },
     data() {
         return {
             excelData: "",
@@ -669,6 +682,7 @@ export default {
                     return sum + volume;
                 }
             }
+            console.log(sum, 'totalVolumeBP')
             // Возвращаем текущую сумму без изменений, если volume_bp не существует или пусто
             return sum;
         }, 0);
@@ -844,7 +858,7 @@ export default {
 
         Actioned() {
             try {
-
+              
                 let data = this.currentClients.map((item) => {
                     return { client: item.client }
                 })
