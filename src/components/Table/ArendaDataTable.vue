@@ -19,6 +19,10 @@
       {{ visible ? "Скрыть данные по аренде" : "Отобразить данные по аренде" }}
     </a>
     <div class="table-content" v-show="visible">
+
+      <div class="filter_arenda">
+
+      
       <label for="amount">Количество строк<br />
         <select name="amount_row" id="amount" v-model="filter_arendaData.page_size" style="width: 100%" class="mini">
           <option value="" disabled>кол-во строк на странице</option>
@@ -31,19 +35,18 @@
 
       <label for="tenant">Арендатор
         <br />
-        <input type="text" id="tenant" class="textarea mini" v-model="tenant" />
+        <v-select v-model="tenant" :options="counterparties" label="work_name" style="width: 20vw; " ></v-select>
+        <!-- <input type="text" id="tenant" class="textarea mini" v-model="tenant" /> -->
       </label>
 
       <label for="tenant">Арендодатель
         <br />
-        <input type="text" id="tenant" class="textarea mini" v-model="landlord" />
+        <v-select v-model="landlord" :options="counterparties" label="work_name" style="width:20vw;" ></v-select>
+        <!-- <input type="text" id="tenant" class="textarea mini" v-model="landlord" /> -->
       </label>
 
 
-
-
-
-      <label for="tenant" style="margin-left: 5px;">Тип вагона
+      <label for="tenant" >Тип вагона
         <br />
         <select name="" id="" class="mini" style="width: 100%" v-model="filter_arendaData.wagon__wagon_type">
           <option value="">Все</option>
@@ -53,13 +56,10 @@
         </select>
       </label>
 
-
-
-      <label for="wagon" style="margin-left: 5px;">Номера вагонов
+      <label for="wagon" >Номера вагонов
         <br />
         <input type="text" style="width: 300px" v-model="wagons" class="textarea mini" placeholder="ввод через пробел">
       </label>
-
 
 
         <!-- Начало аренды -->
@@ -72,7 +72,6 @@
           <br />
           <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_begin_to" />
         </label>
-
    
         <!-- Конец аренды -->
         <label for="tenant">Конец аренды от
@@ -83,7 +82,7 @@
           <br />
           <input type="date" class="textarea mini" v-model="filter_arendaData.arenda_end_to" /></label>
  
-    
+
         <!-- Начало ставки -->
         <label for="tenant">Начало ставки от
           <br />
@@ -95,7 +94,6 @@
           <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_begin_to" />
         </label>
   
-   
         <!-- Конец ставки -->
         <label for="tenant">Конец ставки от
           <br />
@@ -105,14 +103,12 @@
           <br />
           <input type="date" class="textarea mini" v-model="filter_arendaData.stavka_end_to" /></label>
 
-
-
         <label for="tenant">Ставка
           <br />
           <input type="number" id="tenant" class="textarea mini" v-model="filter_arendaData.stavka" />
         </label>
      
-
+      </div>
 
 
       <div style="width: 100%; display: flex; flex-direction: column;">
@@ -122,36 +118,7 @@
       </div>
 
     </div>
-    <div class="block_answer">
-      <div></div>
-      <label for="">
-        <div class="textarea" style="height: auto; width: 100%;" v-show="ten_visible">
-          <ul id="root_tenant">
-            <li v-for="item in filter_tenant" :key="item.id" @click="checkTenant(item.work_name)">
-              <span>{{ item.work_name }}</span>
-              <hr />
-            </li>
-          </ul>
-        </div>
-      </label>
-
-      <label for="">
-        <div class="textarea" style="height: auto; width: 100%;" v-show="ten_visible2">
-          <ul id="root_tenant">
-            <li v-for="item in filter_landlord" :key="item.id" @click="checkLandlord(item.work_name)">
-              <span>{{ item.work_name }}</span>
-              <hr />
-            </li>
-          </ul>
-        </div>
-      </label>
-    </div>
-
-
-
-
-
-
+   
 
     <div style="display: flex; justify-content: space-between;" v-show="visible">
       <p class="amount" style="padding-top: 2%" v-show="visible">
@@ -326,9 +293,12 @@ import cp_work_names from "@/helpers/cp_work_names"
 import Notifications from "@/components/notifications/Notifications.vue";
 import api from "@/api/directory.js";
 import Loader from "../loader/loader.vue";
+import { mapState } from "vuex";
+import vSelect from "vue-select";
+
 export default {
   name: "ArendaDataTable",
-  components: { Loader, Notifications },
+  components: { Loader, Notifications, vSelect },
   data() {
     return {
       all_checkbox: [],
@@ -394,6 +364,9 @@ export default {
 
   },
   computed: {
+    ...mapState({
+      counterparties: (state) => state.counterparties.counterparties,
+    }),
     info_btn() {
       if (this.info_block == false) {
         return require(`@/assets/info.png`)
@@ -401,26 +374,7 @@ export default {
         return require(`@/assets/cross.png`)
       } 
     },
-    filter_tenant() {
-      if (this.tenant.length > 1) {
-        this.ten_visible = true;
-      }
-      return this.tenant.length > 1
-        ? this.$store.state.counterparties.counterparties.filter((i) =>
-          i.work_name.toLowerCase().includes(this.tenant.toLowerCase())
-        )
-        : "";
-    },
-    filter_landlord() {
-      if (this.landlord.length > 1) {
-        this.ten_visible2 = true;
-      }
-      return this.landlord.length > 1
-        ? this.$store.state.counterparties.counterparties.filter((i) =>
-          i.work_name.toLowerCase().includes(this.landlord.toLowerCase())
-        )
-        : "";
-    },
+
   },
   methods: {
     toggleSelectAll() {
@@ -476,39 +430,27 @@ export default {
 
           this.$bvModal.hide('bv-modal-example')
           this.loader = false
-
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Данные удалены";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2500);
+          this.$toast.success(`Успешно\nДанные удалены`, {
+                timeout: 3000
+              })
+         
 
         } else {
           api
             .deleteStavkiArenda(id)
             .then((response) => {
               this.loader = false;
-              this.notifyHead = "Успешно";
-              this.notifyMessage = "Данные удалены";
-              this.notifyClass = "wrapper-success";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 2500);
+              this.$toast.success(`Успешно\nДанные удалены`, {
+                timeout: 3000
+              })
               this.getArenda()
             })
             .catch((error) => {
               this.loader = false;
-              this.notifyHead = "Ошибка";
-              this.notifyMessage = "Данные не удалены";
-              this.notifyClass = "wrapper-error";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 2500);
-              console.log(error);
+              this.$toast.error(`Ошибка\nДанные не удалены`, {
+                timeout: 3000
+              })
+
             });
           // let row = document.getElementById(id);
           // row.parentNode.removeChild(row);
@@ -541,13 +483,10 @@ export default {
           setTimeout(() => {
             wagon_DOM.classList.remove("error");
           }, 1000);
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = error.response.data;
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3500);
+          this.$toast.error(`Ошибка\n${error.response.data}`, {
+            timeout: 3000
+          })
+
         });
     },
 
@@ -584,13 +523,10 @@ export default {
           setTimeout(() => {
             wagon_DOM.classList.remove("error");
           }, 1000);
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = error.response.data;
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3500);
+          this.$toast.error(`Ошибка\n${error.response.data}`, {
+            timeout: 3000
+          })
+
         });
     },
     submitEndArenda(element, id) {
@@ -623,13 +559,10 @@ export default {
           setTimeout(() => {
             wagon_DOM.classList.remove("error");
           }, 1000);
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = error.response.data;
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3500);
+          this.$toast.error(`Ошибка\n${error.response.data}`, {
+            timeout: 3000
+          })
+
         });
     },
     submitStavka(element, id) {
@@ -655,13 +588,9 @@ export default {
           setTimeout(() => {
             wagon_DOM.classList.remove("error");
           }, 1000);
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = error.response.data;
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3500);
+          this.$toast.error(`Ошибка\n${error.response.data}`, {
+            timeout: 3000
+          })
         });
     },
     submitStartStavka(element, id) {
@@ -695,13 +624,9 @@ export default {
           setTimeout(() => {
             wagon_DOM.classList.remove("error");
           }, 1000);
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = error.response.data;
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3500);
+          this.$toast.error(`Ошибка\n${error.response.data}`, {
+            timeout: 3000
+          })
         });
     },
     submitEndStavka(element, id) {
@@ -735,13 +660,9 @@ export default {
           setTimeout(() => {
             wagon_DOM.classList.remove("error");
           }, 1000);
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = error.response.data;
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3500);
+          this.$toast.error(`Ошибка\n${error.response.data}`, {
+            timeout: 3000
+          })
         });
     },
     submitTenant(element, id) {
@@ -766,13 +687,9 @@ export default {
           setTimeout(() => {
             wagon_DOM.classList.remove("error");
           }, 1000);
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = error.response.data;
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3500);
+          this.$toast.error(`Ошибка\n${error.response.data}`, {
+            timeout: 3000
+          })
         });
     },
     submitLandlord(element, id) {
@@ -797,13 +714,10 @@ export default {
           setTimeout(() => {
             wagon_DOM.classList.remove("error");
           }, 1000);
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = error.response.data;
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3500);
+          this.$toast.error(`Ошибка\n${error.response.data}`, {
+            timeout: 3000
+          })
+
         });
     },
 
@@ -846,8 +760,8 @@ export default {
     },
     getArenda() {
       this.loader = true;
-      this.filter_arendaData.tenant = this.tenant;
-      this.filter_arendaData.landlord = this.landlord;
+      this.filter_arendaData.tenant = this.tenant.work_name;
+      this.filter_arendaData.landlord = this.landlord.work_name;
       let data = (this.wagons).replaceAll(' ', ',')
 
       this.filter_arendaData.wagons_in = data
@@ -924,13 +838,9 @@ export default {
         })
         .catch((error) => {
           this.loader = false;
-          this.notifyHead = "Ошибка";
-          this.notifyMessage = "Excel файл не создан, попробуйте позже";
-          this.notifyClass = "wrapper-error";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2500);
+          this.$toast.error("Ошибка\nExcel файл не создан, попробуйте позже", {
+            timeout: 3000
+          });
         });
     }
   },
@@ -958,7 +868,12 @@ export default {
   width: 100%;
   margin: 0;
 }
-
+.filter_arenda{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  column-gap: 2vw;
+  row-gap: 1vh
+}
 li {
   list-style-type: none;
 }
