@@ -1,6 +1,6 @@
 <template>
     <section>
-        <div class="filter_b">
+        <!-- <div class="filter_b">
 
             <label for="">
                 Дата <br>
@@ -8,7 +8,7 @@
             </label>
             <br>
             <button class="Accept button" style="width: 20vw; margin-top: 4%;" @click="getBPData">Запросить</button>
-        </div>
+        </div> -->
         <br>
         <table>
 
