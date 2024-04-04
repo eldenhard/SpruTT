@@ -867,11 +867,11 @@ export default {
                     return { client: item.client }
                 })
                 const clientsParams = data.map((item) => `clients=${item.client}`).join('&');
-
+                let dateBeginChange = this.date_begin.slice(0,-2)
                 // Формируем строку запроса с параметрами clients
                 const queryString = `?wagon_type=${this.wag_type}&report_date=${this.date_begin}&${clientsParams}`;
                 this.loader = true
-                Promise.all([api.getDataForOperSpravka(queryString), api.getDataForOperSpravkaOtherClients(queryString), api.getBP(queryString), api.getBusinessPlan(this.date_begin)])
+                Promise.all([api.getDataForOperSpravka(queryString), api.getDataForOperSpravkaOtherClients(queryString), api.getBP(queryString), api.getBusinessPlan(dateBeginChange+'01')])
                     .then(([response1, response2, response3, response4]) => {
                         this.loader = false
                         this.responseServerData = response1.data
