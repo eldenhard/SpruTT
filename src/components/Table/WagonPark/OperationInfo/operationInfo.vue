@@ -173,7 +173,10 @@
                         <b-tab title="Маржинальная доходность">
                             <b-card-text>
                                 <marginIncomeVue
-                                @stateLoader="stateLoader" />
+                                    @stateLoader="stateLoader" 
+                                    :margin_income_data="responseServerData"
+                                    :bp_data="data3"
+                                />
                             </b-card-text>
                         </b-tab>
                         <b-tab title="Доходность">
@@ -543,6 +546,7 @@ export default {
             currentClients: [],
             typeData: 'plan',
             responseServerDataBP: "",
+            data3: "",
             clients: [{ value: "ТАТНЕФТЬ-ТРАНС, ООО" },
             { value: "ВЕКТОР-ДВИЖЕНИЯ, ООО" },
             { value: "Энергоресурсы" },
@@ -867,14 +871,15 @@ export default {
                 // Формируем строку запроса с параметрами clients
                 const queryString = `?wagon_type=${this.wag_type}&report_date=${this.date_begin}&${clientsParams}`;
                 this.loader = true
-                Promise.all([api.getDataForOperSpravka(queryString), api.getDataForOperSpravkaOtherClients(queryString), api.getBP(queryString)])
-                    .then(([response1, response2, response3]) => {
+                Promise.all([api.getDataForOperSpravka(queryString), api.getDataForOperSpravkaOtherClients(queryString), api.getBP(queryString), api.getBusinessPlan(this.date_begin)])
+                    .then(([response1, response2, response3, response4]) => {
                         this.loader = false
                         this.responseServerData = response1.data
                         // console.log(this.responseServerData)
                         this.responseServerDataOtherClients = response2.data
                         let businessPlanData = response3.data
                         console.log(businessPlanData)
+                        this.data3 =  response4.data
                         this.responseServerData.report.forEach(item => {
                             // Проходимся по ключам первого массива
                             Object.keys(businessPlanData).forEach(key => {
