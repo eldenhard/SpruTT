@@ -108,7 +108,7 @@
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">{{ item.income_wo_penalties | format}}</td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
@@ -195,7 +195,7 @@
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ stationValue.vagonosutki | format }}</td>
+                                    <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
