@@ -918,9 +918,11 @@ export default {
                     })
 
             } catch(error) {
-                this.$toast.error(`Ошибка\nДанные не получены\n${error.response.data}`, {
-                            timeout: 2500
-                        })
+                if(error.response.data == 'float division by zero') {
+                    this.$toast.error(`Ошибка\nДанные не получены\nНа текущую дату нет данных`, {
+                                timeout: 2500
+                    })
+                }
                 this.loader = false
             }
 

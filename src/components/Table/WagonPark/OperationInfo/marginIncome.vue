@@ -1,14 +1,15 @@
 <template>
     <section>
-        <!-- <div class="filter_b">
+        <div class="filter_b">
 
             <label for="">
-                Дата <br>
+                Дата для БП<br>
                 <input type="month" v-model="date_begin_create" class="textarea" style="background: white;width: 20vw ">
             </label>
+            <p>Данные будут выведены в консоль</p>
             <br>
-            <button class="Accept button" style="width: 20vw; margin-top: 4%;" @click="getBPData">Запросить</button>
-        </div> -->
+            <button class="Accept button" style="width: 20vw; margin-top: 4%;" @click="test()">Запросить</button>
+        </div>
         <button class="Request button" style="width: 20%; margin-left: auto" @click="downloadExcel()">Скачать в Excel</button>
         <br>
         <table>
@@ -107,6 +108,8 @@
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">{{ item.income_wo_penalties | format}}</td>
+                            <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
@@ -192,7 +195,7 @@
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;">{{ stationValue.vagonosutki | format }}</td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
@@ -246,6 +249,10 @@ export default {
         }
     },
     methods: {
+        async test(){
+            let res = await api.getBusinessPlan(this.date_begin_create+'-01')
+            console.log(res.data.data)
+        },
         downloadExcel() {
       var table = this.$refs.theTable;
       var tableHTML = table.outerHTML;
