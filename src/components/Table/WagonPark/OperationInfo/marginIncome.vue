@@ -249,7 +249,7 @@ export default {
         downloadExcel() {
       var table = this.$refs.theTable;
       var tableHTML = table.outerHTML;
-      var fileName = "Таблица 'Форма 22'.xls";
+      var fileName = "Таблица 'Маржинальная доходность'.xls";
 
       // var msie = window.navigator.userAgent.indexOf("MSIE ");
 
