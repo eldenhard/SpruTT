@@ -917,7 +917,10 @@ export default {
                         this.loader = false
                     })
 
-            } catch {
+            } catch(error) {
+                this.$toast.error(`Ошибка\nДанные не получены\n${error.response.data}`, {
+                            timeout: 2500
+                        })
                 this.loader = false
             }
 
