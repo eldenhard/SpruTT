@@ -251,23 +251,24 @@ export default {
           }
 
         })
-        try {
-          await api.sendDataForOperSpravka(matchedClients)
-          matchedClients = []
-          this.notifyHead = "Успешно!";
-          this.notifyMessage = "Данные отправлены!";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 2500);
-          this.loader = false;
+        console.log(matchedClients)
+        // try {
+        //   await api.sendDataForOperSpravka(matchedClients)
+        //   matchedClients = []
+        //   this.notifyHead = "Успешно!";
+        //   this.notifyMessage = "Данные отправлены!";
+        //   this.notifyClass = "wrapper-success";
+        //   this.showNotify = true;
+        //   setTimeout(() => {
+        //     this.showNotify = false;
+        //   }, 2500);
+        //   this.loader = false;
 
-        } catch {
-          this.loader = false
-        } finally {
-          this.loader = false
-        }
+        // } catch {
+        //   this.loader = false
+        // } finally {
+        //   this.loader = false
+        // }
         // console.log(matchedClients, startValueDestinationStation)
 
 

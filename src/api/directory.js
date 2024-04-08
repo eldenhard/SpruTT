@@ -232,6 +232,10 @@ const getAllDocumentsByCounterparty2 = (data) => {
 const sendDataForOperSpravka = (data) => {
     return api.post(`${finance}/operativnaya-spravka/`,  data )
 }
+const sendDataForNewBudjet = (data) => {
+    return api.post(`${finance}/budget/`,  data )
+}
+
 const getDataForOperSpravka = (queryString) => {
     return api.get(`${finance}/operativnaya-spravka/report/${queryString}` )
 }
@@ -291,7 +295,7 @@ export default {
     getAgreementNumberForCounterparty,
     // Телеграммы
     getNumberDog,
-
+    sendDataForNewBudjet,
     // Ставки по аренде
     postSaveMany,
     getAllArendaDataStavka,

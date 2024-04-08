@@ -498,7 +498,8 @@
                                             :tableData="tableData"
                                             :typeData="typeData"
                                             @update:tableData="tableData = $event"
-                                            :date_begin_create="date_begin_create" :wagon_type="wagon_type"
+                                            :date_begin_create="date_begin_create" 
+                                            :wagon_type="wagon_type"
                                             @stateLoader="stateLoader">
                                         </enterDataIncomeVue>
                                     </div>

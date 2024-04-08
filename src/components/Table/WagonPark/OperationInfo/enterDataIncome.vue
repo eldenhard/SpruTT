@@ -2,7 +2,8 @@
     <div>
         <div style="display: flex; flex-direction: column; width: 30%; margin-left: auto; gap: 2vw;">
             <button class="Request button special" @click="checkEnterData()">Проверка введенных данных</button>
-            <button class="Accept special" @click="saveNewBusinessPlan()" :disabled="isFlagError">Сохранить данные</button>
+            <button class="Accept special" @click="saveNewBusinessPlan()" :disabled="isFlagError">Сохранить
+                данные</button>
         </div>
         <br>
         <table>
@@ -61,9 +62,9 @@ export default {
     },
     data() {
         return {
-             // проверка на прохождение проверки
-             isFlagError: true,
-             resultData: "",
+            // проверка на прохождение проверки
+            isFlagError: true,
+            resultData: "",
         }
     },
     methods: {
@@ -95,18 +96,18 @@ export default {
             console.log(result, errorList)
             if (errorList.length > 0) {
 
-                this.$toast.error(`Ошибка\nНе найдены данные по клиентам!\n${errorList.join('\n')}`, { 
+                this.$toast.error(`Ошибка\nНе найдены данные по клиентам!\n${errorList.join('\n')}`, {
                     timeout: 3000
                 })
             } else {
-                this.$toast.success(`Успешно\nДанные прошли проверку!\nРазрешено сохранение`, { 
+                this.$toast.success(`Успешно\nДанные прошли проверку!\nРазрешено сохранение`, {
                     timeout: 3000
                 })
 
                 this.isFlagError = false
             }
         },
-        saveNewBusinessPlan() {
+        async saveNewBusinessPlan() {
             this.isFlagError = true
 
             this.$emit('stateLoader', true)
@@ -117,34 +118,67 @@ export default {
             for (let i = 0; i < this.resultData.length; i++) {
                 let obj = {}
                 for (let j = 0; j < keys.length; j++) {
-                    if( obj[keys[j]] == 'client') continue
+                    if (obj[keys[j]] == 'client') continue
                     obj[keys[j]] = Number(this.resultData[i][j]) || 0
                     obj["on_date"] = this.date_begin_create + "-01"
                     obj["wagon_type"] = this.wagon_type
                 }
                 result.push(obj)
             }
-            let promises 
-            if(this.typeData == 'plan'){
+            let promises
+            if (this.typeData == 'plan') {
                 promises = this.resultData.map((item) => api.postNewBusinessPlan(item))
-            } else {
-                promises = this.resultData.map((item) => api.sendDataForOperSpravka(item))
-            }
-     
-            Promise.all(promises)
-                .then((result) => {
-                    this.$emit('stateLoader', false)
-                    this.$toast.success(`Успешно\nДанные Бизнес-плана сохранены`, { 
-                        timeout: 3000
+                Promise.all(promises)
+                    .then((result) => {
+                        this.$emit('stateLoader', false)
+                        this.$toast.success(`Успешно\nДанные Бизнес-плана сохранены`, {
+                            timeout: 3000
+                        })
+                        this.$emit('update:tableData', [])
+                    }).catch((err) => {
+                        this.$toast.error(`Ошибка\n${err.response}`, {
+                            timeout: 4000
+                        })
+                        this.$emit('stateLoader', false)
+
                     })
-                    this.$emit('update:tableData', [])
-                }).catch((err) => {
-                    this.$toast.error(`Ошибка\n${err.response}`, { 
+            } else {
+                try {
+                    promises = this.resultData.map((item) => api.sendDataForNewBudjet(item))
+                Promise.all(promises)
+                    .then((result) => {
+                        this.$emit('stateLoader', false)
+                        this.$toast.success(`Успешно\nДанные Бюджета сохранены`, {
+                            timeout: 3000
+                        })
+                        this.$emit('update:tableData', [])
+                    }).catch((err) => {
+                        this.$toast.error(`Ошибка\n${err.response}`, {
+                            timeout: 4000
+                        })
+                        this.$emit('stateLoader', false)
+
+                    })
+                }
+                    // let result = await api.sendDataForNewBudjet(this.resultData)
+                //     this.$toast.success(`Успешно\nДанные Бизнес-плана сохранены`, {
+                //         timeout: 3000
+                //     })
+                //     this.$emit('update:tableData', [])
+                //     this.$emit('stateLoader', false)
+                // }
+                catch (error) {
+                    this.$toast.error(`Ошибка\n${err.response}`, {
                         timeout: 4000
                     })
                     this.$emit('stateLoader', false)
+                }
 
-                })
+                // promises = this.resultData.map((item) => api.sendDataForOperSpravka(item))
+            }
+
+
+
 
         },
     },
@@ -163,7 +197,8 @@ export default {
     height: 40px;
     margin: 2% 0 0 auto;
 }
-button:disabled{
+
+button:disabled {
     background: rgb(184, 184, 184);
     color: white
 }
