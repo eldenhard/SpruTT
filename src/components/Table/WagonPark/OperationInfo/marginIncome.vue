@@ -397,122 +397,141 @@ export default {
             return array1;
 
         },
-        containsPartialMatch(product, cargo) {
-            const productLower = product.toLowerCase();
-            const cargoLower = cargo.toLowerCase();
-            const regex = new RegExp(`\\b${cargoLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
-            return regex.test(productLower);
+        containsAtLeastTwoMatches(product, cargo) {
+            let productWords = product.split(/s+/); // Разбиваем строки на слова по пробелам
+            let cargoWords = cargo.split(/s+/);
+            let matchCount = 0; // Счетчик для подсчета количества совпадений
+
+            for (let productWord of productWords) {
+                for (let cargoWord of cargoWords) {
+                    // Проверяем, содержится ли слово из product полностью в каком-либо слове из cargo
+                    if (cargoWord.toLowerCase().includes(productWord.toLowerCase())) {
+                        matchCount++; // Увеличиваем счетчик при нахождении совпадения
+                        break; // Прерываем внутренний цикл, если совпадение найдено
+                    }
+                }
+                // Возвращаем true, если найдено минимум два совпадения
+                if (matchCount >= 2) {
+                    return true;
+                }
+            }
+            // Если функция дошла до этой точки, значит, не было найдено двух совпадений
+            return false;
         },
-        // containsSequentialWord(mainString, searchString) {
-        //     // Разбиваем строки на массивы слов
-        //     let mainWords = mainString.split(' ');
-        //     let searchWords = searchString.split(' ');
+        // const productLower = product.toLowerCase();
+        // const cargoLower = cargo.toLowerCase();
+        // const regex = new RegExp(`\\b${cargoLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+        // return regex.test(productLower);
+ 
+    // containsPartialMatch(mainString, searchString) {
+    //     // Разбиваем строки на массивы слов
+    //     let mainWords = mainString.split(' ');
+    //     let searchWords = searchString.split(' ');
 
-        //     // Проходим по каждому слову в основной строке
-        //     for (let i = 0; i <= mainWords.length - searchWords.length; i++) {
-        //         let matchFound = true;
-        //         // Проверяем последовательность слов из searchString в mainString
-        //         for (let j = 0; j < searchWords.length; j++) {
-        //             if (mainWords[i + j] !== searchWords[j]) {
-        //                 matchFound = false;
-        //                 break;
-        //             }
-        //         }
-        //         if (matchFound) {
-        //             return true; // Найдено совпадение последовательности слов
-        //         }
-        //     }
-        //     return false; // Не найдено совпадение последовательности слов
-        // },
+    //     // Проходим по каждому слову в основной строке
+    //     for (let i = 0; i <= mainWords.length - searchWords.length; i++) {
+    //         let matchFound = true;
+    //         // Проверяем последовательность слов из searchString в mainString
+    //         for (let j = 0; j < searchWords.length; j++) {
+    //             if (mainWords[i + j] !== searchWords[j]) {
+    //                 matchFound = false;
+    //                 break;
+    //             }
+    //         }
+    //         if (matchFound) {
+    //             return true; // Найдено совпадение последовательности слов
+    //         }
+    //     }
+    //     return false; // Не найдено совпадение последовательности слов
+    // },
 
-        async getBPData() {
-            this.businessPlanData = ""
+    async getBPData() {
+        this.businessPlanData = ""
+        this.$emit('stateLoader', true);
+        try {
+            let response = await this.bp_data.data;
+            console.log(response)
+            this.margin_income = await this.margin_income_data.margin_incomes;
+            console.log(this.margin_income)
+
+            let budgetData = await this.budget_data.data
+            console.log(budgetData, this.budget_data, 'budget')
+
+            let preData = this.mergeArrays(response, budgetData).sort((a, b) => {
+                return a.client.localeCompare(b.client);
+            })
+
+            // Object.entries(sortedResponse).map(([client, data]) => ({ client, ...data }));
             this.$emit('stateLoader', true);
+            let station_group_west = ['ПРВ', 'МСК', 'ЮВС', 'ОКТ', 'СЕВ', 'КЛГ', 'СКВ', 'ГРК', 'КБШ', 'СВР', 'СКВ'];
+            let station_group_east = ['ЗСБ', 'КРС', 'ВСБ', 'ЗАБ', 'ДВС', 'ЖДЯ'];
+
+            // Создаем объект для мемоизации запросов
+
+
             try {
-                let response = await this.bp_data.data;
-                console.log(response)
-                this.margin_income = await this.margin_income_data.margin_incomes;
-                console.log(this.margin_income)
+                for (let i = 0; i < preData.length; i++) {
+                    let item = preData[i];
+                    let client = item.client;
 
-                let budgetData = await this.budget_data.data
-                console.log(budgetData, this.budget_data, 'budget')
+                    if (this.margin_income.hasOwnProperty(client)) {
+                        let clientData = this.margin_income[client];
 
-                let preData = this.mergeArrays(response, budgetData).sort((a, b) => {
-                    return a.client.localeCompare(b.client);
-                })
+                        for (let station_departure in clientData) {
+                            for (let cargo in clientData[station_departure]) {
+                                for (let station_group in clientData[station_departure][cargo]) {
+                                    let stationListData = clientData[station_departure][cargo][station_group];
 
-                // Object.entries(sortedResponse).map(([client, data]) => ({ client, ...data }));
-                this.$emit('stateLoader', true);
-                let station_group_west = ['ПРВ', 'МСК', 'ЮВС', 'ОКТ', 'СЕВ', 'КЛГ', 'СКВ', 'ГРК', 'КБШ', 'СВР', 'СКВ'];
-                let station_group_east = ['ЗСБ', 'КРС', 'ВСБ', 'ЗАБ', 'ДВС', 'ЖДЯ'];
+                                    for (let station_list in stationListData) {
+                                        if (
+                                            station_list === item.destination &&
+                                            item.product.includes(cargo) ||
+                                            this.containsAtLeastTwoMatches(item.product, cargo) &&
+                                            station_list !== 'revenue' &&
+                                            station_list !== 'weight' &&
+                                            station_list !== 'volume' &&
+                                            station_list !== 'amo'
+                                            && station_list !== 'empty_tariff'
+                                            && station_list !== 'fot'
+                                            && station_list !== 'loaded_tariff'
+                                            && station_list !== 'margin_income'
+                                            && station_list !== 'other_charges'
+                                            && station_list !== 'pps'
+                                            && station_list !== 'repair'
+                                            && station_list !== 'vagonosutki'
+                                        ) {
+                                            // Найдена подходящая станция для текущего элемента
+                                            let data = stationListData[station_list];
+                                            item.station_group = {
+                                                [station_list]: data
+                                            };
+                                        } else if (
+                                            (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
+                                            station_list !== 'revenue' &&
+                                            station_list !== 'weight' &&
+                                            station_list !== 'volume' &&
+                                            station_list !== 'amo'
+                                            && station_list !== 'empty_tariff'
+                                            && station_list !== 'fot'
+                                            && station_list !== 'loaded_tariff'
+                                            && station_list !== 'margin_income'
+                                            && station_list !== 'other_charges'
+                                            && station_list !== 'pps'
+                                            && station_list !== 'repair'
+                                            && station_list !== 'vagonosutki'
+                                            && item.product.includes(cargo) ||
+                                            this.containsAtLeastTwoMatches(item.product, cargo)
+                                        ) {
+                                            // Проверяем станцию запад или восток
+                                            let code = await this.getRoadForStation(station_list, item.destination);
+                                            let isWest = item.destination === 'Станции РФ (Запад)';
+                                            let isEast = item.destination === 'Станции РФ (Восток)';
 
-                // Создаем объект для мемоизации запросов
-
-
-                try {
-                    for (let i = 0; i < preData.length; i++) {
-                        let item = preData[i];
-                        let client = item.client;
-
-                        if (this.margin_income.hasOwnProperty(client)) {
-                            let clientData = this.margin_income[client];
-
-                            for (let station_departure in clientData) {
-                                for (let cargo in clientData[station_departure]) {
-                                    for (let station_group in clientData[station_departure][cargo]) {
-                                        let stationListData = clientData[station_departure][cargo][station_group];
-
-                                        for (let station_list in stationListData) {
-                                            if (
-                                                station_list === item.destination &&
-                                                item.product.includes(cargo) ||
-                                                this.containsPartialMatch(item.product, cargo) &&
-                                                station_list !== 'revenue' &&
-                                                station_list !== 'weight' &&
-                                                station_list !== 'volume' &&
-                                                station_list !== 'amo'
-                                                && station_list !== 'empty_tariff'
-                                                && station_list !== 'fot'
-                                                && station_list !== 'loaded_tariff'
-                                                && station_list !== 'margin_income'
-                                                && station_list !== 'other_charges'
-                                                && station_list !== 'pps'
-                                                && station_list !== 'repair'
-                                                && station_list !== 'vagonosutki'
-                                            ) {
-                                                // Найдена подходящая станция для текущего элемента
-                                                let data = stationListData[station_list];
-                                                item.station_group = {
-                                                    [station_list]: data
-                                                };
-                                            } else if (
-                                                (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
-                                                station_list !== 'revenue' &&
-                                                station_list !== 'weight' &&
-                                                station_list !== 'volume' &&
-                                                station_list !== 'amo'
-                                                && station_list !== 'empty_tariff'
-                                                && station_list !== 'fot'
-                                                && station_list !== 'loaded_tariff'
-                                                && station_list !== 'margin_income'
-                                                && station_list !== 'other_charges'
-                                                && station_list !== 'pps'
-                                                && station_list !== 'repair'
-                                                && station_list !== 'vagonosutki'
-                                                && item.product.includes(cargo) ||
-                                                this.containsPartialMatch(item.product, cargo)
-                                            ) {
-                                                // Проверяем станцию запад или восток
-                                                let code = await this.getRoadForStation(station_list, item.destination);
-                                                let isWest = item.destination === 'Станции РФ (Запад)';
-                                                let isEast = item.destination === 'Станции РФ (Восток)';
-
-                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
-                                                    if (!item.station_group) {
-                                                        item.station_group = {};
-                                                    }
-                                                    item.station_group[station_list] = stationListData[station_list];
+                                            if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
+                                                if (!item.station_group) {
+                                                    item.station_group = {};
                                                 }
+                                                item.station_group[station_list] = stationListData[station_list];
                                             }
                                         }
                                     }
@@ -520,21 +539,22 @@ export default {
                             }
                         }
                     }
-
-                    console.log(preData);
-                    this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 2000 });
-                    this.businessPlanData = preData;
-                    console.log(this.businessPlanData)
-                } catch (error) {
-                    this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
                 }
+
+                console.log(preData);
+                this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 2000 });
+                this.businessPlanData = preData;
+                console.log(this.businessPlanData)
             } catch (error) {
                 this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
-            } finally {
-                this.$emit('stateLoader', false);
             }
+        } catch (error) {
+            this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
+        } finally {
+            this.$emit('stateLoader', false);
         }
     }
+}
 }
 </script>
 
