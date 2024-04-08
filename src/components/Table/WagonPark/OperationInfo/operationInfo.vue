@@ -176,6 +176,7 @@
                                     @stateLoader="stateLoader" 
                                     :margin_income_data="responseServerData"
                                     :bp_data="data3"
+                                    :budget_data="budget_data"
                                 />
                             </b-card-text>
                         </b-tab>
@@ -493,14 +494,12 @@
                                         </table>
                                     </div> -->
                                     <div  style="overflow: auto">
-                                        <enterDataIncomeVue 
-                                            :createNewProfitability="createNewProfitability"
+                                        <enterDataIncomeVue :createNewProfitability="createNewProfitability"
                                             :clients="name_client" 
                                             :tableData="tableData"
                                             :typeData="typeData"
-                                            :budget="budget"
                                             @update:tableData="tableData = $event"
-                                            :date_begin_create="date_begin_create" 
+                                            :date_begin="date_begin" 
                                             :wagon_type="wagon_type"
                                             @stateLoader="stateLoader">
                                         </enterDataIncomeVue>
@@ -529,12 +528,14 @@ import enterDataIncomeVue from './enterDataIncome.vue';
 import { mapState } from "vuex";
 // import chartOperationInfo from './chartOperationInfo.vue';
 import chartOperationInfoVue from './chartOperationInfo.vue';
+import cp_work_names from './testData.js'
+
 export default {
     components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue, chartOperationInfoVue },
     data() {
         return {
             excelData: "",
-            budget: "",
+            budget_data: "",
             hot: "",
             tableData: [],
             currentClientsForExcelFile: "",
@@ -807,6 +808,7 @@ export default {
         },
     },
     watch: {
+        
         wag_type() {
             this.responseServerData = ""
         },
@@ -877,21 +879,31 @@ export default {
                 // Формируем строку запроса с параметрами clients
                 const queryString = `?wagon_type=${this.wag_type}&report_date=${this.date_begin}&${clientsParams}`;
                 this.loader = true
-                Promise.all([api.getDataForOperSpravka(queryString),
+                Promise.all([
+                api.getDataForOperSpravka(queryString),
                 api.getDataForOperSpravkaOtherClients(queryString),
                 api.getBP(queryString), 
                 api.getBusinessPlan(dateBeginChange+'01'),
-                api.getBudget(dateBeginChange+'01')
+                api.getBudget(dateBeginChange+'01'),
+
                 ])
-                    .then(([response1, response2, response3, response4, response5]) => {
+                    .then(([
+                        response1, 
+                        response2, 
+                        response3,
+                         response4, 
+                         response5]) => {
                         this.loader = false
                         this.responseServerData = response1.data
+                        // cp_work_names.cp_work_names,
+                        // response1.data
                         // console.log(this.responseServerData)
                         this.responseServerDataOtherClients = response2.data
                         let businessPlanData = response3.data
                         console.log(businessPlanData)
                         this.data3 =  response4.data
-                        this.budget = response5.data
+                        this.budget_data = response5.data
+                       
                         this.responseServerData.report.forEach(item => {
                             // Проходимся по ключам первого массива
                             Object.keys(businessPlanData).forEach(key => {
@@ -914,8 +926,8 @@ export default {
                             }
                             return acc
                         }, []).sort((a, b) => a.value.localeCompare(b.value))
-                        this.$toast.success(`Успешно\nДанные получены`, {
-                            timeout: 2500
+                        this.$toast.info(`Успешно\nДанные для Оперативной справки получены\nПродолжается загрузка данных для Маржинальной доходности`, {
+                            timeout: 8500
                         })
                     })
                     .catch(error => {

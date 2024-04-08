@@ -1,6 +1,6 @@
 <template>
     <section>
-        <div class="filter_b">
+        <!-- <div class="filter_b">
 
             <label for="">
                 Дата для БП<br>
@@ -10,13 +10,14 @@
             <br>
             <button class="Accept button" style="width: 20vw; margin-top: 4%;" @click="getBPData()">Запросить</button>
 
-        </div>
-        <button class="Request button" style="width: 20%; margin-left: auto" @click="downloadExcel()">Скачать в Excel</button>
+        </div> -->
+        <button class="Request button" style="width: 20%; margin-left: auto" @click="downloadExcel()">Скачать в
+            Excel</button>
         <br>
         <table>
 
         </table>
-        <div style="overflow: auto; width: 100%; height: 60vh;">
+        <div style="overflow: auto; width: 100%;height: auto;">
             <table ref="theTable">
                 <thead>
                     <tr class="TableHeader">
@@ -30,7 +31,7 @@
                         <td colspan="2">Стат нагрузка</td>
                         <td colspan="2">Оборот</td>
                         <td colspan="2">Штрафы</td>
-                        <td colspan="10">Доходность</td>
+                        <td colspan="11">Доходность</td>
                     </tr>
                     <tr class="TableHeader">
                         <td>БП</td>
@@ -60,13 +61,14 @@
                         <td>План</td>
                         <td>Факт</td>
 
-                        <td>План(без штр)</td>
-                        <td>План(со штр)</td>
-                        <td>Факт БП(без штр)</td>
-                        <td>Факт БП(со штр)</td>
-                        <td>Факт Б(без штр)</td>
-                        <td>Факт Б(со штр)</td>
+                        <td>План(без штр) БП</td>
+                        <td>План(без штр) Б</td>
+                        <td>Факт(без штр)</td>
+                        <td>План (со штр) БП</td>
+                        <td>План (со штр) Б</td>
+                        <td>Факт (со штр)</td>
                         <td>+/- БП(без штр)</td>
+                        <td>+/- Б(без штр)</td>
                         <td>+/- БП(со штр)</td>
                         <td>+/- Б(без штр)</td>
                         <td>+/- Б(со штр)</td>
@@ -76,19 +78,18 @@
                 <tbody>
                     <template v-for="(item, index) in businessPlanData">
                         <tr :key="index" v-if="index !== 'revenue'
-                        || index !== 'weight'
-                        || index !== 'volume'
-                        || index !== 'amo'
-                        || index !== 'empty_tariff'
-                        || index !== 'fot'
-                        || index !== 'loaded_tariff'
-                        || index !== 'margin_income'
-                        || index !== 'other_charges'
-                        || index !== 'pps'
-                        || index !== 'repair'
-                        || index !== 'vagonosutki'
-                        "
-                        >
+                            || index !== 'weight'
+                            || index !== 'volume'
+                            || index !== 'amo'
+                            || index !== 'empty_tariff'
+                            || index !== 'fot'
+                            || index !== 'loaded_tariff'
+                            || index !== 'margin_income'
+                            || index !== 'other_charges'
+                            || index !== 'pps'
+                            || index !== 'repair'
+                            || index !== 'vagonosutki'
+                        ">
                             <!-- Основные данные -->
                             <td style="border: 1px solid black;">{{ item.client }}</td>
                             <td style="border: 1px solid black;"></td>
@@ -96,48 +97,66 @@
                             <td style="border: 1px solid black;">{{ item.destination }}</td>
                             <td style="border: 1px solid black;">{{ item.volume | format }}</td>
                             <td style="border: 1px solid black;">{{ item.volume_budget | format }}</td>
-                            <td style="border: 1px solid black;">{{ calculateTotalVolume(item.station_group) | format }}</td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">{{ calculateTotalVolume(item.station_group, 'weight') |
+                                format }}</td>
+                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group, 'weight')
+                                - item.volume) | format }}</td>
+                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group, 'weight')
+                                - item.volume_budget) | format }}</td>
                             <td style="border: 1px solid black;">{{ item.revenue_wo_nds | format }}</td>
                             <td style="border: 1px solid black;">{{ item.revenue_wo_nds_budget | format }}</td>
-                            <td style="border: 1px solid black;">{{ calculateTotalRevenue(item.station_group) | format }}</td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">{{ calculateTotalVolume(item.station_group, 'revenue')
+                                | format }}</td>
+                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group, 'revenue')
+                                - item.revenue_wo_nds) | format }}</td>
+                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group, 'revenue')
+                                - item.revenue_wo_nds_budget) | format }}</td>
                             <td style="border: 1px solid black;">{{ item.md_wo_penalties | format }}</td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;">{{ calculateTotalMD(item.station_group) | format }}</td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;">{{ item.income_wo_penalties | format}}</td>
-                            <td style="border: 1px solid black;">{{ item.income_wo_penalties_budget  | format}}</td></td>
+                            <td style="border: 1px solid black;">{{ item.md_wo_penalties_budget | format }}</td>
+                            <td style="border: 1px solid black;">{{ calculateTotalVolume(item.station_group,
+                                'margin_income') | format }}</td>
+                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group,
+                                'margin_income') - item.md_wo_penalties) | format }}</td>
+                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group,
+                                'margin_income') - item.md_wo_penalties_budget) | format }}</td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">{{ item.income_wo_penalties | format }}</td>
+                            <td style="border: 1px solid black;">{{ item.income_wo_penalties_budget | format }}</td>
+
+                            <td style="border: 1px solid black;">{{ calculateTotalVolume2(item.station_group,
+                                'income_wo_penalties', 'vagonosutki') | format }}</td>
+                            <td style="border: 1px solid black;">{{ item.income_w_penalties | format }}</td>
+                            <td style="border: 1px solid black;">{{ item.income_w_penalties_budget | format }}</td>
+                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">{{ calculateTotalVolume2(item.station_group,
+                                'income_wo_penalties', 'vagonosutki') - item.income_wo_penalties | format }}</td>
+                            <td style="border: 1px solid black;">{{ calculateTotalVolume2(item.station_group,
+                                'income_wo_penalties', 'vagonosutki') - item.income_w_penalties_budget | format }}</td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
                         </tr>
                         <!-- Итерация по ключам и значениям внутри объекта station -->
                         <template v-for="(value, key) in item.station_group">
                             <tr :key="key" class="Total_blue" v-if="key !== 'revenue' && key !== 'weight' && key !== 'volume'
-                        && key !== 'amo'
-                        && key !== 'empty_tariff'
-                        && key !== 'fot'
-                        && key !== 'loaded_tariff'
-                        && key !== 'margin_income'
-                        && key !== 'other_charges'
-                        && key !== 'pps'
-                        && key !== 'repair'
-                        && index !== 'vagonosutki'">
+                                && key !== 'amo'
+                                && key !== 'empty_tariff'
+                                && key !== 'fot'
+                                && key !== 'loaded_tariff'
+                                && key !== 'margin_income'
+                                && key !== 'other_charges'
+                                && key !== 'pps'
+                                && key !== 'repair'
+                                && index !== 'vagonosutki'">
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;">{{ key }}</td> <!-- наименование вложенной станции-->
+                                <td style="border: 1px solid black;">{{ key }}</td>
+                                <!-- наименование вложенной станции-->
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;">{{ value.weight | format }}</td>
@@ -161,26 +180,34 @@
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki | format }} || {{ value.margin_income }} || {{value.vagonosutki}}</td>
+                                <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki | format
+                                    }}</td>
+                                <td style="border: 1px solid black;">{{ value.income_w_penalties | format }}</td>
+                                <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }}</td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
+                                <td style="border: 1px solid black;"></td>
+                                <td style="border: 1px solid black;"></td>
+                                <!-- {{ value.margin_income / value.vagonosutki | format}} || {{ value.margin_income }} || {{ value.vagonosutki }} -->
+                                <!-- {{ value.margin_income_budget / value.vagonosutki_budget | format}} -->
                             </tr>
                             <template v-for="(stationValue, stationKey) in value">
                                 <tr :key="stationKey" class="Total_blue" v-if="stationKey !== 'revenue' && stationKey !== 'weight' && stationKey !== 'volume'
-                        && stationKey !== 'amo'
-                        && stationKey !== 'empty_tariff'
-                        && stationKey !== 'fot'
-                        && stationKey !== 'loaded_tariff'
-                        && stationKey !== 'margin_income'
-                        && stationKey !== 'other_charges'
-                        && stationKey !== 'pps'
-                        && stationKey !== 'repair'
-                        && stationKey !== 'vagonosutki'">
+                                    && stationKey !== 'amo'
+                                    && stationKey !== 'empty_tariff'
+                                    && stationKey !== 'fot'
+                                    && stationKey !== 'loaded_tariff'
+                                    && stationKey !== 'margin_income'
+                                    && stationKey !== 'other_charges'
+                                    && stationKey !== 'pps'
+                                    && stationKey !== 'repair'
+                                    && stationKey !== 'vagonosutki'">
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ stationKey }}</td> <!-- наименование вложенной станции-->
+                                    <td style="border: 1px solid black;">{{ stationKey }}</td>
+                                    <!-- наименование вложенной станции-->
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;">{{ stationValue.weight | format }}</td>
@@ -194,7 +221,8 @@
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;">{{ stationValue.margin_income | format }}</td>
-                                    <td style="border: 1px solid black;">{{ stationValue.margin_income_budget | format }}</td>
+                                    <td style="border: 1px solid black;">{{ stationValue.margin_income_budget | format
+                                        }}</td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
@@ -204,10 +232,18 @@
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;">{{ stationValue.margin_income /
+                                        stationValue.vagonosutki | format }}</td>
+                                    <td style="border: 1px solid black;">{{ stationValue.income_w_penalties | format }}
+                                    </td>
+                                    <td style="border: 1px solid black;">{{ stationValue.income_w_penalties_budget |
+                                        format }}</td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+
                                 </tr>
                             </template>
                         </template>
@@ -225,7 +261,7 @@ import apiWagon from "@/api/wagonPark";
 import cp_work_names from './testData.js'
 
 export default {
-    props: ['bp_data', 'margin_income_data' , 'budget'],
+    props: ['bp_data', 'margin_income_data', 'budget_data', "date_begin"],
     data() {
         return {
             date_begin_create: "",
@@ -235,9 +271,10 @@ export default {
             memo: {},
         }
     },
-    mounted(){
-        console.log(this.data123)
-    },
+    // async mounted(){
+    //     let res = await api.getBudget('2024-02-01')
+    //     console.log(res.data.data)
+    // },
     filters: {
         format(value) {
             if (value != "" && !!value) {
@@ -254,6 +291,7 @@ export default {
         },
     },
     watch: {
+
         margin_income_data: {
             handler(newVal, oldVal) {
                 if (newVal) {
@@ -264,53 +302,57 @@ export default {
         }
     },
     methods: {
-        async test(){
-            let res = await api.getBudget(this.date_begin_create+'-01')
+        async test() {
+            let res = await api.getBudget(this.date_begin_create + '-01')
             console.log(res.data.data)
         },
         downloadExcel() {
-      var table = this.$refs.theTable;
-      var tableHTML = table.outerHTML;
-      var fileName = "Таблица 'Маржинальная доходность'.xls";
+            var table = this.$refs.theTable;
+            var tableHTML = table.outerHTML;
+            var fileName = "Таблица 'Маржинальная доходность'.xls";
 
-      // var msie = window.navigator.userAgent.indexOf("MSIE ");
+            // var msie = window.navigator.userAgent.indexOf("MSIE ");
 
-      var a = document.createElement("a");
-      tableHTML = tableHTML.replace(/  /g, "").replace(/ /g, "%20");
-      a.href = "data:application/vnd.ms-excel," + tableHTML;
-      a.setAttribute("download", fileName);
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    },
-        calculateTotalVolume(stationGroup) {
+            var a = document.createElement("a");
+            tableHTML = tableHTML.replace(/  /g, "").replace(/ /g, "%20");
+            a.href = "data:application/vnd.ms-excel," + tableHTML;
+            a.setAttribute("download", fileName);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        },
+        calculateTotalVolume(stationGroup, type) {
             if (!stationGroup) return 0
             const valuesArray = Object.values(stationGroup)
 
             const totalVolume = valuesArray.reduce((acc, item) => {
-                return acc + item.weight
+                return acc + item[type]
             }, 0)
             return totalVolume
         },
-        calculateTotalRevenue(stationGroup) {
-            if (!stationGroup) return 0
-            const valuesArray = Object.values(stationGroup)
+        calculateTotalVolume2(stationGroup, type, vagonosutki) {
+            // Проверяем, что stationGroup не равен null или undefined
+            if (!stationGroup) return 0;
 
-            const totalVolume = valuesArray.reduce((acc, item) => {
-                return acc + item.revenue
-            }, 0)
-            return totalVolume
-        },
-        calculateTotalMD(stationGroup) {
-            if (!stationGroup) return 0
-            const valuesArray = Object.values(stationGroup)
+            // Извлекаем массив значений из объекта stationGroup
+            const valuesArray = Object.values(stationGroup);
 
+            // Инициализируем переменную для суммирования общего объема
             const totalVolume = valuesArray.reduce((acc, item) => {
-                return acc + item.margin_income
-            }, 0)
-            return totalVolume
+                // Проверяем, что у объекта item есть необходимые свойства (type и vagonosutki) и они являются числами
+                if (item && typeof item[type] === 'number' && typeof item[vagonosutki] === 'number') {
+                    // Добавляем к аккумулятору значение, поделенное на vagonosutki
+                    return acc + (item[type] / item[vagonosutki]);
+                } else {
+                    // Возвращаем аккумулятор без изменений, если объект item не содержит нужные свойства
+                    return acc;
+                }
+            }, 0);
+
+            // Возвращаем общий объем, округленный или в нужном формате
+            return totalVolume;
         },
-        async getRoadForStation(val, destination, ) {
+        async getRoadForStation(val, destination,) {
             const memoKey = `${val}_${destination}`;
             if (this.memo[memoKey]) {
                 return this.memo[memoKey];
@@ -344,15 +386,16 @@ export default {
                     item1.product === item2.product
                 ));
 
-                if(item1) {
+                if (item1) {
                     Object.keys(item2).forEach((key) => {
-                        if(key !== 'client' && key !== 'destination' && key !== 'product') {
+                        if (key !== 'client' && key !== 'destination' && key !== 'product') {
                             item1[`${key}_budget`] = item2[key];
                         }
-                    })
+                    });
                 }
-            })
-            return array1
+            });
+            return array1;
+
         },
         containsPartialMatch(product, cargo) {
             const productLower = product.toLowerCase();
@@ -360,32 +403,51 @@ export default {
             const regex = new RegExp(`\\b${cargoLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
             return regex.test(productLower);
         },
+        // containsSequentialWord(mainString, searchString) {
+        //     // Разбиваем строки на массивы слов
+        //     let mainWords = mainString.split(' ');
+        //     let searchWords = searchString.split(' ');
+
+        //     // Проходим по каждому слову в основной строке
+        //     for (let i = 0; i <= mainWords.length - searchWords.length; i++) {
+        //         let matchFound = true;
+        //         // Проверяем последовательность слов из searchString в mainString
+        //         for (let j = 0; j < searchWords.length; j++) {
+        //             if (mainWords[i + j] !== searchWords[j]) {
+        //                 matchFound = false;
+        //                 break;
+        //             }
+        //         }
+        //         if (matchFound) {
+        //             return true; // Найдено совпадение последовательности слов
+        //         }
+        //     }
+        //     return false; // Не найдено совпадение последовательности слов
+        // },
+
         async getBPData() {
+            this.businessPlanData = ""
             this.$emit('stateLoader', true);
             try {
-                let response = await api.getBusinessPlan(this.date_begin_create+'-01')
-                // await this.bp_data.data;
-                this.margin_income =  this.data123
-                // await this.margin_income_data.margin_incomes;
-                // let sortedKeys = Object.keys(response).sort();
+                let response = await this.bp_data.data;
+                console.log(response)
+                this.margin_income = await this.margin_income_data.margin_incomes;
+                console.log(this.margin_income)
 
-                // // Создаем новый объект с отсортированными ключами
-                // let sortedResponse = {};
-                // for (let key of sortedKeys) {
-                //     sortedResponse[key] = response[key];
-                // }
+                let budgetData = await this.budget_data.data
+                console.log(budgetData, this.budget_data, 'budget')
 
-                let budgetData = await api.getBudget(this.date_begin_create+'-01')
+                let preData = this.mergeArrays(response, budgetData).sort((a, b) => {
+                    return a.client.localeCompare(b.client);
+                })
 
-
-                let preData = this.mergeArrays(response.data.data, budgetData.data.data)
                 // Object.entries(sortedResponse).map(([client, data]) => ({ client, ...data }));
                 this.$emit('stateLoader', true);
                 let station_group_west = ['ПРВ', 'МСК', 'ЮВС', 'ОКТ', 'СЕВ', 'КЛГ', 'СКВ', 'ГРК', 'КБШ', 'СВР', 'СКВ'];
                 let station_group_east = ['ЗСБ', 'КРС', 'ВСБ', 'ЗАБ', 'ДВС', 'ЖДЯ'];
 
                 // Создаем объект для мемоизации запросов
-                
+
 
                 try {
                     for (let i = 0; i < preData.length; i++) {
@@ -435,7 +497,7 @@ export default {
                                                 && station_list !== 'margin_income'
                                                 && station_list !== 'other_charges'
                                                 && station_list !== 'pps'
-                                                && station_list !== 'repair' 
+                                                && station_list !== 'repair'
                                                 && station_list !== 'vagonosutki'
                                                 && item.product.includes(cargo) ||
                                                 this.containsPartialMatch(item.product, cargo)
@@ -462,6 +524,7 @@ export default {
                     console.log(preData);
                     this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 2000 });
                     this.businessPlanData = preData;
+                    console.log(this.businessPlanData)
                 } catch (error) {
                     this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
                 }
@@ -484,17 +547,21 @@ td {
 .filter_b {
     width: 20vw;
 }
+
 /* Стили для таблицы */
 .table-container {
-    overflow-x: auto; /* Добавляем горизонтальную прокрутку, если содержимое таблицы выходит за пределы контейнера */
+    overflow-x: auto;
+    /* Добавляем горизонтальную прокрутку, если содержимое таблицы выходит за пределы контейнера */
 }
 
 /* Стили для заголовка таблицы */
 .TableHeader {
-    background-color: #f8f9fa; /* Цвет фона заголовка */
+    background-color: #f8f9fa;
+    /* Цвет фона заголовка */
     position: sticky;
-    top: 0; /* Закрепляем заголовок таблицы вверху контейнера */
-    z-index: 1; /* Устанавливаем z-index для заголовка, чтобы он отображался над содержимым таблицы */
+    top: 0;
+    /* Закрепляем заголовок таблицы вверху контейнера */
+    z-index: 1;
+    /* Устанавливаем z-index для заголовка, чтобы он отображался над содержимым таблицы */
 }
-
 </style>
