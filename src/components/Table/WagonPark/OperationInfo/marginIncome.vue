@@ -15,7 +15,7 @@
         <table>
 
         </table>
-        <div style="overflow: auto; width: 100%">
+        <div style="overflow: auto; width: 100%; height: 60vh;">
             <table ref="theTable">
                 <thead>
                     <tr class="TableHeader">
@@ -81,6 +81,7 @@
                         || index !== 'other_charges'
                         || index !== 'pps'
                         || index !== 'repair'
+                        || index !== 'vagonosutki'
                         ">
                             <!-- Основные данные -->
                             <td style="border: 1px solid black;">{{ item.client }}</td>
@@ -125,7 +126,8 @@
                         && key !== 'margin_income'
                         && key !== 'other_charges'
                         && key !== 'pps'
-                        && key !== 'repair'">
+                        && key !== 'repair'
+                        && index !== 'vagonosutki'">
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
@@ -167,7 +169,8 @@
                         && stationKey !== 'margin_income'
                         && stationKey !== 'other_charges'
                         && stationKey !== 'pps'
-                        && stationKey !== 'repair'">
+                        && stationKey !== 'repair'
+                        && stationKey !== 'vagonosutki'">
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
@@ -377,6 +380,7 @@ export default {
                                                 && station_list !== 'other_charges'
                                                 && station_list !== 'pps'
                                                 && station_list !== 'repair'
+                                                && station_list !== 'vagonosutki'
                                             ) {
                                                 // Найдена подходящая станция для текущего элемента
                                                 let data = stationListData[station_list];
@@ -395,8 +399,9 @@ export default {
                                                 && station_list !== 'margin_income'
                                                 && station_list !== 'other_charges'
                                                 && station_list !== 'pps'
-                                                && station_list !== 'repair' &&
-                                                item.product.includes(cargo) ||
+                                                && station_list !== 'repair' 
+                                                && station_list !== 'vagonosutki'
+                                                && item.product.includes(cargo) ||
                                                 this.containsPartialMatch(item.product, cargo)
                                             ) {
                                                 // Проверяем станцию запад или восток

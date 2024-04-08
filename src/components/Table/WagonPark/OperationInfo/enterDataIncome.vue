@@ -54,7 +54,10 @@ export default {
         },
         date_begin_create: {
             type: String
-        }
+        },
+        typeData: {
+            type: String
+        },
     },
     data() {
         return {
@@ -121,9 +124,12 @@ export default {
                 }
                 result.push(obj)
             }
-
-       
-            let promises = this.resultData.map((item) => api.postNewBusinessPlan(item))
+            let promises 
+            if(this.typeData == 'plan'){
+                promises = this.resultData.map((item) => api.postNewBusinessPlan(item))
+            } else {
+                promises = this.resultData.map((item) => api.sendDataForOperSpravka(item))
+            }
      
             Promise.all(promises)
                 .then((result) => {

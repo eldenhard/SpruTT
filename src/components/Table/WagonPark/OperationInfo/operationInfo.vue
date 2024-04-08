@@ -430,7 +430,7 @@
                                     <div class="filter_b">
                                         <div style="flex-direction: column">
                                             <select v-model="typeData" style="width: 20vw !important">
-                                                <option value="income" disabled>Загрузка доходности</option>
+                                                <option value="income">Загрузка бюджета</option>
                                                 <option value="plan">Загрузка Бизнес-плана</option>
                                             </select>
                                             <br>
@@ -452,7 +452,7 @@
                                                     label="value" style="width:20vw !important;"></v-select>
                                             </label> -->
                                         </div>
-                                        <div class="download_excel" v-if="typeData == 'plan'">
+                                        <div class="download_excel" >
                                             <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда"
                                                 class="textarea" style="width: 45vw; height: 15vh;">
                                             </textarea>
@@ -466,7 +466,7 @@
                                     </div>
 
 
-                                    <div class="table_block" v-if="typeData == 'income'">
+                                    <!-- <div class="table_block" v-if="typeData == 'income'">
                                         <table>
                                             <thead>
                                                 <th>Выручка</th>
@@ -491,10 +491,12 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>
-                                    <div v-else style="overflow: auto">
+                                    </div> -->
+                                    <div  style="overflow: auto">
                                         <enterDataIncomeVue :createNewProfitability="createNewProfitability"
-                                            :clients="name_client" :tableData="tableData"
+                                            :clients="name_client" 
+                                            :tableData="tableData"
+                                            :typeData="typeData"
                                             @update:tableData="tableData = $event"
                                             :date_begin_create="date_begin_create" :wagon_type="wagon_type"
                                             @stateLoader="stateLoader">
@@ -523,7 +525,7 @@ import marginIncomeVue from './marginIncome.vue';
 import enterDataIncomeVue from './enterDataIncome.vue';
 import { mapState } from "vuex";
 // import chartOperationInfo from './chartOperationInfo.vue';
-
+import data123 from './testData.json'
 import chartOperationInfoVue from './chartOperationInfo.vue';
 export default {
     components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue, chartOperationInfoVue },
@@ -606,6 +608,9 @@ export default {
 
 
         }
+    },
+    mounted(){
+        console.log(this.data123)
     },
     filters: {
         format(value) {
@@ -918,11 +923,11 @@ export default {
                     })
 
             } catch(error) {
-                if(error.response.data == 'float division by zero') {
-                    this.$toast.error(`Ошибка\nДанные не получены\nНа текущую дату нет данных`, {
+        
+                    this.$toast.error(`Ошибка\nДанные не получены\n${error.response.data}`, {
                                 timeout: 2500
                     })
-                }
+                
                 this.loader = false
             }
 
