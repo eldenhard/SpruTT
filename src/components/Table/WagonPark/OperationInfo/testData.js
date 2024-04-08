@@ -1,4 +1,4 @@
-{
+const cp_work_names = {
     "report": [
         {
             "client": "ТАТНЕФТЬ-ТРАНС, ООО",
@@ -10601,4 +10601,8 @@
             }
         }
     }
+}
+
+export default{
+    cp_work_names
 }

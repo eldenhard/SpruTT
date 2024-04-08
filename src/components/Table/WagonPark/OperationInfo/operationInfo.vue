@@ -493,10 +493,12 @@
                                         </table>
                                     </div> -->
                                     <div  style="overflow: auto">
-                                        <enterDataIncomeVue :createNewProfitability="createNewProfitability"
+                                        <enterDataIncomeVue 
+                                            :createNewProfitability="createNewProfitability"
                                             :clients="name_client" 
                                             :tableData="tableData"
                                             :typeData="typeData"
+                                            :budget="budget"
                                             @update:tableData="tableData = $event"
                                             :date_begin_create="date_begin_create" 
                                             :wagon_type="wagon_type"
@@ -526,13 +528,13 @@ import marginIncomeVue from './marginIncome.vue';
 import enterDataIncomeVue from './enterDataIncome.vue';
 import { mapState } from "vuex";
 // import chartOperationInfo from './chartOperationInfo.vue';
-import data123 from './testData.json'
 import chartOperationInfoVue from './chartOperationInfo.vue';
 export default {
     components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue, chartOperationInfoVue },
     data() {
         return {
             excelData: "",
+            budget: "",
             hot: "",
             tableData: [],
             currentClientsForExcelFile: "",
@@ -610,9 +612,7 @@ export default {
 
         }
     },
-    mounted(){
-        console.log(this.data123)
-    },
+
     filters: {
         format(value) {
             if (value != "" && !!value) {
@@ -877,8 +877,13 @@ export default {
                 // Формируем строку запроса с параметрами clients
                 const queryString = `?wagon_type=${this.wag_type}&report_date=${this.date_begin}&${clientsParams}`;
                 this.loader = true
-                Promise.all([api.getDataForOperSpravka(queryString), api.getDataForOperSpravkaOtherClients(queryString), api.getBP(queryString), api.getBusinessPlan(dateBeginChange+'01')])
-                    .then(([response1, response2, response3, response4]) => {
+                Promise.all([api.getDataForOperSpravka(queryString),
+                api.getDataForOperSpravkaOtherClients(queryString),
+                api.getBP(queryString), 
+                api.getBusinessPlan(dateBeginChange+'01'),
+                api.getBudget(dateBeginChange+'01')
+                ])
+                    .then(([response1, response2, response3, response4, response5]) => {
                         this.loader = false
                         this.responseServerData = response1.data
                         // console.log(this.responseServerData)
@@ -886,6 +891,7 @@ export default {
                         let businessPlanData = response3.data
                         console.log(businessPlanData)
                         this.data3 =  response4.data
+                        this.budget = response5.data
                         this.responseServerData.report.forEach(item => {
                             // Проходимся по ключам первого массива
                             Object.keys(businessPlanData).forEach(key => {

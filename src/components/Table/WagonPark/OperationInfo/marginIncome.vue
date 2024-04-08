@@ -8,7 +8,8 @@
             </label>
             <p>Данные будут выведены в консоль</p>
             <br>
-            <button class="Accept button" style="width: 20vw; margin-top: 4%;" @click="test()">Запросить</button>
+            <button class="Accept button" style="width: 20vw; margin-top: 4%;" @click="getBPData()">Запросить</button>
+
         </div>
         <button class="Request button" style="width: 20%; margin-left: auto" @click="downloadExcel()">Скачать в Excel</button>
         <br>
@@ -29,7 +30,7 @@
                         <td colspan="2">Стат нагрузка</td>
                         <td colspan="2">Оборот</td>
                         <td colspan="2">Штрафы</td>
-                        <td colspan="6">Доходность</td>
+                        <td colspan="10">Доходность</td>
                     </tr>
                     <tr class="TableHeader">
                         <td>БП</td>
@@ -61,10 +62,14 @@
 
                         <td>План(без штр)</td>
                         <td>План(со штр)</td>
-                        <td>Факт(без штр)</td>
-                        <td>Факт(со штр)</td>
-                        <td>+/-(без штр)</td>
-                        <td>+/-(со штр)</td>
+                        <td>Факт БП(без штр)</td>
+                        <td>Факт БП(со штр)</td>
+                        <td>Факт Б(без штр)</td>
+                        <td>Факт Б(со штр)</td>
+                        <td>+/- БП(без штр)</td>
+                        <td>+/- БП(со штр)</td>
+                        <td>+/- Б(без штр)</td>
+                        <td>+/- Б(со штр)</td>
 
                     </tr>
                 </thead>
@@ -82,19 +87,20 @@
                         || index !== 'pps'
                         || index !== 'repair'
                         || index !== 'vagonosutki'
-                        ">
+                        "
+                        >
                             <!-- Основные данные -->
                             <td style="border: 1px solid black;">{{ item.client }}</td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;">{{ item.product }}</td>
                             <td style="border: 1px solid black;">{{ item.destination }}</td>
                             <td style="border: 1px solid black;">{{ item.volume | format }}</td>
-                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">{{ item.volume_budget | format }}</td>
                             <td style="border: 1px solid black;">{{ calculateTotalVolume(item.station_group) | format }}</td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;">{{ item.revenue_wo_nds | format }}</td>
-                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">{{ item.revenue_wo_nds_budget | format }}</td>
                             <td style="border: 1px solid black;">{{ calculateTotalRevenue(item.station_group) | format }}</td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
@@ -110,7 +116,7 @@
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;">{{ item.income_wo_penalties | format}}</td>
-                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;">{{ item.income_wo_penalties_budget  | format}}</td></td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
                             <td style="border: 1px solid black;"></td>
@@ -135,16 +141,17 @@
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;">{{ value.weight | format }}</td>
-                                <td style="border: 1px solid black;"></td>
+                                <td style="border: 1px solid black;">{{ value.weight_budget | format }}</td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;">{{ value.revenue | format }}</td>
-                                <td style="border: 1px solid black;"></td>
+                                <td style="border: 1px solid black;">{{ value.revenue_budget | format }}</td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;">{{ value.margin_income | format }}</td>
+                                <td style="border: 1px solid black;">{{ value.margin_income_budget | format }}</td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
@@ -154,8 +161,7 @@
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
+                                <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki | format }} || {{ value.margin_income }} || {{value.vagonosutki}}</td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
@@ -178,17 +184,17 @@
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;">{{ stationValue.weight | format }}</td>
-                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;">{{ stationValue.weight_budget | format }}</td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;">{{ stationValue.revenue | format }}</td>
-                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;">{{ stationValue.revenue_budget | format }}</td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;">{{ stationValue.margin_income | format }}</td>
-                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;">{{ stationValue.margin_income_budget | format }}</td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
@@ -216,16 +222,22 @@
 <script>
 import api from '@/api/directory';
 import apiWagon from "@/api/wagonPark";
+import cp_work_names from './testData.js'
+
 export default {
-    props: ['bp_data', 'margin_income_data'],
+    props: ['bp_data', 'margin_income_data' , 'budget'],
     data() {
         return {
             date_begin_create: "",
             businessPlanData: "",
             margin_income: "",
+            data123: cp_work_names.cp_work_names.margin_incomes,
+            memo: {},
         }
     },
-
+    mounted(){
+        console.log(this.data123)
+    },
     filters: {
         format(value) {
             if (value != "" && !!value) {
@@ -253,7 +265,7 @@ export default {
     },
     methods: {
         async test(){
-            let res = await api.getBusinessPlan(this.date_begin_create+'-01')
+            let res = await api.getBudget(this.date_begin_create+'-01')
             console.log(res.data.data)
         },
         downloadExcel() {
@@ -298,10 +310,10 @@ export default {
             }, 0)
             return totalVolume
         },
-        async getRoadForStation(val, destination, memo = {}) {
+        async getRoadForStation(val, destination, ) {
             const memoKey = `${val}_${destination}`;
-            if (memo[memoKey]) {
-                return memo[memoKey];
+            if (this.memo[memoKey]) {
+                return this.memo[memoKey];
             }
 
             try {
@@ -316,13 +328,31 @@ export default {
                     return acc;
                 }, {});
 
-                memo[memoKey] = lowerCaseDirectory[lowerCaseRoadName];
+                this.memo[memoKey] = lowerCaseDirectory[lowerCaseRoadName];
 
-                return memo[memoKey];
+                return this.memo[memoKey];
             } catch (error) {
                 console.error('Error fetching station data:', error);
                 return null;
             }
+        },
+        mergeArrays(array1, array2) {
+            array2.forEach((item2) => {
+                let item1 = array1.find((item1) => (
+                    item1.client === item2.client &&
+                    item1.destination === item2.destination &&
+                    item1.product === item2.product
+                ));
+
+                if(item1) {
+                    Object.keys(item2).forEach((key) => {
+                        if(key !== 'client' && key !== 'destination' && key !== 'product') {
+                            item1[`${key}_budget`] = item2[key];
+                        }
+                    })
+                }
+            })
+            return array1
         },
         containsPartialMatch(product, cargo) {
             const productLower = product.toLowerCase();
@@ -333,23 +363,29 @@ export default {
         async getBPData() {
             this.$emit('stateLoader', true);
             try {
-                let response = await this.bp_data.data;
-                this.margin_income = await this.margin_income_data.margin_incomes;
-                let sortedKeys = Object.keys(response).sort();
+                let response = await api.getBusinessPlan(this.date_begin_create+'-01')
+                // await this.bp_data.data;
+                this.margin_income =  this.data123
+                // await this.margin_income_data.margin_incomes;
+                // let sortedKeys = Object.keys(response).sort();
 
-                // Создаем новый объект с отсортированными ключами
-                let sortedResponse = {};
-                for (let key of sortedKeys) {
-                    sortedResponse[key] = response[key];
-                }
+                // // Создаем новый объект с отсортированными ключами
+                // let sortedResponse = {};
+                // for (let key of sortedKeys) {
+                //     sortedResponse[key] = response[key];
+                // }
 
-                let preData = Object.entries(sortedResponse).map(([client, data]) => ({ client, ...data }));
+                let budgetData = await api.getBudget(this.date_begin_create+'-01')
+
+
+                let preData = this.mergeArrays(response.data.data, budgetData.data.data)
+                // Object.entries(sortedResponse).map(([client, data]) => ({ client, ...data }));
                 this.$emit('stateLoader', true);
                 let station_group_west = ['ПРВ', 'МСК', 'ЮВС', 'ОКТ', 'СЕВ', 'КЛГ', 'СКВ', 'ГРК', 'КБШ', 'СВР', 'СКВ'];
                 let station_group_east = ['ЗСБ', 'КРС', 'ВСБ', 'ЗАБ', 'ДВС', 'ЖДЯ'];
 
                 // Создаем объект для мемоизации запросов
-                let memo = {};
+                
 
                 try {
                     for (let i = 0; i < preData.length; i++) {
@@ -405,7 +441,7 @@ export default {
                                                 this.containsPartialMatch(item.product, cargo)
                                             ) {
                                                 // Проверяем станцию запад или восток
-                                                let code = await this.getRoadForStation(station_list, item.destination, memo);
+                                                let code = await this.getRoadForStation(station_list, item.destination);
                                                 let isWest = item.destination === 'Станции РФ (Запад)';
                                                 let isEast = item.destination === 'Станции РФ (Восток)';
 
@@ -448,4 +484,17 @@ td {
 .filter_b {
     width: 20vw;
 }
+/* Стили для таблицы */
+.table-container {
+    overflow-x: auto; /* Добавляем горизонтальную прокрутку, если содержимое таблицы выходит за пределы контейнера */
+}
+
+/* Стили для заголовка таблицы */
+.TableHeader {
+    background-color: #f8f9fa; /* Цвет фона заголовка */
+    position: sticky;
+    top: 0; /* Закрепляем заголовок таблицы вверху контейнера */
+    z-index: 1; /* Устанавливаем z-index для заголовка, чтобы он отображался над содержимым таблицы */
+}
+
 </style>

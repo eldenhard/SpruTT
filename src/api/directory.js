@@ -235,7 +235,9 @@ const sendDataForOperSpravka = (data) => {
 const sendDataForNewBudjet = (data) => {
     return api.post(`${finance}/budget/`,  data )
 }
-
+const getBudget = (data) => {
+    return api.get(`${finance}/budget/?on_date=${data}` )
+}
 const getDataForOperSpravka = (queryString) => {
     return api.get(`${finance}/operativnaya-spravka/report/${queryString}` )
 }
@@ -367,6 +369,7 @@ export default {
     getBusinessPlan,
     postNewBusinessPlan,
     getBP,
+    getBudget,
 
 
     getAgreementAdvancedFilter2,
