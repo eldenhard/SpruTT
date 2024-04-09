@@ -91,54 +91,45 @@
                             || index !== 'vagonosutki'
                         ">
                             <!-- Основные данные -->
-                            <td style="border: 1px solid black;">{{ item.client }}</td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;">{{ item.product }}</td>
-                            <td style="border: 1px solid black;">{{ item.destination }}</td>
-                            <td style="border: 1px solid black;">{{ item.volume | format }}</td>
-                            <td style="border: 1px solid black;">{{ item.volume_budget | format }}</td>
-                            <td style="border: 1px solid black;">{{ calculateTotalVolume(item.station_group, 'weight') |
-                                format }}</td>
-                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group, 'weight')
-                                - item.volume) | format }}</td>
-                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group, 'weight')
-                                - item.volume_budget) | format }}</td>
-                            <td style="border: 1px solid black;">{{ item.revenue_wo_nds | format }}</td>
-                            <td style="border: 1px solid black;">{{ item.revenue_wo_nds_budget | format }}</td>
-                            <td style="border: 1px solid black;">{{ calculateTotalVolume(item.station_group, 'revenue')
-                                | format }}</td>
-                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group, 'revenue')
-                                - item.revenue_wo_nds) | format }}</td>
-                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group, 'revenue')
-                                - item.revenue_wo_nds_budget) | format }}</td>
-                            <td style="border: 1px solid black;">{{ item.md_wo_penalties | format }}</td>
-                            <td style="border: 1px solid black;">{{ item.md_wo_penalties_budget | format }}</td>
-                            <td style="border: 1px solid black;">{{ calculateTotalVolume(item.station_group,
-                                'margin_income') | format }}</td>
-                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group,
-                                'margin_income') - item.md_wo_penalties) | format }}</td>
-                            <td style="border: 1px solid black;">{{ (calculateTotalVolume(item.station_group,
-                                'margin_income') - item.md_wo_penalties_budget) | format }}</td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;">{{ item.income_wo_penalties | format }}</td>
-                            <td style="border: 1px solid black;">{{ item.income_wo_penalties_budget | format }}</td>
-
-                            <td style="border: 1px solid black;">{{ calculateTotalVolume2(item.station_group,
-                                'income_wo_penalties', 'vagonosutki') | format }}</td>
-                            <td style="border: 1px solid black;">{{ item.income_w_penalties | format }}</td>
-                            <td style="border: 1px solid black;">{{ item.income_w_penalties_budget | format }}</td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;">{{ calculateTotalVolume2(item.station_group,
-                                'income_wo_penalties', 'vagonosutki') - item.income_wo_penalties | format }}</td>
-                            <td style="border: 1px solid black;">{{ calculateTotalVolume2(item.station_group,
-                                'income_wo_penalties', 'vagonosutki') - item.income_w_penalties_budget | format }}</td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
+    <td>{{ item.client }}</td>
+    <td></td>
+    <td>{{ item.product }}</td>
+    <td>{{ item.destination }}</td>
+    <td>{{ item.volume | format }}</td>
+    <td>{{ item.volume_budget | format }}</td>
+    <td>{{ calculateTotalVolume(item.station_group, 'weight') |  format }}</td>
+    <td>{{ (calculateTotalVolume(item.station_group, 'weight') - item.volume) | format }}</td>
+    <td>{{ (calculateTotalVolume(item.station_group, 'weight')- item.volume_budget) | format }}</td>
+    <td>{{ item.revenue_wo_nds | format }}</td>
+    <td>{{ item.revenue_wo_nds_budget | format }}</td>
+    <td>{{ calculateTotalVolume(item.station_group, 'revenue') | format }}</td>
+    <td>{{(calculateTotalVolume(item.station_group, 'revenue') - item.revenue_wo_nds) | format }}</td>
+    <td>{{ (calculateTotalVolume(item.station_group, 'revenue') - item.revenue_wo_nds_budget) | format }}</td>
+    <td>{{ item.md_wo_penalties | format }}</td>
+    <td>{{ item.md_wo_penalties_budget | format }}</td>
+    <td>{{ calculateTotalVolume(item.station_group,'margin_income') | format }}</td>
+    <td>{{ (calculateTotalVolume(item.station_group, 'margin_income') - item.md_wo_penalties) | format }}</td>
+    <td>{{ (calculateTotalVolume(item.station_group, 'margin_income') - item.md_wo_penalties_budget) | format }}</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>{{ item.income_wo_penalties | format }}</td>
+    <td>{{ item.income_wo_penalties_budget | format }}</td>
+    <td>{{ item.income_wo_penalties / calculateTotalVolume(item.station_group,'vagonosutki') *100 | format }} сумма</td>
+    <td>{{ item.income_w_penalties | format }}</td>
+    <td>{{ item.income_w_penalties_budget | format }}</td>
+    <td></td>
+    <td>
+    {{ calculateTotalVolume2(item.station_group,
+        'income_wo_penalties', 'vagonosutki') - item.income_wo_penalties | format }}</td>
+    <td>
+    {{ calculateTotalVolume2(item.station_group,
+        'income_wo_penalties', 'vagonosutki') - item.income_w_penalties_budget | format }}</td>
+    <td></td>
+    <td></td>
                         </tr>
                         <!-- Итерация по ключам и значениям внутри объекта station -->
                         <template v-for="(value, key) in item.station_group">
@@ -151,7 +142,9 @@
                                 && key !== 'other_charges'
                                 && key !== 'pps'
                                 && key !== 'repair'
-                                && index !== 'vagonosutki'">
+                                && index !== 'vagonosutki'
+                                && key !== 'vagonosutki_empty'
+                                && key !== 'vagonosutki_total'">
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
@@ -180,8 +173,7 @@
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki | format
-                                    }}</td>
+                                <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki | format }} </td>
                                 <td style="border: 1px solid black;">{{ value.income_w_penalties | format }}</td>
                                 <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }}</td>
                                 <td style="border: 1px solid black;"></td>
@@ -192,60 +184,7 @@
                                 <!-- {{ value.margin_income / value.vagonosutki | format}} || {{ value.margin_income }} || {{ value.vagonosutki }} -->
                                 <!-- {{ value.margin_income_budget / value.vagonosutki_budget | format}} -->
                             </tr>
-                            <template v-for="(stationValue, stationKey) in value">
-                                <tr :key="stationKey" class="Total_blue" v-if="stationKey !== 'revenue' && stationKey !== 'weight' && stationKey !== 'volume'
-                                    && stationKey !== 'amo'
-                                    && stationKey !== 'empty_tariff'
-                                    && stationKey !== 'fot'
-                                    && stationKey !== 'loaded_tariff'
-                                    && stationKey !== 'margin_income'
-                                    && stationKey !== 'other_charges'
-                                    && stationKey !== 'pps'
-                                    && stationKey !== 'repair'
-                                    && stationKey !== 'vagonosutki'">
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ stationKey }}</td>
-                                    <!-- наименование вложенной станции-->
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ stationValue.weight | format }}</td>
-                                    <td style="border: 1px solid black;">{{ stationValue.weight_budget | format }}</td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ stationValue.revenue | format }}</td>
-                                    <td style="border: 1px solid black;">{{ stationValue.revenue_budget | format }}</td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ stationValue.margin_income | format }}</td>
-                                    <td style="border: 1px solid black;">{{ stationValue.margin_income_budget | format
-                                        }}</td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ stationValue.margin_income /
-                                        stationValue.vagonosutki | format }}</td>
-                                    <td style="border: 1px solid black;">{{ stationValue.income_w_penalties | format }}
-                                    </td>
-                                    <td style="border: 1px solid black;">{{ stationValue.income_w_penalties_budget |
-                                        format }}</td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-
-                                </tr>
-                            </template>
+                        
                         </template>
                     </template>
                 </tbody>
@@ -269,12 +208,15 @@ export default {
             margin_income: "",
             data123: cp_work_names.cp_work_names.margin_incomes,
             memo: {},
+            exampleObject: "",
+         
         }
     },
-    // async mounted(){
-    //     let res = await api.getBudget('2024-02-01')
-    //     console.log(res.data.data)
-    // },
+    async mounted(){
+    //    console.log(this.deepVagonosutkiSum(), 'вагоносутки')
+    console.log(this.containsAtLeastTwoMatches('Топливо дизельное',
+    'Топливо дизельное с температурой вспышки ниже 61С (в закрытом тигле)'))
+    },
     filters: {
         format(value) {
             if (value != "" && !!value) {
@@ -302,6 +244,30 @@ export default {
         }
     },
     methods: {
+        deepVagonosutkiSum() {
+      // Функция для поиска самого глубокого значения vagonosutki
+      function findDeepestVagonosutki(obj) {
+        let deepestVagonosutki = 0;
+
+        function findDeepest(obj) {
+          for (let key in obj) {
+            if (typeof obj[key] === 'object') {
+              findDeepest(obj[key]); // Рекурсивный вызов для каждого вложенного объекта
+            } else if (key === 'vagonosutki') {
+              deepestVagonosutki += obj[key]; // Найдено значение vagonosutki, суммируем его
+            }
+          }
+        }
+
+        findDeepest(obj); // Начинаем поиск с корневого объекта
+
+        return deepestVagonosutki;
+      }
+
+      // Вызываем функцию для объекта
+      return findDeepestVagonosutki(this.exampleObject);
+    },
+  
         async test() {
             let res = await api.getBudget(this.date_begin_create + '-01')
             console.log(res.data.data)
@@ -398,12 +364,12 @@ export default {
 
         },
         containsAtLeastTwoMatches(product, cargo) {
-            let productWords = product.split(/s+/); // Разбиваем строки на слова по пробелам
-            let cargoWords = cargo.split(/s+/);
+            let productWords = product.split(" "); // Разбиваем строки на слова по пробелам
+            let cargoWords = cargo.split(" ");
             let matchCount = 0; // Счетчик для подсчета количества совпадений
-
             for (let productWord of productWords) {
                 for (let cargoWord of cargoWords) {
+                    console.log(productWord, cargoWord)
                     // Проверяем, содержится ли слово из product полностью в каком-либо слове из cargo
                     if (cargoWord.toLowerCase().includes(productWord.toLowerCase())) {
                         matchCount++; // Увеличиваем счетчик при нахождении совпадения
@@ -412,50 +378,24 @@ export default {
                 }
                 // Возвращаем true, если найдено минимум два совпадения
                 if (matchCount >= 2) {
+                    console.log(matchCount, product, cargo)
                     return true;
                 }
             }
             // Если функция дошла до этой точки, значит, не было найдено двух совпадений
             return false;
         },
-        // const productLower = product.toLowerCase();
-        // const cargoLower = cargo.toLowerCase();
-        // const regex = new RegExp(`\\b${cargoLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
-        // return regex.test(productLower);
- 
-    // containsPartialMatch(mainString, searchString) {
-    //     // Разбиваем строки на массивы слов
-    //     let mainWords = mainString.split(' ');
-    //     let searchWords = searchString.split(' ');
 
-    //     // Проходим по каждому слову в основной строке
-    //     for (let i = 0; i <= mainWords.length - searchWords.length; i++) {
-    //         let matchFound = true;
-    //         // Проверяем последовательность слов из searchString в mainString
-    //         for (let j = 0; j < searchWords.length; j++) {
-    //             if (mainWords[i + j] !== searchWords[j]) {
-    //                 matchFound = false;
-    //                 break;
-    //             }
-    //         }
-    //         if (matchFound) {
-    //             return true; // Найдено совпадение последовательности слов
-    //         }
-    //     }
-    //     return false; // Не найдено совпадение последовательности слов
-    // },
 
     async getBPData() {
         this.businessPlanData = ""
         this.$emit('stateLoader', true);
         try {
             let response = await this.bp_data.data;
-            console.log(response)
             this.margin_income = await this.margin_income_data.margin_incomes;
-            console.log(this.margin_income)
+            console.log(this.margin_income, 'margin_income')
 
             let budgetData = await this.budget_data.data
-            console.log(budgetData, this.budget_data, 'budget')
 
             let preData = this.mergeArrays(response, budgetData).sort((a, b) => {
                 return a.client.localeCompare(b.client);
@@ -485,8 +425,10 @@ export default {
                                     for (let station_list in stationListData) {
                                         if (
                                             station_list === item.destination &&
-                                            item.product.includes(cargo) ||
-                                            this.containsAtLeastTwoMatches(item.product, cargo) &&
+                                            // item.product.includes(cargo) 
+                                            // ||
+                                            this.containsAtLeastTwoMatches(item.product, cargo) 
+                                            &&
                                             station_list !== 'revenue' &&
                                             station_list !== 'weight' &&
                                             station_list !== 'volume' &&
@@ -499,6 +441,8 @@ export default {
                                             && station_list !== 'pps'
                                             && station_list !== 'repair'
                                             && station_list !== 'vagonosutki'
+                                            && station_list !== 'vagonosutki_empty'
+                                            && station_list !== 'vagonosutki_total'
                                         ) {
                                             // Найдена подходящая станция для текущего элемента
                                             let data = stationListData[station_list];
@@ -519,9 +463,14 @@ export default {
                                             && station_list !== 'pps'
                                             && station_list !== 'repair'
                                             && station_list !== 'vagonosutki'
-                                            && item.product.includes(cargo) ||
+                                            && station_list !== 'vagonosutki_empty'
+                                            && station_list !== 'vagonosutki_total'
+                                            && 
+                                            // item.product.includes(cargo) 
+                                            // ||
                                             this.containsAtLeastTwoMatches(item.product, cargo)
                                         ) {
+                                            console.log(station_list, item.destination, 'item.destination')
                                             // Проверяем станцию запад или восток
                                             let code = await this.getRoadForStation(station_list, item.destination);
                                             let isWest = item.destination === 'Станции РФ (Запад)';
@@ -544,7 +493,7 @@ export default {
                 console.log(preData);
                 this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 2000 });
                 this.businessPlanData = preData;
-                console.log(this.businessPlanData)
+                console.log(this.businessPlanData, 'preData')
             } catch (error) {
                 this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
             }
