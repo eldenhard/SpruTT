@@ -85,6 +85,10 @@ export default {
             }, {
                 category: "Факт текущий",
                 value1: this.column_chart_data_plan,
+            },
+            {
+                category: "",
+                value1: 0,
             }
             ];
 

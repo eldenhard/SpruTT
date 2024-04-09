@@ -604,7 +604,7 @@ export default {
 <style scoped>
 
 .Container
-{
+{   
     overflow-y: auto;
     scrollbar-width: revert; 
   scrollbar-color: grey lightgrey; /* Цвет скроллбара и его трека */
@@ -632,14 +632,5 @@ td {
     /* Добавляем горизонтальную прокрутку, если содержимое таблицы выходит за пределы контейнера */
 }
 
-/* Стили для заголовка таблицы */
-.TableHeader {
-    background-color: #f8f9fa;
-    /* Цвет фона заголовка */
-    position: sticky;
-    top: 0;
-    /* Закрепляем заголовок таблицы вверху контейнера */
-    z-index: 1;
-    /* Устанавливаем z-index для заголовка, чтобы он отображался над содержимым таблицы */
-}
+
 </style>
