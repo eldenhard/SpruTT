@@ -1067,7 +1067,7 @@ export default {
 </script>
 
 <style>
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
@@ -1080,7 +1080,7 @@ export default {
 ::-webkit-scrollbar-thumb {
   background: rgb(143, 143, 143);
   border-radius: 5px;
-}
+} */
 .lc {
   background: #ebebeb;
   font-size: normal;

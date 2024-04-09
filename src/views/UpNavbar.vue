@@ -98,9 +98,9 @@ export default {
   },
  
   mounted(){
-    if (!window.location.href.includes('fin_operation')){
-      this.getTasks();
-    }
+    // if (!window.location.href.includes('fin_operation')){
+    //   this.getTasks();
+    // }
   
   },
   computed: {

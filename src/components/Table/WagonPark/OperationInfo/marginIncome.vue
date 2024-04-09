@@ -17,7 +17,8 @@
         <table>
 
         </table>
-        <div style="overflow: auto; width: 100%;height: auto;">
+        <div class="Container Flipped" ref="tableContainer">
+            <div class="Content" ref="scrollTableContent">
             <table ref="theTable">
                 <thead>
                     <tr class="TableHeader">
@@ -31,7 +32,7 @@
                         <td colspan="2">Стат нагрузка</td>
                         <td colspan="2">Оборот</td>
                         <td colspan="2">Штрафы</td>
-                        <td colspan="11">Доходность</td>
+                        <td colspan="10">Доходность</td>
                     </tr>
                     <tr class="TableHeader">
                         <td>БП</td>
@@ -70,7 +71,6 @@
                         <td>+/- БП(без штр)</td>
                         <td>+/- Б(без штр)</td>
                         <td>+/- БП(со штр)</td>
-                        <td>+/- Б(без штр)</td>
                         <td>+/- Б(со штр)</td>
 
                     </tr>
@@ -90,48 +90,44 @@
                             || index !== 'repair'
                             || index !== 'vagonosutki'
                         ">
-                            <!-- Основные данные -->
-    <td>{{ item.client }}</td>
-    <td></td>
-    <td>{{ item.product }}</td>
-    <td>{{ item.destination }}</td>
-    <td>{{ item.volume | format }}</td>
-    <td>{{ item.volume_budget | format }}</td>
-    <td>{{ calculateTotalVolume(item.station_group, 'weight') |  format }}</td>
-    <td>{{ (calculateTotalVolume(item.station_group, 'weight') - item.volume) | format }}</td>
-    <td>{{ (calculateTotalVolume(item.station_group, 'weight')- item.volume_budget) | format }}</td>
-    <td>{{ item.revenue_wo_nds | format }}</td>
-    <td>{{ item.revenue_wo_nds_budget | format }}</td>
-    <td>{{ calculateTotalVolume(item.station_group, 'revenue') | format }}</td>
-    <td>{{(calculateTotalVolume(item.station_group, 'revenue') - item.revenue_wo_nds) | format }}</td>
-    <td>{{ (calculateTotalVolume(item.station_group, 'revenue') - item.revenue_wo_nds_budget) | format }}</td>
-    <td>{{ item.md_wo_penalties | format }}</td>
-    <td>{{ item.md_wo_penalties_budget | format }}</td>
-    <td>{{ calculateTotalVolume(item.station_group,'margin_income') | format }}</td>
-    <td>{{ (calculateTotalVolume(item.station_group, 'margin_income') - item.md_wo_penalties) | format }}</td>
-    <td>{{ (calculateTotalVolume(item.station_group, 'margin_income') - item.md_wo_penalties_budget) | format }}</td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td>{{ item.income_wo_penalties | format }}</td>
-    <td>{{ item.income_wo_penalties_budget | format }}</td>
-    <td>{{ item.income_wo_penalties / calculateTotalVolume(item.station_group,'vagonosutki') *100 | format }} сумма</td>
-    <td>{{ item.income_w_penalties | format }}</td>
-    <td>{{ item.income_w_penalties_budget | format }}</td>
-    <td></td>
-    <td>
-    {{ calculateTotalVolume2(item.station_group,
-        'income_wo_penalties', 'vagonosutki') - item.income_wo_penalties | format }}</td>
-    <td>
-    {{ calculateTotalVolume2(item.station_group,
-        'income_wo_penalties', 'vagonosutki') - item.income_w_penalties_budget | format }}</td>
-    <td></td>
-    <td></td>
+
+                            <td>{{ item.client }}</td>
+                            <td></td>
+                            <td>{{ item.product }}</td>
+                            <td>{{ item.destination }}</td>
+                            <td>{{ item.volume | format }}</td>
+                            <td>{{ item.volume_budget | format }}</td>
+                            <td>{{ calculateTotalVolume(item.station_group, 'weight') | format }}</td>
+                            <td>{{ (calculateTotalVolume(item.station_group, 'weight') - item.volume) | format }}</td>
+                            <td>{{ (calculateTotalVolume(item.station_group, 'weight') - item.volume_budget) | format }}</td>
+                            <td>{{ item.revenue_wo_nds | format }}</td>
+                            <td>{{ item.revenue_wo_nds_budget | format }}</td>
+                            <td>{{ calculateTotalVolume(item.station_group, 'revenue') | format }}</td>
+                            <td>{{ (calculateTotalVolume(item.station_group, 'revenue') - item.revenue_wo_nds) | format}}</td>
+                            <td>{{ (calculateTotalVolume(item.station_group, 'revenue') - item.revenue_wo_nds_budget) | format }}</td>
+                            <td>{{ item.md_wo_penalties | format }}</td>
+                            <td>{{ item.md_wo_penalties_budget | format }}</td>
+                            <td>{{ calculateTotalVolume(item.station_group, 'margin_income') | format }}</td>
+                            <td>{{ (calculateTotalVolume(item.station_group, 'margin_income') - item.md_wo_penalties) | format }}</td>
+                            <td>{{ (calculateTotalVolume(item.station_group, 'margin_income') - item.md_wo_penalties_budget) | format }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ item.income_wo_penalties | format }}</td>
+                            <td>{{ item.income_wo_penalties_budget | format }}</td>
+                            <td>{{ sumMarginIncomePerVagonosutki(item.station_group) | format }} сумма</td>
+                            <td>{{ item.income_w_penalties | format }}</td>
+                            <td>{{ item.income_w_penalties_budget | format }}</td>
+                            <td></td>
+                            <td>{{ sumMarginIncomePerVagonosutki(item.station_group) - item.income_wo_penalties || 0 | format }}</td>
+                            <td>{{ sumMarginIncomePerVagonosutki(item.station_group) - item.income_wo_penalties_budget || 0 | format }}</td>
+                            <td></td>
+                            <td></td>
                         </tr>
-                        <!-- Итерация по ключам и значениям внутри объекта station -->
+
                         <template v-for="(value, key) in item.station_group">
                             <tr :key="key" class="Total_blue" v-if="key !== 'revenue' && key !== 'weight' && key !== 'volume'
                                 && key !== 'amo'
@@ -173,7 +169,8 @@
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki | format }} </td>
+                                <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki | format
+                                    }} || margin_income{{ value.margin_income | format }}|| Вагсут{{ value.vagonosutki | format }}</td>
                                 <td style="border: 1px solid black;">{{ value.income_w_penalties | format }}</td>
                                 <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }}</td>
                                 <td style="border: 1px solid black;"></td>
@@ -181,15 +178,55 @@
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
-                                <!-- {{ value.margin_income / value.vagonosutki | format}} || {{ value.margin_income }} || {{ value.vagonosutki }} -->
-                                <!-- {{ value.margin_income_budget / value.vagonosutki_budget | format}} -->
+
                             </tr>
-                        
                         </template>
                     </template>
+                    <tr>
+                        <td>ИТОГО</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ sumAmountTable('volume')  | format}}</td>
+                        <td>{{ sumAmountTable('volume_budget')  | format}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ sumAmountTable('item.revenue_wo_nds')  | format}}</td>
+                        <td>{{ sumAmountTable('revenue_wo_nds_budget')  | format}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ sumAmountTable('md_wo_penalties')  | format}}</td>
+                        <td>{{ sumAmountTable('md_wo_penalties_budget')  | format}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ sumAmountTable('income_wo_penalties')  | format}}</td>
+                        <td>{{ sumAmountTable('income_wo_penalties_budget')  | format}}</td>
+                        <td></td>
+                        <td>{{ sumAmountTable('income_w_penalties')  | format}}</td>
+                        <td>{{ sumAmountTable('income_w_penalties_budget')  | format}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                    </tr>
                 </tbody>
             </table>
         </div>
+        </div>
+
+
+    
     </section>
 </template>
 
@@ -198,7 +235,7 @@
 import api from '@/api/directory';
 import apiWagon from "@/api/wagonPark";
 import cp_work_names from './testData.js'
-
+import Handsontable from 'handsontable';
 export default {
     props: ['bp_data', 'margin_income_data', 'budget_data', "date_begin"],
     data() {
@@ -209,13 +246,11 @@ export default {
             data123: cp_work_names.cp_work_names.margin_incomes,
             memo: {},
             exampleObject: "",
-         
+
         }
     },
-    async mounted(){
-    //    console.log(this.deepVagonosutkiSum(), 'вагоносутки')
-    console.log(this.containsAtLeastTwoMatches('Топливо дизельное',
-    'Топливо дизельное с температурой вспышки ниже 61С (в закрытом тигле)'))
+     mounted() {
+     
     },
     filters: {
         format(value) {
@@ -243,31 +278,47 @@ export default {
             deep: true
         }
     },
-    methods: {
-        deepVagonosutkiSum() {
-      // Функция для поиска самого глубокого значения vagonosutki
-      function findDeepestVagonosutki(obj) {
-        let deepestVagonosutki = 0;
+    methods: {  
 
-        function findDeepest(obj) {
-          for (let key in obj) {
-            if (typeof obj[key] === 'object') {
-              findDeepest(obj[key]); // Рекурсивный вызов для каждого вложенного объекта
-            } else if (key === 'vagonosutki') {
-              deepestVagonosutki += obj[key]; // Найдено значение vagonosutki, суммируем его
-            }
-          }
-        }
-
-        findDeepest(obj); // Начинаем поиск с корневого объекта
-
-        return deepestVagonosutki;
-      }
-
-      // Вызываем функцию для объекта
-      return findDeepestVagonosutki(this.exampleObject);
+        moveScrollbarToTop() {
+      const container = this.$refs.tableContainer;
+      const content = this.$refs.scrollTableContent;
+      
+      // Перемещаем скроллбар вверх контейнера
+      container.scrollTop = content.scrollHeight;
     },
-  
+    setupScrollListener() {
+      const container = this.$refs.tableContainer;
+      
+      // Добавляем обработчик события прокрутки контейнера
+      container.addEventListener('scroll', () => {
+        container.scrollTop = 0; // Прокручиваем контейнер в самый верх
+      });
+    },
+        deepVagonosutkiSum() {
+            // Функция для поиска самого глубокого значения vagonosutki
+            function findDeepestVagonosutki(obj) {
+                let deepestVagonosutki = 0;
+
+                function findDeepest(obj) {
+                    for (let key in obj) {
+                        if (typeof obj[key] === 'object') {
+                            findDeepest(obj[key]); // Рекурсивный вызов для каждого вложенного объекта
+                        } else if (key === 'vagonosutki') {
+                            deepestVagonosutki += obj[key]; // Найдено значение vagonosutki, суммируем его
+                        }
+                    }
+                }
+
+                findDeepest(obj); // Начинаем поиск с корневого объекта
+
+                return deepestVagonosutki;
+            }
+
+            // Вызываем функцию для объекта
+            return findDeepestVagonosutki(this.exampleObject);
+        },
+
         async test() {
             let res = await api.getBudget(this.date_begin_create + '-01')
             console.log(res.data.data)
@@ -287,6 +338,10 @@ export default {
             a.click();
             document.body.removeChild(a);
         },
+        sumAmountTable(fieldName) {
+            if (!this.businessPlanData) return 0
+            return this.businessPlanData.reduce((total, item) => total + item[fieldName] || 0, 0)
+        },
         calculateTotalVolume(stationGroup, type) {
             if (!stationGroup) return 0
             const valuesArray = Object.values(stationGroup)
@@ -295,6 +350,18 @@ export default {
                 return acc + item[type]
             }, 0)
             return totalVolume
+        },
+        sumMarginIncomePerVagonosutki(stationGroup) {
+            let sum = 0;
+            for (let key in stationGroup) {
+                if (stationGroup.hasOwnProperty(key)) {
+                    let value = stationGroup[key];
+                    if (value.vagonosutki !== 0) {
+                        sum += value.margin_income / value.vagonosutki;
+                    }
+                }
+            }
+            return sum;
         },
         calculateTotalVolume2(stationGroup, type, vagonosutki) {
             // Проверяем, что stationGroup не равен null или undefined
@@ -369,7 +436,6 @@ export default {
             let matchCount = 0; // Счетчик для подсчета количества совпадений
             for (let productWord of productWords) {
                 for (let cargoWord of cargoWords) {
-                    console.log(productWord, cargoWord)
                     // Проверяем, содержится ли слово из product полностью в каком-либо слове из cargo
                     if (cargoWord.toLowerCase().includes(productWord.toLowerCase())) {
                         matchCount++; // Увеличиваем счетчик при нахождении совпадения
@@ -378,7 +444,6 @@ export default {
                 }
                 // Возвращаем true, если найдено минимум два совпадения
                 if (matchCount >= 2) {
-                    console.log(matchCount, product, cargo)
                     return true;
                 }
             }
@@ -387,100 +452,131 @@ export default {
         },
 
 
-    async getBPData() {
-        this.businessPlanData = ""
-        this.$emit('stateLoader', true);
-        try {
-            let response = await this.bp_data.data;
-            this.margin_income = await this.margin_income_data.margin_incomes;
-            console.log(this.margin_income, 'margin_income')
-
-            let budgetData = await this.budget_data.data
-
-            let preData = this.mergeArrays(response, budgetData).sort((a, b) => {
-                return a.client.localeCompare(b.client);
-            })
-
-            // Object.entries(sortedResponse).map(([client, data]) => ({ client, ...data }));
+        async getBPData() {
+            this.businessPlanData = ""
             this.$emit('stateLoader', true);
-            let station_group_west = ['ПРВ', 'МСК', 'ЮВС', 'ОКТ', 'СЕВ', 'КЛГ', 'СКВ', 'ГРК', 'КБШ', 'СВР', 'СКВ'];
-            let station_group_east = ['ЗСБ', 'КРС', 'ВСБ', 'ЗАБ', 'ДВС', 'ЖДЯ'];
-
-            // Создаем объект для мемоизации запросов
-
-
             try {
-                for (let i = 0; i < preData.length; i++) {
-                    let item = preData[i];
-                    let client = item.client;
+                let response = await this.bp_data.data;
+                this.margin_income = await this.margin_income_data.margin_incomes;
+                console.log(this.margin_income, 'margin_income')
 
-                    if (this.margin_income.hasOwnProperty(client)) {
-                        let clientData = this.margin_income[client];
+                let budgetData = await this.budget_data.data
 
-                        for (let station_departure in clientData) {
-                            for (let cargo in clientData[station_departure]) {
-                                for (let station_group in clientData[station_departure][cargo]) {
-                                    let stationListData = clientData[station_departure][cargo][station_group];
+                let preData = this.mergeArrays(response, budgetData).sort((a, b) => {
+                    return a.client.localeCompare(b.client);
+                })
 
-                                    for (let station_list in stationListData) {
-                                        if (
-                                            station_list === item.destination &&
-                                            // item.product.includes(cargo) 
-                                            // ||
-                                            this.containsAtLeastTwoMatches(item.product, cargo) 
-                                            &&
-                                            station_list !== 'revenue' &&
-                                            station_list !== 'weight' &&
-                                            station_list !== 'volume' &&
-                                            station_list !== 'amo'
-                                            && station_list !== 'empty_tariff'
-                                            && station_list !== 'fot'
-                                            && station_list !== 'loaded_tariff'
-                                            && station_list !== 'margin_income'
-                                            && station_list !== 'other_charges'
-                                            && station_list !== 'pps'
-                                            && station_list !== 'repair'
-                                            && station_list !== 'vagonosutki'
-                                            && station_list !== 'vagonosutki_empty'
-                                            && station_list !== 'vagonosutki_total'
-                                        ) {
-                                            // Найдена подходящая станция для текущего элемента
-                                            let data = stationListData[station_list];
-                                            item.station_group = {
-                                                [station_list]: data
-                                            };
-                                        } else if (
-                                            (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
-                                            station_list !== 'revenue' &&
-                                            station_list !== 'weight' &&
-                                            station_list !== 'volume' &&
-                                            station_list !== 'amo'
-                                            && station_list !== 'empty_tariff'
-                                            && station_list !== 'fot'
-                                            && station_list !== 'loaded_tariff'
-                                            && station_list !== 'margin_income'
-                                            && station_list !== 'other_charges'
-                                            && station_list !== 'pps'
-                                            && station_list !== 'repair'
-                                            && station_list !== 'vagonosutki'
-                                            && station_list !== 'vagonosutki_empty'
-                                            && station_list !== 'vagonosutki_total'
-                                            && 
-                                            // item.product.includes(cargo) 
-                                            // ||
-                                            this.containsAtLeastTwoMatches(item.product, cargo)
-                                        ) {
-                                            console.log(station_list, item.destination, 'item.destination')
-                                            // Проверяем станцию запад или восток
-                                            let code = await this.getRoadForStation(station_list, item.destination);
-                                            let isWest = item.destination === 'Станции РФ (Запад)';
-                                            let isEast = item.destination === 'Станции РФ (Восток)';
+                // Object.entries(sortedResponse).map(([client, data]) => ({ client, ...data }));
+                this.$emit('stateLoader', true);
+                let station_group_west = ['ПРВ', 'МСК', 'ЮВС', 'ОКТ', 'СЕВ', 'КЛГ', 'СКВ', 'ГРК', 'КБШ', 'СВР', 'СКВ'];
+                let station_group_east = ['ЗСБ', 'КРС', 'ВСБ', 'ЗАБ', 'ДВС', 'ЖДЯ'];
+                let all_station_group = Object.values(JSON.parse(localStorage.getItem('road')))
+                // Создаем объект для мемоизации запросов
+                
 
-                                            if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
-                                                if (!item.station_group) {
-                                                    item.station_group = {};
+                try {
+                    for (let i = 0; i < preData.length; i++) {
+                        let item = preData[i];
+                        let client = item.client;
+
+                        if (this.margin_income.hasOwnProperty(client)) {
+                            let clientData = this.margin_income[client];
+
+                            for (let station_departure in clientData) {
+                                for (let cargo in clientData[station_departure]) {
+                                    for (let station_group in clientData[station_departure][cargo]) {
+                                        let stationListData = clientData[station_departure][cargo][station_group];
+
+                                        for (let station_list in stationListData) {
+                                            if (
+                                                station_list === item.destination &&
+                                                // item.product.includes(cargo) 
+                                                // ||
+                                                this.containsAtLeastTwoMatches(item.product, cargo)
+                                                &&
+                                                station_list !== 'revenue' &&
+                                                station_list !== 'weight' &&
+                                                station_list !== 'volume' &&
+                                                station_list !== 'amo'
+                                                && station_list !== 'empty_tariff'
+                                                && station_list !== 'fot'
+                                                && station_list !== 'loaded_tariff'
+                                                && station_list !== 'margin_income'
+                                                && station_list !== 'other_charges'
+                                                && station_list !== 'pps'
+                                                && station_list !== 'repair'
+                                                && station_list !== 'vagonosutki'
+                                                && station_list !== 'vagonosutki_empty'
+                                                && station_list !== 'vagonosutki_total'
+                                            ) {
+                                                // Найдена подходящая станция для текущего элемента
+                                                let data = stationListData[station_list];
+                                                item.station_group = {
+                                                    [station_list]: data
+                                                };
+                                            }
+                                            else if (
+                                                (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
+                                                station_list !== 'revenue' &&
+                                                station_list !== 'weight' &&
+                                                station_list !== 'volume' &&
+                                                station_list !== 'amo'
+                                                && station_list !== 'empty_tariff'
+                                                && station_list !== 'fot'
+                                                && station_list !== 'loaded_tariff'
+                                                && station_list !== 'margin_income'
+                                                && station_list !== 'other_charges'
+                                                && station_list !== 'pps'
+                                                && station_list !== 'repair'
+                                                && station_list !== 'vagonosutki'
+                                                && station_list !== 'vagonosutki_empty'
+                                                && station_list !== 'vagonosutki_total'
+                                                &&
+                                                // item.product.includes(cargo) 
+                                                // ||
+                                                this.containsAtLeastTwoMatches(item.product, cargo)
+                                            ) {
+
+                                                // Проверяем станцию запад или восток
+                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                                let isWest = item.destination === 'Станции РФ (Запад)';
+                                                let isEast = item.destination === 'Станции РФ (Восток)';
+
+                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
+                                                    if (!item.station_group) {
+                                                        item.station_group = {};
+                                                    }
+                                                    item.station_group[station_list] = stationListData[station_list];
                                                 }
-                                                item.station_group[station_list] = stationListData[station_list];
+                                            } else if (
+                                                all_station_group.includes(item.destination) &&
+                                                station_list !== 'revenue' &&
+                                                station_list !== 'weight' &&
+                                                station_list !== 'volume' &&
+                                                station_list !== 'amo'
+                                                && station_list !== 'empty_tariff'
+                                                && station_list !== 'fot'
+                                                && station_list !== 'loaded_tariff'
+                                                && station_list !== 'margin_income'
+                                                && station_list !== 'other_charges'
+                                                && station_list !== 'pps'
+                                                && station_list !== 'repair'
+                                                && station_list !== 'vagonosutki'
+                                                && station_list !== 'vagonosutki_empty'
+                                                && station_list !== 'vagonosutki_total'
+                                                &&
+                                                this.containsAtLeastTwoMatches(item.product, cargo)) {
+                                              
+                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                                let isWest = item.destination === 'Станции РФ (Запад)';
+                                                let isEast = item.destination === 'Станции РФ (Восток)';
+
+                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
+                                                    if (!item.station_group) {
+                                                        item.station_group = {};
+                                                    }
+                                                    item.station_group[station_list] = stationListData[station_list];
+                                                }
                                             }
                                         }
                                     }
@@ -488,26 +584,39 @@ export default {
                             }
                         }
                     }
-                }
 
-                console.log(preData);
-                this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 2000 });
-                this.businessPlanData = preData;
-                console.log(this.businessPlanData, 'preData')
+                    this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 2000 });
+                    this.businessPlanData = preData;
+
+                } catch (error) {
+                    this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
+                }
             } catch (error) {
                 this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
+            } finally {
+                this.$emit('stateLoader', false);
             }
-        } catch (error) {
-            this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
-        } finally {
-            this.$emit('stateLoader', false);
         }
     }
-}
 }
 </script>
 
 <style scoped>
+
+.Container
+{
+    overflow-y: auto;
+    scrollbar-width: revert; 
+  scrollbar-color: grey lightgrey; /* Цвет скроллбара и его трека */
+}
+
+.Flipped, .Flipped .Content
+{
+    transform:rotateX(180deg);
+    -ms-transform:rotateX(180deg); /* IE 9 */
+    -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+}
+
 td {
     white-space: nowrap;
     padding: 2px 10px !important;
