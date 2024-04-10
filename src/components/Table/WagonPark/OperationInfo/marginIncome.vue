@@ -197,44 +197,7 @@
                             </template>
 
                         </template>
-                        <tr>
-                            <td>ИТОГО</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>{{ sumAmountTable('volume') | format }}</td>
-                            <td>{{ sumAmountTable('volume_budget') | format }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>{{ sumAmountTable('item.revenue_wo_nds') | format }}</td>
-                            <td>{{ sumAmountTable('revenue_wo_nds_budget') | format }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>{{ sumAmountTable('md_wo_penalties') | format }}</td>
-                            <td>{{ sumAmountTable('md_wo_penalties_budget') | format }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>{{ sumAmountTable('income_wo_penalties') | format }}</td>
-                            <td>{{ sumAmountTable('income_wo_penalties_budget') | format }}</td>
-                            <td></td>
-                            <td>{{ sumAmountTable('income_w_penalties') | format }}</td>
-                            <td>{{ sumAmountTable('income_w_penalties_budget') | format }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
 
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -250,7 +213,6 @@
 import api from '@/api/directory';
 import apiWagon from "@/api/wagonPark";
 import cp_work_names from './testData.js'
-import Handsontable from 'handsontable';
 export default {
     props: ['bp_data', 'margin_income_data', 'budget_data', "date_begin"],
     data() {
@@ -307,9 +269,7 @@ export default {
         }
     },
     methods: {
-        toggleIconType(type) {
-            item.expanded = !item.expanded;
-        },
+
         toggleRow(index) {
             this.$set(this.businessPlanData[index], 'expanded', !this.businessPlanData[index].expanded);
         },
@@ -320,21 +280,7 @@ export default {
                 return this.businessPlanData[index].client !== this.businessPlanData[index + 1].client;
             }
         },
-        moveScrollbarToTop() {
-            const container = this.$refs.tableContainer;
-            const content = this.$refs.scrollTableContent;
 
-            // Перемещаем скроллбар вверх контейнера
-            container.scrollTop = content.scrollHeight;
-        },
-        setupScrollListener() {
-            const container = this.$refs.tableContainer;
-
-            // Добавляем обработчик события прокрутки контейнера
-            container.addEventListener('scroll', () => {
-                container.scrollTop = 0; // Прокручиваем контейнер в самый верх
-            });
-        },
         deepVagonosutkiSum() {
             // Функция для поиска самого глубокого значения vagonosutki
             function findDeepestVagonosutki(obj) {
@@ -632,7 +578,7 @@ export default {
                                                 station_list !== 'vagonosutki_total' &&
                                                 this.containsAtLeastTwoMatches(item.product, cargo)
                                             ) {
-                                                console.log(item.destination, station_list, 'я из 3 блока');
+                                                // console.log(item.destination, station_list, 'я из 3 блока');
                                                 let code = await this.getRoadForStation(station_list, item.destination);
 
                                                 // Проверяем, что станция содержится в массиве all_station_group
@@ -693,7 +639,37 @@ export default {
                         }
                     }
 
-                    // Выводим исходный массив с добавленными объектами "Итого"
+                    // Добавляем объект с общей суммой по массиву
+                    const grandTotal = {
+                        client: "Общая сумма по массиву",
+                        volume: 0,
+                        revenue_wo_nds: 0,
+                        md_wo_penalties: 0,
+                        income_wo_penalties: 0,
+                        volume_budget: 0,
+                        revenue_wo_nds_budget: 0,
+                        md_wo_penalties_budget: 0,
+                        income_wo_penalties_budget: 0
+                    };
+
+                    // Суммируем значения всех объектов "Итого"
+                    result.forEach(item => {
+                        if (item.client.includes("Итого")) {
+                            grandTotal.volume += item.volume || 0;
+                            grandTotal.revenue_wo_nds += item.revenue_wo_nds || 0;
+                            grandTotal.md_wo_penalties += item.md_wo_penalties || 0;
+                            grandTotal.income_wo_penalties += item.income_wo_penalties || 0;
+                            grandTotal.volume_budget += item.volume_budget || 0;
+                            grandTotal.revenue_wo_nds_budget += item.revenue_wo_nds_budget || 0;
+                            grandTotal.md_wo_penalties_budget += item.md_wo_penalties_budget || 0;
+                            grandTotal.income_wo_penalties_budget += item.income_wo_penalties_budget || 0;
+                        }
+                    });
+
+                    // Добавляем объект с общей суммой в конец результата
+                    result.push(grandTotal);
+                    console.log(result)
+                    // Выводим исходный массив с добавленными объектами "Итого" и общей суммой
                     this.businessPlanData = result;
                     this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 3500 });
                     console.log(this.businessPlanData)
