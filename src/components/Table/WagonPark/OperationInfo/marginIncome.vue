@@ -88,18 +88,15 @@
                                 || index !== 'other_charges'
                                 || index !== 'pps'
                                 || index !== 'repair'
-                                || index !== 'vagonosutki'"
-                                :class="{Total_1 : item.client.includes('Итого')}"
-                                @click="toggleRow(index)"
-                                >
+                                || index !== 'vagonosutki'" :class="{ Total_1: item.client.includes('Итого') }"
+                                @click="toggleRow(index)">
 
-                                <td >
-                                    <b-icon 
-                                    :icon="item.expanded ?'x-square-fill' : 'plus-square' " 
-                                    aria-hidden="true" 
-                                    style="position: absolute; left: 10px; margin-top: 5px;"
-                                    v-if="item.station_group"></b-icon>
-                                    {{ item.client }}</td>
+                                <td>
+                                    <b-icon :icon="item.expanded ? 'x-square-fill' : 'plus-square'" aria-hidden="true"
+                                        style="position: absolute; left: 10px; margin-top: 5px;"
+                                        v-if="item.station_group"></b-icon>
+                                    {{ item.client }}
+                                </td>
                                 <td></td>
                                 <td>{{ item.product }}</td>
                                 <td>{{ item.destination }}</td>
@@ -156,8 +153,7 @@
                                     && key !== 'repair'
                                     && index !== 'vagonosutki'
                                     && key !== 'vagonosutki_empty'
-                                    && key !== 'vagonosutki_total'"
-                                    v-show="item.expanded">
+                                    && key !== 'vagonosutki_total'" v-show="item.expanded">
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
@@ -186,9 +182,11 @@
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki | format }} </td>
+                                    <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki |
+                                        format }} </td>
                                     <td style="border: 1px solid black;">{{ value.income_w_penalties | format }}</td>
-                                    <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }}</td>
+                                    <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }}
+                                    </td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
@@ -309,11 +307,11 @@ export default {
         }
     },
     methods: {
-        toggleIconType(type){
-           item.expanded = !item.expanded;
+        toggleIconType(type) {
+            item.expanded = !item.expanded;
         },
         toggleRow(index) {
-          this.$set(this.businessPlanData[index], 'expanded', !this.businessPlanData[index].expanded);  
+            this.$set(this.businessPlanData[index], 'expanded', !this.businessPlanData[index].expanded);
         },
         isLastClient(index) {
             if (index === this.businessPlanData.length - 1) {
@@ -522,7 +520,7 @@ export default {
 
         async getBPData() {
             // this.businessPlanData = ""
-           
+
             try {
                 let response = await this.bp_data.data;
                 this.margin_income = await this.margin_income_data.margin_incomes;
@@ -621,25 +619,24 @@ export default {
                                                 station_list !== 'revenue' &&
                                                 station_list !== 'weight' &&
                                                 station_list !== 'volume' &&
-                                                station_list !== 'amo'
-                                                && station_list !== 'empty_tariff'
-                                                && station_list !== 'fot'
-                                                && station_list !== 'loaded_tariff'
-                                                && station_list !== 'margin_income'
-                                                && station_list !== 'other_charges'
-                                                && station_list !== 'pps'
-                                                && station_list !== 'repair'
-                                                && station_list !== 'vagonosutki'
-                                                && station_list !== 'vagonosutki_empty'
-                                                && station_list !== 'vagonosutki_total'
-                                                &&
-                                                this.containsAtLeastTwoMatches(item.product, cargo)) {
-
+                                                station_list !== 'amo' &&
+                                                station_list !== 'empty_tariff' &&
+                                                station_list !== 'fot' &&
+                                                station_list !== 'loaded_tariff' &&
+                                                station_list !== 'margin_income' &&
+                                                station_list !== 'other_charges' &&
+                                                station_list !== 'pps' &&
+                                                station_list !== 'repair' &&
+                                                station_list !== 'vagonosutki' &&
+                                                station_list !== 'vagonosutki_empty' &&
+                                                station_list !== 'vagonosutki_total' &&
+                                                this.containsAtLeastTwoMatches(item.product, cargo)
+                                            ) {
+                                                console.log(item.destination, station_list, 'я из 3 блока');
                                                 let code = await this.getRoadForStation(station_list, item.destination);
-                                                let isWest = item.destination === 'Станции РФ (Запад)';
-                                                let isEast = item.destination === 'Станции РФ (Восток)';
 
-                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
+                                                // Проверяем, что станция содержится в массиве all_station_group
+                                                if (all_station_group.includes(code)) {
                                                     if (!item.station_group) {
                                                         item.station_group = {};
                                                     }
@@ -653,7 +650,7 @@ export default {
                         }
                     }
 
-                  
+
                     // Получаем объект с суммами по клиентам
                     const summarizedData = this.summarizeByClient(preData);
 
@@ -737,9 +734,11 @@ td {
     white-space: nowrap;
     padding: 2px 10px !important;
 }
-tr:hover{
+
+tr:hover {
     background-color: #f5f5f5;
 }
+
 .filter_b {
     width: 20vw;
 }
