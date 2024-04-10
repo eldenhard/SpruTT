@@ -19,214 +19,235 @@
         </table>
         <div class="Container Flipped" ref="tableContainer">
             <div class="Content" ref="scrollTableContent">
-            <table ref="theTable">
-                <thead>
-                    <tr class="TableHeader">
-                        <td rowspan="2">Клиент</td>
-                        <td rowspan="2">Отправление</td>
-                        <td rowspan="2">Груз</td>
-                        <td rowspan="2">Назначение</td>
-                        <td colspan="5">Объем</td>
-                        <td colspan="5">Выручка (без штрафов)</td>
-                        <td colspan="5">МД (без штрафов)</td>
-                        <td colspan="2">Стат нагрузка</td>
-                        <td colspan="2">Оборот</td>
-                        <td colspan="2">Штрафы</td>
-                        <td colspan="10">Доходность</td>
-                    </tr>
-                    <tr class="TableHeader">
-                        <td>БП</td>
-                        <td>Б</td>
-                        <td>Факт</td>
-                        <td>Откл. БП</td>
-                        <td>Откл. Б</td>
-
-                        <td>БП</td>
-                        <td>Б</td>
-                        <td>Факт</td>
-                        <td>Откл. БП</td>
-                        <td>Откл. Б</td>
-
-                        <td>БП</td>
-                        <td>Б</td>
-                        <td>Факт</td>
-                        <td>Откл. БП</td>
-                        <td>Откл. Б</td>
-
-                        <td>План</td>
-                        <td>Факт</td>
-
-                        <td>План</td>
-                        <td>Факт</td>
-
-                        <td>План</td>
-                        <td>Факт</td>
-
-                        <td>План(без штр) БП</td>
-                        <td>План(без штр) Б</td>
-                        <td>Факт(без штр)</td>
-                        <td>План (со штр) БП</td>
-                        <td>План (со штр) Б</td>
-                        <td>Факт (со штр)</td>
-                        <td>+/- БП(без штр)</td>
-                        <td>+/- Б(без штр)</td>
-                        <td>+/- БП(со штр)</td>
-                        <td>+/- Б(со штр)</td>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <template v-for="(item, index) in businessPlanData">
-                        <tr :key="index" v-if="index !== 'revenue'
-                            || index !== 'weight'
-                            || index !== 'volume'
-                            || index !== 'amo'
-                            || index !== 'empty_tariff'
-                            || index !== 'fot'
-                            || index !== 'loaded_tariff'
-                            || index !== 'margin_income'
-                            || index !== 'other_charges'
-                            || index !== 'pps'
-                            || index !== 'repair'
-                            || index !== 'vagonosutki'
-                        ">
-
-                            <td>{{ item.client }}</td>
-                            <td></td>
-                            <td>{{ item.product }}</td>
-                            <td>{{ item.destination }}</td>
-                            <td>{{ item.volume | format }}</td>
-                            <td>{{ item.volume_budget | format }}</td>
-                            <td>{{ calculateTotalVolume(item.station_group, 'weight') | format }}</td>
-                            <td>{{ (calculateTotalVolume(item.station_group, 'weight') - item.volume) | format }}</td>
-                            <td>{{ (calculateTotalVolume(item.station_group, 'weight') - item.volume_budget) | format }}</td>
-                            <td>{{ item.revenue_wo_nds | format }}</td>
-                            <td>{{ item.revenue_wo_nds_budget | format }}</td>
-                            <td>{{ calculateTotalVolume(item.station_group, 'revenue') | format }}</td>
-                            <td>{{ (calculateTotalVolume(item.station_group, 'revenue') - item.revenue_wo_nds) | format}}</td>
-                            <td>{{ (calculateTotalVolume(item.station_group, 'revenue') - item.revenue_wo_nds_budget) | format }}</td>
-                            <td>{{ item.md_wo_penalties | format }}</td>
-                            <td>{{ item.md_wo_penalties_budget | format }}</td>
-                            <td>{{ calculateTotalVolume(item.station_group, 'margin_income') | format }}</td>
-                            <td>{{ (calculateTotalVolume(item.station_group, 'margin_income') - item.md_wo_penalties) | format }}</td>
-                            <td>{{ (calculateTotalVolume(item.station_group, 'margin_income') - item.md_wo_penalties_budget) | format }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>{{ item.income_wo_penalties | format }}</td>
-                            <td>{{ item.income_wo_penalties_budget | format }}</td>
-                            <td>{{ sumMarginIncomePerVagonosutki(item.station_group) | format }} сумма</td>
-                            <td>{{ item.income_w_penalties | format }}</td>
-                            <td>{{ item.income_w_penalties_budget | format }}</td>
-                            <td></td>
-                            <td>{{ sumMarginIncomePerVagonosutki(item.station_group) - item.income_wo_penalties || 0 | format }}</td>
-                            <td>{{ sumMarginIncomePerVagonosutki(item.station_group) - item.income_wo_penalties_budget || 0 | format }}</td>
-                            <td></td>
-                            <td></td>
+                <table ref="theTable">
+                    <thead>
+                        <tr class="TableHeader">
+                            <td rowspan="2">Клиент</td>
+                            <td rowspan="2">Отправление</td>
+                            <td rowspan="2">Груз</td>
+                            <td rowspan="2">Назначение</td>
+                            <td colspan="5">Объем</td>
+                            <td colspan="5">Выручка (без штрафов)</td>
+                            <td colspan="5">МД (без штрафов)</td>
+                            <td colspan="2">Стат нагрузка</td>
+                            <td colspan="2">Оборот</td>
+                            <td colspan="2">Штрафы</td>
+                            <td colspan="10">Доходность</td>
                         </tr>
+                        <tr class="TableHeader">
+                            <td>БП</td>
+                            <td>Б</td>
+                            <td>Факт</td>
+                            <td>Откл. БП</td>
+                            <td>Откл. Б</td>
 
-                        <template v-for="(value, key) in item.station_group">
-                            <tr :key="key" class="Total_blue" v-if="key !== 'revenue' && key !== 'weight' && key !== 'volume'
-                                && key !== 'amo'
-                                && key !== 'empty_tariff'
-                                && key !== 'fot'
-                                && key !== 'loaded_tariff'
-                                && key !== 'margin_income'
-                                && key !== 'other_charges'
-                                && key !== 'pps'
-                                && key !== 'repair'
-                                && index !== 'vagonosutki'
-                                && key !== 'vagonosutki_empty'
-                                && key !== 'vagonosutki_total'">
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;">{{ key }}</td>
-                                <!-- наименование вложенной станции-->
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;">{{ value.weight | format }}</td>
-                                <td style="border: 1px solid black;">{{ value.weight_budget | format }}</td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;">{{ value.revenue | format }}</td>
-                                <td style="border: 1px solid black;">{{ value.revenue_budget | format }}</td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;">{{ value.margin_income | format }}</td>
-                                <td style="border: 1px solid black;">{{ value.margin_income_budget | format }}</td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki | format
-                                    }} || margin_income{{ value.margin_income | format }}|| Вагсут{{ value.vagonosutki | format }}</td>
-                                <td style="border: 1px solid black;">{{ value.income_w_penalties | format }}</td>
-                                <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }}</td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
-                                <td style="border: 1px solid black;"></td>
+                            <td>БП</td>
+                            <td>Б</td>
+                            <td>Факт</td>
+                            <td>Откл. БП</td>
+                            <td>Откл. Б</td>
 
+                            <td>БП</td>
+                            <td>Б</td>
+                            <td>Факт</td>
+                            <td>Откл. БП</td>
+                            <td>Откл. Б</td>
+
+                            <td>План</td>
+                            <td>Факт</td>
+
+                            <td>План</td>
+                            <td>Факт</td>
+
+                            <td>План</td>
+                            <td>Факт</td>
+
+                            <td>План(без штр) БП</td>
+                            <td>План(без штр) Б</td>
+                            <td>Факт(без штр)</td>
+                            <td>План (со штр) БП</td>
+                            <td>План (со штр) Б</td>
+                            <td>Факт (со штр)</td>
+                            <td>+/- БП(без штр)</td>
+                            <td>+/- Б(без штр)</td>
+                            <td>+/- БП(со штр)</td>
+                            <td>+/- Б(со штр)</td>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template v-for="(item, index) in businessPlanData">
+                            <tr :key='`${item.client}_${index}_${Math.random() * 100}`' v-if="index !== 'revenue'
+                                || index !== 'weight'
+                                || index !== 'volume'
+                                || index !== 'amo'
+                                || index !== 'empty_tariff'
+                                || index !== 'fot'
+                                || index !== 'loaded_tariff'
+                                || index !== 'margin_income'
+                                || index !== 'other_charges'
+                                || index !== 'pps'
+                                || index !== 'repair'
+                                || index !== 'vagonosutki'"
+                                :class="{Total_1 : item.client.includes('Итого')}"
+                                @click="toggleRow(index)"
+                                >
+
+                                <td >
+                                    <b-icon @click="toggleIconType(item)" 
+                                    :icon="item.expanded ?'x-square-fill' : 'plus-square' " 
+                                    aria-hidden="true" 
+                                    style="position: absolute; left: 10px; margin-top: 5px;"
+                                    v-if="item.station_group"></b-icon>
+                                    {{ item.client }}</td>
+                                <td></td>
+                                <td>{{ item.product }}</td>
+                                <td>{{ item.destination }}</td>
+                                <td>{{ item.volume | format }}</td>
+                                <td>{{ item.volume_budget | format }}</td>
+                                <td>{{ calculateTotalVolume(item.station_group, 'weight') | format }}</td>
+                                <td>{{ (calculateTotalVolume(item.station_group, 'weight') - item.volume) | format }}
+                                </td>
+                                <td>{{ (calculateTotalVolume(item.station_group, 'weight') - item.volume_budget) |
+                                    format }}</td>
+                                <td>{{ item.revenue_wo_nds | format }}</td>
+                                <td>{{ item.revenue_wo_nds_budget | format }}</td>
+                                <td>{{ calculateTotalVolume(item.station_group, 'revenue') | format }}</td>
+                                <td>{{ (calculateTotalVolume(item.station_group, 'revenue') - item.revenue_wo_nds) |
+                                    format }}</td>
+                                <td>{{ (calculateTotalVolume(item.station_group, 'revenue') -
+                                    item.revenue_wo_nds_budget) | format }}</td>
+                                <td>{{ item.md_wo_penalties | format }}</td>
+                                <td>{{ item.md_wo_penalties_budget | format }}</td>
+                                <td>{{ calculateTotalVolume(item.station_group, 'margin_income') | format }}</td>
+                                <td>{{ (calculateTotalVolume(item.station_group, 'margin_income') -
+                                    item.md_wo_penalties) | format }}</td>
+                                <td>{{ (calculateTotalVolume(item.station_group, 'margin_income') -
+                                    item.md_wo_penalties_budget) | format }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{ item.income_wo_penalties | format }}</td>
+                                <td>{{ item.income_wo_penalties_budget | format }}</td>
+                                <td>{{ sumMarginIncomePerVagonosutki(item.station_group) | format }} сумма</td>
+                                <td>{{ item.income_w_penalties | format }}</td>
+                                <td>{{ item.income_w_penalties_budget | format }}</td>
+                                <td></td>
+                                <td>{{ sumMarginIncomePerVagonosutki(item.station_group) - item.income_wo_penalties || 0
+                                    | format }}</td>
+                                <td>{{ sumMarginIncomePerVagonosutki(item.station_group) -
+                                    item.income_wo_penalties_budget || 0 | format }}</td>
+                                <td></td>
+                                <td></td>
                             </tr>
+
+                            <template v-for="(value, key) in item.station_group">
+                                <tr :key="`${item.client}_${key}_${Math.random() * 100}`" class="Total_blue" v-if="key !== 'revenue' && key !== 'weight' && key !== 'volume'
+                                    && key !== 'amo'
+                                    && key !== 'empty_tariff'
+                                    && key !== 'fot'
+                                    && key !== 'loaded_tariff'
+                                    && key !== 'margin_income'
+                                    && key !== 'other_charges'
+                                    && key !== 'pps'
+                                    && key !== 'repair'
+                                    && index !== 'vagonosutki'
+                                    && key !== 'vagonosutki_empty'
+                                    && key !== 'vagonosutki_total'"
+                                    v-show="item.expanded">
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;">{{ key }}</td>
+                                    <!-- наименование вложенной станции-->
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;">{{ value.weight | format }}</td>
+                                    <td style="border: 1px solid black;">{{ value.weight_budget | format }}</td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;">{{ value.revenue | format }}</td>
+                                    <td style="border: 1px solid black;">{{ value.revenue_budget | format }}</td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;">{{ value.margin_income | format }}</td>
+                                    <td style="border: 1px solid black;">{{ value.margin_income_budget | format }}</td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki |
+                                        format
+                                        }} || margin_income{{ value.margin_income | format }}|| Вагсут{{
+                                            value.vagonosutki | format }}</td>
+                                    <td style="border: 1px solid black;">{{ value.income_w_penalties | format }}</td>
+                                    <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }}
+                                    </td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+
+                                </tr>
+                            </template>
+
                         </template>
-                    </template>
-                    <tr>
-                        <td>ИТОГО</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>{{ sumAmountTable('volume')  | format}}</td>
-                        <td>{{ sumAmountTable('volume_budget')  | format}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>{{ sumAmountTable('item.revenue_wo_nds')  | format}}</td>
-                        <td>{{ sumAmountTable('revenue_wo_nds_budget')  | format}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>{{ sumAmountTable('md_wo_penalties')  | format}}</td>
-                        <td>{{ sumAmountTable('md_wo_penalties_budget')  | format}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>{{ sumAmountTable('income_wo_penalties')  | format}}</td>
-                        <td>{{ sumAmountTable('income_wo_penalties_budget')  | format}}</td>
-                        <td></td>
-                        <td>{{ sumAmountTable('income_w_penalties')  | format}}</td>
-                        <td>{{ sumAmountTable('income_w_penalties_budget')  | format}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <tr>
+                            <td>ИТОГО</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ sumAmountTable('volume') | format }}</td>
+                            <td>{{ sumAmountTable('volume_budget') | format }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ sumAmountTable('item.revenue_wo_nds') | format }}</td>
+                            <td>{{ sumAmountTable('revenue_wo_nds_budget') | format }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ sumAmountTable('md_wo_penalties') | format }}</td>
+                            <td>{{ sumAmountTable('md_wo_penalties_budget') | format }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ sumAmountTable('income_wo_penalties') | format }}</td>
+                            <td>{{ sumAmountTable('income_wo_penalties_budget') | format }}</td>
+                            <td></td>
+                            <td>{{ sumAmountTable('income_w_penalties') | format }}</td>
+                            <td>{{ sumAmountTable('income_w_penalties_budget') | format }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
 
-                    </tr>
-                </tbody>
-            </table>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        </div>
 
 
-    
+
     </section>
 </template>
 
@@ -246,11 +267,24 @@ export default {
             data123: cp_work_names.cp_work_names.margin_incomes,
             memo: {},
             exampleObject: "",
+            icon_type: "plus-square"
 
         }
     },
-     mounted() {
-     
+    computed: {
+        filteredBusinessPlanData() {
+            const result = [];
+            for (let i = 0; i < this.businessPlanData.length; i++) {
+                result.push(this.businessPlanData[i]);
+                if (this.isLastClient(i)) {
+                    result.push({ isTotalRow: true }); // Добавляем объект для строки "Итого"
+                }
+            }
+            return result;
+        },
+    },
+    mounted() {
+
     },
     filters: {
         format(value) {
@@ -278,23 +312,35 @@ export default {
             deep: true
         }
     },
-    methods: {  
-
+    methods: {
+        toggleIconType(type){
+           item.expanded = !item.expanded;
+        },
+        toggleRow(index) {
+          this.$set(this.businessPlanData[index], 'expanded', !this.businessPlanData[index].expanded);  
+        },
+        isLastClient(index) {
+            if (index === this.businessPlanData.length - 1) {
+                return true; // Последний элемент
+            } else {
+                return this.businessPlanData[index].client !== this.businessPlanData[index + 1].client;
+            }
+        },
         moveScrollbarToTop() {
-      const container = this.$refs.tableContainer;
-      const content = this.$refs.scrollTableContent;
-      
-      // Перемещаем скроллбар вверх контейнера
-      container.scrollTop = content.scrollHeight;
-    },
-    setupScrollListener() {
-      const container = this.$refs.tableContainer;
-      
-      // Добавляем обработчик события прокрутки контейнера
-      container.addEventListener('scroll', () => {
-        container.scrollTop = 0; // Прокручиваем контейнер в самый верх
-      });
-    },
+            const container = this.$refs.tableContainer;
+            const content = this.$refs.scrollTableContent;
+
+            // Перемещаем скроллбар вверх контейнера
+            container.scrollTop = content.scrollHeight;
+        },
+        setupScrollListener() {
+            const container = this.$refs.tableContainer;
+
+            // Добавляем обработчик события прокрутки контейнера
+            container.addEventListener('scroll', () => {
+                container.scrollTop = 0; // Прокручиваем контейнер в самый верх
+            });
+        },
         deepVagonosutkiSum() {
             // Функция для поиска самого глубокого значения vagonosutki
             function findDeepestVagonosutki(obj) {
@@ -430,6 +476,32 @@ export default {
             return array1;
 
         },
+        summarizeByClient(data) {
+            return data.reduce((acc, item) => {
+                const client = item.client;
+                if (!acc[client]) {
+                    acc[client] = {
+                        volume: 0,
+                        revenue_wo_nds: 0,
+                        md_wo_penalties: 0,
+                        income_wo_penalties: 0,
+                        volume_budget: 0,
+                        revenue_wo_nds_budget: 0,
+                        md_wo_penalties_budget: 0,
+                        income_wo_penalties_budget: 0
+                    };
+                }
+                acc[client].volume += item.volume;
+                acc[client].revenue_wo_nds += item.revenue_wo_nds;
+                acc[client].md_wo_penalties += item.md_wo_penalties;
+                acc[client].income_wo_penalties += item.income_wo_penalties;
+                acc[client].volume_budget += item.volume_budget;
+                acc[client].revenue_wo_nds_budget += item.revenue_wo_nds_budget;
+                acc[client].md_wo_penalties_budget += item.md_wo_penalties_budget;
+                acc[client].income_wo_penalties_budget += item.income_wo_penalties_budget;
+                return acc;
+            }, {});
+        },
         containsAtLeastTwoMatches(product, cargo) {
             let productWords = product.split(" "); // Разбиваем строки на слова по пробелам
             let cargoWords = cargo.split(" ");
@@ -453,7 +525,7 @@ export default {
 
 
         async getBPData() {
-            this.businessPlanData = ""
+            // this.businessPlanData = ""
             this.$emit('stateLoader', true);
             try {
                 let response = await this.bp_data.data;
@@ -472,7 +544,7 @@ export default {
                 let station_group_east = ['ЗСБ', 'КРС', 'ВСБ', 'ЗАБ', 'ДВС', 'ЖДЯ'];
                 let all_station_group = Object.values(JSON.parse(localStorage.getItem('road')))
                 // Создаем объект для мемоизации запросов
-                
+
 
                 try {
                     for (let i = 0; i < preData.length; i++) {
@@ -515,69 +587,69 @@ export default {
                                                     [station_list]: data
                                                 };
                                             }
-                                            else if (
-                                                (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
-                                                station_list !== 'revenue' &&
-                                                station_list !== 'weight' &&
-                                                station_list !== 'volume' &&
-                                                station_list !== 'amo'
-                                                && station_list !== 'empty_tariff'
-                                                && station_list !== 'fot'
-                                                && station_list !== 'loaded_tariff'
-                                                && station_list !== 'margin_income'
-                                                && station_list !== 'other_charges'
-                                                && station_list !== 'pps'
-                                                && station_list !== 'repair'
-                                                && station_list !== 'vagonosutki'
-                                                && station_list !== 'vagonosutki_empty'
-                                                && station_list !== 'vagonosutki_total'
-                                                &&
-                                                // item.product.includes(cargo) 
-                                                // ||
-                                                this.containsAtLeastTwoMatches(item.product, cargo)
-                                            ) {
+                                            // else if (
+                                            //     (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
+                                            //     station_list !== 'revenue' &&
+                                            //     station_list !== 'weight' &&
+                                            //     station_list !== 'volume' &&
+                                            //     station_list !== 'amo'
+                                            //     && station_list !== 'empty_tariff'
+                                            //     && station_list !== 'fot'
+                                            //     && station_list !== 'loaded_tariff'
+                                            //     && station_list !== 'margin_income'
+                                            //     && station_list !== 'other_charges'
+                                            //     && station_list !== 'pps'
+                                            //     && station_list !== 'repair'
+                                            //     && station_list !== 'vagonosutki'
+                                            //     && station_list !== 'vagonosutki_empty'
+                                            //     && station_list !== 'vagonosutki_total'
+                                            //     &&
+                                            //     // item.product.includes(cargo) 
+                                            //     // ||
+                                            //     this.containsAtLeastTwoMatches(item.product, cargo)
+                                            // ) {
 
-                                                // Проверяем станцию запад или восток
-                                                let code = await this.getRoadForStation(station_list, item.destination);
-                                                let isWest = item.destination === 'Станции РФ (Запад)';
-                                                let isEast = item.destination === 'Станции РФ (Восток)';
+                                            //     // Проверяем станцию запад или восток
+                                            //     let code = await this.getRoadForStation(station_list, item.destination);
+                                            //     let isWest = item.destination === 'Станции РФ (Запад)';
+                                            //     let isEast = item.destination === 'Станции РФ (Восток)';
 
-                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
-                                                    if (!item.station_group) {
-                                                        item.station_group = {};
-                                                    }
-                                                    item.station_group[station_list] = stationListData[station_list];
-                                                }
-                                            } else if (
-                                                all_station_group.includes(item.destination) &&
-                                                station_list !== 'revenue' &&
-                                                station_list !== 'weight' &&
-                                                station_list !== 'volume' &&
-                                                station_list !== 'amo'
-                                                && station_list !== 'empty_tariff'
-                                                && station_list !== 'fot'
-                                                && station_list !== 'loaded_tariff'
-                                                && station_list !== 'margin_income'
-                                                && station_list !== 'other_charges'
-                                                && station_list !== 'pps'
-                                                && station_list !== 'repair'
-                                                && station_list !== 'vagonosutki'
-                                                && station_list !== 'vagonosutki_empty'
-                                                && station_list !== 'vagonosutki_total'
-                                                &&
-                                                this.containsAtLeastTwoMatches(item.product, cargo)) {
-                                              
-                                                let code = await this.getRoadForStation(station_list, item.destination);
-                                                let isWest = item.destination === 'Станции РФ (Запад)';
-                                                let isEast = item.destination === 'Станции РФ (Восток)';
+                                            //     if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
+                                            //         if (!item.station_group) {
+                                            //             item.station_group = {};
+                                            //         }
+                                            //         item.station_group[station_list] = stationListData[station_list];
+                                            //     }
+                                            // } else if (
+                                            //     all_station_group.includes(item.destination) &&
+                                            //     station_list !== 'revenue' &&
+                                            //     station_list !== 'weight' &&
+                                            //     station_list !== 'volume' &&
+                                            //     station_list !== 'amo'
+                                            //     && station_list !== 'empty_tariff'
+                                            //     && station_list !== 'fot'
+                                            //     && station_list !== 'loaded_tariff'
+                                            //     && station_list !== 'margin_income'
+                                            //     && station_list !== 'other_charges'
+                                            //     && station_list !== 'pps'
+                                            //     && station_list !== 'repair'
+                                            //     && station_list !== 'vagonosutki'
+                                            //     && station_list !== 'vagonosutki_empty'
+                                            //     && station_list !== 'vagonosutki_total'
+                                            //     &&
+                                            //     this.containsAtLeastTwoMatches(item.product, cargo)) {
 
-                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
-                                                    if (!item.station_group) {
-                                                        item.station_group = {};
-                                                    }
-                                                    item.station_group[station_list] = stationListData[station_list];
-                                                }
-                                            }
+                                            //     let code = await this.getRoadForStation(station_list, item.destination);
+                                            //     let isWest = item.destination === 'Станции РФ (Запад)';
+                                            //     let isEast = item.destination === 'Станции РФ (Восток)';
+
+                                            //     if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
+                                            //         if (!item.station_group) {
+                                            //             item.station_group = {};
+                                            //         }
+                                            //         item.station_group[station_list] = stationListData[station_list];
+                                            //     }
+                                            // }
                                         }
                                     }
                                 }
@@ -586,12 +658,57 @@ export default {
                     }
 
                     this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 2000 });
-                    this.businessPlanData = preData;
+                    // Получаем объект с суммами по клиентам
+                    const summarizedData = this.summarizeByClient(preData);
 
+                    // Создаем объект для хранения индексов последних объектов для каждого клиента
+                    const lastIndexMap = {};
+
+                    // Проходим по массиву preData и определяем индексы последних объектов для каждого клиента
+                    for (let i = 0; i < preData.length; i++) {
+                        const client = preData[i].client;
+                        lastIndexMap[client] = i;
+                    }
+
+                    // Создаем массив для хранения результата с добавленными объектами "Итого"
+                    const result = [];
+
+                    // Проходим по массиву preData и добавляем объекты "Итого" после последних объектов с каждым клиентом
+                    for (let i = 0; i < preData.length; i++) {
+                        const item = preData[i];
+                        const client = item.client;
+
+                        // Проверяем, был ли уже добавлен объект "Итого" для данного клиента
+                        if (i === lastIndexMap[client]) {
+                            const totalObject = {
+                                client: "Итого по " + client,
+                                volume: summarizedData[client].volume,
+                                revenue_wo_nds: summarizedData[client].revenue_wo_nds,
+                                md_wo_penalties: summarizedData[client].md_wo_penalties,
+                                income_wo_penalties: summarizedData[client].income_wo_penalties,
+                                volume_budget: summarizedData[client].volume_budget,
+                                revenue_wo_nds_budget: summarizedData[client].revenue_wo_nds_budget,
+                                md_wo_penalties_budget: summarizedData[client].md_wo_penalties_budget,
+                                income_wo_penalties_budget: summarizedData[client].income_wo_penalties_budget
+                            };
+
+                            // Добавляем объект "Итого" после последнего объекта с текущим клиентом
+                            result.push(item); // добавляем текущий объект
+                            result.push(totalObject); // добавляем объект "Итого"
+                        } else {
+                            result.push(item); // добавляем текущий объект без изменений
+                        }
+                    }
+
+                    // Выводим исходный массив с добавленными объектами "Итого"
+                    this.businessPlanData = result;
+                    console.log(this.businessPlanData)
                 } catch (error) {
+                    console.log(error)
                     this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
                 }
             } catch (error) {
+                console.log(error)
                 this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
             } finally {
                 this.$emit('stateLoader', false);
@@ -602,26 +719,29 @@ export default {
 </script>
 
 <style scoped>
-
-.Container
-{   
+.Container {
     overflow-y: auto;
-    scrollbar-width: revert; 
-  scrollbar-color: grey lightgrey; /* Цвет скроллбара и его трека */
+    scrollbar-width: revert;
+    scrollbar-color: grey lightgrey;
+    /* Цвет скроллбара и его трека */
 }
 
-.Flipped, .Flipped .Content
-{
-    transform:rotateX(180deg);
-    -ms-transform:rotateX(180deg); /* IE 9 */
-    -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+.Flipped,
+.Flipped .Content {
+    transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    /* IE 9 */
+    -webkit-transform: rotateX(180deg);
+    /* Safari and Chrome */
 }
 
 td {
     white-space: nowrap;
     padding: 2px 10px !important;
 }
-
+tr:hover{
+    background-color: #f5f5f5;
+}
 .filter_b {
     width: 20vw;
 }
@@ -631,6 +751,4 @@ td {
     overflow-x: auto;
     /* Добавляем горизонтальную прокрутку, если содержимое таблицы выходит за пределы контейнера */
 }
-
-
 </style>

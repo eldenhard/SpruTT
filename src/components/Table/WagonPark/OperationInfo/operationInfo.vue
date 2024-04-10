@@ -870,7 +870,7 @@ export default {
 
         Actioned() {
             try {
-              
+                this.responseServerData = ""
                 let data = this.currentClients.map((item) => {
                     return { client: item.client }
                 })
@@ -880,7 +880,7 @@ export default {
                 const queryString = `?wagon_type=${this.wag_type}&report_date=${this.date_begin}&${clientsParams}`;
                 this.loader = true
                 Promise.all([
-                api.getDataForOperSpravka(queryString),
+                // api.getDataForOperSpravka(queryString),
                 api.getDataForOperSpravkaOtherClients(queryString),
                 api.getBP(queryString), 
                 api.getBusinessPlan(dateBeginChange+'01'),
@@ -888,14 +888,15 @@ export default {
 
                 ])
                     .then(([
-                        response1, 
+                        // response1, 
                         response2, 
                         response3,
                          response4, 
                          response5]) => {
                         this.loader = false
-                        this.responseServerData = response1.data
-                        // cp_work_names.cp_work_names,
+                        this.responseServerData =  cp_work_names.cp_work_names
+                        // response1.data
+                       
                         // response1.data
                         // console.log(this.responseServerData)
                         this.responseServerDataOtherClients = response2.data
