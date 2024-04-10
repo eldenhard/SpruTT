@@ -698,15 +698,15 @@ export default {
 
                     // Выводим исходный массив с добавленными объектами "Итого"
                     this.businessPlanData = result;
-                    this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 2000 });
+                    this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 3500 });
                     console.log(this.businessPlanData)
                 } catch (error) {
                     console.log(error)
-                    this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
+                    this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 6000 });
                 }
             } catch (error) {
                 console.log(error)
-                this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
+                this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 6000 });
             } finally {
                 this.$emit('stateLoader', false);
                 this.$emit('startLoaderFromChildComponent', false)
