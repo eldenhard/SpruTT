@@ -94,7 +94,7 @@
                                 >
 
                                 <td >
-                                    <b-icon @click="toggleIconType(item)" 
+                                    <b-icon 
                                     :icon="item.expanded ?'x-square-fill' : 'plus-square' " 
                                     aria-hidden="true" 
                                     style="position: absolute; left: 10px; margin-top: 5px;"
@@ -132,7 +132,7 @@
                                 <td></td>
                                 <td>{{ item.income_wo_penalties | format }}</td>
                                 <td>{{ item.income_wo_penalties_budget | format }}</td>
-                                <td>{{ sumMarginIncomePerVagonosutki(item.station_group) | format }} сумма</td>
+                                <td>{{ sumMarginIncomePerVagonosutki(item.station_group) | format }} </td>
                                 <td>{{ item.income_w_penalties | format }}</td>
                                 <td>{{ item.income_w_penalties_budget | format }}</td>
                                 <td></td>
@@ -186,13 +186,9 @@
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki |
-                                        format
-                                        }} || margin_income{{ value.margin_income | format }}|| Вагсут{{
-                                            value.vagonosutki | format }}</td>
+                                    <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki | format }} </td>
                                     <td style="border: 1px solid black;">{{ value.income_w_penalties | format }}</td>
-                                    <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }}
-                                    </td>
+                                    <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }}</td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
@@ -526,7 +522,7 @@ export default {
 
         async getBPData() {
             // this.businessPlanData = ""
-            this.$emit('stateLoader', true);
+           
             try {
                 let response = await this.bp_data.data;
                 this.margin_income = await this.margin_income_data.margin_incomes;
@@ -539,7 +535,7 @@ export default {
                 })
 
                 // Object.entries(sortedResponse).map(([client, data]) => ({ client, ...data }));
-                this.$emit('stateLoader', true);
+                this.$emit('startLoaderFromChildComponent', true)
                 let station_group_west = ['ПРВ', 'МСК', 'ЮВС', 'ОКТ', 'СЕВ', 'КЛГ', 'СКВ', 'ГРК', 'КБШ', 'СВР', 'СКВ'];
                 let station_group_east = ['ЗСБ', 'КРС', 'ВСБ', 'ЗАБ', 'ДВС', 'ЖДЯ'];
                 let all_station_group = Object.values(JSON.parse(localStorage.getItem('road')))
@@ -587,69 +583,69 @@ export default {
                                                     [station_list]: data
                                                 };
                                             }
-                                            // else if (
-                                            //     (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
-                                            //     station_list !== 'revenue' &&
-                                            //     station_list !== 'weight' &&
-                                            //     station_list !== 'volume' &&
-                                            //     station_list !== 'amo'
-                                            //     && station_list !== 'empty_tariff'
-                                            //     && station_list !== 'fot'
-                                            //     && station_list !== 'loaded_tariff'
-                                            //     && station_list !== 'margin_income'
-                                            //     && station_list !== 'other_charges'
-                                            //     && station_list !== 'pps'
-                                            //     && station_list !== 'repair'
-                                            //     && station_list !== 'vagonosutki'
-                                            //     && station_list !== 'vagonosutki_empty'
-                                            //     && station_list !== 'vagonosutki_total'
-                                            //     &&
-                                            //     // item.product.includes(cargo) 
-                                            //     // ||
-                                            //     this.containsAtLeastTwoMatches(item.product, cargo)
-                                            // ) {
+                                            else if (
+                                                (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
+                                                station_list !== 'revenue' &&
+                                                station_list !== 'weight' &&
+                                                station_list !== 'volume' &&
+                                                station_list !== 'amo'
+                                                && station_list !== 'empty_tariff'
+                                                && station_list !== 'fot'
+                                                && station_list !== 'loaded_tariff'
+                                                && station_list !== 'margin_income'
+                                                && station_list !== 'other_charges'
+                                                && station_list !== 'pps'
+                                                && station_list !== 'repair'
+                                                && station_list !== 'vagonosutki'
+                                                && station_list !== 'vagonosutki_empty'
+                                                && station_list !== 'vagonosutki_total'
+                                                &&
+                                                // item.product.includes(cargo) 
+                                                // ||
+                                                this.containsAtLeastTwoMatches(item.product, cargo)
+                                            ) {
 
-                                            //     // Проверяем станцию запад или восток
-                                            //     let code = await this.getRoadForStation(station_list, item.destination);
-                                            //     let isWest = item.destination === 'Станции РФ (Запад)';
-                                            //     let isEast = item.destination === 'Станции РФ (Восток)';
+                                                // Проверяем станцию запад или восток
+                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                                let isWest = item.destination === 'Станции РФ (Запад)';
+                                                let isEast = item.destination === 'Станции РФ (Восток)';
 
-                                            //     if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
-                                            //         if (!item.station_group) {
-                                            //             item.station_group = {};
-                                            //         }
-                                            //         item.station_group[station_list] = stationListData[station_list];
-                                            //     }
-                                            // } else if (
-                                            //     all_station_group.includes(item.destination) &&
-                                            //     station_list !== 'revenue' &&
-                                            //     station_list !== 'weight' &&
-                                            //     station_list !== 'volume' &&
-                                            //     station_list !== 'amo'
-                                            //     && station_list !== 'empty_tariff'
-                                            //     && station_list !== 'fot'
-                                            //     && station_list !== 'loaded_tariff'
-                                            //     && station_list !== 'margin_income'
-                                            //     && station_list !== 'other_charges'
-                                            //     && station_list !== 'pps'
-                                            //     && station_list !== 'repair'
-                                            //     && station_list !== 'vagonosutki'
-                                            //     && station_list !== 'vagonosutki_empty'
-                                            //     && station_list !== 'vagonosutki_total'
-                                            //     &&
-                                            //     this.containsAtLeastTwoMatches(item.product, cargo)) {
+                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
+                                                    if (!item.station_group) {
+                                                        item.station_group = {};
+                                                    }
+                                                    item.station_group[station_list] = stationListData[station_list];
+                                                }
+                                            } else if (
+                                                all_station_group.includes(item.destination) &&
+                                                station_list !== 'revenue' &&
+                                                station_list !== 'weight' &&
+                                                station_list !== 'volume' &&
+                                                station_list !== 'amo'
+                                                && station_list !== 'empty_tariff'
+                                                && station_list !== 'fot'
+                                                && station_list !== 'loaded_tariff'
+                                                && station_list !== 'margin_income'
+                                                && station_list !== 'other_charges'
+                                                && station_list !== 'pps'
+                                                && station_list !== 'repair'
+                                                && station_list !== 'vagonosutki'
+                                                && station_list !== 'vagonosutki_empty'
+                                                && station_list !== 'vagonosutki_total'
+                                                &&
+                                                this.containsAtLeastTwoMatches(item.product, cargo)) {
 
-                                            //     let code = await this.getRoadForStation(station_list, item.destination);
-                                            //     let isWest = item.destination === 'Станции РФ (Запад)';
-                                            //     let isEast = item.destination === 'Станции РФ (Восток)';
+                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                                let isWest = item.destination === 'Станции РФ (Запад)';
+                                                let isEast = item.destination === 'Станции РФ (Восток)';
 
-                                            //     if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
-                                            //         if (!item.station_group) {
-                                            //             item.station_group = {};
-                                            //         }
-                                            //         item.station_group[station_list] = stationListData[station_list];
-                                            //     }
-                                            // }
+                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
+                                                    if (!item.station_group) {
+                                                        item.station_group = {};
+                                                    }
+                                                    item.station_group[station_list] = stationListData[station_list];
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -657,7 +653,7 @@ export default {
                         }
                     }
 
-                    this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 2000 });
+                  
                     // Получаем объект с суммами по клиентам
                     const summarizedData = this.summarizeByClient(preData);
 
@@ -702,6 +698,7 @@ export default {
 
                     // Выводим исходный массив с добавленными объектами "Итого"
                     this.businessPlanData = result;
+                    this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 2000 });
                     console.log(this.businessPlanData)
                 } catch (error) {
                     console.log(error)
@@ -712,6 +709,7 @@ export default {
                 this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 2000 });
             } finally {
                 this.$emit('stateLoader', false);
+                this.$emit('startLoaderFromChildComponent', false)
             }
         }
     }
