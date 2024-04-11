@@ -102,7 +102,8 @@
                                 <td>{{ item.destination }}</td>
                                 <td>{{ item.volume | format }}</td>
                                 <td>{{ item.volume_budget | format }}</td>
-                                <td>{{ calculateTotalVolume(item.station_group, 'weight') | format }}</td>
+                                <!-- <td>{{ calculateTotalVolume(item.station_group, 'weight') }}</td> -->
+                                <td>{{ item.total_weight | format}}</td>
                                 <td>{{ (calculateTotalVolume(item.station_group, 'weight') - item.volume) | format }}
                                 </td>
                                 <td>{{ (calculateTotalVolume(item.station_group, 'weight') - item.volume_budget) |
@@ -419,9 +420,12 @@ export default {
         summarizeByClient(data) {
             return data.reduce((acc, item) => {
                 const client = item.client;
+
+                // Проверяем, есть ли уже объект для этого клиента в аккумуляторе, если нет - создаем
                 if (!acc[client]) {
                     acc[client] = {
                         volume: 0,
+                        total_weight: 0,
                         revenue_wo_nds: 0,
                         md_wo_penalties: 0,
                         income_wo_penalties: 0,
@@ -431,14 +435,24 @@ export default {
                         income_wo_penalties_budget: 0
                     };
                 }
+
+                // Добавляем значения из текущего элемента данных к объекту сумм для этого клиента
                 acc[client].volume += item.volume;
+                acc[client].total_weight += this.calculateTotalVolume(item.station_group, 'weight');
                 acc[client].revenue_wo_nds += item.revenue_wo_nds;
-                acc[client].md_wo_penalties += item.md_wo_penalties;
                 acc[client].income_wo_penalties += item.income_wo_penalties;
                 acc[client].volume_budget += item.volume_budget;
                 acc[client].revenue_wo_nds_budget += item.revenue_wo_nds_budget;
                 acc[client].md_wo_penalties_budget += item.md_wo_penalties_budget;
                 acc[client].income_wo_penalties_budget += item.income_wo_penalties_budget;
+
+                // Добавляем расчеты через функции, если они определены
+                if (item.station_group) {
+                    // acc[client].total_weight += this.calculateTotalVolume(item.station_group, 'weight');
+                    acc[client].total_revenue = this.calculateTotalVolume(item.station_group, 'revenue');
+                    acc[client].sum_margin_income = this.sumMarginIncomePerVagonosutki(item.station_group);
+                }
+
                 return acc;
             }, {});
         },
@@ -527,68 +541,68 @@ export default {
                                                     [station_list]: data
                                                 };
                                             }
-                                            else if (
-                                                (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
-                                                station_list !== 'revenue' &&
-                                                station_list !== 'weight' &&
-                                                station_list !== 'volume' &&
-                                                station_list !== 'amo'
-                                                && station_list !== 'empty_tariff'
-                                                && station_list !== 'fot'
-                                                && station_list !== 'loaded_tariff'
-                                                && station_list !== 'margin_income'
-                                                && station_list !== 'other_charges'
-                                                && station_list !== 'pps'
-                                                && station_list !== 'repair'
-                                                && station_list !== 'vagonosutki'
-                                                && station_list !== 'vagonosutki_empty'
-                                                && station_list !== 'vagonosutki_total'
-                                                &&
-                                                // item.product.includes(cargo) 
-                                                // ||
-                                                this.containsAtLeastTwoMatches(item.product, cargo)
-                                            ) {
+                                            // else if (
+                                            //     (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
+                                            //     station_list !== 'revenue' &&
+                                            //     station_list !== 'weight' &&
+                                            //     station_list !== 'volume' &&
+                                            //     station_list !== 'amo'
+                                            //     && station_list !== 'empty_tariff'
+                                            //     && station_list !== 'fot'
+                                            //     && station_list !== 'loaded_tariff'
+                                            //     && station_list !== 'margin_income'
+                                            //     && station_list !== 'other_charges'
+                                            //     && station_list !== 'pps'
+                                            //     && station_list !== 'repair'
+                                            //     && station_list !== 'vagonosutki'
+                                            //     && station_list !== 'vagonosutki_empty'
+                                            //     && station_list !== 'vagonosutki_total'
+                                            //     &&
+                                            //     // item.product.includes(cargo) 
+                                            //     // ||
+                                            //     this.containsAtLeastTwoMatches(item.product, cargo)
+                                            // ) {
 
-                                                // Проверяем станцию запад или восток
-                                                let code = await this.getRoadForStation(station_list, item.destination);
-                                                let isWest = item.destination === 'Станции РФ (Запад)';
-                                                let isEast = item.destination === 'Станции РФ (Восток)';
+                                            //     // Проверяем станцию запад или восток
+                                            //     let code = await this.getRoadForStation(station_list, item.destination);
+                                            //     let isWest = item.destination === 'Станции РФ (Запад)';
+                                            //     let isEast = item.destination === 'Станции РФ (Восток)';
 
-                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
-                                                    if (!item.station_group) {
-                                                        item.station_group = {};
-                                                    }
-                                                    item.station_group[station_list] = stationListData[station_list];
-                                                }
-                                            } else if (
-                                                all_station_group.includes(item.destination) &&
-                                                station_list !== 'revenue' &&
-                                                station_list !== 'weight' &&
-                                                station_list !== 'volume' &&
-                                                station_list !== 'amo' &&
-                                                station_list !== 'empty_tariff' &&
-                                                station_list !== 'fot' &&
-                                                station_list !== 'loaded_tariff' &&
-                                                station_list !== 'margin_income' &&
-                                                station_list !== 'other_charges' &&
-                                                station_list !== 'pps' &&
-                                                station_list !== 'repair' &&
-                                                station_list !== 'vagonosutki' &&
-                                                station_list !== 'vagonosutki_empty' &&
-                                                station_list !== 'vagonosutki_total' &&
-                                                this.containsAtLeastTwoMatches(item.product, cargo)
-                                            ) {
-                                                // console.log(item.destination, station_list, 'я из 3 блока');
-                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                            //     if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
+                                            //         if (!item.station_group) {
+                                            //             item.station_group = {};
+                                            //         }
+                                            //         item.station_group[station_list] = stationListData[station_list];
+                                            //     }
+                                            // } else if (
+                                            //     all_station_group.includes(item.destination) &&
+                                            //     station_list !== 'revenue' &&
+                                            //     station_list !== 'weight' &&
+                                            //     station_list !== 'volume' &&
+                                            //     station_list !== 'amo' &&
+                                            //     station_list !== 'empty_tariff' &&
+                                            //     station_list !== 'fot' &&
+                                            //     station_list !== 'loaded_tariff' &&
+                                            //     station_list !== 'margin_income' &&
+                                            //     station_list !== 'other_charges' &&
+                                            //     station_list !== 'pps' &&
+                                            //     station_list !== 'repair' &&
+                                            //     station_list !== 'vagonosutki' &&
+                                            //     station_list !== 'vagonosutki_empty' &&
+                                            //     station_list !== 'vagonosutki_total' &&
+                                            //     this.containsAtLeastTwoMatches(item.product, cargo)
+                                            // ) {
+                                            //     // console.log(item.destination, station_list, 'я из 3 блока');
+                                            //     let code = await this.getRoadForStation(station_list, item.destination);
 
-                                                // Проверяем, что станция содержится в массиве all_station_group
-                                                if (all_station_group.includes(code)) {
-                                                    if (!item.station_group) {
-                                                        item.station_group = {};
-                                                    }
-                                                    item.station_group[station_list] = stationListData[station_list];
-                                                }
-                                            }
+                                            //     // Проверяем, что станция содержится в массиве all_station_group
+                                            //     if (all_station_group.includes(code)) {
+                                            //         if (!item.station_group) {
+                                            //             item.station_group = {};
+                                            //         }
+                                            //         item.station_group[station_list] = stationListData[station_list];
+                                            //     }
+                                            // }
                                         }
                                     }
                                 }
@@ -622,6 +636,7 @@ export default {
                             const totalObject = {
                                 client: "Итого по " + client,
                                 volume: summarizedData[client].volume,
+                                total_weight: summarizedData[client].total_weight,
                                 revenue_wo_nds: summarizedData[client].revenue_wo_nds,
                                 md_wo_penalties: summarizedData[client].md_wo_penalties,
                                 income_wo_penalties: summarizedData[client].income_wo_penalties,
@@ -643,6 +658,7 @@ export default {
                     const grandTotal = {
                         client: "Общая сумма по массиву",
                         volume: 0,
+                        total_weight: 0,
                         revenue_wo_nds: 0,
                         md_wo_penalties: 0,
                         income_wo_penalties: 0,
@@ -656,6 +672,7 @@ export default {
                     result.forEach(item => {
                         if (item.client.includes("Итого")) {
                             grandTotal.volume += item.volume || 0;
+                            grandTotal.total_weight += item.total_weight || 0;
                             grandTotal.revenue_wo_nds += item.revenue_wo_nds || 0;
                             grandTotal.md_wo_penalties += item.md_wo_penalties || 0;
                             grandTotal.income_wo_penalties += item.income_wo_penalties || 0;
