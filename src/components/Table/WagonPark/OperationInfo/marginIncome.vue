@@ -596,37 +596,69 @@ export default {
                                                     if (!item.station_group) {
                                                         item.station_group = {};
                                                     }
+                                                    console.log(stationListData[station_list])
                                                     item.station_group[station_list] = stationListData[station_list];
                                                 }
-                                            } else if (
-                                                all_station_group.includes(item.destination) &&
-                                                station_list !== 'revenue' &&
-                                                station_list !== 'weight' &&
-                                                station_list !== 'volume' &&
-                                                station_list !== 'amo' &&
-                                                station_list !== 'empty_tariff' &&
-                                                station_list !== 'fot' &&
-                                                station_list !== 'loaded_tariff' &&
-                                                station_list !== 'margin_income' &&
-                                                station_list !== 'other_charges' &&
-                                                station_list !== 'pps' &&
-                                                station_list !== 'repair' &&
-                                                station_list !== 'vagonosutki' &&
-                                                station_list !== 'vagonosutki_empty' &&
-                                                station_list !== 'vagonosutki_total' &&
-                                                this.containsAtLeastTwoMatches(item.product, cargo)
-                                            ) {
-                                                // console.log(item.destination, station_list, 'я из 3 блока');
-                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                            } 
+                                            // else if (
+                                            //     all_station_group.includes(item.destination) &&
+                                            //     station_list !== 'revenue' &&
+                                            //     station_list !== 'weight' &&
+                                            //     station_list !== 'volume' &&
+                                            //     station_list !== 'amo' &&
+                                            //     station_list !== 'empty_tariff' &&
+                                            //     station_list !== 'fot' &&
+                                            //     station_list !== 'loaded_tariff' &&
+                                            //     station_list !== 'margin_income' &&
+                                            //     station_list !== 'other_charges' &&
+                                            //     station_list !== 'pps' &&
+                                            //     station_list !== 'repair' &&
+                                            //     station_list !== 'vagonosutki' &&
+                                            //     station_list !== 'vagonosutki_empty' &&
+                                            //     station_list !== 'vagonosutki_total' &&
+                                            //     this.containsAtLeastTwoMatches(item.product, cargo)
+                                            // ) {
+                                            //     // console.log(item.destination, station_list, 'я из 3 блока');
+                                            //     let code = await this.getRoadForStation(station_list, item.destination);
 
-                                                // Проверяем, что станция содержится в массиве all_station_group
-                                                if (all_station_group.includes(code)) {
-                                                    if (!item.station_group) {
-                                                        item.station_group = {};
-                                                    }
-                                                    item.station_group[station_list] = stationListData[station_list];
-                                                }
-                                            }
+                                            //     // Проверяем, что станция содержится в массиве all_station_group
+                                            //     if (all_station_group.includes(code)) {
+                                            //         if (!item.station_group) {
+                                            //             item.station_group = {};
+                                            //         }
+                                            //         item.station_group[station_list] = stationListData[station_list];
+                                            //     }
+                                            // } else if (
+                                            //     item.destination === 'экспорт' &&
+                                              
+                                            //     station_list !== 'revenue' &&
+                                            //     station_list !== 'weight' &&
+                                            //     station_list !== 'volume' &&
+                                            //     station_list !== 'amo' &&
+                                            //     station_list !== 'empty_tariff' &&
+                                            //     station_list !== 'fot' &&
+                                            //     station_list !== 'loaded_tariff' &&
+                                            //     station_list !== 'margin_income' &&
+                                            //     station_list !== 'other_charges' &&
+                                            //     station_list !== 'pps' &&
+                                            //     station_list !== 'repair' &&
+                                            //     station_list !== 'vagonosutki' &&
+                                            //     station_list !== 'vagonosutki_empty' &&
+                                            //     station_list !== 'vagonosutki_total' &&
+                                            //     this.containsAtLeastTwoMatches(item.product, cargo)
+                                            // ) {
+                                            //     // console.log(item.destination, station_list, 'я из 3 блока');
+                                            //     // let code = await this.getRoadForStation(station_list, item.destination);
+                                                
+                                            //     // Проверяем, что станция содержится в массиве all_station_group
+                                            //     if (station_list.includes('эксп.')) {
+                                            //         console.log(station_list,'экспортные')
+                                            //         if (!item.station_group) {
+                                            //             item.station_group = {};
+                                            //         }
+                                            //         item.station_group[station_list] = stationListData[station_list];
+                                            //     }
+                                            // }
                                         }
                                     }
                                 }
@@ -680,41 +712,7 @@ export default {
                         }
                     }
 
-                    // Добавляем объект с общей суммой по массиву
-                    const grandTotal = {
-                        client: "Общая сумма по массиву",
-                        volume: 0,
-                        total_volume_fact: 0,
-                        total_revenue_fact: 0,
-                        total_md_wo_penalties_fact: 0,
-                        revenue_wo_nds: 0,
-                        md_wo_penalties: 0,
-                        income_wo_penalties: 0,
-                        volume_budget: 0,
-                        revenue_wo_nds_budget: 0,
-                        md_wo_penalties_budget: 0,
-                        income_wo_penalties_budget: 0
-                    };
-
-                    // Суммируем значения всех объектов "Итого"
-                    result.forEach(item => {
-                        if (item.client.includes("Итого")) {
-                            grandTotal.volume += item.volume || 0;
-                            grandTotal.total_volume_fact += item.total_volume_fact || 0;
-                            grandTotal.total_revenue_fact += item.total_revenue_fact || 0;
-                            grandTotal.total_md_wo_penalties_fact += item.total_md_wo_penalties_fact || 0;
-                            grandTotal.revenue_wo_nds += item.revenue_wo_nds || 0;
-                            grandTotal.md_wo_penalties += item.md_wo_penalties || 0;
-                            grandTotal.income_wo_penalties += item.income_wo_penalties || 0;
-                            grandTotal.volume_budget += item.volume_budget || 0;
-                            grandTotal.revenue_wo_nds_budget += item.revenue_wo_nds_budget || 0;
-                            grandTotal.md_wo_penalties_budget += item.md_wo_penalties_budget || 0;
-                            grandTotal.income_wo_penalties_budget += item.income_wo_penalties_budget || 0;
-                        }
-                    });
-
-                    // Добавляем объект с общей суммой в конец результата
-                    result.push(grandTotal);
+                  
                     console.log(result)
                     // Выводим исходный массив с добавленными объектами "Итого" и общей суммой
                     this.businessPlanData = result;

@@ -53,7 +53,7 @@ export default {
         wagon_type: {
             type: String
         },
-        date_begin_create: {
+        date_begin: {
             type: String
         },
         typeData: {
@@ -81,7 +81,7 @@ export default {
                         obj[keys[j]] = Number(this.tableData[i][j].replace(',', '.')) || 0
                     }
 
-                    obj["on_date"] = this.date_begin_create + "-01"
+                    obj["on_date"] = this.date_begin + "-01"
                     obj["wagon_type"] = this.wagon_type
                 }
                 result.push(obj)
@@ -120,7 +120,7 @@ export default {
                 for (let j = 0; j < keys.length; j++) {
                     if (obj[keys[j]] == 'client') continue
                     obj[keys[j]] = Number(this.resultData[i][j]) || 0
-                    obj["on_date"] = this.date_begin_create + "-01"
+                    obj["on_date"] = this.date_begin + "-01"
                     obj["wagon_type"] = this.wagon_type
                 }
                 result.push(obj)

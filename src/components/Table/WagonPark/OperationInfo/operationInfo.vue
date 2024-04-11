@@ -471,39 +471,13 @@
                                     </div>
 
 
-                                    <!-- <div class="table_block" v-if="typeData == 'income'">
-                                        <table>
-                                            <thead>
-                                                <th>Выручка</th>
-                                                <th>Вес</th>
-                                                <th>Тариф порож </th>
-                                                <th>Тариф по сопред порож</th>
-                                                <th>Тариф груж</th>
-                                                <th>Доп. расходы</th>
-                                                <th>Маржинальный доход</th>
-                                                <th>Вагоносутки (раб)</th>
-                                                <th>Вагоносутки (общ) </th>
-                                                <th>Доходность (раб в/с)</th>
-                                                <th>Доходность (общ в/с)</th>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td v-for="item, index in createNewProfitability" :key="index"
-                                                        style="padding: 0 !important;">
-                                                        <input type="number" class="input"
-                                                            v-model="createNewProfitability[index]">
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div> -->
                                     <div  style="overflow: auto">
                                         <enterDataIncomeVue :createNewProfitability="createNewProfitability"
                                             :clients="name_client" 
                                             :tableData="tableData"
                                             :typeData="typeData"
                                             @update:tableData="tableData = $event"
-                                            :date_begin="date_begin" 
+                                            :date_begin="date_begin_create" 
                                             :wagon_type="wagon_type"
                                             @stateLoader="stateLoader">
                                         </enterDataIncomeVue>
@@ -546,7 +520,7 @@ export default {
             wagon_type: "Полувагон",
             wag_type: "Полувагон",
             date_begin: new Date().toISOString().slice(0, 10),
-            date_begin_create: new Date().toISOString().slice(0, 7),
+            date_begin_create: "",
             date_end: "",
             loader: false,
             responseServerData: "",
@@ -813,7 +787,9 @@ export default {
         },
     },
     watch: {
-        
+        date_begin_create() {
+            console.log(this.date_begin_create)  
+        },
         wag_type() {
             this.responseServerData = ""
         },
