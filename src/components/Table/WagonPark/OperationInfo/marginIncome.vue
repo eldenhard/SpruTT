@@ -645,7 +645,7 @@ export default {
 
                                                 let code = await this.getRoadForStation(station_list, item.destination);
                                                 // Проверяем, что станция содержится в массиве all_station_group
-                                                if (all_station_group.includes(code)) {
+                                             
                                                     if (!item.station_group[stationKey]) {
                                                         // Если объекта нет, создаем новый объект с копией данных станции
                                                         item.station_group[stationKey] = { ...stationListData[stationKey] };
@@ -658,7 +658,7 @@ export default {
                                                             }
                                                         }
                                                     }
-                                                }
+                                                
                                             }
                                             else if (
                                                 item.destination === 'экспорт' &&

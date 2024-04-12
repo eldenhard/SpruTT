@@ -2,6 +2,12 @@ import Vue from "vue";
 import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate";
 
+import LogRocket from 'logrocket';
+import createPlugin from 'logrocket-vuex';
+const logrocketPlugin = createPlugin(LogRocket);
+
+
+
 import auth from "@/store/modules/auth"
 import counterparties from '@/store/modules/counterparties'
 import stations  from "@/store/modules/stations";

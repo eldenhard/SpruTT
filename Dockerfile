@@ -15,6 +15,8 @@ RUN npm install @handsontable/vue
 RUN npm install vue-select
 RUN npm install @amcharts/amcharts5
 RUN npm install @amcharts/amcharts4
+RUN npm i --save logrocket
+RUN npm i --save logrocket-vuex
 COPY ./ .
 RUN npm run build
 

@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <Loader :loader="loader"></Loader>
 
     <UpNavbar />
@@ -24,7 +24,7 @@ import loader_mini from './components/loader/loader_mini.vue';
 // import { actionTypes as dnActionTypes } from './store/modules/dog_number';
 import { actionTypes as ccActionTypes } from './store/modules/cargo_code';
 
-
+import LogRocket from 'logrocket';
 export default {
   name: 'App',
   components: { UpNavbar, Authorization, Loader, loader_mini },
@@ -69,6 +69,17 @@ export default {
   },
   // Синхронизация
   async mounted() {
+    let id_rocket = JSON.parse(localStorage.getItem('vuex')).auth.uid
+
+    let { first_name, last_name, email } = JSON.parse(localStorage.getItem('vuex')).auth.user.user
+    console.log(first_name, last_name)
+    console.log(id_rocket)
+    LogRocket.init('fs2mx3/sprutt')
+    LogRocket.identify(id_rocket, {
+      name: `${first_name} ${last_name}`,
+      email: `${email}`,
+    });
+    
     this.loader_mini = true
     let objStation = {
       'ОКТЯБРЬСКАЯ': 'ОКТ',
