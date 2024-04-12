@@ -880,6 +880,8 @@ export default {
                         this.loader = false
                         this.responseServerData =   response1.data
                         // cp_work_names.cp_work_names
+                        //  response1.data
+                        // cp_work_names.cp_work_names
                         // response1.data
                         
                         // response1.data
