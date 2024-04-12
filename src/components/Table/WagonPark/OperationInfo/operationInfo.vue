@@ -40,7 +40,8 @@
                         <b-tab title="Выполнение плана" active>
                             <b-card-text>
                                 <div style="overflow: auto; margin-left: -5%;">
-                                    <table>
+                                    <button class="Request button" style="width: 20%; margin-left: auto" @click="downloadTableToExcel()">Скачать в Excel</button>
+                                    <table ref="theTableOperIncome">
                                         <thead>
                                             <tr>
                                                 <th class="greenCell">Клиент
@@ -802,6 +803,21 @@ export default {
         },
         startLoaderFromChildComponent(val){
             this.startLoaderChildComponent = val
+        },
+        downloadTableToExcel() {
+            var table = this.$refs.theTableOperIncome;
+            var tableHTML = table.outerHTML;
+            var fileName = "Таблица 'Оперативная справка'.xls";
+
+            // var msie = window.navigator.userAgent.indexOf("MSIE ");
+
+            var a = document.createElement("a");
+            tableHTML = tableHTML.replace(/  /g, "").replace(/ /g, "%20");
+            a.href = "data:application/vnd.ms-excel," + tableHTML;
+            a.setAttribute("download", fileName);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         },
         downloadExcel() {
 
