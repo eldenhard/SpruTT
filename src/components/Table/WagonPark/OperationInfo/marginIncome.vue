@@ -529,152 +529,14 @@ export default {
                 this.$emit('startLoaderFromChildComponent', true)
                 let station_group_west = ['ПРВ', 'МСК', 'ЮВС', 'ОКТ', 'СЕВ', 'КЛГ', 'СКВ', 'ГРК', 'КБШ', 'СВР', 'СКВ'];
                 let station_group_east = ['ЗСБ', 'КРС', 'ВСБ', 'ЗАБ', 'ДВС', 'ЖДЯ'];
+                let station_group_rf = ['ОКТ', 'КЛГ', 'МСК', 'ГОР', 'СЕВ', 'ЮЗП', 'ЮЖН', 'ДОН', 'СКВ', 'ЮКЖ', 'ЮВС', 'ПРВ', 'КБШ', 'СВР', 'ЮУР', 'ЗСБ', 'МЕЛ', 'ЛУГ', 'КРС', 'ЖДЯ', 'ВСБ', 'ЗАБ', 'ДВС', 'РБК' ]
                 let all_station_group = Object.values(JSON.parse(localStorage.getItem('road')))
                 // Создаем объект для мемоизации запросов
                 let listExcluded = ['revenue', 'weight', 'volume', 'amo', 'empty_tariff', 'fot', 'loaded_tariff', 'margin_income', 'other_charges', 'pps', 'repair', 'vagonosutki', 'vagonosutki_empty', 'vagonosutki_total']
 
                 try {
 
-                    // for (let i = 0; i < preData.length; i++) {
-                    //     let item = preData[i];
-                    //     let client = item.client;
-
-                    //     if (this.margin_income.hasOwnProperty(client)) {
-                    //         let clientData = this.margin_income[client];
-
-                    //         for (let station_departure in clientData) {
-                    //             for (let cargo in clientData[station_departure]) {
-                    //                 for (let station_group in clientData[station_departure][cargo]) {
-                    //                     let stationListData = clientData[station_departure][cargo][station_group];
-
-                    //                     for (let station_list in stationListData) {
-                    //                         if (
-                    //                             station_list === item.destination &&
-                    //                             // item.product.includes(cargo) 
-                    //                             // ||
-                    //                             this.containsAtLeastTwoMatches(item.product, cargo)
-                    //                             &&
-                    //                             station_list !== 'revenue' &&
-                    //                             station_list !== 'weight' &&
-                    //                             station_list !== 'volume' &&
-                    //                             station_list !== 'amo'
-                    //                             && station_list !== 'empty_tariff'
-                    //                             && station_list !== 'fot'
-                    //                             && station_list !== 'loaded_tariff'
-                    //                             && station_list !== 'margin_income'
-                    //                             && station_list !== 'other_charges'
-                    //                             && station_list !== 'pps'
-                    //                             && station_list !== 'repair'
-                    //                             && station_list !== 'vagonosutki'
-                    //                             && station_list !== 'vagonosutki_empty'
-                    //                             && station_list !== 'vagonosutki_total'
-                    //                         ) {
-                    //                             // Найдена подходящая станция для текущего элемента
-                    //                             let data = stationListData[station_list];
-                    //                             item.station_group = {
-                    //                                 [station_list]: data
-                    //                             };
-                    //                         }
-                    //                         // else if (
-                    //                         //     (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
-                    //                         //     station_list !== 'revenue' &&
-                    //                         //     station_list !== 'weight' &&
-                    //                         //     station_list !== 'volume' &&
-                    //                         //     station_list !== 'amo'
-                    //                         //     && station_list !== 'empty_tariff'
-                    //                         //     && station_list !== 'fot'
-                    //                         //     && station_list !== 'loaded_tariff'
-                    //                         //     && station_list !== 'margin_income'
-                    //                         //     && station_list !== 'other_charges'
-                    //                         //     && station_list !== 'pps'
-                    //                         //     && station_list !== 'repair'
-                    //                         //     && station_list !== 'vagonosutki'
-                    //                         //     && station_list !== 'vagonosutki_empty'
-                    //                         //     && station_list !== 'vagonosutki_total'
-                    //                         //     &&
-                    //                         //     // item.product.includes(cargo) 
-                    //                         //     // ||
-                    //                         //     this.containsAtLeastTwoMatches(item.product, cargo)
-                    //                         // ) {
-
-                    //                         //     // Проверяем станцию запад или восток
-                    //                         //     let code = await this.getRoadForStation(station_list, item.destination);
-                    //                         //     let isWest = item.destination === 'Станции РФ (Запад)';
-                    //                         //     let isEast = item.destination === 'Станции РФ (Восток)';
-
-                    //                         //     if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
-                    //                         //         if (!item.station_group) {
-                    //                         //             item.station_group = {};
-                    //                         //         }
-                    //                         //         console.log(stationListData[station_list])
-                    //                         //         item.station_group[station_list] = stationListData[station_list];
-                    //                         //     }
-                    //                         // } 
-                    //                         // else if (
-                    //                         //     all_station_group.includes(item.destination) &&
-                    //                         //     station_list !== 'revenue' &&
-                    //                         //     station_list !== 'weight' &&
-                    //                         //     station_list !== 'volume' &&
-                    //                         //     station_list !== 'amo' &&
-                    //                         //     station_list !== 'empty_tariff' &&
-                    //                         //     station_list !== 'fot' &&
-                    //                         //     station_list !== 'loaded_tariff' &&
-                    //                         //     station_list !== 'margin_income' &&
-                    //                         //     station_list !== 'other_charges' &&
-                    //                         //     station_list !== 'pps' &&
-                    //                         //     station_list !== 'repair' &&
-                    //                         //     station_list !== 'vagonosutki' &&
-                    //                         //     station_list !== 'vagonosutki_empty' &&
-                    //                         //     station_list !== 'vagonosutki_total' &&
-                    //                         //     this.containsAtLeastTwoMatches(item.product, cargo)
-                    //                         // ) {
-                    //                         //     // console.log(item.destination, station_list, 'я из 3 блока');
-                    //                         //     let code = await this.getRoadForStation(station_list, item.destination);
-
-                    //                         //     // Проверяем, что станция содержится в массиве all_station_group
-                    //                         //     if (all_station_group.includes(code)) {
-                    //                         //         if (!item.station_group) {
-                    //                         //             item.station_group = {};
-                    //                         //         }
-                    //                         //         item.station_group[station_list] = stationListData[station_list];
-                    //                         //     }
-                    //                         // } else if (
-                    //                         //     item.destination === 'экспорт' &&
-
-                    //                         //     station_list !== 'revenue' &&
-                    //                         //     station_list !== 'weight' &&
-                    //                         //     station_list !== 'volume' &&
-                    //                         //     station_list !== 'amo' &&
-                    //                         //     station_list !== 'empty_tariff' &&
-                    //                         //     station_list !== 'fot' &&
-                    //                         //     station_list !== 'loaded_tariff' &&
-                    //                         //     station_list !== 'margin_income' &&
-                    //                         //     station_list !== 'other_charges' &&
-                    //                         //     station_list !== 'pps' &&
-                    //                         //     station_list !== 'repair' &&
-                    //                         //     station_list !== 'vagonosutki' &&
-                    //                         //     station_list !== 'vagonosutki_empty' &&
-                    //                         //     station_list !== 'vagonosutki_total' &&
-                    //                         //     this.containsAtLeastTwoMatches(item.product, cargo)
-                    //                         // ) {
-                    //                         //     // console.log(item.destination, station_list, 'я из 3 блока');
-                    //                         //     // let code = await this.getRoadForStation(station_list, item.destination);
-
-                    //                         //     // Проверяем, что станция содержится в массиве all_station_group
-                    //                         //     if (station_list.includes('эксп.')) {
-                    //                         //         console.log(station_list,'экспортные')
-                    //                         //         if (!item.station_group) {
-                    //                         //             item.station_group = {};
-                    //                         //         }
-                    //                         //         item.station_group[station_list] = stationListData[station_list];
-                    //                         //     }
-                    //                         // }
-                    //                     }
-                    //                 }
-                    //             }
-                    //         }
-                    //     }
-                    // }
+                 
 
 
                     // Получаем объект с суммами по клиентам
@@ -748,7 +610,32 @@ export default {
                                                     }
                                                 }
                                             }
+                                            else if (
+                                                (item.destination === 'Станции РФ' || item.destination === 'РФ') &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
+                                                !listExcluded.includes(station_list)
+                                            ) {
+                                                const stationKey = station_list;
+                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                                let isFull = item.destination === 'Станции РФ';
+                                                let isLow = item.destination === 'РФ';
 
+
+                                                if ((isFull && station_group_rf.includes(code)) || (isLow && station_group_rf.includes(code))) {
+                                                    if (!item.station_group[stationKey]) {
+                                                        // Если объекта нет, создаем новый объект с копией данных станции
+                                                        item.station_group[stationKey] = { ...stationListData[stationKey] };
+                                                    } else {
+                                                        // Если объект существует, суммируем значения полей станции
+                                                        const existingStation = item.station_group[stationKey];
+                                                        for (let field in stationListData) {
+                                                            if (typeof stationListData[field] === 'number') {
+                                                                existingStation[field] += stationListData[field];
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
                                             else if (
                                                 all_station_group.includes(item.destination) &&
                                                 !listExcluded.includes(station_list) &&
