@@ -236,10 +236,10 @@ const sendDataForNewBudjet = (data) => {
     return api.post(`${finance}/budget/`,  data )
 }
 const getBudget = (data) => {
-    return api.get(`${finance}/budget/?on_date=${data}` )
+    return api.get(`${finance}/budget/?on_date=${data}`,  {timeout: 6000000} )
 }
 const getDataForOperSpravka = (queryString) => {
-    return api.get(`${finance}/operativnaya-spravka/report/${queryString}` )
+    return api.get(`${finance}/operativnaya-spravka/report/${queryString}`, {timeout: 6000000} )
 }
 const createNewProfitability = (data) => {
     return api.post(`${finance}/operativnaya-srpavka-other-info/`, data)
@@ -248,13 +248,13 @@ const postNewBusinessPlan = (data) => {
     return api.post(`${finance}/business-plan/`, data)
 }
 const getDataForOperSpravkaOtherClients = (queryString) => {
-    return api.get(`${finance}/operativnaya-spravka/report-other-clients/${queryString}` )
+    return api.get(`${finance}/operativnaya-spravka/report-other-clients/${queryString}`,  {timeout: 6000000})
 }
 const getBP = (queryString) => {
-    return api.get(`${finance}/operativnaya-spravka/bp/${queryString}` )
+    return api.get(`${finance}/operativnaya-spravka/bp/${queryString}`,  {timeout: 6000000} )
 }
 const  getBusinessPlan = (queryString) => {
-    return api.get(`${finance}/business-plan/?on_date=${queryString}&page_size=1_000_000` )
+    return api.get(`${finance}/business-plan/?on_date=${queryString}&page_size=1_000_000`,  {timeout: 6000000} )
 }
 
 // Получение  договора по параметрам расширенного поиска
