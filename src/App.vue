@@ -70,14 +70,6 @@ export default {
   // Синхронизация
   async mounted() {
 
-    const cashe = await cashe.open()
-    console.log(cashe)
-    // for(let i = 0; i < 15; i++){
-    //   await fetch('https://jsonplaceholder.typicode.com/comments')
-    //   .then(response => response.json())
-    //   .then(json => console.log(json))
-    // }
-  
 
 
     let id_rocket = JSON.parse(localStorage.getItem('vuex')).auth.uid
@@ -153,19 +145,19 @@ export default {
     // console.log(this.token)
     try {
       localStorage.setItem('accessToken', JSON.stringify(this.token))
-      // if (!window.location.href.includes('fin_operation')) {
-      //   await Promise.all([
-      //     this.$store.dispatch(actionTypes.getStaffGroups),
-      //     this.$store.dispatch('getClient'),
-      //     this.$store.dispatch('getCounterpartie'),
-      //     this.$store.dispatch('getRoadAsRoad'),
+       if (!window.location.href.includes('fin_operation')) {
+        await Promise.all([
+          this.$store.dispatch(actionTypes.getStaffGroups),
+          this.$store.dispatch('getClient'),
+          this.$store.dispatch('getCounterpartie'),
+          this.$store.dispatch('getRoadAsRoad'),
 
-      //     this.$store.dispatch(actionTypes.staffGlobal),
-      //     this.$store.dispatch(cpActionTypes.getCounterparties, { url: 'personal/counterparties/?page_size=500', clear: true }),
-      //     this.$store.dispatch(userActionTypes.getUsers, { url: 'personal/users/?page_size=500', clear: true }),
-      //     this.$store.dispatch(ccActionTypes.getCargoCode, { url: 'wagon-park/cargo/?page_size=500', clear: true }),
-      //   ])
-      // }
+          this.$store.dispatch(actionTypes.staffGlobal),
+          this.$store.dispatch(cpActionTypes.getCounterparties, { url: 'personal/counterparties/?page_size=500', clear: true }),
+          this.$store.dispatch(userActionTypes.getUsers, { url: 'personal/users/?page_size=500', clear: true }),
+          this.$store.dispatch(ccActionTypes.getCargoCode, { url: 'wagon-park/cargo/?page_size=500', clear: true }),
+        ])
+      }
     }
     catch (error) {
       console.error(error)
