@@ -131,8 +131,8 @@
                                 </td>
                                 <td>{{ item.md_wo_penalties | format }}</td>
                                 <td>{{ item.md_wo_penalties_budget | format }}</td>
-                                <td>{{ item.total_md_wo_penalties_fact || calculateTotalVolume(item.station_group,
-                                    'margin_income') | format }}</td>
+                                <td>{{ item.total_md_wo_penalties_fact ||
+                                    calculateTotalVolume(item.station_group, 'margin_income') | format }}</td>
                                 <!-- Отклонение -->
                                 <td>{{
                                     item.client.includes('Итого') ?
@@ -158,7 +158,10 @@
                                 <td></td>
                                 <td>{{ item.income_wo_penalties | format }}</td>
                                 <td>{{ item.income_wo_penalties_budget | format }}</td>
-                                <td>{{ sumMarginIncomePerVagonosutki(item.station_group) | format }} </td>
+                                <!-- Итого маржинальной догходности -->
+                                <!-- <td>{{ sumMarginIncomePerVagonosutki(item.station_group) | format }} </td> -->
+                                <td>{{ calculateTotalVolume(item.station_group, 'margin_income') /
+                                    calculateTotalVolume(item.station_group, 'vagonosutki_total') | format }}</td>
                                 <td>{{ item.income_w_penalties | format }}</td>
                                 <td>{{ item.income_w_penalties_budget | format }}</td>
                                 <td></td>
@@ -211,7 +214,8 @@
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki |
+                                    <td style="border: 1px solid black;">{{ value.margin_income /
+                                        value.vagonosutki_total |
                                         format }} </td>
                                     <td style="border: 1px solid black;">{{ value.income_w_penalties | format }}</td>
                                     <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }}
@@ -319,7 +323,7 @@ export default {
                     for (let key in obj) {
                         if (typeof obj[key] === 'object') {
                             findDeepest(obj[key]); // Рекурсивный вызов для каждого вложенного объекта
-                        } else if (key === 'vagonosutki') {
+                        } else if (key === 'vagonosutki_total') {
                             deepestVagonosutki += obj[key]; // Найдено значение vagonosutki, суммируем его
                         }
                     }
@@ -371,8 +375,8 @@ export default {
             for (let key in stationGroup) {
                 if (stationGroup.hasOwnProperty(key)) {
                     let value = stationGroup[key];
-                    if (value.vagonosutki !== 0) {
-                        sum += value.margin_income / value.vagonosutki;
+                    if (value.vagonosutki_total !== 0) {
+                        sum += value.margin_income / value.vagonosutki_total;
                     }
                 }
             }
@@ -529,14 +533,14 @@ export default {
                 this.$emit('startLoaderFromChildComponent', true)
                 let station_group_west = ['ПРВ', 'МСК', 'ЮВС', 'ОКТ', 'СЕВ', 'КЛГ', 'СКВ', 'ГРК', 'КБШ', 'СВР', 'СКВ'];
                 let station_group_east = ['ЗСБ', 'КРС', 'ВСБ', 'ЗАБ', 'ДВС', 'ЖДЯ'];
-                let station_group_rf = ['ОКТ', 'КЛГ', 'МСК', 'ГОР', 'СЕВ', 'ЮЗП', 'ЮЖН', 'ДОН', 'СКВ', 'ЮКЖ', 'ЮВС', 'ПРВ', 'КБШ', 'СВР', 'ЮУР', 'ЗСБ', 'МЕЛ', 'ЛУГ', 'КРС', 'ЖДЯ', 'ВСБ', 'ЗАБ', 'ДВС', 'РБК' ]
+                let station_group_rf = ['ОКТ', 'КЛГ', 'МСК', 'ГОР', 'СЕВ', 'ЮЗП', 'ЮЖН', 'ДОН', 'СКВ', 'ЮКЖ', 'ЮВС', 'ПРВ', 'КБШ', 'СВР', 'ЮУР', 'ЗСБ', 'МЕЛ', 'ЛУГ', 'КРС', 'ЖДЯ', 'ВСБ', 'ЗАБ', 'ДВС', 'РБК']
                 let all_station_group = Object.values(JSON.parse(localStorage.getItem('road')))
                 // Создаем объект для мемоизации запросов
                 let listExcluded = ['revenue', 'weight', 'volume', 'amo', 'empty_tariff', 'fot', 'loaded_tariff', 'margin_income', 'other_charges', 'pps', 'repair', 'vagonosutki', 'vagonosutki_empty', 'vagonosutki_total']
 
                 try {
 
-                 
+
 
 
                     // Получаем объект с суммами по клиентам
@@ -584,7 +588,7 @@ export default {
                                                     }
                                                 }
                                             }
-                                            else if (
+                                            if (
                                                 (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
                                                 (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
                                                 !listExcluded.includes(station_list)
@@ -594,23 +598,24 @@ export default {
                                                 let isWest = item.destination === 'Станции РФ (Запад)';
                                                 let isEast = item.destination === 'Станции РФ (Восток)';
 
-
+                                                // Проверяем, соответствует ли код станции группе "Запад" или "Восток"
                                                 if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))) {
+                                                    // Инициализируем объект станции, если он еще не существует
                                                     if (!item.station_group[stationKey]) {
-                                                        // Если объекта нет, создаем новый объект с копией данных станции
-                                                        item.station_group[stationKey] = { ...stationListData[stationKey] };
+                                                        item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
                                                     } else {
-                                                        // Если объект существует, суммируем значения полей станции
+                                                        // Если станция уже существует, суммируем только нужные поля
                                                         const existingStation = item.station_group[stationKey];
-                                                        for (let field in stationListData) {
-                                                            if (typeof stationListData[field] === 'number') {
-                                                                existingStation[field] += stationListData[field];
+                                                        for (let field in stationListData[stationKey]) {
+                                                            if (typeof stationListData[stationKey][field] === 'number') {
+                                                                // Суммируем поля, если они числовые
+                                                                existingStation[field] += stationListData[stationKey][field];
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
-                                            else if (
+                                            if (
                                                 (item.destination === 'Станции РФ' || item.destination === 'РФ') &&
                                                 (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
                                                 !listExcluded.includes(station_list)
@@ -623,20 +628,20 @@ export default {
 
                                                 if ((isFull && station_group_rf.includes(code)) || (isLow && station_group_rf.includes(code))) {
                                                     if (!item.station_group[stationKey]) {
-                                                        // Если объекта нет, создаем новый объект с копией данных станции
-                                                        item.station_group[stationKey] = { ...stationListData[stationKey] };
+                                                        item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
                                                     } else {
-                                                        // Если объект существует, суммируем значения полей станции
+                                                        // Если станция уже существует, суммируем только нужные поля
                                                         const existingStation = item.station_group[stationKey];
-                                                        for (let field in stationListData) {
-                                                            if (typeof stationListData[field] === 'number') {
-                                                                existingStation[field] += stationListData[field];
+                                                        for (let field in stationListData[stationKey]) {
+                                                            if (typeof stationListData[stationKey][field] === 'number') {
+                                                                // Суммируем поля, если они числовые
+                                                                existingStation[field] += stationListData[stationKey][field];
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
-                                            else if (
+                                            if (
                                                 all_station_group.includes(item.destination) &&
                                                 !listExcluded.includes(station_list) &&
                                                 (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
@@ -645,41 +650,41 @@ export default {
 
                                                 let code = await this.getRoadForStation(station_list, item.destination);
                                                 // Проверяем, что станция содержится в массиве all_station_group
-                                             
-                                                    if (!item.station_group[stationKey]) {
-                                                        // Если объекта нет, создаем новый объект с копией данных станции
-                                                        item.station_group[stationKey] = { ...stationListData[stationKey] };
-                                                    } else {
-                                                        // Если объект существует, суммируем значения полей станции
-                                                        const existingStation = item.station_group[stationKey];
-                                                        for (let field in stationListData) {
-                                                            if (typeof stationListData[field] === 'number') {
-                                                                existingStation[field] += stationListData[field];
-                                                            }
+
+                                                if (!item.station_group[stationKey]) {
+                                                    item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                } else {
+                                                    // Если станция уже существует, суммируем только нужные поля
+                                                    const existingStation = item.station_group[stationKey];
+                                                    for (let field in stationListData[stationKey]) {
+                                                        if (typeof stationListData[stationKey][field] === 'number') {
+                                                            // Суммируем поля, если они числовые
+                                                            existingStation[field] += stationListData[stationKey][field];
                                                         }
                                                     }
-                                                
+                                                }
+
                                             }
-                                            else if (
+                                            if (
                                                 item.destination === 'экспорт' &&
                                                 station_list.includes('эксп.') &&
                                                 !listExcluded.includes(station_list) &&
                                                 (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
                                             ) {
                                                 const stationKey = station_list;
-                                                    if (!item.station_group[stationKey]) {
-                                                        // Если объекта нет, создаем новый объект с копией данных станции
-                                                        item.station_group[stationKey] = { ...stationListData[stationKey] };
-                                                    } else {
-                                                        // Если объект существует, суммируем значения полей станции
-                                                        const existingStation = item.station_group[stationKey];
-                                                        for (let field in stationListData) {
-                                                            if (typeof stationListData[field] === 'number') {
-                                                                existingStation[field] += stationListData[field];
-                                                            }
+                                                if (!item.station_group[stationKey]) {
+                                                    item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                } else {
+                                                    // Если станция уже существует, суммируем только нужные поля
+                                                    const existingStation = item.station_group[stationKey];
+                                                    for (let field in stationListData[stationKey]) {
+                                                        if (typeof stationListData[stationKey][field] === 'number') {
+                                                            // Суммируем поля, если они числовые
+                                                            existingStation[field] += stationListData[stationKey][field];
                                                         }
                                                     }
-                                                
+                                                }
+
                                             }
                                         }
                                     }
