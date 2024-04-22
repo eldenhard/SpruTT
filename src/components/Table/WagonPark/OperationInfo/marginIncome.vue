@@ -494,6 +494,9 @@ export default {
             }, {});
         },
         containsAtLeastTwoMatches(product, cargo) {
+            if(product == "Бензин" && cargo == 'Бензин моторный (автомобильный) неэтилированный' || cargo == "Бензин стабильный газовый (газолин)"){
+                return true
+            }
             let productWords = product.split(" "); // Разбиваем строки на слова по пробелам
             let cargoWords = cargo.split(" ");
             let matchCount = 0; // Счетчик для подсчета количества совпадений
@@ -539,10 +542,6 @@ export default {
                 let listExcluded = ['revenue', 'weight', 'volume', 'amo', 'empty_tariff', 'fot', 'loaded_tariff', 'margin_income', 'other_charges', 'pps', 'repair', 'vagonosutki', 'vagonosutki_empty', 'vagonosutki_total']
 
                 try {
-
-
-
-
                     // Получаем объект с суммами по клиентам
 
 
@@ -568,7 +567,8 @@ export default {
                                             // Проверяем условия на совпадение destination и cargo
                                             if (
                                                 station_list === item.destination &&
-                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) 
+                                                || item.product === cargo) &&
                                                 !listExcluded.includes(station_list)
                                             ) {
                                                 // Определяем уникальный ключ для станции (например, название станции)

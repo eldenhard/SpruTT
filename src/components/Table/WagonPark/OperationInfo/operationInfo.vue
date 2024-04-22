@@ -891,22 +891,13 @@ export default {
                         response1, 
                         response2, 
                         response3,
-                         response4, 
-                         response5]) => {
+                        response4, 
+                        response5]) => {
                         this.loader = false
                         this.responseServerData =   response1.data
-                        // cp_work_names.cp_work_names
-                        //  response1.data
-                        // cp_work_names.cp_work_names
-                        // response1.data
-                        
-                        // response1.data
-                       
-                        // response1.data
-                        // console.log(this.responseServerData)
+
                         this.responseServerDataOtherClients = response2.data
                         let businessPlanData = response3.data
-                        console.log(businessPlanData)
                         this.data3 =  response4.data
                         this.budget_data = response5.data
                        
@@ -948,11 +939,9 @@ export default {
                     })
 
             } catch(error) {
-        
                     this.$toast.error(`Ошибка\nДанные не получены\n${error.response.data}`, {
                                 timeout: 2500
                     })
-                
                 this.loader = false
             }
 
