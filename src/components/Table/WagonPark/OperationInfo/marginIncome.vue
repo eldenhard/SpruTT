@@ -494,7 +494,7 @@ export default {
             }, {});
         },
         containsAtLeastTwoMatches(product, cargo) {
-            if(product == "Бензин" && cargo == 'Бензин моторный (автомобильный) неэтилированный' || cargo == "Бензин стабильный газовый (газолин)"){
+            if (product == "Бензин" && cargo == 'Бензин моторный (автомобильный) неэтилированный' || cargo == "Бензин стабильный газовый (газолин)") {
                 return true
             }
             let productWords = product.split(" "); // Разбиваем строки на слова по пробелам
@@ -544,6 +544,8 @@ export default {
                 try {
                     // Получаем объект с суммами по клиентам
 
+                    const result_boris = []
+                    const cargoStationMap = {}
 
                     for (let item of preData) {
                         const client = item.client;
@@ -567,8 +569,8 @@ export default {
                                             // Проверяем условия на совпадение destination и cargo
                                             if (
                                                 station_list === item.destination &&
-                                                (this.containsAtLeastTwoMatches(item.product, cargo) 
-                                                || item.product === cargo) &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo)
+                                                    || item.product === cargo) &&
                                                 !listExcluded.includes(station_list)
                                             ) {
                                                 // Определяем уникальный ключ для станции (например, название станции)
@@ -588,7 +590,7 @@ export default {
                                                     }
                                                 }
                                             }
-                                            if (
+                                            else if (
                                                 (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
                                                 (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
                                                 !listExcluded.includes(station_list)
@@ -615,7 +617,7 @@ export default {
                                                     }
                                                 }
                                             }
-                                            if (
+                                            else if (
                                                 (item.destination === 'Станции РФ' || item.destination === 'РФ') &&
                                                 (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
                                                 !listExcluded.includes(station_list)
@@ -641,7 +643,7 @@ export default {
                                                     }
                                                 }
                                             }
-                                            if (
+                                            else if (
                                                 all_station_group.includes(item.destination) &&
                                                 !listExcluded.includes(station_list) &&
                                                 (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
@@ -665,7 +667,8 @@ export default {
                                                 }
 
                                             }
-                                            if (
+                                           
+                                            else if (
                                                 item.destination === 'экспорт' &&
                                                 station_list.includes('эксп.') &&
                                                 !listExcluded.includes(station_list) &&
@@ -686,6 +689,38 @@ export default {
                                                 }
 
                                             }
+                                            
+                                            else {
+                                                const cargoKey = cargo;
+                                                const stationKey = station_list;
+
+                                                // Проверяем, существует ли клиент в cargoStationMap
+                                                if (!cargoStationMap[client]) {
+                                                    cargoStationMap[client] = {}; // Инициализация объекта для клиента
+                                                }
+
+                                                // Проверяем, существует ли груз у текущего клиента
+                                                if (!cargoStationMap[client][cargoKey]) {
+                                                    cargoStationMap[client][cargoKey] = {}; // Инициализация объекта для груза
+                                                }
+
+                                                // Проверяем, существует ли станция у текущего груза
+                                                if (!cargoStationMap[client][cargoKey][stationKey]) {
+                                                    // Если объекта для станции в грузе нет, создаем новый объект с копией данных станции
+                                                    cargoStationMap[client][cargoKey][stationKey] = { ...stationListData[stationKey] };
+                                                }
+                                                //  else {
+                                                //     // Если объект существует, суммируем значения полей станции
+                                                //     const existingStation = cargoStationMap[client][cargoKey][stationKey];
+                                                //     for (let field in stationListData[stationKey]) {
+                                                //         if (typeof stationListData[stationKey][field] === 'number') {
+                                                //             existingStation[field] += stationListData[stationKey][field];
+                                                //         }
+                                                //     }
+                                                // }
+                                            }
+
+
                                         }
                                     }
                                 }
@@ -697,7 +732,40 @@ export default {
                             }
                         }
                     }
-                    console.log(preData, '111111111111111111111111111111')
+                    // После завершения всех операций добавляем этот блок кода
+                    // Перебираем клиентов
+                    for (const client in cargoStationMap) {
+                        const clientData = cargoStationMap[client];
+
+                        // Перебираем грузы у текущего клиента
+                        for (const cargo in clientData) {
+                            const cargoData = clientData[cargo];
+
+                            // Перебираем станции у текущего груза
+                            for (const station in cargoData) {
+                                const stationData = cargoData[station];
+
+                                // Проверяем, если станция пустая (не содержит ни одного поля кроме ключа)
+                                const isEmptyStation = Object.keys(stationData).length === 0;
+                                if (isEmptyStation) {
+                                    delete cargoData[station]; // Удаляем пустую станцию
+                                }
+                            }
+
+                            // Проверяем, если груз пустой (не содержит ни одной станции)
+                            const isEmptyCargo = Object.keys(cargoData).length === 0;
+                            if (isEmptyCargo) {
+                                delete clientData[cargo]; // Удаляем пустой груз
+                            }
+                        }
+
+                        // Проверяем, если клиент пустой (не содержит ни одного груза)
+                        const isEmptyClient = Object.keys(clientData).length === 0;
+                        if (isEmptyClient) {
+                            delete cargoStationMap[client]; // Удаляем пустого клиента
+                        }
+                    }
+                    console.log(cargoStationMap, 'result_for_boris')
 
                     const summarizedData = this.summarizeByClient(preData);
 
