@@ -564,7 +564,6 @@ export default {
                                 for (let cargo in clientData[station_departure]) {
                                     for (let station_group in clientData[station_departure][cargo]) {
                                         const stationListData = clientData[station_departure][cargo][station_group];
-
                                         // Обходим данные станций внутри станций групп
                                         for (let station_list in stationListData) {
                                             // Проверяем условия на совпадение destination и cargo
@@ -641,42 +640,18 @@ export default {
                                                     }
                                                 }
                                             }
-                                                else if (
-                                                    (item.destination === 'Станции РФ' || item.destination === 'РФ') &&
-                                                    (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
-                                                    !listExcluded.includes(station_list)
-                                                ) {
-                                                    const stationKey = station_list;
-                                                    let code = await this.getRoadForStation(station_list, item.destination);
-                                                    let isFull = item.destination === 'Станции РФ';
-                                                    let isLow = item.destination === 'РФ';
+                                            else if (
+                                                (item.destination === 'Станции РФ' || item.destination === 'РФ') &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
+                                                !listExcluded.includes(station_list)
+                                            ) {
+                                                const stationKey = station_list;
+                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                                let isFull = item.destination === 'Станции РФ';
+                                                let isLow = item.destination === 'РФ';
 
 
-                                                    if ((isFull && station_group_rf.includes(code)) || (isLow && station_group_rf.includes(code))) {
-                                                        if (!item.station_group[stationKey]) {
-                                                            item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
-                                                        } else {
-                                                            // Если станция уже существует, суммируем только нужные поля
-                                                            const existingStation = item.station_group[stationKey];
-                                                            for (let field in stationListData[stationKey]) {
-                                                                if (typeof stationListData[stationKey][field] === 'number') {
-                                                                    // Суммируем поля, если они числовые
-                                                                    existingStation[field] += stationListData[stationKey][field];
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                else if (
-                                                    all_station_group.includes(item.destination) &&
-                                                    !listExcluded.includes(station_list) &&
-                                                    (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
-                                                ) {
-                                                    const stationKey = station_list;
-
-                                                    let code = await this.getRoadForStation(station_list, item.destination);
-                                                    // Проверяем, что станция содержится в массиве all_station_group
-
+                                                if ((isFull && station_group_rf.includes(code)) || (isLow && station_group_rf.includes(code))) {
                                                     if (!item.station_group[stationKey]) {
                                                         item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
                                                     } else {
@@ -689,61 +664,82 @@ export default {
                                                             }
                                                         }
                                                     }
-
                                                 }
+                                            }
+                                            else if (
+                                                all_station_group.includes(item.destination) &&
+                                                !listExcluded.includes(station_list) &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
+                                            ) {
+                                                const stationKey = station_list;
 
-                                                else if (
-                                                    item.destination === 'экспорт' &&
-                                                    station_list.includes('эксп.') &&
-                                                    !listExcluded.includes(station_list) &&
-                                                    (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
-                                                ) {
-                                                    const stationKey = station_list;
-                                                    if (!item.station_group[stationKey]) {
-                                                        item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
-                                                    } else {
-                                                        // Если станция уже существует, суммируем только нужные поля
-                                                        const existingStation = item.station_group[stationKey];
-                                                        for (let field in stationListData[stationKey]) {
-                                                            if (typeof stationListData[stationKey][field] === 'number') {
-                                                                // Суммируем поля, если они числовые
-                                                                existingStation[field] += stationListData[stationKey][field];
-                                                            }
+                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                                // Проверяем, что станция содержится в массиве all_station_group
+
+                                                if (!item.station_group[stationKey]) {
+                                                    item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                } else {
+                                                    // Если станция уже существует, суммируем только нужные поля
+                                                    const existingStation = item.station_group[stationKey];
+                                                    for (let field in stationListData[stationKey]) {
+                                                        if (typeof stationListData[stationKey][field] === 'number') {
+                                                            // Суммируем поля, если они числовые
+                                                            existingStation[field] += stationListData[stationKey][field];
                                                         }
                                                     }
-
                                                 }
 
-                                                else {
-                                                    const cargoKey = cargo;
-                                                    const stationKey = station_list;
-
-                                                    // Проверяем, существует ли клиент в cargoStationMap
-                                                    if (!cargoStationMap[client]) {
-                                                        cargoStationMap[client] = {}; // Инициализация объекта для клиента
+                                            }
+                                            else if (
+                                                item.destination === 'экспорт' &&
+                                                station_list.includes('эксп.') &&
+                                                !listExcluded.includes(station_list) &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
+                                            ) {
+                                                const stationKey = station_list;
+                                                if (!item.station_group[stationKey]) {
+                                                    item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                } else {
+                                                    // Если станция уже существует, суммируем только нужные поля
+                                                    const existingStation = item.station_group[stationKey];
+                                                    for (let field in stationListData[stationKey]) {
+                                                        if (typeof stationListData[stationKey][field] === 'number') {
+                                                            // Суммируем поля, если они числовые
+                                                            existingStation[field] += stationListData[stationKey][field];
+                                                        }
                                                     }
-
-                                                    // Проверяем, существует ли груз у текущего клиента
-                                                    if (!cargoStationMap[client][cargoKey]) {
-                                                        cargoStationMap[client][cargoKey] = {}; // Инициализация объекта для груза
-                                                    }
-
-                                                    // Проверяем, существует ли станция у текущего груза
-                                                    if (!cargoStationMap[client][cargoKey][stationKey]) {
-                                                        // Если объекта для станции в грузе нет, создаем новый объект с копией данных станции
-                                                        cargoStationMap[client][cargoKey][stationKey] = { ...stationListData[stationKey] };
-                                                    }
-                                                    //  else {
-                                                    //     // Если объект существует, суммируем значения полей станции
-                                                    //     const existingStation = cargoStationMap[client][cargoKey][stationKey];
-                                                    //     for (let field in stationListData[stationKey]) {
-                                                    //         if (typeof stationListData[stationKey][field] === 'number') {
-                                                    //             existingStation[field] += stationListData[stationKey][field];
-                                                    //         }
-                                                    //     }
-                                                    // }
                                                 }
 
+                                            }
+                                            else {
+                                                const cargoKey = cargo;
+                                                const stationKey = station_list;
+
+                                                // Проверяем, существует ли клиент в cargoStationMap
+                                                if (!cargoStationMap[client]) {
+                                                    cargoStationMap[client] = {}; // Инициализация объекта для клиента
+                                                }
+
+                                                // Проверяем, существует ли груз у текущего клиента
+                                                if (!cargoStationMap[client][cargoKey]) {
+                                                    cargoStationMap[client][cargoKey] = {}; // Инициализация объекта для груза
+                                                }
+
+                                                // Проверяем, существует ли станция у текущего груза
+                                                if (!cargoStationMap[client][cargoKey][stationKey]) {
+                                                    // Если объекта для станции в грузе нет, создаем новый объект с копией данных станции
+                                                    cargoStationMap[client][cargoKey][stationKey] = { ...stationListData[stationKey] };
+                                                }
+                                                //  else {
+                                                //     // Если объект существует, суммируем значения полей станции
+                                                //     const existingStation = cargoStationMap[client][cargoKey][stationKey];
+                                                //     for (let field in stationListData[stationKey]) {
+                                                //         if (typeof stationListData[stationKey][field] === 'number') {
+                                                //             existingStation[field] += stationListData[stationKey][field];
+                                                //         }
+                                                //     }
+                                                // }
+                                            }
 
                                             }
                                         }

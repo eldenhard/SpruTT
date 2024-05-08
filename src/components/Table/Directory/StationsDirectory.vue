@@ -43,7 +43,7 @@
               </thead>
               <tbody>
                 <tr v-for="station in station_search_data" :key="station.id">
-                  <td>{{ station.name }}</td>
+                  <td>{{ station.name.toLowerCase() }}</td>
                   <td>{{ station.code6 }}</td>
                   <td>{{ station.code }}</td>
                   <td>{{ station.name_en }}</td>
