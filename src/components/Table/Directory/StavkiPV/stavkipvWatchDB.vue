@@ -701,7 +701,7 @@ export default {
 
 
         // open_modal(id) {
-        //     // console.log(id)
+        //     console.log(id)
         //     this.selected_record = id
         //     this.$bvModal.show('standard_directory_created')
         // },

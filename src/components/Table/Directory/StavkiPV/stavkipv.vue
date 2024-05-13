@@ -17,7 +17,8 @@
                 АЛГОРИТМ РАБОТЫ: <br>
             <ol>
                 <li>Создайте шапку требуемой таблицы (!) и нажмите кнопку "Подтвердить создание шапки"</li>
-                <li>Обратите внимание, что страна назначения добавляется автоматически при выборе поля "станция". <br> Поле
+                <li>Обратите внимание, что страна назначения добавляется автоматически при выборе поля "станция". <br>
+                    Поле
                     страна заполнять не нужно, оно заполняется автоматически </li>
                 <li>Скопируйте данные из Excel в область загрузки</li>
                 <li>Нажмите загрузить в таблицу ( проверьте данные таблицы )</li>
@@ -42,11 +43,12 @@
                         <tr>
                             <td class="col1">Клиент <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
                             <td>
-                                <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Клиент" />
+                                <!-- <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Клиент" /> -->
+                                <v-select v-model="Standard.client" :options="name_client" label="client"></v-select>
                             </td>
                         </tr>
                         <br />
-                        <tr v-show="ten_visible">
+                        <!-- <tr v-show="ten_visible">
                             <td></td>
                             <td>
                                 <div class="textarea" style="height: auto; width: 100%; margin-bottom: 1%"
@@ -59,7 +61,7 @@
                                     </ul>
                                 </div>
                             </td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td>№ документа <sup style="color: rgb(172, 9, 9);font-size: 18px">*</sup></td>
                             <td>
@@ -80,7 +82,8 @@
                         </tr>
                         <br />
                         <tr v-if="visible_agreement">
-                            <td class="col1">Все договора <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
+                            <td class="col1">Все договора <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup>
+                            </td>
                             <td>
                                 <v-select v-model="new_comp" :options="all_agreement_number"
                                     label="agreement_number"></v-select>
@@ -96,16 +99,19 @@
                         <br />
 
                         <tr>
-                            <td class="col1">Дата начала <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup></td>
+                            <td class="col1">Дата начала <sup style="color: rgb(172, 9, 9); font-size: 18px">*</sup>
+                            </td>
                             <td>
-                                <input type="date" id="a" class="textarea" v-model="Standard.on_date" placeholder="Дата" />
+                                <input type="date" id="a" class="textarea" v-model="Standard.on_date"
+                                    placeholder="Дата" />
                             </td>
                         </tr>
                         <br />
                         <tr>
                             <td class="col1">Дата окончания</td>
                             <td>
-                                <input type="date" id="a" class="textarea" v-model="Standard.end_date" placeholder="Дата" />
+                                <input type="date" id="a" class="textarea" v-model="Standard.end_date"
+                                    placeholder="Дата" />
                             </td>
                         </tr>
                         <br />
@@ -136,7 +142,7 @@
                 <!-- Выбрано приложение -->
                 <section style="flex: 2 0 auto;" v-if="picked != 'agreement_number'">
                     <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"
-                     style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
+                        style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
                     <button class="Accept" @click="loadFromExcel()" :disabled="active_load_button"
                         style="margin-top: 2%;width: 100%;margin-left: auto;height: 40px;">Загрузить в таблицу</button>
                     <br>
@@ -154,7 +160,8 @@
                 <button class="Delete button" style="width: 25%; height: 40px; margin-right: auto;"
                     @click="clearTable()">Очистить таблицу</button>
                 <br>
-                <button class="button Action" style="width: 25%; height: 40px;" @click="checkingData()">Проверка введеных
+                <button class="button Action" style="width: 25%; height: 40px;" @click="checkingData()">Проверка
+                    введеных
                     данных</button>
                 <button class="Accept button" style="width: 25%; height: 40px;" @click="saveData()">Отправить данные и
                     создать приложение</button>
@@ -184,9 +191,7 @@
 
             <div class="info_block" style="display: flex; justify-content: start; gap: 15px; margin-top: 2%">
                 <div>
-                    <button
-                        style="background: lightblue;  width: 10vw; padding: 1%; color: black; font-size: 14px; white-space: nowrap"
-                        @click="info_block = !info_block">
+                    <button class="Request button" @click="info_block = !info_block">
                         Справочник стран
                     </button>
                     <br>
@@ -211,9 +216,7 @@
 
                 </div>
                 <div>
-                    <button
-                        style="background: lightblue;  width: 10vw; padding: 1%; color: black; font-size: 14px; white-space: nowrap"
-                        @click="info_block2 = !info_block2">
+                    <button class="Request button" @click="info_block2 = !info_block2">
                         Справочник дорог
                     </button>
                     <br>
@@ -257,11 +260,13 @@
                                 <b-dropdown id="dropdown-2" text="Груз" class="m-md-2" dropleft style="width: 90%">
                                     <b-dropdown-item @click="addField('Код ЕТСНГ')">Код ЕТСНГ (6-ти
                                         значный)</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по ЕТСНГ
+                                    <b-dropdown-item @click="addField('Группа позиций по ЕТСНГ')">Группа позиций по
+                                        ЕТСНГ
                                         (123*)</b-dropdown-item>
                                     <b-dropdown-item @click="addField('Класс груза')">Класс груза (1 или 2 или
                                         3)</b-dropdown-item>
-                                    <b-dropdown-item @click="addField('Груз наимен')">Наименование груза</b-dropdown-item>
+                                    <b-dropdown-item @click="addField('Груз наимен')">Наименование
+                                        груза</b-dropdown-item>
 
                                 </b-dropdown>
                                 <b-dropdown id="dropdown-2" dropleft text="Грузоподъемность" class="m-md-2"
@@ -269,28 +274,35 @@
                                     <div style="height: 30vh; overflow-y: auto;">
 
 
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 65.5 т')">Ставка при:
+                                        <b-dropdown-item
+                                            @click="addField('Ставка при: Грузоподъемность менее 65.5 т')">Ставка при:
                                             Грузоподъемность
                                             менее 65,5 т</b-dropdown-item>
                                         <hr>
 
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 66 т')">Ставка
+                                        <b-dropdown-item
+                                            @click="addField('Ставка при: Грузоподъемность менее 66 т')">Ставка
                                             при: Грузоподъемность менее
                                             66 т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 66 т')">Ставка при:
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 66 т')">Ставка
+                                            при:
                                             Грузоподъемность 66
                                             т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 66 т')">Ставка
+                                        <b-dropdown-item
+                                            @click="addField('Ставка при: Грузоподъемность более 66 т')">Ставка
                                             при: Грузоподъемность более
                                             66 т</b-dropdown-item>
                                         <hr>
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 69 т')">Ставка
+                                        <b-dropdown-item
+                                            @click="addField('Ставка при: Грузоподъемность менее 69 т')">Ставка
                                             при: Грузоподъемность менее
                                             69 т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 69 т')">Ставка при:
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 69 т')">Ставка
+                                            при:
                                             Грузоподъемность 69
                                             т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 69 т')">Ставка
+                                        <b-dropdown-item
+                                            @click="addField('Ставка при: Грузоподъемность более 69 т')">Ставка
                                             при: Грузоподъемность более
                                             69 т</b-dropdown-item>
                                         <hr>
@@ -304,24 +316,30 @@
                                             при: Грузоподъемность
                                             менее 70,3 т</b-dropdown-item>
                                         <hr>
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 71 т')">Ставка
+                                        <b-dropdown-item
+                                            @click="addField('Ставка при: Грузоподъемность менее 71 т')">Ставка
                                             при: Грузоподъемность менее
                                             71 т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 71 т')">Ставка при:
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 71 т')">Ставка
+                                            при:
                                             Грузоподъемность 71
                                             т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 71 т')">Ставка
+                                        <b-dropdown-item
+                                            @click="addField('Ставка при: Грузоподъемность более 71 т')">Ставка
                                             при: Грузоподъемность более
                                             71 т</b-dropdown-item>
                                         <hr>
 
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность менее 75 т')">Ставка
+                                        <b-dropdown-item
+                                            @click="addField('Ставка при: Грузоподъемность менее 75 т')">Ставка
                                             при: Грузоподъемность менее
                                             75 т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 75 т')">Ставка при:
+                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность 75 т')">Ставка
+                                            при:
                                             Грузоподъемность 75
                                             т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Ставка при: Грузоподъемность более 75 т')">Ставка
+                                        <b-dropdown-item
+                                            @click="addField('Ставка при: Грузоподъемность более 75 т')">Ставка
                                             при: Грузоподъемность более
                                             75 т</b-dropdown-item>
                                     </div>
@@ -333,7 +351,8 @@
                                     отправления</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Мн. станций отпр.')">Множество станций
                                     отправки</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Станция/Дорога/Страна назначения')">Станция/Дорога/Страна
+                                <b-dropdown-item
+                                    @click="addField('Станция/Дорога/Страна назначения')">Станция/Дорога/Страна
                                     назначения</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Станция след.погр.')">Станция следующей
                                     погрузки</b-dropdown-item>
@@ -532,19 +551,7 @@ export default {
                 return require(`@/assets/cross.png`)
             }
         },
-        filter_client() {
-            if (this.Standard.client.length > 1) {
-                this.ten_visible = true;
-            }
 
-            return this.Standard.client.length > 1
-                ? this.name_client.filter((item) =>
-                    item.client
-                        .toLowerCase()
-                        .includes(this.Standard.client.toLowerCase())
-                )
-                : "";
-        },
         filter_cargo() {
             if (this.cargo_user.length > 1) {
                 this.cargo_list = true;
@@ -946,7 +953,7 @@ export default {
             if (this.errorp.length == 0) {
                 this.flagCheck = true;
                 this.checkCompleteData = new_data;
-             
+
                 this.notifyHead = "Успешно";
                 this.notifyMessage = "Данные проверку прошли!";
                 this.notifyClass = "wrapper-success";
@@ -1273,35 +1280,42 @@ export default {
                 return null; // Возвращаем null в случае ошибки
             }
         },
-
-        createAgreement() {
+        // Создание договора при выбранном селекторе "Договор"
+        async createAgreement() {
             this.loader = true
+            let params = {
+                page_size: 1000,
+                wagon_type: 'Полувагон'
+            }
+            const allAgreementInDataBase = await api.getTarifData(params)
+            for (let i in allAgreementInDataBase.data.data) {
+                if (allAgreementInDataBase.data.data[i].agreement_number === this.Standard.agreement_number 
+                && allAgreementInDataBase.data.data[i].client === this.Standard.client.client) {
+                    this.loader = false
+                    this.$toast.error('Договор с таким номером и клиентом уже существует\nПроверьте ранее созданный договор в разделе "Просмотр данных"', {
+                        timeout: 5000
+                    })
+                    return
+                }
+            }
             let agreement = [{
                 agreement_number: this.Standard.agreement_number,
                 on_date: this.Standard.on_date,
                 end_date: this.Standard.end_date,
-                client: this.Standard.client,
+                client: this.Standard.client.client,
                 wagon_type: 'Полувагон'
             }]
             api.postTarifData(agreement)
                 .then(response => {
                     this.loader = false
-                    this.notifyHead = "Успешно";
-                    this.notifyMessage = "Договор создан";
-                    this.notifyClass = "wrapper-success";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 3000);
+                    this.$toast.success('Договор создан', {
+                        timeout: 3000
+                    })
                 }).catch((error) => {
                     this.loader = false
-                    this.notifyHead = "Ошибка";
-                    this.notifyMessage = `Договор не создан! Повторите попытку позже`;
-                    this.notifyClass = "wrapper-error";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 3000);
+                    this.$toast.error('Договор не создан! Повторите попытку позже', {
+                        timeout: 4500
+                    })
                 })
         },
         // Получить все договора по клиенту
@@ -1474,7 +1488,7 @@ export default {
                                 capacity_value_match = capacityField.match(/[0-9]+/);
                                 capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
 
-                                stavka =  parseFloat(item[capacityField].replace(/[^0-9,]/g, '').replace(',', '.'))
+                                stavka = parseFloat(item[capacityField].replace(/[^0-9,]/g, '').replace(',', '.'))
                             }
 
                             const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
@@ -1570,12 +1584,12 @@ export default {
                     } if (finallyDataToSend[i]['Ставка НДС']) {
                         finallyDataToSend[i].stavka_nds = Number(finallyDataToSend[i]['Ставка НДС']?.replace(',', '.'))
                     }
-                    if(finallyDataToSend[i].stavka == undefined){
+                    if (finallyDataToSend[i].stavka == undefined) {
                         finallyDataToSend[i].stavka = null
                     }
                     if (isNaN(finallyDataToSend[i].stavka)) {
                         console.log('ошибка ставки')
-                        throw new Error(`<br> Ставка не может быть обработа. Проверьте поле ставок. <br> Строка: ${i+1}`);
+                        throw new Error(`<br> Ставка не может быть обработа. Проверьте поле ставок. <br> Строка: ${i + 1}`);
                     }
                 }
                 console.log(finallyDataToSend, 'finallyDataToSend')
@@ -1638,8 +1652,8 @@ export default {
     },
 };
 </script>
-  
-<style  scoped>
+
+<style scoped>
 button:disabled {
     background: lightgray;
 }
@@ -1744,7 +1758,7 @@ table {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     background: #ffffff;
-    box-shadow: 2px 2px 5px  #cfcfcf;
+    box-shadow: 2px 2px 5px #cfcfcf;
     /* box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff; */
     position: relative;
     left: 50%;
