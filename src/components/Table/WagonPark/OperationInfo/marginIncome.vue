@@ -80,7 +80,7 @@
                             <tr :key='`${item.client}_${index}_${Math.random() * 100}`' v-if="index !== 'revenue'
                                 || index !== 'weight'
                                 || index !== 'volume'
-                                || index !=='aid'
+                                || index !== 'aid'
                                 || index !== 'shipments'
                                 || index !== 'amo'
                                 || index !== 'empty_tariff'
@@ -572,10 +572,10 @@ export default {
                                         // Обходим данные станций внутри станций групп
                                         for (let station_list in stationListData) {
                                             // Проверяем условия на совпадение destination и cargo
+
                                             if (
                                                 station_list === item.destination &&
-                                                (this.containsAtLeastTwoMatches(item.product, cargo)
-                                                    || item.product === cargo) &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
                                                 !listExcluded.includes(station_list)
                                             ) {
                                                 // Определяем уникальный ключ для станции (например, название станции)
@@ -585,6 +585,7 @@ export default {
                                                 if (!item.station_group[stationKey]) {
                                                     // Если объекта нет, создаем новый объект с копией данных станции
                                                     item.station_group[stationKey] = { ...stationListData[stationKey] };
+                                                    continue
                                                 } else {
                                                     // Если объект существует, суммируем значения полей станции
                                                     const existingStation = item.station_group[stationKey];
@@ -593,6 +594,7 @@ export default {
                                                             existingStation[field] += stationListData[field];
                                                         }
                                                     }
+                                                    continue
                                                 }
                                             }
                                             else if (
@@ -610,6 +612,7 @@ export default {
                                                     // Инициализируем объект станции, если он еще не существует
                                                     if (!item.station_group[stationKey]) {
                                                         item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                        continue
                                                     } else {
                                                         // Если станция уже существует, суммируем только нужные поля
                                                         const existingStation = item.station_group[stationKey];
@@ -619,6 +622,7 @@ export default {
                                                                 existingStation[field] += stationListData[stationKey][field];
                                                             }
                                                         }
+                                                        continue
                                                     }
                                                 }
                                             }
@@ -633,6 +637,7 @@ export default {
                                                 if ((item.destination.includes(code))) {
                                                     if (!item.station_group[stationKey]) {
                                                         item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                        continue
                                                     } else {
                                                         // Если станция уже существует, суммируем только нужные поля
                                                         const existingStation = item.station_group[stationKey];
@@ -642,6 +647,7 @@ export default {
                                                                 existingStation[field] += stationListData[stationKey][field];
                                                             }
                                                         }
+                                                        continue
                                                     }
                                                 }
                                             }
@@ -659,6 +665,7 @@ export default {
                                                 if ((isFull && station_group_rf.includes(code)) || (isLow && station_group_rf.includes(code))) {
                                                     if (!item.station_group[stationKey]) {
                                                         item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                        continue
                                                     } else {
                                                         // Если станция уже существует, суммируем только нужные поля
                                                         const existingStation = item.station_group[stationKey];
@@ -668,6 +675,7 @@ export default {
                                                                 existingStation[field] += stationListData[stationKey][field];
                                                             }
                                                         }
+                                                        continue
                                                     }
                                                 }
                                             }
@@ -677,20 +685,29 @@ export default {
                                                 (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
                                             ) {
                                                 const stationKey = station_list;
+                                                let code
+                                                if (!listExcluded.includes(station_list)) {
+                                                    code = await this.getRoadForStation(station_list, item.destination);
+                                                }
 
-                                                let code = await this.getRoadForStation(station_list, item.destination);
                                                 // Проверяем, что станция содержится в массиве all_station_group
-
-                                                if (!item.station_group[stationKey]) {
+                                                console.log(stationKey, code)
+                                                if (!item.station_group[stationKey] && item.destination == code) {
                                                     item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                    continue
                                                 } else {
                                                     // Если станция уже существует, суммируем только нужные поля
-                                                    const existingStation = item.station_group[stationKey];
-                                                    for (let field in stationListData[stationKey]) {
-                                                        if (typeof stationListData[stationKey][field] === 'number') {
-                                                            // Суммируем поля, если они числовые
-                                                            existingStation[field] += stationListData[stationKey][field];
+                                                    if (item.destination == code) {
+
+                                                        const existingStation = item.station_group[stationKey];
+                                                        for (let field in stationListData[stationKey]) {
+                                                            if (typeof stationListData[stationKey][field] === 'number') {
+                                                                // Суммируем поля, если они числовые
+                                                                existingStation[field] += stationListData[stationKey][field];
+                                                            }
                                                         }
+                                                    } else {
+                                                        continue
                                                     }
                                                 }
 
@@ -704,6 +721,7 @@ export default {
                                                 const stationKey = station_list;
                                                 if (!item.station_group[stationKey]) {
                                                     item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+
                                                 } else {
                                                     // Если станция уже существует, суммируем только нужные поля
                                                     const existingStation = item.station_group[stationKey];
@@ -713,6 +731,7 @@ export default {
                                                             existingStation[field] += stationListData[stationKey][field];
                                                         }
                                                     }
+                                                    continue
                                                 }
 
                                             }
@@ -746,116 +765,116 @@ export default {
                                                 // }
                                             }
 
-                                            }
                                         }
                                     }
                                 }
-
-                                // Проверяем, остался ли объект item.station_group пустым
-                                if (Object.keys(item.station_group).length === 0) {
-                                    delete item.station_group; // Удаляем item.station_group
-                                }
-                            }
-                        }
-                        // После завершения всех операций добавляем этот блок кода
-                        // Перебираем клиентов
-                        for (const client in cargoStationMap) {
-                            const clientData = cargoStationMap[client];
-
-                            // Перебираем грузы у текущего клиента
-                            for (const cargo in clientData) {
-                                const cargoData = clientData[cargo];
-
-                                // Перебираем станции у текущего груза
-                                for (const station in cargoData) {
-                                    const stationData = cargoData[station];
-
-                                    // Проверяем, если станция пустая (не содержит ни одного поля кроме ключа)
-                                    const isEmptyStation = Object.keys(stationData).length === 0;
-                                    if (isEmptyStation) {
-                                        delete cargoData[station]; // Удаляем пустую станцию
-                                    }
-                                }
-
-                                // Проверяем, если груз пустой (не содержит ни одной станции)
-                                const isEmptyCargo = Object.keys(cargoData).length === 0;
-                                if (isEmptyCargo) {
-                                    delete clientData[cargo]; // Удаляем пустой груз
-                                }
                             }
 
-                            // Проверяем, если клиент пустой (не содержит ни одного груза)
-                            const isEmptyClient = Object.keys(clientData).length === 0;
-                            if (isEmptyClient) {
-                                delete cargoStationMap[client]; // Удаляем пустого клиента
+                            // Проверяем, остался ли объект item.station_group пустым
+                            if (Object.keys(item.station_group).length === 0) {
+                                delete item.station_group; // Удаляем item.station_group
                             }
                         }
-                        console.log(cargoStationMap, 'result_for_boris')
-
-                        const summarizedData = this.summarizeByClient(preData);
-
-                        // Создаем объект для хранения индексов последних объектов для каждого клиента
-                        const lastIndexMap = {};
-
-                        // Проходим по массиву preData и определяем индексы последних объектов для каждого клиента
-                        for (let i = 0; i < preData.length; i++) {
-                            const client = preData[i].client;
-                            lastIndexMap[client] = i;
-                        }
-
-                        // Создаем массив для хранения результата с добавленными объектами "Итого"
-                        const result = [];
-
-                        // Проходим по массиву preData и добавляем объекты "Итого" после последних объектов с каждым клиентом
-                        for (let i = 0; i < preData.length; i++) {
-                            const item = preData[i];
-                            const client = item.client;
-
-                            // Проверяем, был ли уже добавлен объект "Итого" для данного клиента
-                            if (i === lastIndexMap[client]) {
-                                const totalObject = {
-                                    client: "Итого по " + client,
-                                    volume: summarizedData[client].volume,
-                                    total_volume_fact: summarizedData[client].total_volume_fact,
-                                    total_revenue_fact: summarizedData[client].total_revenue_fact,
-                                    total_md_wo_penalties_fact: summarizedData[client].total_md_wo_penalties_fact,
-                                    revenue_wo_nds: summarizedData[client].revenue_wo_nds,
-                                    md_wo_penalties: summarizedData[client].md_wo_penalties,
-                                    income_wo_penalties: summarizedData[client].income_wo_penalties,
-                                    volume_budget: summarizedData[client].volume_budget,
-                                    revenue_wo_nds_budget: summarizedData[client].revenue_wo_nds_budget,
-                                    md_wo_penalties_budget: summarizedData[client].md_wo_penalties_budget,
-                                    income_wo_penalties_budget: summarizedData[client].income_wo_penalties_budget
-                                };
-
-                                // Добавляем объект "Итого" после последнего объекта с текущим клиентом
-                                result.push(item); // добавляем текущий объект
-                                result.push(totalObject); // добавляем объект "Итого"
-                            } else {
-                                result.push(item); // добавляем текущий объект без изменений
-                            }
-                        }
-
-
-                        console.log(result)
-                        // Выводим исходный массив с добавленными объектами "Итого" и общей суммой
-                        this.businessPlanData = result;
-                        this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 3500 });
-                        console.log(this.businessPlanData)
-                    } catch (error) {
-                        console.log(error)
-                        this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 6000 });
                     }
+                    // После завершения всех операций добавляем этот блок кода
+                    // Перебираем клиентов
+                    for (const client in cargoStationMap) {
+                        const clientData = cargoStationMap[client];
+
+                        // Перебираем грузы у текущего клиента
+                        for (const cargo in clientData) {
+                            const cargoData = clientData[cargo];
+
+                            // Перебираем станции у текущего груза
+                            for (const station in cargoData) {
+                                const stationData = cargoData[station];
+
+                                // Проверяем, если станция пустая (не содержит ни одного поля кроме ключа)
+                                const isEmptyStation = Object.keys(stationData).length === 0;
+                                if (isEmptyStation) {
+                                    delete cargoData[station]; // Удаляем пустую станцию
+                                }
+                            }
+
+                            // Проверяем, если груз пустой (не содержит ни одной станции)
+                            const isEmptyCargo = Object.keys(cargoData).length === 0;
+                            if (isEmptyCargo) {
+                                delete clientData[cargo]; // Удаляем пустой груз
+                            }
+                        }
+
+                        // Проверяем, если клиент пустой (не содержит ни одного груза)
+                        const isEmptyClient = Object.keys(clientData).length === 0;
+                        if (isEmptyClient) {
+                            delete cargoStationMap[client]; // Удаляем пустого клиента
+                        }
+                    }
+                    console.log(cargoStationMap, 'result_for_boris')
+
+                    const summarizedData = this.summarizeByClient(preData);
+
+                    // Создаем объект для хранения индексов последних объектов для каждого клиента
+                    const lastIndexMap = {};
+
+                    // Проходим по массиву preData и определяем индексы последних объектов для каждого клиента
+                    for (let i = 0; i < preData.length; i++) {
+                        const client = preData[i].client;
+                        lastIndexMap[client] = i;
+                    }
+
+                    // Создаем массив для хранения результата с добавленными объектами "Итого"
+                    const result = [];
+
+                    // Проходим по массиву preData и добавляем объекты "Итого" после последних объектов с каждым клиентом
+                    for (let i = 0; i < preData.length; i++) {
+                        const item = preData[i];
+                        const client = item.client;
+
+                        // Проверяем, был ли уже добавлен объект "Итого" для данного клиента
+                        if (i === lastIndexMap[client]) {
+                            const totalObject = {
+                                client: "Итого по " + client,
+                                volume: summarizedData[client].volume,
+                                total_volume_fact: summarizedData[client].total_volume_fact,
+                                total_revenue_fact: summarizedData[client].total_revenue_fact,
+                                total_md_wo_penalties_fact: summarizedData[client].total_md_wo_penalties_fact,
+                                revenue_wo_nds: summarizedData[client].revenue_wo_nds,
+                                md_wo_penalties: summarizedData[client].md_wo_penalties,
+                                income_wo_penalties: summarizedData[client].income_wo_penalties,
+                                volume_budget: summarizedData[client].volume_budget,
+                                revenue_wo_nds_budget: summarizedData[client].revenue_wo_nds_budget,
+                                md_wo_penalties_budget: summarizedData[client].md_wo_penalties_budget,
+                                income_wo_penalties_budget: summarizedData[client].income_wo_penalties_budget
+                            };
+
+                            // Добавляем объект "Итого" после последнего объекта с текущим клиентом
+                            result.push(item); // добавляем текущий объект
+                            result.push(totalObject); // добавляем объект "Итого"
+                        } else {
+                            result.push(item); // добавляем текущий объект без изменений
+                        }
+                    }
+
+
+                    console.log(result)
+                    // Выводим исходный массив с добавленными объектами "Итого" и общей суммой
+                    this.businessPlanData = result;
+                    this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 3500 });
+                    console.log(this.businessPlanData)
                 } catch (error) {
                     console.log(error)
                     this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 6000 });
-                } finally {
-                    this.$emit('stateLoader', false);
-                    this.$emit('startLoaderFromChildComponent', false)
                 }
+            } catch (error) {
+                console.log(error)
+                this.$toast.error('Ошибка получения данных\n' + error.response, { timeout: 6000 });
+            } finally {
+                this.$emit('stateLoader', false);
+                this.$emit('startLoaderFromChildComponent', false)
             }
+        }
     }
-    }
+}
 </script>
 
 <style scoped>
