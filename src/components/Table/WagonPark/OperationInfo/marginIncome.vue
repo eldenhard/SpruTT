@@ -80,6 +80,7 @@
                             <tr :key='`${item.client}_${index}_${Math.random() * 100}`' v-if="index !== 'revenue'
                                 || index !== 'weight'
                                 || index !== 'volume'
+                                || index !=='aid'
                                 || index !== 'amo'
                                 || index !== 'empty_tariff'
                                 || index !== 'fot'
@@ -176,6 +177,7 @@
                             <template v-for="(value, key) in item.station_group">
                                 <tr :key="`${item.client}_${key}_${Math.random() * 100}`" class="Total_blue" v-if="key !== 'revenue' && key !== 'weight' && key !== 'volume'
                                     && key !== 'amo'
+                                    && key !== 'aid'
                                     && key !== 'empty_tariff'
                                     && key !== 'fot'
                                     && key !== 'loaded_tariff'
@@ -493,6 +495,7 @@ export default {
                 return acc;
             }, {});
         },
+        // Сведение некоторых грузов по короткому наименвоанию
         containsAtLeastTwoMatches(product, cargo) {
             if ((product == "Бензин" && cargo == 'Бензин моторный (автомобильный) неэтилированный' || cargo == "Бензин стабильный газовый (газолин)") ||
                 (product == "Мазут нефтяной и каменноугольный" && cargo == "Мазут топочный")) {
@@ -540,7 +543,7 @@ export default {
                 let station_group_rf = ['ОКТ', 'КЛГ', 'МСК', 'ГОР', 'СЕВ', 'ЮЗП', 'ЮЖН', 'ДОН', 'СКВ', 'ЮКЖ', 'ЮВС', 'ПРВ', 'КБШ', 'СВР', 'ЮУР', 'ЗСБ', 'МЕЛ', 'ЛУГ', 'КРС', 'ЖДЯ', 'ВСБ', 'ЗАБ', 'ДВС', 'РБК']
                 let all_station_group = Object.values(JSON.parse(localStorage.getItem('road')))
                 // Создаем объект для мемоизации запросов
-                let listExcluded = ['revenue', 'weight', 'volume', 'amo', 'empty_tariff', 'fot', 'loaded_tariff', 'margin_income', 'other_charges', 'pps', 'repair', 'vagonosutki', 'vagonosutki_empty', 'vagonosutki_total']
+                let listExcluded = ['revenue', 'weight', 'volume', 'amo', 'empty_tariff', 'fot', 'loaded_tariff', 'margin_income', 'other_charges', 'pps', 'repair', 'vagonosutki', 'vagonosutki_empty', 'vagonosutki_total', 'aid']
 
                 try {
                     // Получаем объект с суммами по клиентам

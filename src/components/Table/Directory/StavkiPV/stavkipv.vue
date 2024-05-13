@@ -1385,22 +1385,20 @@ export default {
         },
         // Загрузка из Excel в таблицу
         loadFromExcel() {
+            
             if (this.selectedFields.length < 1) {
-                this.notifyHead = "Ошибка";
-                this.notifyMessage = "Вы не заполнили шапку таблицы!";
-                this.notifyClass = "wrapper-error";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 3000);
+                this.$toast.error("Вы не заполнили шапку таблицы!", {
+                    timeout: 3000
+                });
+
                 this.active_load_button = true
                 return
             }
+          
             const excelData = this.excelData;
             // Парсим данные из Excel, разделяя их по строкам и столбцам
             const rows = excelData.split("\n");
             const data = rows.map((row) => row.split("\t"));
-
             // Уничтожаем текущий экземпляр Handsontable, если он существует
             if (this.hot) {
                 this.hot.destroy();
@@ -1428,7 +1426,9 @@ export default {
                     data.splice(data.indexOf(i), 1);
                 }
             }
-
+            if(this.selectedFields[2] === 'Класс груза'){
+                console.log(data)
+           }
             this.tableData = data;
 
             // КОНЕЦ РАБОЧЕГО КОДА
