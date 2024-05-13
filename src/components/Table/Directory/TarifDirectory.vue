@@ -208,26 +208,14 @@
         <tr>
           <td class="col1">Клиент</td>
           <td>
-            <input type="text" id="a" class="textarea" v-model="Standard.client" placeholder="Клиент" />
+            <v-select v-model="Standard.client" :options="name_client" label="client"></v-select>
           </td>
 
 
 
         </tr>
         <br />
-        <tr v-show="ten_visible">
-          <td></td>
-          <td>
-            <div class="textarea" style="height: auto; width: 100%; margin-bottom: 1%" v-show="ten_visible">
-              <ul id="root_tenant">
-                <li v-for="item in filter_client" :key="item.id" @click="checkClient(item.client)">
-                  <span>{{ item.client }}</span>
-                  <hr />
-                </li>
-              </ul>
-            </div>
-          </td>
-        </tr>
+
       </table>
       <button class="button Action" style="height: 30px" @click="checkingData()">
         Проверка введеных данных
@@ -550,19 +538,7 @@ export default {
         return require(`@/assets/cross.png`)
       }
     },
-    filter_client() {
-      if (this.Standard.client.length > 1) {
-        this.ten_visible = true;
-      }
 
-      return this.Standard.client.length > 1
-        ? this.name_client.filter((item) =>
-          item.client
-            .toLowerCase()
-            .includes(this.Standard.client.toLowerCase())
-        )
-        : "";
-    },
     filter_cargo() {
       if (this.cargo_user.length > 1) {
         this.cargo_list = true;
@@ -799,42 +775,42 @@ export default {
       //   event.target.value = "";
       //   return;
       // } 
-  else if (event.target.id == "wagons") {
-    let operationBuffer = []
-    navigator.clipboard.readText().then((response) => {
-       operationBuffer = response.split("\n")
-      if(operationBuffer.at(-1) == "") {
-        operationBuffer.pop()
+      else if (event.target.id == "wagons") {
+        let operationBuffer = []
+        navigator.clipboard.readText().then((response) => {
+          operationBuffer = response.split("\n")
+          if (operationBuffer.at(-1) == "") {
+            operationBuffer.pop()
+          }
+          this.WorkInClass(operationBuffer, event);
+          event.target.value = "";
+
+          return
+        })
+        // let operationBuffer = event.target.value.split(" ")
+        // let result = []
+        // console.log(operationBuffer)
+        // let idx = operationBuffer.indexOf(' ')
+        // while (idx !== -1) {
+        //   if(operationBuffer[idx-1] == ',') {
+        //     idx = operationBuffer.indexOf(' ', idx + 1)
+        //     continue
+        //   } 
+        //   result.push(idx)
+        //   idx = operationBuffer.indexOf(' ', idx + 1)
+        // }
+        // console.log(result)
+        // let parts = []
+
+        // for(let i = 0; i < result.length-1; i++) {
+        //   let startIndex = result[i]
+        //   let endIndex = result[i]+1
+        //   console.log(startIndex, endIndex)
+        //   let part = operationBuffer.substring(startIndex, endIndex)
+        //   parts.push(part)
+        // }
+        // console.log(parts)
       }
-      this.WorkInClass(operationBuffer, event);
-      event.target.value = "";
-
-      return
-    })
-    // let operationBuffer = event.target.value.split(" ")
-    // let result = []
-    // console.log(operationBuffer)
-    // let idx = operationBuffer.indexOf(' ')
-    // while (idx !== -1) {
-    //   if(operationBuffer[idx-1] == ',') {
-    //     idx = operationBuffer.indexOf(' ', idx + 1)
-    //     continue
-    //   } 
-    //   result.push(idx)
-    //   idx = operationBuffer.indexOf(' ', idx + 1)
-    // }
-    // console.log(result)
-    // let parts = []
-
-    // for(let i = 0; i < result.length-1; i++) {
-    //   let startIndex = result[i]
-    //   let endIndex = result[i]+1
-    //   console.log(startIndex, endIndex)
-    //   let part = operationBuffer.substring(startIndex, endIndex)
-    //   parts.push(part)
-    // }
-    // console.log(parts)
-}
 
       else if (event.target.id == 'distance_num' || event.target.id == "country") {
         // Разделение по любому количеству пробелов
@@ -1022,6 +998,21 @@ export default {
       this.flagCheck = false;
       this.loader = true;
       this.errorp = [];
+      let params = {
+        page_size: 1000,
+        wagon_type: 'Цистерна'
+      }
+      const allAgreementInDataBase = await api.getTarifData(params)
+      for (let i in allAgreementInDataBase.data.data) {
+        if (allAgreementInDataBase.data.data[i].agreement_number === this.Standard.agreement_number
+          && allAgreementInDataBase.data.data[i].client === this.Standard.client.client) {
+          this.loader = false
+          this.$toast.error('Договор с таким номером и клиентом уже существует\nДоговор не создан', {
+            timeout: 5000
+          })
+          return
+        }
+      }
       try {
         this.Standard.responsible = this.uid;
         let parametrs;
@@ -1082,13 +1073,9 @@ export default {
         if (this.errorp.length == 0) {
           this.flagCheck = true;
           this.checkCompleteData = new_data;
-          this.notifyHead = "Успешно";
-          this.notifyMessage = "Данные проверку прошли!";
-          this.notifyClass = "wrapper-success";
-          this.showNotify = true;
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3000);
+          this.$toast.success('Данные проверку прошли', {
+            timeout: 3500
+          })
         }
       } catch (error) {
         console.log(error);
@@ -1182,7 +1169,7 @@ export default {
           newItem.wagons = []; // Инициализируем массив для вагонов
           for (const wagon of item.wagons) {
             try {
-             if(wagon.length < 8) continue
+              if (wagon.length < 8) continue
               const wagon_id = await this.getWagonData(wagon, index);
               if (wagon_id !== null) {
                 newItem.wagons.push(wagon_id);
@@ -1233,13 +1220,10 @@ export default {
           this.showNotify = false;
         }, 10000);
       } else {
-        this.notifyHead = "Успешно";
-        this.notifyMessage = "Ошибок нет, отправка данных возможна";
-        this.notifyClass = "wrapper-success";
-        this.showNotify = true;
-        setTimeout(() => {
-          this.showNotify = false;
-        }, 10000);
+        this.$toast.success("Успешно\nОшибок нет, отправка данных возможна", {
+          timeout: 7000,
+        });
+
       }
 
       return newData;
@@ -1304,9 +1288,7 @@ export default {
       this.ten_visible = false;
       this.cargo_list = false;
     },
-    checkClient(value) {
-      this.Standard.client = value;
-    },
+
     checkCargo(value, code6) {
       this.Standard.cargo = code6;
       this.cargo_user = value;
@@ -1314,34 +1296,24 @@ export default {
     // ОТправка обработанных данных в таблицу БД
     async postData() {
       if (this.flagCheck == false) {
-        this.notifyHead = "Ошибка";
-        this.notifyMessage = "Пройдите проверку введенных";
-        this.notifyClass = "wrapper-error";
-        this.showNotify = true;
-        setTimeout(() => {
-          this.showNotify = false;
-        }, 3000);
+        this.$toast.error("Пройдите проверку введенных данных", {
+          timeout: 5000,
+        })
+
         return;
       }
       // проверка когда перелючено на приложение и не выбран договор
       if (this.picked == "annex_number" && this.agreement_number_test == "") {
-        this.notifyHead = "Ошибка";
-        this.notifyMessage =
-          "Заполните поле с выбором договора для вашего приложения";
-        this.notifyClass = "wrapper-error";
-        this.showNotify = true;
-        setTimeout(() => {
-          this.showNotify = false;
-        }, 3000);
+        this.$toast.error("Заполните поле с выбором договора для вашего приложения", {
+          timeout: 5000,
+        })
+
         return;
       } else if (this.picked == "annex_number" && this.Standard.annex_number == null) {
-        this.notifyHead = "Ошибка";
-        this.notifyMessage = "Заполните номер приложения";
-        this.notifyClass = "wrapper-error";
-        this.showNotify = true;
-        setTimeout(() => {
-          this.showNotify = false;
-        }, 3000);
+        this.$toast.error("Заполните номер приложения", {
+          timeout: 5000,
+        })
+
         return;
       } else {
         this.loader = true;
@@ -1349,6 +1321,7 @@ export default {
         if (this.checkCompleteData.length == 0) {
           this.loader = true
           this.Standard.wagon_type = 'Цистерна'
+          this.Standard.client = this.Standard.client.client
           api
             .postTarifData([this.Standard])
             .then((response) => {
@@ -1356,23 +1329,16 @@ export default {
               // Получаю все приложения для договора
               this.getAllAgreement();
               this.flagCheck = false;
-              this.notifyHead = "Успешно";
-              this.notifyMessage = "Данные отправлены";
-              this.notifyClass = "wrapper-success";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 2000);
+              this.$toast.success("Данные отправлены", {
+                timeout: 5000,
+              })
+
             })
             .catch((error) => {
               this.loader = false;
-              this.notifyHead = "Ошибка";
-              this.notifyMessage = "Данные не отправлены";
-              this.notifyClass = "wrapper-error";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 2000);
+              this.$toast.error("Данные не отправлены", {
+                timeout: 5000,
+              })
             });
         } else {
           this.checkCompleteData.forEach((item) => {
@@ -1464,13 +1430,10 @@ export default {
           } catch (error) {
             console.log(error)
             this.loader = false;
-            this.notifyHead = "Ошибка";
-            this.notifyMessage = `${error}<br> Что-то пошло не так. Сообщите в отдел разработки`;
-            this.notifyClass = "wrapper-error";
-            this.showNotify = true;
-            setTimeout(() => {
-              this.showNotify = false;
-            }, 3500);
+            this.$toast.error(`${error}\nЧто-то пошло не так. Сообщите в отдел разработки`, {
+                timeout: 5000,
+              })
+
             return
           }
 
@@ -1505,24 +1468,18 @@ export default {
               this.flagCheck = false;
 
               this.loader = false;
-              this.notifyHead = "Успешно";
-              this.notifyMessage = "Данные загружены";
-              this.notifyClass = "wrapper-success";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 2000);
+              this.$toast.success("Данные загружены", {
+                timeout: 5000,
+              })
+
               this.data = [];
             })
             .catch((error) => {
               this.loader = false;
-              this.notifyHead = "Ошибка";
-              this.notifyMessage = "Проверьте поле с ошибками";
-              this.notifyClass = "wrapper-error";
-              this.showNotify = true;
-              setTimeout(() => {
-                this.showNotify = false;
-              }, 3000);
+              this.$toast.error('Проверьте поле с ошибками', {
+                timeout: 5000,
+              })
+
 
               for (let i in this.data) {
                 this.data[i]["error"] = null;
