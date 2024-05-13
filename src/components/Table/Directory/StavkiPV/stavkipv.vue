@@ -575,6 +575,9 @@ export default {
                 this.Standard.stavka_date_begin = null
                 this.all_agreement_number = []
                 this.new_comp = null
+                if (this.picked != 'agreement_number') {
+                    this.checkClient(newValue)
+                }
             },
             deep: true
 
@@ -953,14 +956,10 @@ export default {
             if (this.errorp.length == 0) {
                 this.flagCheck = true;
                 this.checkCompleteData = new_data;
+                this.$toast.success("Данные проверку прошли!", {
+                    timeout: 3000
+                })
 
-                this.notifyHead = "Успешно";
-                this.notifyMessage = "Данные проверку прошли!";
-                this.notifyClass = "wrapper-success";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 3000);
             }
         },
 
@@ -1129,13 +1128,10 @@ export default {
                     this.showNotify = false;
                 }, 10000);
             } else {
-                this.notifyHead = "Успешно";
-                this.notifyMessage = "Ошибок нет, отправка данных возможна";
-                this.notifyClass = "wrapper-success";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 10000);
+                this.$toast.success("Ошибок нет, отправка данных возможна", {
+                    timeout: 5000,
+                });
+
             }
 
             return newData;
@@ -1289,8 +1285,8 @@ export default {
             }
             const allAgreementInDataBase = await api.getTarifData(params)
             for (let i in allAgreementInDataBase.data.data) {
-                if (allAgreementInDataBase.data.data[i].agreement_number === this.Standard.agreement_number 
-                && allAgreementInDataBase.data.data[i].client === this.Standard.client.client) {
+                if (allAgreementInDataBase.data.data[i].agreement_number === this.Standard.agreement_number
+                    && allAgreementInDataBase.data.data[i].client === this.Standard.client.client) {
                     this.loader = false
                     this.$toast.error('Договор с таким номером и клиентом уже существует\nПроверьте ранее созданный договор в разделе "Просмотр данных"', {
                         timeout: 5000
@@ -1320,39 +1316,29 @@ export default {
         },
         // Получить все договора по клиенту
         getAgreementByClient() {
+
+            if (this.Standard.client == null || this.Standard.client == undefined && this.Standard.client.client == null || this.Standard.client.client == undefined) {
+                return
+            }
             this.loader = true
-            api.getAllDocumentsByClient(this.Standard.client)
+            api.getAllDocumentsByClient(this.Standard.client?.client)
                 .then(response => {
                     this.loader = false
-
                     this.all_agreement_number = response.data.data
                     if (this.all_agreement_number.length == 0) {
-                        this.notifyHead = "Ошибка";
-                        this.notifyMessage = `Договоры у контрагента ${this.Standard.client} не найдены`;
-                        this.notifyClass = "wrapper-error";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 5000);
+                        this.$toast.error(`Договоры у контрагента ${this.Standard.client?.client} не найдены`, {
+                            timeout: 5000
+                        })
                     } else {
-                        this.notifyHead = "Успешно";
-                        this.notifyMessage = "Договоры получены";
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 3000);
+                        this.$toast.success('Договоры получены', {
+                            timeout: 3000
+                        })
                     }
-
                 }).catch((error) => {
                     this.loader = false
-                    this.notifyHead = "Ошибка";
-                    this.notifyMessage = "Договора не получены! Повторите попытку позже";
-                    this.notifyClass = "wrapper-error";
-                    this.showNotify = true;
-                    setTimeout(() => {
-                        this.showNotify = false;
-                    }, 3000);
+                    this.$toast.error(`Договора не получены! Повторите попытку позже`, {
+                        timeout: 5000
+                    })
                     console.error(error)
                 })
         },
@@ -1366,13 +1352,14 @@ export default {
         // Выбор клиента для селекта
         checkClient(value) {
             this.Standard.client = value;
-            this.$nextTick(() => {
-                if (this.picked != 'agreement_number') {
-                    this.getAgreementByClient()
-                }
-                this.ten_visible = false;
-                this.cargo_list = false;
-            })
+
+            if (this.picked != 'agreement_number') {
+                this.getAgreementByClient()
+            }
+            this.ten_visible = false;
+            this.cargo_list = false;
+
+
         },
         // Удалить элемент шапки таблицы
         deleteTH(value) {
@@ -1385,7 +1372,7 @@ export default {
         },
         // Загрузка из Excel в таблицу
         loadFromExcel() {
-            
+
             if (this.selectedFields.length < 1) {
                 this.$toast.error("Вы не заполнили шапку таблицы!", {
                     timeout: 3000
@@ -1394,7 +1381,7 @@ export default {
                 this.active_load_button = true
                 return
             }
-          
+
             const excelData = this.excelData;
             // Парсим данные из Excel, разделяя их по строкам и столбцам
             const rows = excelData.split("\n");
@@ -1426,10 +1413,19 @@ export default {
                     data.splice(data.indexOf(i), 1);
                 }
             }
-            if(this.selectedFields[2] === 'Класс груза'){
-                console.log(data)
-           }
-            this.tableData = data;
+            let resultDataChangeClass = []
+            if (this.selectedFields[2] === 'Класс груза') {
+                const changeCargoClass = data[0][2].replace(/[^0-9]/g, "").split("")
+                changeCargoClass.forEach((item) => {
+                    const newArray = [...data[0]]
+                    newArray[2] = item
+                    resultDataChangeClass.push(newArray)
+                })
+                this.tableData = resultDataChangeClass;
+            } else {
+                this.tableData = data;
+            }
+
 
             // КОНЕЦ РАБОЧЕГО КОДА
             this.excelData = "";
@@ -1568,6 +1564,7 @@ export default {
                     console.log(finallyDataToSend, 'else')
                 }
                 for (let i in finallyDataToSend) {
+                    finallyDataToSend[i].client = finallyDataToSend[i].client?.client
                     if (finallyDataToSend[i].cargos_list) {
                         finallyDataToSend[i].cargos_list = finallyDataToSend[i].cargos_list.join(';');
                     } else {
@@ -1598,34 +1595,25 @@ export default {
                         console.log(response)
                         this.loader = false
                         this.tableData = []
-                        this.notifyHead = "Успешно";
-                        this.notifyMessage = "Данные отправлены!";
-                        this.notifyClass = "wrapper-success";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 2000);
+                        this.$toast.success('Данные отправлены', {
+                            timeout: 3000
+                        })
+
                     }).catch((err) => {
                         console.log(err)
-                        this.notifyHead = "Ошибка";
-                        this.notifyMessage = err.response.data;
-                        this.notifyClass = "wrapper-error";
-                        this.showNotify = true;
-                        setTimeout(() => {
-                            this.showNotify = false;
-                        }, 5500);
+                        this.loader = false;
+                        this.$toast.error(`Данные не отправлены\n${err.response.data}`, {
+                            timeout: 5000
+                        })
                     })
 
             } catch (error) {
                 console.error("Ошибка в блоке try:", error);
                 this.loader = false;
-                this.notifyHead = "Ошибка";
-                this.notifyMessage = "Очистите таблицу и повторите загрузку повторно! " + error.message;
-                this.notifyClass = "wrapper-error";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 3500);
+                this.$toast.error(`Очистите таблицу и повторите загрузку повторно!\n${error?.message}`, {
+                    timeout: 5000
+                })
+
             }
 
         },
