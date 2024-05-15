@@ -239,8 +239,9 @@ const getBudget = (data) => {
     return api.get(`${finance}/budget/?on_date=${data}`,  {timeout: 6000000} )
 }
 const getDataForOperSpravka = (queryString) => {
-    return api.get(`${finance}/operativnaya-spravka/report/${queryString}&salt=v2`, {timeout: 6000000} )
+    return api.get(`${finance}/operativnaya-spravka/report/${queryString}`, {timeout: 6000000} )
 }
+// &salt=v2
 const createNewProfitability = (data) => {
     return api.post(`${finance}/operativnaya-srpavka-other-info/`, data)
 }

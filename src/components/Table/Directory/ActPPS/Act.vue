@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 78vw !important; height: 85vh; overflow: auto;">
+  <div style="width: 78vw !important;">
     <Loader :loader="loader" />
     <h3 class="explanation" style="font-size: 17px; margin-top: -1%;">
       Перед использованием этого раздела обязательно выполнить <a @click="instruction = !instruction">следующие действия
