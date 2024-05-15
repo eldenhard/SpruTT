@@ -137,9 +137,7 @@
                                     calculateTotalVolume(item.station_group, 'margin_income') | format }}</td>
                                 <!-- Отклонение -->
                                 <td>{{
-                                    item.client.includes('Итого') ?
-                                        item.total_md_wo_penalties_fact - item.md_wo_penalties
-                                        :
+                                    item.client.includes('Итого') ?  item.total_md_wo_penalties_fact - item.md_wo_penalties:
                                         (calculateTotalVolume(item.station_group, 'margin_income') - item.md_wo_penalties) |
                                         format
                                 }}
@@ -162,8 +160,8 @@
                                 <td>{{ item.income_wo_penalties_budget | format }}</td>
                                 <!-- Итого маржинальной догходности -->
                                 <!-- <td>{{ sumMarginIncomePerVagonosutki(item.station_group) | format }} </td> -->
-                                <td>{{ calculateTotalVolume(item.station_group, 'margin_income') /
-                                    calculateTotalVolume(item.station_group, 'vagonosutki_total') | format }}</td>
+                                <td>{{ calculateTotalVolume(item.station_group, 'vagonosutki_total') == 0 ? 0 :
+                                 calculateTotalVolume(item.station_group, 'margin_income') / calculateTotalVolume(item.station_group, 'vagonosutki_total') | format }}</td>
                                 <td>{{ item.income_w_penalties | format }}</td>
                                 <td>{{ item.income_w_penalties_budget | format }}</td>
                                 <td></td>
