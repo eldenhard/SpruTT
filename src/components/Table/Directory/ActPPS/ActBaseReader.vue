@@ -93,8 +93,7 @@
           <th>Расчетное время в сутках</th>
           <th>Операция</th>
           <th>Станция</th>
-          <!-- <th>Номер заявки</th>
-          <th>Операция</th> -->
+   
           <th>Цена без НДС</th>
           <th>Валюта</th>
           <th>Контрагент</th>
@@ -102,8 +101,7 @@
           <th>№ акта</th>
           <th>Дата акта</th>
           <th>Факт по вагонам к возмещению</th>
-          <!-- <th>Подготовлено под груз (код 6)</th>
-          <th>Из под груза (код 6)</th> -->
+
         </tr>
       </thead>
       <tbody>
@@ -139,33 +137,13 @@
             <InputLoader :nameInp="`days`" :idRow="item.id" :idLoader="`daysload ${item.id}`"
               :idElement="`days ${item.id}`" :valueDataInp="item.days" @changeData="DataChange" />
           </td>
-          <!-- <td>
-            <InputLoader
-              :nameInp="`date_processing`"
-              :idRow="item.id"
-              :idLoader="`date_processingload ${item.id}`"
-              :idElement="`date_processing ${item.id}`"
-              :valueDataInp="item.date_processing"
-              :typeInp="'date'"
-              @changeDate="DateChange"
-            />
-          </td> -->
-          <!-- <td>
-            <InputLoader
-              :nameInp="`application_number`"
-              :idRow="item.id"
-              :idLoader="`application_numberload ${item.id}`"
-              :idElement="`application_number ${item.id}`"
-              :valueDataInp="item.application_number"
-              @changeData="DataChange"
-            />
-          </td> -->
+         
           <td>
             <InputLoader :nameInp="`operation`" :idRow="item.id" :idLoader="`operationload ${item.id}`"
               :idElement="`operation ${item.id}`" :valueDataInp="item.operation" @changeData="DataChange" />
           </td>
           <td>
-            <!-- {{ data }} -->
+           
             <InputLoader :nameInp="`station_name`" :idRow="item.id" :idLoader="`station_nameload ${item.id}`"
               :idElement="`station_name ${item.id}`" :valueDataInp="item.station_name" @changeData="DataChange" />
           </td>
@@ -204,29 +182,12 @@
               @changeDate="DateChange" />
           </td>
           
-          <!-- <td>
-            <InputLoader
-              :nameInp="`for_cargo`"
-              :idRow="item.id"
-              :idLoader="`for_cargoload ${item.id}`"
-              :idElement="`for_cargo ${item.id}`"
-              :valueDataInp="item.for_cargo"
-              @changeData="DataChange"
-            />
-          </td> -->
-          <!-- <td>
-            <InputLoader
-              :nameInp="`from_cargo`"
-              :idRow="item.id"
-              :idLoader="`from_cargoload ${item.id}`"
-              :idElement="`from_cargo ${item.id}`"
-              :valueDataInp="item.from_cargo"
-              @changeData="DataChange"
-            />
-          </td> -->
+      
         </tr>
       </tbody>
     </table>
+
+
   </div>
     <div id="wrapper">
       <ul id="pagination">
@@ -238,12 +199,17 @@
         </li>
       </ul>
     </div>
+    <template v-if="data.length > 0 && (this.uid == 236 || this.uid == 102)">
+
+      <ActPPSNewVersionReaderData :ppsData="data"/>
+    </template>
     <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass" />
   </div>
 </template>
 
 <script>
 import api from "@/api/directory";
+import ActPPSNewVersionReaderData from "./ActPPSNewVersionReaderData.vue";
 import InputLoader from "../../../ui/InputLoader.vue";
 import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
@@ -268,7 +234,7 @@ class BaseReader {
 }
 export default {
   name: "acrBaseReader",
-  components: { InputLoader, Loader, Notifications },
+  components: { InputLoader, Loader, Notifications, ActPPSNewVersionReaderData },
   data() {
     return {
       all_checkbox: [],
@@ -320,6 +286,7 @@ export default {
   computed: {
     ...mapState({
       cargo_code: (state) => state.cargo_code.cargo_code,
+      uid: (state) => state.auth.uid,
     }),
     filter_client() {
       if (this.filter.counterparty.length > 1) {

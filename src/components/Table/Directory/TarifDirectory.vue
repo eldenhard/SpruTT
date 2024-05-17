@@ -1014,6 +1014,14 @@ export default {
         }
       }
       try {
+        if(this.Standard.agreement_number === "" || this.Standard.client === "" ) {
+            this.$toast.error('Заполните все обязательные поля\n № Документа и клиента', {
+              timeout: 5000
+            })
+            this.loader = false
+            return
+        }
+        console.log(this.Standard.agreement_number, this.Standard)
         this.Standard.responsible = this.uid;
         let parametrs;
         if (this.data.length == 0) {
@@ -1067,15 +1075,15 @@ export default {
           }
           parametrs = this.data;
         }
-
+        console.log()
         let new_data = await this.createNewData();
         this.loader = false;
         if (this.errorp.length == 0) {
           this.flagCheck = true;
           this.checkCompleteData = new_data;
-          this.$toast.success('Данные проверку прошли', {
-            timeout: 3500
-          })
+          // this.$toast.success('Данные проверку прошли', {
+          //   timeout: 3500
+          // })
         }
       } catch (error) {
         console.log(error);
@@ -1221,7 +1229,7 @@ export default {
         }, 10000);
       } else {
         this.$toast.success("Успешно\nОшибок нет, отправка данных возможна", {
-          timeout: 7000,
+          timeout: 5000,
         });
 
       }
