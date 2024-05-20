@@ -4,7 +4,7 @@ import { getItem, setItem } from "@/helpers/persistanseStorage";
 // import { HardStartAutentifications } from '@/views/Authorization'
 let config = {
     //  baseURL: 'http://10.20.0.43/api/'
-    baseURL: '/10.20.0.40/'
+    baseURL: '/api/'
 }
 
 const _axios = axios.create(config)
