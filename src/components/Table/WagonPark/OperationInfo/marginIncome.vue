@@ -169,9 +169,7 @@
                                 <!-- <td>{{ sumMarginIncomePerVagonosutki(item.station_group) | format }} </td> -->
                                 <td>{{ calculateTotalVolume(item.station_group, 'vagonosutki_total') == 0 ? 0 :
                                  calculateTotalVolume(item.station_group, 'margin_income') / calculateTotalVolume(item.station_group, 'vagonosutki_total') | format }}</td>
-                                <td>{{ item.income_w_penalties | format }}
-                                
-                                {{ item.station_group }} </td>
+                                <td>{{ item.income_w_penalties | format }} </td>
                                 <td>{{ item.income_w_penalties_budget | format }}</td>
                                 <td></td>
                                 <td>{{ sumMarginIncomePerVagonosutki(item.station_group) - item.income_wo_penalties || 0
