@@ -928,8 +928,8 @@ export default {
                         })
                     })
                     .catch(error => {
-                        console.error(error)
-                        this.$toast.error(`Ошибка\nДанные не получены\n${error.response.data}`, {
+                     
+                        this.$toast.error(`Ошибка\nДанные не получены\n${error.response.data?.detail}`, {
                             timeout: 2500
                         })
                         this.loader = false
@@ -939,7 +939,7 @@ export default {
                     })
 
             } catch(error) {
-                    this.$toast.error(`Ошибка\nДанные не получены\n${error.response.data}`, {
+                    this.$toast.error(`Ошибка\nДанные не получены\n${error.response.data?.detail}`, {
                                 timeout: 2500
                     })
                 this.loader = false
