@@ -156,14 +156,12 @@
         ? 0 : 
      calculateTotalVolume(item.station_group, 'volume_budget') / calculateTotalVolume(item.station_group, 'aid') | format }} -->
      </td>
-        <!-- Стат нагрузка ФАКТ -->
-        <td>{{ calculateTotalVolume(item.station_group, 'aid') == 0 
-        ? 0 :
-        item.total_volume_fact || calculateTotalVolume(item.station_group, 'weight') / calculateTotalVolume(item.station_group, 'aid') | format }}
-    </td>
+                                <!-- Стат нагрузка ФАКТ -->
+                                <td>{{ calculateTotalVolume(item.station_group, 'aid') == 0  ? 0 : sumStatNagruzka(item.station_group) | format }}</td>
 
                                 <td></td>
-                                <td></td>
+                                <!-- Оборот -->
+                                <td>{{ calculateTotalVolume(item.station_group, 'aid') == 0  ? 0 : sumOborot(item.station_group) | format }}</td>
                                 <td></td>
                                 <td></td>
                                 <td>{{ item.income_wo_penalties ?? 0 | format }}</td>
@@ -219,17 +217,14 @@
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;">{{ value.aid == 0 ? 0 : value.weight / value.aid | format }}</td>
                                     <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;">{{ value.aid == 0 ? 0 : value.vagonosutki_total / value.aid | format }}</td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ value.margin_income /
-                                        value.vagonosutki_total |
-                                        format }} </td>
+                                    <td style="border: 1px solid black;">{{ value.margin_income / value.vagonosutki_total | format }} </td>
                                     <td style="border: 1px solid black;">{{ value.income_w_penalties | format }}</td>
-                                    <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }}
-                                    </td>
+                                    <td style="border: 1px solid black;">{{ value.income_w_penalties_budget | format }} </td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
@@ -387,6 +382,31 @@ export default {
                     let value = stationGroup[key];
                     if (value.vagonosutki_total !== 0) {
                         sum += value.margin_income / value.vagonosutki_total;
+                    }
+                }
+            }
+            return sum;
+        },
+        // Расчет стат нагрузки
+        sumStatNagruzka(stationGroup) {
+            let sum = 0;
+            for (let key in stationGroup) {
+                if (stationGroup.hasOwnProperty(key)) {
+                    let value = stationGroup[key];
+                    if (value.aid !== 0) {
+                        sum += value.weight / value.aid;
+                    }
+                }
+            }
+            return sum;
+        },
+        sumOborot(stationGroup) {
+            let sum = 0;
+            for (let key in stationGroup) {
+                if (stationGroup.hasOwnProperty(key)) {
+                    let value = stationGroup[key];
+                    if (value.aid !== 0) {
+                        sum += value.vagonosutki_total / value.aid;
                     }
                 }
             }
@@ -682,38 +702,38 @@ export default {
                                                 }
                                             }
                                             // ЕСЛИ назначение станции запад - восток
-                                            else if (
-                                                (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
-                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
-                                                !listExcluded.includes(station_list)
-                                            ) {
-                                                const stationKey = station_list;
-                                                let code = await this.getRoadForStation(station_list, item.destination);
-                                                let isWest = item.destination === 'Станции РФ (Запад)';
-                                                let isEast = item.destination === 'Станции РФ (Восток)';
+                                            // else if (
+                                            //     (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
+                                            //     (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
+                                            //     !listExcluded.includes(station_list)
+                                            // ) {
+                                            //     const stationKey = station_list;
+                                            //     let code = await this.getRoadForStation(station_list, item.destination);
+                                            //     let isWest = item.destination === 'Станции РФ (Запад)';
+                                            //     let isEast = item.destination === 'Станции РФ (Восток)';
 
-                                                // Проверяем, соответствует ли код станции группе "Запад" или "Восток"
-                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))
-                                                && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product == cargo)) {
+                                            //     // Проверяем, соответствует ли код станции группе "Запад" или "Восток"
+                                            //     if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))
+                                            //     && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product == cargo)) {
                            
-                                                    // Инициализируем объект станции, если он еще не существует
-                                                    if (!item.station_group[stationKey]) {
-                                                        item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                            //         // Инициализируем объект станции, если он еще не существует
+                                            //         if (!item.station_group[stationKey]) {
+                                            //             item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
                                                         
-                                                    } else {
-                                                            // Если станция уже существует, суммируем только нужные поля
-                                                            const existingStation = item.station_group[stationKey];
-                                                            for (let field in stationListData[stationKey]) {
-                                                                if (typeof stationListData[stationKey][field] === 'number') {
-                                                                    // Суммируем поля, если они числовые
-                                                                    existingStation[field] += stationListData[stationKey][field];
-                                                                }
-                                                            }
-                                                            continue
+                                            //         } else {
+                                            //                 // Если станция уже существует, суммируем только нужные поля
+                                            //                 const existingStation = item.station_group[stationKey];
+                                            //                 for (let field in stationListData[stationKey]) {
+                                            //                     if (typeof stationListData[stationKey][field] === 'number') {
+                                            //                         // Суммируем поля, если они числовые
+                                            //                         existingStation[field] += stationListData[stationKey][field];
+                                            //                     }
+                                            //                 }
+                                            //                 continue
                                                         
-                                                    }
-                                                }
-                                            }
+                                            //         }
+                                            //     }
+                                            // }
                                             else if (
                                                 item.destination === 'ДВС, КРС' &&
                                                 (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
