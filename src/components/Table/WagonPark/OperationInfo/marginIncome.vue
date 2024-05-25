@@ -151,13 +151,16 @@
                                     }}
                                 </td>
                                 <!-- Стат нагрузка ПЛАН -->
-                                <td>{{calculateTotalVolume(item.station_group, 'shipments') == 0 
-                                    ? 0 : 
-                                calculateTotalVolume(item.station_group, 'volume_budget') / calculateTotalVolume(item.station_group, 'shipments') | format }}</td>
-                                  <!-- Стат нагрузка ФАКТ -->
-                                  <td>{{ calculateTotalVolume(item.station_group, 'shipments') == 0 
-                                    ? 0 :
-                                  item.total_volume_fact || calculateTotalVolume(item.station_group, 'weight') / calculateTotalVolume(item.station_group, 'shipments') | format }}</td>
+    <td>
+        <!-- {{calculateTotalVolume(item.station_group, 'aid') == 0 
+        ? 0 : 
+     calculateTotalVolume(item.station_group, 'volume_budget') / calculateTotalVolume(item.station_group, 'aid') | format }} -->
+     </td>
+        <!-- Стат нагрузка ФАКТ -->
+        <td>{{ calculateTotalVolume(item.station_group, 'aid') == 0 
+        ? 0 :
+        item.total_volume_fact || calculateTotalVolume(item.station_group, 'weight') / calculateTotalVolume(item.station_group, 'aid') | format }}
+    </td>
 
                                 <td></td>
                                 <td></td>
@@ -172,10 +175,8 @@
                                 <td>{{ item.income_w_penalties | format }} </td>
                                 <td>{{ item.income_w_penalties_budget | format }}</td>
                                 <td></td>
-                                <td>{{ sumMarginIncomePerVagonosutki(item.station_group) - item.income_wo_penalties || 0
-                                    | format }}</td>
-                                <td>{{ sumMarginIncomePerVagonosutki(item.station_group) -
-                                    item.income_wo_penalties_budget || 0 | format }}</td>
+                                <td>{{ sumMarginIncomePerVagonosutki(item.station_group) - item.income_wo_penalties || 0 | format }}</td>
+                                <td>{{ sumMarginIncomePerVagonosutki(item.station_group) - item.income_wo_penalties_budget || 0 | format }}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -216,8 +217,7 @@
                                     <td style="border: 1px solid black;">{{ value.margin_income_budget | format }}</td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
-                                    <td style="border: 1px solid black;">{{ value.shipments == 0 ? 0 : value.weight / value.shipments | format }}
-                                    {{  value.weight_budget }}  {{ value.shipments }}</td>
+                                    <td style="border: 1px solid black;">{{ value.aid == 0 ? 0 : value.weight / value.aid | format }}</td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>
                                     <td style="border: 1px solid black;"></td>

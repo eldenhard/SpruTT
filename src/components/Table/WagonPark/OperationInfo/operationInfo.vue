@@ -30,8 +30,7 @@
                 </label>
                 <br>
 
-                <button class="Accept button" @click="Actioned()" style="width:20vw !important; height: 40px;">Загрузить
-                    данные</button>
+                <button class="Accept button" @click="Actioned()" style="width:20vw !important; height: 40px;">Загрузить данные</button>
 
             </div>
             <div>
@@ -883,8 +882,8 @@ export default {
                 api.getDataForOperSpravka(queryString),
                 api.getDataForOperSpravkaOtherClients(queryString),
                 api.getBP(queryString), 
-                api.getBusinessPlan(dateBeginChange+'01'),
-                api.getBudget(dateBeginChange+'01'),
+                api.getBusinessPlan(this.wag_type, dateBeginChange+'01'),
+                api.getBudget(this.wag_type, dateBeginChange+'01'),
 
                 ])
                     .then(([

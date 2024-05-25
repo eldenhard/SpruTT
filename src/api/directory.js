@@ -235,8 +235,8 @@ const sendDataForOperSpravka = (data) => {
 const sendDataForNewBudjet = (data) => {
     return api.post(`${finance}/budget/`,  data )
 }
-const getBudget = (data) => {
-    return api.get(`${finance}/budget/?on_date=${data}`,  {timeout: 6000000} )
+const getBudget = ( wagon_type, data) => {
+    return api.get(`${finance}/budget/?on_date=${data}&wagon_type=${wagon_type}`,  {timeout: 6000000} )
 }
 const getDataForOperSpravka = (queryString) => {
     return api.get(`${finance}/operativnaya-spravka/report/${queryString}`, {timeout: 6000000} )
@@ -254,8 +254,8 @@ const getDataForOperSpravkaOtherClients = (queryString) => {
 const getBP = (queryString) => {
     return api.get(`${finance}/operativnaya-spravka/bp/${queryString}`,  {timeout: 6000000} )
 }
-const  getBusinessPlan = (queryString) => {
-    return api.get(`${finance}/business-plan/?on_date=${queryString}&page_size=1_000_000`,  {timeout: 6000000} )
+const  getBusinessPlan = (wag_type, queryString) => {
+    return api.get(`${finance}/business-plan/?on_date=${queryString}&page_size=1_000_000&wagon_type=${wag_type}`,  {timeout: 6000000} )
 }
 
 // Получение  договора по параметрам расширенного поиска
