@@ -489,7 +489,7 @@ export default {
         },
         summarizeByClient(data) {
     const summarizedData = data.reduce((acc, item) => {
-        let client = item.client;
+        const client = item.client.includes('Прочие') ? item.client.replace('Прочие ', '') : item.client;
 
         // Проверяем, есть ли уже объект для этого клиента в аккумуляторе, если нет - создаем
         if (!acc[client]) {
@@ -516,9 +516,9 @@ export default {
 
         // Добавляем значения из текущего элемента данных к объекту сумм для этого клиента
         acc[client].volume += item.volume || 0;
-        acc[client].total_volume_fact += this.calculateTotalVolume(item.station_group, 'weight') || 0;
-        acc[client].total_revenue_fact += this.calculateTotalVolume(item.station_group, 'revenue') || 0;
-        acc[client].total_md_wo_penalties_fact += this.calculateTotalVolume(item.station_group, 'margin_income') || 0;
+        acc[client].total_volume_fact += this.calculateTotalVolume(item.station_group, 'weight');
+        acc[client].total_revenue_fact += this.calculateTotalVolume(item.station_group, 'revenue');
+        acc[client].total_md_wo_penalties_fact += this.calculateTotalVolume(item.station_group, 'margin_income');
         acc[client].revenue_wo_nds += item.revenue_wo_nds || 0;
         acc[client].volume_budget += item.volume_budget || 0;
         acc[client].revenue_wo_nds_budget += item.revenue_wo_nds_budget || 0;
@@ -537,57 +537,6 @@ export default {
         return acc;
     }, {});
 
-    // Дополнительная обработка данных "Прочие"
-    data.forEach(item => {
-        if (item.client.startsWith("Прочие")) {
-            const client = item.client.replace("Прочие ", "").trim();
-
-            // Проверяем, есть ли уже объект для этого клиента в аккумуляторе, если нет - создаем
-            if (!summarizedData[client]) {
-                summarizedData[client] = {
-                    volume: 0,
-                    total_volume_fact: 0,
-                    total_revenue_fact: 0,
-                    total_md_wo_penalties_fact: 0,
-                    revenue_wo_nds: 0,
-                    md_wo_penalties: 0,
-                    income_wo_penalties_sum: 0,
-                    income_wo_penalties_count: 0,
-                    volume_budget: 0,
-                    revenue_wo_nds_budget: 0,
-                    md_wo_penalties_budget: 0,
-                    income_wo_penalties: 0,
-                    income_wo_penalties_sum: 0,
-                    income_wo_penalties_count: 0,
-                    income_wo_penalties_budget: 0,
-                    income_wo_penalties_sum_budget: 0,
-                    income_wo_penalties_count_budget: 0,
-                };
-            }
-
-            // Добавляем значения из текущего элемента данных к объекту сумм для этого клиента
-            summarizedData[client].volume += item.volume || 0;
-            summarizedData[client].total_volume_fact += this.calculateTotalVolume(item.station_group, 'weight') || 0;
-            summarizedData[client].total_revenue_fact += this.calculateTotalVolume(item.station_group, 'revenue') || 0;
-            summarizedData[client].total_md_wo_penalties_fact += this.calculateTotalVolume(item.station_group, 'margin_income') || 0;
-            summarizedData[client].revenue_wo_nds += item.revenue_wo_nds || 0;
-            summarizedData[client].volume_budget += item.volume_budget || 0;
-            summarizedData[client].revenue_wo_nds_budget += item.revenue_wo_nds_budget || 0;
-            summarizedData[client].md_wo_penalties += item.md_wo_penalties || 0;
-            summarizedData[client].md_wo_penalties_budget += item.md_wo_penalties_budget || 0;
-
-            // Обновляем сумму и счетчик для income_wo_penalties, если значение не равно 0
-            if (item.income_wo_penalties !== 0) {
-                summarizedData[client].income_wo_penalties_sum += item.income_wo_penalties;
-                summarizedData[client].income_wo_penalties_count += 1;
-            }
-            if (item.income_wo_penalties_budget !== 0) {
-                summarizedData[client].income_wo_penalties_sum_budget += item.income_wo_penalties_budget;
-                summarizedData[client].income_wo_penalties_count_budget += 1;
-            }
-        }
-    });
-
     // Вычисление среднего значения для income_wo_penalties
     Object.keys(summarizedData).forEach(client => {
         const clientData = summarizedData[client];
@@ -597,6 +546,7 @@ export default {
             clientData.income_wo_penalties = 0; // или null, если нужно
         }
     });
+
     Object.keys(summarizedData).forEach(client => {
         const clientData = summarizedData[client];
         if (clientData.income_wo_penalties_count_budget > 0) {
@@ -832,7 +782,7 @@ export default {
                                                     }
                                                 }
                                             }
-                                            // ЕСЛИ назначение сокращенное название дороги СВР ЗСБ и т.д.
+                                            // // ЕСЛИ назначение сокращенное название дороги СВР ЗСБ и т.д.
                                              if (
                                                 all_station_group.includes(item.destination) &&
                                                 !listExcluded.includes(station_list) &&
@@ -897,25 +847,7 @@ export default {
                                                 }
 
                                             }
-                                            // else {
-                                            //     const cargoKey = cargo;
-                                            //     const stationKey = station_list;
 
-                                            //     // Проверяем, существует ли клиент в cargoStationMap
-                                            //     if (!cargoStationMap[client]) {
-                                            //         cargoStationMap[client] = {}; // Инициализация объекта для клиента
-                                            //     }
-
-                                            //     // Проверяем, существует ли груз у текущего клиента
-                                            //     if (!cargoStationMap[client][cargoKey]) {
-                                            //         cargoStationMap[client][cargoKey] = {}; // Инициализация объекта для груза
-                                            //     }
-
-                                            //     // Проверяем, существует ли станция у текущего груза
-                                            //     if (!cargoStationMap[client][cargoKey][stationKey]) {
-                                            //         // Если объекта для станции в грузе нет, создаем новый объект с копией данных станции
-                                            //         cargoStationMap[client][cargoKey][stationKey] = { ...stationListData[stationKey] };
-                                            //     }
                                             else {
                                                     const stationKey = station_list;
                                                     // Если станция не была обработана и не содержится в anotherCargo или listExcluded, добавляем ее в anotherCargo
