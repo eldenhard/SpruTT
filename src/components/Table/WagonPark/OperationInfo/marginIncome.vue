@@ -846,6 +846,7 @@ export default {
                                                         // Создаем новый объект с данными станции и добавляем его в anotherCargo
                                                         anotherCargo[stationKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
                                                     } else {
+                                                        
                                                         anotherCargo[stationKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
                                                     }
                                                 }
@@ -938,7 +939,7 @@ for (let client of clients) {
                 // Суммируем значения каждого поля
                 totalVolumeFact += station.weight || 0;
                 totalRevenueFact += station.revenue || 0;
-                totalMdWoPenaltiesFact += station.total_md_wo_penalties_fact || 0;
+                totalMdWoPenaltiesFact += station.margin_income || 0;
                 revenueWoNds += station.revenue_wo_nds || 0;
                 mdWoPenalties += station.md_wo_penalties || 0;
                 incomeWoPenalties += station.income_wo_penalties || 0;
@@ -1015,7 +1016,7 @@ result.forEach(item => {
             income_wo_penalties_budget: 0
         };
     }
-
+// total_volume_fact total_revenue_fact
     totals[client].total_volume_fact += item.total_volume_fact || 0;
     totals[client].total_revenue_fact += item.total_revenue_fact || 0;
     totals[client].total_md_wo_penalties_fact += item.total_md_wo_penalties_fact || 0;
@@ -1036,13 +1037,6 @@ result.forEach(item => {
             item.total_volume_fact += totals[client].total_volume_fact || 0;
             item.total_revenue_fact += totals[client].total_revenue_fact || 0;
             item.total_md_wo_penalties_fact += totals[client].total_md_wo_penalties_fact || 0;
-            item.revenue_wo_nds += totals[client].revenue_wo_nds || 0;
-            item.md_wo_penalties += totals[client].md_wo_penalties || 0;
-            item.income_wo_penalties += totals[client].income_wo_penalties || 0;
-            item.volume_budget += totals[client].volume_budget || 0;
-            item.revenue_wo_nds_budget += totals[client].revenue_wo_nds_budget || 0;
-            item.md_wo_penalties_budget += totals[client].md_wo_penalties_budget || 0;
-            item.income_wo_penalties_budget += totals[client].income_wo_penalties_budget || 0;
         }
     }
 });
