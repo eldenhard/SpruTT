@@ -90,8 +90,9 @@
                                 || index !== 'other_charges'
                                 || index !== 'pps'
                                 || index !== 'repair'
-                                || index !== 'vagonosutki'" :class="{ Total_1: item.client.includes('Итого') }"
-                                @click="toggleRow(index)">
+                                || index !== 'vagonosutki'" :class="{ Total_1: item.client.includes('Итого'), Total_grey: item.client.includes('Прочие') }"
+                                @click="toggleRow(index)"
+                                >
 
                                 <td>
                                     <b-icon :icon="item.expanded ? 'x-square-fill' : 'plus-square'" aria-hidden="true"
@@ -99,22 +100,19 @@
                                         v-if="item.station_group"></b-icon>
                                     {{ item.client }}
                                 </td>
-                                <td></td>
-                                <td>{{ item.product }}</td>
-                                <td>{{ item.destination }}</td>
-                                <td>{{ item.volume | format }}</td>
-                                <td>{{ item.volume_budget | format }}</td>
-                                <td>{{ item.total_volume_fact || calculateTotalVolume(item.station_group, 'weight')  |
-                                    format }}</td>
-                                <td>{{ item.client.includes('Итого') ? item.total_volume_fact - item.volume :
-                                    (calculateTotalVolume(item.station_group, 'weight') - item.volume) | format }}</td>
-                                <td>{{ item.client.includes('Итого') ? item.total_volume_fact - item.volume_budget :
-                                    (calculateTotalVolume(item.station_group, 'weight') - item.volume_budget) | format
-                                    }}</td>
-                                <td>{{ item.revenue_wo_nds ?? 0| format }}</td>
-                                <td>{{ item.revenue_wo_nds_budget ?? 0| format }}</td>
-                                <td>{{ item.total_revenue_fact || calculateTotalVolume(item.station_group, 'revenue')|
-                                    format }}</td>
+<td></td>
+    <td>{{ item.product }}</td>
+    <td>{{ item.destination }}</td>
+    <td>{{ item.volume | format }}</td>
+    <td>{{ item.volume_budget | format }}</td>
+    <td>{{ item.total_volume_fact || calculateTotalVolume(item.station_group, 'weight')  | format }}</td>
+    <td>{{ item.client.includes('Итого') ? item.total_volume_fact - item.volume :  (isNaN(calculateTotalVolume(item.station_group, 'weight') - item.volume) ? 0 : calculateTotalVolume(item.station_group, 'weight') - item.volume) | format }}</td>    
+    <td>{{ item.client.includes('Итого') ? item.total_volume_fact - item.volume_budget : 
+    (isNaN(calculateTotalVolume(item.station_group, 'weight') - item.volume_budget)) ? 0 :
+     (calculateTotalVolume(item.station_group, 'weight') - item.volume_budget)| format }}</td>
+    <td>{{ item.revenue_wo_nds ?? 0| format }}</td>
+    <td>{{ item.revenue_wo_nds_budget ?? 0| format }}</td>
+    <td>{{ item.total_revenue_fact || calculateTotalVolume(item.station_group, 'revenue') | format }}</td>
                                 <!-- Отклонение -->
                                 <td>
                                     {{ item.client.includes('Итого') ?
@@ -490,77 +488,126 @@ export default {
 
         },
         summarizeByClient(data) {
-            const summarizedData = data.reduce((acc, item) => {
-                const client = item.client;
+    const summarizedData = data.reduce((acc, item) => {
+        let client = item.client;
 
-                // Проверяем, есть ли уже объект для этого клиента в аккумуляторе, если нет - создаем
-                if (!acc[client]) {
-                    acc[client] = {
-                        volume: 0,
-                        total_volume_fact: 0,
-                        total_revenue_fact: 0,
-                        total_md_wo_penalties_fact: 0,
-                        revenue_wo_nds: 0,
-                        md_wo_penalties: 0,
-                        income_wo_penalties_sum: 0,
-                        income_wo_penalties_count: 0,
-                        volume_budget: 0,
-                        revenue_wo_nds_budget: 0,
-                        md_wo_penalties_budget: 0,
+        // Проверяем, есть ли уже объект для этого клиента в аккумуляторе, если нет - создаем
+        if (!acc[client]) {
+            acc[client] = {
+                volume: 0,
+                total_volume_fact: 0,
+                total_revenue_fact: 0,
+                total_md_wo_penalties_fact: 0,
+                revenue_wo_nds: 0,
+                md_wo_penalties: 0,
+                income_wo_penalties_sum: 0,
+                income_wo_penalties_count: 0,
+                volume_budget: 0,
+                revenue_wo_nds_budget: 0,
+                md_wo_penalties_budget: 0,
+                income_wo_penalties: 0,
+                income_wo_penalties_sum: 0,
+                income_wo_penalties_count: 0,
+                income_wo_penalties_budget: 0,
+                income_wo_penalties_sum_budget: 0,
+                income_wo_penalties_count_budget: 0,
+            };
+        }
 
-                        income_wo_penalties: 0,
-                        income_wo_penalties_sum: 0,
-                        income_wo_penalties_count: 0,
+        // Добавляем значения из текущего элемента данных к объекту сумм для этого клиента
+        acc[client].volume += item.volume || 0;
+        acc[client].total_volume_fact += this.calculateTotalVolume(item.station_group, 'weight') || 0;
+        acc[client].total_revenue_fact += this.calculateTotalVolume(item.station_group, 'revenue') || 0;
+        acc[client].total_md_wo_penalties_fact += this.calculateTotalVolume(item.station_group, 'margin_income') || 0;
+        acc[client].revenue_wo_nds += item.revenue_wo_nds || 0;
+        acc[client].volume_budget += item.volume_budget || 0;
+        acc[client].revenue_wo_nds_budget += item.revenue_wo_nds_budget || 0;
+        acc[client].md_wo_penalties += item.md_wo_penalties || 0;
+        acc[client].md_wo_penalties_budget += item.md_wo_penalties_budget || 0;
 
-                        income_wo_penalties_budget: 0,
-                        income_wo_penalties_sum_budget: 0,
-                        income_wo_penalties_count_budget: 0,
-                    };
-                }
+        // Обновляем сумму и счетчик для income_wo_penalties, если значение не равно 0
+        if (item.income_wo_penalties !== 0) {
+            acc[client].income_wo_penalties_sum += item.income_wo_penalties;
+            acc[client].income_wo_penalties_count += 1;
+        }
+        if (item.income_wo_penalties_budget !== 0) {
+            acc[client].income_wo_penalties_sum_budget += item.income_wo_penalties_budget;
+            acc[client].income_wo_penalties_count_budget += 1;
+        }
+        return acc;
+    }, {});
 
-                // Добавляем значения из текущего элемента данных к объекту сумм для этого клиента
-                acc[client].volume += item.volume;
-                acc[client].total_volume_fact += this.calculateTotalVolume(item.station_group, 'weight');
-                acc[client].total_revenue_fact += this.calculateTotalVolume(item.station_group, 'revenue');
-                acc[client].total_md_wo_penalties_fact += this.calculateTotalVolume(item.station_group, 'margin_income');
-                acc[client].revenue_wo_nds += item.revenue_wo_nds;
-                acc[client].volume_budget += item.volume_budget;
-                acc[client].revenue_wo_nds_budget += item.revenue_wo_nds_budget;
-                acc[client].md_wo_penalties += item.md_wo_penalties;
-                acc[client].md_wo_penalties_budget += item.md_wo_penalties_budget;
+    // Дополнительная обработка данных "Прочие"
+    data.forEach(item => {
+        if (item.client.startsWith("Прочие")) {
+            const client = item.client.replace("Прочие ", "").trim();
 
-                // Обновляем сумму и счетчик для income_wo_penalties, если значение не равно 0
-                if (item.income_wo_penalties !== 0) {
-                    acc[client].income_wo_penalties_sum += item.income_wo_penalties;
-                    acc[client].income_wo_penalties_count += 1;
-                }
-                if (item.income_wo_penalties_budget !== 0) {
-                    acc[client].income_wo_penalties_sum_budget += item.income_wo_penalties_budget;
-                    acc[client].income_wo_penalties_count_budget += 1;
-                }
-                return acc;
-            }, {});
+            // Проверяем, есть ли уже объект для этого клиента в аккумуляторе, если нет - создаем
+            if (!summarizedData[client]) {
+                summarizedData[client] = {
+                    volume: 0,
+                    total_volume_fact: 0,
+                    total_revenue_fact: 0,
+                    total_md_wo_penalties_fact: 0,
+                    revenue_wo_nds: 0,
+                    md_wo_penalties: 0,
+                    income_wo_penalties_sum: 0,
+                    income_wo_penalties_count: 0,
+                    volume_budget: 0,
+                    revenue_wo_nds_budget: 0,
+                    md_wo_penalties_budget: 0,
+                    income_wo_penalties: 0,
+                    income_wo_penalties_sum: 0,
+                    income_wo_penalties_count: 0,
+                    income_wo_penalties_budget: 0,
+                    income_wo_penalties_sum_budget: 0,
+                    income_wo_penalties_count_budget: 0,
+                };
+            }
 
-            // Вычисление среднего значения для income_wo_penalties
-            Object.keys(summarizedData).forEach(client => {
-                const clientData = summarizedData[client];
-                if (clientData.income_wo_penalties_count > 0) {
-                    clientData.income_wo_penalties = clientData.income_wo_penalties_sum / clientData.income_wo_penalties_count;
-                } else {
-                    clientData.income_wo_penalties = 0; // или null, если нужно
-                }
-            });
-            Object.keys(summarizedData).forEach(client => {
-                const clientData = summarizedData[client];
-                if (clientData.income_wo_penalties_count_budget > 0) {
-                    clientData.income_wo_penalties_budget = clientData.income_wo_penalties_sum_budget / clientData.income_wo_penalties_count_budget;
-                } else {
-                    clientData.income_wo_penalties_budget = 0; // или null, если нужно
-                }
-            });
-            return summarizedData;
-        },
+            // Добавляем значения из текущего элемента данных к объекту сумм для этого клиента
+            summarizedData[client].volume += item.volume || 0;
+            summarizedData[client].total_volume_fact += this.calculateTotalVolume(item.station_group, 'weight') || 0;
+            summarizedData[client].total_revenue_fact += this.calculateTotalVolume(item.station_group, 'revenue') || 0;
+            summarizedData[client].total_md_wo_penalties_fact += this.calculateTotalVolume(item.station_group, 'margin_income') || 0;
+            summarizedData[client].revenue_wo_nds += item.revenue_wo_nds || 0;
+            summarizedData[client].volume_budget += item.volume_budget || 0;
+            summarizedData[client].revenue_wo_nds_budget += item.revenue_wo_nds_budget || 0;
+            summarizedData[client].md_wo_penalties += item.md_wo_penalties || 0;
+            summarizedData[client].md_wo_penalties_budget += item.md_wo_penalties_budget || 0;
 
+            // Обновляем сумму и счетчик для income_wo_penalties, если значение не равно 0
+            if (item.income_wo_penalties !== 0) {
+                summarizedData[client].income_wo_penalties_sum += item.income_wo_penalties;
+                summarizedData[client].income_wo_penalties_count += 1;
+            }
+            if (item.income_wo_penalties_budget !== 0) {
+                summarizedData[client].income_wo_penalties_sum_budget += item.income_wo_penalties_budget;
+                summarizedData[client].income_wo_penalties_count_budget += 1;
+            }
+        }
+    });
+
+    // Вычисление среднего значения для income_wo_penalties
+    Object.keys(summarizedData).forEach(client => {
+        const clientData = summarizedData[client];
+        if (clientData.income_wo_penalties_count > 0) {
+            clientData.income_wo_penalties = clientData.income_wo_penalties_sum / clientData.income_wo_penalties_count;
+        } else {
+            clientData.income_wo_penalties = 0; // или null, если нужно
+        }
+    });
+    Object.keys(summarizedData).forEach(client => {
+        const clientData = summarizedData[client];
+        if (clientData.income_wo_penalties_count_budget > 0) {
+            clientData.income_wo_penalties_budget = clientData.income_wo_penalties_sum_budget / clientData.income_wo_penalties_count_budget;
+        } else {
+            clientData.income_wo_penalties_budget = 0; // или null, если нужно
+        }
+    });
+
+    return summarizedData;
+},
 
         // Сведение некоторых грузов по короткому наименвоанию
         containsAtLeastTwoMatches(product, cargo) {
@@ -654,6 +701,7 @@ export default {
                     const result_boris = []
                     const cargoStationMap = {}
                     const anotherCargo = []
+                    const handleStations = []
                     for (let item of preData) {
                         const client = item.client;
 
@@ -681,7 +729,7 @@ export default {
                                             ) {
                                                 // Определяем уникальный ключ для станции (например, название станции)
                                                 const stationKey = station_list;
-
+                                                handleStations[stationKey] = true
                                                 // Проверяем, существует ли уже объект с таким ключом в item.station_group
                                                 if (!item.station_group[stationKey]) {
                                                     // Если объекта нет, создаем новый объект с копией данных станции
@@ -699,155 +747,156 @@ export default {
                                                 }
                                             }
                                             // ЕСЛИ назначение станции запад - восток
-                                            // else if (
-                                            //     (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
-                                            //     (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
-                                            //     !listExcluded.includes(station_list)
-                                            // ) {
-                                            //     const stationKey = station_list;
-                                            //     let code = await this.getRoadForStation(station_list, item.destination);
-                                            //     let isWest = item.destination === 'Станции РФ (Запад)';
-                                            //     let isEast = item.destination === 'Станции РФ (Восток)';
+                                            else if (
+                                                (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
+                                                !listExcluded.includes(station_list)
+                                            ) {
+                                                const stationKey = station_list;
+                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                                let isWest = item.destination === 'Станции РФ (Запад)';
+                                                let isEast = item.destination === 'Станции РФ (Восток)';
 
-                                            //     // Проверяем, соответствует ли код станции группе "Запад" или "Восток"
-                                            //     if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))
-                                            //     && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product == cargo)) {
+                                                // Проверяем, соответствует ли код станции группе "Запад" или "Восток"
+                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))
+                                                && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product == cargo)) {
 
-                                            //         // Инициализируем объект станции, если он еще не существует
-                                            //         if (!item.station_group[stationKey]) {
-                                            //             item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                    // Инициализируем объект станции, если он еще не существует
+                                                    if (!item.station_group[stationKey]) {
+                                                        item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
 
-                                            //         } else {
-                                            //                 // Если станция уже существует, суммируем только нужные поля
-                                            //                 const existingStation = item.station_group[stationKey];
-                                            //                 for (let field in stationListData[stationKey]) {
-                                            //                     if (typeof stationListData[stationKey][field] === 'number') {
-                                            //                         // Суммируем поля, если они числовые
-                                            //                         existingStation[field] += stationListData[stationKey][field];
-                                            //                     }
-                                            //                 }
-                                            //                 continue
+                                                    } else {
+                                                            // Если станция уже существует, суммируем только нужные поля
+                                                            const existingStation = item.station_group[stationKey];
+                                                            for (let field in stationListData[stationKey]) {
+                                                                if (typeof stationListData[stationKey][field] === 'number') {
+                                                                    // Суммируем поля, если они числовые
+                                                                    existingStation[field] += stationListData[stationKey][field];
+                                                                }
+                                                            }
+                                                            continue
 
-                                            //         }
-                                            //     }
-                                            // }
-                                            // else if (
-                                            //     item.destination === 'ДВС, КРС' &&
-                                            //     (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
-                                            //     !listExcluded.includes(station_list)
-                                            // ) {
-                                            //     const stationKey = station_list;
-                                            //     let code = await this.getRoadForStation(station_list, item.destination);
+                                                    }
+                                                }
+                                            }
+                                            else if (
+                                                item.destination === 'ДВС, КРС' &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
+                                                !listExcluded.includes(station_list)
+                                            ) {
+                                                const stationKey = station_list;
+                                                let code = await this.getRoadForStation(station_list, item.destination);
 
-                                            //     if ((item.destination.includes(code))) {
-                                            //         if (!item.station_group[stationKey]) {
-                                            //             item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                if ((item.destination.includes(code))) {
+                                                    if (!item.station_group[stationKey]) {
+                                                        item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
 
-                                            //         } else {
-                                            //             // Если станция уже существует, суммируем только нужные поля
-                                            //             const existingStation = item.station_group[stationKey];
-                                            //             for (let field in stationListData[stationKey]) {
-                                            //                 if (typeof stationListData[stationKey][field] === 'number') {
-                                            //                     // Суммируем поля, если они числовые
-                                            //                     existingStation[field] += stationListData[stationKey][field];
-                                            //                 }
-                                            //             }
-                                            //             continue
-                                            //         }
-                                            //     }
-                                            // }
-                                            // else if (
-                                            //     (item.destination === 'Станции РФ' || item.destination === 'РФ') &&
-                                            //     (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
-                                            //     !listExcluded.includes(station_list)
-                                            // ) {
-                                            //     const stationKey = station_list;
-                                            //     let code = await this.getRoadForStation(station_list, item.destination);
-                                            //     let isFull = item.destination === 'Станции РФ';
-                                            //     let isLow = item.destination === 'РФ';
+                                                    } else {
+                                                        // Если станция уже существует, суммируем только нужные поля
+                                                        const existingStation = item.station_group[stationKey];
+                                                        for (let field in stationListData[stationKey]) {
+                                                            if (typeof stationListData[stationKey][field] === 'number') {
+                                                                // Суммируем поля, если они числовые
+                                                                existingStation[field] += stationListData[stationKey][field];
+                                                            }
+                                                        }
+                                                        continue
+                                                    }
+                                                }
+                                            }
+                                            else if (
+                                                (item.destination === 'Станции РФ' || item.destination === 'РФ') &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
+                                                !listExcluded.includes(station_list)
+                                            ) {
+                                                const stationKey = station_list;
+                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                                let isFull = item.destination === 'Станции РФ';
+                                                let isLow = item.destination === 'РФ';
 
 
-                                            //     if ((isFull && station_group_rf.includes(code)) || (isLow && station_group_rf.includes(code))) {
-                                            //         if (!item.station_group[stationKey]) {
-                                            //             item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                if ((isFull && station_group_rf.includes(code)) || (isLow && station_group_rf.includes(code))) {
+                                                    if (!item.station_group[stationKey]) {
+                                                        item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
 
-                                            //         } else {
-                                            //             // Если станция уже существует, суммируем только нужные поля
-                                            //             const existingStation = item.station_group[stationKey];
-                                            //             for (let field in stationListData[stationKey]) {
-                                            //                 if (typeof stationListData[stationKey][field] === 'number') {
-                                            //                     // Суммируем поля, если они числовые
-                                            //                     existingStation[field] += stationListData[stationKey][field];
-                                            //                 }
-                                            //             }
-                                            //             continue
-                                            //         }
-                                            //     }
-                                            // }
-                                            // // ЕСЛИ назначение сокращенное название дороги СВР ЗСБ и т.д.
-                                            //  if (
-                                            //     all_station_group.includes(item.destination) &&
-                                            //     !listExcluded.includes(station_list) &&
-                                            //     (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
-                                            // ) {
+                                                    } else {
+                                                        // Если станция уже существует, суммируем только нужные поля
+                                                        const existingStation = item.station_group[stationKey];
+                                                        for (let field in stationListData[stationKey]) {
+                                                            if (typeof stationListData[stationKey][field] === 'number') {
+                                                                // Суммируем поля, если они числовые
+                                                                existingStation[field] += stationListData[stationKey][field];
+                                                            }
+                                                        }
+                                                        continue
+                                                    }
+                                                }
+                                            }
+                                            // ЕСЛИ назначение сокращенное название дороги СВР ЗСБ и т.д.
+                                             if (
+                                                all_station_group.includes(item.destination) &&
+                                                !listExcluded.includes(station_list) &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
+                                            ) {
 
-                                            //     const stationKey = station_list;
+                                                const stationKey = station_list;
 
-                                            //     let code
-                                            //     if (!listExcluded.includes(station_list)) {
-                                            //         code = await this.getRoadForStation(station_list, item.destination);
-                                            //     }
+                                                let code
+                                                if (!listExcluded.includes(station_list)) {
+                                                    code = await this.getRoadForStation(station_list, item.destination);
+                                                }
 
-                                            //     // Проверяем, что станция содержится в массиве all_station_group
-                                            //     if (!item.station_group[stationKey] && item.destination == code && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product == cargo)) {
-                                            //         // console.log(this.containsAtLeastTwoMatches(item.product, cargo), item.product == cargo)
-                                            //         // console.log(stationKey,  item.product,  cargo, 'То что должно сочитаться')
-                                            //         if(stationKey == 'Находка-восточная'){
-                                            //              console.log(this.containsAtLeastTwoMatches(item.product, cargo), item.product == cargo)
-                                            //             console.log(stationKey,  item.product,  cargo, 'То что должно сочитаться')
-                                            //         }
-                                            //         item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                // Проверяем, что станция содержится в массиве all_station_group
+                                                if (!item.station_group[stationKey] && item.destination == code && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product == cargo)) {
+                                                    // console.log(this.containsAtLeastTwoMatches(item.product, cargo), item.product == cargo)
+                                                    // console.log(stationKey,  item.product,  cargo, 'То что должно сочитаться')
+                                                    if(stationKey == 'Находка-восточная'){
+                                                         console.log(this.containsAtLeastTwoMatches(item.product, cargo), item.product == cargo)
+                                                        console.log(stationKey,  item.product,  cargo, 'То что должно сочитаться')
+                                                    }
+                                                    item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
 
-                                            //     } else {
-                                            //         // Если станция уже существует, суммируем только нужные поля
-                                            //         if (item.destination == code && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)) {
+                                                } else {
+                                                    // Если станция уже существует, суммируем только нужные поля
+                                                    if (item.destination == code && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)) {
 
-                                            //             const existingStation = item.station_group[stationKey];
-                                            //             for (let field in stationListData[stationKey]) {
-                                            //                 if (typeof stationListData[stationKey][field] === 'number') {
-                                            //                     // Суммируем поля, если они числовые
-                                            //                     existingStation[field] += stationListData[stationKey][field];
-                                            //                 }
-                                            //             }
-                                            //         } else {
-                                            //             continue
-                                            //         }
-                                            //     }
+                                                        const existingStation = item.station_group[stationKey];
+                                                        for (let field in stationListData[stationKey]) {
+                                                            if (typeof stationListData[stationKey][field] === 'number') {
+                                                                // Суммируем поля, если они числовые
+                                                                existingStation[field] += stationListData[stationKey][field];
+                                                            }
+                                                        }
+                                                    } else {
+                                                        continue
+                                                    }
+                                                }
 
-                                            // }
-                                            // else if (
-                                            //     item.destination === 'экспорт' &&
-                                            //     station_list.includes('эксп.') &&
-                                            //     !listExcluded.includes(station_list) &&
-                                            //     (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
-                                            // ) {
-                                            //     const stationKey = station_list;
-                                            //     if (!item.station_group[stationKey]) {
-                                            //         item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                            }
+                                            else if (
+                                                item.destination === 'экспорт' &&
+                                                station_list.includes('эксп.') &&
+                                                !listExcluded.includes(station_list) &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)
+                                            ) {
+                                                handleStations[stationKey] = true
+                                                const stationKey = station_list;
+                                                if (!item.station_group[stationKey]) {
+                                                    item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
 
-                                            //     } else {
-                                            //         // Если станция уже существует, суммируем только нужные поля
-                                            //         const existingStation = item.station_group[stationKey];
-                                            //         for (let field in stationListData[stationKey]) {
-                                            //             if (typeof stationListData[stationKey][field] === 'number') {
-                                            //                 // Суммируем поля, если они числовые
-                                            //                 existingStation[field] += stationListData[stationKey][field];
-                                            //             }
-                                            //         }
-                                            //         continue
-                                            //     }
+                                                } else {
+                                                    // Если станция уже существует, суммируем только нужные поля
+                                                    const existingStation = item.station_group[stationKey];
+                                                    for (let field in stationListData[stationKey]) {
+                                                        if (typeof stationListData[stationKey][field] === 'number') {
+                                                            // Суммируем поля, если они числовые
+                                                            existingStation[field] += stationListData[stationKey][field];
+                                                        }
+                                                    }
+                                                    continue
+                                                }
 
-                                            // }
+                                            }
                                             // else {
                                             //     const cargoKey = cargo;
                                             //     const stationKey = station_list;
@@ -868,34 +917,16 @@ export default {
                                             //         cargoStationMap[client][cargoKey][stationKey] = { ...stationListData[stationKey] };
                                             //     }
                                             else {
-                                                const stationKey = station_list;
-                                                // Если объект существует, суммируем значения полей станции
-                                                if (!anotherCargo[stationKey] && !listExcluded.includes(stationKey)) {
-
-                                                    // Если объекта нет, создаем новый объект с копией данных станции
-                                                    anotherCargo[stationKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
-
-                                                } else {
-                                                    // Если объект существует, суммируем значения полей станции
-                                                    if (!listExcluded.includes(stationKey)) {
-                                                        const existingStation = anotherCargo[stationKey];
-                                                        for (let field in stationListData) {
-                                                            if (typeof stationListData[field] === 'number') {
-                                                                existingStation[field] += stationListData[field];
-                                                            }
-                                                        }
-                                                        continue
+                                                    const stationKey = station_list;
+                                                    // Если станция не была обработана и не содержится в anotherCargo или listExcluded, добавляем ее в anotherCargo
+                                                    if (!handleStations[stationKey] && !anotherCargo[stationKey] && !listExcluded.includes(stationKey)) {
+                                                        // Создаем новый объект с данными станции и добавляем его в anotherCargo
+                                                        anotherCargo[stationKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
+                                                    } else {
+                                                        // Если станция уже была обработана или содержится в anotherCargo или listExcluded, пропускаем ее
+                                                        continue;
                                                     }
-
                                                 }
-                                                // const existingStation = cargoStationMap[client][cargoKey][stationKey];
-                                                // for (let field in stationListData[stationKey]) {
-                                                //     if (typeof stationListData[stationKey][field] === 'number') {
-                                                //         existingStation[field] += stationListData[stationKey][field];
-                                                //     }
-                                                // }
-                                            }
-                                            // }
 
                                         }
                                     }
@@ -909,13 +940,13 @@ export default {
                         }
                     }
 
-                    console.log(anotherCargo, 'anotherCargo')
+                    
 
                     let result_data = []
                     for (let el in anotherCargo) {
                         result_data.push(anotherCargo[el])
                     }
-                    console.log(result_data)
+                   
                     const groupedData = result_data.reduce((acc, item) => {
                         const index = acc.findIndex(group => group.client === item.client && group.product === item.cargo);
 
@@ -932,7 +963,7 @@ export default {
                         return acc;
                     }, []);
 
-console.log(groupedData, 'groupedData')
+
                     // После завершения всех операций добавляем этот блок кода
                     // Перебираем клиентов
                     // for (const client in cargoStationMap) {
@@ -982,115 +1013,68 @@ console.log(groupedData, 'groupedData')
                     // Создаем массив для хранения результата с добавленными объектами "Итого"
                     const result = [];
 
-                    // Проходим по массиву preData и добавляем объекты "Итого" после последних объектов с каждым клиентом
-                    // for (let i = 0; i < preData.length; i++) {
-                    //     const item = preData[i];
-                    //     const client = item.client;
 
-                    //     // Проверяем, был ли уже добавлен объект "Итого" для данного клиента
-                    //     if (i === lastIndexMap[client]) {
-                    //         const totalObject = {
-                    //             client: "Итого по " + client,
-                    //             volume: summarizedData[client].volume,
-                    //             total_volume_fact: summarizedData[client].total_volume_fact,
-                    //             total_revenue_fact: summarizedData[client].total_revenue_fact,
-                    //             total_md_wo_penalties_fact: summarizedData[client].total_md_wo_penalties_fact,
-                    //             revenue_wo_nds: summarizedData[client].revenue_wo_nds,
-                    //             md_wo_penalties: summarizedData[client].md_wo_penalties,
-                    //             income_wo_penalties: summarizedData[client].income_wo_penalties, // среднее арифмитеческое при делении не учитываем позиции с 0
-                    //             volume_budget: summarizedData[client].volume_budget,
-                    //             revenue_wo_nds_budget: summarizedData[client].revenue_wo_nds_budget,
-                    //             md_wo_penalties_budget: summarizedData[client].md_wo_penalties_budget,
-                    //             income_wo_penalties_budget: summarizedData[client].income_wo_penalties_budget // среднее арифмитеческое 
-                    //         };
+// Создаем массив для хранения всех уникальных клиентов
+const clients = new Set(preData.map(item => item.client));
 
-                    //         // Добавляем объект "Итого" после последнего объекта с текущим клиентом
-                    //         result.push(item); // добавляем текущий объект
+// Обрабатываем каждый клиент
+for (let client of clients) {
+    // Получаем все объекты preData для текущего клиента
+    const clientItems = preData.filter(item => item.client === client);
 
-                    //         result.push(totalObject); // добавляем объект "Итого"
-                    //     } else {
-                    //         result.push(item); // добавляем текущий объект без изменений
-                    //     }
-                    // }
+    // Добавляем все объекты item для текущего клиента в результат
+    clientItems.forEach(item => result.push(item));
 
-for (let i = 0; i < preData.length; i++) {
-    const item = preData[i];
-    const client = item.client;
+    // Обрабатываем объекты "Прочие" для текущего клиента
     const otherData = groupedData.filter(group => group.client === client);
+    console.log(otherData, 'otherData')
     if (otherData.length > 0) {
-        // Если есть, добавляем их в итоговый массив после текущего объекта item
+        // Для каждого объекта "Прочие" проверяем и удаляем совпадающие станции
         otherData.forEach(data => {
             data.client = "Прочие " + data.client; // Добавляем слово "Прочие" к клиенту
-            result.push(data);
-        });
-    }
-    // Добавляем текущий объект item в итоговый массив
-    result.push(item);
 
-    // Проверяем, есть ли данные "Прочие" в groupedData для данного клиента
+            // Проверяем и удаляем совпадающие станции
+            for (let item of clientItems) {
+                if (data.product === item.cargo) {
+                    for (let station in data.station_group) {
+                        if (item.station_group && item.station_group[station]) {
+                            if (data.station_group[station].station_name === item.station_group[station].station_name) {
+                                delete data.station_group[station];
+                            }
+                        }
+                    }
+                }
+            }
 
-    // Проверяем, был ли уже добавлен объект "Итого" для данного клиента
-    if (i === lastIndexMap[client]) {
-        const totalObject = {
-            client: "Итого по " + client,
-            volume: summarizedData[client].volume,
-            total_volume_fact: summarizedData[client].total_volume_fact,
-            total_revenue_fact: summarizedData[client].total_revenue_fact,
-            total_md_wo_penalties_fact: summarizedData[client].total_md_wo_penalties_fact,
-            revenue_wo_nds: summarizedData[client].revenue_wo_nds,
-            md_wo_penalties: summarizedData[client].md_wo_penalties,
-            income_wo_penalties: summarizedData[client].income_wo_penalties, // среднее арифмитеческое при делении не учитываем позиции с 0
-            volume_budget: summarizedData[client].volume_budget,
-            revenue_wo_nds_budget: summarizedData[client].revenue_wo_nds_budget,
-            md_wo_penalties_budget: summarizedData[client].md_wo_penalties_budget,
-            income_wo_penalties_budget: summarizedData[client].income_wo_penalties_budget // среднее арифмитеческое 
-        };
-
-        // Добавляем объект "Итого" после всех данных "Прочие" для данного клиента
-        result.push(totalObject); // добавляем объект "Итого"
-    }
-}
-
-// После того как добавили все объекты item, добавляем данные "Прочие" и объекты "Итого"
-for (let i = 0; i < preData.length; i++) {
-    const item = preData[i];
-    const client = item.client;
-
-    // Проверяем, есть ли данные "Прочие" в groupedData для данного клиента
-    const otherData = groupedData.filter(group => group.client === client);
-    if (otherData.length > 0) {
-        // Если есть, добавляем их в итоговый массив после всех объектов item
-        otherData.forEach(data => {
-            data.client = "Прочие " + data.client; // Добавляем слово "Прочие" к клиенту
-            result.push(data);
+            // Добавляем объект "Прочие" в результат, если station_group не пустой
+            if (Object.keys(data.station_group).length > 0) {
+                result.push(data);
+            }
         });
     }
 
-    // Проверяем, был ли уже добавлен объект "Итого" для данного клиента
-    if (i === lastIndexMap[client]) {
-        const totalObject = {
-            client: "Итого по " + client,
-            volume: summarizedData[client].volume,
-            total_volume_fact: summarizedData[client].total_volume_fact,
-            total_revenue_fact: summarizedData[client].total_revenue_fact,
-            total_md_wo_penalties_fact: summarizedData[client].total_md_wo_penalties_fact,
-            revenue_wo_nds: summarizedData[client].revenue_wo_nds,
-            md_wo_penalties: summarizedData[client].md_wo_penalties,
-            income_wo_penalties: summarizedData[client].income_wo_penalties, // среднее арифмитеческое при делении не учитываем позиции с 0
-            volume_budget: summarizedData[client].volume_budget,
-            revenue_wo_nds_budget: summarizedData[client].revenue_wo_nds_budget,
-            md_wo_penalties_budget: summarizedData[client].md_wo_penalties_budget,
-            income_wo_penalties_budget: summarizedData[client].income_wo_penalties_budget // среднее арифмитеческое 
-        };
+    // Добавляем объект "Итого" для текущего клиента
+    const totalObject = {
+        client: "Итого по " + client,
+        volume: summarizedData[client].volume,
+        total_volume_fact: summarizedData[client].total_volume_fact,
+        total_revenue_fact: summarizedData[client].total_revenue_fact,
+        total_md_wo_penalties_fact: summarizedData[client].total_md_wo_penalties_fact,
+        revenue_wo_nds: summarizedData[client].revenue_wo_nds,
+        md_wo_penalties: summarizedData[client].md_wo_penalties,
+        income_wo_penalties: summarizedData[client].income_wo_penalties, // среднее арифметическое при делении не учитываем позиции с 0
+        volume_budget: summarizedData[client].volume_budget,
+        revenue_wo_nds_budget: summarizedData[client].revenue_wo_nds_budget,
+        md_wo_penalties_budget: summarizedData[client].md_wo_penalties_budget,
+        income_wo_penalties_budget: summarizedData[client].income_wo_penalties_budget // среднее арифметическое 
+    };
 
-        // Добавляем объект "Итого" после данных "Прочие" для данного клиента
-        result.push(totalObject); // добавляем объект "Итого"
-    }
+    result.push(totalObject); // добавляем объект "Итого"
 }
-
-                    console.log(result, 'ИТОГ',)
+this.businessPlanData = this.removeMatchingStations(result)
+                    console.log(this.businessPlanData, 'ИТОГ',)
                     // Выводим исходный массив с добавленными объектами "Итого" и общей суммой
-                    this.businessPlanData = result;
+                    // this.businessPlanData = result;
 
 
                     this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 3500 });
@@ -1106,6 +1090,46 @@ for (let i = 0; i < preData.length; i++) {
                 this.$emit('stateLoader', false);
                 this.$emit('startLoaderFromChildComponent', false)
             }
+        },
+        removeMatchingStations(data) {
+            const stationMap = {};
+
+            // Проходим по всем элементам и заполняем stationMap
+            data.forEach(item => {
+                if (!item.client.startsWith("Прочие")) {
+                    const client = item.client;
+                    const product = item.product;
+
+                    if (!stationMap[client]) {
+                        stationMap[client] = {};
+                    }
+
+                    if (!stationMap[client][product]) {
+                        stationMap[client][product] = new Set();
+                    }
+
+                    if (item.station_group) {
+                        for (let station in item.station_group) {
+                            stationMap[client][product].add(station);
+                        }
+                    }
+                }
+            });
+
+            // Проходим по всем элементам "Прочие" и удаляем совпадающие станции
+            data.forEach(item => {
+                if (item.client.startsWith("Прочие")) {
+                    const client = item.client.replace("Прочие ", "").trim();
+                    const product = item.product;
+
+                    if (stationMap[client] && stationMap[client][product]) {
+                        item.station_group = item.station_group.filter(station => {
+                            return !stationMap[client][product].has(station.station_name);
+                        });
+                    }
+                }
+            });
+            return data
         }
     }
 }
