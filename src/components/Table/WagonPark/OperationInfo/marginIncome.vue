@@ -104,10 +104,8 @@
                                 <td>{{ item.destination }}</td>
                                 <td>{{ item.volume | format }}</td>
                                 <td>{{ item.volume_budget | format }}</td>
-                                <td>{{ item.total_volume_fact || calculateTotalVolume(item.station_group, 'weight') |
-                                    format }}</td>
-                                <td>{{ item.client.includes('Итого') ? item.total_volume_fact - item.volume :
-                                    (calculateTotalVolume(item.station_group, 'weight') - item.volume) | format }}</td>
+                                <td>{{ item.total_volume_fact || calculateTotalVolume(item.station_group, 'weight') | format }}</td>
+                                <td>{{ item.client.includes('Итого') ? item.total_volume_fact - item.volume : (calculateTotalVolume(item.station_group, 'weight') - item.volume) | format }}</td>
                                 <td>{{ item.client.includes('Итого') ? item.total_volume_fact - item.volume_budget :
                                     (calculateTotalVolume(item.station_group, 'weight') - item.volume_budget) | format
                                     }}</td>
@@ -551,56 +549,37 @@ export default {
     return summarizedData;
 },
 
-        // summarizeByClient(data) {
-        //     return data.reduce((acc, item) => {
-        //         const client = item.client;
-
-        //         // Проверяем, есть ли уже объект для этого клиента в аккумуляторе, если нет - создаем
-        //         if (!acc[client]) {
-        //             acc[client] = {
-        //                 volume: 0,
-        //                 total_volume_fact: 0,
-        //                 total_revenue_fact: 0,
-        //                 total_md_wo_penalties_fact: 0,
-        //                 revenue_wo_nds: 0,
-        //                 md_wo_penalties: 0,
-        //                 income_wo_penalties: 0,
-        //                 volume_budget: 0,
-        //                 revenue_wo_nds_budget: 0,
-        //                 md_wo_penalties_budget: 0,
-        //                 income_wo_penalties_budget: 0
-        //             };
-        //         }
-
-        //         // Добавляем значения из текущего элемента данных к объекту сумм для этого клиента
-        //         acc[client].volume += item.volume;
-        //         acc[client].total_volume_fact += this.calculateTotalVolume(item.station_group, 'weight');
-        //         acc[client].total_revenue_fact += this.calculateTotalVolume(item.station_group, 'revenue');
-        //         acc[client].total_md_wo_penalties_fact += this.calculateTotalVolume(item.station_group, 'margin_income');
-        //         acc[client].revenue_wo_nds += item.revenue_wo_nds;
-        //         acc[client].volume_budget += item.volume_budget;
-        //         acc[client].revenue_wo_nds_budget += item.revenue_wo_nds_budget;
-        //         acc[client].md_wo_penalties += item.md_wo_penalties;
-        //         acc[client].md_wo_penalties_budget += item.md_wo_penalties_budget;
-
-        //         // acc[client].income_wo_penalties += item.income_wo_penalties;
-        //         // acc[client].income_wo_penalties_budget += item.income_wo_penalties_budget;
-
-        //         // // Добавляем расчеты через функции, если они определены
-        //         // if (item.station_group) {
-        //         //     // acc[client].total_volume_fact += this.calculateTotalVolume(item.station_group, 'weight');
-        //         //     acc[client].total_revenue_fact = this.calculateTotalVolume(item.station_group, 'revenue');
-        //         //     acc[client].sum_margin_income = this.sumMarginIncomePerVagonosutki(item.station_group);
-        //         // }
-
-        //         return acc;
-        //     }, {});
-        // },
+    
         // Сведение некоторых грузов по короткому наименвоанию
         containsAtLeastTwoMatches(product, cargo) {
-            if ((product === "Бензин" && (cargo === 'Бензин моторный (автомобильный) неэтилированный' || cargo === "Бензин стабильный газовый (газолин)")) ||
-                (product === "Мазут нефтяной и каменноугольный" && cargo === "Мазут топочный")) {
-                    console.log(product, cargo, 'Я тут')
+            if ((product === "Бензин" && 
+            (cargo === 'Бензин моторный (автомобильный) неэтилированный' || cargo === "Бензин стабильный газовый (газолин)"
+            || cargo === 'Бензины, не поименованные в алфавите' || cargo === "Бензин для промышленных целей")) ||
+
+
+            (product === "Щебень" && (cargo === 'Щебень, не поименованный в алфавите' || cargo === "Щебень гранитный"
+            || cargo === 'Щебень для балластировки железнодорожного пути' || cargo === "Щебень из гравия")) ||
+            
+            // (product === "Уголь" && 
+            // (cargo === 'Бензин моторный (автомобильный) неэтилированный' || cargo === "Бензин стабильный газовый (газолин)"
+            // || cargo === ' Бензины, не поименованные в алфавите' || cargo === "Бензин для промышленных целей"))||
+        
+            // (product === "Кокс" && 
+            // (cargo === 'Бензин моторный (автомобильный) неэтилированный' || cargo === "Бензин стабильный газовый (газолин)"
+            // || cargo === ' Бензины, не поименованные в алфавите' || cargo === "Бензин для промышленных целей"))||
+
+            // (product === "Сталь" && 
+            // (cargo === 'Бензин моторный (автомобильный) неэтилированный' || cargo === "Бензин стабильный газовый (газолин)"
+            // || cargo === ' Бензины, не поименованные в алфавите' || cargo === "Бензин для промышленных целей"))||
+
+            // (product === "Металл" && 
+            // (cargo === 'Бензин моторный (автомобильный) неэтилированный' || cargo === "Бензин стабильный газовый (газолин)"
+            // || cargo === ' Бензины, не поименованные в алфавите' || cargo === "Бензин для промышленных целей"))||
+
+            (product === "Цемент" && (cargo === 'Цемент,не поименованный в алфавите' || cargo === "Цемент тампонажный")) ||
+
+            (product === "Мазут нефтяной и каменноугольный" && cargo === "Мазут топочный"))
+            {
                 return true
             }
         //    else {
@@ -702,38 +681,38 @@ export default {
                                                 }
                                             }
                                             // ЕСЛИ назначение станции запад - восток
-                                            // else if (
-                                            //     (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
-                                            //     (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
-                                            //     !listExcluded.includes(station_list)
-                                            // ) {
-                                            //     const stationKey = station_list;
-                                            //     let code = await this.getRoadForStation(station_list, item.destination);
-                                            //     let isWest = item.destination === 'Станции РФ (Запад)';
-                                            //     let isEast = item.destination === 'Станции РФ (Восток)';
+                                            else if (
+                                                (item.destination === 'Станции РФ (Запад)' || item.destination === 'Станции РФ (Восток)') &&
+                                                (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
+                                                !listExcluded.includes(station_list)
+                                            ) {
+                                                const stationKey = station_list;
+                                                let code = await this.getRoadForStation(station_list, item.destination);
+                                                let isWest = item.destination === 'Станции РФ (Запад)';
+                                                let isEast = item.destination === 'Станции РФ (Восток)';
 
-                                            //     // Проверяем, соответствует ли код станции группе "Запад" или "Восток"
-                                            //     if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))
-                                            //     && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product == cargo)) {
+                                                // Проверяем, соответствует ли код станции группе "Запад" или "Восток"
+                                                if ((isWest && station_group_west.includes(code)) || (isEast && station_group_east.includes(code))
+                                                && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product == cargo)) {
                            
-                                            //         // Инициализируем объект станции, если он еще не существует
-                                            //         if (!item.station_group[stationKey]) {
-                                            //             item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
+                                                    // Инициализируем объект станции, если он еще не существует
+                                                    if (!item.station_group[stationKey]) {
+                                                        item.station_group[stationKey] = { ...stationListData[stationKey] }; // Создаем копию данных станции
                                                         
-                                            //         } else {
-                                            //                 // Если станция уже существует, суммируем только нужные поля
-                                            //                 const existingStation = item.station_group[stationKey];
-                                            //                 for (let field in stationListData[stationKey]) {
-                                            //                     if (typeof stationListData[stationKey][field] === 'number') {
-                                            //                         // Суммируем поля, если они числовые
-                                            //                         existingStation[field] += stationListData[stationKey][field];
-                                            //                     }
-                                            //                 }
-                                            //                 continue
+                                                    } else {
+                                                            // Если станция уже существует, суммируем только нужные поля
+                                                            const existingStation = item.station_group[stationKey];
+                                                            for (let field in stationListData[stationKey]) {
+                                                                if (typeof stationListData[stationKey][field] === 'number') {
+                                                                    // Суммируем поля, если они числовые
+                                                                    existingStation[field] += stationListData[stationKey][field];
+                                                                }
+                                                            }
+                                                            continue
                                                         
-                                            //         }
-                                            //     }
-                                            // }
+                                                    }
+                                                }
+                                            }
                                             else if (
                                                 item.destination === 'ДВС, КРС' &&
                                                 (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo) &&
