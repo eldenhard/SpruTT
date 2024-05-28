@@ -838,31 +838,69 @@ export default {
 
                                             }
                                             else {
-                                                const stationKey = station_list;
-                                                // Создаем уникальный ключ для client + cargo + stationKey, чтобы различать разные клиенты и грузы
-                                                const uniqueKey = `${client}_${cargo}_${stationKey}`;
+    const stationKey = station_list;
+    // Создаем уникальный ключ для client + cargo + stationKey, чтобы различать разные клиенты и грузы
+    const uniqueKey = `${client}_${cargo}_${stationKey}`;
+    
+    // Проверяем, что станция не была обработана в верхних блоках if и не содержится в anotherCargo или listExcluded
+    if (!handleStations[stationKey] && !anotherCargo[uniqueKey] && !listExcluded.includes(stationKey) && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)) {
+        // Создаем новый объект с данными станции и добавляем его в anotherCargo
+        anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
+    } 
+    else {
+        // Проверяем, существует ли поле station_group и производим суммирование
+        if (item.station_group && item.station_group[stationKey]) {
+            const existingStation = item.station_group[stationKey];
+            // Проверяем, совпадают ли клиент, груз и название станции
+            if (existingStation.client === client && existingStation.cargo === cargo && existingStation.station_name === station_list) {
+                for (let field in stationListData[stationKey]) {
+                    if (typeof stationListData[stationKey][field] === 'number') {
+                        if (!existingStation.hasOwnProperty(field)) {
+                            existingStation[field] = 0;
+                        }
+                        existingStation[field] += stationListData[stationKey][field];
+                    }
+                }
+            } else {
+                // Добавляем в anotherCargo если клиент, груз и станция не совпадают
+                anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
+            }
+        } else {
+            if( !listExcluded.includes(station_list) ) {
+                    // Добавляем в anotherCargo если station_group не существует
+                anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
+            }
+        
+        }
+    }
+}
+                                            // РАБОЧИЙ
+                                            // else {
+                                            //     const stationKey = station_list;
+                                            //     // Создаем уникальный ключ для client + cargo + stationKey, чтобы различать разные клиенты и грузы
+                                            //     const uniqueKey = `${client}_${cargo}_${stationKey}`;
                                                 
-                                                // Если станция не была обработана и не содержится в anotherCargo или listExcluded, добавляем ее в anotherCargo
-                                                if (!handleStations[stationKey] && !anotherCargo[uniqueKey] && !listExcluded.includes(stationKey) && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)) {
-                                                    // Создаем новый объект с данными станции и добавляем его в anotherCargo
-                                                    anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
-                                                } 
-                                                else {
-                                                    // Если объект существует, проверяем, существует ли поле station_group и производим суммирование
-                                                    if (item.station_group && item.station_group[stationKey]) {
-                                                        const existingStation = item.station_group[stationKey];
-                                                        // Проверяем, совпадают ли клиент, груз и название станции
-                                                        if (existingStation.client === client && existingStation.cargo === cargo && existingStation.station_name === station_list) {
-                                                            for (let field in existingStation) {
-                                                                if (typeof existingStation[field] === 'number') {
-                                                                    existingStation[field] += stationListData[stationKey][field];
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    continue;
-                                                }
-                                            }
+                                            //     // Если станция не была обработана и не содержится в anotherCargo или listExcluded, добавляем ее в anotherCargo
+                                            //     if (!handleStations[stationKey] && !anotherCargo[uniqueKey] && !listExcluded.includes(stationKey) && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)) {
+                                            //         // Создаем новый объект с данными станции и добавляем его в anotherCargo
+                                            //         anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
+                                            //     } 
+                                            //     else {
+                                            //         // Если объект существует, проверяем, существует ли поле station_group и производим суммирование
+                                            //         if (item.station_group && item.station_group[stationKey]) {
+                                            //             const existingStation = item.station_group[stationKey];
+                                            //             // Проверяем, совпадают ли клиент, груз и название станции
+                                            //             if (existingStation.client === client && existingStation.cargo === cargo && existingStation.station_name === station_list) {
+                                            //                 for (let field in existingStation) {
+                                            //                     if (typeof existingStation[field] === 'number') {
+                                            //                         existingStation[field] += stationListData[stationKey][field];
+                                            //                     }
+                                            //                 }
+                                            //             }
+                                            //         }
+                                            //         continue;
+                                            //     }
+                                            // }
                                             
 
                                         }
