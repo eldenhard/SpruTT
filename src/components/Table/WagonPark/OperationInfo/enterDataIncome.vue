@@ -12,7 +12,7 @@
                 <th>Груз</th>
                 <th>Назначение</th>
                 <th>Выручка</th>
-                <th>Вес</th>
+                <th>{{ wagon_type === 'Цистерна'? 'Вес' : 'Погрузки' }}</th>
                 <th>Тариф порож </th>
                 <th>Тариф СТ</th>
                 <th>Тариф груж</th>
@@ -67,6 +67,7 @@ export default {
             resultData: "",
         }
     },
+
     methods: {
         checkEnterData() {
             this.loader = true
@@ -93,7 +94,7 @@ export default {
                 }
             }
             this.resultData = result
-            console.log(result, errorList)
+            console.log(result, '111111')
             if (errorList.length > 0) {
 
                 this.$toast.error(`Ошибка\nНе найдены данные по клиентам!\n${errorList.join('\n')}`, {
@@ -114,7 +115,6 @@ export default {
             // this.loader = true
             let keys = Object.keys(this.createNewProfitability)
             let result = []
-            console.log(this.resultData)
             for (let i = 0; i < this.resultData.length; i++) {
                 let obj = {}
                 for (let j = 0; j < keys.length; j++) {
@@ -127,6 +127,12 @@ export default {
             }
             let promises
             if (this.typeData == 'plan') {
+                if(this.wagon_type === 'Полувагон'){
+                    this.resultData.forEach((item) => {
+                        item['loadings_amount'] = item.volume
+                        item['volume'] = 0
+                    })
+                }
                 promises = this.resultData.map((item) => api.postNewBusinessPlan(item))
                 Promise.all(promises)
                     .then((result) => {
@@ -144,6 +150,12 @@ export default {
                     })
             } else {
                 try {
+                    if(this.wagon_type === 'Полувагон'){
+                    this.resultData.forEach((item) => {
+                        item['loadings_amount'] = item.volume
+                        item['volume'] = 0
+                    })
+                }
                     promises = this.resultData.map((item) => api.sendDataForNewBudjet(item))
                 Promise.all(promises)
                     .then((result) => {
@@ -160,6 +172,8 @@ export default {
 
                     })
                 }
+
+
                     // let result = await api.sendDataForNewBudjet(this.resultData)
                 //     this.$toast.success(`Успешно\nДанные Бизнес-плана сохранены`, {
                 //         timeout: 3000
