@@ -38,6 +38,7 @@
                     <b-tabs card>
                         <b-tab title="Выполнение плана" active>
                             <b-card-text>
+                                <!-- <pre>{{filteredReportData}}</pre> -->
                                 <div style="overflow: auto; margin-left: -5%;">
                                     <button class="Request button" style="width: 20%; margin-left: auto" @click="downloadTableToExcel()">Скачать в Excel</button>
                                     <table ref="theTableOperIncome">
@@ -90,6 +91,8 @@
                                             <tr v-if="Array.isArray(responseServerData.report) && responseServerData.report.length == 0">
                                                 <td colspan="11">По выбранным параметрам нет данных</td>
                                             </tr>
+                                           <template v-if="wag_type =='Цистерна'">
+
                                             <tr v-for="item, index in filteredReportData" :key="index">
                                                 <td>{{ item.client }}</td>
                                                 <td>{{ item.volume_bp || 0 | format }}</td> 
@@ -164,6 +167,86 @@
                                             <td>{{ totalRevenueCurrentFact / totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) * 100 || 0 | format }} %</td>
                                           <td>{{totalRevenueCurrentFact / totalRevenueWithoutNDS * 100 || 0 | format }} %</td>
                                             </tr>
+                                            </template>
+
+
+
+                                            <template v-else>
+                                                <tr v-for="item, index in filteredReportData" :key="index">
+            <td>{{ item.client }}</td>
+            <td>{{ item.loading_amount || 0 | format }}</td> 
+            <td>{{ item.metric | format }}</td> 
+            <td>{{ (item.loading_amount || 0) / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) | format }}</td> 
+            <td>{{ item.metric_current_plan | format }}</td>
+            <td>{{ item.metric_current_fact | format }}</td>
+            <td>{{ item.metric_current_fact / item.loading_amount * 100 || 0 | format }}%</td>
+            <td>{{ item.metric_current_fact / item.metric_current_plan * 100 || 0 | format }} % </td>
+            <td>{{ item.metric_current_fact / item.metric * 100 || 0 | format }} %
+            </td> 
+            <td>{{ item.revenue_wo_nds_bp | format }}</td> 
+            <td>{{ item.revenue_wo_nds | format }}</td>
+            <td>{{ item.revenue_current_plan | format }}</td> 
+            <td>{{ item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) | format }}</td> 
+            <td>{{ item.revenue_current_fact | format }}</td> 
+            <td>{{ item.revenue_current_fact / item.revenue_current_plan * 100 || 0 | format }} %</td>
+            <td>
+                {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8))) * 100 | format }}
+                %
+            </td> 
+            <td>{{ item.revenue_current_fact / item.revenue_wo_nds * 100 || 0 |  format }} %</td>
+                                            </tr>
+                                            <tr v-for="item in totalResponse2" :key="item.id">
+                                                <td>Прочие</td>
+                                                <td>{{ item.loading_amount || 0 | format }}</td> <!-- 1  -->
+                                                <td>{{ item.metric || 0 | format }}</td> <!-- 2
+-->
+                                                <td>{{ item.loading_amount / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) || 0 | format }}</td> <!-- 3
+-->
+                                                <td>{{ item.metric_current_plan || 0 | format }}</td> <!-- 4
+-->
+                                                <td>{{ item.metric_current_fact || 0 | format }}</td> <!-- 5
+-->
+                                                <td>{{ item.metric_current_fact / item.loading_amount * 100 || 0 | format }}
+                                                    %</td> <!-- 6
+-->
+                                                <td>{{ item.metric_current_fact / item.metric_current_plan * 100 || 0 | format }} % <!-- 7
+ --> </td>
+                                                <td>{{ item.metric_current_fact / item.metric * 100 || 0 | format }} %
+                                                </td> <!-- 8
+ -->
+                                                <td>{{ item.revenue_wo_nds_bp || 0 }}</td> <!-- 9
+ -->
+                                                <td>{{ item.revenue_wo_nds || 0 | format }}</td> <!-- 10 -->
+                                                <td>{{ item.revenue_current_plan || 0 | format }}</td> <!-- 11 -->
+                                                <td>{{ item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) || 0 | format }}</td> <!-- 12 -->
+                                                <td>{{ item.revenue_current_fact || 0 | format }}</td> <!-- 13 -->
+                                                <td>{{ item.revenue_current_fact / item.revenue_current_plan * 100 || 0 | format }} %</td> <!-- 14 -->
+                                                <td>
+                                                    {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8))) * 100 || 0 |
+            format }} %
+                                                </td> <!-- 15 -->
+                                                <td>{{ item.revenue_current_fact / item.revenue_wo_nds * 100 || 0 | format }} %</td> <!-- 16 -->
+                                            </tr>
+                                            <tr class="Row_grey">
+                                                 <td>Итого</td>
+                                                <td>{{ totalLoadingsAmount | format }}</td>
+                                                <td>{{ totalMetric | format }}</td>
+                                                <td>{{ totalLoadingsAmount / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) || 0 | format }}</td>
+                                                <td>{{ totalMetricCurrentPlan | format }}</td>
+                                                <td>{{ totalMetricCurrentFact | format }}</td>
+                                                <td>{{ totalMetricCurrentFact / totalLoadingsAmount * 100  || 0| format }} %</td>
+                                                <td>{{ totalMetricCurrentFact / totalMetricCurrentPlan * 100 || 0| format }} %</td>  
+                                                <td>{{ totalMetricCurrentFact / totalMetric * 100 || 0 | format }} %</td>
+                                       <td>{{ totalMetricRevenue_wo_nds_bp | format}}</td>
+                                                <td>{{ totalRevenueWithoutNDS | format }}</td>
+                                             <td>{{ totalRevenueCurrentPlan | format }}</td>
+                                            <td>{{ totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) || 0 | format }}</td>
+                                              <td>{{ totalRevenueCurrentFact  | format }}</td>
+                                                <td>{{ totalRevenueCurrentFact / totalRevenueCurrentPlan * 100 || 0 | format }} %</td>
+                                            <td>{{ totalRevenueCurrentFact / totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) * 100 || 0 | format }} %</td>
+                                          <td>{{totalRevenueCurrentFact / totalRevenueWithoutNDS * 100 || 0 | format }} %</td>
+                                            </tr>
+                                            </template>
                                         </tbody>
                                     </table>
                                 </div>
@@ -628,6 +711,7 @@ export default {
         },
         filteredReportData() {
             if (this.selectedOptions.length == 0) {
+                console.log(this.selectedOptions.report, 'report')
                 return this.responseServerData.report
             } else {
                 let array_val = this.selectedOptions.map(item => item.value)
@@ -673,6 +757,27 @@ export default {
                 }
             }
             console.log(sum, 'totalVolumeBP')
+            // Возвращаем текущую сумму без изменений, если volume_bp не существует или пусто
+            return sum;
+        }, 0);
+    } else {
+        return 0;
+    }
+},
+totalLoadingsAmount() {
+    if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+        return this.filteredReportData.reduce((sum, item) => {
+            // Проверяем, есть ли значение loading_amount и не пустое ли оно
+            if (item.loading_amount !== undefined && item.loading_amount !== "") {
+                // Преобразуем значение в число, если оно не пустое
+                const volume = parseFloat(item.loading_amount);
+                // Проверяем, является ли volume числом
+                if (!isNaN(volume)) {
+                    // Если все в порядке, добавляем его к сумме
+                    return sum + volume;
+                }
+            }
+            console.log(sum, 'loading_amount')
             // Возвращаем текущую сумму без изменений, если volume_bp не существует или пусто
             return sum;
         }, 0);
