@@ -712,7 +712,7 @@ export default {
         filteredReportData() {
             if (this.selectedOptions.length == 0) {
                 console.log(this.selectedOptions.report, 'report')
-                return this.responseServerData.report
+                return this.responseServerData.report?.sort((a,b) => a.client > b.client ? 1 : -1)
             } else {
                 let array_val = this.selectedOptions.map(item => item.value)
                 return this.responseServerData.report.filter((item) => {
