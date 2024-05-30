@@ -22,56 +22,56 @@
                 <table ref="theTable">
                     <thead>
                         <tr class="TableHeader">
-                            <td rowspan="2">Клиент</td>
-                            <td rowspan="2">Отправление</td>
-                            <td rowspan="2">Груз</td>
-                            <td rowspan="2">Назначение</td>
-                            <td colspan="5">Объем</td>
-                            <td colspan="5">Выручка (без штрафов)</td>
-                            <td colspan="5">МД (без штрафов)</td>
-                            <td colspan="2">Стат нагрузка</td>
-                            <td colspan="2">Оборот</td>
-                            <td colspan="2">Штрафы</td>
-                            <td colspan="10">Доходность</td>
+                            <th rowspan="2">Клиент</th>
+                            <th rowspan="2">Отправление</th>
+                            <th rowspan="2">Груз</th>
+                            <th rowspan="2">Назначение</th>
+                            <th colspan="5">Объем</th>
+                            <th colspan="5">Выручка (без штрафов)</th>
+                            <th colspan="5">МД (без штрафов)</th>
+                            <th colspan="2">Стат нагрузка</th>
+                            <th colspan="2">Оборот</th>
+                            <th colspan="2">Штрафы</th>
+                            <th colspan="10">Доходность</th>
                         </tr>
                         <tr class="TableHeader">
-                            <td>БП</td>
-                            <td>Б</td>
-                            <td>Факт</td>
-                            <td>Откл. БП</td>
-                            <td>Откл. Б</td>
+                            <th>БП</th>
+                            <th>Б</th>
+                            <th>Факт</th>
+                            <th>Откл. БП</th>
+                            <th>Откл. Б</th>
 
-                            <td>БП</td>
-                            <td>Б</td>
-                            <td>Факт</td>
-                            <td>Откл. БП</td>
-                            <td>Откл. Б</td>
+                            <th>БП</th>
+                            <th>Б</th>
+                            <th>Факт</th>
+                            <th>Откл. БП</th>
+                            <th>Откл. Б</th>
 
-                            <td>БП</td>
-                            <td>Б</td>
-                            <td>Факт</td>
-                            <td>Откл. БП</td>
-                            <td>Откл. Б</td>
+                            <th>БП</th>
+                            <th>Б</th>
+                            <th>Факт</th>
+                            <th>Откл. БП</th>
+                            <th>Откл. Б</th>
 
-                            <td>План</td>
-                            <td>Факт</td>
+                            <th>План</th>
+                            <th>Факт</th>
 
-                            <td>План</td>
-                            <td>Факт</td>
+                            <th>План</th>
+                            <th>Факт</th>
 
-                            <td>План</td>
-                            <td>Факт</td>
+                            <th>План</th>
+                            <th>Факт</th>
 
-                            <td>План(без штр) БП</td>
-                            <td>План(без штр) Б</td>
-                            <td>Факт(без штр)</td>
-                            <td>План (со штр) БП</td>
-                            <td>План (со штр) Б</td>
-                            <td>Факт (со штр)</td>
-                            <td>+/- БП(без штр)</td>
-                            <td>+/- Б(без штр)</td>
-                            <td>+/- БП(со штр)</td>
-                            <td>+/- Б(со штр)</td>
+                            <th>План(без штр) БП</th>
+                            <th>План(без штр) Б</th>
+                            <th>Факт(без штр)</th>
+                            <th>План (со штр) БП</th>
+                            <th>План (со штр) Б</th>
+                            <th>Факт (со штр)</th>
+                            <th>+/- БП(без штр)</th>
+                            <th>+/- Б(без штр)</th>
+                            <th>+/- БП(со штр)</th>
+                            <th>+/- Б(со штр)</th>
 
                         </tr>
                     </thead>
@@ -849,43 +849,92 @@ export default {
                                                 }
 
                                             }
+
+
                                             else {
-                                                const stationKey = station_list;
-                                                // Создаем уникальный ключ для client + cargo + stationKey, чтобы различать разные клиенты и грузы
-                                                const uniqueKey = `${client}_${station_departure}_${cargo}_${stationKey}`;
+    const stationKey = station_list;
+    // Создаем уникальный ключ для client + cargo + stationKey, чтобы различать разные клиенты и грузы
+    const uniqueKey = `${client}_${station_departure}_${cargo}_${stationKey}`;
 
-                                                // Проверяем, что станция не была обработана в верхних блоках if и не содержится в anotherCargo или listExcluded
-                                                if (!handleStations[stationKey] && !anotherCargo[uniqueKey] && !listExcluded.includes(stationKey) && (this.containsAtLeastTwoMatches(item.product, cargo) || item.product === cargo)) {
-                                                    // Создаем новый объект с данными станции и добавляем его в anotherCargo
-                                                    anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
-                                                }
-                                                else {
-                                                    // Проверяем, существует ли поле station_group и производим суммирование
-                                                    if (item.station_group && item.station_group[stationKey]) {
-                                                        const existingStation = item.station_group[stationKey];
-                                                        // Проверяем, совпадают ли клиент, груз и название станции
-                                                        if (existingStation.client === client && existingStation.cargo === cargo && existingStation.station_name === station_list) {
-                                                            for (let field in stationListData[stationKey]) {
-                                                                if (typeof stationListData[stationKey][field] === 'number') {
-                                                                    if (!existingStation.hasOwnProperty(field)) {
-                                                                        existingStation[field] = 0;
-                                                                    }
-                                                                    existingStation[field] += stationListData[stationKey][field];
-                                                                }
-                                                            }
-                                                        } else {
-                                                            // Добавляем в anotherCargo если клиент, груз и станция не совпадают
-                                                            anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
-                                                        }
-                                                    } else {
-                                                        if (!listExcluded.includes(station_list)) {
-                                                            // Добавляем в anotherCargo если station_group не существует
-                                                            anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
-                                                        }
+    // Проверяем, что станция не была обработана в верхних блоках if и не содержится в anotherCargo или listExcluded
+    if (!handleStations[stationKey] && !anotherCargo[uniqueKey] && !listExcluded.includes(stationKey) &&  !(this.containsAtLeastTwoMatches(item.product, cargo))) {
+        // Добавляем условие для проверки containsAtLeastTwoMatches
+            // Создаем новый объект с данными станции и добавляем его в anotherCargo
+            anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
+            if(client == 'РТС-ТРАНС, ООО'){
+                console.log( client, cargo, station_list)
+            }
+    } else {
+        // Проверяем, существует ли поле station_group и производим суммирование
+        if (item.station_group && item.station_group[stationKey]) {
+            const existingStation = item.station_group[stationKey];
+            // Проверяем, совпадают ли клиент, груз и название станции
+            if (existingStation.client === client && existingStation.cargo === cargo && existingStation.station_name === station_list) {
+                console.log('else 2', client, cargo, station_list)
+                for (let field in stationListData[stationKey]) {
+                    if (typeof stationListData[stationKey][field] === 'number') {
+                        if (!existingStation.hasOwnProperty(field)) {
+                            existingStation[field] = 0;
+                        }
+                        existingStation[field] += stationListData[stationKey][field];
+                    }
+                }
+            } 
+        } else {
+            if (!listExcluded.includes(station_list) &&  !(this.containsAtLeastTwoMatches(item.product, cargo)) ) {
+                if(client == 'РТС-ТРАНС, ООО'){
+                console.log('else 3', client, cargo, station_list)
+            }
+                // Добавляем условие для проверки containsAtLeastTwoMatches перед добавлением в anotherCargo
+                
+                    // Добавляем в anotherCargo если station_group не существует
+                    anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
+                
+            }
+        }
+    }
+}
 
-                                                    }
-                                                }
-                                            }
+
+
+                                            // Вернуть полносьбю исправный код
+                                            // else {
+                                            //     const stationKey = station_list;
+                                            //     // Создаем уникальный ключ для client + cargo + stationKey, чтобы различать разные клиенты и грузы
+                                            //     const uniqueKey = `${client}_${station_departure}_${cargo}_${stationKey}`;
+
+                                            //     // Проверяем, что станция не была обработана в верхних блоках if и не содержится в anotherCargo или listExcluded
+                                            //     if (!handleStations[stationKey] && !anotherCargo[uniqueKey] && !listExcluded.includes(stationKey)) {
+                                            //         // Создаем новый объект с данными станции и добавляем его в anotherCargo
+                                            //         anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
+                                            //     }
+                                            //     else {
+                                            //         // Проверяем, существует ли поле station_group и производим суммирование
+                                            //         if (item.station_group && item.station_group[stationKey]) {
+                                            //             const existingStation = item.station_group[stationKey];
+                                            //             // Проверяем, совпадают ли клиент, груз и название станции
+                                            //             if (existingStation.client === client && existingStation.cargo === cargo && existingStation.station_name === station_list) {
+                                            //                 for (let field in stationListData[stationKey]) {
+                                            //                     if (typeof stationListData[stationKey][field] === 'number') {
+                                            //                         if (!existingStation.hasOwnProperty(field)) {
+                                            //                             existingStation[field] = 0;
+                                            //                         }
+                                            //                         existingStation[field] += stationListData[stationKey][field];
+                                            //                     }
+                                            //                 }
+                                            //             } else {
+                                            //                 // Добавляем в anotherCargo если клиент, груз и станция не совпадают
+                                            //                 anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
+                                            //             }
+                                            //         } else {
+                                            //             if (!listExcluded.includes(station_list)) {
+                                            //                 // Добавляем в anotherCargo если station_group не существует
+                                            //                 anotherCargo[uniqueKey] = { ...stationListData[stationKey], client: client, cargo: cargo, station_name: station_list };
+                                            //             }
+
+                                            //         }
+                                            //     }
+                                            // }
 
 
 
@@ -1151,6 +1200,7 @@ export default {
 </script>
 
 <style scoped>
+
 .Container {
     overflow-y: auto;
     scrollbar-width: revert;
@@ -1167,7 +1217,7 @@ export default {
     /* Safari and Chrome */
 }
 
-td {
+th, td {
     white-space: nowrap;
     padding: 2px 10px !important;
 }
