@@ -264,6 +264,7 @@
                                     :margin_income_data="responseServerData"
                                     :bp_data="data3"
                                     :budget_data="budget_data"
+                                    :fines_data="fines_data"
                                 />
                             </b-card-text>
                         </b-tab>
@@ -1015,7 +1016,7 @@ totalLoadingsAmount() {
                         let businessPlanData = response3.data
                         this.data3 =  response4.data
                         this.budget_data = response5.data
-                       
+                        this.fines_data = response6.data.data
                         this.responseServerData.report.forEach(item => {
                             // Проходимся по ключам первого массива
                             Object.keys(businessPlanData).forEach(key => {
