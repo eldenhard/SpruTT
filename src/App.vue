@@ -72,14 +72,14 @@ export default {
 
 
 
-    let id_rocket = JSON.parse(localStorage.getItem('vuex')).auth.uid
+    // let id_rocket = JSON.parse(localStorage.getItem('vuex')).auth.uid
 
-    let { first_name, last_name, email } = JSON.parse(localStorage.getItem('vuex')).auth.user.user
-    LogRocket.init('fs2mx3/sprutt')
-    LogRocket.identify(id_rocket, {
-      name: `${first_name} ${last_name}`,
-      email: `${email}`,
-    });
+    // let { first_name, last_name, email } = JSON.parse(localStorage.getItem('vuex')).auth.user.user
+    // LogRocket.init('fs2mx3/sprutt')
+    // LogRocket.identify(id_rocket, {
+    //   name: `${first_name} ${last_name}`,
+    //   email: `${email}`,
+    // });
 
 
     if (navigator.storage && navigator.storage.estimate) {

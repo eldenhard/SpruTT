@@ -209,6 +209,9 @@ const deleteActs = (id, data) => {
     return api.patch(`${finance}/acts/${id}/`, data)
 }
 
+const getAllFines = () => {
+    return api.get(`${finance}/fines`)
+}
 const fullSearchDirectory = (data) => {
     return api.get(`${documents}/contract/?created_at_gte=${data.on_date}&category=${data.category}&counterparty_like=${data.counterparty}&is_annex=${data.type}&annex_date=${data.annex_date}`)
 // &counterparty=${data.counterparty}
@@ -357,6 +360,7 @@ export default {
     getAllDocumentsNotType,
     fullSearchDirectory,
     getManyCategoryDate,
+    getAllFines,
 
     getAllDocumentsByCounterparty,
     getAllDocumentsByCounterparty2,

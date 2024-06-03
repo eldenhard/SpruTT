@@ -13,6 +13,7 @@
         </div> -->
         <button class="Request button" style="width: 20%; margin-left: auto" @click="downloadExcel()">Скачать в
             Excel</button>
+            <button @click=getFines()>fines</button>
         <br>
         <table>
 
@@ -355,7 +356,10 @@ export default {
         }
     },
     methods: {
-
+        async getFines(){
+            let response = await api.getAllFines()
+            console.log(response)
+        },
         toggleRow(index) {
             this.$set(this.businessPlanData[index], 'expanded', !this.businessPlanData[index].expanded);
         },
