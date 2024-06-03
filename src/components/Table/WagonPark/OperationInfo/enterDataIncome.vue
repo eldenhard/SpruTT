@@ -184,7 +184,10 @@ export default {
                 this.$emit('stateLoader', true)
                 try{
                     let response = await api.createManyFines(this.resultData)
-                    console.log(response)
+                    this.$toast.success(`Успешно\nДанные Бюджета сохранены`, {
+                            timeout: 3000
+                        })
+                    this.$emit('update:tableData', [])
                 } catch (error) {
                     this.$emit('stateLoader', false)
                     this.$toast.error(`Ошибка\n${error.response}`, {
