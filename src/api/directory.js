@@ -210,7 +210,10 @@ const deleteActs = (id, data) => {
 }
 
 const getAllFines = () => {
-    return api.get(`${finance}/fines`)
+    return api.get(`${finance}/fines/`)
+}
+const createManyFines = (data) => {
+    return api.post(`${finance}/fines/save-many/`, data)
 }
 const fullSearchDirectory = (data) => {
     return api.get(`${documents}/contract/?created_at_gte=${data.on_date}&category=${data.category}&counterparty_like=${data.counterparty}&is_annex=${data.type}&annex_date=${data.annex_date}`)
@@ -361,6 +364,7 @@ export default {
     fullSearchDirectory,
     getManyCategoryDate,
     getAllFines,
+    createManyFines,
 
     getAllDocumentsByCounterparty,
     getAllDocumentsByCounterparty2,

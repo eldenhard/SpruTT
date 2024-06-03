@@ -520,6 +520,7 @@
                                             <select v-model="typeData" style="width: 20vw !important">
                                                 <option value="income">Загрузка бюджета</option>
                                                 <option value="plan">Загрузка Бизнес-плана</option>
+                                                <option value="penalties">Загрузка штрафов</option>
                                             </select>
                                             <br>
                                             <br>
@@ -558,6 +559,7 @@
                                         <enterDataIncomeVue :createNewProfitability="createNewProfitability"
                                             :clients="name_client" 
                                             :tableData="tableData"
+                                            :createNewFines="createNewFines"
                                             :typeData="typeData"
                                             @update:tableData="tableData = $event"
                                             :date_begin="date_begin_create" 
@@ -652,6 +654,11 @@ export default {
             { value: 'СтройТехно-Урал, ООО' },
             { value: 'УГПХ, ООО' }],
             startLoaderChildComponent: false,
+            createNewFines:{
+                client: "",
+                total: 0,
+                
+            },
             createNewProfitability: {
                 client: "",
                 product: "",

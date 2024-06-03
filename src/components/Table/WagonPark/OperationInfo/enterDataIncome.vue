@@ -6,8 +6,8 @@
                 данные</button>
         </div>
         <br>
-        <table>
-            <thead>
+        <table style="width: 100%;">
+            <thead v-if="typeData == 'plan' || typeData == 'income'">
                 <th>Клиент</th>
                 <th>Груз</th>
                 <th>Назначение</th>
@@ -23,6 +23,10 @@
                 <th>Вагоносутки (общ) </th>
                 <th>Доходность (без штрафа)</th>
                 <th>Доходность (с штрафом)</th>
+            </thead>
+            <thead v-if="typeData == 'penalties'">
+                <th>Клиент</th>
+                <th>Сумма</th>
             </thead>
             <tbody>
                 <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
@@ -59,6 +63,9 @@ export default {
         typeData: {
             type: String
         },
+        createNewFines: {
+            type: Object
+        }
     },
     data() {
         return {
@@ -69,9 +76,21 @@ export default {
     },
 
     methods: {
-        checkEnterData() {
+       async checkEnterData() {
+
+           if(this.date_begin == "") {
+            this.$toast.error('Необходимо выбрать дату начала периода', {
+                timeout: 5000
+            })
+               return
+           }
             this.loader = true
-            let keys = Object.keys(this.createNewProfitability)
+            let keys 
+            if(this.typeData == 'penalties') {
+                keys = Object.keys(this.createNewFines)
+            } else {
+                keys = Object.keys(this.createNewProfitability)
+            }
             let result = []
             for (let i = 0; i < this.tableData.length; i++) {
                 let obj = {}
@@ -81,9 +100,15 @@ export default {
                     } else {
                         obj[keys[j]] = Number(this.tableData[i][j].replace(',', '.')) || 0
                     }
-
-                    obj["on_date"] = this.date_begin + "-01"
-                    obj["wagon_type"] = this.wagon_type
+                    if(this.typeData == 'penalties') {
+                        obj["month"] = Number(this.date_begin.slice(-2))
+                        obj["year"] = Number(this.date_begin.slice(0,4))
+                        obj["wagon_type"] = this.wagon_type
+                        obj["counterparty"] = obj["client"]
+                    } else {
+                        obj["on_date"] = this.date_begin + "-01"
+                        obj["wagon_type"] = this.wagon_type
+                    }
                 }
                 result.push(obj)
             }
@@ -94,7 +119,7 @@ export default {
                 }
             }
             this.resultData = result
-            console.log(result, '111111')
+
             if (errorList.length > 0) {
 
                 this.$toast.error(`Ошибка\nНе найдены данные по клиентам!\n${errorList.join('\n')}`, {
@@ -113,7 +138,13 @@ export default {
 
             this.$emit('stateLoader', true)
             // this.loader = true
-            let keys = Object.keys(this.createNewProfitability)
+            let keys
+            if(this.typeData == 'penalties'){
+                keys = Object.keys(this.createNewFines)
+
+            } else {
+                keys = Object.keys(this.createNewProfitability)
+            }
             let result = []
             for (let i = 0; i < this.resultData.length; i++) {
                 let obj = {}
@@ -148,7 +179,23 @@ export default {
                         this.$emit('stateLoader', false)
 
                     })
-            } else {
+            } 
+            else if(this.typeData == 'penalties') {
+                this.$emit('stateLoader', true)
+                try{
+                    let response = await api.createManyFines(this.resultData)
+                    console.log(response)
+                } catch (error) {
+                    this.$emit('stateLoader', false)
+                    this.$toast.error(`Ошибка\n${error.response}`, {
+                        timeout: 4000
+                    })
+                } finally {
+                    this.$emit('stateLoader', false)
+                }
+
+            }
+            else {
                 try {
                     if(this.wagon_type === 'Полувагон'){
                     this.resultData.forEach((item) => {
