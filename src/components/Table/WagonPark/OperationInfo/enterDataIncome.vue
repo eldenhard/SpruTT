@@ -27,6 +27,7 @@
             <thead v-if="typeData == 'penalties'">
                 <th>Клиент</th>
                 <th>Сумма</th>
+                <th>Плановая сумма</th>
             </thead>
             <tbody>
                 <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">

@@ -597,6 +597,7 @@ export default {
     components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue, chartOperationInfoVue },
     data() {
         return {
+            fines_data: "",
             excelData: "",
             budget_data: "",
             hot: "",
@@ -657,6 +658,7 @@ export default {
             createNewFines:{
                 client: "",
                 total: 0,
+                plan_total: 0,
                 
             },
             createNewProfitability: {
@@ -996,6 +998,7 @@ totalLoadingsAmount() {
                 api.getBP(queryString), 
                 api.getBusinessPlan(this.wag_type, dateBeginChange+'01'),
                 api.getBudget(this.wag_type, dateBeginChange+'01'),
+                api.getAllFines()
 
                 ])
                     .then(([
@@ -1003,7 +1006,8 @@ totalLoadingsAmount() {
                         response2, 
                         response3,
                         response4, 
-                        response5]) => {
+                        response5,
+                        response6]) => {
                         this.loader = false
                         this.responseServerData =   response1.data
 
