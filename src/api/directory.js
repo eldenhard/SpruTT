@@ -209,6 +209,9 @@ const deleteActs = (id, data) => {
     return api.patch(`${finance}/acts/${id}/`, data)
 }
 
+const getAllInsuranceWagons = (data) => {
+    return api.get(`${finance}/insurance-wagons/`, {params: data})
+}
 const getAllFines = () => {
     return api.get(`${finance}/fines/`)
 }
@@ -365,6 +368,7 @@ export default {
     getManyCategoryDate,
     getAllFines,
     createManyFines,
+    getAllInsuranceWagons,
 
     getAllDocumentsByCounterparty,
     getAllDocumentsByCounterparty2,

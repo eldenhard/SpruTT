@@ -64,7 +64,7 @@
             <rentalrateTable />
           </b-card-text>
         </b-tab>
-      <b-tab title="Данные по ставкам ЦС " active>
+      <b-tab title="Данные по ставкам ЦС " >
         <b-card-text style="width: 75vw !important; ">
           <TarifDirectory />
         </b-card-text>
@@ -79,7 +79,11 @@
           <LoadingPlanAndFactVue />
         </b-card-text>
       </b-tab>
-
+      <b-tab title="Реестр застрахованных вагонов" active>
+        <b-card-text>
+          <RegisterInsuredWagons />
+        </b-card-text>
+      </b-tab>
       <b-tab title="Загрузка актов" >
         <b-card-text>
           <LoadingActs />
@@ -123,7 +127,7 @@ import OtherChargesVue from '../components/Table/Directory/OtherCharges/OtherCha
 import stavkipvVue from '../components/Table/Directory/StavkiPV/stavkipv.vue';
 import allformdocument from '../components/Table/ReferenceInformation/AllFormsDocument/AllFormDocument.vue'
 import LoadingActs from '../components/Table/Directory/LoadingActs/LoadingActs.vue'
-
+import RegisterInsuredWagons from '@/components/Table/Directory/RegisterInsuredWagons/RegisterInsuredWagons.vue'
 import LoadingPlanAndFactVue from '../components/Table/Directory/LoadingPlanAndFact/LoadingPlanAndFact.vue';
 export default {
   name: "Directory",
@@ -145,6 +149,7 @@ export default {
     allformdocument,
     LoadingPlanAndFactVue,
     LoadingActs,
+    RegisterInsuredWagons,
   },
   mounted() {
     document.title = "Справочники";
