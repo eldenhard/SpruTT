@@ -656,6 +656,7 @@ export default {
             { value: 'ПЕРВООСНОВА, АО' },
             { value: 'ДЕЛОВЫЕ ПРОГРАММЫ, ООО' },
             { value: 'СтройТехно-Урал, ООО' },
+            { value: 'ПЭКСО' },
             { value: 'УГПХ, ООО' }],
             startLoaderChildComponent: false,
             createNewFines:{
