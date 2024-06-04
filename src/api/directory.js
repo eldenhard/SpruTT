@@ -212,6 +212,10 @@ const deleteActs = (id, data) => {
 const getAllInsuranceWagons = (data) => {
     return api.get(`${finance}/insurance-wagons/`, {params: data})
 }
+
+const createOpepativnayaSpravka = (data) => {
+    return api.post(`${finance}/operativnaya-spravka/`, data)
+}
 const getAllFines = () => {
     return api.get(`${finance}/fines/`)
 }
@@ -369,7 +373,7 @@ export default {
     getAllFines,
     createManyFines,
     getAllInsuranceWagons,
-
+    createOpepativnayaSpravka,
     getAllDocumentsByCounterparty,
     getAllDocumentsByCounterparty2,
 

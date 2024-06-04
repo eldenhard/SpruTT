@@ -522,6 +522,7 @@
                                                 <option value="income">Загрузка бюджета</option>
                                                 <option value="plan">Загрузка Бизнес-плана</option>
                                                 <option value="penalties">Загрузка штрафов</option>
+                                                <option value="operspravka">Загрузка опер.справки</option>
                                             </select>
                                             <br>
                                             <br>
@@ -561,6 +562,7 @@
                                             :clients="name_client" 
                                             :tableData="tableData"
                                             :createNewFines="createNewFines"
+                                            :createNewOperSpravka="createNewOperSpravka"
                                             :typeData="typeData"
                                             @update:tableData="tableData = $event"
                                             :date_begin="date_begin_create" 
@@ -661,6 +663,11 @@ export default {
                 total: 0,
                 plan_total: 0,
                 
+            },
+            createNewOperSpravka: {
+                client: "",
+                num_vol: 0,
+                plan_revenue_wo_nds: 0,
             },
             createNewProfitability: {
                 client: "",

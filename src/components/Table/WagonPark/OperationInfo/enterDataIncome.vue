@@ -29,6 +29,11 @@
                 <th>Сумма</th>
                 <th>Плановая сумма</th>
             </thead>
+            <thead v-if="typeData == 'operspravka'">
+                <th>Клиент</th>
+                <th>{{ wagon_type === 'Цистерна'? 'Объем' : 'Погрузки' }}</th>
+                <th>Выручка</th>
+            </thead>
             <tbody>
                 <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
                     <td v-for="(cell, cellIndex) in row" :key="cellIndex">
@@ -66,6 +71,9 @@ export default {
         },
         createNewFines: {
             type: Object
+        },
+        createNewOperSpravka: {
+            type: Object
         }
     },
     data() {
@@ -89,7 +97,11 @@ export default {
             let keys 
             if(this.typeData == 'penalties') {
                 keys = Object.keys(this.createNewFines)
-            } else {
+            }
+            else if(this.typeData == 'operspravka') {
+                keys = Object.keys(this.createNewOperSpravka)
+            }
+            else {
                 keys = Object.keys(this.createNewProfitability)
             }
             let result = []
@@ -106,7 +118,16 @@ export default {
                         obj["year"] = Number(this.date_begin.slice(0,4))
                         obj["wagon_type"] = this.wagon_type
                         obj["counterparty"] = obj["client"]
-                    } else {
+                    } 
+
+                    else {
+                        if(this.typeData == 'operspravka') {
+                            if(this.wagon_type == 'Полувагон') {
+                                obj["loading_amount"] = obj["num_vol"]
+                            } else {
+                                obj["volume"] = obj["num_vol"]
+                            }
+                        }
                         obj["on_date"] = this.date_begin + "-01"
                         obj["wagon_type"] = this.wagon_type
                     }
@@ -198,6 +219,23 @@ export default {
                     this.$emit('stateLoader', false)
                 }
 
+            }
+            else if(this.typeData == 'operspravka') {
+                promises = this.resultData.map((item) => api.createOpepativnayaSpravka([item]))
+                Promise.all(promises)
+                    .then((result) => {
+                        this.$emit('stateLoader', false)
+                        this.$toast.success(`Успешно\nДанные оперативной справки сохранены`, {
+                            timeout: 3000
+                        })
+                        this.$emit('update:tableData', [])
+                    }).catch((err) => {
+                        this.$toast.error(`Ошибка\n${err.response}`, {
+                            timeout: 4000
+                        })
+                        this.$emit('stateLoader', false)
+
+                    })
             }
             else {
                 try {
