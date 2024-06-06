@@ -609,34 +609,47 @@ export default {
             }
         },
         mergeArrays(array1, array2) {
-                array2.forEach((item2) => {
-                    let item1 = array1.find((item1) => (
-                        item1.client === item2.client &&
-                        item1.destination === item2.destination &&
-                        item1.product === item2.product
-                    ));
+        array2.forEach((item2) => {
+            let item1 = array1.find((item1) => (
+                item1.client === item2.client &&
+                item1.destination === item2.destination &&
+                item1.product === item2.product
+            ));
 
-                    if (item1) {
-                        // Обновляем существующий объект
-                        Object.keys(item2).forEach((key) => {
-                            if (key !== 'client' && key !== 'destination' && key !== 'product') {
-                                item1[`${key}_budget`] = item2[key];
-                            }
-                        });
-                    } else {
-                        // Добавляем новый объект
-                        let newItem = { ...item2 };
-                        Object.keys(newItem).forEach((key) => {
-                            if (key !== 'client' && key !== 'destination' && key !== 'product') {
-                                newItem[`${key}_budget`] = newItem[key];
-                                delete newItem[key];
-                            }
-                        });
-                        array1.push(newItem);
+            if (item1) {
+                // Обновляем существующий объект
+                Object.keys(item2).forEach((key) => {
+                    if (key !== 'client' && key !== 'destination' && key !== 'product') {
+                        item1[`${key}_budget`] = item2[key];
                     }
                 });
-                return array1;
-            },
+            } else {
+                // Создаем новый объект, включая все поля из array1 с значениями по умолчанию 0
+                let newItem = {
+                    client: item2.client,
+                    destination: item2.destination,
+                    product: item2.product,
+                };
+
+                // Добавляем поля из array1 с значением 0
+                Object.keys(array1[0]).forEach((key) => {
+                    if (key !== 'client' && key !== 'destination' && key !== 'product') {
+                        newItem[key] = 0;
+                    }
+                });
+
+                // Добавляем поля из item2 как поля _budget
+                Object.keys(item2).forEach((key) => {
+                    if (key !== 'client' && key !== 'destination' && key !== 'product') {
+                        newItem[`${key}_budget`] = item2[key];
+                    }
+                });
+
+                array1.push(newItem);
+            }
+        });
+        return array1;
+    },
         // mergeArrays(array1, array2) {
         //     array2.forEach((item2) => {
         //         let item1 = array1.find((item1) => (
@@ -803,6 +816,7 @@ export default {
                     return a.client.localeCompare(b.client);
                 })
 
+                console.log(preData, 'preData')
                 // Object.entries(sortedResponse).map(([client, data]) => ({ client, ...data }));
                 this.$emit('startLoaderFromChildComponent', true)
                 let station_group_west = ['ПРВ', 'МСК', 'ЮВС', 'ОКТ', 'СЕВ', 'КЛГ', 'СКВ', 'ГРК', 'КБШ', 'СВР', 'СКВ'];
