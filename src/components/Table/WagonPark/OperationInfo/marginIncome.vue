@@ -214,9 +214,9 @@
                                 <!-- Факт (со штр)	 -->
                                 <td v-if="!item.client.includes('Итого')">
                                     {{ calculateTotalVolume(item.station_group, 'vagonosutki_total') == 0 ? 0 :
-                                        ((item.total_revenue_fact || calculateTotalVolume(item.station_group, 'revenue')) + item.total) / calculateTotalVolume(item.station_group, 'vagonosutki_total') | format
+                                        ((item.total_revenue_fact || calculateTotalVolume(item.station_group, 'margin_income')) + item.total) / calculateTotalVolume(item.station_group, 'vagonosutki_total') | format
                                     }}
-
+<!-- revenue -->
                                 </td>
                                 <td v-else>
                                     {{ (item.total_md_wo_penalties_fact + item.total) / item.total_vagonosutki | format }}
