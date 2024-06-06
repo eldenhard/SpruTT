@@ -1001,13 +1001,19 @@ totalLoadingsAmount() {
                 // Формируем строку запроса с параметрами clients
                 const queryString = `?wagon_type=${this.wag_type}&report_date=${this.date_begin}&${clientsParams}`;
                 this.loader = true
+                let on_date = {
+                    month: dateBeginChange.slice(-3, -1),
+                    year: Number(dateBeginChange.slice(0,4)),
+                    wagon_type: this.wag_type
+                }
+                console.log(dateBeginChange)
                 Promise.all([
                 api.getDataForOperSpravka(queryString),
                 api.getDataForOperSpravkaOtherClients(queryString),
                 api.getBP(queryString), 
                 api.getBusinessPlan(this.wag_type, dateBeginChange+'01'),
                 api.getBudget(this.wag_type, dateBeginChange+'01'),
-                api.getAllFines()
+                api.getAllFines(on_date)
 
                 ])
                     .then(([

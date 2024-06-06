@@ -216,8 +216,8 @@ const getAllInsuranceWagons = (data) => {
 const createOpepativnayaSpravka = (data) => {
     return api.post(`${finance}/operativnaya-spravka/`, data)
 }
-const getAllFines = () => {
-    return api.get(`${finance}/fines/`)
+const getAllFines = (on_date) => {
+    return api.get(`${finance}/fines/`, {params: on_date})
 }
 const createManyFines = (data) => {
     return api.post(`${finance}/fines/save-many/`, data)
