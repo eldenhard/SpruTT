@@ -64,7 +64,7 @@
             <rentalrateTable />
           </b-card-text>
         </b-tab>
-      <b-tab title="Данные по ставкам ЦС">
+      <b-tab title="Данные по ставкам ЦС" active>
         <b-card-text style="width: 75vw !important; ">
           <TarifDirectory />
         </b-card-text>
@@ -79,7 +79,7 @@
           <LoadingPlanAndFactVue />
         </b-card-text>
       </b-tab>
-      <b-tab title="Реестр застрахованных вагонов" active>
+      <b-tab title="Реестр застрахованных вагонов" >
         <b-card-text>
           <RegisterInsuredWagons />
         </b-card-text>
