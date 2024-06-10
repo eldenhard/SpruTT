@@ -217,7 +217,7 @@ const createOpepativnayaSpravka = (data) => {
     return api.post(`${finance}/operativnaya-spravka/`, data)
 }
 const getAllFines = (on_date) => {
-    return api.get(`${finance}/fines/`, {params: on_date})
+    return api.get(`${finance}/fines/filter/`, {params: on_date})
 }
 const createManyFines = (data) => {
     return api.post(`${finance}/fines/save-many/`, data)

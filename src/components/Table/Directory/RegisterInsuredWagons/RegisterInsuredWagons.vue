@@ -5,13 +5,16 @@
             <div class="air_block_header">
                 <h4>Реестр застрахованных вагонов</h4>
             </div>
+            <hr>
             <br>
             <div>
                 <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons" />
                 <br>
-                <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true" :colHeaders="colHeaders" :columns="columns"
+                <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true"  :columns="columns"
                     :preventOverflow="'horizontal'" :filters="true"  :language="'ru-RU'"
-                    :manualColumnResize="true" :autoWrapRow="true" :autoWrapCol="true" :height="'auto'" :width="'95%'">
+                    :manualColumnResize="true" :autoWrapRow="true" :autoWrapCol="true" :height="'60vh'"  :width="'100%'" :fillHandle="false"
+                    :dropdownMenu="true"
+                    >
                 </hot-table>
                 <!-- :dropdownMenu="true" -->
 
@@ -49,10 +52,35 @@ export default {
                 { title: 'Страховая компания', data: 'insurance_company', },
                 { title: '№ договора', data: 'agr_number', type: 'numeric' },
                 { title: 'Дата договора', data: 'agr_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
-            ],
-            dataForHotTable: [],
-            colHeaders: ["Номер вагона", "Тип вагона", "Собст. на момент страхования", "Страховая компания", "№ договора",
-                "Дата договора"],
+
+                { title: 'Уведомлено', data: 'is_notified' },
+                { title: 'Модель вагона', data: 'wagon_model' },
+                { title: 'Дата постройки', data: 'build_date' },
+                { title: 'Срок службы', data: 'lifetime' },
+                { title: 'Поставщик', data: 'provider' },
+                { title: '№ Договора поставки', data: 'delivery_agr_number' },
+                { title: 'Дата разделки', data: 'cutting_date' },
+                { title: 'Примечание', data: 'note1' },
+                { title: 'На балансе', data: 'on_balance' },
+                { title: 'Собственник', data: 'owner' },
+                { title: 'Собственник (ЭТРАН)', data: 'owner_etran' },
+                { title: 'Группа', data: 'group' },
+                { title: ' Дата прекращения действия договора страхования', data: 'agr_date_end' },
+                { title: 'Страховая сумма, руб', data: 'insurance_sum' },
+                { title: 'Франшиза', data: 'franchise' },
+                { title: 'Примечание', data: 'note2' },
+                { title: 'Финансисты', data: 'pr_33_finansists' },
+                { title: 'В управлении компании', data: 'in_company_management' },
+                { title: 'Арендатор', data: 'tenant' },
+                { title: 'Арендатор (ЭТРАН)', data: 'tenant_etran' },
+                { title: 'Дата изменения состояния', data: 'state_change_date' },
+                { title: 'Дата последней операции', data: 'last_operation_date' },
+                { title: '(Пр1)примечание по парку', data: '(Пр1)примечание по парку' },
+                { title: '(Пр7)примечание по парку 2', data: '(Пр7)примечание по парку 2' },
+                { title: '(Пр2)примечание диспетчера', data: 'pr2_note_dispatcher' },
+            ], 
+            // colHeaders: ["Номер вагона", "Тип вагона", "Собст. на момент страхования", "Страховая компания", "№ договора",
+            //     "Дата договора"],
             getInsuredWagonsData: [],
         }
     },

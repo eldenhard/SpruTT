@@ -1,8 +1,8 @@
 <template>
     <section class="search_bloc">
         <div class="long_search">
-            <input type="text" placeholder="Поиск..." v-model="search" @input="IputProcessing(search)">
-            <button class="Request" @click="InputTable(search)">
+            <input type="text" placeholder="Введите номера вагонов..." v-model="search" @input="IputProcessing(search)">
+            <button class="Request" @click="getRequestToServerData(search)">
                 <span v-if="isSearch">Найти</span>
                 <b-icon v-if="!isSearch" icon="three-dots" animation="cylon" font-scale="3"></b-icon>
             </button>
@@ -35,10 +35,9 @@ export default {
             }, 500)
         },
         async getRequestToServerData(search) {
-            if (this.search == "" || this.search.length <= 1) return
+            // if (this.search == "" || this.search.length <= 1) return
             this.isSearch = false
-            let obj = {wagon_number: search}
-
+            let obj = {wagons: search.replace(/[^.\d]+/g,"").replace(/(\d{8})(?=\d)/g, '$1,')}
             try{
                 let response = await api.getAllInsuranceWagons(obj)
                 this.$emit('getInsuredWagons', response)
