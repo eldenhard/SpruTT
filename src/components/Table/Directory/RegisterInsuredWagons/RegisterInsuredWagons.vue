@@ -14,6 +14,7 @@
                     :preventOverflow="'horizontal'" :filters="true"  :language="'ru-RU'"
                     :manualColumnResize="true" :autoWrapRow="true" :autoWrapCol="true" :height="'60vh'"  :width="'100%'" :fillHandle="false"
                     :dropdownMenu="true"
+                    v-if="getInsuredWagonsData.length > 0"
                     >
                 </hot-table>
                 <!-- :dropdownMenu="true" -->
