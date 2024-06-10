@@ -38,10 +38,10 @@ export default {
             if (this.search == "" || this.search.length <= 1) return
             this.isSearch = false
             let obj = {wagon_number: search}
-            debugger
+
             try{
                 let response = await api.getAllInsuranceWagons(obj)
-                console.log(response)
+                this.$emit('getInsuredWagons', response)
                 this.isSearch = true
             }
             catch{
