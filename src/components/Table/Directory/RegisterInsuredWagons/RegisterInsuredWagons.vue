@@ -46,7 +46,7 @@ export default {
                 { title: 'Номер вагона', data: 'wagon_number' },
                 { title: 'Тип вагона', data: 'wagon_type' },
                 { title: 'Собст. на момент страхования', data: 'owner_at_insurance_moment' },
-                { title: 'Страховая компания', data: 'insurance_company', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
+                { title: 'Страховая компания', data: 'insurance_company', },
                 { title: '№ договора', data: 'agr_number', type: 'numeric' },
                 { title: 'Дата договора', data: 'agr_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
             ],
