@@ -91,7 +91,7 @@ export default {
     methods: {
         getInsuredWagons(data) {
             
-            this.getInsuredWagonsData = data.data.data
+            this.getInsuredWagonsData = data.data
             this.$nextTick(() => {
                 const hotInstance = this.$refs.hotTableComponent.hotInstance
                 hotInstance.loadData(this.getInsuredWagonsData)

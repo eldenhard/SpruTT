@@ -40,6 +40,7 @@ export default {
             let obj = {wagons: search.replace(/[^.\d]+/g,"").replace(/(\d{8})(?=\d)/g, '$1,')}
             try{
                 let response = await api.getAllInsuranceWagons(obj)
+                console.log(response)
                 this.$emit('getInsuredWagons', response)
                 this.isSearch = true
             }
