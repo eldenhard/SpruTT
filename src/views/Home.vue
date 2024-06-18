@@ -153,6 +153,8 @@ export default {
   },
   mounted() {
     document.title = "Справочники";
+    document.querySelector('.hot-display-license-info').style = 'display: none !important';
+
   
   },
 };

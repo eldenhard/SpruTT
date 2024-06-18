@@ -38,13 +38,17 @@ export default {
             // if (this.search == "" || this.search.length <= 1) return
             this.isSearch = false
             let obj = {wagons: search.replace(/[^.\d]+/g,"").replace(/(\d{8})(?=\d)/g, '$1,')}
+            let today = new Date().toISOString().slice(0, 10)
             try{
                 let response = await api.getAllInsuranceWagons(obj)
-                console.log(response)
+                let response2 = await api.getOwnWagonsCompare(today)
+                // console.log(response, response2)
                 this.$emit('getInsuredWagons', response)
+                this.$emit('getOwnWagonsCompare', response2)
                 this.isSearch = true
             }
-            catch{
+            catch (err){
+                console.log(err)
                 this.isSearch = true
             }
         }

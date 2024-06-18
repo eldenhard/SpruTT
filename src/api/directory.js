@@ -213,6 +213,9 @@ const getAllInsuranceWagons = (data) => {
     return api.post(`${finance}/insurance-wagons/filter/`, data)
 }
 
+const getOwnWagonsCompare = (today) => {
+   return api.get(`${finance}/own-wagons-compare/?on_date=${today}&belong_source=stg`)
+}
 const createOpepativnayaSpravka = (data) => {
     return api.post(`${finance}/operativnaya-spravka/`, data)
 }
@@ -373,6 +376,7 @@ export default {
     getAllFines,
     createManyFines,
     getAllInsuranceWagons,
+    getOwnWagonsCompare,
     createOpepativnayaSpravka,
     getAllDocumentsByCounterparty,
     getAllDocumentsByCounterparty2,

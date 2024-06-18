@@ -8,16 +8,19 @@
             <hr>
             <br>
             <div>
-                <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons" />
-                <PregisterInsuredWagonsAddColumnVue @add_column_el="addNewObjectInColumns" v-show="getInsuredWagonsData.length > 0"/>
+                <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons"
+                    @getOwnWagonsCompare="getOwnWagonsCompare" />
+                <PregisterInsuredWagonsAddColumnVue @add_column_el="addNewObjectInColumns"
+                    v-show="getInsuredWagonsData.length > 0" />
                 <br>
-                <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true"  :columns="columns"
-                    :preventOverflow="'horizontal'" :filters="true"  :language="'ru-RU'"
-                    :manualColumnResize="true" :autoWrapRow="true" :autoWrapCol="true" :height="'60vh'"  :width="'100%'" :fillHandle="false"
-                    :dropdownMenu="true"
-                    v-show="getInsuredWagonsData.length > 0"
-                    >
+                <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true" :columns="columns"
+                    :preventOverflow="'horizontal'" :filters="true" :language="'ru-RU'" :manualColumnResize="true"
+                    :autoWrapRow="true" :autoWrapCol="true" :height="'60vh'" :width="'100%'" :fillHandle="false"
+                    :dropdownMenu="true" v-show="getInsuredWagonsData.length > 0">
                 </hot-table>
+                <br>
+
+                <OwnWagonsCompareTable :getOwnWagonsCompareData="getOwnWagonsCompareData" :columns="columns"/>
             </div>
         </div>
     </div>
@@ -34,12 +37,14 @@ registerLanguageDictionary(ruRU);
 registerAllModules();
 import 'handsontable/dist/handsontable.full.css';
 import PregisterInsuredWagonsAddColumnVue from './components/PregisterInsuredWagonsAddColumn.vue';
+import OwnWagonsCompareTable from "./components/OwnWagonsCompareTable.vue";
 export default {
     components: {
         Loader,
         PregisterIsuredwagonsSearch,
         PregisterInsuredWagonsAddColumnVue,
         HotTable,
+        OwnWagonsCompareTable,
     },
     data() {
         return {
@@ -51,15 +56,16 @@ export default {
                 { title: 'Страховая компания', data: 'insurance_company', },
                 { title: '№ договора', data: 'agr_number', type: 'numeric' },
                 { title: 'Дата договора', data: 'agr_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
-            ], 
+            ],
             getInsuredWagonsData: [],
+            getOwnWagonsCompareData: [],
         }
     },
-    mounted(){
+    mounted() {
         document.querySelector('.hot-display-license-info').style = 'display: none !important';
     },
     methods: {
-        addNewObjectInColumns(data){
+        addNewObjectInColumns(data) {
             this.$nextTick(() => {
                 const hotInstance = this.$refs.hotTableComponent.hotInstance;
                 this.columns = [
@@ -75,6 +81,20 @@ export default {
                 hotInstance.render();
             })
         },
+        getOwnWagonsCompare(data) {
+            let preData = data.data
+            let compareDataMap = {}
+            preData.forEach((el) => {
+                if (el['Принадлежность СТЖ'] === 'С') {
+                    compareDataMap[el['Номер вагона']] = true
+                }
+            })
+            preData = this.getInsuredWagonsData.filter((item) => {
+                return compareDataMap[item.wagon_number]
+            })
+            this.getOwnWagonsCompareData = preData
+
+        },
         getInsuredWagons(data) {
             this.getInsuredWagonsData = data.data
             this.$nextTick(() => {
@@ -83,30 +103,27 @@ export default {
                 hotInstance.updateSettings({ data: this.getInsuredWagonsData })
                 hotInstance.render()
             })
-            console.log(this.getInsuredWagonsData)
         },
     },
 }
 </script>
 
 <style scoped>
-
 .air_block {
-  width: 100%;
-  height: auto;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  background: #ffffff;
-  box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
-  position: relative;
-  left: 50%;
-  padding: 1%;
-  transform: translate(-50%, 0);
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background: #ffffff;
+    box-shadow: -25px 25px 41px #cfcfcf, 25px -25px 41px #ffffff;
+    position: relative;
+    left: 50%;
+    padding: 1%;
+    transform: translate(-50%, 0);
 }
 
 .air_block_header {
-  padding: 1% 0 0 2%;
-  color: #cacaca;
+    padding: 1% 0 0 2%;
+    color: #cacaca;
 }
-
 </style>
