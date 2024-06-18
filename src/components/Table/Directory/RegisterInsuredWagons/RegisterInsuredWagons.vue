@@ -80,6 +80,7 @@ export default {
             this.$nextTick(() => {
                 const hotInstance = this.$refs.hotTableComponent.hotInstance
                 hotInstance.loadData(this.getInsuredWagonsData)
+                hotInstance.updateSettings({ data: this.getInsuredWagonsData })
                 hotInstance.render()
             })
             console.log(this.getInsuredWagonsData)
