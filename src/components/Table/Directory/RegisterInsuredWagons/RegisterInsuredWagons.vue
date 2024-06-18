@@ -20,7 +20,7 @@
                 </hot-table>
                 <br>
 
-                <OwnWagonsCompareTable :getOwnWagonsCompareData="getOwnWagonsCompareData" :columns="columns"/>
+                <OwnWagonsCompareTable :getOwnWagonsCompareData="getOwnWagonsCompareData" :columns="columns" v-show="getOwnWagonsCompareData.length > 0"/>
             </div>
         </div>
     </div>

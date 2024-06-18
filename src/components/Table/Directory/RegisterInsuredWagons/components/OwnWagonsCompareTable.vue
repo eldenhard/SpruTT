@@ -24,10 +24,14 @@ export default {
     components: {
         HotTable,
     },
+    created() {
+        document.querySelector('.hot-display-license-info').style = 'display: none !important';
+    },
     watch: {
         getOwnWagonsCompareData: {
             handler(newData) {
                 this.updateTableData(newData);
+                document.querySelector('.hot-display-license-info').style = 'display: none !important';
             },
             deep: true,
         },
@@ -40,10 +44,12 @@ export default {
     methods: {
         updateTableData(newData) {
             this.$nextTick(() => {
+                document.querySelector('.hot-display-license-info').style = 'display: none !important';
                 const hotInstance = this.$refs.hotTableComponent2.hotInstance;
                 hotInstance.loadData(newData)
                 hotInstance.updateSettings({ data: newData })
                 hotInstance.render()
+                  document.querySelector('.hot-display-license-info').style = 'display: none !important';
             })
         },
     },
