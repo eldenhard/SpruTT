@@ -8,19 +8,29 @@
             <hr>
             <br>
             <div>
-                <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons"
-                    @getOwnWagonsCompare="getOwnWagonsCompare" />
-                <PregisterInsuredWagonsAddColumnVue @add_column_el="addNewObjectInColumns"
-                    v-show="getInsuredWagonsData.length > 0" />
+                <div style="display: flex; justify-content: space-between;; gap: 5vw; height: 4vh; ">
+                    <template v-if="getInsuredWagonsData.length > 0">
+                        <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons"
+                            @getOwnWagonsCompare="getOwnWagonsCompare" style="width: 80%" />
+                    </template>
+                    <template v-else>
+                        <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons"
+                            @getOwnWagonsCompare="getOwnWagonsCompare" style="width: 100%" />
+                    </template>
+                    <PregisterInsuredWagonsAddColumnVue @add_column_el="addNewObjectInColumns"
+                        v-show="getInsuredWagonsData.length > 0" style="width: 100%" />
+                </div>
                 <br>
+                <h4 class="air_block_header" v-show="getInsuredWagonsData.length > 0">Застрахованные вагоны</h4>
                 <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true" :columns="columns"
                     :preventOverflow="'horizontal'" :filters="true" :language="'ru-RU'" :manualColumnResize="true"
-                    :autoWrapRow="true" :autoWrapCol="true" :height="'60vh'" :width="'100%'" :fillHandle="false"
+                    :autoWrapRow="true" :autoWrapCol="true" :height="'40vh'" :width="'100%'" :fillHandle="false"
                     :dropdownMenu="true" v-show="getInsuredWagonsData.length > 0">
                 </hot-table>
                 <br>
 
-                <OwnWagonsCompareTable :getOwnWagonsCompareData="getOwnWagonsCompareData" :columns="columns" v-show="getOwnWagonsCompareData.length > 0"/>
+                <OwnWagonsCompareTable :getOwnWagonsCompareData="getOwnWagonsCompareData" :columns="columns_own_wagons" :columns_table_copy="columns"
+                    v-show="getOwnWagonsCompareData.length > 0" />
             </div>
         </div>
     </div>
@@ -57,6 +67,9 @@ export default {
                 { title: '№ договора', data: 'agr_number', type: 'numeric' },
                 { title: 'Дата договора', data: 'agr_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
             ],
+            columns_own_wagons: [
+            { title: 'Номер вагона', data: 'Номер вагона' },
+            ],
             getInsuredWagonsData: [],
             getOwnWagonsCompareData: [],
         }
@@ -82,19 +95,37 @@ export default {
             })
         },
         getOwnWagonsCompare(data) {
-            let preData = data.data
-            let compareDataMap = {}
-            preData.forEach((el) => {
-                if (el['Принадлежность СТЖ'] === 'С') {
-                    compareDataMap[el['Номер вагона']] = true
-                }
-            })
-            preData = this.getInsuredWagonsData.filter((item) => {
-                return compareDataMap[item.wagon_number]
-            })
-            this.getOwnWagonsCompareData = preData
+    let preData = data.data;
+    let compareDataMap = {};
 
-        },
+    // Создаем карту для getInsuredWagonsData, чтобы быстро проверить наличие вагонов
+    this.getInsuredWagonsData.forEach((item) => {
+        compareDataMap[item.wagon_number] = true;
+    });
+
+    // Фильтруем preData, оставляя только те вагоны, которых нет в compareDataMap
+    preData = preData.filter((el) => {
+        return el['Принадлежность СТЖ'] === 'С' && !compareDataMap[el['Номер вагона']];
+    });
+
+    console.log(preData, 'preData');
+    this.getOwnWagonsCompareData = preData;
+},
+
+        // getOwnWagonsCompare(data) {
+        //     let preData = data.data
+        //     let compareDataMap = {}
+        //     preData.forEach((el) => {
+        //         if (el['Принадлежность СТЖ'] === 'С') {
+        //             compareDataMap[el['Номер вагона']] = true
+        //         }
+        //     })
+        //     preData = this.getInsuredWagonsData.filter((item) => {
+        //         return compareDataMap[item.wagon_number]
+        //     })
+        //     this.getOwnWagonsCompareData = preData
+
+        // },
         getInsuredWagons(data) {
             this.getInsuredWagonsData = data.data
             this.$nextTick(() => {
@@ -110,7 +141,7 @@ export default {
 
 <style scoped>
 .air_block {
-    width: 100%;
+    width: 90%;
     height: auto;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;

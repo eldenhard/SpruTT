@@ -1,9 +1,11 @@
 <template>
-    <div>
-        <br>
-        <label class="label_vselect">Добавление полей в таблицу <br>
-            <v-select v-model="add_column_el" :options="sort_cols_elements" label="title" multiple></v-select>
-        </label>
+    <div style="display: flex; align-items: flex-start;">
+        
+        <!-- <label class="label_vselect" > -->
+            <v-select v-model="add_column_el" :options="sort_cols_elements" label="title"  style="width: 100%; " 
+      
+      placeholder="Добавление столбцов" multiple></v-select>
+        <!-- </label> -->
     </div>
 </template>
 
@@ -60,7 +62,13 @@ export default {
 
 <style scoped>
 .label_vselect{
-    width: 30%;
+    width: 80%;
     color: grey
+}
+.v-select .vs--multiple .vs--searchable{
+    height: 25vh !important;
+}
+.vs__dropdown-toggle{
+    height: 25vh!important;
 }
 </style>

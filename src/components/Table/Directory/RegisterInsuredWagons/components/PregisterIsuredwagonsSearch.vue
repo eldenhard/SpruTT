@@ -68,13 +68,13 @@ export default {
 .long_search {
     position: relative;
     width: 100%;
-    height: 5vh;
+    height: 110%;
 }
 
 .long_search input {
     width: 100%;
     height: 100%;
-    border: 2px solid #007BFF !important;
+    border: 1px solid #007BFF !important;
     border-radius: 10px;
     text-align: left !important;
     padding-left: 2% !important;
@@ -99,12 +99,12 @@ export default {
 }
 
 .long_search button {
-    width: 10%;
+    width: 15%;
     height: 80%;
     position: absolute;
-    top: 5px;
+    top: 4px;
     right: 5px;
-    bottom: 1%;
+    
     border-radius: 8px;
 }
 </style>
