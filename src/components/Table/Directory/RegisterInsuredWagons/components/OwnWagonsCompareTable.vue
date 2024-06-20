@@ -1,76 +1,3 @@
-<!-- <template>
-    <div>
-
-        <br>
-        <h4 v-show="getOwnWagonsCompareData.length > 0" class="air_block_header">Перечень незастрахованных вагонов </h4>
-        <hot-table ref="hotTableComponent2" :data="getOwnWagonsCompareData" :rowHeaders="true" :columns="columns"
-            :preventOverflow="'horizontal'" :filters="true" :language="'ru-RU'" :manualColumnResize="true"
-            :autoWrapRow="true" :autoWrapCol="true" :height="'40vh'" :width="'30%'" :fillHandle="false"
-            :dropdownMenu="true" v-show="getOwnWagonsCompareData.length > 0">
-        </hot-table>
-    </div>
-</template>
-
-<script>
-import { HotTable } from '@handsontable/vue';
-import { registerAllModules } from 'handsontable/registry';
-import { registerLanguageDictionary, getLanguagesDictionaries, ruRU } from 'handsontable/i18n';
-registerLanguageDictionary(ruRU);
-registerAllModules();
-import 'handsontable/dist/handsontable.full.css';
-
-export default {
-    props: ['getOwnWagonsCompareData', 'columns'],
-    components: {
-        HotTable,
-    },
-    created() {
-        document.querySelectorAll
-('.hot-display-license-info').style = 'display: none !important';
-    },
-    watch: {
-        getOwnWagonsCompareData: {
-            handler(newData) {
-                this.updateTableData(newData);
-                document.querySelectorAll
-('.hot-display-license-info').style = 'display: none !important';
-            },
-            deep: true,
-        },
-    },
-    mounted() {
-        this.updateTableData(this.getOwnWagonsCompareData);
-        document.querySelectorAll
-('.hot-display-license-info').style = 'display: none !important';
-
-    },
-    methods: {
-        updateTableData(newData) {
-            this.$nextTick(() => {
-                document.querySelectorAll
-('.hot-display-license-info').style = 'display: none !important';
-                const hotInstance = this.$refs.hotTableComponent2.hotInstance;
-                hotInstance.loadData(newData)
-                hotInstance.updateSettings({ data: newData })
-                hotInstance.render()
-                  document.querySelectorAll
-('.hot-display-license-info').style = 'display: none !important';
-            })
-        },
-    },
-}
-</script>
-
-<style scoped>
-.hot-display-license-info{
-    display: none !important;
-}
-.air_block_header {
-    padding: 1% 0 0 2%;
-    color: #cacaca;
-}
-</style> -->
-
 <template>
     <div>
         <br>
@@ -131,37 +58,59 @@ export default {
         getOwnWagonsCompareData: {
             handler(newData) {
                 this.updateTableData('hotTableComponent1', newData);
-                document.querySelectorAll('.hot-display-license-info').style = 'display: none !important';
+               document.querySelectorAll('.hot-display-license-info').forEach(element => {
+    element.style.display = 'none';
+});
+
             },
             deep: true,
         },
         insuredWagonsData: {
             handler(newData) {
                 this.updateTableData('hotTableComponent2', newData);
-                document.querySelectorAll('.hot-display-license-info').style = 'display: none !important';
-                console.log(newData, 'newData')
+               document.querySelectorAll('.hot-display-license-info').forEach(element => {
+    element.style.display = 'none';
+});
+
             },
             deep: true,
         },
     },
+    created() {
+       document.querySelectorAll('.hot-display-license-info').forEach(element => {
+    element.style.display = 'none';
+});
+
+
+    },
     mounted() {
         this.updateTableData('hotTableComponent1', this.getOwnWagonsCompareData);
         this.updateTableData('hotTableComponent2', this.insuredWagonsData);
-        document.querySelectorAll('.hot-display-license-info').style = 'display: none !important';
+       document.querySelectorAll('.hot-display-license-info').forEach(element => {
+    element.style.display = 'none';
+});
+
     },
+   
     methods: {
         saveData(){
             console.log(this.insuredWagonsData)
         },
         updateTableData(componentRef, newData) {
             this.$nextTick(() => {
-                document.querySelectorAll('.hot-display-license-info').style = 'display: none !important';
+               document.querySelectorAll('.hot-display-license-info').forEach(element => {
+    element.style.display = 'none';
+});
+
                 const hotInstance = this.$refs[componentRef]?.hotInstance;
                 if (hotInstance) {
                     hotInstance.loadData(newData);
                     hotInstance.updateSettings({ data: newData });
                     hotInstance.render();
-                    document.querySelectorAll('.hot-display-license-info').style = 'display: none !important';
+                   document.querySelectorAll('.hot-display-license-info').forEach(element => {
+    element.style.display = 'none';
+});
+
                 }
             });
         },
@@ -189,9 +138,7 @@ export default {
 </script>
 
 <style scoped>
-.hot-display-license-info {
-    display: none !important;
-}
+
 
 .air_block_header {
     padding: 1% 0 0 2%;
