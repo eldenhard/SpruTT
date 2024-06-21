@@ -272,8 +272,6 @@
                                 <b-dropdown id="dropdown-2" dropleft text="Грузоподъемность" class="m-md-2"
                                     style="z-index: 50000000000 !important; width: 90%">
                                     <div style="height: 30vh; overflow-y: auto;">
-
-
                                         <b-dropdown-item
                                             @click="addField('Ставка при: Грузоподъемность менее 65.5 т')">Ставка при:
                                             Грузоподъемность
@@ -345,6 +343,65 @@
                                     </div>
                                 </b-dropdown>
 
+                                <b-dropdown id="dropdown-2" dropleft text="Коэффициент при" class="m-md-2"
+                                    style="z-index: 50000000000 !important; width: 90%">
+                                    <div style="height: 30vh; overflow-y: auto;">
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 65.5 т')">Коэффициент при:
+                                            Грузоподъемность
+                                            менее 65,5 т</b-dropdown-item>
+                                        <hr>
+
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 66 т')">Коэффициент при: Грузоподъемность менее
+                                            66 т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Коэффициент при: Грузоподъемность 66 т')">Коэффициент при:
+                                            Грузоподъемность 66
+                                            т</b-dropdown-item>
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность более 66 т')">Коэффициент при: Грузоподъемность более
+                                            66 т</b-dropdown-item>
+                                        <hr>
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 69 т')">Коэффициент при: Грузоподъемность менее
+                                            69 т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Коэффициент при: Грузоподъемность 69 т')">Коэффициент при:
+                                            Грузоподъемность 69
+                                            т</b-dropdown-item>
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность более 69 т')">Коэффициент при: Грузоподъемность более
+                                            69 т</b-dropdown-item>
+                                        <hr>
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 69.5 т')">Коэффициент при: Грузоподъемность
+                                            менее 69,5 т</b-dropdown-item>
+                                        <hr>
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 70.3 т')">Коэффициент при: Грузоподъемность
+                                            менее 70,3 т</b-dropdown-item>
+                                        <hr>
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 71 т')">Коэффициент при: Грузоподъемность менее
+                                            71 т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Коэффициент при: Грузоподъемность 71 т')">Коэффициент при:
+                                            Грузоподъемность 71
+                                            т</b-dropdown-item>
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность более 71 т')">Коэффициент при: Грузоподъемность более
+                                            71 т</b-dropdown-item>
+                                        <hr>
+
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 75 т')">Коэффициент при: Грузоподъемность менее
+                                            75 т</b-dropdown-item>
+                                        <b-dropdown-item @click="addField('Коэффициент при: Грузоподъемность 75 т')">Коэффициент при:
+                                            Грузоподъемность 75
+                                            т</b-dropdown-item>
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность более 75 т')">Коэффициент при: Грузоподъемность более
+                                            75 т</b-dropdown-item>
+                                    </div>
+                                </b-dropdown>
 
                                 <b-dropdown-item
                                     @click="addField('Станция/Дорога/Страна отправления')">Станция/Дорога/Страна
@@ -1478,18 +1535,24 @@ export default {
                             let capacity_value_match;
                             let capacity_value;
                             let stavka
+                            let k
                             // let stavka_nds
                             if (capacityField) {
                                 capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
                                 capacity_value_match = capacityField.match(/[0-9]+/);
                                 capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
 
-                                stavka = parseFloat(item[capacityField].replace(/[^0-9,]/g, '').replace(',', '.'))
+                                if(capacityField.includes('Коэффициент')) {
+                                    k = parseFloat(item[capacityField].replace(/[^0-9,]/g, '').replace(',', '.'))
+                                    stavka = 0
+                                } else {
+                                    stavka = parseFloat(item[capacityField].replace(/[^0-9,]/g, '').replace(',', '.'))
+                                }
                             }
 
                             const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
 
-                            const capacityObject = { capacity_compare, capacity_value, stavka, cargos_list };
+                            const capacityObject = { capacity_compare, capacity_value, stavka, cargos_list, k };
 
                             for (const key in item) {
                                 const newKey = translationMap[key] || key;
@@ -1525,13 +1588,21 @@ export default {
                         let capacity_value_match;
                         let capacity_value;
                         let stavka
+                        let k
                         // let stavka_nds;
 
                         if (capacityField) {
                             capacity_compare = capacityField.includes('менее') ? 'less' : capacityField.includes('более') ? 'more' : 'equal';
                             capacity_value_match = capacityField.match(/[0-9]+/);
                             capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
-                            stavka = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
+
+                            if(capacityField.includes('Коэффициент')) {
+                                    k = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0; 
+                                    stavka = 0
+                                } else {
+                                    stavka = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;                               
+                                 }
+                           
 
                             // console.log(capacityField)
                             // stavka_nds = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
@@ -1539,7 +1610,7 @@ export default {
 
                         const cargos_list = Array.isArray(item.cargos_list) ? item.cargos_list.join(';') : '';
 
-                        const capacityObject = { capacity_compare, capacity_value, stavka, cargos_list };
+                        const capacityObject = { capacity_compare, capacity_value, stavka, cargos_list, k };
 
                         for (const key in item) {
                             const newKey = translationMap[key] || key;
@@ -1590,22 +1661,22 @@ export default {
                     }
                 }
                 console.log(finallyDataToSend, 'finallyDataToSend')
-                api.postTarifData(finallyDataToSend)
-                    .then(response => {
-                        console.log(response)
-                        this.loader = false
-                        this.tableData = []
-                        this.$toast.success('Данные отправлены', {
-                            timeout: 3000
-                        })
+                // api.postTarifData(finallyDataToSend)
+                //     .then(response => {
+                //         console.log(response)
+                //         this.loader = false
+                //         this.tableData = []
+                //         this.$toast.success('Данные отправлены', {
+                //             timeout: 3000
+                //         })
 
-                    }).catch((err) => {
-                        console.log(err)
-                        this.loader = false;
-                        this.$toast.error(`Данные не отправлены\n${err.response.data}`, {
-                            timeout: 5000
-                        })
-                    })
+                //     }).catch((err) => {
+                //         console.log(err)
+                //         this.loader = false;
+                //         this.$toast.error(`Данные не отправлены\n${err.response.data}`, {
+                //             timeout: 5000
+                //         })
+                //     })
 
             } catch (error) {
                 console.error("Ошибка в блоке try:", error);
