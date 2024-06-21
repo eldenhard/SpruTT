@@ -1661,22 +1661,22 @@ export default {
                     }
                 }
                 console.log(finallyDataToSend, 'finallyDataToSend')
-                // api.postTarifData(finallyDataToSend)
-                //     .then(response => {
-                //         console.log(response)
-                //         this.loader = false
-                //         this.tableData = []
-                //         this.$toast.success('Данные отправлены', {
-                //             timeout: 3000
-                //         })
+                api.postTarifData(finallyDataToSend)
+                    .then(response => {
+                        console.log(response)
+                        this.loader = false
+                        this.tableData = []
+                        this.$toast.success('Данные отправлены', {
+                            timeout: 3000
+                        })
 
-                //     }).catch((err) => {
-                //         console.log(err)
-                //         this.loader = false;
-                //         this.$toast.error(`Данные не отправлены\n${err.response.data}`, {
-                //             timeout: 5000
-                //         })
-                //     })
+                    }).catch((err) => {
+                        console.log(err)
+                        this.loader = false;
+                        this.$toast.error(`Данные не отправлены\n${err.response.data}`, {
+                            timeout: 5000
+                        })
+                    })
 
             } catch (error) {
                 console.error("Ошибка в блоке try:", error);
