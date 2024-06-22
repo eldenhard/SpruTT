@@ -422,7 +422,7 @@
                                 <b-dropdown-item @click="addField('Вагоны')">Вагоны</b-dropdown-item>
 
                                 <b-dropdown-item @click="addField('Ставка НДС')">Ставка НДС</b-dropdown-item>
-
+                                <!-- <b-dropdown-item @click="addField('Тип отправки')">Тип отправки</b-dropdown-item> -->
 
                                 <!-- <b-dropdown id="dropdown-2" text="Тип отправки" class="m-md-2" dropright style="width: 85%">
                                     <b-dropdown-item @click="addField('Вагонная')">Вагонная</b-dropdown-item>

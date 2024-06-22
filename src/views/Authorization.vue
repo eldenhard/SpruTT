@@ -70,11 +70,12 @@ export default {
               this.first_name = this.$store.state.auth.user.user?.first_name
               this.last_name = this.$store.state.auth.user.user?.last_name
               console.log(this.$store.state.auth)
-              this.notifyHead = "Здравствуйте";
-              this.notifyMessage = "Вы успешно авторизированы";
-              this.notifyClass = "wrapper-success";
+              this.$toast.success(`Вы успешно авторизированы `, {
+                timeout: 2500,
+              })
+
               this.showAuthForm = false
-  
+
             }
           }).then((res) => {
             return new Promise((resolve) => {
@@ -84,21 +85,21 @@ export default {
                 resolve()
               }, 2500);
             }).then(() => {
-            window.location.href= '/main'
-            // location.reload()
-          })
-         
+              window.location.href = '/main'
+              // location.reload()
+            })
+
           }).catch((error) => {
-            this.showNotify = true;
-            this.notifyHead = "Ошибка авторизации";
-            this.notifyMessage = error.response.data;
-            this.notifyClass = "wrapper-error";
+            this.$toast.error(`Ошибка авторизации \n${error.response.data}`, {
+              timeout: 4000,
+            })
+
           });
       } else {
-        this.showNotify = true;
-        this.notifyHead = "Ошибка авторизации";
-        this.notifyMessage = "Введите Email";
-        this.notifyClass = "wrapper-error";
+        this.$toast.error(`Ошибка авторизации \nВведите Email`, {
+          timeout: 4000,
+        })
+
       }
 
 
