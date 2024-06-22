@@ -9,7 +9,7 @@
             <br>
             <div>
                 <div style="display: flex; justify-content: space-between;; gap: 5vw; height: 4vh; ">
-                    <template v-if="getInsuredWagonsData.length > 0">
+                    <template v-if="getInsuredWagonsData.length > 1">
                         <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons"
                             @getOwnWagonsCompare="getOwnWagonsCompare" style="width: 80%" />
                     </template>
@@ -18,19 +18,19 @@
                             @getOwnWagonsCompare="getOwnWagonsCompare" style="width: 100%" />
                     </template>
                     <PregisterInsuredWagonsAddColumnVue @add_column_el="addNewObjectInColumns"
-                        v-show="getInsuredWagonsData.length > 0" style="width: 100%" />
+                        v-show="getInsuredWagonsData.length > 1" style="width: 100%" />
                 </div>
                 <br>
                 <h4 class="air_block_header" v-show="getInsuredWagonsData.length > 0">Застрахованные вагоны</h4>
                 <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true" :columns="columns"
                     :preventOverflow="'horizontal'" :filters="true" :language="'ru-RU'" :manualColumnResize="true"
                     :autoWrapRow="true" :autoWrapCol="true" :height="'40vh'" :width="'100%'" :fillHandle="false"
-                    :dropdownMenu="true" v-show="getInsuredWagonsData.length > 0">
+                    :dropdownMenu="true">
                 </hot-table>
                 <br>
 
                 <OwnWagonsCompareTable :getOwnWagonsCompareData="getOwnWagonsCompareData" :columns="columns_own_wagons" :columns_table_copy="columns"
-                    v-show="getOwnWagonsCompareData.length > 0" />
+                  />
             </div>
         </div>
     </div>
@@ -70,8 +70,8 @@ export default {
             columns_own_wagons: [
             { title: 'Номер вагона', data: 'Номер вагона' },
             ],
-            getInsuredWagonsData: [],
-            getOwnWagonsCompareData: [],
+            getInsuredWagonsData: [ { title: 'Номер вагона', data: 'wagon_number' },],
+            getOwnWagonsCompareData: [{ title: 'Номер вагона', data: 'wagon_number' },],
         }
     },
     mounted() {
