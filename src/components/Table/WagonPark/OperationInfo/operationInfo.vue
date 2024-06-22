@@ -190,8 +190,8 @@
             <td>{{ item.revenue_wo_nds | format }}</td>
             <td>{{ item.revenue_current_plan | format }}</td> 
             <!-- <td>{{ item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) | format }}</td>  -->
-            <td>{{ item.revenue_current_fact | format }}</td> 
-            <td></td>
+            <td>{{ item.revenue_current_fact | format }}  </td> 
+            <td>{{item.revenue_current_plan / item.revenue_current_fact *100 || 0 | format }} %</td>
             <td>{{ item.revenue_current_fact / item.revenue_current_plan * 100 || 0 | format }} %</td>
             <td>
                 {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8))) * 100 | format }}
@@ -199,6 +199,7 @@
             </td> 
             <td>{{ item.revenue_current_fact / item.revenue_wo_nds * 100 || 0 |  format }} %</td>
                                             </tr>
+                                            <!-- прочие -->
                                             <tr v-for="item in totalResponse2" :key="item.id">
                                                 <td>Прочие</td>
                                                 <td>{{ item.loading_amount || 0 | format }}</td> <!-- 1  -->
@@ -224,7 +225,7 @@
                                                 <td>{{ item.revenue_current_plan || 0 | format }}</td> <!-- 11 -->
                                                 <!-- <td>{{ item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) || 0 | format }}</td> 12 -->
                                                 <td>{{ item.revenue_current_fact || 0 | format }}</td> <!-- 13 -->
-                                                <td>   </td>
+                                                <td> {{ item.revenue_current_plan /item.revenue_current_fact *100|| 0 | format }} % </td>
                                                 <td>{{ item.revenue_current_fact / item.revenue_current_plan * 100 || 0 | format }} %</td> <!-- 14 -->
                                                 <td>
                                                     {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8))) * 100 || 0 |
@@ -246,10 +247,10 @@
                                                 <td>{{ totalRevenueWithoutNDS | format }}</td>
                                              <td>{{ totalRevenueCurrentPlan | format }}</td>
                                             <!-- <td>{{ totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) || 0 | format }}</td> -->
-                                            <td></td>
+                                            <td>{{ totalRevenueCurrentFact | format }}</td>
                                               <!-- <td>{{ totalRevenueCurrentFact  | format }}</td> -->
-                                              <td></td>
-                                                <td>{{ totalRevenueCurrentFact / totalRevenueCurrentPlan * 100 || 0 | format }} %</td>
+                                              <td>{{ totalRevenueCurrentPlan /  totalRevenueCurrentFact * 100 || 0 | format }} %</td>
+                                            <td>{{ totalRevenueCurrentFact / totalRevenueCurrentPlan * 100 || 0 | format }} %</td>
                                             <td>{{ totalRevenueCurrentFact / totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) * 100 || 0 | format }} %</td>
                                           <td>{{totalRevenueCurrentFact / totalRevenueWithoutNDS * 100 || 0 | format }} %</td>
                                             </tr>
@@ -876,6 +877,13 @@ totalLoadingsAmount() {
         totalRevenueWithoutNDS() {
             if (this.responseServerData.report && this.responseServerData.report.length > 0) {
                 return this.filteredReportData.reduce((sum, item) => sum + item.revenue_wo_nds, 0) + this.totalResponse2[0].revenue_wo_nds
+            } else {
+                return 0
+            }
+        },
+        totalRevenueRevenueOnData() {
+            if (this.responseServerData.report && this.responseServerData.report.length > 0) {
+                return this.filteredReportData.reduce((sum, item) => sum + item.revenue_current_fact, 0) + this.totalResponse2[0].revenue_current_fact
             } else {
                 return 0
             }
