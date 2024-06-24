@@ -19,6 +19,7 @@
                 </hot-table>
             </div>
         </div>
+        <br>
         <button class="Accept button" disabled style="width: 30%; margin-left: auto;" @click="saveData()">Сохранить данные</button>
     </div>
 </template>

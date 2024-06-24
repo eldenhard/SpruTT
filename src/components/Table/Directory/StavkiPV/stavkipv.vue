@@ -418,7 +418,7 @@
                                 <b-dropdown-item @click="addField('Коэффициент')">Коэффициент</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Расстояние')">Расстояние</b-dropdown-item>
                                 <b-dropdown-item @click="addField('НДС')">НДС</b-dropdown-item>
-                                <b-dropdown-item @click="addField('Оборот, сут')">Оборот, сут</b-dropdown-item>
+                                <b-dropdown-item @click="addField('Оборот, руб/сут')">Оборот, руб/сут</b-dropdown-item>
                                 <b-dropdown-item @click="addField('Вагоны')">Вагоны</b-dropdown-item>
 
                                 <b-dropdown-item @click="addField('Ставка НДС')">Ставка НДС</b-dropdown-item>
@@ -961,9 +961,9 @@ export default {
                             key = 'stavka_nds'
                             value = Number(value)
                         }
-                        else if (key === 'Оборот, сут') {
+                        else if (key === 'Оборот, руб/сут') {
                             key = 'turnover'
-                            value = value
+                            value = Number(value)
                         }
                         else if (key === 'Группа позиций по ЕТСНГ') {
                             key = 'cargo_type'
@@ -1511,7 +1511,7 @@ export default {
                     'Коэффициент': 'k',
                     'НДС': 'nds',
                     'Cтавка НДС': 'stavka_nds',
-                    'Оборот, сут': 'turnover',
+                    'Оборот, руб/сут': 'turnover',
                     "Группа позиций по ЕТСНГ": "mask",
                     "Класс груза": 'dangerous_code',
                     "Код ЕТСНГ": 'etsng'

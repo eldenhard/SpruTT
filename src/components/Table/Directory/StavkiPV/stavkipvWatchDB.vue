@@ -154,10 +154,12 @@
                                 <th >Груз наимен</th>
                                 <th >Мн. станций отправки</th>
                                 <th >Расстояние</th>
+                                
                                 <th >Станция следующей погрузки</th>
                                 <th >Станции исключения назначения</th>
                                 <th >Страна</th>
                                 <th >Вагоны</th>
+                                <th> Оборот, руб/сут</th>
                                 <th >Ответственный</th>
                             </tr>
                             <template v-for="childr in att.attachments">
@@ -293,6 +295,7 @@
                                     <!-- Станции исключения следующей погрузки-->
                                     <td  style="padding: 0 5px;">{{ childr?.country_to_name }}</td> <!-- Страна-->
                                     <td  style="padding: 0 5px;">{{ childr?.wagons_list ? childr.wagons_list.join(",") : "" }}</td> <!-- Вагоны-->
+                                    <td  style="padding: 0 5px;">{{ childr?.turnover }}</td>
                                     <td  style="padding: 0 5px;">{{ childr.responsible_name }}</td>
                                 </tr>
                             </template>
