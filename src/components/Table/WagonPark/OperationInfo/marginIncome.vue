@@ -20,7 +20,7 @@
         </table>
         <div class="Container Flipped" ref="tableContainer">
             <div class="Content" ref="scrollTableContent">
-                <table ref="theTable">
+                <table ref="theTable" >
                     <thead>
                         <tr class="TableHeader">
                             <th rowspan="2">Клиент</th>
@@ -74,6 +74,43 @@
                             <th>+/- БП(со штр)</th>
                             <th>+/- Б(со штр)</th>
 
+                        </tr>
+                        <tr class="RowAlphabet">
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                            <td>6</td>
+                            <td>7</td>
+                            <td>8</td>
+                            <td>9</td>
+                            <td>10</td>
+                            <td>11</td>
+                            <td>12</td>
+                            <td>13</td>
+                            <td>14</td>
+                            <td>15</td>
+                            <td>16</td>
+                            <td>17</td>
+                            <td>18</td>
+                            <td>19</td>
+                            <td>20</td>
+                            <td>21</td>
+                            <td>22</td>
+                            <td>23</td>
+                            <td>24</td>
+                            <td>25</td>
+                            <td>26</td>
+                            <td>27</td>
+                            <td>28</td>
+                            <td>29</td>
+                            <td>30</td>
+                            <td>31</td>
+                            <td>32</td>
+                            <td>33</td>
+                            <td>34</td>
+                            <td>35</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -332,8 +369,43 @@
                                 </tr>
                             </template>
 
+                          
                         </template>
-
+                        <tr>
+                                <td colspan="4">Общий итог</td>
+                                <!-- <td>{{itogoDataResult}}</td> -->
+                                <td>{{ }}</td>
+                                  <td>{{ }}</td>
+                                  <td>{{ itogoDataResult.el6 | format}}</td>
+                                  <td>{{ itogoDataResult.el7 | format}}</td>
+                                 <td>{{ itogoDataResult.el8 | format}}</td>
+                                  <td>{{ }}</td>
+                                  <td>{{ }}</td>
+                                 <td>{{ itogoDataResult.el11 | format}}</td>
+                                 <td>{{ itogoDataResult.el12 | format}}</td>
+                                 <td>{{ itogoDataResult.el13 | format}}</td>
+                                  <td>{{ itogoDataResult.el14 | format}}</td>
+                                  <td>{{ }}</td>
+                                 <td>{{ }}</td>
+                                 <td>{{ itogoDataResult.el17 | format}}</td>
+                                 <td>{{ itogoDataResult.el18 | format}}</td>
+                                 <td>{{ itogoDataResult.el19 | format}}</td>
+                                 <td>{{ itogoDataResult.el20 | format}}</td>
+                                 <td>{{ itogoDataResult.el21 | format}}</td>
+                                 <td>{{ itogoDataResult.el22 | format}}</td>
+                                 <td>{{ itogoDataResult.el23 | format}}</td>
+                                 <td>{{ itogoDataResult.el24 | format}} </td>
+                                 <td>{{ }}</td>
+                                 <td>{{ }}</td>
+                                 <td>{{ itogoDataResult.el27 | format}} </td> <!-- среднее -->
+                                 <td>{{ itogoDataResult.el28 | format}}</td>
+                                 <td>{{ itogoDataResult.el29 | format}}</td>
+                                 <td>{{ itogoDataResult.el30 | format}} </td> <!-- среднее -->
+                                 <td>{{ itogoDataResult.el31 | format}}  </td> <!-- среднее -->
+                                 <td>{{ itogoDataResult.el32 | format}}  </td> <!-- среднее -->
+                                 <td>{{ }}</td>
+                                 <td>{{ }}</td>
+                            </tr>
                     </tbody>
                 </table>
             </div>
@@ -359,11 +431,32 @@ export default {
             data123: cp_work_names.cp_work_names.margin_incomes,
             memo: {},
             exampleObject: "",
-            icon_type: "plus-square"
+            icon_type: "plus-square",
+            itogoDataResult: {},
 
         }
     },
     computed: {
+        // calculateGrandTotalForField(){
+        //     let allEle
+        //     return 1
+        //     // const keys = Object.keys(this.businessPlanData[0]);
+        //     // console.log(keys, 'keys')
+        //     // let totals = {}
+        //     // keys.forEach(key => {
+        //     //     totals[key] = 0
+        //     // })
+        //     // this.businessPlanData.forEach(item => {
+        //     //     if(item.client.includes('Итого')){
+        //     //         return
+        //     //     }
+        //     //     keys.forEach(key => {
+        //     //         totals[key] += item[key] || 0
+        //     //     })
+        //     // })
+        //     // console.log(totals)
+        //     // return totals
+        // },
         filteredBusinessPlanData() {
             const result = [];
             for (let i = 0; i < this.businessPlanData.length; i++) {
@@ -376,7 +469,7 @@ export default {
         },
     },
     mounted() {
-
+        // this.getItogoRows()
     },
     filters: {
         format(value) {
@@ -394,7 +487,15 @@ export default {
         },
     },
     watch: {
-
+        businessPlanData: {
+      handler() {
+        this.$nextTick(() => {
+          this.getItogoRows();
+        });
+      },
+      deep: true,
+      immediate: true
+    },
 
         margin_income_data: {
             handler(newVal, oldVal) {
@@ -406,6 +507,69 @@ export default {
         }
     },
     methods: {
+        getItogoRows() {
+    const table = this.$refs.theTable;
+    if (!table) return;
+
+    // Фильтруем строки, которые содержат "Итого по"
+    const rows = table.querySelectorAll('tr');
+    const itogoRows = Array.from(rows).filter(row => {
+      const firstCell = row.querySelector('td');
+      return firstCell && firstCell.textContent.includes('Итого по');
+    });
+
+    // Массив для хранения данных строк "Итого по"
+    const itogoData = itogoRows.map(row => {
+      const cells = row.querySelectorAll('td');
+
+      // Создаем объект для каждой строки
+      const data = {};
+      cells.forEach((cell, index) => {
+        if (index > 0) { // Пропускаем первый элемент
+          const cleanValue = cell.textContent.replace(/\s/g, ''); // Удаление пробелов
+          data['el' + index] = Number(cleanValue) || 0; // Преобразование к числу
+        } else {
+          data['el' + index] = cell.textContent; // Первый элемент сохраняем как есть
+        }
+      });
+
+      return data;
+    });
+
+    // Создаем итоговый объект с суммами
+    const result = itogoData.reduce((acc, obj) => {
+      Object.keys(obj).forEach(key => {
+        if (key !== 'el0') { // Пропускаем первый элемент
+          acc[key] = acc[key] || { sum: 0, count: 0 };
+
+          if (obj[key] !== 0) {
+            acc[key].sum += obj[key];
+            acc[key].count += 1;
+          }
+        } else {
+          acc[key] = obj[key]; // Сохраняем первый элемент как есть
+        }
+      });
+      return acc;
+    }, {});
+
+    // Преобразование сумм в среднее для нужных полей
+    ['el27', 'el30', 'el31', 'el32', 'el33'].forEach(key => {
+      if (result[key]) {
+        result[key] = result[key].count ? (result[key].sum / result[key].count) : 0;
+      }
+    });
+
+    // Преобразование остальных сумм в конечные значения
+    Object.keys(result).forEach(key => {
+      if (!['el27', 'el30', 'el31', 'el32', 'el33'].includes(key) && typeof result[key] === 'object') {
+        result[key] = result[key].sum;
+      }
+    });
+
+    console.log(result, 'Итоговый объект');
+    this.itogoDataResult = result; // Сохраняем результат
+  },
         async getFines() {
             let response = await api.getAllFines()
             console.log(response)

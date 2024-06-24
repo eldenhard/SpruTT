@@ -191,12 +191,9 @@
             <td>{{ item.revenue_current_plan | format }}</td> 
             <!-- <td>{{ item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) | format }}</td>  -->
             <td>{{ item.revenue_current_fact | format }}  </td> 
-            <td>{{item.revenue_current_plan / item.revenue_current_fact *100 || 0 | format }} %</td>
-            <td>{{ item.revenue_current_fact / item.revenue_current_plan * 100 || 0 | format }} %</td>
-            <td>
-                {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8))) * 100 | format }}
-                %
-            </td> 
+            <td>{{item.revenue_current_fact / item.revenue_current_plan *100 || 0 | format }} %</td> 
+            <td>{{ item.revenue_current_fact / item.revenue_wo_nds_bp * 100 || 0 | format }} %</td>
+            <td>{{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8))) * 100 | format }}%</td> 
             <td>{{ item.revenue_current_fact / item.revenue_wo_nds * 100 || 0 |  format }} %</td>
                                             </tr>
                                             <!-- прочие -->
@@ -249,10 +246,10 @@
                                             <!-- <td>{{ totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) || 0 | format }}</td> -->
                                             <td>{{ totalRevenueCurrentFact | format }}</td>
                                               <!-- <td>{{ totalRevenueCurrentFact  | format }}</td> -->
-                                              <td>{{ totalRevenueCurrentPlan /  totalRevenueCurrentFact * 100 || 0 | format }} %</td>
-                                            <td>{{ totalRevenueCurrentFact / totalRevenueCurrentPlan * 100 || 0 | format }} %</td>
+                                            <td>{{ totalRevenueCurrentFact /totalRevenueCurrentPlan  * 100 || 0 | format }} %</td>
+                                            <td>{{ totalRevenueCurrentFact / totalMetricRevenue_wo_nds_bp * 100 || 0 | format }} %</td>
                                             <td>{{ totalRevenueCurrentFact / totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) * 100 || 0 | format }} %</td>
-                                          <td>{{totalRevenueCurrentFact / totalRevenueWithoutNDS * 100 || 0 | format }} %</td>
+                                            <td>{{totalRevenueCurrentFact / totalRevenueWithoutNDS * 100 || 0 | format }} %</td>
                                             </tr>
                                             </template>
                                         </tbody>
