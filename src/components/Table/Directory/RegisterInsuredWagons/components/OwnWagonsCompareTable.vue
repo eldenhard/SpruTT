@@ -7,20 +7,21 @@
                 <hot-table ref="hotTableComponent1" :data="getOwnWagonsCompareData" :rowHeaders="true"
                     :columns="columns" :manualRowMove="true" :manualColumnMove="true" :preventOverflow="'horizontal'"
                     :filters="true" :language="'ru-RU'" :manualColumnResize="true" :height="'40vh'" :width="'100%'"
-                    :fillHandle="false" :dropdownMenu="true" @afterSelection="handleSelection">
+                    :fillHandle="false" :dropdownMenu="dropdownMenuOptions" @afterSelection="handleSelection">
                 </hot-table>
             </div>
             <div class="table-container">
                 <hot-table ref="hotTableComponent2" :data="insuredWagonsData" :rowHeaders="true"
                     :columns="columns_table_copy" :manualRowMove="true" :manualColumnMove="true"
                     :preventOverflow="'horizontal'" :filters="true" :language="'ru-RU'" :manualColumnResize="true"
-                    :height="'40vh'" :width="'100%'" :fillHandle="true" :dropdownMenu="true" @afterPaste="handlePaste"
+                    :height="'40vh'" :width="'100%'" :fillHandle="true" :dropdownMenu="dropdownMenuOptions" @afterPaste="handlePaste"
                     :contextMenu="contextMenuOptions">
                 </hot-table>
             </div>
         </div>
         <br>
-        <button class="Accept button" disabled style="width: 30%; margin-left: auto;" @click="saveData()">Сохранить данные</button>
+        <button class="Accept button" style="width: 30%; margin-left: auto;" @click="saveData()">Сохранить
+            данные</button>
     </div>
 </template>
 <script>
@@ -29,7 +30,7 @@
 import { HotTable } from '@handsontable/vue';
 import { registerAllModules } from 'handsontable/registry';
 import { registerLanguageDictionary, getLanguagesDictionaries, ruRU } from 'handsontable/i18n';
-
+import api from "@/api/directory";
 registerLanguageDictionary(ruRU);
 registerAllModules();
 import 'handsontable/dist/handsontable.full.css';
@@ -38,7 +39,7 @@ export default {
     components: {
         HotTable,
     },
-    props: ['getOwnWagonsCompareData', 'columns', 'columns_table_copy'],
+    props: ['getOwnWagonsCompareData', 'columns', 'columns_table_copy', 'dropdownMenuOptions'],
     data() {
         return {
             insuredWagonsData: [
@@ -59,9 +60,9 @@ export default {
         getOwnWagonsCompareData: {
             handler(newData) {
                 this.updateTableData('hotTableComponent1', newData);
-               document.querySelectorAll('.hot-display-license-info').forEach(element => {
-    element.style.display = 'none';
-});
+                document.querySelectorAll('.hot-display-license-info').forEach(element => {
+                    element.style.display = 'none';
+                });
 
             },
             deep: true,
@@ -69,48 +70,61 @@ export default {
         insuredWagonsData: {
             handler(newData) {
                 this.updateTableData('hotTableComponent2', newData);
-               document.querySelectorAll('.hot-display-license-info').forEach(element => {
-    element.style.display = 'none';
-});
+                document.querySelectorAll('.hot-display-license-info').forEach(element => {
+                    element.style.display = 'none';
+                });
 
             },
             deep: true,
         },
     },
     created() {
-       document.querySelectorAll('.hot-display-license-info').forEach(element => {
-    element.style.display = 'none';
-});
+        document.querySelectorAll('.hot-display-license-info').forEach(element => {
+            element.style.display = 'none';
+        });
 
 
     },
     mounted() {
         this.updateTableData('hotTableComponent1', this.getOwnWagonsCompareData);
         this.updateTableData('hotTableComponent2', this.insuredWagonsData);
-       document.querySelectorAll('.hot-display-license-info').forEach(element => {
-    element.style.display = 'none';
-});
+        document.querySelectorAll('.hot-display-license-info').forEach(element => {
+            element.style.display = 'none';
+        });
 
     },
-   
+
     methods: {
-        saveData(){
-            console.log(this.insuredWagonsData)
+        async saveData() {
+            this.$emit('startStopLoader', true)
+            try{
+                let response = await api.sendNewDataInsuranceWagons(this.insuredWagonsData)
+                this.$emit('startStopLoader', false)
+                this.$toast.success('Данные сохранены', {
+                    timeout: 3000
+                })
+            } catch (err) {
+                console.log(err)
+                this.$emit('startStopLoader', false)
+                this.$toast.error('Данные не сохранены', {
+                    timeout: 3000
+                })
+            }
         },
         updateTableData(componentRef, newData) {
             this.$nextTick(() => {
-               document.querySelectorAll('.hot-display-license-info').forEach(element => {
-    element.style.display = 'none';
-});
+                document.querySelectorAll('.hot-display-license-info').forEach(element => {
+                    element.style.display = 'none';
+                });
 
                 const hotInstance = this.$refs[componentRef]?.hotInstance;
                 if (hotInstance) {
                     hotInstance.loadData(newData);
                     hotInstance.updateSettings({ data: newData });
                     hotInstance.render();
-                   document.querySelectorAll('.hot-display-license-info').forEach(element => {
-    element.style.display = 'none';
-});
+                    document.querySelectorAll('.hot-display-license-info').forEach(element => {
+                        element.style.display = 'none';
+                    });
 
                 }
             });
@@ -139,8 +153,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .air_block_header {
     padding: 1% 0 0 2%;
     color: #cacaca;

@@ -25,12 +25,13 @@
                 <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true" :columns="columns"
                     :preventOverflow="'horizontal'" :filters="true" :language="'ru-RU'" :manualColumnResize="true"
                     :autoWrapRow="true" :autoWrapCol="true" :height="'40vh'" :width="'100%'" :fillHandle="false"
-                    :dropdownMenu="true">
+                    :dropdownMenu="dropdownMenuOptions">
                 </hot-table>
                 <br>
 
                 <OwnWagonsCompareTable :getOwnWagonsCompareData="getOwnWagonsCompareData" :columns="columns_own_wagons" :columns_table_copy="columns"
-                  />
+                @startStopLoader="startStopLoader" :dropdownMenuOptions="dropdownMenuOptions"/>
+                  
             </div>
         </div>
     </div>
@@ -61,12 +62,15 @@ export default {
             loader: false,
             columns: [
                 { title: 'Номер вагона', data: 'wagon_number' },
-                { title: 'Тип вагона', data: 'wagon_type' },
+                { title: 'Тип вагона', data: 'wagon_type', editor: 'select', selectOptions: ['ПВ', 'ЦС'] },
                 { title: 'Собст. на момент страхования', data: 'owner_at_insurance_moment' },
                 { title: 'Страховая компания', data: 'insurance_company', },
                 { title: '№ договора', data: 'agr_number', },
                 { title: 'Дата договора', data: 'agr_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
             ],
+            dropdownMenuOptions: ['clear_column','filter_by_condition', 'filter_by_value'],
+                
+            
             columns_own_wagons: [
             { title: 'Номер вагона', data: 'Номер вагона' },
             ],
@@ -78,6 +82,9 @@ export default {
         document.querySelector('.hot-display-license-info').style = 'display: none !important';
     },
     methods: {
+        startStopLoader(value){
+            this.loader = value
+        },
         addNewObjectInColumns(data) {
             this.$nextTick(() => {
                 const hotInstance = this.$refs.hotTableComponent.hotInstance;

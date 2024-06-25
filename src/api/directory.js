@@ -212,7 +212,9 @@ const deleteActs = (id, data) => {
 const getAllInsuranceWagons = (data) => {
     return api.post(`${finance}/insurance-wagons/filter/`, data)
 }
-
+const sendNewDataInsuranceWagons = (data) => {
+    return api.post(`${finance}/insurance-wagons/save-many/`, data)
+}
 const getOwnWagonsCompare = (today) => {
    return api.get(`${finance}/own-wagons-compare/?on_date=${today}&belong_source=stg`)
 }
@@ -376,6 +378,7 @@ export default {
     getAllFines,
     createManyFines,
     getAllInsuranceWagons,
+    sendNewDataInsuranceWagons,
     getOwnWagonsCompare,
     createOpepativnayaSpravka,
     getAllDocumentsByCounterparty,
