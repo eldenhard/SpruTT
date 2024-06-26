@@ -31,7 +31,7 @@
             <br>
             Требования: <br>
             <ol>
-                <li>Станция или дорога отправления/назначения всегда должны быть первыми</li>
+                <li><b>Станция или дорога отправления/назначения всегда должны быть первыми</b></li>
                 <li>Воспрещается ставить их в середину таблицы или конец !</li>
             </ol>
             </p>
@@ -422,7 +422,7 @@
                                 <b-dropdown-item @click="addField('Вагоны')">Вагоны</b-dropdown-item>
 
                                 <b-dropdown-item @click="addField('Ставка НДС')">Ставка НДС</b-dropdown-item>
-                                <!-- <b-dropdown-item @click="addField('Тип отправки')">Тип отправки</b-dropdown-item> -->
+                                <b-dropdown-item @click="addField('Тип отправки')">Тип отправки</b-dropdown-item>
 
                                 <!-- <b-dropdown id="dropdown-2" text="Тип отправки" class="m-md-2" dropright style="width: 85%">
                                     <b-dropdown-item @click="addField('Вагонная')">Вагонная</b-dropdown-item>
@@ -957,6 +957,10 @@ export default {
                             key = 'nds'
                             value = Number(value)
                         }
+                        else if (key === 'Тип отправки') {
+                            key = 'shipment_type'
+                            value = String(value)
+                        }
                         else if (key === 'Cтавка НДС') {
                             key = 'stavka_nds'
                             value = Number(value)
@@ -1155,6 +1159,35 @@ export default {
                             console.error(`Ошибка при обработке груза "${item.cargos_list}" на индексе ${index}`, error);
                         }
                     }
+                }
+                if(item.shipment_type){
+                    let type_by_db = [
+                        {wagon: "ВО"},
+                        {group_3_5: "ГР 3-5"},
+                        {group_6_20: "ГР 6-20"},
+                        {group_2: "ГР 2"},
+                        {group_gt_20: "ГР > 20"},
+                        {msho: "МШО"},
+                    ];
+                    try{
+                        let normalizedShipmentType = item.shipment_type.replace(/\s+/g, '').toLowerCase();
+                        newItem.shipment_type = type_by_db.filter((type) => {
+                            let key = Object.keys(type)[0];
+                            let value = type[key];
+    
+                            let normalizedValue = value.replace(/\s+/g, '').toLowerCase();
+                            return normalizedShipmentType === normalizedValue;
+                        }).map(type => Object.keys(type)[0])[0]
+                         if(!newItem.shipment_type){
+                            this.$toast.error(`Не удалось обработать тип отправки "${item.shipment_type}" на строке ${index}`, {timeout: 4000});
+                            // throw new Error(`Не удалось обработать тип отправки "${item.shipment_type}" на строке ${index}`);
+                            return
+                           
+                         }
+                    } catch (error){
+                        console.error(`Ошибка при обработке статьи "${item.wagons}" на строке ${index+1}`, error);
+                    }
+
                 }
                 if (item.wagons) {
                     newItem.wagons = []; // Инициализируем массив для исключений следующей погрузки
