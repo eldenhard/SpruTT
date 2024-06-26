@@ -160,6 +160,7 @@
                                 <th >Страна</th>
                                 <th >Вагоны</th>
                                 <th> Оборот, руб/сут</th>
+                                <th> Тип отправки</th>
                                 <th >Ответственный</th>
                             </tr>
                             <template v-for="childr in att.attachments">
@@ -296,6 +297,7 @@
                                     <td  style="padding: 0 5px;">{{ childr?.country_to_name }}</td> <!-- Страна-->
                                     <td  style="padding: 0 5px;">{{ childr?.wagons_list ? childr.wagons_list.join(",") : "" }}</td> <!-- Вагоны-->
                                     <td  style="padding: 0 5px;">{{ childr?.turnover }}</td>
+                                    <td  style="padding: 0 5px;">{{ isType(childr?.shipment_type) }}</td>
                                     <td  style="padding: 0 5px;">{{ childr.responsible_name }}</td>
                                 </tr>
                             </template>
@@ -396,6 +398,22 @@ export default {
         },
     },
     methods: {
+        isType(val){
+            let type_by_db = [
+                        {wagon: "ВО"},
+                        {group_3_5: "ГР 3-5"},
+                        {group_6_20: "ГР 6-20"},
+                        {group_2: "ГР 2"},
+                        {group_gt_20: "ГР > 20"},
+                        {msho: "МШО"},
+                    ];
+       for(let type of type_by_db){
+           if(type.hasOwnProperty(val)){
+               return type[val]
+           }
+           return null
+       }
+        },
         translateCountry(id) {
             if(this.countryRoad.length > 10){
                 return id
