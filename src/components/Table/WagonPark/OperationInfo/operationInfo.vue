@@ -511,6 +511,8 @@
                         <b-tab title="Графики">
                             <b-card-text>
                                 <chartOperationInfoVue 
+                              
+                                :wagon_type="wag_type"
                                 :column_chart_data_BP="totalVolumeBP"
                                 :column_chart_data_B="totalMetric"
                                 :column_chart_data_plan="totalMetricCurrentPlan"
@@ -727,14 +729,12 @@ export default {
 
             // Создаем новый объект Date с первым днем следующего месяца и днем 0 текущего месяца
             const lastDayOfMonth = new Date(year, month, 0);
-            console.log(lastDayOfMonth.getDate())
             // Получаем день месяца (количество дней в месяце)
           return lastDayOfMonth.getDate();
 
         },
         filteredReportData() {
             if (this.selectedOptions.length == 0) {
-                console.log(this.selectedOptions.report, 'report')
                 return this.responseServerData.report?.sort((a,b) => a.client > b.client ? 1 : -1)
             } else {
                 let array_val = this.selectedOptions.map(item => item.value)
@@ -770,16 +770,27 @@ export default {
     if (this.responseServerData.report && this.responseServerData.report.length > 0) {
         return this.filteredReportData.reduce((sum, item) => {
             // Проверяем, есть ли значение volume_bp и не пустое ли оно
-            if (item.volume_bp !== undefined && item.volume_bp !== "") {
-                // Преобразуем значение в число, если оно не пустое
-                const volume = parseFloat(item.volume_bp);
+            if(this.wag_type == 'Полувагон'){
+                if (item.metric !== undefined && item.metric !== "") {
+                    // Преобразуем значение в число, если оно не пустое
+                const volume = parseFloat(item.metric);
                 // Проверяем, является ли volume числом
                 if (!isNaN(volume)) {
                     // Если все в порядке, добавляем его к сумме
                     return sum + volume;
                 }
+                }
+            } else {
+                if (item.volume_bp !== undefined && item.volume_bp !== "") {
+                    // Преобразуем значение в число, если оно не пустое
+                    const volume = parseFloat(item.volume_bp);
+                    // Проверяем, является ли volume числом
+                    if (!isNaN(volume)) {
+                        // Если все в порядке, добавляем его к сумме
+                        return sum + volume;
+                    }
+                }
             }
-            console.log(sum, 'totalVolumeBP')
             // Возвращаем текущую сумму без изменений, если volume_bp не существует или пусто
             return sum;
         }, 0);
@@ -800,7 +811,6 @@ totalLoadingsAmount() {
                     return sum + volume;
                 }
             }
-            console.log(sum, 'loading_amount')
             // Возвращаем текущую сумму без изменений, если volume_bp не существует или пусто
             return sum;
         }, 0);
@@ -922,9 +932,7 @@ totalLoadingsAmount() {
         },
     },
     watch: {
-        date_begin_create() {
-            console.log(this.date_begin_create)  
-        },
+
         wag_type() {
             this.responseServerData = ""
         },
@@ -994,7 +1002,6 @@ totalLoadingsAmount() {
                     data[i] = subArray.slice(0, Object.keys(this.createNewProfitability).length);
                 }
             }
-            console.log(data);
             this.tableData = data;
 
             // КОНЕЦ РАБОЧЕГО КОДА
@@ -1004,6 +1011,8 @@ totalLoadingsAmount() {
 
         Actioned() {
             try {
+              
+             
                 this.responseServerData = ""
                 let data = this.currentClients.map((item) => {
                     return { client: item.client }
@@ -1018,7 +1027,6 @@ totalLoadingsAmount() {
                     year: Number(dateBeginChange.slice(0,4)),
                     wagon_type: this.wag_type
                 }
-                console.log(dateBeginChange)
                 Promise.all([
                 api.getDataForOperSpravka(queryString),
                 api.getDataForOperSpravkaOtherClients(queryString),
@@ -1056,15 +1064,14 @@ totalLoadingsAmount() {
                             });
                         });
 
-                        console.log(this.responseServerData.report);
                         const clients = this.responseServerData.report.map(item => item.client)
-                        this.responseServerData
                         this.allClientsInTable = clients.reduce((acc, client) => {
                             if (!acc.find(item => item.value === client)) {
                                 acc.push({ value: client, label: client })
                             }
                             return acc
                         }, []).sort((a, b) => a.value.localeCompare(b.value))
+                      
                         this.$toast.info(`Успешно\nДанные для Оперативной справки получены\nПродолжается загрузка данных для Маржинальной доходности`, {
                             timeout: 8500
                         })
