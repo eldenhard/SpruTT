@@ -179,7 +179,7 @@
                                 </td>
                                 <td>{{ item.md_wo_penalties ?? 0 | format }}</td>
                                 <td>{{ item.md_wo_penalties_budget ?? 0 | format }}</td>
-                                <td>{{ item.total_md_wo_penalties_fact / item.total_vagonosutki || calculateTotalVolume(item.station_group, 'margin_income') | format }}</td>
+                                <td>{{ item.total_md_wo_penalties_fact || calculateTotalVolume(item.station_group, 'margin_income') | format }}</td>
                                 <!-- Отклонение -->
                                 <td>{{
                                     item.client.includes('Итого') ? item.total_md_wo_penalties_fact -
@@ -238,9 +238,9 @@
 
                                 </td>
                                 <td v-else>
-                                    {{ item.total_vagonosutki == 0 ? 0 : item.total_md_wo_penalties_fact /
-                                    item.total_vagonosutki | format}}
-
+                                    <!-- {{ item.total_vagonosutki == 0 ? 0 : item.total_md_wo_penalties_fact /
+                                    item.total_vagonosutki | format}} -->
+                                {{ (item.total_md_wo_penalties_fact) / item.total_vagonosutki | format }}
                                 </td>
                                 <!-- План (со штр) БП	 -->
                                 <td>{{ item.income_w_penalties | format }} </td>
@@ -256,7 +256,7 @@
 
                                 </td>
                                 <td v-else>
-                                    {{ ((item.total_md_wo_penalties_fact / item.total_vagonosutki) + item.total) / item.total_vagonosutki | format }}
+                                    {{ (item.total_md_wo_penalties_fact + item.total) / item.total_vagonosutki | format }}
 
                                 </td>
 
