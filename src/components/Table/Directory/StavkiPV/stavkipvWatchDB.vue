@@ -398,22 +398,24 @@ export default {
         },
     },
     methods: {
-        isType(val){
+
+        isType(val) {
             let type_by_db = [
-                        {wagon: "ВО"},
-                        {group_3_5: "ГР 3-5"},
-                        {group_6_20: "ГР 6-20"},
-                        {group_2: "ГР 2"},
-                        {group_gt_20: "ГР > 20"},
-                        {msho: "МШО"},
-                    ];
-       for(let type of type_by_db){
-           if(type.hasOwnProperty(val)){
-               return type[val]
-           }
-           return null
-       }
-        },
+                {wagon: "ВО"},
+                {group_3_5: "ГР 3-5"},
+                {group_6_20: "ГР 6-20"},
+                {group_2: "ГР 2"},
+                {group_gt_20: "ГР > 20"},
+                {msho: "МШО"},
+            ];
+
+            for (let type of type_by_db) {
+                if (val in type) {
+                return type[val];
+                }
+            }
+            return null;
+            },
         translateCountry(id) {
             if(this.countryRoad.length > 10){
                 return id
