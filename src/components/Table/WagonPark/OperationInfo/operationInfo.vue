@@ -162,11 +162,12 @@
                                        <td>{{ totalMetricRevenue_wo_nds_bp | format}}</td>
                                                 <td>{{ totalRevenueWithoutNDS | format }}</td>
                                              <!-- <td>{{ totalRevenueCurrentPlan | format }}</td> -->
-                                              <td></td>
+                                              <td>{{ totalMetricRevenue_wo_nds_bp | format }}</td>
                                             <td>{{ totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) || 0 | format }}</td>
                                               <td>{{ totalRevenueCurrentFact  | format }}</td>
                                                 <!-- <td>{{ totalRevenueCurrentFact / totalRevenueCurrentPlan * 100 || 0 | format }} %</td> -->
-                                                 <td></td>
+                                            <td>{{ totalRevenueCurrentFact / (totalMetricRevenue_wo_nds_bp / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8))) * 100 || 0 | format }} % </td>
+                                            
                                             <td>{{ totalRevenueCurrentFact / totalRevenueWithoutNDS / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8)) * 100 || 0 | format }} %</td>
                                           <td>{{totalRevenueCurrentFact / totalRevenueWithoutNDS * 100 || 0 | format }} %</td>
                                             </tr>
