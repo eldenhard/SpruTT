@@ -143,8 +143,10 @@
                                 <td>{{ item.destination }}</td>
                                 <td>{{ item.volume | format }}</td>
                                 <td>{{ item.volume_budget | format }}</td>
-                                <td>{{ item.total_volume_fact || calculateTotalVolume(item.station_group, 'weight') |
+                                <!-- item.total_volume_fact || -->
+                                <td v-if="!item.client.includes('Итого')">{{ calculateTotalVolume(item.station_group, 'weight') |
                                     format }}</td>
+                                    <td v-else>{{ item.weight_by_VLAD | format}}</td>
                                 <td>{{ item.client.includes('Итого') ? item.total_volume_fact - item.volume :
                                     (isNaN(calculateTotalVolume(item.station_group, 'weight') - item.volume) ? 0 :
                                         calculateTotalVolume(item.station_group, 'weight') - item.volume) | format }}</td>
@@ -156,8 +158,10 @@
                                 </td>
                                 <td>{{ item.revenue_wo_nds ?? 0 | format }}</td>
                                 <td>{{ item.revenue_wo_nds_budget ?? 0 | format }}</td>
-                                <td>{{ item.total_revenue_fact || calculateTotalVolume(item.station_group, 'revenue') |
+                                <!-- item.total_revenue_fact || -->
+                                <td v-if="!item.client.includes('Итого')">{{  calculateTotalVolume(item.station_group, 'revenue') |
                                     format }}</td>
+                                <td v-else>{{ item.revenue_by_VLAD | format}}</td>
                                 <!-- Отклонение -->
                                 <td>
                                     {{ item.client.includes('Итого') ?
@@ -1553,9 +1557,12 @@ this.businessPlanData.forEach(item => {
                         }
                     }
         this.businessPlanData.forEach((item) => {
+            
             if(item.client.includes('Итого по')){
                 item.margin_income_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.margin_income
                 item.revenue_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.revenue
+                item.weight_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.weight
+
             }
         })
 
