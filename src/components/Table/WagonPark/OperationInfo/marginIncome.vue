@@ -156,12 +156,14 @@
                                         (calculateTotalVolume(item.station_group, 'weight') - item.volume_budget) | format
                                     }}
                                 </td>
-                                <td>{{ item.revenue_wo_nds ?? 0 | format }}</td>
+                                
+                                <td>{{ item.revenue_wo_nds ?? 0 | format }} </td>
                                 <td>{{ item.revenue_wo_nds_budget ?? 0 | format }}</td>
                                 <!-- item.total_revenue_fact || -->
                                 <td v-if="!item.client.includes('Итого')">{{  calculateTotalVolume(item.station_group, 'revenue') |
                                     format }}</td>
                                 <td v-else>{{ item.revenue_by_VLAD | format}}</td>
+                                
                                 <!-- Отклонение -->
                                 <td>
                                     {{ item.client.includes('Итого') ?
@@ -184,7 +186,7 @@
                                 <td>{{ item.md_wo_penalties ?? 0 | format }}</td>
                                 <td>{{ item.md_wo_penalties_budget ?? 0 | format }}</td>
                                 <td v-if="!item.client.includes('Итого')">{{calculateTotalVolume(item.station_group, 'margin_income') | format }}</td>
-                                <td>{{ item.margin_income_by_VLAD | format }}</td>
+                                <td v-else>{{ item.margin_income_by_VLAD | format }}</td>
                                 <!-- Отклонение -->
                                 <td>{{
                                     item.client.includes('Итого') ? item.total_md_wo_penalties_fact -
@@ -192,7 +194,7 @@
                                         (calculateTotalVolume(item.station_group, 'margin_income') - item.md_wo_penalties)
                                         ?? 0 |
                                         format
-                                }}
+                                }}   
                                 </td>
                                 <td>
                                     {{ item.client.includes('Итого') ?
@@ -203,8 +205,11 @@
                                         | format
                                     }}
                                 </td>
+                               
+                                <!-- <td></td> -->
                                 <!-- Стат нагрузка ПЛАН -->
                                 <td>
+                                    
                                     <!-- {{calculateTotalVolume(item.station_group, 'aid') == 0 
         ? 0 : 
      calculateTotalVolume(item.station_group, 'volume_budget') / calculateTotalVolume(item.station_group, 'aid') | format }} -->
@@ -238,15 +243,16 @@
                                 <!-- Факт(без штр) -->
                                 <td v-if="!item.client.includes('Итого')">{{ 
                                 calculateTotalVolume(item.station_group,'vagonosutki_total') == 0 ? 0 :
-                                   item.margin_income_by_VLAD /
-                                    calculateTotalVolume(item.station_group, 'vagonosutki_total') | format }}
+                                calculateTotalVolume(item.station_group, 'margin_income') /
+                                calculateTotalVolume(item.station_group, 'vagonosutki_total') | format }}
 
                                 </td>
                                 <td v-else>
                                     <!-- {{ item.total_vagonosutki == 0 ? 0 : item.total_md_wo_penalties_fact /
                                     item.total_vagonosutki | format}} -->
-                                {{ (item.total_md_wo_penalties_fact) / item.total_vagonosutki | format }}
+                                {{ (item.margin_income_by_VLAD) / item.vagonosutki_total_by_VLAD | format }}
                                 </td>
+                          
                                 <!-- План (со штр) БП	 -->
                                 <td>{{ item.income_w_penalties | format }} </td>
 
@@ -261,7 +267,7 @@
 
                                 </td>
                                 <td v-else>
-                                    {{ (item.margin_income_by_VLAD + item.total) / item.total_vagonosutki | format }}
+                                    {{ (item.margin_income_by_VLAD + item.total) / item.vagonosutki_total_by_VLAD | format }}
 
                                 </td>
 
@@ -1562,7 +1568,7 @@ this.businessPlanData.forEach(item => {
                 item.margin_income_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.margin_income
                 item.revenue_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.revenue
                 item.weight_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.weight
-
+                item.vagonosutki_total_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.vagonosutki_total
             }
         })
 
