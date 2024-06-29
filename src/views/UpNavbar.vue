@@ -1,5 +1,8 @@
 <template>
   <div v-show="visibleElement" style="z-index: 100;">
+    <!-- <div>
+      <button @click="cData()">Быстрая загрузка ПВ</button>
+    </div> -->
     <Modal_Notification :modal_notifications="modal_notifications" @close="close_modal" :data="data"/>
 
     <b-navbar toggleable="lg" type="light" style="background: #F8F9FA !important;" ref="navbar">
@@ -118,6 +121,18 @@ export default {
     }
   },
   methods: {
+    async cData(){
+      let arr = ['АО "УРАЛЬСКАЯ СТАЛЬ"','Алоран', 'Газпром Нефть, ПАО'	, 'ДЕЛОВЫЕ ПРОГРАММЫ, ООО','КТС, ООО', 'МТК, ООО','Мечел-Транс', 'НАЦИОНАЛЬНАЯ ТРАНСПОРТНАЯ КОМПАНИЯ, АО', 'НЕРУДНАЯ ЛОГИСТИЧЕСКАЯ КОМПАНИЯ, ООО','НОВАЯ ГОРНАЯ УК, ООО', 'ООО "Альфа-транс"', 'ПЕРВООСНОВА, АО', 'ППО','РУССКИЙ УГОЛЬ, АО','СДС-Уголь','СПО, ООО', 'ТАТНЕФТЬ-ТРАНС, ООО', 'ТК РУТ Логистик', 'ТЭК УЛЬТИМА, ООО','ТрансКом ТОО', 'УГПХ, ООО', 'Уголь-Транс',   'ЧЭМК, АО', 'ЭЛСИ ЛОГИСТИКА СИБИРЬ, ООО' 	]
+
+      let promises = arr.map(item => api.vigrData(item, '2024-03-31', 'Полувагон'))
+      Promise.all(promises)
+        .then((response) => {
+          console.log(response)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
     getTasks(){
       const preid = JSON.parse(localStorage.getItem("vuex"));
         const id = preid.auth.uid;

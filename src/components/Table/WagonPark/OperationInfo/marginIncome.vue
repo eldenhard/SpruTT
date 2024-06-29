@@ -179,7 +179,8 @@
                                 </td>
                                 <td>{{ item.md_wo_penalties ?? 0 | format }}</td>
                                 <td>{{ item.md_wo_penalties_budget ?? 0 | format }}</td>
-                                <td>{{ item.total_md_wo_penalties_fact || calculateTotalVolume(item.station_group, 'margin_income') | format }}</td>
+                                <td v-if="!item.client.includes('Итого')">{{calculateTotalVolume(item.station_group, 'margin_income') | format }}</td>
+                                <td>{{ item.margin_income_by_VLAD | format }}</td>
                                 <!-- Отклонение -->
                                 <td>{{
                                     item.client.includes('Итого') ? item.total_md_wo_penalties_fact -
@@ -233,7 +234,7 @@
                                 <!-- Факт(без штр) -->
                                 <td v-if="!item.client.includes('Итого')">{{ 
                                 calculateTotalVolume(item.station_group,'vagonosutki_total') == 0 ? 0 :
-                                    calculateTotalVolume(item.station_group, 'margin_income') /
+                                   item.margin_income_by_VLAD /
                                     calculateTotalVolume(item.station_group, 'vagonosutki_total') | format }}
 
                                 </td>
@@ -256,7 +257,7 @@
 
                                 </td>
                                 <td v-else>
-                                    {{ (item.total_md_wo_penalties_fact + item.total) / item.total_vagonosutki | format }}
+                                    {{ (item.margin_income_by_VLAD + item.total) / item.total_vagonosutki | format }}
 
                                 </td>
 
@@ -610,13 +611,13 @@ export default {
         },
 
         downloadExcel() {
-            var table = this.$refs.theTable;
-            var tableHTML = table.outerHTML;
-            var fileName = "Таблица 'Маржинальная доходность'.xls";
+            let table = this.$refs.theTable;
+            let tableHTML = table.outerHTML;
+            let fileName = "Таблица 'Маржинальная доходность'.xls";
 
-            // var msie = window.navigator.userAgent.indexOf("MSIE ");
+            // let msie = window.navigator.userAgent.indexOf("MSIE ");
 
-            var a = document.createElement("a");
+            let a = document.createElement("a");
             tableHTML = tableHTML.replace(/  /g, "").replace(/ /g, "%20");
             a.href = "data:application/vnd.ms-excel," + tableHTML;
             a.setAttribute("download", fileName);
@@ -1020,7 +1021,7 @@ export default {
                     // Получаем объект с суммами по клиентам
                     const anotherCargo = []
                     const handleStations = []
-
+                    console.log(preData, '123')
                     for (let item of preData) {
                         const client = item.client;
 
@@ -1397,79 +1398,6 @@ export default {
                             data_all_client.push(this.businessPlanData[i]);
                         }
                     }
-                    // Создаем объект для хранения итогов по клиентам
-                    // const clientTotals = {};
-                    // // Проходим по массиву this.businessPlanData и суммируем значения для каждого клиента
-                    // this.businessPlanData.forEach(item => {
-                    //     const client = item.client.includes("Прочие") ? item.client.replace("Прочие ", "") : item.client.replace("Итого по ", "");
-
-                    //     if (!clientTotals[client]) {
-                    //         clientTotals[client] = {
-                    //             total_volume_fact: 0,
-                    //             total_revenue_fact: 0,
-                    //             total_md_wo_penalties_fact: 0,
-                    //             revenue_wo_nds: 0,
-                    //             md_wo_penalties: 0,
-                    //             income_wo_penalties: 0,
-                    //             volume: 0,
-                    //             volume_budget: 0,
-                    //             revenue_wo_nds_budget: 0,
-                    //             md_wo_penalties_budget: 0,
-                    //             income_wo_penalties_budget: 0,
-                    //             total_vagonosutki: 0,
-                    //             total_oborot_fact: 0,
-                    //             total_stat_nagr_fact: 0,
-                    //             total: 0,
-                    //             plan_total: 0,
-                    //             income_wo_penalties_budget_count: 0, // подсчет нулевых значений для план без штрафа БП
-                    //             income_wo_penalties_bp_count: 0,
-
-                    //             // sumOborot(item.station_group) 
-                    //         };
-                    //     }
-
-                    //     clientTotals[client].total_volume_fact += this.calculateTotalVolume(item.station_group, 'weight') || 0;
-                    //     clientTotals[client].total_revenue_fact += this.calculateTotalVolume(item.station_group, 'revenue') || 0;
-                    //     clientTotals[client].total_md_wo_penalties_fact += this.calculateTotalVolume(item.station_group, 'margin_income') || 0;
-                    //     clientTotals[client].revenue_wo_nds += item.revenue_wo_nds || 0;
-                    //     clientTotals[client].md_wo_penalties += item.md_wo_penalties || 0;
-                    //     clientTotals[client].income_wo_penalties += item.income_wo_penalties || 0;
-                    //     clientTotals[client].volume += item.volume || 0
-                    //     clientTotals[client].volume_budget += item.volume_budget || 0;
-                    //     clientTotals[client].revenue_wo_nds_budget += item.revenue_wo_nds_budget || 0;
-                    //     clientTotals[client].md_wo_penalties_budget += item.md_wo_penalties_budget || 0;
-                    //     clientTotals[client].income_wo_penalties_budget += item.income_wo_penalties_budget  || 0;
-                    //     clientTotals[client].total_vagonosutki += this.calculateTotalVolume(item.station_group, 'vagonosutki_total') || 0;
-                    //     clientTotals[client].total_oborot_fact += this.sumOborot(item.station_group) || 0;
-                    //     clientTotals[client].total_stat_nagr_fact += this.sumStatNagruzka(item.station_group) || 0;
-                    //     clientTotals[client].total = item.total || 0;
-                    //     clientTotals[client].plan_total = item.plan_total || 0;
-                    // });
-
-                    // // Проходим по массиву this.businessPlanData снова и обновляем значения для записей "Итого"
-                    // this.businessPlanData.forEach(item => {
-                    //     if (item.client.includes("Итого по ")) {
-                    //         const client = item.client.replace("Итого по ", "");
-                    //         if (clientTotals[client]) {
-                    //             item.total_volume_fact = clientTotals[client].total_volume_fact;
-                    //             item.total_revenue_fact = clientTotals[client].total_revenue_fact;
-                    //             item.total_md_wo_penalties_fact = clientTotals[client].total_md_wo_penalties_fact;
-                    //             item.revenue_wo_nds = clientTotals[client].revenue_wo_nds;
-                    //             item.md_wo_penalties = clientTotals[client].md_wo_penalties;
-                    //             item.income_wo_penalties = clientTotals[client].income_wo_penalties;
-                    //             item.volume = clientTotals[client].volume;
-                    //             item.volume_budget = clientTotals[client].volume_budget;
-                    //             item.revenue_wo_nds_budget = clientTotals[client].revenue_wo_nds_budget;
-                    //             item.md_wo_penalties_budget = clientTotals[client].md_wo_penalties_budget;
-                    //             item.income_wo_penalties_budget =  clientTotals[client].income_wo_penalties_budget;
-                    //             item.total_vagonosutki = clientTotals[client].total_vagonosutki;
-                    //             item.total_oborot_fact = clientTotals[client].total_oborot_fact
-                    //             item.total_stat_nagr_fact = clientTotals[client].total_stat_nagr_fact
-                    //             item.total = clientTotals[client].total
-                    //             item.plan_total = clientTotals[client].plan_total
-                    //         }
-                    //     }
-                    // });
 
 // Инициализация объекта для хранения суммарных значений по клиентам
 let clientTotals = {};
@@ -1624,6 +1552,14 @@ this.businessPlanData.forEach(item => {
                             }
                         }
                     }
+        this.businessPlanData.forEach((item) => {
+            if(item.client.includes('Итого по')){
+                item.margin_income_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.margin_income
+                item.revenue_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.revenue
+            }
+        })
+
+        
                     console.log(this.businessPlanData, 'финальные данные');
                     this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 3500 });
                 } catch (error) {

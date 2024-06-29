@@ -121,7 +121,16 @@ const getFinRep2= (date_begin, date_end) => {
 const personalTasks = (id) => {
     return api.get(`${resource}/tasks/?user=${id}`)
 }
+
+
+const vigrData = (client, data, type) => {
+    return api.get(`finance/operativnaya-spravka/report-file/?wagon_type=${type}&report_date=${data}&clients=${client}`)
+}
 export default {
+    vigrData,
+
+
+    
     getUsers,
     getReportById,
     saveReport,
