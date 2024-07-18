@@ -293,10 +293,15 @@ const getAgreementAdvancedFilter2 = (contract_type, counterparty, number, page_s
 const getAnnexesAgreementAdvancedFilter2 = (annex, counterparty, number, page_size, page) => {
     return api.get(`${documents}/contract/?annex=${annex}&counterparty=${counterparty}&number=${number}&page_size=${page_size}&page=${page}` )
 }
+
+
+const getWagonFlights = (wagon_type, data) => {
+     return api.get(`${finance}/operativnaya-spravka/report-file/?wagon_type=${wagon_type}&report_date=${data}`)
+}
 export default {
     getAgreementAdvancedFilter,
     getAnnexesAgreementAdvancedFilter,
-
+    getWagonFlights,
 
     getAllcounterparties,
     putCounterparties,

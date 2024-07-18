@@ -659,7 +659,7 @@
                             </b-card-text>
                         </b-tab>
                         <b-tab title="Выгрузка рейсов">
-
+                            <dowloadFlightsVue @stateLoader="stateLoader"/>
                         </b-tab>
                     </b-tabs>
                 </b-card>
@@ -682,9 +682,9 @@ import { mapState } from "vuex";
 // import chartOperationInfo from './chartOperationInfo.vue';
 import chartOperationInfoVue from './chartOperationInfo.vue';
 import cp_work_names from './testData.js'
-
+import dowloadFlightsVue from './dowloadFlights.vue';
 export default {
-    components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue, chartOperationInfoVue },
+    components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue, chartOperationInfoVue, dowloadFlightsVue },
     data() {
         return {
             sklad_flights: "",
@@ -1152,7 +1152,7 @@ totalLoadingsAmount() {
                             }
                             return acc
                         }, []).sort((a, b) => a.value.localeCompare(b.value))
-                        console.log('sklad_flights',this.sklad_flights)
+                        
                         const result = this.sklad_flights.reduce((acc, obj) => { 
                             for (let key in obj) { 
                                 if (acc[key]) { 
@@ -1165,7 +1165,6 @@ totalLoadingsAmount() {
                         }, {}); 
                        this.sklad_flights = [result]
 
-                       console.log(this.sklad_flights, '!!!!!!!!')
                         this.$toast.info(`Успешно\nДанные для Оперативной справки получены\nПродолжается загрузка данных для Маржинальной доходности`, {
                             timeout: 8500
                         })
