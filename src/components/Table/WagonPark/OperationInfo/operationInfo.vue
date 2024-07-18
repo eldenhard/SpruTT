@@ -131,8 +131,7 @@
                                                 <td>{{ item.metric_current_fact / item.volume_bp * 100 || 0 | format }}
                                                     %</td> <!-- 6
 -->
-                                                <td>{{ item.metric_current_fact / item.metric_current_plan * 100 || 0 | format }} % <!-- 7
- --> </td>
+                                                <td>{{ item.metric_current_fact / item.metric_current_plan * 100 || 0 | format }} % <!-- 7--> </td>
                                                 <td>{{ item.metric_current_fact / item.metric * 100 || 0 | format }} %
                                                 </td> <!-- 8
  -->
@@ -144,8 +143,7 @@
                                                 <td>{{ item.revenue_current_fact || 0 | format }}</td> <!-- 13 -->
                                                 <td>{{ item.revenue_current_fact / item.revenue_current_plan * 100 || 0 | format }} %</td> <!-- 14 -->
                                                 <td>
-                                                    {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8))) * 100 || 0 |
-            format }} %
+                                                    {{ item.revenue_current_fact / (item.revenue_wo_nds / getAmountDaysOfCurrentMonth * Number(date_begin.slice(8))) * 100 || 0 | format }} %
                                                 </td> <!-- 15 -->
                                                 <td>{{ item.revenue_current_fact / item.revenue_wo_nds * 100 || 0 | format }} %</td> <!-- 16 -->
                                             </tr>
@@ -255,8 +253,77 @@
                                             </template>
                                         </tbody>
                                     </table>
-                                </div>
 
+                                    <br>
+
+                                </div>
+                                <div style="overflow: auto; margin-left: -5%;">
+
+                                    <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Амортизация</th>
+                                                    <th>Расстояние</th>
+                                                    <th>Расстояние после последней дислокации</th>
+                                                    <th>Порожний тариф</th>
+                                                    <th>ФОТ</th>
+                                                    <th>Груж тариф</th>
+                                                    <th>МД</th>
+                                                    <th>ППС</th>
+                                                    <th>Прочие расходы</th>
+                                                    <th>Ремонт</th>
+                                                    <th>Доход</th>
+                                                    <th>Отправки</th>
+                                                    <th>Ставка</th>
+                                                    <th>Тариф МПС</th>
+                                                    <th>Тариф РФ</th>
+                                                    <th>Тариф общий</th>
+                                                    <th>Оборот</th>
+                                                    <th>Вагоносутки</th>
+                                                    <th>Вагоносутки драфт</th>
+                                                    <th>Вагоносутки порожние</th>
+                                                    <th>Вагоносутки порожние драфт</th>
+                                                    <th>Вагоносутки общие</th>
+                                                    <th>Вагоносутки общие драфт</th>
+                                                    <th>Объем</th>
+                                                    <th>Вес</th>
+    
+                                                </tr>
+                                                <tr class="RowAlphabet">
+                                                    <th v-for="num in 25" :key="num">{{ num }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="item in sklad_flights" :key="item.aid">
+                                                    <td>{{ item.amo | format}}</td>
+                                                    <td>{{ item.distance | format}}</td>
+                                                    <td>{{ item.distance_left_from_current_dislocation | format}}</td>
+                                                    <td>{{ item.empty_tariff  | format}}</td>
+                                                    <td>{{ item.fot  | format}}</td>
+                                                    <td>{{ item.loaded_tariff  | format}}</td>
+                                                    <td>{{ item.margin_income  | format}}</td>
+                                                    <td>{{ item.pps  | format}}</td>
+                                                    <td>{{ item.other_charges  | format}}</td>
+                                                    <td>{{ item.repair  | format}}</td>
+                                                    <td>{{ item.revenue | format}}</td>
+                                                    <td>{{ item.shipments  | format}}</td>
+                                                    <td>{{ item.stavka   | format}}</td>
+                                                    <td>{{ item.tariff_mps  | format}}</td>
+                                                    <td>{{ item.tariff_rf  | format}}</td>
+                                                    <td>{{ item.tariff_total  | format}}</td>
+                                                    <td>{{ item.turnover  | format}}</td>
+                                                    <td>{{ item.vagonosutki  | format}}</td>
+                                                    <td>{{ item.vagonosutki_draft  | format}}</td>
+                                                    <td>{{ item.vagonosutki_empty  | format}}</td>
+                                                    <td>{{ item.vagonosutki_empty_draft  | format}}</td>
+                                                    <td>{{ item.vagonosutki_total  | format}}</td>
+                                                    <td>{{ item.vagonosutki_total_draft  | format}}</td>
+                                                    <td>{{ item.volume  | format}}</td>
+                                                    <td>{{ item.weight  | format}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
                             </b-card-text>
                         </b-tab>
                         <b-tab >
@@ -608,6 +675,7 @@ export default {
     components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue, chartOperationInfoVue },
     data() {
         return {
+            sklad_flights: "",
             fines_data: "",
             excelData: "",
             budget_data: "",
@@ -1046,7 +1114,7 @@ totalLoadingsAmount() {
                         response6]) => {
                         this.loader = false
                         this.responseServerData =   response1.data
-
+                        this.sklad_flights = response1.data.sklad_flights
                         this.responseServerDataOtherClients = response2.data
                         let businessPlanData = response3.data
                         this.data3 =  response4.data
@@ -1072,7 +1140,20 @@ totalLoadingsAmount() {
                             }
                             return acc
                         }, []).sort((a, b) => a.value.localeCompare(b.value))
-                      
+                        console.log('sklad_flights',this.sklad_flights)
+                        const result = this.sklad_flights.reduce((acc, obj) => { 
+                            for (let key in obj) { 
+                                if (acc[key]) { 
+                                    acc[key] += Number(obj[key]); 
+                                } else { 
+                                    acc[key] = Number(obj[key]); 
+                                } 
+                            } 
+                            return acc; 
+                        }, {}); 
+                       this.sklad_flights = [result]
+
+                       console.log(this.sklad_flights, '!!!!!!!!')
                         this.$toast.info(`Успешно\nДанные для Оперативной справки получены\nПродолжается загрузка данных для Маржинальной доходности`, {
                             timeout: 8500
                         })
@@ -1087,6 +1168,18 @@ totalLoadingsAmount() {
                     .finally(() => {
                         this.loader = false
                     })
+            
+                    // console.log('sklad_flights',response1.data.sklad_flights)
+                    //     // просуммировать все значения в массиве объектов и вывести все в один объект
+                    //     this.sklad_flights = response1.data.sklad_flights.reduce((acc, obj) => {
+                    //         Object.keys(obj).forEach(key => {
+                    //             if (!acc[key]) {
+                    //                 acc[key] = 0;
+                    //             }
+                    //             acc[key] += obj[key];
+                    //         })
+                    //     })
+                     
 
             } catch(error) {
                     this.$toast.error(`Ошибка\nДанные не получены\n${error.response.data?.detail}`, {
