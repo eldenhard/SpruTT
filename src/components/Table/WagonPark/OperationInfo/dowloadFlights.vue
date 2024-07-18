@@ -10,6 +10,11 @@
                 <option value="Полувагон">Полувагон</option>
             </select>
         </label>
+        <label>Клиент <br>
+            <v-select v-model="currentClients" :options="name_client" label="client" style="width:15vw !important;"></v-select>
+        </label>
+        <br>
+
         <button class="Accept" @click="downloadFlights()">Выгрузить</button>
     </div>
 </template>
@@ -17,31 +22,43 @@
 
 <script>
 import api from '@/api/directory'
+import { mapState } from "vuex";
+import vSelect from "vue-select";
+
 export default {
+    components: { vSelect },
     data() {
         return {
             date_begin: "",
-            wagon_type: "Цистерна"
+            wagon_type: "Цистерна",
+            currentClients: "",
         }
+    },
+    computed: {
+        ...mapState({
+            name_client: (state) => state.client.name_client,
+
+        }),
     },
     methods: {
         async downloadFlights() {
             this.$emit('stateLoader', true)
-            let last_date = this.date_begin + '-'+ this.getLastDayOfMonth(this.date_begin.split('-')[0], Number(this.date_begin.split('-')[1])-1)
-            try{
-                let response = await api.getWagonFlights(this.wagon_type, last_date)
+            let last_date = this.date_begin + '-' + this.getLastDayOfMonth(this.date_begin.split('-')[0], Number(this.date_begin.split('-')[1]) - 1)
+            try {
+                // console.log(this.currentClients)
+                let response = await api.getWagonFlights(this.wagon_type, last_date, this.currentClients?.client)
                 this.$emit('stateLoader', false)
 
-                this.$toast.success("Выгрузка прошла успешно", {
-                    timeout: 3500
+                this.$toast.success("Выгрузка прошла успешно. Проверьте файл в папке SpruTT", {
+                    timeout: 4000
                 })
-            } catch(err){
+            } catch (err) {
                 this.$emit('stateLoader', false)
 
                 this.$toast.error(`Произошла ошибка\n${err}`, {
                     timeout: 3500
                 })
-            } finally{
+            } finally {
                 this.$emit('stateLoader', false)
 
             }
