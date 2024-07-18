@@ -42,11 +42,23 @@ export default {
     },
     methods: {
         async downloadFlights() {
+            if(!this.date_begin){
+                this.$toast.error("Выберите дату выгрузки", {
+                    timeout: 4000
+                })
+                return
+            }
             this.$emit('stateLoader', true)
             let last_date = this.date_begin + '-' + this.getLastDayOfMonth(this.date_begin.split('-')[0], Number(this.date_begin.split('-')[1]) - 1)
             try {
                 // console.log(this.currentClients)
-                let response = await api.getWagonFlights(this.wagon_type, last_date, this.currentClients?.client)
+                let queryParams
+                if(this.currentClients.client !== undefined){
+                     queryParams= `?wagon_type=${this.wagon_type}&report_date=${last_date}&client=${this.currentClients.client}`;
+                } else {
+                    queryParams= `?wagon_type=${this.wagon_type}&report_date=${last_date}`;
+                }
+                let response = await api.getWagonFlights(queryParams)
                 this.$emit('stateLoader', false)
 
                 this.$toast.success("Выгрузка прошла успешно. Проверьте файл в папке SpruTT", {

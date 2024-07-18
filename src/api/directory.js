@@ -295,8 +295,8 @@ const getAnnexesAgreementAdvancedFilter2 = (annex, counterparty, number, page_si
 }
 
 
-const getWagonFlights = (wagon_type, data, client = "") => {
-     return api.get(`${finance}/operativnaya-spravka/report-file/?wagon_type=${wagon_type}&report_date=${data}&client=${client}`)
+const getWagonFlights = (queryParams) => {
+     return api.get(`${finance}/operativnaya-spravka/report-file/${queryParams}`)
 }
 export default {
     getAgreementAdvancedFilter,
