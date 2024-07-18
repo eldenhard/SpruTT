@@ -257,7 +257,7 @@
                                     <br>
 
                                 </div>
-                                <div class="air_block_header">
+                                <div class="air_block_header" style="margin-left: -5%;">
                                     <h5>Склад ВГО</h5>
                                 </div>
                                 <div style="overflow: auto; margin-left: -5%;">
