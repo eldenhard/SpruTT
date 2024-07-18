@@ -265,18 +265,21 @@
                                     <table>
                                             <thead>
                                                 <tr>
-                                                    <th>Амортизация</th>
+                                                    <th>Вес</th>
+                                                    <th>Объем</th>
+                                                    <!-- <th>Амортизация</th>
                                                     <th>Расстояние</th>
                                                     <th>Расстояние после последней дислокации</th>
                                                     <th>Порожний тариф</th>
                                                     <th>ФОТ</th>
-                                                    <th>Груж тариф</th>
+                                                    <th>Груж тариф</th> -->
                                                     <th>МД</th>
-                                                    <th>ППС</th>
+                                                    <th>Доход</th>
+                                                    <!-- <th>ППС</th>
                                                     <th>Прочие расходы</th>
                                                     <th>Ремонт</th>
-                                                    <th>Доход</th>
-                                                    <th>Отправки</th>
+                                                 
+                                                    <!-- <th>Отправки</th>
                                                     <th>Ставка</th>
                                                     <th>Тариф МПС</th>
                                                     <th>Тариф РФ</th>
@@ -287,18 +290,21 @@
                                                     <th>Вагоносутки порожние</th>
                                                     <th>Вагоносутки порожние драфт</th>
                                                     <th>Вагоносутки общие</th>
-                                                    <th>Вагоносутки общие драфт</th>
-                                                    <th>Объем</th>
-                                                    <th>Вес</th>
+                                                    <th>Вагоносутки общие драфт</th>  -->
+                                                   
     
                                                 </tr>
                                                 <tr class="RowAlphabet">
-                                                    <th v-for="num in 25" :key="num">{{ num }}</th>
+                                                    <th v-for="num in 4" :key="num">{{ num }}</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr v-for="item in sklad_flights" :key="item.aid">
-                                                    <td>{{ item.amo | format}}</td>
+                                                    <td style="text-align: center !important">{{ item.weight  | format}}</td>
+                                                    <td>{{ item.volume  | format}}</td> 
+                                                    <td>{{ item.margin_income  | format}}</td>
+                                                    <td>{{ item.revenue  | format}}</td>
+                                                    <!-- <td>{{ item.amo | format}}</td>
                                                     <td>{{ item.distance | format}}</td>
                                                     <td>{{ item.distance_left_from_current_dislocation | format}}</td>
                                                     <td>{{ item.empty_tariff  | format}}</td>
@@ -322,7 +328,7 @@
                                                     <td>{{ item.vagonosutki_total  | format}}</td>
                                                     <td>{{ item.vagonosutki_total_draft  | format}}</td>
                                                     <td>{{ item.volume  | format}}</td>
-                                                    <td>{{ item.weight  | format}}</td>
+                                                    <td>{{ item.weight  | format}}</td> -->
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -651,6 +657,9 @@
 
                                 </div>
                             </b-card-text>
+                        </b-tab>
+                        <b-tab title="Выгрузка рейсов">
+
                         </b-tab>
                     </b-tabs>
                 </b-card>
