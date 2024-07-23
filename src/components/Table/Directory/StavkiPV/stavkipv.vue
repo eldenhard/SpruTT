@@ -160,8 +160,7 @@
                 <button class="Delete button" style="width: 25%; height: 40px; margin-right: auto;"
                     @click="clearTable()">Очистить таблицу</button>
                 <br>
-                <button class="button Action" style="width: 25%; height: 40px;" @click="checkingData()">Проверка
-                    введеных
+                <button class="button Action" style="width: 25%; height: 40px;" @click="checkingData()">Проверка введеных
                     данных</button>
                 <button class="Accept button" style="width: 25%; height: 40px;" @click="saveData()">Отправить данные и
                     создать приложение</button>
@@ -905,28 +904,28 @@ export default {
                         let value = currentItem[j];
                         if (key === 'Станция/Дорога/Страна отправления') {
                             // Обработка для отправления
-                            if (value.match(/[А-Я]{3}/) && !value.includes('Станции')) {
+                            if (value.match(/[А-Я]{3}/) && !value.toLowerCase().includes('станции') && value.trim().length > 3) {
                                 key = 'departure_station';
                                 value = value.replace(/[А-Я]{3}/, '').trim()
                                 stationNameSet.add(value)
-                            } else if (value.match(/[А-Я]{3}/) && value.includes('Станции')) {
+                            } else if (value.match(/[А-Я]{3}/) && value.toLowerCase().includes('станции')) {
                                 key = 'departure_road';
-                                value = value.replace('Станции', '').trim().substring(0, 3).toUpperCase();
-                            } else if (key === 'Станция/Дорога/Страна отправления') {
+                                value = value.toLowerCase().replace('станции', '').trim().substring(0, 3).toUpperCase();
+                            } else {
                                 key = 'country_from';
                             }
                         }
                         else if (key === 'Станция/Дорога/Страна назначения') {
                             // Обработка для назначения
-                            if (value.match(/[А-Я]{3}/) && !value.includes('Станции')) {
+                            if (value.match(/[А-Я]{3}/) && !value.toLowerCase().includes('станции') && value.trim().length > 3) {
                                 key = 'destination_station';
                                 value = value.replace(/[А-Я]{3}/, '').trim()
                                 stationNameSet.add(value)
 
-                            } else if (value.match(/[А-Я]{3}/) && value.includes('Станции')) {
+                            } else if (value.match(/[А-Я]{3}/) && value.toLowerCase().includes('станции')) {
                                 key = 'destination_road';
-                                value = value.replace('Станции', '').trim().substring(0, 3).toUpperCase();
-                            } else if (key === 'Станция/Дорога/Страна назначения') {
+                                value = value.toLowerCase().replace('станции', '').trim().substring(0, 3).toUpperCase();
+                            } else  {
                                 key = 'country_to';
                             }
 
@@ -1011,7 +1010,7 @@ export default {
 
             // // Создание новых данных на основе преобразованных данных
             let new_data = await this.createNewData(DataValueFrom);
-            console.log(new_data, new_data);
+            console.log(new_data);
             this.loader = false;
             // Вывод сообщения при отсутствии ошибок
             if (this.errorp.length == 0) {
@@ -1036,7 +1035,7 @@ export default {
                         const code = await this.getStationCode(item.destination_station, index);
                         if (code !== null) {
                             newItem.destination_station = code.code;
-                        }
+                        } 
                     } catch (error) {
                         console.error(`Ошибка при получении кода для станции "${item.destination_station}" на индексе ${index}`, error);
                     }
@@ -1237,7 +1236,8 @@ export default {
                 const country = this.road.find(item => item.name.toLowerCase() === lowerCountryName);
                 console.log(country)
                 if (!country) {
-                    throw new Error(`Не удалось найти страну: "${country_name}" на строке ${index + 1}. Уточните существующие страны в справочнике на этой странице`);
+                    throw new Error(`Не удалось найти страну: "${country_name}" на строке ${index + 1}. Уточните существующие страны в справочнике на этой странице.\n
+                    Либо удостоверьтесь в корректности вводимых данных`);
                 }
 
                 return country.id;

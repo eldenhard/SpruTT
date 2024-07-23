@@ -7,32 +7,64 @@
             </div>
             <hr>
             <br>
-            <div>
-                <div style="display: flex; justify-content: space-between;; gap: 5vw; height: 4vh; ">
-                    <template v-if="getInsuredWagonsData.length > 1">
-                        <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons"
-                            @getOwnWagonsCompare="getOwnWagonsCompare" style="width: 80%" />
-                    </template>
-                    <template v-else>
-                        <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons"
-                            @getOwnWagonsCompare="getOwnWagonsCompare" style="width: 100%" />
-                    </template>
-                    <PregisterInsuredWagonsAddColumnVue @add_column_el="addNewObjectInColumns"
-                        v-show="getInsuredWagonsData.length > 1" style="width: 100%" />
-                </div>
-                <br>
-                <h4 class="air_block_header" v-show="getInsuredWagonsData.length > 0">Застрахованные вагоны</h4>
-                <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true" :columns="columns"
-                    :preventOverflow="'horizontal'" :filters="true" :language="'ru-RU'" :manualColumnResize="true"
-                    :autoWrapRow="true" :autoWrapCol="true" :height="'40vh'" :width="'100%'" :fillHandle="false"
-                    :dropdownMenu="dropdownMenuOptions">
-                </hot-table>
-                <br>
+            <b-card no-body>
+                <b-tabs card>
+                    <b-tab title="Застрахованные вагоны" active>
+                        <b-card-text>
+                            <div>
+                                <div style="display: flex; justify-content: space-between;; gap: 5vw; height: 4vh; ">
+                                    <template v-if="getInsuredWagonsData.length > 1">
+                                        <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons"
+                                            @getOwnWagonsCompare="getOwnWagonsCompare" style="width: 80%" />
+                                    </template>
+                                    <template v-else>
+                                        <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons"
+                                            @getOwnWagonsCompare="getOwnWagonsCompare" style="width: 100%" />
+                                    </template>
+                                    <PregisterInsuredWagonsAddColumnVue @add_column_el="addNewObjectInColumns"
+                                        v-show="getInsuredWagonsData.length > 1" style="width: 100%" />
+                                </div>
+                                <br>
+                                <h4 class="air_block_header" v-show="getInsuredWagonsData.length > 0">Застрахованные
+                                    вагоны</h4>
+                                <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true"
+                                    :columns="columns" :preventOverflow="'horizontal'" :filters="true"
+                                    :language="'ru-RU'" :manualColumnResize="true" :autoWrapRow="true"
+                                    :autoWrapCol="true" :height="'40vh'" :width="'100%'" :fillHandle="false"
+                                    :dropdownMenu="dropdownMenuOptions" :readOnly="true"
+                                    @afterSelection="handleCellClick">
+                                </hot-table>
+                                <br>
 
-                <OwnWagonsCompareTable :getOwnWagonsCompareData="getOwnWagonsCompareData" :columns="columns_own_wagons" :columns_table_copy="columns"
-                @startStopLoader="startStopLoader" :dropdownMenuOptions="dropdownMenuOptions"/>
-                  
-            </div>
+                                <OwnWagonsCompareTable :getOwnWagonsCompareData="getOwnWagonsCompareData"
+                                    :columns="columns_own_wagons" :columns_table_copy="columns"
+                                    @startStopLoader="startStopLoader" :dropdownMenuOptions="dropdownMenuOptions" />
+
+                            </div>
+                        </b-card-text>
+                    </b-tab>
+                    <b-tab title="Страховые случаи">
+                        <b-card-text>
+                            <template>
+                                <div style="display: flex; justify-content: space-between;; gap: 5vw; height: 4vh; ">
+                                    <section class="search_bloc" style="width: 100%;"
+                                        <div class="long_search">
+                                            <input type="text" placeholder="Введите номера вагонов..." v-model="search"
+                                                @input="IputProcessing(search)">
+                                            <button class="Request" @click="getRequestToServerData(search)">
+                                                <span v-if="isSearch">Найти</span>
+                                                <b-icon v-if="!isSearch" icon="three-dots" animation="cylon"
+                                                    font-scale="3"></b-icon>
+                                            </button>
+                                        </div>
+
+                                    </section>
+                                </div>
+                            </template>
+                        </b-card-text>
+                    </b-tab>
+                </b-tabs>
+            </b-card>
         </div>
     </div>
 </template>
@@ -60,6 +92,7 @@ export default {
     data() {
         return {
             loader: false,
+            isSearch: true,
             columns: [
                 { title: 'Номер вагона', data: 'wagon_number' },
                 { title: 'Тип вагона', data: 'wagon_type', editor: 'select', selectOptions: ['ПВ', 'ЦС'] },
@@ -68,13 +101,13 @@ export default {
                 { title: '№ договора', data: 'agr_number', },
                 { title: 'Дата договора', data: 'agr_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
             ],
-            dropdownMenuOptions: ['clear_column','filter_by_condition', 'filter_by_value'],
-                
-            
+            dropdownMenuOptions: ['clear_column', 'filter_by_condition', 'filter_by_value'],
+
+
             columns_own_wagons: [
-            { title: 'Номер вагона', data: 'Номер вагона' },
+                { title: 'Номер вагона', data: 'Номер вагона' },
             ],
-            getInsuredWagonsData: [ { title: 'Номер вагона', data: 'wagon_number' },],
+            getInsuredWagonsData: [{ title: 'Номер вагона', data: 'wagon_number' },],
             getOwnWagonsCompareData: [{ title: 'Номер вагона', data: 'wagon_number' },],
         }
     },
@@ -82,7 +115,15 @@ export default {
         document.querySelector('.hot-display-license-info').style = 'display: none !important';
     },
     methods: {
-        startStopLoader(value){
+        handleCellClick(row, column, row2, column2, preventScrolling, selectionLayerLevel) {
+            // Получаем данные строки
+            const rowData = this.getInsuredWagonsData[row];
+            // Форматируем данные для отображения в алерте
+            const rowDataString = Object.entries(rowData).map(([key, value]) => `${key}: ${value}`).join('\n');
+            // Вызываем алерт с данными строки
+            alert(`Данные строки:\n${rowDataString}`);
+        },
+        startStopLoader(value) {
             this.loader = value
         },
         addNewObjectInColumns(data) {
@@ -102,22 +143,22 @@ export default {
             })
         },
         getOwnWagonsCompare(data) {
-    let preData = data.data;
-    let compareDataMap = {};
+            let preData = data.data;
+            let compareDataMap = {};
 
-    // Создаем карту для getInsuredWagonsData, чтобы быстро проверить наличие вагонов
-    this.getInsuredWagonsData.forEach((item) => {
-        compareDataMap[item.wagon_number] = true;
-    });
+            // Создаем карту для getInsuredWagonsData, чтобы быстро проверить наличие вагонов
+            this.getInsuredWagonsData.forEach((item) => {
+                compareDataMap[item.wagon_number] = true;
+            });
 
-    // Фильтруем preData, оставляя только те вагоны, которых нет в compareDataMap
-    preData = preData.filter((el) => {
-        return el['Принадлежность СТЖ'] === 'С' && !compareDataMap[el['Номер вагона']];
-    });
+            // Фильтруем preData, оставляя только те вагоны, которых нет в compareDataMap
+            preData = preData.filter((el) => {
+                return el['Принадлежность СТЖ'] === 'С' && !compareDataMap[el['Номер вагона']];
+            });
 
-    console.log(preData, 'preData');
-    this.getOwnWagonsCompareData = preData;
-},
+            console.log(preData, 'preData');
+            this.getOwnWagonsCompareData = preData;
+        },
 
         // getOwnWagonsCompare(data) {
         //     let preData = data.data
@@ -142,6 +183,9 @@ export default {
                 hotInstance.render()
             })
         },
+        dataWagons(data) {
+            console.log(data)
+        }
     },
 }
 </script>
@@ -163,5 +207,54 @@ export default {
 .air_block_header {
     padding: 1% 0 0 2%;
     color: #cacaca;
+}
+
+.long_search {
+    position: relative;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.long_search {
+    position: relative;
+    width: 100%;
+    height: 110%;
+}
+
+.long_search input {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #007BFF !important;
+    border-radius: 10px;
+    text-align: left !important;
+    padding-left: 2% !important;
+}
+
+::-webkit-input-placeholder {
+    text-align: left;
+}
+
+:-moz-placeholder {
+    /* Firefox 18- */
+    text-align: left;
+}
+
+::-moz-placeholder {
+    /* Firefox 19+ */
+    text-align: left;
+}
+
+:-ms-input-placeholder {
+    text-align: left;
+}
+
+.long_search button {
+    width: 15%;
+    height: 80%;
+    position: absolute;
+    top: 4px;
+    right: 5px;
+    
+    border-radius: 8px;
 }
 </style>
