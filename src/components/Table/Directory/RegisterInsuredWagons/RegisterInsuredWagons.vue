@@ -45,22 +45,7 @@
                     </b-tab>
                     <b-tab title="Страховые случаи">
                         <b-card-text>
-                            <template>
-                                <div style="display: flex; justify-content: space-between;; gap: 5vw; height: 4vh; ">
-                                    <section class="search_bloc" style="width: 100%;"
-                                        <div class="long_search">
-                                            <input type="text" placeholder="Введите номера вагонов..." v-model="search"
-                                                @input="IputProcessing(search)">
-                                            <button class="Request" @click="getRequestToServerData(search)">
-                                                <span v-if="isSearch">Найти</span>
-                                                <b-icon v-if="!isSearch" icon="three-dots" animation="cylon"
-                                                    font-scale="3"></b-icon>
-                                            </button>
-                                        </div>
-
-                                    </section>
-                                </div>
-                            </template>
+                            <saveAccidientVue />
                         </b-card-text>
                     </b-tab>
                 </b-tabs>
@@ -81,6 +66,7 @@ registerAllModules();
 import 'handsontable/dist/handsontable.full.css';
 import PregisterInsuredWagonsAddColumnVue from './components/PregisterInsuredWagonsAddColumn.vue';
 import OwnWagonsCompareTable from "./components/OwnWagonsCompareTable.vue";
+import saveAccidientVue from './components/saveAccidient.vue';
 export default {
     components: {
         Loader,
@@ -88,11 +74,12 @@ export default {
         PregisterInsuredWagonsAddColumnVue,
         HotTable,
         OwnWagonsCompareTable,
+        saveAccidientVue,
     },
     data() {
         return {
             loader: false,
-            isSearch: true,
+
             columns: [
                 { title: 'Номер вагона', data: 'wagon_number' },
                 { title: 'Тип вагона', data: 'wagon_type', editor: 'select', selectOptions: ['ПВ', 'ЦС'] },
@@ -209,52 +196,4 @@ export default {
     color: #cacaca;
 }
 
-.long_search {
-    position: relative;
-    width: 90%;
-    margin: 0 auto;
-}
-
-.long_search {
-    position: relative;
-    width: 100%;
-    height: 110%;
-}
-
-.long_search input {
-    width: 100%;
-    height: 100%;
-    border: 1px solid #007BFF !important;
-    border-radius: 10px;
-    text-align: left !important;
-    padding-left: 2% !important;
-}
-
-::-webkit-input-placeholder {
-    text-align: left;
-}
-
-:-moz-placeholder {
-    /* Firefox 18- */
-    text-align: left;
-}
-
-::-moz-placeholder {
-    /* Firefox 19+ */
-    text-align: left;
-}
-
-:-ms-input-placeholder {
-    text-align: left;
-}
-
-.long_search button {
-    width: 15%;
-    height: 80%;
-    position: absolute;
-    top: 4px;
-    right: 5px;
-    
-    border-radius: 8px;
-}
 </style>
