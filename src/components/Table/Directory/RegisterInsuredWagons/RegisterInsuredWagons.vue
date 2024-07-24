@@ -45,7 +45,7 @@
                     </b-tab>
                     <b-tab title="Страховые случаи">
                         <b-card-text>
-                            <saveAccidientVue />
+                            <saveAccidientVue   @startStopLoader="startStopLoader"/>
                         </b-card-text>
                     </b-tab>
                 </b-tabs>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import api from "@/api/directory";
+import api from "@/api/wagonPark";
 import Loader from "@/components/loader/loader.vue";
 import PregisterIsuredwagonsSearch from "./components/PregisterIsuredwagonsSearch.vue";
 import { HotTable } from '@handsontable/vue';
@@ -129,7 +129,7 @@ export default {
                 hotInstance.render();
             })
         },
-        getOwnWagonsCompare(data) {
+        async getOwnWagonsCompare(data) {
             let preData = data.data;
             let compareDataMap = {};
 
@@ -144,7 +144,26 @@ export default {
             });
 
             console.log(preData, 'preData');
-            this.getOwnWagonsCompareData = preData;
+            try{
+                this.loader = true
+                let promises = preData.map(el => api.getWagons({number: el['Номер вагона']}));
+                const results = await Promise.all(promises);
+
+
+                this.loader = false
+                let compareDataMap2 = []
+                for(let i in results){
+                    if(results[i].data.data[0].is_active === true){
+                        compareDataMap2.push({"Номер вагона":results[i].data.data[0].number})
+                    }
+                }
+                this.getOwnWagonsCompareData = compareDataMap2
+                // console.log(this.getOwnWagonsCompareData, 'this.getOwnWagonsCompareData');
+            } catch(err){
+                this.loader = false
+
+            }
+         
         },
 
         // getOwnWagonsCompare(data) {

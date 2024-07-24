@@ -298,10 +298,19 @@ const getAnnexesAgreementAdvancedFilter2 = (annex, counterparty, number, page_si
 const getWagonFlights = (queryParams) => {
      return api.get(`${finance}/operativnaya-spravka/report-file/${queryParams}`)
 }
+
+const saveDataInsuranceCases = (data) => {
+    return api.post(`${finance}/insurance-cases/`, data)
+}
+const getDataInsuranceCases = () => {
+    return api.get(`${finance}/insurance-cases/`)
+}
 export default {
+    saveDataInsuranceCases,
     getAgreementAdvancedFilter,
     getAnnexesAgreementAdvancedFilter,
     getWagonFlights,
+    getDataInsuranceCases,
 
     getAllcounterparties,
     putCounterparties,
