@@ -53,11 +53,12 @@
             </table>
         </div>
         <br><br>
+        <hr>
         <div class="air_block_header">
             <h4>Ранее введенные данные</h4>
             <b-button variant="success" @click="getData()">Загрузить данные</b-button>
         </div>
-        
+    
         <div style="overflow: auto; height: 30vh; margin-top: 5%;">
             <table>
                 <thead>
@@ -149,6 +150,15 @@ export default {
                 this.$emit('startStopLoader', true)
                 let response = await api.getDataInsuranceCases()
                 this.responseOldData = response.data.data
+                if(this.responseOldData.length > 0){
+                    this.$toast.success('Данные загружены', {
+                        timeout: 3000
+                    })
+                } else {
+                    this.$toast.warning('Нет ранее ввденных данных', {
+                        timeout: 4000
+                    })
+                }
             } catch (err) {
                 this.$toast.error(`Данные не загружены\n ${err}`, {
                     timeout: 3000
@@ -172,6 +182,7 @@ export default {
                 })
                 let response = await api.getDataInsuranceCases()
                 this.responseOldData = response.data.data
+
             } catch (err) {
                 console.log(err)
                 this.$emit('startStopLoader', false)

@@ -98,7 +98,8 @@ export default {
         async saveData() {
             this.$emit('startStopLoader', true)
             try{
-                let response = await api.sendNewDataInsuranceWagons(this.insuredWagonsData)
+                await api.sendNewDataInsuranceWagons(this.insuredWagonsData)
+
                 this.$emit('startStopLoader', false)
                 this.$toast.success('Данные сохранены', {
                     timeout: 3000
