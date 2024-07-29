@@ -25,6 +25,9 @@
                                         v-show="getInsuredWagonsData.length > 1" style="width: 100%" />
                                 </div>
                                 <br>
+                                <b-button variant="success" style="position: absolute; right: 2%;"  v-if="getInsuredWagonsData.length > 1"
+                                    @click="DownloadExcel('test')">Выгрузить таблицу</b-button>
+                                <br>
                                 <h4 class="air_block_header" v-show="getInsuredWagonsData.length > 0">Застрахованные
                                     вагоны</h4>
                                 <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true"
@@ -45,7 +48,7 @@
                     </b-tab>
                     <b-tab title="Страховые случаи">
                         <b-card-text>
-                            <saveAccidientVue   @startStopLoader="startStopLoader"/>
+                            <saveAccidientVue @startStopLoader="startStopLoader" />
                         </b-card-text>
                     </b-tab>
                 </b-tabs>
@@ -55,6 +58,9 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { saveAs } from 'file-saver';
+
 import api from "@/api/wagonPark";
 import Loader from "@/components/loader/loader.vue";
 import PregisterIsuredwagonsSearch from "./components/PregisterIsuredwagonsSearch.vue";
@@ -79,11 +85,230 @@ export default {
     data() {
         return {
             loader: false,
-
+            nameClient: [],
             columns: [
                 { title: 'Номер вагона', data: 'wagon_number' },
                 { title: 'Тип вагона', data: 'wagon_type', editor: 'select', selectOptions: ['ПВ', 'ЦС'] },
-                { title: 'Собст. на момент страхования', data: 'owner_at_insurance_moment' },
+                {
+                    title: 'Собст. на момент страхования', data: 'owner_at_insurance_moment', editor: 'select',
+                    selectOptions: [
+                        "METALLOINVEST TRADING AG",
+                        "PTC Operator",
+                        "TRANSPORT TECHNOLOGIES GP",
+                        "Ай Эм Ти Экспресс",
+                        "АККЕРМАНН ЦЕМЕНТ, ООО",
+                        "АКЦИОНЕРНОЕ ОБЩЕСТВО \"ЯДРАН\"",
+                        "Алоран",
+                        "Альянс Инерт",
+                        "Антрацит Трейд",
+                        "АО \"УРАЛЬСКАЯ СТАЛЬ\"",
+                        "АРДЕН",
+                        "АРТВЭЙ, ООО",
+                        "АСР-ГРУПП, ООО",
+                        "АУРА",
+                        "Базалт",
+                        "БЕЛИНТЕРТРАНС",
+                        "БПТранспорт",
+                        "БТС-Логистика, ООО",
+                        "Булатовский базальт",
+                        "БЦК",
+                        "ВЕКТОР-ДВИЖЕНИЯ, ООО",
+                        "ВЕРАТЭК, ООО",
+                        "ВЕСКО",
+                        "ВЗКСМ, ООО",
+                        "Восток-Сибирь Логистик",
+                        "Газпром Нефть, ПАО",
+                        "Газпромтранс",
+                        "ГАЗПРОМТРАНС, ООО",
+                        "ГК Вагонсервис",
+                        "ГК ТИТАН, АО",
+                        "Грифон",
+                        "Группа Магнезит",
+                        "ДВ УГОЛЬ СИБИРИ, ООО",
+                        "ДЕЛОВЫЕ ПРОГРАММЫ, ООО",
+                        "ДЕЛЬТА, ООО",
+                        "Джетта Строй ЛТД",
+                        "ДИПТРАНС, ООО",
+                        "ДЛСГРУПП, ООО",
+                        "ДНК",
+                        "ДублТранс",
+                        "ЕВРАЗ НТМК",
+                        "Евросиб",
+                        "ЕВРОСИБ СПБ-ТС, АО",
+                        "Евротрансрейл",
+                        "Еврохим",
+                        "ЕвроХим",
+                        "ЗУР",
+                        "ИКТ",
+                        "ИМПЭКСТРЕЙД, ООО",
+                        "Интерлогистикс",
+                        "Интер Транс",
+                        "Исткомтранс",
+                        "КазКомир Компани ТОО",
+                        "КалугаВагонСервис",
+                        "КАМЕЛОТ",
+                        "КАРБОН УГОЛЬ, ООО",
+                        "Карбо-трейд",
+                        "КВУ, ООО",
+                        "КЛИШИ",
+                        "КОКС",
+                        "Компания EAST WEST HOLDING LIMITED",
+                        "КОНТУР СПБ, ООО",
+                        "КОЭКЛЕРИЧИ РАША, ООО",
+                        "КТС, ООО",
+                        "КУЙБЫШЕВАЗОТ, ПАО",
+                        "КУРГАНСТАЛЬМОСТ, ЗАО",
+                        "ЛГОК",
+                        "ЛП, ООО",
+                        "ЛСР",
+                        "ЛУКОШКИНСКИЙ КАРЬЕР, ООО",
+                        "Майкубен-Вест ООО",
+                        "МГОК",
+                        "МЕТИНВЕСТ-ШИППИНГ",
+                        "Мечел-Транс",
+                        "МИКТрансАзия",
+                        "МТК, ООО",
+                        "МТЛК",
+                        "Научно-внедренческая фирма \"Грифон\" ЗАО",
+                        "НАЦИОНАЛЬНАЯ ТРАНСПОРТНАЯ КОМПАНИЯ, АО",
+                        "НБ ТАЙГА ЭНЕРДЖИ, ООО",
+                        "НЕРУДНАЯ ЛОГИСТИЧЕСКАЯ КОМПАНИЯ, ООО",
+                        "НЕРУДСТРОЙТРАНС",
+                        "НЕФТЕХИМТРЕЙД, ООО",
+                        "ННК-Транс",
+                        "НОВАЯ ГОРНАЯ УК, ООО",
+                        "НПК, АО",
+                        "НУТЭК",
+                        "НХС",
+                        "НХТК",
+                        "НХТК, ООО",
+                        "ОБНИНСКОРГСИНТЕЗ, АО",
+                        "Общество с ограниченной ответственностью \"Дельта-Трейд\"",
+                        "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ПАРМА ПЕТРОЛИУМ ОПЕРЕЙШН КЛМ\"",
+                        "Общество с ограниченной ответственностью \"ПромИнвест\"",
+                        "Объединенная горнодобывающая компания",
+                        "ОКСИ ЭНЕРДЖИ, ООО",
+                        "ООО \"Альфа-транс\"",
+                        "ООО \"БалтТрансСервис\"",
+                        "ООО \"ЗСТК\"",
+                        "ООО Маритер",
+                        "ООО \"Парма Петролиум Оперейшн КЛМ\"",
+                        "ООО \"ПРОМЖДСЕРВИС\"",
+                        "ООО \"Рэйл Оператор\"",
+                        "ООО \"Санторини Виктори\"",
+                        "ООО \"СГК\"",
+                        "ООО \"СИБАНТРАЦИТ ЛОГИСТИКА\"",
+                        "ООО \"СОКАР РУС\"",
+                        "ООО СТЮ",
+                        "ООО «СЧПЗ Трейд»",
+                        "ООО Татнефтехим",
+                        "ООО \"Татнефть-Транс\"",
+                        "ООО \"Томская Топливная Компания\"",
+                        "ОТС-Логистика",
+                        "ПАО «Газпром нефть»",
+                        "ПАО \"Газпром Нефть\"",
+                        "ПГК, АО",
+                        "ПЕРВООСНОВА, АО",
+                        "ПНК, АО",
+                        "ППО",
+                        "ПРОГРЕСС ХХI ВЕК, ООО",
+                        "Проминвест",
+                        "ПРОМУГОЛЬСЕРВИС, ООО",
+                        "ПУТ",
+                        "ПЭКСО, ООО",
+                        "РВК, ООО",
+                        "Рейл Сервис",
+                        "РемиНико",
+                        "Ресурс Транс",
+                        "РЕСУРС ТРАНС, ООО",
+                        "РНК, ООО",
+                        "РН-Транс",
+                        "РОССОЙЛ, ООО",
+                        "РТК Групп",
+                        "РТС-ТРАНС, ООО",
+                        "РУК, ООО",
+                        "РусждТранс",
+                        "РУСНЕРУДТРЕЙД, ООО",
+                        "Рус-ОйлЭкс",
+                        "РУССКИЙ УГОЛЬ, АО",
+                        "РУСТЭК",
+                        "РЭЙЛ ПРО, ООО",
+                        "РЭУ, ООО",
+                        "Саткинская нерудная компания",
+                        "САЯНПРОМТРАНС",
+                        "СДС-Уголь",
+                        "Серебрянский цементный завод",
+                        "СИБАНТРАЦИТ ЛОГИСТИКА, ООО",
+                        "СИБТРЕЙД, ООО",
+                        "СИГМА, ООО",
+                        "СИМПРЕАЛ ЛОГИСТИКА, ООО",
+                        "СКС, АО",
+                        "СКС, ООО",
+                        "СПО, ООО",
+                        "Стелла",
+                        "СТК, ООО",
+                        "СТРОЙ-ДРЕВ, ООО",
+                        "СТРОЙСЕРВИС",
+                        "СтройТехно-Урал, ООО",
+                        "СТС-ГРУПП, ООО",
+                        "СТС, ООО",
+                        "ТАЙГА ЭНЕРДЖИ, ООО",
+                        "ТАКТ",
+                        "ТАТНЕФТЬ-ТРАНС, ООО",
+                        "ТГ РУСЖДТРАНС, ООО",
+                        "ТД РКУ",
+                        "ТД УГЛИ КУЗБАССА, ООО",
+                        "ТЕРМИНАЛ МОРСКОЙ РЫБНЫЙ ПОРТ",
+                        "ТК РУТ Логистик",
+                        "ТК \"Славия\"",
+                        "ТЛК",
+                        "ТЛК СТАРЫЙ КЛЮЧ, ООО",
+                        "ТОО \"CITITRANS\"",
+                        "ТОО «GLP Operator»",
+                        "ТОО «Logistic resurs»",
+                        "ТОО «PartnerInterFreight» (ПартнэрИнтэрФрэйт)",
+                        "ТОО \"Авион Норд\"",
+                        "ТОО «ЛУКОЙЛ Лубрикантс Центральная Азия»",
+                        "ТОО «Тенгри Транс»",
+                        "ТОРГОВЫЙ ДОМ ЮЖНО-СИБИРСКИЙ, АО",
+                        "ТПС",
+                        "ТРАНС ИНВЕСТ, ООО",
+                        "ТрансКом ТОО",
+                        "Трансметкокс",
+                        "ТРАНСХИМРЕСУРС, ООО",
+                        "ТРЕЙД ОЙЛ, ООО",
+                        "Т-СЕРВИС ЛОГИСТИКС, ООО",
+                        "ТСК ЛОГИСТИКА, ООО",
+                        "ТТ ЛОГИСТИКА, ООО",
+                        "ТТО, ООО",
+                        "ТЭК УЛЬТИМА, ООО",
+                        "УГМК-Транс",
+                        "Уголь-Транс",
+                        "УГПХ, ООО",
+                        "УК ООО ТМС ГРУПП",
+                        "УК Разрез Степной",
+                        "УК Южный Альянс",
+                        "УралЛогистика",
+                        "Урал Логистика, ООО",
+                        "Уральская транспортная компания",
+                        "ФЕРРУМ ТРЕЙД",
+                        "ФЛК, ООО",
+                        "ФОРСТ ТРЕЙДИНГ",
+                        "ХК КАМА-ТРАКС, ООО",
+                        "Центр Комир KZ",
+                        "ЦОФ Березовская",
+                        "ЧТПЗ, АО",
+                        "ЧЭМК, АО",
+                        "Шахта Грамотеинская",
+                        "Экспортно-производственное республиканское унитарное предприятие «БЕЛЛЕСЭКСПОРТ»",
+                        "ЭКТОС-ТРАНС, ООО",
+                        "ЭЛСИ ЛОГИСТИКА СИБИРЬ, ООО",
+                        "Энергоресурсы",
+                        "Энэрго-Трэйд",
+                        "ЮНИТРАНС РЭЙЛ",
+
+                    ]
+                },
                 { title: 'Страховая компания', data: 'insurance_company', },
                 { title: '№ договора', data: 'agr_number', },
                 { title: 'Дата договора', data: 'agr_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
@@ -101,7 +326,30 @@ export default {
     mounted() {
         document.querySelector('.hot-display-license-info').style = 'display: none !important';
     },
+    computed: {
+        ...mapState({
+            clients: state => state.client.name_client
+        }),
+
+    },
     methods: {
+        DownloadExcel() {
+            const hotInstance = this.$refs.hotTableComponent.hotInstance;
+            const exportPlugin = hotInstance.getPlugin('exportFile');
+
+            // Экспортируем CSV с BOM и точкой с запятой как разделителем
+            const csvData = exportPlugin.exportAsString('csv', {
+                bom: true,
+                columnHeaders: true,
+                rowHeaders: true,
+                mimeType: 'text/csv',
+                columnDelimiter: ';', // Используем точку с запятой в качестве разделителя
+            });
+
+            // Создаем blob с данными и сохраняем его
+            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            saveAs(blob, 'Застрахованные_вагоны.csv');
+        },
         handleCellClick(row, column, row2, column2, preventScrolling, selectionLayerLevel) {
             // Получаем данные строки
             const rowData = this.getInsuredWagonsData[row];
@@ -113,12 +361,13 @@ export default {
         startStopLoader(value) {
             this.loader = value
         },
+        // Добаление новых столбцов  в таблицы
         addNewObjectInColumns(data) {
             this.$nextTick(() => {
                 const hotInstance = this.$refs.hotTableComponent.hotInstance;
                 this.columns = [
                     { title: 'Номер вагона', data: 'wagon_number' },
-                    { title: 'Тип вагона', data: 'wagon_type' },
+                    { title: 'Тип вагона', data: 'wagon_type', editor: 'select', selectOptions: ['ПВ', 'ЦС'] },
                     { title: 'Собст. на момент страхования', data: 'owner_at_insurance_moment' },
                     { title: 'Страховая компания', data: 'insurance_company', },
                     { title: '№ договора', data: 'agr_number', type: 'numeric' },
@@ -144,42 +393,36 @@ export default {
             });
 
             console.log(preData, 'preData');
-            try{
+            try {
                 this.loader = true
-                let promises = preData.map(el => api.getWagons({number: el['Номер вагона']}));
+                let promises = preData.map(el => api.getWagons({ number: el['Номер вагона'] }));
                 const results = await Promise.all(promises);
 
 
                 this.loader = false
                 let compareDataMap2 = []
-                for(let i in results){
-                    if(results[i].data.data[0].is_active === true){
-                        compareDataMap2.push({"Номер вагона":results[i].data.data[0].number})
+                for (let i in results) {
+                    if (results[i].data.data[0].is_active === true) {
+                        compareDataMap2.push({ "Номер вагона": results[i].data.data[0].number })
                     }
                 }
                 this.getOwnWagonsCompareData = compareDataMap2
-                // console.log(this.getOwnWagonsCompareData, 'this.getOwnWagonsCompareData');
-            } catch(err){
+                this.$nextTick(() => {
+                    const hotInstance = this.$refs.hotTableComponent.hotInstance
+                    hotInstance.loadData(this.getInsuredWagonsData)
+                    hotInstance.updateSettings({ data: this.getInsuredWagonsData })
+                    hotInstance.render()
+                })
+                console.log('client: ', this.nameClient)
+                console.log(this.getOwnWagonsCompareData, 'this.getOwnWagonsCompareData');
+            } catch (err) {
                 this.loader = false
 
             }
-         
+
         },
 
-        // getOwnWagonsCompare(data) {
-        //     let preData = data.data
-        //     let compareDataMap = {}
-        //     preData.forEach((el) => {
-        //         if (el['Принадлежность СТЖ'] === 'С') {
-        //             compareDataMap[el['Номер вагона']] = true
-        //         }
-        //     })
-        //     preData = this.getInsuredWagonsData.filter((item) => {
-        //         return compareDataMap[item.wagon_number]
-        //     })
-        //     this.getOwnWagonsCompareData = preData
 
-        // },
         getInsuredWagons(data) {
             this.getInsuredWagonsData = data.data
             this.$nextTick(() => {
@@ -214,5 +457,4 @@ export default {
     padding: 1% 0 0 2%;
     color: #cacaca;
 }
-
 </style>
