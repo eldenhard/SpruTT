@@ -209,8 +209,8 @@ const deleteActs = (id, data) => {
     return api.patch(`${finance}/acts/${id}/`, data)
 }
 
-const getAllInsuranceWagons = (data) => {
-    return api.post(`${finance}/insurance-wagons/filter/`, data)
+const getAllInsuranceWagons = (data, page) => {
+    return api.post(`${finance}/insurance-wagons/filter/?page=${page}`, data)
 }
 const sendNewDataInsuranceWagons = (data) => {
     return api.post(`${finance}/insurance-wagons/save-many/`, data)

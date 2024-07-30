@@ -25,8 +25,9 @@
                                         v-show="getInsuredWagonsData.length > 1" style="width: 100%" />
                                 </div>
                                 <br>
-                                <b-button variant="success" style="position: absolute; right: 2%;"  v-if="getInsuredWagonsData.length > 1"
-                                    @click="DownloadExcel('test')">Выгрузить таблицу</b-button>
+                                <b-button variant="success" style="position: absolute; right: 2%;"
+                                    v-if="getInsuredWagonsData.length > 1" @click="DownloadExcel('test')">Выгрузить
+                                    таблицу</b-button>
                                 <br>
                                 <h4 class="air_block_header" v-show="getInsuredWagonsData.length > 0">Застрахованные
                                     вагоны</h4>
@@ -34,8 +35,7 @@
                                     :columns="columns" :preventOverflow="'horizontal'" :filters="true"
                                     :language="'ru-RU'" :manualColumnResize="true" :autoWrapRow="true"
                                     :autoWrapCol="true" :height="'40vh'" :width="'100%'" :fillHandle="false"
-                                    :dropdownMenu="dropdownMenuOptions" :readOnly="true"
-                                    @afterSelection="handleCellClick">
+                                    :dropdownMenu="dropdownMenuOptions" :readOnly="true">
                                 </hot-table>
                                 <br>
 
@@ -350,14 +350,7 @@ export default {
             const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
             saveAs(blob, 'Застрахованные_вагоны.csv');
         },
-        handleCellClick(row, column, row2, column2, preventScrolling, selectionLayerLevel) {
-            // Получаем данные строки
-            const rowData = this.getInsuredWagonsData[row];
-            // Форматируем данные для отображения в алерте
-            const rowDataString = Object.entries(rowData).map(([key, value]) => `${key}: ${value}`).join('\n');
-            // Вызываем алерт с данными строки
-            alert(`Данные строки:\n${rowDataString}`);
-        },
+
         startStopLoader(value) {
             this.loader = value
         },
@@ -381,24 +374,28 @@ export default {
         async getOwnWagonsCompare(data) {
             let preData = data.data;
             let compareDataMap = {};
-
+            console.log('test:', this.getInsuredWagonsData)
             // Создаем карту для getInsuredWagonsData, чтобы быстро проверить наличие вагонов
             this.getInsuredWagonsData.forEach((item) => {
                 compareDataMap[item.wagon_number] = true;
             });
-
+            console.log('preData - do', preData);
             // Фильтруем preData, оставляя только те вагоны, которых нет в compareDataMap
             preData = preData.filter((el) => {
                 return el['Принадлежность СТЖ'] === 'С' && !compareDataMap[el['Номер вагона']];
             });
 
-            console.log(preData, 'preData');
             try {
                 this.loader = true
                 let promises = preData.map(el => api.getWagons({ number: el['Номер вагона'] }));
                 const results = await Promise.all(promises);
 
 
+                // const results = []
+                // for (let i of preData) {
+                //     let result = await api.getWagons({ number: i['Номер вагона'] })
+                //     results.push(result)
+                // }
                 this.loader = false
                 let compareDataMap2 = []
                 for (let i in results) {
@@ -413,8 +410,6 @@ export default {
                     hotInstance.updateSettings({ data: this.getInsuredWagonsData })
                     hotInstance.render()
                 })
-                console.log('client: ', this.nameClient)
-                console.log(this.getOwnWagonsCompareData, 'this.getOwnWagonsCompareData');
             } catch (err) {
                 this.loader = false
 
@@ -424,7 +419,7 @@ export default {
 
 
         getInsuredWagons(data) {
-            this.getInsuredWagonsData = data.data
+            this.getInsuredWagonsData = data
             this.$nextTick(() => {
                 const hotInstance = this.$refs.hotTableComponent.hotInstance
                 hotInstance.loadData(this.getInsuredWagonsData)

@@ -214,9 +214,18 @@ export default {
             this.isSearch = false
             let obj = { wagons: search.replace(/[^.\d]+/g, "").replace(/(\d{8})(?=\d)/g, '$1,') }
             let today = new Date().toISOString().slice(0, 10)
+            let allData = []
             try {
-                let response = await api.getAllInsuranceWagons(obj)
-                this.responseData = response.data
+                // let response = await api.getAllInsuranceWagons(obj)
+                let last_page = 1
+                let response = await api.getAllInsuranceWagons(obj,last_page);
+                allData.push(...response.data.data)
+                while(last_page < response.data.total_pages){
+                    last_page +=1
+                    let res = await api.getAllInsuranceWagons(obj, last_page);
+                    allData.push(...res.data.data)
+                }
+                this.responseData = allData
                 this.isSearch = true
             }
             catch (err) {

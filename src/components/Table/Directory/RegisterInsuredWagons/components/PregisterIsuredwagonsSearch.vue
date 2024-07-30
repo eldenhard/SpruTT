@@ -15,8 +15,8 @@
 import api from "@/api/directory";
 export default {
 
-    data(){
-        return{
+    data() {
+        return {
             isSearch: true,
             search: "",
             intervalResponse: null,
@@ -34,20 +34,36 @@ export default {
                 this.getRequestToServerData(val)
             }, 500)
         },
+
+    
+
         async getRequestToServerData(search) {
             // if (this.search == "" || this.search.length <= 1) return
             this.isSearch = false
-            let obj = {wagons: search.replace(/[^.\d]+/g,"").replace(/(\d{8})(?=\d)/g, '$1,')}
+            let obj = { wagons: search.replace(/[^.\d]+/g, "").replace(/(\d{8})(?=\d)/g, '$1,'), }
             let today = new Date().toISOString().slice(0, 10)
-            try{
-                let response = await api.getAllInsuranceWagons(obj)
-                let response2 = await api.getOwnWagonsCompare(today)
-                // console.log(response, response2)
-                this.$emit('getInsuredWagons', response)
+            let allData = [];
+            try {
+                // let response = await api.getAllInsuranceWagons(obj)
+
+
+                let last_page = 1
+                let response = await api.getAllInsuranceWagons(obj,last_page);
+                allData.push(...response.data.data)
+                while(last_page < response.data.total_pages){
+                    last_page +=1
+                    let res = await api.getAllInsuranceWagons(obj, last_page);
+                    allData.push(...res.data.data)
+                }
+
+                let today = new Date().toISOString().slice(0, 10);
+                let response2 = await api.getOwnWagonsCompare(today);
+
+                this.$emit('getInsuredWagons', allData);
                 this.$emit('getOwnWagonsCompare', response2)
                 this.isSearch = true
             }
-            catch (err){
+            catch (err) {
                 console.log(err)
                 this.isSearch = true
             }
@@ -57,8 +73,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .long_search {
     position: relative;
     width: 90%;
@@ -104,7 +118,7 @@ export default {
     position: absolute;
     top: 4px;
     right: 5px;
-    
+
     border-radius: 8px;
 }
 </style>
