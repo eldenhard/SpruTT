@@ -430,3 +430,9 @@ li.nav-item a.nav-link{
   background: rgb(255, 216, 216) !important;
 
 } */
+
+
+.description-text {
+  font-size: 14px;
+  color: lightgray;
+}

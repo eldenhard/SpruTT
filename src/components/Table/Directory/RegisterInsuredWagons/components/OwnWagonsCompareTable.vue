@@ -2,8 +2,14 @@
     <div>
         <br>
         <h4 v-show="getOwnWagonsCompareData.length > 0" class="air_block_header">Перечень незастрахованных вагонов</h4>
+        <b-form-checkbox id="checkbox-1" v-model="status" name="checkbox-1" value="accepted"
+            unchecked-value="not_accepted">
+            Включить вагоны с примечаниями
+        </b-form-checkbox>
         <div class="tables-container">
+
             <div class="table-container">
+                <span class="description-text">Всего записей {{ getOwnWagonsCompareData.length ?? 0 }}</span>
                 <hot-table ref="hotTableComponent1" :data="getOwnWagonsCompareData" :rowHeaders="true"
                     :columns="columns" :manualRowMove="true" :manualColumnMove="true" :preventOverflow="'horizontal'"
                     :filters="true" :language="'ru-RU'" :manualColumnResize="true" :height="'40vh'" :width="'100%'"
@@ -11,11 +17,12 @@
                 </hot-table>
             </div>
             <div class="table-container">
+                <span class="description-text">Скопируйте и вставьте данные в эту таблицу</span>
                 <hot-table ref="hotTableComponent2" :data="insuredWagonsData" :rowHeaders="true"
                     :columns="columns_table_copy" :manualRowMove="true" :manualColumnMove="true"
                     :preventOverflow="'horizontal'" :filters="true" :language="'ru-RU'" :manualColumnResize="true"
-                    :height="'40vh'" :width="'100%'" :fillHandle="true" :dropdownMenu="dropdownMenuOptions" @afterPaste="handlePaste"
-                    :contextMenu="contextMenuOptions">
+                    :height="'40vh'" :width="'100%'" :fillHandle="true" :dropdownMenu="dropdownMenuOptions"
+                    @afterPaste="handlePaste" :contextMenu="contextMenuOptions">
                 </hot-table>
             </div>
         </div>
@@ -31,6 +38,7 @@ import { HotTable } from '@handsontable/vue';
 import { registerAllModules } from 'handsontable/registry';
 import { registerLanguageDictionary, getLanguagesDictionaries, ruRU } from 'handsontable/i18n';
 import api from "@/api/directory";
+import api_wagon from "@/api/wagonPark";
 registerLanguageDictionary(ruRU);
 registerAllModules();
 import 'handsontable/dist/handsontable.full.css';
@@ -42,10 +50,12 @@ export default {
     props: ['getOwnWagonsCompareData', 'columns', 'columns_table_copy', 'dropdownMenuOptions'],
     data() {
         return {
+            sortWagons: [],
             insuredWagonsData: [
                 { title: 'Номер вагона', data: 'wagon_number' },
-
+ { title: 'Номер вагона', data: 'wagon_number' },
             ],
+
             contextMenuOptions: {
                 items: {
                     'remove_row': {
@@ -54,15 +64,20 @@ export default {
                 }
             },
             selectedWagons: [],
+            status: false,
         };
     },
     watch: {
         getOwnWagonsCompareData: {
-            handler(newData) {
+            async handler(newData) {
                 this.updateTableData('hotTableComponent1', newData);
                 document.querySelectorAll('.hot-display-license-info').forEach(element => {
                     element.style.display = 'none';
                 });
+                let promises = this.getOwnWagonsCompareData.map(item => api_wagon.getWagon(item['Номер вагона']));
+                let result = await Promise.all(promises);
+                this.sortWagons = result.filter(el => el.note1 != '');
+                console.log('AAAAAAAAAAA', this.getOwnWagonsCompareData, this.sortWagons)
 
             },
             deep: true,
@@ -97,7 +112,7 @@ export default {
     methods: {
         async saveData() {
             this.$emit('startStopLoader', true)
-            try{
+            try {
                 await api.sendNewDataInsuranceWagons(this.insuredWagonsData)
 
                 this.$emit('startStopLoader', false)

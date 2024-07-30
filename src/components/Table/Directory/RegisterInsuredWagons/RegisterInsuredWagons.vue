@@ -31,6 +31,8 @@
                                 <br>
                                 <h4 class="air_block_header" v-show="getInsuredWagonsData.length > 0">Застрахованные
                                     вагоны</h4>
+                                <span class="description-text">Всего записей {{ getInsuredWagonsData.length ?? 0
+                                    }}</span>
                                 <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true"
                                     :columns="columns" :preventOverflow="'horizontal'" :filters="true"
                                     :language="'ru-RU'" :manualColumnResize="true" :autoWrapRow="true"
@@ -317,10 +319,16 @@ export default {
 
 
             columns_own_wagons: [
-                { title: 'Номер вагона', data: 'Номер вагона' },
+                { title: 'Номер вагона', data: 'Номер вагона' },   { title: 'Собственник', data: 'owner' },
+            { title: 'В управлении компании', data: 'in_company_management' },
+            { title: 'Примечание 1', data: 'note1' }
             ],
             getInsuredWagonsData: [{ title: 'Номер вагона', data: 'wagon_number' },],
-            getOwnWagonsCompareData: [{ title: 'Номер вагона', data: 'wagon_number' },],
+            getOwnWagonsCompareData: [{ title: 'Номер вагона', data: 'wagon_number' },
+            { title: 'Собственник', data: 'owner' },
+            { title: 'В управлении компании', data: 'in_company_management' },
+            { title: 'Примечание 1', data: 'note1' },
+            ],
         }
     },
     mounted() {
@@ -374,12 +382,10 @@ export default {
         async getOwnWagonsCompare(data) {
             let preData = data.data;
             let compareDataMap = {};
-            console.log('test:', this.getInsuredWagonsData)
             // Создаем карту для getInsuredWagonsData, чтобы быстро проверить наличие вагонов
             this.getInsuredWagonsData.forEach((item) => {
                 compareDataMap[item.wagon_number] = true;
             });
-            console.log('preData - do', preData);
             // Фильтруем preData, оставляя только те вагоны, которых нет в compareDataMap
             preData = preData.filter((el) => {
                 return el['Принадлежность СТЖ'] === 'С' && !compareDataMap[el['Номер вагона']];
@@ -390,12 +396,6 @@ export default {
                 let promises = preData.map(el => api.getWagons({ number: el['Номер вагона'] }));
                 const results = await Promise.all(promises);
 
-
-                // const results = []
-                // for (let i of preData) {
-                //     let result = await api.getWagons({ number: i['Номер вагона'] })
-                //     results.push(result)
-                // }
                 this.loader = false
                 let compareDataMap2 = []
                 for (let i in results) {
