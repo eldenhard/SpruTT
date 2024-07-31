@@ -110,8 +110,8 @@ export default {
                 await api.sendNewDataInsuranceWagons(this.insuredWagonsData)
 
                 this.$emit('startStopLoader', false)
-                this.$toast.success('Данные сохранены', {
-                    timeout: 3000
+                this.$toast.success('Данные сохранены\nДля отображения данных в таблице "Застрахованные вагоны", запросите данные повторно', {
+                    timeout: 7000
                 })
                 this.insuredWagonsData =  [{ title: 'Номер вагона', data: 'wagon_number' }]
 

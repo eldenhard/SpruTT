@@ -1,11 +1,11 @@
 <template>
     <section class="search_bloc">
         <div class="long_search">
-            <input type="text" placeholder="Введите номера вагонов..." v-model="search" @input="IputProcessing(search)">
-            <button class="Request" @click="getRequestToServerData(search)">
-                <span v-if="isSearch">Найти</span>
+            <!-- <input type="text" placeholder="Введите номера вагонов..." v-model="search" @input="IputProcessing(search)"> -->
+            <b-button variant="success" class="btn btn-success" @click="getRequestToServerData(search)" style="display: flex; align-items: center; justify-content: center;">
+                <span v-if="isSearch">Запросить данные по вагонам</span>
                 <b-icon v-if="!isSearch" icon="three-dots" animation="cylon" font-scale="3"></b-icon>
-            </button>
+            </b-button>
         </div>
 
     </section>
@@ -35,7 +35,8 @@ export default {
             }, 500)
         },
 
-    
+        
+  
 
         async getRequestToServerData(search) {
             // if (this.search == "" || this.search.length <= 1) return
@@ -75,7 +76,7 @@ export default {
 </script>
 
 <style scoped>
-.long_search {
+/* .long_search {
     position: relative;
     width: 90%;
     margin: 0 auto;
@@ -94,7 +95,7 @@ export default {
     border-radius: 10px;
     text-align: left !important;
     padding-left: 2% !important;
-}
+} */
 
 ::-webkit-input-placeholder {
     text-align: left;
@@ -115,11 +116,12 @@ export default {
 }
 
 .long_search button {
-    width: 15%;
-    height: 80%;
-    position: absolute;
+    
+   width: 13vw;
+    height:4vh;
+    /* position: absolute;
     top: 4px;
-    right: 5px;
+    right: 5px; */
 
     border-radius: 8px;
 }

@@ -25,7 +25,7 @@
                                         v-show="getInsuredWagonsData.length > 1" style="width: 100%" />
                                 </div>
                                 <br>
-                                <b-button variant="success" style="position: absolute; right: 2%;"
+                                <b-button variant="info" style="position: absolute; right: 2%;"
                                     v-if="getInsuredWagonsData.length > 1" @click="DownloadExcel('test')">Выгрузить
                                     таблицу</b-button>
                                 <br>
