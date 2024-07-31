@@ -676,7 +676,7 @@ import api from '@/api/directory'
 import Loader from "@/components/loader/loader.vue";
 import vSelect from "vue-select";
 import Handsontable from "handsontable";
-import marginIncomeVue from './marginIncome2.vue';
+import marginIncomeVue from './marginIncome.vue';
 import enterDataIncomeVue from './enterDataIncome.vue';
 import { mapState } from "vuex";
 // import chartOperationInfo from './chartOperationInfo.vue';

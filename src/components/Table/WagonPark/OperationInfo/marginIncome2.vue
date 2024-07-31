@@ -103,8 +103,20 @@
                                 <!-- Отклонение -->
                                 <td>{{ (item.md_wo_penalties ?? 0) - (item.margin_income_itogo_po_client ?? 0) | format
                                     }}</td>
-                                <td>{{ (item.md_wo_penalties_budget ?? 0) - (item.margin_income_itogo_po_client ?? 0) |
-                                    format }}</td>
+                                <td>{{ (item.md_wo_penalties_budget ?? 0) - (item.margin_income_itogo_po_client ?? 0) | format }}</td>
+                                <!-- Стат нагрузка -->
+                               <td>0</td>
+                               <td v-if="!item.client.includes('Итого')">{{ item?.aid_itogo_po_client == 0 ? 0 :
+                                    sumStatNagruzka(item.station_group) ?? 0 | format }}</td>
+                                <td v-else>{{ item.total_stat_nagr_fact | format }} </td>
+                                <!-- Оборот -->
+                                 <td>0</td>
+                                 <td v-if="!item.client.includes('Итого')">{{  item?.aid_itogo_po_client == 0 ? 0 :
+                                    sumOborot(item.station_group) ?? 0 | format }}</td>
+                                <td v-else>{{ item.total_oborot_fact | format }} </td>
+                                <!-- Штрафы -->
+                                <td>{{ item.plan_total | format }} </td>
+                                <td>{{ item.total | format }}</td>
                             </tr>
                             <template v-if="item.expanded" v-for="(stationList, key) in item.station_group">
                                 <!-- Разные входные параметры данных (необходимо 2 разных подхода к выводу данных) -->
@@ -122,6 +134,17 @@
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;">{{ station.revenue | format }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="border: 1px solid black;">{{station.aid == 0 ? 0:  station.weight / station.aid | format}}</td>
+                                        <td></td>
+                                        <td>{{station.aid == 0 ? 0:  station.vagonosutki_total / station.aid | format}}</td>
                                     </tr>
                                 </template>
                                 <template  v-else >
@@ -138,6 +161,17 @@
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;">{{stationList.revenue | format  }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td style="border: 1px solid black;">{{stationList.aid == 0 ? 0:  stationList.weight / stationList.aid | format}}</td>
+                                        <td></td>
+                                        <td>{{stationList.aid == 0 ? 0:  stationList.vagonosutki_total / stationList.aid | format}}</td>
                                     </tr>
                                 </template>
                             </template>
@@ -403,30 +437,65 @@ export default {
             return sum;
         },
         // Расчет стат нагрузки
+        // sumStatNagruzka(stationGroup) {
+        //     let sum = 0;
+        //     console.log('из группы подсчета данных',stationGroup)
+        //     for (let key in stationGroup) {
+        //         if (stationGroup.hasOwnProperty(key)) {
+        //             let value = stationGroup[key];
+        //             if (value.aid !== 0) {
+        //                 sum += value.weight / value.aid;
+        //             }
+        //         }
+        //     }
+        //     return sum;
+        // },
         sumStatNagruzka(stationGroup) {
             let sum = 0;
+            console.log('из группы подсчета данных', stationGroup);
             for (let key in stationGroup) {
                 if (stationGroup.hasOwnProperty(key)) {
-                    let value = stationGroup[key];
-                    if (value.aid !== 0) {
-                        sum += value.weight / value.aid;
+                    let stationList = stationGroup[key];
+                    // Проверяем, является ли элемент массивом
+                    if (Array.isArray(stationList)) {
+                        stationList.forEach(value => {
+                            if (value.aid !== 0) {
+                                sum += value.weight / value.aid;
+                            }
+                        });
+                    } else {
+                        if (stationList.aid !== 0) {
+                            sum += stationList.weight / stationList.aid;
+                        }
                     }
                 }
             }
             return sum;
         },
+        // Суммирование оборотов
         sumOborot(stationGroup) {
             let sum = 0;
+            console.log('из группы подсчета данных', stationGroup);
             for (let key in stationGroup) {
                 if (stationGroup.hasOwnProperty(key)) {
-                    let value = stationGroup[key];
-                    if (value.aid !== 0) {
-                        sum += value.vagonosutki_total / value.aid;
+                    let stationList = stationGroup[key];
+                    // Проверяем, является ли элемент массивом
+                    if (Array.isArray(stationList)) {
+                        stationList.forEach(value => {
+                            if (value.aid !== 0) {
+                                sum += value.vagonosutki_total / value.aid;
+                            }
+                        });
+                    } else {
+                        if (stationList.aid !== 0) {
+                            sum += stationList.vagonosutki_total / stationList.aid;
+                        }
                     }
                 }
             }
             return sum;
         },
+     
         returnTotalFines(stationGroup, type, test) {
             if (test == 'zero') {
                 if (!stationGroup) return 0
@@ -1095,6 +1164,7 @@ export default {
                                         if (!summarizedData[newKey]) {
                                             summarizedData[newKey] = 0;
                                         }
+                                        
                                         summarizedData[newKey] += obj[key];
                                     }
                                 }
