@@ -40,15 +40,15 @@ export default {
         async getRequestToServerData(search) {
             // if (this.search == "" || this.search.length <= 1) return
             this.isSearch = false
-            let obj = { wagons: search.replace(/[^.\d]+/g, "").replace(/(\d{8})(?=\d)/g, '$1,'), }
+            let obj = { wagons: search }
             let today = new Date().toISOString().slice(0, 10)
             let allData = [];
             try {
                 // let response = await api.getAllInsuranceWagons(obj)
 
-
+                console.log(obj)
                 let last_page = 1
-                let response = await api.getAllInsuranceWagons(obj,last_page);
+                let response = await api.getAllInsuranceWagons(obj, last_page);
                 allData.push(...response.data.data)
                 while(last_page < response.data.total_pages){
                     last_page +=1
@@ -58,7 +58,9 @@ export default {
 
                 let today = new Date().toISOString().slice(0, 10);
                 let response2 = await api.getOwnWagonsCompare(today);
-
+                this.$toast.success('Данные по застрахованным вагонам загружены\n Продолжается загрузка незастрахованных вагонов', {
+                    timeout: 3000
+                })
                 this.$emit('getInsuredWagons', allData);
                 this.$emit('getOwnWagonsCompare', response2)
                 this.isSearch = true

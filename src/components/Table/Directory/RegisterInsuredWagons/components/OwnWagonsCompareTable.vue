@@ -2,14 +2,11 @@
     <div>
         <br>
         <h4 v-show="getOwnWagonsCompareData.length > 0" class="air_block_header">Перечень незастрахованных вагонов</h4>
-        <b-form-checkbox id="checkbox-1" v-model="status" name="checkbox-1" value="accepted"
-            unchecked-value="not_accepted">
-            Включить вагоны с примечаниями
-        </b-form-checkbox>
+
         <div class="tables-container">
 
             <div class="table-container">
-                <span class="description-text">Всего записей {{ getOwnWagonsCompareData.length ?? 0 }}</span>
+                <span class="description-text">Скопируйте данные из этой таблицы</span>
                 <hot-table ref="hotTableComponent1" :data="getOwnWagonsCompareData" :rowHeaders="true"
                     :columns="columns" :manualRowMove="true" :manualColumnMove="true" :preventOverflow="'horizontal'"
                     :filters="true" :language="'ru-RU'" :manualColumnResize="true" :height="'40vh'" :width="'100%'"
@@ -17,7 +14,7 @@
                 </hot-table>
             </div>
             <div class="table-container">
-                <span class="description-text">Скопируйте и вставьте данные в эту таблицу</span>
+                <span class="description-text">Вставьте данные в эту таблицу</span>
                 <hot-table ref="hotTableComponent2" :data="insuredWagonsData" :rowHeaders="true"
                     :columns="columns_table_copy" :manualRowMove="true" :manualColumnMove="true"
                     :preventOverflow="'horizontal'" :filters="true" :language="'ru-RU'" :manualColumnResize="true"
@@ -53,7 +50,6 @@ export default {
             sortWagons: [],
             insuredWagonsData: [
                 { title: 'Номер вагона', data: 'wagon_number' },
- { title: 'Номер вагона', data: 'wagon_number' },
             ],
 
             contextMenuOptions: {
@@ -74,10 +70,8 @@ export default {
                 document.querySelectorAll('.hot-display-license-info').forEach(element => {
                     element.style.display = 'none';
                 });
-                let promises = this.getOwnWagonsCompareData.map(item => api_wagon.getWagon(item['Номер вагона']));
-                let result = await Promise.all(promises);
-                this.sortWagons = result.filter(el => el.note1 != '');
-                console.log('AAAAAAAAAAA', this.getOwnWagonsCompareData, this.sortWagons)
+    
+                console.log('AAAAAAAAAAA', this.getOwnWagonsCompareData)
 
             },
             deep: true,
@@ -119,6 +113,8 @@ export default {
                 this.$toast.success('Данные сохранены', {
                     timeout: 3000
                 })
+                this.insuredWagonsData =  [{ title: 'Номер вагона', data: 'wagon_number' }]
+
             } catch (err) {
                 console.log(err)
                 this.$emit('startStopLoader', false)

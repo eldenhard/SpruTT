@@ -215,6 +215,9 @@ const getAllInsuranceWagons = (data, page) => {
 const sendNewDataInsuranceWagons = (data) => {
     return api.post(`${finance}/insurance-wagons/save-many/`, data)
 }
+const getInsuranceWagons = () => {
+    return api.get(`${finance}/insurance-wagons/`)
+}
 const getOwnWagonsCompare = (today) => {
    return api.get(`${finance}/own-wagons-compare/?on_date=${today}&belong_source=stg`)
 }
@@ -311,7 +314,8 @@ export default {
     getAnnexesAgreementAdvancedFilter,
     getWagonFlights,
     getDataInsuranceCases,
-
+    getInsuranceWagons,
+    
     getAllcounterparties,
     putCounterparties,
     getDirectoryFarm,
