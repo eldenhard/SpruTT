@@ -103,25 +103,98 @@
                                 <!-- Отклонение -->
                                 <td>{{ (item.md_wo_penalties ?? 0) - (item.margin_income_itogo_po_client ?? 0) | format
                                     }}</td>
-                                <td>{{ (item.md_wo_penalties_budget ?? 0) - (item.margin_income_itogo_po_client ?? 0) | format }}</td>
+                                <td>{{ (item.md_wo_penalties_budget ?? 0) - (item.margin_income_itogo_po_client ?? 0) |
+                                    format }}</td>
                                 <!-- Стат нагрузка -->
-                               <td>0</td>
-                               <td v-if="!item.client.includes('Итого')">{{ item?.aid_itogo_po_client == 0 ? 0 :
+                                <td>0</td>
+                                <td v-if="!item.client.includes('Итого')">{{ item?.aid_itogo_po_client == 0 ? 0 :
                                     sumStatNagruzka(item.station_group) ?? 0 | format }}</td>
                                 <td v-else>{{ item.total_stat_nagr_fact | format }} </td>
                                 <!-- Оборот -->
-                                 <td>0</td>
-                                 <td v-if="!item.client.includes('Итого')">{{  item?.aid_itogo_po_client == 0 ? 0 :
+                                <td>0</td>
+                                <td v-if="!item.client.includes('Итого')">{{ item?.aid_itogo_po_client == 0 ? 0 :
                                     sumOborot(item.station_group) ?? 0 | format }}</td>
                                 <td v-else>{{ item.total_oborot_fact | format }} </td>
                                 <!-- Штрафы -->
-                                <td>{{ item.plan_total | format }} </td>
-                                <td>{{ item.total | format }}</td>
+                                <td v-if="!item.client.includes('Итого')">{{ item.plan_total | format }}</td>
+                                <td v-else>{{ item.plan_total_by_VLAD | format }}</td>
+
+                                <td v-if="!item.client.includes('Итого')">{{ item.total | format }}</td>
+                                <td v-else>{{ item.total_by_VLAD | format }}</td>
+
+                                <!-- Доходность -->
+                                <!-- План(без штр) БП -->
+                                <td>{{ item.income_wo_penalties ?? 0 | format }} </td>
+                                <!-- План(без штр) Б	 -->
+                                <td>{{ item.income_wo_penalties_budget ?? 0 | format }} </td>
+                                <!-- Факт(без штр) -->
+                                <td v-if="!item.client.includes('Итого')">
+                                    {{
+                                        (item?.vagonosutki_total_itogo_po_client == 0 ||
+                                            item?.margin_income_itogo_po_client == 0 ||
+                                            !item?.vagonosutki_total_itogo_po_client ||
+                                            !item?.margin_income_itogo_po_client) ? 0 :
+                                            ((item.margin_income_itogo_po_client ?? 0) / (item.vagonosutki_total_itogo_po_client
+                                                ?? 0))
+                                            | format }}
+                                </td>
+
+                                <td v-else>{{ (item.margin_income_by_VLAD) / item.vagonosutki_total_by_VLAD | format }}
+                                </td>
+                                <!-- План (со штр) БП	 -->
+                                <td>{{ item.income_w_penalties ?? 0 | format }} </td>
+
+                                <!-- План (со штр) Б	 -->
+                                <td>{{ item.income_w_penalties_budget ?? 0 | format }}</td>
+                                
+                                <!-- Факт(со штр) -->
+                                <td v-if="!item.client.includes('Итого')">
+                                    {{     (item?.vagonosutki_total_itogo_po_client == 0 ||
+                                            item?.margin_income_itogo_po_client == 0 ||
+                                            !item?.vagonosutki_total_itogo_po_client ||
+                                            !item?.margin_income_itogo_po_client) ?  0:
+                                        (item.margin_income_itogo_po_client + item.total) / item.vagonosutki_total_itogo_po_client | format
+                                    }}
+
+                                </td>
+                                <td v-else>
+                                    {{ (item.margin_income_by_VLAD + item.total_by_VLAD) / item.vagonosutki_total_by_VLAD | format }}
+                                </td>
+
+                                <!-- +/- Б(без штр) -->
+                                <td v-if="!item.client.includes('Итого')">
+                                    {{
+                                        (item?.vagonosutki_total_itogo_po_client == 0 ||
+                                            item?.margin_income_itogo_po_client == 0 ||
+                                            !item?.vagonosutki_total_itogo_po_client ||
+                                            !item?.margin_income_itogo_po_client) ?  item.income_wo_penalties :
+                                            item.income_wo_penalties -  ((item.margin_income_itogo_po_client ?? 0) / (item.vagonosutki_total_itogo_po_client
+                                                ?? 0))
+                                            | format }}
+                                </td>
+
+                                <td v-else>{{ item.income_wo_penalties - ((item.margin_income_by_VLAD) / item.vagonosutki_total_by_VLAD) | format }}</td>
+                                <td v-if="!item.client.includes('Итого')">
+                                    {{
+                                        (item?.vagonosutki_total_itogo_po_client == 0 ||
+                                            item?.margin_income_itogo_po_client == 0 ||
+                                            !item?.vagonosutki_total_itogo_po_client ||
+                                            !item?.margin_income_itogo_po_client) ?  item.income_wo_penalties_budget :
+                                            item.income_wo_penalties_budget -  ((item.margin_income_itogo_po_client ?? 0) / (item.vagonosutki_total_itogo_po_client
+                                                ?? 0))
+                                            | format }}
+                                </td>
+
+                                <td v-else>{{ item.income_wo_penalties_budget - ((item.margin_income_by_VLAD) / item.vagonosutki_total_by_VLAD) | format }}</td>
+                                
+                                <td>0</td>
+                                <td>0</td>
                             </tr>
                             <template v-if="item.expanded" v-for="(stationList, key) in item.station_group">
                                 <!-- Разные входные параметры данных (необходимо 2 разных подхода к выводу данных) -->
                                 <template v-if="!item.client.includes('Прочие')">
-                                    <tr class="Total_blue"  v-for="(station, sIndex) in stationList"   :key="`${item.client}_${key}_${sIndex}`">
+                                    <tr class="Total_blue" v-for="(station, sIndex) in stationList"
+                                        :key="`${item.client}_${key}_${sIndex}`">
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
@@ -142,25 +215,40 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td style="border: 1px solid black;">{{station.aid == 0 ? 0:  station.weight / station.aid | format}}</td>
+                                        <td style="border: 1px solid black;">{{ station.aid == 0 ? 0 : station.weight /
+                                            station.aid | format }}</td>
                                         <td></td>
-                                        <td>{{station.aid == 0 ? 0:  station.vagonosutki_total / station.aid | format}}</td>
+                                        <td>{{ station.aid == 0 ? 0 : station.vagonosutki_total / station.aid | format
+                                            }}
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                 </template>
-                                <template  v-else >
-                                    <tr >
+                                <template v-else>
+                                    <tr class="Total_blue">
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;">{{ stationList.station_name }}</td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
-                                        <td style="border: 1px solid black;">{{ stationList.weight| format  }}</td>
+                                        <td style="border: 1px solid black;">{{ stationList.weight | format }}</td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
-                                        <td style="border: 1px solid black;">{{stationList.revenue | format  }}</td>
+                                        <td style="border: 1px solid black;">{{ stationList.revenue | format }}</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -169,14 +257,63 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td style="border: 1px solid black;">{{stationList.aid == 0 ? 0:  stationList.weight / stationList.aid | format}}</td>
+                                        <td style="border: 1px solid black;">{{ stationList.aid == 0 ? 0 :
+                                            stationList.weight / stationList.aid | format }}</td>
                                         <td></td>
-                                        <td>{{stationList.aid == 0 ? 0:  stationList.vagonosutki_total / stationList.aid | format}}</td>
+                                        <td>{{ stationList.aid == 0 ? 0 : stationList.vagonosutki_total /
+                                            stationList.aid
+                                            | format }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                 </template>
                             </template>
                         </template>
-
+                        <tr>
+                                <td colspan="4">Общий итог</td>
+                                <!-- <td>{{itogoDataResult}}</td> -->
+                                <td>{{ }}</td>
+                                  <td>{{ }}</td>
+                                  <td>{{ itogoDataResult.el6 | format}}</td>
+                                  <td>{{ itogoDataResult.el7 | format}}</td>
+                                 <td>{{ itogoDataResult.el8 | format}}</td>
+                                  <td>{{ }}</td>
+                                  <td>{{ }}</td>
+                                 <td>{{ itogoDataResult.el11 | format}}</td>
+                                 <td>{{ itogoDataResult.el12 | format}}</td>
+                                 <td>{{ itogoDataResult.el13 | format}}</td>
+                                  <td>{{ itogoDataResult.el14 | format}}</td>
+                                  <td>{{ }}</td>
+                                 <td>{{ }}</td>
+                                 <td>{{ itogoDataResult.el17 | format}}</td>
+                                 <td>{{ itogoDataResult.el18 | format}}</td>
+                                 <td>{{ itogoDataResult.el19 | format}}</td>
+                                 <td>{{ itogoDataResult.el20 | format}}</td>
+                                 <td>{{ itogoDataResult.el21 | format}}</td>
+                                 <td>{{ itogoDataResult.el22 | format}}</td>
+                                 <td>{{ itogoDataResult.el23 | format}}</td>
+                                 <td>{{ itogoDataResult.el24 | format}} </td>
+                                 <td>{{ }}</td>
+                                 <td>{{ }}</td>
+                                 <td>{{ itogoDataResult.el27 | format}} </td> <!-- среднее -->
+                                 <td>{{ itogoDataResult.el28 | format}}</td>
+                                 <td>{{ itogoDataResult.el29 | format}}</td>
+                                 <td>{{ itogoDataResult.el30 | format}} </td> <!-- среднее -->
+                                 <td>{{ itogoDataResult.el31 | format}}  </td> <!-- среднее -->
+                                 <td>{{ itogoDataResult.el32 | format}}  </td> <!-- среднее -->
+                                 <td>{{ }}</td>
+                                 <td>{{ }}</td>
+                            </tr>
                     </tbody>
                 </table>
             </div>
@@ -452,7 +589,6 @@ export default {
         // },
         sumStatNagruzka(stationGroup) {
             let sum = 0;
-            console.log('из группы подсчета данных', stationGroup);
             for (let key in stationGroup) {
                 if (stationGroup.hasOwnProperty(key)) {
                     let stationList = stationGroup[key];
@@ -475,7 +611,6 @@ export default {
         // Суммирование оборотов
         sumOborot(stationGroup) {
             let sum = 0;
-            console.log('из группы подсчета данных', stationGroup);
             for (let key in stationGroup) {
                 if (stationGroup.hasOwnProperty(key)) {
                     let stationList = stationGroup[key];
@@ -495,7 +630,7 @@ export default {
             }
             return sum;
         },
-     
+
         returnTotalFines(stationGroup, type, test) {
             if (test == 'zero') {
                 if (!stationGroup) return 0
@@ -507,37 +642,52 @@ export default {
             }
             return stationGroup[type]
         },
+
+        // calculateTotalVolume(stationGroup, type) {
+        //     if (!stationGroup) return 0
+        //     const valuesArray = Object.values(stationGroup)
+
+        //     const totalVolume = valuesArray.reduce((acc, item) => {
+        //         return acc + item[type]
+        //     }, 0)
+        //     return totalVolume
+        // },
         calculateTotalVolume(stationGroup, type) {
-            if (!stationGroup) return 0
-            const valuesArray = Object.values(stationGroup)
-
-            const totalVolume = valuesArray.reduce((acc, item) => {
-                return acc + item[type]
-            }, 0)
-            return totalVolume
-        },
-        calculateTotalVolume2(stationGroup, type, vagonosutki) {
-            // Проверяем, что stationGroup не равен null или undefined
             if (!stationGroup) return 0;
+            let totalVolume = 0;
 
-            // Извлекаем массив значений из объекта stationGroup
-            const valuesArray = Object.values(stationGroup);
-
-            // Инициализируем переменную для суммирования общего объема
-            const totalVolume = valuesArray.reduce((acc, item) => {
-                // Проверяем, что у объекта item есть необходимые свойства (type и vagonosutki) и они являются числами
-                if (item && typeof item[type] === 'number' && typeof item[vagonosutki] === 'number') {
-                    // Добавляем к аккумулятору значение, поделенное на vagonosutki
-                    return acc + (item[type] / item[vagonosutki]);
-                } else {
-                    // Возвращаем аккумулятор без изменений, если объект item не содержит нужные свойства
-                    return acc;
+            for (let key in stationGroup) {
+                if (stationGroup.hasOwnProperty(key)) {
+                    let stationList = stationGroup[key];
+                    if (Array.isArray(stationList)) {
+                        // Если stationList - массив
+                        stationList.forEach(item => {
+                            totalVolume += item[type] || 0;
+                        });
+                    } else if (typeof stationList === 'object') {
+                        // Если stationList - объект, проходимся по его значениям
+                        for (let innerKey in stationList) {
+                            if (stationList.hasOwnProperty(innerKey)) {
+                                let innerItem = stationList[innerKey];
+                                if (Array.isArray(innerItem)) {
+                                    innerItem.forEach(item => {
+                                        totalVolume += item[type] || 0;
+                                    });
+                                } else if (typeof innerItem === 'object') {
+                                    totalVolume += innerItem[type] || 0;
+                                }
+                            }
+                        }
+                    } else {
+                        // Если stationList - объект, но не массив
+                        totalVolume += stationList[type] || 0;
+                    }
                 }
-            }, 0);
+            }
 
-            // Возвращаем общий объем, округленный или в нужном формате
             return totalVolume;
         },
+
         async getRoadForStation(val, destination,) {
             const memoKey = `${val}_${destination}`;
             if (this.memo[memoKey]) {
@@ -832,7 +982,7 @@ export default {
                                             //         }
                                             //     }
                                             // }
-                                            // // // // ЕСЛИ назначение сокращенное название дороги СВР ЗСБ и т.д.
+                                            // // // ЕСЛИ назначение сокращенное название дороги СВР ЗСБ и т.д.
                                             // else if (
                                             //     all_station_group.includes(item.destination) &&
                                             //     !listExcluded.includes(station_list) &&
@@ -903,7 +1053,7 @@ export default {
                                                     anotherCargo[uniqueKey] = { ...stationListData[station_list], client: client, cargo: cargo, station_name: station_list, total: item.total, plan_total: item.plan_total };
                                                 }
 
-                                         
+
 
                                             }
                                         }
@@ -964,6 +1114,7 @@ export default {
                         // Удаляем item, если station_group существует, но является пустым массивом
                         return false;
                     });
+
 
 
                     const clients = new Set(preData.map(item => item.client));
@@ -1147,7 +1298,57 @@ export default {
                         }
                     }
 
+                    const total_weight_by_client_array = Object.entries(total_weight_by_client).map(([client, data]) => ({ client, ...data }));
 
+                    let curent_client = "";
+                    for (let obj of this.businessPlanData) {
+                        let client = obj.client;
+
+                        // Проверка для "Прочие"
+                        if (client.includes('Прочие')) {
+                            obj.total = 0;
+                            obj.plan_total = 0;
+                            if (obj.station_group) {
+                                obj.station_group.sort((a, b) => a.station_name.localeCompare(b.station_name));
+                            }
+
+                            const baseClient = client.replace('Прочие ', '');
+                            const baseClientData = this.businessPlanData.find(data => data.client === baseClient);
+                            if (baseClientData) {
+                                const clientData = total_weight_by_client[baseClient];
+                                if (clientData && clientData.total_volume_fact) {
+                                    const totalWeight = this.calculateTotalVolume(obj.station_group, 'weight');
+                                    obj.total = (totalWeight / clientData.total_volume_fact) * baseClientData.total;
+                                    obj.plan_total = (totalWeight / clientData.total_volume_fact) * baseClientData.plan_total;
+                                }
+                            }
+                        } else if (client.includes('Итого по ')) {
+                            const baseClient = client.replace('Итого по ', '');
+                            obj.total = this.businessPlanData.find(data => data.client === baseClient)?.total || 0;
+                            obj.plan_total = this.businessPlanData.find(data => data.client === baseClient)?.plan_total || 0;
+                        }
+
+                        if (curent_client.includes(client)) {
+                            const clientData = total_weight_by_client_array.find(data => data.client === curent_client);
+                            if (clientData && clientData.total_volume_fact) {
+                                obj.total = (this.calculateTotalVolume(obj.station_group, 'weight') / clientData.total_volume_fact) * obj.total;
+                                obj.plan_total = (this.calculateTotalVolume(obj.station_group, 'weight') / clientData.total_volume_fact) * obj.plan_total;
+                            }
+                        } else {
+                            curent_client = client;
+                        }
+                    }
+                    for (let client of Object.keys(total_weight_by_client)) {
+                        let firstClientObj = this.businessPlanData.find(obj => obj.client === client);
+                        if (firstClientObj) {
+                            const clientData = total_weight_by_client[client];
+                            if (clientData && clientData.total_volume_fact) {
+                                const totalWeight = this.calculateTotalVolume(firstClientObj.station_group, 'weight');
+                                firstClientObj.total = (totalWeight / clientData.total_volume_fact) * firstClientObj.total;
+                                firstClientObj.plan_total = (totalWeight / clientData.total_volume_fact) * firstClientObj.plan_total;
+                            }
+                        }
+                    }
 
                     // Подсчет итого по каждому полю по клиенту
                     this.businessPlanData.forEach(item => {
@@ -1156,7 +1357,7 @@ export default {
                         const summarizedData = {};
 
                         // Проверяем, является ли station_group массивом
-                        if (Array.isArray(item.station_group) ) {
+                        if (Array.isArray(item.station_group)) {
                             item.station_group.forEach(obj => {
                                 for (let key in obj) {
                                     if (typeof obj[key] === 'number') {
@@ -1164,7 +1365,7 @@ export default {
                                         if (!summarizedData[newKey]) {
                                             summarizedData[newKey] = 0;
                                         }
-                                        
+
                                         summarizedData[newKey] += obj[key];
                                     }
                                 }
@@ -1179,7 +1380,6 @@ export default {
                                 if (Array.isArray(stationList)) {
                                     stationList.forEach(obj => {
                                         for (let key in obj) {
-                                            console.log(key)
                                             if (typeof obj[key] === 'number') {
                                                 const newKey = `${key}_itogo_po_client`;
                                                 if (!summarizedData[newKey]) {
@@ -1202,7 +1402,24 @@ export default {
                             item.vagonosutki_total_itogo_po_client = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.vagonosutki_total || 0;
                         }
                     });
+                    // Вывод корректных даных для штрафов
+                    this.businessPlanData.forEach((item) => {
+                        this.fines_data.forEach((el) => {
+                            if (item.client.includes('Итого по') && item.client.includes(el.counterparty)) {
+                                item.total_by_VLAD = el.total
+                                item.plan_total_by_VLAD = el.plan_total
+                            }
+                        })
+                    })
+                    this.businessPlanData.forEach((item) => {
 
+                        if (item.client.includes('Итого по')) {
+                            item.margin_income_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.margin_income
+                            item.revenue_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.revenue
+                            item.weight_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.weight
+                            item.vagonosutki_total_by_VLAD = this.margin_income_data.margin_incomes[item.client.slice(9).trim()]?.vagonosutki_total
+                        }
+                    })
 
                     console.log(this.businessPlanData, 'финальные данные');
                     this.$toast.success('Успешно\nДанные маржинальной доходности получены', { timeout: 3500 });
