@@ -5,6 +5,9 @@ export const resource = "wagon-park"
 const getWagons = (filters) => {
     return api.get(`${resource}/wagons`, { params: filters })
 }
+const postInsuranceNote = (wagon_number, data) => {
+    return api.patch(`${resource}/wagons/${wagon_number}/`, data)
+}
 const getWagon = (number) => {
     return api.get(`${resource}/wagons/${number}/`)
 }
@@ -194,6 +197,7 @@ const getAllRoads = (road_name) => {
 }
 // Получить все
 export default {
+    postInsuranceNote,
     getWagons,
     getWagon,
     getPassport,

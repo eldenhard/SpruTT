@@ -16,8 +16,8 @@
         <a class="WatchAllArenda" v-on:click="visible = !visible">
             {{
                 visible
-                ? "Скрыть данные по ставкам"
-                : "Отобразить данные по ставкам"
+                    ? "Скрыть данные по ставкам"
+                    : "Отобразить данные по ставкам"
             }}
         </a>
         <div class="table-content" v-show="visible">
@@ -28,8 +28,6 @@
                     <option value="1">1</option>
                     <option value="10">10</option>
                     <option value="25">25</option>
-                    <option value="50">50</option>
-
                 </select>
             </label>
 
@@ -123,9 +121,10 @@
                             <!-- ДАТА -->
                             <td>
                                 <div class="inputcontainer">
-                                    <input type="date" :id="`on_date` + item.id" v-model="item.on_date" v-on:keyup.enter="
-                                        submitData(item.on_date, item.id, 'on_date', 'on_date_load')
-                                        " />
+                                    <input type="date" :id="`on_date` + item.id" v-model="item.on_date"
+                                        v-on:keyup.enter="
+                                            submitData(item.on_date, item.id, 'on_date', 'on_date_load')
+                                            " />
                                     <div class="icon-container" :id="`on_date_load` + item.id" style="display: none">
                                         <i class="loader"></i>
                                     </div>
@@ -134,9 +133,10 @@
                             <!-- ДАТА ОКОНЧАНИЯ -->
                             <td>
                                 <div class="inputcontainer">
-                                    <input type="date" :id="`end_date` + item.id" v-model="item.end_date" v-on:keyup.enter="
-                                        submitData(item.end_date, item.id, 'end_date', 'end_date_load')
-                                        " />
+                                    <input type="date" :id="`end_date` + item.id" v-model="item.end_date"
+                                        v-on:keyup.enter="
+                                            submitData(item.end_date, item.id, 'end_date', 'end_date_load')
+                                            " />
                                     <div class="icon-container" :id="`end_date_load` + item.id" style="display: none">
                                         <i class="loader"></i>
                                     </div>
@@ -169,7 +169,8 @@
                         <tr>
                             <td colspan="13">
                                 <details colspan="13">
-                                    <summary style="background: lightgrey; color: black; text-align: center !important;">
+                                    <summary
+                                        style="background: lightgrey; color: black; text-align: center !important;">
                                         Приложений {{ item.attachments.length }} шт.
                                     </summary>
 
@@ -177,7 +178,8 @@
                             <!-- <td>Приложение {{ att.agreement_number }}</td> -->
                             <details>
                                 <summary style="width: 78.5vw;  text-align: center !important;">
-                                    Приложение {{ att.agreement_number }} <span v-if="att.attachments[0]?.on_date">от</span>
+                                    Приложение {{ att.agreement_number }} <span
+                                        v-if="att.attachments[0]?.on_date">от</span>
                                     {{ att.attachments[0]?.on_date?.split('-').reverse().join('.') }}
                                 </summary>
                         <tr>
@@ -188,7 +190,8 @@
                                     <input id="all" type="checkbox" :checked="selectAll" @change="toggleSelectAll">
                                 </label>
                             </th> -->
-                            <th>Все&nbsp;<input id="all" type="checkbox" :checked="selectAll" @change="toggleSelectAll(att.agreement_number)"></th>
+                            <th>Все&nbsp;<input id="all" type="checkbox" :checked="selectAll"
+                                    @change="toggleSelectAll(att.agreement_number)"></th>
                             <!-- <th>Дата</th> -->
                             <th>Дата оконч.</th>
                             <!-- <th>Клиент</th> -->
@@ -224,7 +227,8 @@
                                             v-on:keyup.enter="
                                                 submitData(childr.end_date, childr.id, 'end_date', 'end_date_load')
                                                 " />
-                                        <div class="icon-container" :id="`end_date_load` + childr.id" style="display: none">
+                                        <div class="icon-container" :id="`end_date_load` + childr.id"
+                                            style="display: none">
                                             <i class="loader"></i>
                                         </div>
                                     </div>
@@ -243,8 +247,8 @@
                                 </td> -->
                                 <td>
                                     <div class="inputcontainer">
-                                        <input :id="`distance_min` + childr.id" type="text" v-model="childr.distance_min"
-                                            v-on:keyup.enter="
+                                        <input :id="`distance_min` + childr.id" type="text"
+                                            v-model="childr.distance_min" v-on:keyup.enter="
                                                 submitData(childr.distance_min, childr.id, 'distance_min', 'distance_min_load')
                                                 " />
                                         <div class="icon-container" :id="`distance_min_load` + childr.id"
@@ -255,8 +259,8 @@
                                 </td>
                                 <td>
                                     <div class="inputcontainer">
-                                        <input :id="`distance_max` + childr.id" type="text" v-model="childr.distance_max"
-                                            v-on:keyup.enter="
+                                        <input :id="`distance_max` + childr.id" type="text"
+                                            v-model="childr.distance_max" v-on:keyup.enter="
                                                 submitData(childr.distance_max, childr.id, 'distance_max', 'distance_max_load')
                                                 " />
                                         <div class="icon-container" :id="`distance_max_load` + childr.id"
@@ -271,16 +275,18 @@
                                             v-on:keyup.enter="
                                                 submitData(childr.stavka, childr.id, 'stavka', 'stavka_load')
                                                 " />
-                                        <div class="icon-container" :id="`stavka_load` + childr.id" style="display: none">
+                                        <div class="icon-container" :id="`stavka_load` + childr.id"
+                                            style="display: none">
                                             <i class="loader"></i>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="inputcontainer" style="width: 100px !important;">
-                                        <input :id="`nds` + childr.id" type="text" v-model="childr.nds" v-on:keyup.enter="
-                                            submitData(childr.nds, childr.id, 'nds', 'nds_load')
-                                            " />
+                                        <input :id="`nds` + childr.id" type="text" v-model="childr.nds"
+                                            v-on:keyup.enter="
+                                                submitData(childr.nds, childr.id, 'nds', 'nds_load')
+                                                " />
                                         <div class="icon-container" :id="`nds_load` + childr.id" style="display: none">
                                             <i class="loader"></i>
                                         </div>
@@ -291,7 +297,8 @@
                                         <input :id="`cargo` + childr.id" type="text" v-model="childr.cargo_name"
                                             v-on:keyup.enter="
                                                 submitData(childr.cargo_name, childr.id, 'cargo', 'cargo_load')" />
-                                        <div class="icon-container" :id="`cargo_load` + childr.id" style="display: none">
+                                        <div class="icon-container" :id="`cargo_load` + childr.id"
+                                            style="display: none">
                                             <i class="loader"></i>
                                         </div>
                                     </div>
@@ -329,7 +336,8 @@
                                 <td>{{ childr?.departure_stations ? childr?.departure_stations.join(",") : "" }}</td>
                                 <!-- Мн. станций отправки-->
                                 <td>{{ childr?.distance }}</td> <!-- Расстояние-->
-                                <td>{{ childr?.next_loading_stations ? childr.next_loading_stations.join(",") : "" }}</td>
+                                <td>{{ childr?.next_loading_stations ? childr.next_loading_stations.join(",") : "" }}
+                                </td>
                                 <!-- Станция следующей погрузки-->
                                 <td>{{ childr?.exclude_next_loading_stations ?
                                     childr.exclude_next_loading_stations.join(",") : "" }}</td>
@@ -362,15 +370,15 @@
                 </li>
             </ul>
         </div>
-<br>
-<br>
+        <br>
+        <br>
         <!-- </b-container> -->
         <Notifications :show="showNotify" :header="notifyHead" :message="notifyMessage" :block-class="notifyClass"
             id="notif" />
     </div>
 </template>
-  
-  
+
+
 <script>
 import api from "@/api/directory";
 import apiStations from "@/api/wagonPark"
@@ -378,11 +386,40 @@ import Loader from "@/components/loader/loader.vue";
 import Notifications from "@/components/notifications/Notifications.vue";
 import { mapState } from "vuex";
 import loader_mini from "@/components/loader/loader_mini.vue";
-
+import { HotTable } from '@handsontable/vue';
+import 'handsontable/dist/handsontable.full.css';
 export default {
-    components: { Loader, Notifications, loader_mini },
+    components: { Loader, Notifications, loader_mini, HotTable },
     data() {
         return {
+            columns: [
+                { title: '№', data: 'index' },
+                { title: 'Номер дог.', data: 'agreement_number' },
+                { title: 'Дата', data: 'on_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
+                { title: 'Дата оконч.', data: 'end_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
+                { title: 'Клиент', data: 'client' },
+                { title: 'Ответственный', data: 'responsible_name' }
+            ],
+            columnsAttachments: [
+                { title: 'Все', data: 'select_all', type: 'checkbox', renderer: 'html' },
+                { title: 'Дата оконч.', data: 'end_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
+                { title: 'Расстояние от', data: 'distance_min' },
+                { title: 'Расстояние до', data: 'distance_max' },
+                { title: 'Ставка', data: 'stavka' },
+                { title: 'НДС', data: 'nds' },
+                { title: 'Груз', data: 'cargo_name' },
+                { title: 'Станция отпр.', data: 'departure_station_name' },
+                { title: 'Станция назн.', data: 'destination_station_name' },
+                { title: 'Сдвоенный рейс', data: 'for_paired_flights', type: 'checkbox', renderer: 'html' },
+                { title: 'Груз наимен', data: 'cargos_list' },
+                { title: 'Мн. станций отправки', data: 'departure_stations' },
+                { title: 'Расстояние', data: 'distance' },
+                { title: 'Станция следующей погрузки', data: 'next_loading_stations' },
+                { title: 'Станции исключения назначения', data: 'exclude_next_loading_stations' },
+                { title: 'Страна', data: 'country_name' },
+                { title: 'Вагоны', data: 'wagons_list' },
+                { title: 'Ответственный', data: 'responsible_name' }
+            ],
             all_checkbox: [],
             selectAll: false,
             selectedItems: [],
@@ -406,7 +443,7 @@ export default {
 
             ten_visible: false,
             filter_arendaData: {
-                page_size: "25",
+                page_size: "10",
                 client: "",
                 cargo: "",
                 wagon_type: "Цистерна",
@@ -465,12 +502,12 @@ export default {
             this.selectAll = !this.selectAll
             if (this.selectAll) {
                 console.log(this.data[0].attachments, annex_number, 'Начальные данные')
-                for(let i in this.data[0].attachments){
-                  if(this.data[0].attachments[i].agreement_number == annex_number){
-                    this.selectedItems = this.data[0].attachments[i].attachments.map(item => item.id)
-                  }
+                for (let i in this.data[0].attachments) {
+                    if (this.data[0].attachments[i].agreement_number == annex_number) {
+                        this.selectedItems = this.data[0].attachments[i].attachments.map(item => item.id)
+                    }
                 }
-          
+
             } else {
                 this.selectedItems = []
             }
@@ -537,7 +574,7 @@ export default {
 
             return false;
         },
-       async getPagination(pg_size, pg_number) {
+        async getPagination(pg_size, pg_number) {
             this.loader = true;
 
             api
@@ -547,48 +584,48 @@ export default {
                     this.data = response.data.data;
                     // console.log(this.data);
                     this.data = response.data.data;
-                // Так как с сервера приходят в виде мало сгруппированном, здесь происходить группировка приложений
-                function groupAttachments(attachments) {
-                    const groupedAttachments = {};
+                    // Так как с сервера приходят в виде мало сгруппированном, здесь происходить группировка приложений
+                    function groupAttachments(attachments) {
+                        const groupedAttachments = {};
 
-                    attachments.forEach((attachment) => {
-                        const agreementNumber = attachment.agreement_number;
+                        attachments.forEach((attachment) => {
+                            const agreementNumber = attachment.agreement_number;
 
-                        if (!groupedAttachments[agreementNumber]) {
-                            groupedAttachments[agreementNumber] = [];
+                            if (!groupedAttachments[agreementNumber]) {
+                                groupedAttachments[agreementNumber] = [];
+                            }
+
+                            groupedAttachments[agreementNumber].push(attachment);
+                        });
+
+                        return Object.keys(groupedAttachments).map((key) => ({
+                            agreement_number: key,
+                            attachments: groupedAttachments[key],
+                        }));
+                    }
+                    this.loader = false
+                    // Обрабатываем каждый элемент данных
+
+                    const promises = this.data.map(async (item) => {
+                        item.attachments = groupAttachments(item.attachments);
+                        if (item) {
+                            await Promise.all(item.attachments.flatMap(value => value.attachments || []))
+                                .then(async (codes) => {
+                                    for (const code of codes) {
+                                        if (code?.departure_station_id !== null) {
+                                            code.departure_station_id = code.departure_station_id;
+                                        }
+                                        if (code?.destination_station_id !== null) {
+                                            code.destination_station_id = code.destination_station_id;
+                                        }
+                                    }
+                                });
                         }
-
-                        groupedAttachments[agreementNumber].push(attachment);
+                        return item;
                     });
 
-                    return Object.keys(groupedAttachments).map((key) => ({
-                        agreement_number: key,
-                        attachments: groupedAttachments[key],
-                    }));
-                }
-                this.loader = false
-                // Обрабатываем каждый элемент данных
-            
-                const promises = this.data.map(async (item) => {
-                    item.attachments = groupAttachments(item.attachments);
-                    if (item) {
-                        await Promise.all(item.attachments.flatMap(value => value.attachments || []))
-                            .then(async (codes) => {
-                                for (const code of codes) {
-                                    if (code?.departure_station_id !== null) {
-                                        code.departure_station_id = code.departure_station_id;
-                                    }
-                                    if (code?.destination_station_id !== null) {
-                                        code.destination_station_id = code.destination_station_id;
-                                    }
-                                }
-                            });
-                    }
-                    return item;
-                });
+                    // // Дожидаемся завершения всех промисов и устанавливаем this.loader = false
 
-                // // Дожидаемся завершения всех промисов и устанавливаем this.loader = false
-        
                     this.pageNumber = response.data.page_number;
                 })
 
@@ -732,7 +769,7 @@ export default {
                 }
                 this.loader = false
                 // Обрабатываем каждый элемент данных
-            
+
                 const promises = this.data.map(async (item) => {
                     item.attachments = groupAttachments(item.attachments);
                     if (item) {
@@ -755,6 +792,19 @@ export default {
                 await Promise.allSettled(promises).then((results) => {
                     this.loader_mini = false;
                 });
+
+                let result = []
+                let data_for_senchakov = this.data.map((item) => {
+                    for(let attachment of item.attachments) {
+                        result.push({
+                            'Приложение': attachment.agreement_number,
+                            'Клиент': item.client,
+                            'Дата начала': attachment.attachments[0].on_date
+                        })
+                    }
+                    return result
+                })
+                console.log(this.data, data_for_senchakov)
             } catch (error) {
                 this.loader = false;
                 this.notifyHead = "Ошибка";
@@ -960,9 +1010,9 @@ export default {
     },
 };
 </script>
-  
-  
-  
+
+
+
 <style scoped>
 td input {
     text-align: center;

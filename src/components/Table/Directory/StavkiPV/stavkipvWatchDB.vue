@@ -43,275 +43,7 @@
                 <span> Всего записей: {{ total_objects }} </span>
             </p>
             <div style="max-width: 100%; overflow: auto; margin-bottom: 5%">
-                <table border="1" v-show="visible">
-                    <thead>
-                        <th>№</th>
-                        <th>Номер дог.</th>
-                        <!-- <th>Номер прил.</th> -->
-                        <th>Дата</th>
-                        <th>Дата оконч.</th>
-                        <th>Клиент</th>
-
-                    </thead>
-
-                    <!-- { "id": 295, "agreement_number": null, "on_date": null, "end_date": null, "client": "", "distance_min":
-                    null, "distance_max": null, "stavka": 1487, "stavka_pre": 2722, "base": null, "cargo": null,
-                    "departure_station": null, "destination_station": null, "responsible": null } -->
-                    <tbody>
-                        <template v-for="(item, index) in data">
-                            <tr :id="item.id">
-                                <td @click="open_modal(item.id)" class="delete">{{ index + 1 }}</td>
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`agreement_number` + item.id" v-model="item.agreement_number"
-                                            v-on:keyup.enter="
-                                                submitData(
-                                                    item.agreement_number,
-                                                    item.id,
-                                                    'agreement_number',
-                                                    'agreementload'
-                                                )
-                                                " />
-                                        <div class="icon-container" :id="`agreementload` + item.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
-                                    </div>
-                                </td>
-
-
-
-
-                                <!-- ДАТА -->
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input type="date" :id="`on_date` + item.id" v-model="item.on_date"
-                                            v-on:keyup.enter="
-                                                submitData(item.on_date, item.id, 'on_date', 'on_date_load')
-                                                " />
-                                        <div class="icon-container" :id="`on_date_load` + item.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                                <!-- ДАТА ОКОНЧАНИЯ -->
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input type="date" :id="`end_date` + item.id" v-model="item.end_date"
-                                            v-on:keyup.enter="
-                                                submitData(item.end_date, item.id, 'end_date', 'end_date_load')
-                                                " />
-                                        <div class="icon-container" :id="`end_date_load` + item.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
-                                    </div>
-                                </td>
-                                <!-- КЛИЕНТ -->
-                                <td>
-                                    <div class="inputcontainer">
-                                        <input :id="`client` + item.id" v-model="item.client" v-on:keyup.enter="
-                                            submitData(item.client, item.id, 'client', 'client_load')
-                                            " />
-                                        <div class="icon-container" :id="`client_load` + item.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
-                                    </div>
-                                </td>
-
-                            </tr>
-                            <!-- ПРИЛОЖЕНИЯ -->
-
-                            <tr>
-                                <td colspan="13">
-                                    <details colspan="13">
-                                        <summary
-                                            style="background: lightgrey; color: black; text-align: center !important;">
-                                            Приложений {{ item.attachments.length }} шт.
-                                        </summary>
-
-                            <tr v-for="att in item.attachments" :key="att.id">
-                                <!-- <td>Приложение {{ att.agreement_number }}</td> -->
-                                <details>
-                                    <summary style="width: 70vw;  text-align: center !important;">
-                                        Приложение {{ att.agreement_number }} <span
-                                            v-if="att.attachments[0]?.on_date">от</span>
-                                        {{ att.attachments[0]?.on_date?.split('-').reverse().join('.') }}
-                                    </summary>
-                            <tr>
-                                <!-- <th>Дейст</th> -->
-                                <th>Дата оконч.</th>
-
-                                <th >Станция отпр.</th>
-                                <th >Дорога отпр.</th>
-                                <th >Станция назн.</th>
-                                <th >Дорога назн.</th>
-                                <th >Груз</th>
-                                <th >Ставка</th>
-                                <th >Более/Менее</th>
-                                <th >Грузоподъем т</th>
-                                <th >НДС</th>
-                                <th >Ставка НДС, %</th>
-                                <th >Коэффициент</th>
-                                <th >Груз наимен</th>
-                                <th >Мн. станций отправки</th>
-                                <th >Расстояние</th>
-                                
-                                <th >Станция следующей погрузки</th>
-                                <th >Станции исключения назначения</th>
-                                <th >Страна</th>
-                                <th >Вагоны</th>
-                                <th> Оборот, руб/сут</th>
-                                <th> Тип отправки</th>
-                                <th >Ответственный</th>
-                            </tr>
-                            <template v-for="childr in att.attachments">
-                                <tr :key="childr.id" colspan="13">
-
-                                    <!-- <td @click="open_modal(childr.id)" class="delete">Удалить</td> -->
-
-                                    <td style="padding: 0 5px;">
-                                        <!-- {{ childr.end_date }} -->
-                                        <div class="inputcontainer">
-                                            <input :id="`end_date` + childr.id" type="date" v-model="childr.end_date"
-                                                v-on:keyup.enter="
-                                                    submitData(childr.end_date, childr.id, 'end_date', 'end_date_load')
-                                                    " />
-                                            <div class="icon-container" :id="`end_date_load` + childr.id"
-                                                style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td  style="padding: 0 5px;" >
-                                        {{ childr.departure_station_name }}
-                                        <!-- <div class="inputcontainer" >
-                                            <input :id="`departure_station` + childr.id" type="text"
-                                                v-model="childr.departure_station_name" v-on:keyup.enter="
-                                                    submitData(childr.departure_station_name, childr.id, 'departure_station', 'departure_station_load', $event)
-                                                    " />
-                                            <div class="icon-container" :id="`departure_station_load` + childr.id"
-                                                style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div> -->
-                                    </td>
-                                    <td  style="padding: 0 5px;">{{ translateCountry(childr.departure_road_id) }}</td>
-                                    <!-- <td  style="padding: 0 5px;">
-                                    <div class="inputcontainer">
-                                        <input :id="`departure_road_id` + childr.id" type="text"
-                                            v-model="childr.departure_road_id_name" v-on:keyup.enter="
-                                                submitData(childr.departure_road_id_name, childr.id, 'departure_road_id', 'departure_road_id_load', $event)
-                                                " />
-                                        <div class="icon-container" :id="`departure_road_id_load` + childr.id"
-                                            style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
-                                    </div>
-                                </td> -->
-                                    <td  style="padding: 0 5px;">
-                                        {{ childr.destination_station_name }}
-                                        <!-- <div class="inputcontainer">
-                                            <input :id="`destination_station` + childr.id" type="text"
-                                                v-model="childr.destination_station_name" v-on:keyup.enter="
-                                                    submitData(childr.destination_station_name, childr.id, 'destination_station', 'destination_station_load', $event)
-                                                    " />
-                                            <div class="icon-container" :id="`destination_station_load` + childr.id"
-                                                style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div> -->
-                                    </td>
-                                    <td  style="padding: 0 5px;">
-                                        {{ childr.destination_road_id }}
-                                        <!-- <div class="inputcontainer">
-                                            <input :id="`destination_road_id` + childr.id" type="text"
-                                                v-model="childr.destination_road_id_name" v-on:keyup.enter="
-                                                    submitData(childr.destination_road_id_name, childr.id, 'destination_road_id', 'destination_road_id_load', $event)
-                                                    " />
-                                            <div class="icon-container" :id="`destination_road_id_load` + childr.id"
-                                                style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div> -->
-                                    </td>
-                                    <td  style="padding: 0 5px;">
-                                        {{ childr?.cargo_var }}
-                                        <!-- <div class="inputcontainer">
-                                        <input :id="`cargo_name` + childr.id" type="text" v-model="childr.cargo_name"
-                                            v-on:keyup.enter="
-                                                submitData(childr.cargo_name, childr.id, 'cargo_name', 'cargo_load')" />
-                                        <div class="icon-container" :id="`cargo_load` + childr.id" style="display: none">
-                                            <i class="loader"></i>
-                                        </div>
-                                    </div> -->
-                                    </td>
-                                    <td  style="padding: 0 5px;">
-                                        {{ childr.stavka }}
-                                        <!-- <div class="inputcontainer">
-                                            <input :id="`stavka` + childr.id" type="text" v-model="childr.stavka"
-                                                v-on:keyup.enter="
-                                                    submitData(childr.stavka, childr.id, 'stavka', 'stavka_load')
-                                                    " />
-                                            <div class="icon-container" :id="`stavka_load` + childr.id"
-                                                style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div> -->
-                                    </td>
-
-                                    <td  style="padding: 0 5px;">{{ childr.capacity_compare == 'less' ? 'Менее' : 'Более' }}</td>
-                                    <td  style="padding: 0 5px;">{{ childr.capacity_value }} </td>
-                                    <td  style="padding: 0 5px;">
-                                        {{ childr.nds }}
-                                        <!-- <div class="inputcontainer">
-                                            <input :id="`nds` + childr.id" type="text" v-model="childr.nds"
-                                                v-on:keyup.enter="
-                                                    submitData(childr.nds, childr.id, 'nds', 'nds_load')
-                                                    " />
-                                            <div class="icon-container" :id="`nds_load` + childr.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div> -->
-                                    </td>
-                                    <td  style="padding: 0 5px;">{{ childr.stavka_nds }}</td>
-                                    <td  style="padding: 0 5px;">
-                                        {{ childr.k }}
-                                        <!-- <div class="inputcontainer">
-                                            <input :id="`k` + childr.id" type="text" v-model="childr.k" v-on:keyup.enter="
-                                                submitData(childr.k, childr.id, 'k', 'k_load')
-                                                " />
-                                            <div class="icon-container" :id="`k_load` + childr.id" style="display: none">
-                                                <i class="loader"></i>
-                                            </div>
-                                        </div> -->
-                                    </td>
-                                    <td  style="padding: 0 5px;">{{ childr?.cargos_list ?? "" }}</td> <!--Груз наимен-->
-                                    <td  style="padding: 0 5px;">{{ childr?.departure_stations ? childr?.departure_stations.join(",") : "" }}</td>
-                                    <!-- Мн. станций отправки-->
-                                    <td  style="padding: 0 5px;">{{ childr?.distance }}</td> <!-- Расстояние-->
-                                    <td  style="padding: 0 5px;">{{ childr?.next_loading_stations ? childr.next_loading_stations.join(",") : "" }}
-                                    </td>
-                                    <!-- Станция следующей погрузки-->
-                                    <td  style="padding: 0 5px;">{{ childr?.exclude_next_loading_stations ?
-                                        childr.exclude_next_loading_stations.join(",") : "" }}</td>
-                                    <!-- Станции исключения следующей погрузки-->
-                                    <td  style="padding: 0 5px;">{{ childr?.country_to_name }}</td> <!-- Страна-->
-                                    <td  style="padding: 0 5px;">{{ childr?.wagons_list ? childr.wagons_list.join(",") : "" }}</td> <!-- Вагоны-->
-                                    <td  style="padding: 0 5px;">{{ childr?.turnover }}</td>
-                                    <td  style="padding: 0 5px;">{{ isType(childr?.shipment_type) }}</td>
-                                    <td  style="padding: 0 5px;">{{ childr.responsible_name }}</td>
-                                </tr>
-                            </template>
-                            </details>
-                            </tr>
-                            </details>
-                            </td>
-                            </tr>
-
-
-                        </template>
-
-                    </tbody>
-                </table>
+               
             </div>
         </div>
     </div>
@@ -345,7 +77,7 @@ export default {
 
             ten_visible: false,
             filter_arendaData: {
-                page_size: "100",
+                page_size: "500",
                 client: "",
                 cargo: "",
                 wagon_type: "Полувагон"
@@ -618,7 +350,18 @@ export default {
                     return item;
                 });
 
-
+                let result = []
+                let data_for_senchakov = this.data.map((item) => {
+                    for(let attachment of item.attachments) {
+                        result.push({
+                            'Приложение': attachment.agreement_number,
+                            'Клиент': item.client,
+                            'Дата начала': attachment.attachments[0].on_date
+                        })
+                    }
+                    return result
+                })
+                console.log(this.data, data_for_senchakov)
             } catch (error) {
                 this.loader = false;
                 this.notifyHead = "Ошибка";

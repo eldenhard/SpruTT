@@ -1125,8 +1125,11 @@ totalLoadingsAmount() {
                         response5,
                         response6]) => {
                         this.loader = false
-                        this.responseServerData =   response1.data
+                        this.responseServerData =    response1.data
+                        // cp_work_names.cp_work_names
+                        // response1.data
                         this.sklad_flights = response1.data.sklad_flights
+                        // response1.data.sklad_flights
                         this.responseServerDataOtherClients = response2.data
                         let businessPlanData = response3.data
                         this.data3 =  response4.data

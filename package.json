@@ -44,13 +44,16 @@
     "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
+    "@types/node": "^22.0.2",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "css-loader": "^3.6.0",
+    "knip": "^5.27.0",
     "sass": "^1.72.0",
     "sass-loader": "^13.3.3",
+    "typescript": "^5.5.4",
     "vue-cli-plugin-tailwind": "~3.0.0",
     "vue-loader": "^15.11.1",
     "vue-style-loader": "^4.1.3",

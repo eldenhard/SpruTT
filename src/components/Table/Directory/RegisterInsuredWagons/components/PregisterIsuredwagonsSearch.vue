@@ -47,7 +47,6 @@ export default {
             try {
                 // let response = await api.getAllInsuranceWagons(obj)
 
-                console.log(obj)
                 let last_page = 1
                 let response = await api.getAllInsuranceWagons(obj, last_page);
                 allData.push(...response.data.data)

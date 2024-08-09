@@ -105,10 +105,11 @@ export default {
 
 // Для маленькой таблицы незастрахованных вагонов
             columns_own_wagons: [
-                { title: 'Номер вагона', data: 'Номер вагона' },   
-                { title: 'Принадлежность СТЖ', data: 'Принадлежность СТЖ' },
-                { title: 'В управлении компании', data: 'В управлении компании' },
-                { title: 'Тип вагона', data: 'Тип' }
+                { title: 'Номер вагона', data: 'Номер вагона',},   
+                { title: 'Принадлежность СТЖ', data: 'Принадлежность СТЖ',editor: false },
+                { title: 'В управлении компании', data: 'В управлении компании',editor: false },
+                { title: 'Тип вагона', data: 'Тип',editor: false },
+                { title: 'Примечание', data: 'Примечание' }
 
                 // В управлении компании
             ],
@@ -189,17 +190,19 @@ export default {
                 this.loader = true
                 let promises = preData.map(el => api.getWagons({ number: el['Номер вагона'] }));
                 const results = await Promise.all(promises);
-
+                console.log('results',results)
                 this.loader = false
                 let compareDataMap2 = []
                 for (let i in results) {
                     if (results[i].data.data[0].is_active === true) {
-                        compareDataMap2.push({ "Номер вагона": results[i].data.data[0].number, "В управлении компании": results[i].data.data[0].last_uk, "Тип": this.isType(results[i].data.data[0].wagon_type), 'Принадлежность СТЖ': 'С' },)
+                        compareDataMap2.push({ "Номер вагона": results[i].data.data[0].number, "В управлении компании": results[i].data.data[0].last_uk, "Тип": this.isType(results[i].data.data[0].wagon_type), 'Принадлежность СТЖ': 'С', 'Примечание': results[i].data.data[0].insurance_comment },)
                     }
                 }
                 this.$toast.success('Данные по незастрахованным вагонам получены', {
                     timeout: 3000
                 })
+
+                console.log('compareDataMap2:', compareDataMap2)
                 this.getOwnWagonsCompareData = compareDataMap2
                 this.$nextTick(() => {
                     const hotInstance = this.$refs.hotTableComponent.hotInstance
@@ -213,51 +216,6 @@ export default {
             }
 
         },
-//         async getOwnWagonsCompare(data) {
-//     let preData = data.data;
-//     let compareDataMap = {};
-
-//     // Создаем карту для getInsuredWagonsData, чтобы быстро проверить наличие вагонов
-//     this.getInsuredWagonsData.forEach((item) => {
-//         compareDataMap[item.wagon_number] = true;
-//     });
-
-//     // Фильтруем preData, оставляя только те вагоны, которых нет в compareDataMap
-//     preData = preData.filter((el) => {
-//         return el['Принадлежность СТЖ'] === 'С' && !compareDataMap[el['Номер вагона']];
-//     });
-
-//     try {
-//         this.loader = true;
-//         let results = [];
-
-//         // Выполняем запросы последовательно
-//         for (let el of preData) {
-//             let response = await api.getWagons({ number: el['Номер вагона'] });
-//             if (response.data.data[0].is_active === true) {
-//                 results.push({
-//                     "Номер вагона": response.data.data[0].number,
-//                     "В управлении компании": response.data.data[0].last_uk,
-//                     "Тип": response.data.data[0].wagon_type,
-//                     ...el  // Добавляем все данные из preData
-//                 });
-//             }
-//         }
-
-//         this.loader = false;
-//         this.getOwnWagonsCompareData = results;
-//         this.$nextTick(() => {
-//             const hotInstance = this.$refs.hotTableComponent.hotInstance;
-//             hotInstance.loadData(this.getOwnWagonsCompareData);
-//             hotInstance.updateSettings({ data: this.getOwnWagonsCompareData });
-//             hotInstance.render();
-//         });
-//     } catch (err) {
-//         this.loader = false;
-//         console.error(err);
-//     }
-// },
-
 
         getInsuredWagons(data) {
             this.getInsuredWagonsData = data
@@ -268,9 +226,7 @@ export default {
                 hotInstance.render()
             })
         },
-        dataWagons(data) {
-            console.log(data)
-        }
+
     },
 }
 </script>

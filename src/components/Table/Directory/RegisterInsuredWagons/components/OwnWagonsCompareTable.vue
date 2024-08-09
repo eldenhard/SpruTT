@@ -1,19 +1,28 @@
 <template>
     <div>
-        <br>
+        <hr>
         <h4 v-show="getOwnWagonsCompareData.length > 0" class="air_block_header">Перечень незастрахованных вагонов</h4>
 
         <div class="tables-container">
 
             <div class="table-container">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="is_show">
+                    <label class="form-check-label " for="flexCheckDefault">
+                        Показать вагоны с примечанием
+                    </label>
+                </div>
                 <span class="description-text">Скопируйте данные из этой таблицы</span>
-                <hot-table ref="hotTableComponent1" :data="getOwnWagonsCompareData" :rowHeaders="true"
+                <hot-table ref="hotTableComponent1" :data="checkApplication" :rowHeaders="true"
                     :columns="columns" :manualRowMove="true" :manualColumnMove="true" :preventOverflow="'horizontal'"
                     :filters="true" :language="'ru-RU'" :manualColumnResize="true" :height="'40vh'" :width="'100%'"
-                    :fillHandle="false" :dropdownMenu="dropdownMenuOptions" @afterSelection="handleSelection">
+                    :fillHandle="false" :dropdownMenu="dropdownMenuOptions" @afterSelection="handleSelection"
+                  
+                >
                 </hot-table>
             </div>
             <div class="table-container">
+                <br>
                 <span class="description-text">Вставьте данные в эту таблицу</span>
                 <hot-table ref="hotTableComponent2" :data="insuredWagonsData" :rowHeaders="true"
                     :columns="columns_table_copy" :manualRowMove="true" :manualColumnMove="true"
@@ -61,19 +70,37 @@ export default {
             },
             selectedWagons: [],
             status: false,
+            is_show: false
+
         };
     },
+    computed: {
+        checkApplication() {
+            if (this.is_show) {
+                // Показывать только те данные, у которых есть примечание
+                return this.getOwnWagonsCompareData.filter(item => item['Примечание'] !== null && item['Примечание'] !== '');
+            } else if(!this.is_show) {
+                console.log('HERE',this.getOwnWagonsCompareData.filter(item => item['Примечание'] === null || item['Примечание'] === ''))
+                // Показывать все данные, кроме тех, у которых есть примечание
+                return this.getOwnWagonsCompareData.filter(item => item['Примечание'] === null || item['Примечание'] === '');
+            }
+        }
+    },
     watch: {
+        is_show() {
+            // Перезагружаем таблицу при изменении чекбокса
+            this.$refs.hotTableComponent1.hotInstance.loadData(this.checkApplication);
+        },
         getOwnWagonsCompareData: {
             async handler(newData) {
-                this.updateTableData('hotTableComponent1', newData);
+                this.updateTableData('hotTableComponent1', this.checkApplication);
                 document.querySelectorAll('.hot-display-license-info').forEach(element => {
                     element.style.display = 'none';
                 });
-    
-                console.log('AAAAAAAAAAA', this.getOwnWagonsCompareData)
-
-            },
+                // Обновляем таблицу, если исходные данные изменились
+                this.$refs.hotTableComponent1.hotInstance.loadData(this.checkApplication);
+                this.saveEditCellsInRow(newData)
+                },
             deep: true,
         },
         insuredWagonsData: {
@@ -95,7 +122,7 @@ export default {
 
     },
     mounted() {
-        this.updateTableData('hotTableComponent1', this.getOwnWagonsCompareData);
+        this.updateTableData('hotTableComponent1', this.checkApplication);
         this.updateTableData('hotTableComponent2', this.insuredWagonsData);
         document.querySelectorAll('.hot-display-license-info').forEach(element => {
             element.style.display = 'none';
@@ -104,6 +131,32 @@ export default {
     },
 
     methods: {
+        async saveEditCellsInRow(val) {
+            let check_data= val.filter(item => item['Примечание'] != null)
+            if(Array.isArray(check_data) && check_data.length > 0) {
+                this.$emit('startStopLoader', true)
+                try{
+                    let promises = val
+                    .filter(item => item['Примечание'] != null)
+                    .map(el => api_wagon.postInsuranceNote(el['Номер вагона'], {insurance_comment: el['Примечание']}));
+                  
+                    await Promise.all(promises)
+                    this.checkApplication
+                    this.$emit('startStopLoader', false)
+                    this.$toast.success(`Данные по вагону сохранены`, {
+                        timeout: 3000
+                    })
+                } catch(err){
+                    console.log(err)
+                    this.$emit('startStopLoader', false)
+                    this.$toast.error(`Данные не сохранены\n${err}`, {
+                        timeout: 3000
+                    })
+                }
+            } else {
+                return
+            }
+        },
         async saveData() {
             this.$emit('startStopLoader', true)
             try {
@@ -113,7 +166,7 @@ export default {
                 this.$toast.success('Данные сохранены\nДля отображения данных в таблице "Застрахованные вагоны", запросите данные повторно', {
                     timeout: 7000
                 })
-                this.insuredWagonsData =  [{ title: 'Номер вагона', data: 'wagon_number' }]
+                this.insuredWagonsData = [{ title: 'Номер вагона', data: 'wagon_number' }]
 
             } catch (err) {
                 console.log(err)
@@ -151,6 +204,7 @@ export default {
             }
             this.selectedWagons = selected;
         },
+
         handlePaste(changes) {
             const hotInstance2 = this.$refs.hotTableComponent2.hotInstance;
             changes.forEach(change => {
