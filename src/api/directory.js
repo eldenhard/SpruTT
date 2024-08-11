@@ -305,6 +305,10 @@ const getWagonFlights = (queryParams) => {
 const saveDataInsuranceCases = (data) => {
     return api.post(`${finance}/insurance-cases/`, data)
 }
+
+const saveManyDataInsuranceCases = (data) => {
+    return api.post(`${finance}/insurance-cases/save-many/`, data)
+}
 const getDataInsuranceCases = () => {
     return api.get(`${finance}/insurance-cases/`)
 }
@@ -315,7 +319,7 @@ export default {
     getWagonFlights,
     getDataInsuranceCases,
     getInsuranceWagons,
-    
+    saveManyDataInsuranceCases,
     getAllcounterparties,
     putCounterparties,
     getDirectoryFarm,

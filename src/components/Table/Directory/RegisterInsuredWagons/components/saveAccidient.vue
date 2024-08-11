@@ -2,11 +2,17 @@
     <div>
         <b-modal id="modal-1" :title="is_insurances_cases" centered size="xl" cancel-disabled>
             <div class="modal-table">
-                <hot-table ref="hotTable"  :data="tableData" :columns="columns" :rowHeaders="false" :colHeaders="colHeaders"
-                    :height="150" :manualColumnResize="true" :manualRowResize="true"  className="custom-table" >
+                <hot-table :data="tableData" :columns="columns" :rowHeaders="false" :colHeaders="colHeaders"
+                    :height="150" :manualColumnResize="true" :manualRowResize="true" :filters="true" :language="'ru-RU'"
+                    :dropdownMenu="dropdownMenuOptions">
                 </hot-table>
+
             </div>
             <template #modal-footer="{ ok }">
+                <b-form-checkbox id="checkbox-1" v-show="is_insurances_cases != 'Новый страховой случай'" v-model="status" name="checkbox-1"
+                    unchecked-value="not_accepted">
+                    Закрыть страховой случай
+                </b-form-checkbox>
                 <b-button size="md" variant="success" @click="saveAccidientByWagon()">Сохранить</b-button>
             </template>
         </b-modal>
@@ -26,7 +32,8 @@
         <br><br>
 
         <hot-table ref="hotTable" :data="responseData" :columns="columns" :colHeaders="colHeaders"
-            :contextMenu="customContextMenu" :manualColumnResize="true" :manualRowResize="true" :height="'30vh'">
+            :contextMenu="customContextMenu" :manualColumnResize="true" :manualRowResize="true" :height="'30vh'"
+            :language="'ru-RU'" :filters="true" :dropdownMenu="dropdownMenuOptions">
         </hot-table>
 
         <br><br>
@@ -89,6 +96,7 @@ export default {
             intervalResponse: null,
             responseData: [],
             responseOldData: [],
+            status : false,
             tableData: {
                 wagon_number: "",
                 wagon_type: "",
@@ -129,9 +137,10 @@ export default {
                 date_nrp_vu_23: "",
                 is_closed: ""
             },
+            dropdownMenuOptions: ['filter_by_condition', 'filter_action_bar', 'filter_by_value', 'clear_column'],
 
             columns: [
-                { data: 'wagon_number', type: 'text',editor: false },
+                { data: 'wagon_number', type: 'text', editor: false },
                 { data: 'wagon_type', editor: false },
                 { data: 'owner', type: 'text' },
                 { data: 'insurance_company', type: 'text' },
@@ -143,7 +152,6 @@ export default {
                 { data: 'vu36_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
                 { data: 'fault_code', type: 'text' },
                 { data: 'repair_exclusion_loss', type: 'text' },
-                { data: 'status', type: 'text' },
                 { data: 'damage_causer', type: 'text' },
                 { data: 'client', type: 'text' },
                 { data: 'sk_notification_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
@@ -162,6 +170,7 @@ export default {
                 { data: 'total_loss_tt', type: 'numeric' },
                 { data: 'reimbursed', type: 'numeric' },
                 { data: 'reimbursed_ost', type: 'numeric' },
+                { data: 'status', editor: 'select', selectOptions: ['Новый', 'Старый', 'Архивный'] },
                 { data: 'comment', type: 'text' },
                 // { data: 'repair_kind', type: 'text' },
                 // { data: 'station_nrp_vu_23', type: 'text' },
@@ -276,15 +285,18 @@ export default {
         async saveAccidientByWagon() {
             try {
                 this.$emit('startStopLoader', true);
-                let test = this.tableData[0];
-                await api.saveDataInsuranceCases(test);
+                this.tableData[0].is_closed = this.status;
+                console.log('ДАНЕЫЕ: ', this.tableData[0])
+                await api.saveDataInsuranceCases( this.tableData[0]);
                 this.$emit('startStopLoader', false);
                 this.$bvModal.hide("modal-1");
                 this.$toast.success('Данные сохранены', {
                     timeout: 3000
                 });
-                let response = await api.getDataInsuranceCases();
-                this.responseOldData = response.data.data;
+                console.log(this.tableData);
+                // await saveManyDataInsuranceCases(this.tableData);
+                // let response = await api.getDataInsuranceCases();
+                // this.responseOldData = response.data.data;
             } catch (err) {
                 console.log(err);
                 this.$emit('startStopLoader', false);
@@ -332,6 +344,20 @@ export default {
                     hotInstance.loadData(this.responseData)
                     hotInstance.updateSettings({ data: this.responseData })
                     hotInstance.render()
+                    console.log('checkdata', this.$refs.hotTable.$el)
+                    // let val_table = this.$refs.hotTable.$el.querySelector('.htCore')
+                    this.$nextTick(() => {
+        let val_table = this.$refs.hotTable.$el.querySelector('.htCore');
+        console.log('val_table', val_table);
+        
+        // Apply custom classes or inline styles if needed
+        let headerCells = val_table.querySelectorAll('thead th');
+        headerCells.forEach(header => {
+            header.style.backgroundColor = '#ffeb3b';  // Yellow background
+            header.style.color = '#000000';            // Black text
+            header.style.fontWeight = 'bold';          // Bold text
+        });
+    });
                 })
                 this.isSearch = true
             }
@@ -363,7 +389,11 @@ export default {
     width: 100%;
     height: 110%;
 }
-
+.htCore thead th {
+    background-color: #ffeb3b; /* Yellow background */
+    color: #000000; /* Black text */
+    font-weight: bold;
+}
 .long_search input {
     width: 100%;
     height: 100%;
@@ -397,11 +427,13 @@ tr:hover {
     margin: 0 auto;
 }
 
-.table th,
-.table td {
-    text-align: center;
-    vertical-align: middle;
+td.custom-cell {
+    color: #fff;
+    background-color: #e9c10e;
 }
 
-
+.custom-table thead th:nth-child(even),
+.custom-table tbody tr:nth-child(odd) th {
+    background-color: #1dcc60;
+}
 </style>

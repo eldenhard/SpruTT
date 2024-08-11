@@ -73,6 +73,7 @@ export default {
             is_show: false
 
         };
+        
     },
     computed: {
         checkApplication() {
