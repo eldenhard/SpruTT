@@ -33,7 +33,7 @@
 
         <hot-table ref="hotTable" :data="responseData" :columns="columns" :colHeaders="colHeaders"
             :contextMenu="customContextMenu" :manualColumnResize="true" :manualRowResize="true" :height="'30vh'"
-            :language="'ru-RU'" :filters="true" :dropdownMenu="dropdownMenuOptions">
+            :language="'ru-RU'" :filters="true" :dropdownMenu="dropdownMenuOptions" :className="'custom-table'">
         </hot-table>
 
         <br><br>
@@ -97,6 +97,13 @@ export default {
             responseData: [],
             responseOldData: [],
             status : false,
+            cell: [
+    {
+      row: 0,
+      col: 0,
+      className: 'custom-cell',
+    },
+  ],
             tableData: {
                 wagon_number: "",
                 wagon_type: "",
@@ -247,6 +254,8 @@ export default {
             element.style.display = 'none';
         });
 
+
+
     },
     methods: {
         handleContextMenuClick(type) {
@@ -389,11 +398,7 @@ export default {
     width: 100%;
     height: 110%;
 }
-.htCore thead th {
-    background-color: #ffeb3b; /* Yellow background */
-    color: #000000; /* Black text */
-    font-weight: bold;
-}
+
 .long_search input {
     width: 100%;
     height: 100%;
@@ -428,12 +433,11 @@ tr:hover {
 }
 
 td.custom-cell {
-    color: #fff;
-    background-color: #e9c10e;
+  color: #fff;
+  background-color: #37bc6c;
 }
-
 .custom-table thead th:nth-child(even),
 .custom-table tbody tr:nth-child(odd) th {
-    background-color: #1dcc60;
+  background-color: #d7f1e1;
 }
 </style>
