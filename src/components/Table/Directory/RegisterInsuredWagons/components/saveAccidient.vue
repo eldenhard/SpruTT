@@ -1,20 +1,16 @@
 <template>
     <div>
-        <b-modal id="modal-1" title="Страховой случай" centered size="lg" cancel-disabled>
+        <b-modal id="modal-1" :title="is_insurances_cases" centered size="xl" cancel-disabled>
             <div class="modal-table">
-                <hot-table :data="tableData" :columns="columns" :rowHeaders="false" :colHeaders="colHeaders"
-                    :height="150" :manualColumnResize="true" :manualRowResize="true">
+                <hot-table ref="hotTable"  :data="tableData" :columns="columns" :rowHeaders="false" :colHeaders="colHeaders"
+                    :height="150" :manualColumnResize="true" :manualRowResize="true"  className="custom-table" >
                 </hot-table>
             </div>
             <template #modal-footer="{ ok }">
-
-                <!-- Emulate built in modal footer ok and cancel button actions -->
-                <b-button size="md" variant="success" @click="saveAccidientByWagon()">
-                    Сохранить
-                </b-button>
-
+                <b-button size="md" variant="success" @click="saveAccidientByWagon()">Сохранить</b-button>
             </template>
         </b-modal>
+
         <div style="display: flex; justify-content: space-between; gap: 5vw; height: 4vh;">
             <section class="search_bloc" style="width: 100%;">
                 <div class="long_search">
@@ -28,37 +24,18 @@
             </section>
         </div>
         <br><br>
-        <div style="overflow: auto; height: 30vh;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>№ вагона</th>
-                        <th>Тип вагона</th>
-                        <th>Собст. на момент страхования</th>
-                        <th>Страховая компания</th>
-                        <th>№ договора</th>
-                        <th>Дата договора</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in responseData" :key="item.id" @click="openModalPage(item)">
-                        <td>{{ item.wagon_number }}</td>
-                        <td>{{ item.wagon_type }}</td>
-                        <td>{{ item.owner_at_insurance_moment }}</td>
-                        <td>{{ item.insurance_company }}</td>
-                        <td>{{ item.agr_date }}</td>
-                        <td>{{ item.agr_number }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+
+        <hot-table ref="hotTable" :data="responseData" :columns="columns" :colHeaders="colHeaders"
+            :contextMenu="customContextMenu" :manualColumnResize="true" :manualRowResize="true" :height="'30vh'">
+        </hot-table>
+
         <br><br>
-        <hr>
+        <!-- <hr>
         <div class="air_block_header">
             <h4>Ранее введенные данные</h4>
             <b-button variant="success" @click="getData()">Загрузить данные</b-button>
         </div>
-    
+
         <div style="overflow: auto; height: 30vh; margin-top: 5%;">
             <table>
                 <thead>
@@ -85,11 +62,10 @@
                         <td>{{ item.station_nrp_vu_23 }}</td>
                         <td>{{ item.road_nrp_vu_23 }}</td>
                         <td>{{ item.date_nrp_vu_23?.split("-").reverse().join(".") }}</td>
-                       
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -97,6 +73,7 @@
 import api from "@/api/directory";
 import { HotTable } from '@handsontable/vue';
 import { registerAllModules } from 'handsontable/registry';
+import { Theme } from '@amcharts/amcharts5';
 
 registerAllModules();
 
@@ -108,106 +85,229 @@ export default {
         return {
             isSearch: true,
             search: "",
+            is_insurances_cases: "",
             intervalResponse: null,
-            responseData: "",
-            responseOldData: "",
-            tableData:
-                { wagon_number: '', wagon_type: 'ПВ', owner: '', insurance_company: '', agr_number: '', repair_kind: '', station_nrp_vu_23: '', road_nrp_vu_23: '', date_nrp_vu_23: '' }
-            ,
+            responseData: [],
+            responseOldData: [],
+            tableData: {
+                wagon_number: "",
+                wagon_type: "",
+                owner: "",
+                insurance_company: "",
+                agr_number: "",
+                agr_date: "",
+                franchise_sum: "",
+                conditional: "",
+                insure_case_date: "",
+                vu23_date: "",
+                vu36_date: "",
+                fault_code: "",
+                repair_exclusion_loss: "",
+                status: "",
+                damage_causer: "",
+                client: "",
+                sk_notification_date: "",
+                out_application_number: "",
+                application_date: "",
+                last_request_response_date: "",
+                refund_date: "",
+                estimated_insurance_indemnity: "",
+                franchise: "",
+                deduction_of_balances: "",
+                fact_insurance_indemnity: "",
+                refused: "",
+                repair_downtime_pending_amount: "",
+                railway_fare_to_from_repair: "",
+                additional_compensation_due: "",
+                total_loss_tt: "",
+                reimbursed: "",
+                reimbursed_ost: "",
+                comment: "",
+                repair_kind: "",
+                station_nrp_vu_23: "",
+                road_nrp_vu_23: "",
+                date_nrp_vu_23: "",
+                is_closed: ""
+            },
+
             columns: [
-                { data: 'wagon_number', type: 'text' },
-                { data: 'wagon_type', type: 'dropdown', source: ['ПВ', 'ЦС'] },
+                { data: 'wagon_number', type: 'text',editor: false },
+                { data: 'wagon_type', editor: false },
                 { data: 'owner', type: 'text' },
                 { data: 'insurance_company', type: 'text' },
                 { data: 'agr_number', type: 'text' },
-                { data: 'repair_kind', type: 'text' },
-                { data: 'station_nrp_vu_23', type: 'text' },
-                { data: 'road_nrp_vu_23', type: 'text' },
-                { data: 'date_nrp_vu_23', type: 'date', dateFormat: 'YYYY-MM-DD' }
+                { data: 'franchise_sum', type: 'numeric' },
+                { data: 'conditional', editor: 'select', selectOptions: ['Условная', 'Безусловная'] },
+                { data: 'insure_case_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
+                { data: 'vu23_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
+                { data: 'vu36_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
+                { data: 'fault_code', type: 'text' },
+                { data: 'repair_exclusion_loss', type: 'text' },
+                { data: 'status', type: 'text' },
+                { data: 'damage_causer', type: 'text' },
+                { data: 'client', type: 'text' },
+                { data: 'sk_notification_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
+                { data: 'out_application_number', type: 'text' },
+                { data: 'application_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
+                { data: 'last_request_response_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
+                { data: 'refund_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
+                { data: 'estimated_insurance_indemnity', type: 'text' },
+                { data: 'franchise', type: 'text' },
+                { data: 'deduction_of_balances', type: 'numeric' },
+                { data: 'fact_insurance_indemnity', type: 'numeric' },
+                { data: 'refused', type: 'numeric' },
+                { data: 'repair_downtime_pending_amount', type: 'numeric' },
+                { data: 'railway_fare_to_from_repair', type: 'numeric' },
+                { data: 'additional_compensation_due', type: 'numeric' },
+                { data: 'total_loss_tt', type: 'numeric' },
+                { data: 'reimbursed', type: 'numeric' },
+                { data: 'reimbursed_ost', type: 'numeric' },
+                { data: 'comment', type: 'text' },
+                // { data: 'repair_kind', type: 'text' },
+                // { data: 'station_nrp_vu_23', type: 'text' },
+                // { data: 'road_nrp_vu_23', type: 'text' },
+                // { data: 'date_nrp_vu_23', type: 'date', dateFormat: 'YYYY-MM-DD' },
+                // { data: 'is_closed', type: 'dropdown', source: ['Да', 'Нет'] }
             ],
-            colHeaders: ['Номер вагона', 'Тип вагона', 'Собственник', 'Страховая компания', 'Договор страхования', 'Вид ремонта', 'Станция НРП (ВУ-23)', 'Дорога НРП (ВУ-23)', 'Дата НРП (дата ВУ-23)'],
+            colHeaders: [
+                'Номер вагона',
+                'Тип вагона',
+                'Собственник',
+                'Договор страхования',
+                'Дата договора',
+                'Сумма франшизы',
+                'Условная/ Безусловная',
+                'Дата страхового случая (ВУ_25)',
+                'Дата ВУ-23',
+                'Дата ВУ-36/ИСКЛ',
+                'Код неисправности',
+                'Ремонт/исключение/утеря',
+                'Виновник в повреждении',
+                'Клиент',
+                'Дата уведомления в СК',
+                'Исх. Номер заявления',
+                'Дата заявления',
+                'Дата направления ответа по крайнему запросу',
+                'Дата возмещения',
+                'Предполагаемое/ Причитающееся страховое возмещение',
+                'Франшиза',
+                'Вычет остатков',
+                'Факт возмещения от страховой, руб.',
+                'Отказано СК, руб.',
+                'Сумма за простой в ремонте',
+                'ж.д тариф в/из ремонта',
+                'Причитающееся довозмещение',
+                'ИТОГО потери ТТ',
+                'Возмещено ВСЕГО',
+                'Осталось возместить',
+                'Статус',
+                'Примечание'
+            ],
+            customContextMenu: {
+                items: {
+                    'new_case': {
+                        name: 'Новый страховой случай',
+                        callback: () => this.handleContextMenuClick('new')
+                    },
+                    'old_cases': {
+                        name: 'Старые страховые случаи',
+                        callback: () => this.handleContextMenuClick('old')
+                    },
+                    'archived_cases': {
+                        name: 'Архивные страховые случаи',
+                        callback: () => this.handleContextMenuClick('archived')
+                    },
+                    // 'sep1': '---------',
+                    // 'remove_row': {
+                    //     name: 'Удалить строку',
+                    //     callback: (key, selection) => {
+                    //         this.$refs.hotTable.hotInstance.alter('remove_row', selection[0].start.row);
+                    //     }
+                    // }
+                }
+            }
         }
     },
     created() {
         document.querySelectorAll('.hot-display-license-info').forEach(element => {
             element.style.display = 'none';
         });
-
     },
     mounted() {
         document.querySelectorAll('.hot-display-license-info').forEach(element => {
             element.style.display = 'none';
         });
-    },
-    watch: {
-        search() {
-            return this.search.length <= 1 ? this.responseSearchData = null : this.responseSearchData
-        }
+
     },
     methods: {
+        handleContextMenuClick(type) {
+            const selected = this.$refs.hotTable.hotInstance.getSelectedLast();
+            if (selected) {
+                const rowIndex = selected[0];
+                const rowData = this.responseData[rowIndex];
+                this.is_insurances_cases = type == 'new' ? 'Новый страховой случай' : type == 'old' ? 'Старые страховые случаи' : 'Архивные страховые случаи';
+                this.openModalPage(rowData, type)
+                console.log(`Selected row data for ${type}:`, rowData);
+            }
+        },
         async getData() {
             try {
-                this.$emit('startStopLoader', true)
-                let response = await api.getDataInsuranceCases()
-                this.responseOldData = response.data.data
-                if(this.responseOldData.length > 0){
+                this.$emit('startStopLoader', true);
+                let response = await api.getDataInsuranceCases();
+                this.responseOldData = response.data.data;
+                if (this.responseOldData.length > 0) {
                     this.$toast.success('Данные загружены', {
                         timeout: 3000
-                    })
+                    });
                 } else {
-                    this.$toast.warning('Нет ранее ввденных данных', {
+                    this.$toast.warning('Нет ранее введенных данных', {
                         timeout: 4000
-                    })
+                    });
                 }
             } catch (err) {
                 this.$toast.error(`Данные не загружены\n ${err}`, {
                     timeout: 3000
-                })
-                this.$emit('startStopLoader', false)
+                });
+                this.$emit('startStopLoader', false);
             } finally {
-                this.$emit('startStopLoader', false)
+                this.$emit('startStopLoader', false);
             }
         },
         async saveAccidientByWagon() {
             try {
-                this.$emit('startStopLoader', true)
-                // console.log(this.tableData[0])
-                let test = this.tableData[0]
-                // console.log(test)
-                await api.saveDataInsuranceCases(test)
-                this.$emit('startStopLoader', false)
-                this.$bvModal.hide("modal-1")
+                this.$emit('startStopLoader', true);
+                let test = this.tableData[0];
+                await api.saveDataInsuranceCases(test);
+                this.$emit('startStopLoader', false);
+                this.$bvModal.hide("modal-1");
                 this.$toast.success('Данные сохранены', {
                     timeout: 3000
-                })
-                let response = await api.getDataInsuranceCases()
-                this.responseOldData = response.data.data
-
+                });
+                let response = await api.getDataInsuranceCases();
+                this.responseOldData = response.data.data;
             } catch (err) {
-                console.log(err)
-                this.$emit('startStopLoader', false)
+                console.log(err);
+                this.$emit('startStopLoader', false);
                 this.$toast.error(`Данные не сохранены\n ${err}`, {
                     timeout: 3000
-                })
+                });
             } finally {
-                this.$emit('startStopLoader', false)
+                this.$emit('startStopLoader', false);
             }
         },
         IputProcessing(val) {
-            clearInterval(this.intervalResponse)
+            clearInterval(this.intervalResponse);
             this.intervalResponse = setTimeout(() => {
-                this.getRequestToServerData(val)
-            }, 500)
+                this.getRequestToServerData(val);
+            }, 500);
         },
         openModalPage(item) {
-            // Загрузите данные строки в tableData
-            this.$bvModal.show("modal-1")
+            this.$bvModal.show("modal-1");
             this.$nextTick(() => {
-
                 document.querySelectorAll('.hot-display-license-info').forEach(element => {
                     element.style.display = 'none';
                 });
-            })
+            });
             this.tableData = [{ ...item }];
         },
         async getRequestToServerData(search) {
@@ -218,14 +318,21 @@ export default {
             try {
                 // let response = await api.getAllInsuranceWagons(obj)
                 let last_page = 1
-                let response = await api.getAllInsuranceWagons(obj,last_page);
+                let response = await api.getAllInsuranceWagons(obj, last_page);
                 allData.push(...response.data.data)
-                while(last_page < response.data.total_pages){
-                    last_page +=1
+                while (last_page < response.data.total_pages) {
+                    last_page += 1
                     let res = await api.getAllInsuranceWagons(obj, last_page);
                     allData.push(...res.data.data)
                 }
                 this.responseData = allData
+                console.log('allData: ', allData)
+                this.$nextTick(() => {
+                    const hotInstance = this.$refs.hotTable.hotInstance
+                    hotInstance.loadData(this.responseData)
+                    hotInstance.updateSettings({ data: this.responseData })
+                    hotInstance.render()
+                })
                 this.isSearch = true
             }
             catch (err) {
@@ -244,6 +351,7 @@ export default {
     display: flex;
     justify-content: space-between
 }
+
 .long_search {
     position: relative;
     width: 90%;
@@ -294,4 +402,6 @@ tr:hover {
     text-align: center;
     vertical-align: middle;
 }
+
+
 </style>

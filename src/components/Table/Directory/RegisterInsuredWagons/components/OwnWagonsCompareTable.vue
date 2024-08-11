@@ -2,7 +2,7 @@
     <div>
         <hr>
         <h4 v-show="getOwnWagonsCompareData.length > 0" class="air_block_header">Перечень незастрахованных вагонов</h4>
-
+      
         <div class="tables-container">
 
             <div class="table-container">
@@ -12,7 +12,7 @@
                         Показать вагоны с примечанием
                     </label>
                 </div>
-                <span class="description-text">Скопируйте данные из этой таблицы</span>
+                <span class="description-text">Для сохранения примечания нажмите ENTER</span>
                 <hot-table ref="hotTableComponent1" :data="checkApplication" :rowHeaders="true"
                     :columns="columns" :manualRowMove="true" :manualColumnMove="true" :preventOverflow="'horizontal'"
                     :filters="true" :language="'ru-RU'" :manualColumnResize="true" :height="'40vh'" :width="'100%'"
@@ -23,7 +23,7 @@
             </div>
             <div class="table-container">
                 <br>
-                <span class="description-text">Вставьте данные в эту таблицу</span>
+                <span class="description-text">Скопируйте данные из левой таблицы и вставьте данные в эту таблицу</span>
                 <hot-table ref="hotTableComponent2" :data="insuredWagonsData" :rowHeaders="true"
                     :columns="columns_table_copy" :manualRowMove="true" :manualColumnMove="true"
                     :preventOverflow="'horizontal'" :filters="true" :language="'ru-RU'" :manualColumnResize="true"

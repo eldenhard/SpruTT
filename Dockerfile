@@ -18,6 +18,7 @@ RUN npm install @amcharts/amcharts4
 RUN npm i --save logrocket
 RUN npm i --save logrocket-vuex
 RUN npm install -save vue-xlsx
+
 # RUN npm i vuedraggable
 COPY ./ .
 RUN npm run build
