@@ -401,7 +401,7 @@ export default {
                 { data: 'cargo_var', readOnly: true },
                 { data: 'stavka', readOnly: false }, // Editable, cyan
                 { data: 'capacity_compare', readOnly: false, editor: 'select', selectOptions: ['Более', 'Менее'] }, // Editable, cyan
-                { data: 'capacity_value', type: 'numeric', readOnly: false }, // Editable, cyan
+                { data: 'capacity_value', type: 'numeric', readOnly: false, editor: 'select', selectOptions: [65.5,66,69,69.5,70.3,71,75] }, // Editable, cyan
                 { data: 'nds', readOnly: true },
                 { data: 'stavka_nds', readOnly: true },
                 { data: 'k', type: 'numeric', readOnly: false }, // Editable, cyan
