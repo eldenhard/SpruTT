@@ -303,14 +303,15 @@ const getWagonFlights = (queryParams) => {
 }
 
 const saveDataInsuranceCases = (data) => {
-    return api.post(`${finance}/insurance-cases/`, data)
-}
-
-const saveManyDataInsuranceCases = (data) => {
     return api.post(`${finance}/insurance-cases/save-many/`, data)
 }
-const getDataInsuranceCases = () => {
-    return api.get(`${finance}/insurance-cases/`)
+
+const saveManyDataInsuranceCases = (id,data) => {
+    return api.patch(`${finance}/insurance-cases/${id}/`, data)
+}
+
+const getDataInsuranceCases = (data) => {
+    return api.get(`${finance}/insurance-cases/`, {params: data})
 }
 export default {
     saveDataInsuranceCases,

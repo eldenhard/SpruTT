@@ -2,18 +2,25 @@
     <div>
         <b-modal id="modal-123456" :title="is_insurances_cases" centered size="xl" cancel-disabled>
             <div class="modal-table">
-                <hot-table :data="tableData" :columns="columns" :rowHeaders="false" :colHeaders="colHeaders"
-                    :height="150" :manualColumnResize="true" :manualRowResize="true" :filters="true" :language="'ru-RU'"
-                    :dropdownMenu="dropdownMenuOptions">
+                <hot-table ref="modalHotTable" v-if="tableData.length > 0" :data="tableData" :columns="columns"
+                    :rowHeaders="false" :colHeaders="colHeaders" height="30vh" :manualColumnResize="true"
+                    :manualRowResize="true" :filters="true" :language="'ru-RU'" :dropdownMenu="dropdownMenuOptions">
                 </hot-table>
-
+                <div v-else style="display: flex; align-items: center; justify-content: center">
+                    <h4>Данных нет</h4>
+                </div>
             </div>
-            <template #modal-footer="{ ok }">
-                <b-form-checkbox id="checkbox-1" v-show="is_insurances_cases != 'Новый страховой случай'" v-model="status" name="checkbox-1"
-                    unchecked-value="not_accepted">
+            <template #modal-footer="{ ok, cancel }">
+                <b-form-checkbox id="checkbox-1"
+                    v-show="is_insurances_cases != 'Новый страховой случай' && tableData.length > 0 && is_insurances_cases != 'Архивные страховые случаи'"
+                    v-model="status" name="checkbox-1" unchecked-value="not_accepted">
                     Закрыть страховой случай
                 </b-form-checkbox>
-                <b-button size="md" variant="success" @click="saveAccidientByWagon()">Сохранить</b-button>
+                <b-button size="md" variant="success"
+                    v-if="tableData.length > 0 && is_insurances_cases != 'Архивные страховые случаи'"
+                    @click="saveAccidientByWagon(is_insurances_cases)">Сохранить</b-button>
+                <b-button size="md" variant="danger" v-else @click="cancel()">Закрыть</b-button>
+
             </template>
         </b-modal>
 
@@ -42,11 +49,12 @@
             <h4>Ранее введенные данные</h4>
             <b-button variant="success" @click="getData()">Загрузить данные</b-button>
         </div>
+        <br>
         <hot-table ref="hotTable2" :data="earlyData" :columns="columns" :colHeaders="colHeaders"
             :contextMenu="customContextMenu" :manualColumnResize="true" :manualRowResize="true" :height="'30vh'"
-            :language="'ru-RU'" :filters="true" :dropdownMenu="dropdownMenuOptions" >
+            :language="'ru-RU'" :filters="true" :dropdownMenu="dropdownMenuOptions">
         </hot-table>
-    
+
     </div>
 </template>
 
@@ -70,53 +78,14 @@ export default {
             intervalResponse: null,
             responseData: [],
             responseOldData: [],
-            status : false,
+            status: false,
             earlyData: [],
-            tableData: {
-                wagon_number: "",
-                wagon_type: "",
-                owner: "",
-                insurance_company: "",
-                agr_number: "",
-                agr_date: "",
-                franchise_sum: "",
-                conditional: "",
-                insure_case_date: "",
-                vu23_date: "",
-                vu36_date: "",
-                fault_code: "",
-                repair_exclusion_loss: "",
-                status: "",
-                damage_causer: "",
-                client: "",
-                sk_notification_date: "",
-                out_application_number: "",
-                application_date: "",
-                last_request_response_date: "",
-                refund_date: "",
-                estimated_insurance_indemnity: "",
-                franchise: "",
-                deduction_of_balances: "",
-                fact_insurance_indemnity: "",
-                refused: "",
-                repair_downtime_pending_amount: "",
-                railway_fare_to_from_repair: "",
-                additional_compensation_due: "",
-                total_loss_tt: "",
-                reimbursed: "",
-                reimbursed_ost: "",
-                comment: "",
-                repair_kind: "",
-                station_nrp_vu_23: "",
-                road_nrp_vu_23: "",
-                date_nrp_vu_23: "",
-                is_closed: ""
-            },
+            tableData: [],
             dropdownMenuOptions: ['filter_by_condition', 'filter_action_bar', 'filter_by_value', 'clear_column'],
 
             columns: [
-                { data: 'wagon_number', type: 'text', editor: false },
-                { data: 'wagon_type', editor: false },
+                { data: 'wagon_number', type: 'text', readOnly: false },
+                { data: 'wagon_type', readOnly: true },
                 { data: 'owner', type: 'text' },
                 { data: 'insurance_company', type: 'text' },
                 { data: 'agr_number', type: 'text' },
@@ -130,10 +99,10 @@ export default {
                 { data: 'damage_causer', type: 'text' },
                 { data: 'client', type: 'text' },
                 { data: 'sk_notification_date', type: 'date', dateFormat: 'YYYY-MM-DD', readOnly: false },
-                { data: 'out_application_number', type: 'text',readOnly: false },
-                { data: 'application_date', type: 'date', dateFormat: 'YYYY-MM-DD',readOnly: false  },
-                { data: 'last_request_response_date', type: 'date', dateFormat: 'YYYY-MM-DD' ,readOnly: false },
-                { data: 'refund_date', type: 'date', dateFormat: 'YYYY-MM-DD',readOnly: false  },
+                { data: 'out_application_number', type: 'text', readOnly: false },
+                { data: 'application_date', type: 'date', dateFormat: 'YYYY-MM-DD', readOnly: false },
+                { data: 'last_request_response_date', type: 'date', dateFormat: 'YYYY-MM-DD', readOnly: false },
+                { data: 'refund_date', type: 'date', dateFormat: 'YYYY-MM-DD', readOnly: false },
                 { data: 'estimated_insurance_indemnity', type: 'text' },
                 { data: 'franchise', type: 'text' },
                 { data: 'deduction_of_balances', type: 'numeric' },
@@ -187,6 +156,7 @@ export default {
                 'Статус',
                 'Примечание'
             ],
+            ver_imp_data: "",
             customContextMenu: {
                 items: {
                     'new_case': {
@@ -232,7 +202,8 @@ export default {
                 const rowIndex = selected[0];
                 const rowData = this.responseData[rowIndex];
                 this.is_insurances_cases = type == 'new' ? 'Новый страховой случай' : type == 'old' ? 'Старые страховые случаи' : 'Архивные страховые случаи';
-                this.openModalPage(rowData, type)
+
+                this.openModalPage(rowData, type);
                 console.log(`Selected row data for ${type}:`, rowData);
             }
         },
@@ -243,25 +214,18 @@ export default {
                 let response = await api.getDataInsuranceCases();
                 this.earlyData = response.data.data;
                 this.$nextTick(() => {
-                    const hotInstance = this.$refs.hotTable2.hotInstance
-                    hotInstance.loadData(this.earlyData)
-                    hotInstance.updateSettings({ data: this.earlyData})
-                    hotInstance.render()
-            })
+                    const hotInstance = this.$refs.hotTable2.hotInstance;
+                    hotInstance.loadData(this.earlyData);
+                    hotInstance.updateSettings({ data: this.earlyData });
+                    hotInstance.render();
+                });
                 if (this.earlyData.length > 0) {
-                    this.$toast.success('Данные загружены', {
-                        timeout: 3000
-                    });
+                    this.$toast.success('Данные загружены', { timeout: 3000 });
                 } else {
-                    this.$toast.warning('Нет ранее введенных данных', {
-                        timeout: 4000
-                    });
+                    this.$toast.warning('Нет ранее введенных данных', { timeout: 4000 });
                 }
             } catch (err) {
-                this.$toast.error(`Данные не загружены\n ${err}`, {
-                    timeout: 3000
-                });
-                this.$emit('startStopLoader', false);
+                this.$toast.error(`Данные не загружены\n ${err}`, { timeout: 3000 });
             } finally {
                 this.$emit('startStopLoader', false);
             }
@@ -269,41 +233,292 @@ export default {
         async saveAccidientByWagon() {
             try {
                 this.$emit('startStopLoader', true);
-                this.tableData[0].is_closed = this.status;
-                console.log('ДАНЕЫЕ: ', this.tableData[0])
-                await api.saveDataInsuranceCases( this.tableData[0]);
+                let wagonNumber = this.tableData[0].wagon_number;
+
+                // Получаем все данные по вагону
+                let response = await api.getDataInsuranceCases({ wagon_number: wagonNumber });
+
+                if (this.is_insurances_cases === 'Новый страховой случай') {
+                    // Сначала сохраняем новый страховой случай
+                    await api.saveDataInsuranceCases(this.tableData);
+
+                    // Затем обновляем статус всех "Новых" записей на "Старые"
+                    let newCases = response.data?.data.filter(item => item.status === 'Новый');
+                    newCases.forEach(item => {
+                        item.status = 'Старый';
+                    });
+
+                    // Сохраняем обновленные записи
+                    let promises = newCases.map(item => api.saveManyDataInsuranceCases(item.id, item));
+                    await Promise.all(promises);
+
+                } else if (this.is_insurances_cases === 'Старые страховые случаи') {
+                    // В старых страховых случаях просто сохраняем изменения, не трогая статус
+                    let promises = this.tableData.map(item => api.saveManyDataInsuranceCases(item.id, item));
+                    await Promise.all(promises);
+                    // Если статус установлен как архивный, обновляем все записи на "Архивный"
+                    response.data?.data.forEach(item => {
+                        item.status = 'Архивный';
+                        item.is_closed = true;
+                    });
+
+                    // Сохраняем обновленные данные
+                    let promises2 = response.data?.data.map(item => api.saveManyDataInsuranceCases(item.id, item));
+                    await Promise.all(promises2);
+                }
+
                 this.$emit('startStopLoader', false);
                 this.$bvModal.hide("modal-123456");
-                this.$toast.success('Данные сохранены', {
-                    timeout: 3000
-                });
+                this.$toast.success('Данные сохранены', { timeout: 3000 });
 
             } catch (err) {
                 console.log(err);
                 this.$emit('startStopLoader', false);
-                this.$toast.error(`Данные не сохранены\n ${err}`, {
-                    timeout: 3000
-                });
-            } finally {
-                this.$emit('startStopLoader', false);
+                this.$toast.error(`Данные не сохранены\n ${err}`, { timeout: 3000 });
             }
         },
+
+        // async saveAccidientByWagon() {
+        //     try {
+        //         this.$emit('startStopLoader', true);
+        //         let wagonNumber = this.tableData[0].wagon_number;
+        //         let response = await api.getDataInsuranceCases({ wagon_number: wagonNumber });
+
+        //         // Обновляем статусы для существующих записей
+        //         response.data?.data.forEach(item => {
+        //             if (this.status) {
+        //                 item.status = 'Архивный';
+        //             } else if (item.status === 'Новый') {
+        //                 item.status = 'Старый';
+        //             }
+        //             item.is_closed = this.status;
+        //         });
+
+        //         // Сохранение изменений
+        //         let promises = response.data?.data.map(item => api.saveManyDataInsuranceCases(item.id, item));
+        //         await Promise.all(promises);
+
+        //         // Сохранение нового страхового случая
+        //         if (this.is_insurances_cases === 'Новый страховой случай') {
+        //             await api.saveDataInsuranceCases(this.tableData);
+        //         }
+
+        //         this.$emit('startStopLoader', false);
+        //         this.$bvModal.hide("modal-123456");
+        //         this.$toast.success('Данные сохранены', { timeout: 3000 });
+        //         this.status = false
+
+        //     } catch (err) {
+        //         console.log(err);
+        //         this.$emit('startStopLoader', false);
+        //         this.$toast.error(`Данные не сохранены\n ${err}`, { timeout: 3000 });
+        //     }
+        // },
+
+        async openModalPage(item, type) {
+            let response;
+            let wagonNumber = item.wagon_number;
+
+            if (type === "new") {
+                // Открытие нового случая
+                this.tableData = [{ ...item }];
+                response = await api.getDataInsuranceCases({ wagon_number: wagonNumber });
+
+                // Изменение статуса всех "Новых" на "Старый"
+                let filter_response = response.data.data.filter(item => item.status === 'Новый');
+                if (filter_response.length > 0) {
+                    filter_response.forEach(item => {
+                        item.status = 'Старый';
+                    });
+                    this.ver_imp_data = filter_response;
+                }
+
+                this.$bvModal.show("modal-123456");
+
+            } else if (type === "old") {
+                // Открытие старых случаев
+                response = await api.getDataInsuranceCases({ wagon_number: wagonNumber, status: "Старый" });
+                this.tableData = response.data.data;
+                this.$bvModal.show("modal-123456");
+                this.$nextTick(() => this.initializeHotTable());
+
+            } else if (type === "archived") {
+                // Открытие архивных случаев
+                response = await api.getDataInsuranceCases({ wagon_number: wagonNumber, status: "Архивный" });
+                this.tableData = response.data.data;
+                this.$bvModal.show("modal-123456");
+                this.$nextTick(() => this.initializeHotTable());
+            }
+        },
+
+        initializeHotTable() {
+            const hotInstance = this.$refs.modalHotTable?.hotInstance;
+            if (hotInstance) {
+                hotInstance.loadData(this.tableData);
+                hotInstance.updateSettings({ data: this.tableData });
+                hotInstance.render();
+            } else {
+                console.error('hotInstance не определен');
+            }
+        },
+
+        // handleContextMenuClick(type) {
+        //     const selected = this.$refs.hotTable.hotInstance.getSelectedLast();
+        //     if (selected) {
+        //         const rowIndex = selected[0];
+        //         const rowData = this.responseData[rowIndex];
+        //         this.is_insurances_cases = type == 'new' ? 'Новый страховой случай' : type == 'old' ? 'Старые страховые случаи' : 'Архивные страховые случаи';
+
+        //         this.openModalPage(rowData, type)
+        //         console.log(`Selected row data for ${type}:`, rowData);
+        //     }
+        // },
+        // // Запрос для ранее введенных данных
+        // async getData() {
+        //     try {
+        //         this.$emit('startStopLoader', true);
+        //         let response = await api.getDataInsuranceCases();
+        //         this.earlyData = response.data.data;
+        //         this.$nextTick(() => {
+        //             const hotInstance = this.$refs.hotTable2.hotInstance
+        //             hotInstance.loadData(this.earlyData)
+        //             hotInstance.updateSettings({ data: this.earlyData })
+        //             hotInstance.render()
+        //         })
+        //         if (this.earlyData.length > 0) {
+        //             this.$toast.success('Данные загружены', {
+        //                 timeout: 3000
+        //             });
+        //         } else {
+        //             this.$toast.warning('Нет ранее введенных данных', {
+        //                 timeout: 4000
+        //             });
+        //         }
+        //     } catch (err) {
+        //         this.$toast.error(`Данные не загружены\n ${err}`, {
+        //             timeout: 3000
+        //         });
+        //         this.$emit('startStopLoader', false);
+        //     } finally {
+        //         this.$emit('startStopLoader', false);
+        //     }
+        // },
+        // // Действие из кнопки "Сохранить" модального окна
+        // async saveAccidientByWagon(type) {
+        //     try {
+        //         this.$emit('startStopLoader', true);
+        //         let query_params = { 'wagon_number': this.tableData[0].wagon_number }
+        //         let response = await api.getDataInsuranceCases(query_params);
+        //         response.data?.data.forEach(item => {
+        //             item.is_closed = this.status
+        //             if (this.status == true) {
+        //                 item.status = 'Архивный'
+        //             }
+        //         })
+
+        //         if (type == 'Новый страховой случай') {
+        //             // Сохраняю новый страховой случай
+        //             await api.saveDataInsuranceCases(this.tableData);
+        //             // изменяю все ранее введенные новые случаи по вагону на СТАРЫЕ
+        //             if (this.ver_imp_data.length > 0) {
+        //                 // Меняю статус старых случай на СТАРЫЕ
+        //                 let promises = this.ver_imp_data.map(item => api.saveManyDataInsuranceCases(item.id, item));
+        //                 await Promise.all(promises);
+
+        //             }
+
+        //         } else {
+        //             let promises = response.data?.data.map(item => api.saveManyDataInsuranceCases(item.id, item));
+        //             await Promise.all(promises);
+        //             // Сохраняю изменения которые ввел пользователь
+        //             let promises2 = this.tableData.map(item => api.saveManyDataInsuranceCases(item.id, item));
+        //             await Promise.all(promises2);
+        //         }
+        //         // await api.saveManyDataInsuranceCases(this.tableData);
+        //         this.$emit('startStopLoader', false);
+        //         this.$bvModal.hide("modal-123456");
+        //         this.$toast.success('Данные сохранены', {
+        //             timeout: 3000
+        //         });
+
+        //     } catch (err) {
+        //         console.log(err);
+        //         this.$emit('startStopLoader', false);
+        //         this.$toast.error(`Данные не сохранены\n ${err}`, {
+        //             timeout: 3000
+        //         });
+        //     } finally {
+        //         this.$emit('startStopLoader', false);
+        //     }
+        // },
         IputProcessing(val) {
             clearInterval(this.intervalResponse);
             this.intervalResponse = setTimeout(() => {
                 this.getRequestToServerData(val);
             }, 500);
         },
-        openModalPage(item) {
-            this.$bvModal.show("modal-123456");
-            this.$nextTick(() => {
-                document.querySelectorAll('.hot-display-license-info').forEach(element => {
-                    element.style.display = 'none';
-                });
-            });
-            this.tableData = [{ ...item }];
-        },
-         
+        // async openModalPage(item, type) {
+        //     if (type == "new") {
+        //         this.tableData = [{ ...item }];
+        //         let response = await api.getDataInsuranceCases({ wagon_number: item.wagon_number });
+
+        //         let filter_response = response.data.data.filter(item => item.status == 'Новый')
+
+        //         if (filter_response.length > 0) {
+        //             filter_response.forEach(item => {
+        //                 item.status = 'Старый'
+        //             })
+        //             this.ver_imp_data = filter_response
+
+        //             // await api.saveDataInsuranceCases(filter_response);
+        //         }
+        //         this.$bvModal.show("modal-123456");
+        //     }
+        //     else if (type == "old") {
+        //         let response = await api.getDataInsuranceCases({ wagon_number: item.wagon_number, status: "Старый" });
+        //         this.tableData = response.data.data
+        //         this.$nextTick(() => {
+        //             document.querySelectorAll('.hot-display-license-info').forEach(element => {
+        //                 element.style.display = 'none';
+        //             });
+        //             this.$bvModal.show("modal-123456");
+        //             const hotInstance = this.$refs.modalHotTable?.hotInstance;
+        //             if (hotInstance) {
+        //                 hotInstance.loadData(this.tableData);
+        //                 hotInstance.updateSettings({ data: this.tableData });
+
+        //                 hotInstance.render();
+        //             } else {
+        //                 console.error('hotInstance не определен');
+        //             }
+
+        //         });
+
+        //     } else {
+        //         let response = await api.getDataInsuranceCases({ wagon_number: item.wagon_number, status: "Архивный" });
+        //         this.tableData = response.data.data
+        //         console.log(this.tableData, 'AAA')
+        //         this.$nextTick(() => {
+        //             document.querySelectorAll('.hot-display-license-info').forEach(element => {
+        //                 element.style.display = 'none';
+        //             });
+        //             this.$bvModal.show("modal-123456");
+        //             const hotInstance = this.$refs.modalHotTable?.hotInstance;
+        //             if (hotInstance) {
+        //                 hotInstance.loadData(this.tableData);
+        //                 hotInstance.updateSettings({ data: this.tableData });
+
+        //                 hotInstance.render();
+        //             } else {
+        //                 console.error('hotInstance не определен');
+        //             }
+
+        //         });
+        //     }
+
+
+        // },
+
         async getRequestToServerData(search) {
             this.isSearch = false
             let obj = { wagons: search.replace(/[^.\d]+/g, "").replace(/(\d{8})(?=\d)/g, '$1,') }
@@ -320,18 +535,18 @@ export default {
                     allData.push(...res.data.data)
                 }
                 this.responseData = allData
-                console.log('allData: ', allData)
                 this.$nextTick(() => {
                     const hotInstance = this.$refs.hotTable.hotInstance
                     hotInstance.loadData(this.responseData)
-                    hotInstance.updateSettings({ data: this.responseData,
+                    hotInstance.updateSettings({
+                        data: this.responseData,
                         afterRenderer: (TD, row, col, prop, value, cellProperties) => {
-                                // Если элемент readOnly
-                                if (this.columns[col].readOnly === false) {
-                                    TD.style.backgroundColor = '#fbfddd';
-                                }
+                            // Если элемент readOnly
+                            if (this.columns[col].readOnly === false) {
+                                TD.style.backgroundColor = '#fbfddd';
                             }
-                     })
+                        }
+                    })
                     hotInstance.render()
                     console.log('checkdata', this.$refs.hotTable.$el)
                 })
@@ -400,11 +615,12 @@ tr:hover {
 }
 
 td.custom-cell {
-  color: #fff;
-  background-color: #37bc6c;
+    color: #fff;
+    background-color: #37bc6c;
 }
+
 .custom-table thead th:nth-child(even),
 .custom-table tbody tr:nth-child(odd) th {
-  background-color: #d7f1e1;
+    background-color: #d7f1e1;
 }
 </style>
