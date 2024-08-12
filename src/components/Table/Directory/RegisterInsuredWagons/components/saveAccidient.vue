@@ -161,11 +161,11 @@ export default {
                 { data: 'repair_exclusion_loss', type: 'text' },
                 { data: 'damage_causer', type: 'text' },
                 { data: 'client', type: 'text' },
-                { data: 'sk_notification_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
-                { data: 'out_application_number', type: 'text' },
-                { data: 'application_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
-                { data: 'last_request_response_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
-                { data: 'refund_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
+                { data: 'sk_notification_date', type: 'date', dateFormat: 'YYYY-MM-DD', readOnly: false },
+                { data: 'out_application_number', type: 'text',readOnly: false },
+                { data: 'application_date', type: 'date', dateFormat: 'YYYY-MM-DD',readOnly: false  },
+                { data: 'last_request_response_date', type: 'date', dateFormat: 'YYYY-MM-DD' ,readOnly: false },
+                { data: 'refund_date', type: 'date', dateFormat: 'YYYY-MM-DD',readOnly: false  },
                 { data: 'estimated_insurance_indemnity', type: 'text' },
                 { data: 'franchise', type: 'text' },
                 { data: 'deduction_of_balances', type: 'numeric' },
@@ -351,7 +351,14 @@ export default {
                 this.$nextTick(() => {
                     const hotInstance = this.$refs.hotTable.hotInstance
                     hotInstance.loadData(this.responseData)
-                    hotInstance.updateSettings({ data: this.responseData })
+                    hotInstance.updateSettings({ data: this.responseData,
+                        afterRenderer: (TD, row, col, prop, value, cellProperties) => {
+                                // Если элемент readOnly
+                                if (this.columns[col].readOnly === false) {
+                                    TD.style.backgroundColor = '#fbfddd';
+                                }
+                            }
+                     })
                     hotInstance.render()
                     console.log('checkdata', this.$refs.hotTable.$el)
                     // let val_table = this.$refs.hotTable.$el.querySelector('.htCore')
