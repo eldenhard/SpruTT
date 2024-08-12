@@ -382,7 +382,7 @@ export default {
             ten_visible: false,
             filter_arendaData: {
                 page_size: "50",
-                client: "ЮНИТРАНС РЭЙЛ",
+                client: "",
                 cargo: "",
                 wagon_type: "Полувагон"
             },
