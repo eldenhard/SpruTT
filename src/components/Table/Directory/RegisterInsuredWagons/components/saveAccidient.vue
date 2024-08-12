@@ -37,42 +37,16 @@
         </hot-table>
 
         <br><br>
-        <!-- <hr>
+        <hr>
         <div class="air_block_header">
             <h4>Ранее введенные данные</h4>
             <b-button variant="success" @click="getData()">Загрузить данные</b-button>
         </div>
-
-        <div style="overflow: auto; height: 30vh; margin-top: 5%;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>№ вагона</th>
-                        <th>Тип вагона</th>
-                        <th>Собственник</th>
-                        <th>Страховая компания</th>
-                        <th>Договор страхования</th>
-                        <th>Вид ремонта</th>
-                        <th>Станция НРП (ВУ-23)</th>
-                        <th>Дорога НРП (ВУ-23)</th>
-                        <th>Дата НРП (дата ВУ-23)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="item in responseOldData" :key="item.id">
-                        <td>{{ item.wagon_number }}</td>
-                        <td>{{ item.wagon_type }}</td>
-                        <td>{{ item.owner }}</td>
-                        <td>{{ item.insurance_company }}</td>
-                        <td>{{ item.agr_number }}</td>
-                        <td>{{ item.repair_kind }}</td>
-                        <td>{{ item.station_nrp_vu_23 }}</td>
-                        <td>{{ item.road_nrp_vu_23 }}</td>
-                        <td>{{ item.date_nrp_vu_23?.split("-").reverse().join(".") }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> -->
+        <hot-table ref="hotTable2" :data="earlyData" :columns="columns" :colHeaders="colHeaders"
+            :contextMenu="customContextMenu" :manualColumnResize="true" :manualRowResize="true" :height="'30vh'"
+            :language="'ru-RU'" :filters="true" :dropdownMenu="dropdownMenuOptions" >
+        </hot-table>
+    
     </div>
 </template>
 
@@ -97,13 +71,7 @@ export default {
             responseData: [],
             responseOldData: [],
             status : false,
-            cell: [
-    {
-      row: 0,
-      col: 0,
-      className: 'custom-cell',
-    },
-  ],
+            earlyData: [],
             tableData: {
                 wagon_number: "",
                 wagon_type: "",
@@ -268,12 +236,19 @@ export default {
                 console.log(`Selected row data for ${type}:`, rowData);
             }
         },
+
         async getData() {
             try {
                 this.$emit('startStopLoader', true);
                 let response = await api.getDataInsuranceCases();
-                this.responseOldData = response.data.data;
-                if (this.responseOldData.length > 0) {
+                this.earlyData = response.data.data;
+                this.$nextTick(() => {
+                    const hotInstance = this.$refs.hotTable2.hotInstance
+                    hotInstance.loadData(this.earlyData)
+                    hotInstance.updateSettings({ data: this.earlyData})
+                    hotInstance.render()
+            })
+                if (this.earlyData.length > 0) {
                     this.$toast.success('Данные загружены', {
                         timeout: 3000
                     });
@@ -302,10 +277,7 @@ export default {
                 this.$toast.success('Данные сохранены', {
                     timeout: 3000
                 });
-                console.log(this.tableData);
-                // await saveManyDataInsuranceCases(this.tableData);
-                // let response = await api.getDataInsuranceCases();
-                // this.responseOldData = response.data.data;
+
             } catch (err) {
                 console.log(err);
                 this.$emit('startStopLoader', false);
@@ -331,6 +303,7 @@ export default {
             });
             this.tableData = [{ ...item }];
         },
+         
         async getRequestToServerData(search) {
             this.isSearch = false
             let obj = { wagons: search.replace(/[^.\d]+/g, "").replace(/(\d{8})(?=\d)/g, '$1,') }
@@ -361,19 +334,6 @@ export default {
                      })
                     hotInstance.render()
                     console.log('checkdata', this.$refs.hotTable.$el)
-                    // let val_table = this.$refs.hotTable.$el.querySelector('.htCore')
-                    this.$nextTick(() => {
-        let val_table = this.$refs.hotTable.$el.querySelector('.htCore');
-        console.log('val_table', val_table);
-        
-        // Apply custom classes or inline styles if needed
-        let headerCells = val_table.querySelectorAll('thead th');
-        headerCells.forEach(header => {
-            header.style.backgroundColor = '#ffeb3b';  // Yellow background
-            header.style.color = '#000000';            // Black text
-            header.style.fontWeight = 'bold';          // Bold text
-        });
-    });
                 })
                 this.isSearch = true
             }
