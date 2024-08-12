@@ -27,7 +27,7 @@
                                 <br>
                                 <b-button variant="info" style="position: absolute; right: 2%;"
                                     v-if="getInsuredWagonsData.length > 1" @click="DownloadExcel('test')">Выгрузить
-                                    таблицу</b-button>
+                                    в EXCEL</b-button>
                                 <br>
                                 <h4 class="air_block_header" v-show="getInsuredWagonsData.length > 0">Застрахованные
                                     вагоны</h4>

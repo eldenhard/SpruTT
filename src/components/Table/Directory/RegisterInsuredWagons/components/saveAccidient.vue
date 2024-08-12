@@ -47,8 +47,14 @@
         <hr>
         <div class="air_block_header">
             <h4>Ранее введенные данные</h4>
-            <b-button variant="success" @click="getData()">Загрузить данные</b-button>
+            <div style="display: flex; flex-direction: column; gap: 25px">
+
+                <b-button variant="success" @click="getData()">Загрузить данные</b-button>
+                <b-button variant="info" v-show="earlyData.length > 0" @click="downloadToExcel()">Выгрузить в
+                    EXCEL</b-button>
+            </div>
         </div>
+
         <br>
         <hot-table ref="hotTable2" :data="earlyData" :columns="columns" :colHeaders="colHeaders"
             :contextMenu="customContextMenu" :manualColumnResize="true" :manualRowResize="true" :height="'30vh'"
@@ -63,7 +69,7 @@ import api from "@/api/directory";
 import { HotTable } from '@handsontable/vue';
 import { registerAllModules } from 'handsontable/registry';
 import { Theme } from '@amcharts/amcharts5';
-
+import Handsontable from 'handsontable';
 registerAllModules();
 
 export default {
@@ -90,7 +96,24 @@ export default {
                 { data: 'insurance_company', type: 'text' },
                 { data: 'agr_number', type: 'text' },
                 { data: 'franchise_sum', type: 'numeric' },
-                { data: 'conditional', editor: 'select', selectOptions: ['Условная', 'Безусловная'] },
+                {
+                    data: 'conditional',
+                    type: 'dropdown',
+                    editor: 'select',
+                    selectOptions: ['Условная', 'Безусловная'],
+                    renderer: function (instance, td, row, col, prop, value, cellProperties) {
+                        let displayValue = value === true || value === 'Условная' ? 'Условная' : 'Безусловная';
+                        Handsontable.renderers.TextRenderer.apply(this, arguments);
+                        td.innerText = displayValue;
+                    },
+                    onChange: function (value, row, prop) {
+                        // Преобразуем строковое значение в boolean при изменении
+                        if (prop === 'conditional') {
+                            this.tableData[row][prop] = value === 'Условная' ? true : false;
+                        }
+                    }
+                },
+
                 { data: 'insure_case_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
                 { data: 'vu23_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
                 { data: 'vu36_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
@@ -196,6 +219,23 @@ export default {
 
     },
     methods: {
+        downloadToExcel() {
+            const hotInstance = this.$refs.hotTable2.hotInstance;
+            const exportPlugin = hotInstance.getPlugin('exportFile');
+
+            // Экспортируем CSV с BOM и точкой с запятой как разделителем
+            const csvData = exportPlugin.exportAsString('csv', {
+                bom: true,
+                columnHeaders: true,
+                rowHeaders: true,
+                mimeType: 'text/csv',
+                columnDelimiter: ';', // Используем точку с запятой в качестве разделителя
+            });
+
+            // Создаем blob с данными и сохраняем его
+            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            saveAs(blob, 'Страховые случаи.csv');
+        },
         handleContextMenuClick(type) {
             const selected = this.$refs.hotTable.hotInstance.getSelectedLast();
             if (selected) {
@@ -235,12 +275,18 @@ export default {
                 this.$emit('startStopLoader', true);
                 let wagonNumber = this.tableData[0].wagon_number;
 
+                // Преобразование перед сохранением: "Условная" -> true, "Безусловная" -> false
+                let dataToSave = this.tableData.map(item => ({
+                    ...item,
+                    conditional: item.conditional === 'Условная' ? true : false
+                }));
+
                 // Получаем все данные по вагону
                 let response = await api.getDataInsuranceCases({ wagon_number: wagonNumber });
 
                 if (this.is_insurances_cases === 'Новый страховой случай') {
                     // Сначала сохраняем новый страховой случай
-                    await api.saveDataInsuranceCases(this.tableData);
+                    await api.saveDataInsuranceCases(dataToSave);
 
                     // Затем обновляем статус всех "Новых" записей на "Старые"
                     let newCases = response.data?.data.filter(item => item.status === 'Новый');
@@ -254,19 +300,22 @@ export default {
 
                 } else if (this.is_insurances_cases === 'Старые страховые случаи') {
                     // В старых страховых случаях просто сохраняем изменения, не трогая статус
-                    let promises = this.tableData.map(item => api.saveManyDataInsuranceCases(item.id, item));
+                    let promises = dataToSave.map(item => api.saveManyDataInsuranceCases(item.id, item));
                     await Promise.all(promises);
+
                     // Если статус установлен как архивный, обновляем все записи на "Архивный"
-                    response.data?.data.forEach(item => {
-                        item.status = 'Архивный';
-                        item.is_closed = true;
-                    });
+                    if (this.status) {
+                        response.data?.data.forEach(item => {
+                            item.status = 'Архивный';
+                            item.is_closed = true;
+                        });
 
-                    // Сохраняем обновленные данные
-                    let promises2 = response.data?.data.map(item => api.saveManyDataInsuranceCases(item.id, item));
-                    await Promise.all(promises2);
+                        // Сохраняем обновленные данные
+                        let promises2 = response.data?.data.map(item => api.saveManyDataInsuranceCases(item.id, item));
+                        await Promise.all(promises2);
+                    }
                 }
-
+                this.getData()
                 this.$emit('startStopLoader', false);
                 this.$bvModal.hide("modal-123456");
                 this.$toast.success('Данные сохранены', { timeout: 3000 });
@@ -278,42 +327,7 @@ export default {
             }
         },
 
-        // async saveAccidientByWagon() {
-        //     try {
-        //         this.$emit('startStopLoader', true);
-        //         let wagonNumber = this.tableData[0].wagon_number;
-        //         let response = await api.getDataInsuranceCases({ wagon_number: wagonNumber });
 
-        //         // Обновляем статусы для существующих записей
-        //         response.data?.data.forEach(item => {
-        //             if (this.status) {
-        //                 item.status = 'Архивный';
-        //             } else if (item.status === 'Новый') {
-        //                 item.status = 'Старый';
-        //             }
-        //             item.is_closed = this.status;
-        //         });
-
-        //         // Сохранение изменений
-        //         let promises = response.data?.data.map(item => api.saveManyDataInsuranceCases(item.id, item));
-        //         await Promise.all(promises);
-
-        //         // Сохранение нового страхового случая
-        //         if (this.is_insurances_cases === 'Новый страховой случай') {
-        //             await api.saveDataInsuranceCases(this.tableData);
-        //         }
-
-        //         this.$emit('startStopLoader', false);
-        //         this.$bvModal.hide("modal-123456");
-        //         this.$toast.success('Данные сохранены', { timeout: 3000 });
-        //         this.status = false
-
-        //     } catch (err) {
-        //         console.log(err);
-        //         this.$emit('startStopLoader', false);
-        //         this.$toast.error(`Данные не сохранены\n ${err}`, { timeout: 3000 });
-        //     }
-        // },
 
         async openModalPage(item, type) {
             let response;
@@ -332,9 +346,8 @@ export default {
                     });
                     this.ver_imp_data = filter_response;
                 }
-
                 this.$bvModal.show("modal-123456");
-
+                this.$nextTick(() => this.initializeHotTable());
             } else if (type === "old") {
                 // Открытие старых случаев
                 response = await api.getDataInsuranceCases({ wagon_number: wagonNumber, status: "Старый" });
@@ -354,6 +367,9 @@ export default {
         initializeHotTable() {
             const hotInstance = this.$refs.modalHotTable?.hotInstance;
             if (hotInstance) {
+                document.querySelectorAll('.hot-display-license-info').forEach(element => {
+                    element.style.display = 'none';
+                });
                 hotInstance.loadData(this.tableData);
                 hotInstance.updateSettings({ data: this.tableData });
                 hotInstance.render();
@@ -362,162 +378,14 @@ export default {
             }
         },
 
-        // handleContextMenuClick(type) {
-        //     const selected = this.$refs.hotTable.hotInstance.getSelectedLast();
-        //     if (selected) {
-        //         const rowIndex = selected[0];
-        //         const rowData = this.responseData[rowIndex];
-        //         this.is_insurances_cases = type == 'new' ? 'Новый страховой случай' : type == 'old' ? 'Старые страховые случаи' : 'Архивные страховые случаи';
 
-        //         this.openModalPage(rowData, type)
-        //         console.log(`Selected row data for ${type}:`, rowData);
-        //     }
-        // },
-        // // Запрос для ранее введенных данных
-        // async getData() {
-        //     try {
-        //         this.$emit('startStopLoader', true);
-        //         let response = await api.getDataInsuranceCases();
-        //         this.earlyData = response.data.data;
-        //         this.$nextTick(() => {
-        //             const hotInstance = this.$refs.hotTable2.hotInstance
-        //             hotInstance.loadData(this.earlyData)
-        //             hotInstance.updateSettings({ data: this.earlyData })
-        //             hotInstance.render()
-        //         })
-        //         if (this.earlyData.length > 0) {
-        //             this.$toast.success('Данные загружены', {
-        //                 timeout: 3000
-        //             });
-        //         } else {
-        //             this.$toast.warning('Нет ранее введенных данных', {
-        //                 timeout: 4000
-        //             });
-        //         }
-        //     } catch (err) {
-        //         this.$toast.error(`Данные не загружены\n ${err}`, {
-        //             timeout: 3000
-        //         });
-        //         this.$emit('startStopLoader', false);
-        //     } finally {
-        //         this.$emit('startStopLoader', false);
-        //     }
-        // },
-        // // Действие из кнопки "Сохранить" модального окна
-        // async saveAccidientByWagon(type) {
-        //     try {
-        //         this.$emit('startStopLoader', true);
-        //         let query_params = { 'wagon_number': this.tableData[0].wagon_number }
-        //         let response = await api.getDataInsuranceCases(query_params);
-        //         response.data?.data.forEach(item => {
-        //             item.is_closed = this.status
-        //             if (this.status == true) {
-        //                 item.status = 'Архивный'
-        //             }
-        //         })
-
-        //         if (type == 'Новый страховой случай') {
-        //             // Сохраняю новый страховой случай
-        //             await api.saveDataInsuranceCases(this.tableData);
-        //             // изменяю все ранее введенные новые случаи по вагону на СТАРЫЕ
-        //             if (this.ver_imp_data.length > 0) {
-        //                 // Меняю статус старых случай на СТАРЫЕ
-        //                 let promises = this.ver_imp_data.map(item => api.saveManyDataInsuranceCases(item.id, item));
-        //                 await Promise.all(promises);
-
-        //             }
-
-        //         } else {
-        //             let promises = response.data?.data.map(item => api.saveManyDataInsuranceCases(item.id, item));
-        //             await Promise.all(promises);
-        //             // Сохраняю изменения которые ввел пользователь
-        //             let promises2 = this.tableData.map(item => api.saveManyDataInsuranceCases(item.id, item));
-        //             await Promise.all(promises2);
-        //         }
-        //         // await api.saveManyDataInsuranceCases(this.tableData);
-        //         this.$emit('startStopLoader', false);
-        //         this.$bvModal.hide("modal-123456");
-        //         this.$toast.success('Данные сохранены', {
-        //             timeout: 3000
-        //         });
-
-        //     } catch (err) {
-        //         console.log(err);
-        //         this.$emit('startStopLoader', false);
-        //         this.$toast.error(`Данные не сохранены\n ${err}`, {
-        //             timeout: 3000
-        //         });
-        //     } finally {
-        //         this.$emit('startStopLoader', false);
-        //     }
-        // },
         IputProcessing(val) {
             clearInterval(this.intervalResponse);
             this.intervalResponse = setTimeout(() => {
                 this.getRequestToServerData(val);
             }, 500);
         },
-        // async openModalPage(item, type) {
-        //     if (type == "new") {
-        //         this.tableData = [{ ...item }];
-        //         let response = await api.getDataInsuranceCases({ wagon_number: item.wagon_number });
 
-        //         let filter_response = response.data.data.filter(item => item.status == 'Новый')
-
-        //         if (filter_response.length > 0) {
-        //             filter_response.forEach(item => {
-        //                 item.status = 'Старый'
-        //             })
-        //             this.ver_imp_data = filter_response
-
-        //             // await api.saveDataInsuranceCases(filter_response);
-        //         }
-        //         this.$bvModal.show("modal-123456");
-        //     }
-        //     else if (type == "old") {
-        //         let response = await api.getDataInsuranceCases({ wagon_number: item.wagon_number, status: "Старый" });
-        //         this.tableData = response.data.data
-        //         this.$nextTick(() => {
-        //             document.querySelectorAll('.hot-display-license-info').forEach(element => {
-        //                 element.style.display = 'none';
-        //             });
-        //             this.$bvModal.show("modal-123456");
-        //             const hotInstance = this.$refs.modalHotTable?.hotInstance;
-        //             if (hotInstance) {
-        //                 hotInstance.loadData(this.tableData);
-        //                 hotInstance.updateSettings({ data: this.tableData });
-
-        //                 hotInstance.render();
-        //             } else {
-        //                 console.error('hotInstance не определен');
-        //             }
-
-        //         });
-
-        //     } else {
-        //         let response = await api.getDataInsuranceCases({ wagon_number: item.wagon_number, status: "Архивный" });
-        //         this.tableData = response.data.data
-        //         console.log(this.tableData, 'AAA')
-        //         this.$nextTick(() => {
-        //             document.querySelectorAll('.hot-display-license-info').forEach(element => {
-        //                 element.style.display = 'none';
-        //             });
-        //             this.$bvModal.show("modal-123456");
-        //             const hotInstance = this.$refs.modalHotTable?.hotInstance;
-        //             if (hotInstance) {
-        //                 hotInstance.loadData(this.tableData);
-        //                 hotInstance.updateSettings({ data: this.tableData });
-
-        //                 hotInstance.render();
-        //             } else {
-        //                 console.error('hotInstance не определен');
-        //             }
-
-        //         });
-        //     }
-
-
-        // },
 
         async getRequestToServerData(search) {
             this.isSearch = false
