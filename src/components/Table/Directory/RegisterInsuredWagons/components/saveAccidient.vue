@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-modal id="modal-1" :title="is_insurances_cases" centered size="xl" cancel-disabled>
+        <b-modal id="modal-123456" :title="is_insurances_cases" centered size="xl" cancel-disabled>
             <div class="modal-table">
                 <hot-table :data="tableData" :columns="columns" :rowHeaders="false" :colHeaders="colHeaders"
                     :height="150" :manualColumnResize="true" :manualRowResize="true" :filters="true" :language="'ru-RU'"
@@ -273,7 +273,7 @@ export default {
                 console.log('ДАНЕЫЕ: ', this.tableData[0])
                 await api.saveDataInsuranceCases( this.tableData[0]);
                 this.$emit('startStopLoader', false);
-                this.$bvModal.hide("modal-1");
+                this.$bvModal.hide("modal-123456");
                 this.$toast.success('Данные сохранены', {
                     timeout: 3000
                 });
@@ -295,7 +295,7 @@ export default {
             }, 500);
         },
         openModalPage(item) {
-            this.$bvModal.show("modal-1");
+            this.$bvModal.show("modal-123456");
             this.$nextTick(() => {
                 document.querySelectorAll('.hot-display-license-info').forEach(element => {
                     element.style.display = 'none';
