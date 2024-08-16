@@ -31,7 +31,7 @@ export default {
                 { title: 'Собственник', data: 'owner' },
                 { title: 'Собственник (ЭТРАН)', data: 'owner_etran' },
                 { title: 'Группа', data: 'group' },
-                { title: 'Дата прекращения действия договора страхования', data: 'agr_date_end' },
+                { title: 'Дата прекращения действия договора страхования', data: 'agr_date_end', width: 450 },
                 { title: 'Страховая сумма, руб', data: 'insurance_sum' },
                 { title: 'Франшиза', data: 'franchise' },
                 { title: 'Примечание 2', data: 'note2' },

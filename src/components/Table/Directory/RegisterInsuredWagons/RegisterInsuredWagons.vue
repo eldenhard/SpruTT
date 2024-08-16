@@ -187,7 +187,7 @@ export default {
             });
 
             try {
-                this.loader = true
+                // this.loader = true
                 let promises = preData.map(el => api.getWagons({ number: el['Номер вагона'] }));
                 const results = await Promise.all(promises);
                 console.log('results',results)
