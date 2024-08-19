@@ -130,6 +130,9 @@ const createAgreeemntStivkaPV = (data) => {
 const getTarifData = (data) => {
     return api.get(`${finance}/stavki-revenue/`, {params: data})
 }
+const editStavkiRevenue = (id, data) => {
+    return api.patch(`${finance}/stavki-revenue/${id}/`, data)
+}
 const deleteTarifData = (id) => {
     return api.delete(`${finance}/stavki-revenue/${id}`)
 }
@@ -211,6 +214,9 @@ const deleteActs = (id, data) => {
 
 const getAllInsuranceWagons = (data, page) => {
     return api.post(`${finance}/insurance-wagons/filter/?page=${page}`, data)
+}
+const editInsuranceWagons = (id, data) => {
+    return api.patch(`${finance}/insurance-wagons/${id}/`, data)
 }
 const sendNewDataInsuranceWagons = (data) => {
     return api.post(`${finance}/insurance-wagons/save-many/`, data)
@@ -368,6 +374,7 @@ export default {
     // Данные по тарифам
     postTarifData,
     getTarifData,
+    editStavkiRevenue,
     deleteTarifData,
     patchTarifData,
     getAllTarifDataPagination,
@@ -401,6 +408,7 @@ export default {
     getAllFines,
     createManyFines,
     getAllInsuranceWagons,
+    editInsuranceWagons,
     sendNewDataInsuranceWagons,
     getOwnWagonsCompare,
     createOpepativnayaSpravka,

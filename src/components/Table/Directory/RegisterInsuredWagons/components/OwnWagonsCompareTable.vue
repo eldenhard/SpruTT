@@ -1,8 +1,11 @@
 <template>
     <div>
         <hr>
-        <h4 v-show="getOwnWagonsCompareData.length > 0" class="air_block_header">Перечень незастрахованных вагонов</h4>
-      
+        <div style="display: flex; vertical-align: middle; align-items: center;">
+            <b-spinner label="Spinning" :variant="'secondary'" style="width: 2rem; height: 2rem;" v-show="is_mini_loader"></b-spinner>
+            <h4 v-show="getOwnWagonsCompareData.length > 0" class="air_block_header" >Перечень незастрахованных вагонов</h4>   
+           
+        </div>
         <div class="tables-container">
 
             <div class="table-container">
@@ -53,7 +56,7 @@ export default {
     components: {
         HotTable,
     },
-    props: ['getOwnWagonsCompareData', 'columns', 'columns_table_copy', 'dropdownMenuOptions'],
+    props: ['getOwnWagonsCompareData', 'columns', 'columns_table_copy', 'dropdownMenuOptions', 'is_mini_loader'],
     data() {
         return {
             sortWagons: [],
@@ -196,6 +199,7 @@ export default {
             });
         },
         handleSelection(row, column, row2, column2) {
+            alert('123')
             const hotInstance = this.$refs.hotTableComponent1.hotInstance;
             const selected = [];
             for (let r = row; r <= row2; r++) {

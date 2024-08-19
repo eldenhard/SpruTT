@@ -11,7 +11,8 @@
             </select>
         </label>
         <label>Клиент <br>
-            <v-select v-model="currentClients" :options="name_client" label="client" style="width:15vw !important;"></v-select>
+            <v-select v-model="currentClients" :options="name_client" label="client"
+                style="width:15vw !important;"></v-select>
         </label>
         <br>
 
@@ -42,7 +43,7 @@ export default {
     },
     methods: {
         async downloadFlights() {
-            if(!this.date_begin){
+            if (!this.date_begin) {
                 this.$toast.error("Выберите дату выгрузки", {
                     timeout: 4000
                 })
@@ -53,11 +54,22 @@ export default {
             try {
                 // console.log(this.currentClients)
                 let queryParams
-                if(this.currentClients.client !== undefined){
-                     queryParams= `?wagon_type=${this.wagon_type}&report_date=${last_date}&client=${this.currentClients.client}`;
+                if (this.currentClients.client !== undefined) {
+                    queryParams = `?wagon_type=${this.wagon_type}&report_date=${last_date}&client=${this.currentClients.client}`;
                 } else {
-                    queryParams= `?wagon_type=${this.wagon_type}&report_date=${last_date}`;
+                    queryParams = `?wagon_type=${this.wagon_type}&report_date=${last_date}`;
                 }
+                // if (window.Worker) {
+                //     let my_worker = new Worker('./web_workers/web_worker.js'); // Убедитесь, что путь правильный и доступен
+                //     my_worker.onmessage = event => {
+                //         // обрабатываем сообщение здесь
+                //         console.log(event.data)
+                //     };
+                //     my_worker.onerror = err => {
+                //         console.error('Worker error:', err.message);
+                //     };
+                //     my_worker.postMessage("Привет от родительского процесса");
+                // }
                 let response = await api.getWagonFlights(queryParams)
                 this.$emit('stateLoader', false)
 

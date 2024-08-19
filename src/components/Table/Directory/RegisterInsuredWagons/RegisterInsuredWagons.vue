@@ -29,21 +29,26 @@
                                     v-if="getInsuredWagonsData.length > 1" @click="DownloadExcel('test')">Выгрузить
                                     в EXCEL</b-button>
                                 <br>
-                                <h4 class="air_block_header" v-show="getInsuredWagonsData.length > 0">Застрахованные
-                                    вагоны</h4>
+                                <h4 class="air_block_header" v-show="getInsuredWagonsData.length > 0">
+                                    <b-spinner label="Spinning" :variant="'secondary'"
+                                        style="width: 1.5rem; height: 1.5rem;" v-show="is_save_row"/>&nbsp;Застрахованные
+                                    вагоны
+                                </h4>
                                 <span class="description-text">Всего записей {{ getInsuredWagonsData.length ?? 0
                                     }}</span>
+
                                 <hot-table ref="hotTableComponent" :data="getInsuredWagonsData" :rowHeaders="true"
                                     :columns="columns" :preventOverflow="'horizontal'" :filters="true"
                                     :language="'ru-RU'" :manualColumnResize="true" :autoWrapRow="true"
                                     :autoWrapCol="true" :height="'40vh'" :width="'100%'" :fillHandle="false"
-                                    :dropdownMenu="dropdownMenuOptions" >
+                                    :dropdownMenu="dropdownMenuOptions">
                                 </hot-table>
                                 <br>
 
                                 <OwnWagonsCompareTable :getOwnWagonsCompareData="getOwnWagonsCompareData"
                                     :columns="columns_own_wagons" :columns_table_copy="columns"
-                                    @startStopLoader="startStopLoader" :dropdownMenuOptions="dropdownMenuOptions" />
+                                    @startStopLoader="startStopLoader" :dropdownMenuOptions="dropdownMenuOptions"
+                                    :is_mini_loader="mini_loader" />
 
                             </div>
                         </b-card-text>
@@ -64,6 +69,7 @@ import { mapState } from "vuex";
 import { saveAs } from 'file-saver';
 
 import api from "@/api/wagonPark";
+import api_directory from "@/api/directory";
 import Loader from "@/components/loader/loader.vue";
 import PregisterIsuredwagonsSearch from "./components/PregisterIsuredwagonsSearch.vue";
 import { HotTable } from '@handsontable/vue';
@@ -87,7 +93,9 @@ export default {
     data() {
         return {
             loader: false,
+            mini_loader: false,
             nameClient: [],
+            is_save_row: false,
             columns: [
                 { title: 'Номер вагона', data: 'wagon_number' },
                 { title: 'Тип вагона', data: 'wagon_type', editor: 'select', selectOptions: ['ПВ', 'ЦС'] },
@@ -98,17 +106,19 @@ export default {
                 { title: 'Страховая компания', data: 'insurance_company', },
                 { title: '№ договора', data: 'agr_number', },
                 { title: 'Дата договора', data: 'agr_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
+                { title: 'Дата прекращения действия договора страхования', data: 'agr_date_end', dateFormat: 'YYYY-MM-DD', correctFormat: true, width: 450 },
+
             ],
             // dropdownMenuOptions: ['clear_column', 'filter_by_condition', 'filter_by_value'],
-            dropdownMenuOptions: ['filter_by_condition', 'filter_action_bar','filter_by_value', 'clear_column'],
+            dropdownMenuOptions: ['filter_by_condition', 'filter_action_bar', 'filter_by_value', 'clear_column'],
 
 
-// Для маленькой таблицы незастрахованных вагонов
+            // Для маленькой таблицы незастрахованных вагонов
             columns_own_wagons: [
-                { title: 'Номер вагона', data: 'Номер вагона',},   
-                { title: 'Принадлежность СТЖ', data: 'Принадлежность СТЖ',editor: false },
-                { title: 'В управлении компании', data: 'В управлении компании',editor: false },
-                { title: 'Тип вагона', data: 'Тип',editor: false },
+                { title: 'Номер вагона', data: 'Номер вагона', },
+                { title: 'Принадлежность СТЖ', data: 'Принадлежность СТЖ', editor: false },
+                { title: 'В управлении компании', data: 'В управлении компании', editor: false },
+                { title: 'Тип вагона', data: 'Тип', editor: false },
                 { title: 'Примечание', data: 'Примечание' }
 
                 // В управлении компании
@@ -121,6 +131,8 @@ export default {
     },
     mounted() {
         document.querySelector('.hot-display-license-info').style = 'display: none !important';
+        const hotInstance = this.$refs.hotTableComponent.hotInstance;
+        hotInstance.addHook('afterChange', this.onCellValueChange);
     },
     computed: {
         ...mapState({
@@ -128,7 +140,44 @@ export default {
         }),
 
     },
+
     methods: {
+        // Обработка изменений ячейки
+        onCellValueChange(changes, source) {
+            if (source !== 'loadData') {
+                const hotInstance = this.$refs.hotTableComponent.hotInstance;
+                changes.forEach(([row, prop, oldValue, newValue]) => {
+                    console.log(`Ячейка изменена: Строка ${row}, Колонка ${prop}, Старое значение: ${oldValue}, Новое значение: ${newValue}`);
+
+                    // Получаем индекс строки в исходном наборе данных
+                    const physicalRow = hotInstance.toPhysicalRow(row);
+                    const rowData = hotInstance.getSourceDataAtRow(physicalRow);
+                    rowData[prop] = newValue;
+
+                    // Логика сохранения изменений
+                    this.saveEditCellsInRow(rowData);
+                });
+            }
+        },
+        async saveEditCellsInRow(updatedRow) {
+            try {
+                this.is_save_row = true
+                console.log('Сохранение строки:', updatedRow);
+                await api_directory.editInsuranceWagons(updatedRow.id, updatedRow)
+                this.$toast.success(`Данные по вагону сохранены`, {
+                    timeout: 3000
+                });
+                this.is_save_row = false
+            } catch (err) {
+                console.log('Ошибка сохранения:', err);
+                this.is_save_row = false
+
+                this.$toast.error(`Данные не сохранены\n${err}`, {
+                    timeout: 3000
+                });
+            }
+        },
+
         DownloadExcel() {
             const hotInstance = this.$refs.hotTableComponent.hotInstance;
             const exportPlugin = hotInstance.getPlugin('exportFile');
@@ -161,6 +210,8 @@ export default {
                     { title: 'Страховая компания', data: 'insurance_company', },
                     { title: '№ договора', data: 'agr_number', type: 'numeric' },
                     { title: 'Дата договора', data: 'agr_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
+                    { title: 'Дата прекращения действия договора страхования', data: 'agr_date_end', dateFormat: 'YYYY-MM-DD', correctFormat: true, width: 450 },
+
                     ...data
                 ];
                 hotInstance.updateSettings({ columns: this.columns });
@@ -168,9 +219,9 @@ export default {
             })
         },
         isType(value) {
-            if(value === 'Полувагон') {
+            if (value === 'Полувагон') {
                 return 'ПВ'
-            }else if(value === 'Цистерна') {
+            } else if (value === 'Цистерна') {
                 return 'ЦС'
             }
         },
@@ -188,10 +239,11 @@ export default {
 
             try {
                 // this.loader = true
+                this.mini_loader = true
                 let promises = preData.map(el => api.getWagons({ number: el['Номер вагона'] }));
                 const results = await Promise.all(promises);
-                console.log('results',results)
-                this.loader = false
+                console.log('results', results)
+                this.mini_loader = false
                 let compareDataMap2 = []
                 for (let i in results) {
                     if (results[i].data.data[0].is_active === true) {
@@ -211,7 +263,7 @@ export default {
                     hotInstance.render()
                 })
             } catch (err) {
-                this.loader = false
+                this.mini_loader = false
 
             }
 
