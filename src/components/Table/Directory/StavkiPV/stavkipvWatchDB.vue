@@ -401,7 +401,7 @@ export default {
                 { data: 'cargo_var', readOnly: true },
                 { data: 'stavka', readOnly: false }, // Editable, cyan
                 { data: 'capacity_compare', readOnly: false, editor: 'select', selectOptions: ['Более', 'Менее'] }, // Editable, cyan
-                { data: 'capacity_value', type: 'numeric', readOnly: false, editor: 'select', selectOptions: [65.5,66,69,69.5,70.3,71,75] }, // Editable, cyan
+                { data: 'capacity_value', type: 'numeric', readOnly: false, editor: 'select', selectOptions: [65.5, 66, 69, 69.5, 70.3, 71, 75] }, // Editable, cyan
                 { data: 'nds', readOnly: true },
                 { data: 'stavka_nds', readOnly: true },
                 { data: 'k', type: 'numeric', readOnly: false }, // Editable, cyan
@@ -456,7 +456,8 @@ export default {
             uid: (state) => state.auth.uid,
             user: (state) => state.users.users,
             cargo_code: (state) => state.cargo_code.cargo_code,
-            countryRoad: (state) => state.road.roadAsCountries
+            countryRoad: (state) => state.road.roadAsCountries,
+            wagonRoad: (state) => state.wagon_roads.wagon_roads,
 
         }),
 
@@ -549,7 +550,7 @@ export default {
         },
         async saveNewData() {
             console.log(this.data_for_modal);
-            if(this.data_for_modal.on_date == '' || this.data_for_modal.on_date == null) {
+            if (this.data_for_modal.on_date == '' || this.data_for_modal.on_date == null) {
                 this.$toast.error(`Заполните дату начала договора`, {
                     timeout: 4000
                 });
@@ -602,7 +603,7 @@ export default {
                 const lowerCountryName = country_name.toLowerCase(); // Приводим ввод пользователя к нижнему регистру
                 const country = this.countryRoad.find(item => item.name.toLowerCase() === lowerCountryName);
                 console.log(country)
-              
+
                 return country.id;
             } catch (error) {
                 return null; // Возвращаем null в случае ошибки
@@ -612,7 +613,7 @@ export default {
             let response = await apiWagon.getCurrentStationByName(station_name);
             return response.data.data[0]?.code
         },
-      
+
         isType(val) {
             let type_by_db = [
                 { wagon: "ВО" },
@@ -800,7 +801,21 @@ export default {
                 // });
 
                 // await Promise.all([first_promise, ...second_promises]);
-                this.data = response.data.data;
+                
+                let all_data = response.data.data
+                for(let i in all_data) {
+                    if(all_data[i].attachments) {
+                        all_data[i].attachments.forEach((attachment) => {
+                           if(attachment.departure_road_id){
+                            attachment.departure_road_id = this.wagonRoad.find(item => item.id === attachment.departure_road_id).name
+                            }
+                            if(attachment.destination_road_id){
+                                attachment.destination_road_id = this.wagonRoad.find(item => item.id === attachment.destination_road_id).name
+                            }
+                        })
+                    }
+                }
+                this.data = all_data
 
                 function groupAttachments(attachments) {
                     const groupedAttachments = {};

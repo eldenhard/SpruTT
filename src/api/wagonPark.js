@@ -170,8 +170,13 @@ const getAllCountries = (data) => {
 const getExtensionData = (data) => {
     return api.get(`${resource}/dislocations/last-operations/`, {params: data})
 }
+// дороги стран
 const getAllRoad = () => {
     return api.get(`${resource}/countries/`)
+}
+// дороги станций
+const getWagonRoads = () => {
+    return api.get(`${resource}/roads/?page_size=500`)
 }
 const getDislocation = (date_begin, date_end) => {
     return api.get(`${resource}/dislocations/restricted/?date_begin=${date_begin}&date_end=${date_end}`)
@@ -233,6 +238,7 @@ export default {
     getFileFlights2,
     test,
     getAllRoads,
+    getWagonRoads,
     // Брошенные вагоны
     getWagonsThrow,
     getWagonsThrowTypes,
