@@ -382,7 +382,7 @@ export default {
             ten_visible: false,
             filter_arendaData: {
                 page_size: "50",
-                client: "",
+                client: '',
                 cargo: "",
                 wagon_type: "Полувагон"
             },
@@ -783,7 +783,7 @@ export default {
         },
         //   Получение данных в таблицу
         async getStandardData() {
-            this.loader = true;
+            // this.loader = true;
             this.data = [];
 
             try {
@@ -792,6 +792,14 @@ export default {
                 this.pagination = response.data.links;
                 this.total_pages = response.data.total_pages;
                 this.total_objects = response.data.total_objects;
+                // console.log("Данные под изменение", response.data.data)
+                // let first_promise = api.editStavkiRevenue(response.data.data[0].id, { client: 'ООО "СИБАНТРАЦИТ ЛОГИСТИКА"' });
+
+                // let second_promises = response.data.data[0].attachments.map((item) => {
+                //     return api.editStavkiRevenue(item.id, { client: 'ООО "СИБАНТРАЦИТ ЛОГИСТИКА"' });
+                // });
+
+                // await Promise.all([first_promise, ...second_promises]);
                 this.data = response.data.data;
 
                 function groupAttachments(attachments) {
@@ -843,7 +851,6 @@ export default {
                     }
                     return result
                 })
-                console.log(this.data, data_for_senchakov)
             } catch (error) {
                 this.loader = false;
                 this.notifyHead = "Ошибка";

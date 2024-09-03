@@ -31,7 +31,8 @@
                                 <br>
                                 <h4 class="air_block_header" v-show="getInsuredWagonsData.length > 0">
                                     <b-spinner label="Spinning" :variant="'secondary'"
-                                        style="width: 1.5rem; height: 1.5rem;" v-show="is_save_row"/>&nbsp;Застрахованные
+                                        style="width: 1.5rem; height: 1.5rem;"
+                                        v-show="is_save_row" />&nbsp;Застрахованные
                                     вагоны
                                 </h4>
                                 <span class="description-text">Всего записей {{ getInsuredWagonsData.length ?? 0
@@ -144,7 +145,8 @@ export default {
     methods: {
         // Обработка изменений ячейки
         onCellValueChange(changes, source) {
-            if (source !== 'loadData') {
+          
+            if (changes && source !== 'loadData') {
                 const hotInstance = this.$refs.hotTableComponent.hotInstance;
                 changes.forEach(([row, prop, oldValue, newValue]) => {
                     console.log(`Ячейка изменена: Строка ${row}, Колонка ${prop}, Старое значение: ${oldValue}, Новое значение: ${newValue}`);
@@ -270,14 +272,19 @@ export default {
         },
 
         getInsuredWagons(data) {
-            this.getInsuredWagonsData = data
-            this.$nextTick(() => {
-                const hotInstance = this.$refs.hotTableComponent.hotInstance
-                hotInstance.loadData(this.getInsuredWagonsData)
-                hotInstance.updateSettings({ data: this.getInsuredWagonsData })
-                hotInstance.render()
-            })
+            this.getInsuredWagonsData = [...data]; // Используем копию данных
+            this.updateHotTableData();
         },
+
+        updateHotTableData() {
+            this.$nextTick(() => {
+                console.log('обновил данные')
+                const hotInstance = this.$refs.hotTableComponent.hotInstance;
+                hotInstance.loadData(this.getInsuredWagonsData);
+                hotInstance.updateSettings({ data: this.getInsuredWagonsData });
+                hotInstance.render();
+            });
+        }
 
     },
 }
