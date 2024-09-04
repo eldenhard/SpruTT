@@ -661,6 +661,9 @@
                         <b-tab title="Выгрузка рейсов">
                             <dowloadFlightsVue @stateLoader="stateLoader"/>
                         </b-tab>
+                        <b-tab title="Выгрузка данных ФС">
+                            <downloadAllData @stateLoader="stateLoader"/>
+                        </b-tab>
                     </b-tabs>
                 </b-card>
             </div>
@@ -683,8 +686,9 @@ import { mapState } from "vuex";
 import chartOperationInfoVue from './chartOperationInfo.vue';
 import cp_work_names from './testData.js'
 import dowloadFlightsVue from './dowloadFlights.vue';
+import downloadAllData from './downloadAllData.vue';
 export default {
-    components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue, chartOperationInfoVue, dowloadFlightsVue },
+    components: { Periods, Loader, vSelect, marginIncomeVue, enterDataIncomeVue, chartOperationInfoVue, dowloadFlightsVue,downloadAllData },
     data() {
         return {
             sklad_flights: "",

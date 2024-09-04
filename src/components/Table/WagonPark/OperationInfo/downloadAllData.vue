@@ -10,13 +10,10 @@
                 <option value="Полувагон">Полувагон</option>
             </select>
         </label>
-        <label>Клиент <br>
-            <v-select v-model="currentClients" :options="name_client" label="client"
-                style="width:15vw !important;"></v-select>
-        </label>
+
         <br>
 
-        <button class="Accept" @click="downloadFlights()">Выгрузить</button>
+        <button class="Accept" @click="downloadFinancialData()">Выгрузить</button>
     </div>
 </template>
 
@@ -42,7 +39,7 @@ export default {
         }),
     },
     methods: {
-        async downloadFlights() {
+        async downloadFinancialData() {
             if (!this.date_begin) {
                 this.$toast.error("Выберите дату выгрузки", {
                     timeout: 4000
@@ -52,28 +49,17 @@ export default {
             this.$emit('stateLoader', true)
             let last_date = this.date_begin + '-' + this.getLastDayOfMonth(this.date_begin.split('-')[0], Number(this.date_begin.split('-')[1]) - 1)
             try {
+                
                 // console.log(this.currentClients)
-                let queryParams
-                if (this.currentClients.client !== undefined) {
-                    queryParams = `?wagon_type=${this.wagon_type}&report_date=${last_date}&clients=${this.currentClients.client}`;
-                } else {
-                    queryParams = `?wagon_type=${this.wagon_type}&report_date=${last_date}`;
+                let queryParams = `?wagon_type=${this.wagon_type}&report_date=${last_date}`;
+                for(let i in this.name_client){
+                    queryParams += `&clients=${this.name_client[i].client}`
                 }
-                // if (window.Worker) {
-                //     let my_worker = new Worker('./web_workers/web_worker.js'); // Убедитесь, что путь правильный и доступен
-                //     my_worker.onmessage = event => {
-                //         // обрабатываем сообщение здесь
-                //         console.log(event.data)
-                //     };
-                //     my_worker.onerror = err => {
-                //         console.error('Worker error:', err.message);
-                //     };
-                //     my_worker.postMessage("Привет от родительского процесса");
-                // }
-                let response = await api.getWagonFlights(queryParams)
+                console.log('queryParams', queryParams)
+                await api.getAllFinanceData(queryParams)
                 this.$emit('stateLoader', false)
 
-                this.$toast.success("Выгрузка прошла успешно. Проверьте файл в папке SpruTT", {
+                this.$toast.success("Выгрузка прошла успешно. Проверьте файл в папке", {
                     timeout: 4000
                 })
             } catch (err) {

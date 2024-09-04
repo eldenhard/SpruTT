@@ -127,6 +127,9 @@ const postTarifData = (data) => {
 const createAgreeemntStivkaPV = (data) => {
     return api.post(`${finance}/stavki-revenue/`, data)
 }
+const getAllFinanceData = (data) => {
+   return api.get(`${finance}/operativnaya-spravka/report-file/${data}`) 
+}
 const getTarifData = (data) => {
     return api.get(`${finance}/stavki-revenue/`, {params: data})
 }
@@ -354,6 +357,7 @@ export default {
     deleteStavkiArenda,
     postPenaltyStandards,
     createAgreeemntStivkaPV,
+    getAllFinanceData,
 
     // Нормативы
     getStandard,
