@@ -140,15 +140,34 @@
 
                 </section>
                 <!-- Выбрано приложение -->
-                <section style="flex: 2 0 auto;" v-if="picked != 'agreement_number'">
+                <!-- <section style="flex: 2 0 auto;" v-if="picked != 'agreement_number'">
                     <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"
                         style="width: 100%;  margin-top: 8%; height: 25vh;"></textarea>
                     <button class="Accept" @click="loadFromExcel()" :disabled="active_load_button"
-                        style="margin-top: 2%;width: 100%;margin-left: auto;height: 40px;">Загрузить в таблицу</button>
+                        style="margin-top: 2%;width: 100%;margin-left: auto;height: 40px;" >Загрузить в таблицу</button>
                     <br>
                     <button class="Request button" style="width: 100%; height: 40px; "
-                        @click="active_load_button = !active_load_button">Подтвердить создание шапки</button>
+                        @click="changeActiveLoadButton" v-show="active_load_button">Подтвердить создание шапки</button>
+                </section> -->
+                <section style="flex: 2 0 auto;" v-if="picked != 'agreement_number'">
+                    <!-- Текстовое поле для вставки данных из Excel -->
+                    <textarea v-model="excelData" placeholder="Вставьте данные из Excel сюда" class="textarea"
+                        style="width: 100%; margin-top: 8%; height: 25vh;"></textarea>
+
+                    <!-- Кнопка для загрузки данных -->
+                    <button class="Accept" @click="loadFromExcel" :disabled="!isLoadButtonEnabled"
+                        style="margin-top: 2%; width: 100%; margin-left: auto; height: 40px;">
+                        Загрузить в таблицу
+                    </button>
+                    <br>
+                    <!-- Кнопка для подтверждения шапки -->
+                    <button class="Request button" style="width: 100%; height: 40px;" @click="confirmHeader"
+                        v-if="!isHeaderConfirmed">
+                        Подтвердить создание шапки
+                    </button>
                 </section>
+
+
             </div>
 
             <br />
@@ -160,10 +179,11 @@
                 <button class="Delete button" style="width: 25%; height: 40px; margin-right: auto;"
                     @click="clearTable()">Очистить таблицу</button>
                 <br>
-                <button class="button Action" style="width: 25%; height: 40px;" @click="checkingData()">Проверка введеных
+                <button class="button Action" style="width: 25%; height: 40px;" @click="checkingData()">Проверка
+                    введеных
                     данных</button>
-                <button class="Accept button" style="width: 25%; height: 40px;" @click="saveData()">Отправить данные и
-                    создать приложение</button>
+                <button class="Accept button" style="width: 25%; height: 40px;" @click="saveData()" :disabled="tableData.length == 0">
+                    Отправить данные и  создать приложение</button>
             </section>
             <br>
             <label for="">Маски шапки таблицы <br>
@@ -346,58 +366,83 @@
                                     style="z-index: 50000000000 !important; width: 90%">
                                     <div style="height: 30vh; overflow-y: auto;">
                                         <b-dropdown-item
-                                            @click="addField('Коэффициент при: Грузоподъемность менее 65.5 т')">Коэффициент при:
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 65.5 т')">Коэффициент
+                                            при:
                                             Грузоподъемность
                                             менее 65,5 т</b-dropdown-item>
                                         <hr>
 
                                         <b-dropdown-item
-                                            @click="addField('Коэффициент при: Грузоподъемность менее 66 т')">Коэффициент при: Грузоподъемность менее
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 66 т')">Коэффициент
+                                            при:
+                                            Грузоподъемность менее
                                             66 т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Коэффициент при: Грузоподъемность 66 т')">Коэффициент при:
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность 66 т')">Коэффициент при:
                                             Грузоподъемность 66
                                             т</b-dropdown-item>
                                         <b-dropdown-item
-                                            @click="addField('Коэффициент при: Грузоподъемность более 66 т')">Коэффициент при: Грузоподъемность более
+                                            @click="addField('Коэффициент при: Грузоподъемность более 66 т')">Коэффициент
+                                            при:
+                                            Грузоподъемность более
                                             66 т</b-dropdown-item>
                                         <hr>
                                         <b-dropdown-item
-                                            @click="addField('Коэффициент при: Грузоподъемность менее 69 т')">Коэффициент при: Грузоподъемность менее
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 69 т')">Коэффициент
+                                            при:
+                                            Грузоподъемность менее
                                             69 т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Коэффициент при: Грузоподъемность 69 т')">Коэффициент при:
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность 69 т')">Коэффициент при:
                                             Грузоподъемность 69
                                             т</b-dropdown-item>
                                         <b-dropdown-item
-                                            @click="addField('Коэффициент при: Грузоподъемность более 69 т')">Коэффициент при: Грузоподъемность более
+                                            @click="addField('Коэффициент при: Грузоподъемность более 69 т')">Коэффициент
+                                            при:
+                                            Грузоподъемность более
                                             69 т</b-dropdown-item>
                                         <hr>
                                         <b-dropdown-item
-                                            @click="addField('Коэффициент при: Грузоподъемность менее 69.5 т')">Коэффициент при: Грузоподъемность
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 69.5 т')">Коэффициент
+                                            при:
+                                            Грузоподъемность
                                             менее 69,5 т</b-dropdown-item>
                                         <hr>
                                         <b-dropdown-item
-                                            @click="addField('Коэффициент при: Грузоподъемность менее 70.3 т')">Коэффициент при: Грузоподъемность
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 70.3 т')">Коэффициент
+                                            при:
+                                            Грузоподъемность
                                             менее 70,3 т</b-dropdown-item>
                                         <hr>
                                         <b-dropdown-item
-                                            @click="addField('Коэффициент при: Грузоподъемность менее 71 т')">Коэффициент при: Грузоподъемность менее
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 71 т')">Коэффициент
+                                            при:
+                                            Грузоподъемность менее
                                             71 т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Коэффициент при: Грузоподъемность 71 т')">Коэффициент при:
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность 71 т')">Коэффициент при:
                                             Грузоподъемность 71
                                             т</b-dropdown-item>
                                         <b-dropdown-item
-                                            @click="addField('Коэффициент при: Грузоподъемность более 71 т')">Коэффициент при: Грузоподъемность более
+                                            @click="addField('Коэффициент при: Грузоподъемность более 71 т')">Коэффициент
+                                            при:
+                                            Грузоподъемность более
                                             71 т</b-dropdown-item>
                                         <hr>
 
                                         <b-dropdown-item
-                                            @click="addField('Коэффициент при: Грузоподъемность менее 75 т')">Коэффициент при: Грузоподъемность менее
+                                            @click="addField('Коэффициент при: Грузоподъемность менее 75 т')">Коэффициент
+                                            при:
+                                            Грузоподъемность менее
                                             75 т</b-dropdown-item>
-                                        <b-dropdown-item @click="addField('Коэффициент при: Грузоподъемность 75 т')">Коэффициент при:
+                                        <b-dropdown-item
+                                            @click="addField('Коэффициент при: Грузоподъемность 75 т')">Коэффициент при:
                                             Грузоподъемность 75
                                             т</b-dropdown-item>
                                         <b-dropdown-item
-                                            @click="addField('Коэффициент при: Грузоподъемность более 75 т')">Коэффициент при: Грузоподъемность более
+                                            @click="addField('Коэффициент при: Грузоподъемность более 75 т')">Коэффициент
+                                            при:
+                                            Грузоподъемность более
                                             75 т</b-dropdown-item>
                                     </div>
                                 </b-dropdown>
@@ -524,7 +569,9 @@ export default {
 
 
 
-            excelData: "",
+            excelData: '', // данные из textarea
+            selectedFields: [], // поля, выбранные пользователем
+            isHeaderConfirmed: false, // статус подтверждения шапки
             tableData: [],
             TableDataRTS: [],
             selectedFields: [],
@@ -600,6 +647,9 @@ export default {
                 // return Object.keys(directory).filter((key) => directory[key].toLowerCase().includes(this.search_road.toLowerCase()))
             }
         },
+        isLoadButtonEnabled() {
+            return this.isHeaderConfirmed && this.selectedFields.length > 0;
+        },
         info_btn() {
             if (this.info_block == false) {
                 return require(`@/assets/info.png`)
@@ -619,6 +669,7 @@ export default {
                 : "";
         },
     },
+
     watch: {
         'Standard.client': {
             handler(newValue, oldValue) {
@@ -637,6 +688,9 @@ export default {
             },
             deep: true
 
+        },
+        selectedFields() {
+            this.isHeaderConfirmed = false;
         },
         maskHeadTable() {
             if (this.maskHeadTable == 1) {
@@ -925,7 +979,7 @@ export default {
                             } else if (value.match(/[А-Я]{3}/) && value.toLowerCase().includes('станции')) {
                                 key = 'destination_road';
                                 value = value.toLowerCase().replace('станции', '').trim().substring(0, 3).toUpperCase();
-                            } else  {
+                            } else {
                                 key = 'country_to';
                             }
 
@@ -1035,7 +1089,7 @@ export default {
                         const code = await this.getStationCode(item.destination_station, index);
                         if (code !== null) {
                             newItem.destination_station = code.code;
-                        } 
+                        }
                     } catch (error) {
                         console.error(`Ошибка при получении кода для станции "${item.destination_station}" на индексе ${index}`, error);
                     }
@@ -1159,32 +1213,32 @@ export default {
                         }
                     }
                 }
-                if(item.shipment_type){
+                if (item.shipment_type) {
                     let type_by_db = [
-                        {wagon: "ВО"},
-                        {group_3_5: "ГР 3-5"},
-                        {group_6_20: "ГР 6-20"},
-                        {group_2: "ГР 2"},
-                        {group_gt_20: "ГР > 20"},
-                        {msho: "МШО"},
+                        { wagon: "ВО" },
+                        { group_3_5: "ГР 3-5" },
+                        { group_6_20: "ГР 6-20" },
+                        { group_2: "ГР 2" },
+                        { group_gt_20: "ГР > 20" },
+                        { msho: "МШО" },
                     ];
-                    try{
+                    try {
                         let normalizedShipmentType = item.shipment_type.replace(/\s+/g, '').toLowerCase();
                         newItem.shipment_type = type_by_db.filter((type) => {
                             let key = Object.keys(type)[0];
                             let value = type[key];
-    
+
                             let normalizedValue = value.replace(/\s+/g, '').toLowerCase();
                             return normalizedShipmentType === normalizedValue;
                         }).map(type => Object.keys(type)[0])[0]
-                         if(!newItem.shipment_type){
-                            this.$toast.error(`Не удалось обработать тип отправки "${item.shipment_type}" на строке ${index}`, {timeout: 4000});
+                        if (!newItem.shipment_type) {
+                            this.$toast.error(`Не удалось обработать тип отправки "${item.shipment_type}" на строке ${index}`, { timeout: 4000 });
                             // throw new Error(`Не удалось обработать тип отправки "${item.shipment_type}" на строке ${index}`);
                             return
-                           
-                         }
-                    } catch (error){
-                        console.error(`Ошибка при обработке статьи "${item.wagons}" на строке ${index+1}`, error);
+
+                        }
+                    } catch (error) {
+                        console.error(`Ошибка при обработке статьи "${item.wagons}" на строке ${index + 1}`, error);
                     }
 
                 }
@@ -1460,6 +1514,18 @@ export default {
             if (this.selectedFields.includes(field)) return
             this.selectedFields.push(field);
         },
+        confirmHeader() {
+            if (this.selectedFields.length < 1) {
+                this.$toast.error("Выберите поля шапки перед подтверждением!", {
+                    timeout: 3000
+                });
+            } else {
+                this.isHeaderConfirmed = true;
+                this.$toast.success("Шапка подтверждена!", {
+                    timeout: 3000
+                });
+            }
+        },
         // Загрузка из Excel в таблицу
         loadFromExcel() {
 
@@ -1513,7 +1579,7 @@ export default {
             //     })
             //     this.tableData = resultDataChangeClass;
             // } else {
-                this.tableData = data;
+            this.tableData = data;
             // }
 
             console.log('tableData', this.tableData)
@@ -1524,13 +1590,16 @@ export default {
         async saveData() {
 
             if (!this.flagCheck) {
-                this.notifyHead = "Ошибка";
-                this.notifyMessage = "Вы не прошли проверку данных!";
-                this.notifyClass = "wrapper-error";
-                this.showNotify = true;
-                setTimeout(() => {
-                    this.showNotify = false;
-                }, 3000);
+                this.$toast.error("Вы не прошли проверку данных!", {
+                    timeout: 3000
+                })
+                // this.notifyHead = "Ошибка";
+                // this.notifyMessage = "Вы не прошли проверку данных!";
+                // this.notifyClass = "wrapper-error";
+                // this.showNotify = true;
+                // setTimeout(() => {
+                //     this.showNotify = false;
+                // }, 3000);
                 return
             }
             try {
@@ -1575,7 +1644,7 @@ export default {
                                 capacity_value_match = capacityField.match(/[0-9]+/);
                                 capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
 
-                                if(capacityField.includes('Коэффициент')) {
+                                if (capacityField.includes('Коэффициент')) {
                                     k = parseFloat(item[capacityField].replace(/[^0-9,]/g, '').replace(',', '.'))
                                     stavka = 0
                                 } else {
@@ -1629,13 +1698,13 @@ export default {
                             capacity_value_match = capacityField.match(/[0-9]+/);
                             capacity_value = parseFloat(capacity_value_match ? capacity_value_match[0] : 0);
 
-                            if(capacityField.includes('Коэффициент')) {
-                                    k = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0; 
-                                    stavka = 0
-                                } else {
-                                    stavka = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;                               
-                                 }
-                           
+                            if (capacityField.includes('Коэффициент')) {
+                                k = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
+                                stavka = 0
+                            } else {
+                                stavka = stavkaField ? parseFloat(item[stavkaField].replace(/[^0-9,]/g, '').replace(',', '.')) || 0 : 0;
+                            }
+
 
                             // console.log(capacityField)
                             // stavka_nds = Number(item[capacityField]) || 0; // Получаем значение по ключу capacityField
@@ -1747,7 +1816,7 @@ export default {
 
 <style scoped>
 button:disabled {
-    background: lightgray;
+    background: lightgray !important;
 }
 
 .col1 {
