@@ -1503,20 +1503,20 @@ export default {
                     data.splice(data.indexOf(i), 1);
                 }
             }
-            let resultDataChangeClass = []
-            if (this.selectedFields[2] === 'Класс груза') {
-                const changeCargoClass = data[0][2].replace(/[^0-9]/g, "").split("")
-                changeCargoClass.forEach((item) => {
-                    const newArray = [...data[0]]
-                    newArray[2] = item
-                    resultDataChangeClass.push(newArray)
-                })
-                this.tableData = resultDataChangeClass;
-            } else {
+            // let resultDataChangeClass = []
+            // if (this.selectedFields[2] === 'Класс груза') {
+            //     const changeCargoClass = data[0][2].replace(/[^0-9]/g, "").split("")
+            //     changeCargoClass.forEach((item) => {
+            //         const newArray = [...data[0]]
+            //         newArray[2] = item
+            //         resultDataChangeClass.push(newArray)
+            //     })
+            //     this.tableData = resultDataChangeClass;
+            // } else {
                 this.tableData = data;
-            }
+            // }
 
-
+            console.log('tableData', this.tableData)
             // КОНЕЦ РАБОЧЕГО КОДА
             this.excelData = "";
         },

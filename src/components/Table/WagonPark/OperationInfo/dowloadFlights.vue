@@ -59,6 +59,92 @@ export default {
                 } else {
                     queryParams = `?wagon_type=${this.wagon_type}&report_date=${last_date}`;
                 }
+//                let error_client = [
+//     {
+//         "client": "АКЦИОНЕРНОЕ ОБЩЕСТВО \"ЯДРАН\""
+//     },
+//     {
+//         "client": "АО \"УРАЛЬСКАЯ СТАЛЬ\""
+//     },
+//     {
+//         "client": "Научно-внедренческая фирма \"Грифон\" ЗАО"
+//     },
+//     {
+//         "client": "Общество с ограниченной ответственностью \"Дельта-Трейд\""
+//     },
+//     {
+//         "client": "ОБЩЕСТВО С ОГРАНИЧЕННОЙ ОТВЕТСТВЕННОСТЬЮ \"ПАРМА ПЕТРОЛИУМ ОПЕРЕЙШН КЛМ\""
+//     },
+//     {
+//         "client": "Общество с ограниченной ответственностью \"ПромИнвест\""
+//     },
+//     {
+//         "client": "ООО \"Альфа-транс\""
+//     },
+//     {
+//         "client": "ООО \"БалтТрансСервис\""
+//     },
+//     {
+//         "client": "ООО \"ЕТК\""
+//     },
+//     {
+//         "client": "ООО \"ЗСТК\""
+//     },
+//     {
+//         "client": "ООО \"Парма Петролиум Оперейшн КЛМ\""
+//     },
+//     {
+//         "client": "ООО \"ПРОМЖДСЕРВИС\""
+//     },
+//     {
+//         "client": "ООО \"Рэйл Оператор\""
+//     },
+//     {
+//         "client": "ООО \"Санторини Виктори\""
+//     },
+//     {
+//         "client": "ООО \"СГК\""
+//     },
+//     {
+//         "client": "ООО \"СИБАНТРАЦИТ ЛОГИСТИКА\""
+//     },
+//     {
+//         "client": "ООО \"СОКАР РУС\""
+//     },
+//     {
+//         "client": "ООО \"Татнефть-Транс\""
+//     },
+//     {
+//         "client": "ООО \"Томская Топливная Компания\""
+//     },
+//     {
+//         "client": "ПАО \"Газпром Нефть\""
+//     },
+//     {
+//         "client": "ТК \"Славия\""
+//     },
+//     {
+//         "client": "ТОО \"CITITRANS\""
+//     },
+//     {
+//         "client": "ТОО \"Авион Норд\""
+//     },
+
+// ]
+//                 const errorClients = []; // Массив для хранения клиентов, запросы к которым завершились ошибкой
+//                 for (let i in error_client) {
+//                     try {
+//                         let queryParams = `?wagon_type=${this.wagon_type}&report_date=${last_date}&clients=${error_client[i].client}`;
+//                         console.log(queryParams);
+//                         await api.getWagonFlights(queryParams);
+//                     } catch (error) {
+//                         // Если запрос завершился ошибкой, добавляем клиента в массив errorClients
+//                         errorClients.push(error_client[i]);
+//                     }
+//                 }
+//                 // После завершения всех запросов, отправляем запросы к клиентам, которые не завершились ошибкой    if (errorClients.length > 0) {
+//                 console.log('Ошибки при отправке запросов к следующим клиентам:', errorClients);
+            
                 // if (window.Worker) {
                 //     let my_worker = new Worker('./web_workers/web_worker.js'); // Убедитесь, что путь правильный и доступен
                 //     my_worker.onmessage = event => {
@@ -70,28 +156,29 @@ export default {
                 //     };
                 //     my_worker.postMessage("Привет от родительского процесса");
                 // }
+
                 let response = await api.getWagonFlights(queryParams)
                 this.$emit('stateLoader', false)
 
-                this.$toast.success("Выгрузка прошла успешно. Проверьте файл в папке SpruTT", {
-                    timeout: 4000
-                })
-            } catch (err) {
-                this.$emit('stateLoader', false)
+            this.$toast.success("Выгрузка прошла успешно. Проверьте файл в папке SpruTT", {
+                timeout: 4000
+            })
+        } catch(err) {
+            this.$emit('stateLoader', false)
 
-                this.$toast.error(`Произошла ошибка\n${err}`, {
-                    timeout: 3500
-                })
-            } finally {
-                this.$emit('stateLoader', false)
+            this.$toast.error(`Произошла ошибка\n${err}`, {
+                timeout: 3500
+            })
+        } finally {
+            this.$emit('stateLoader', false)
 
-            }
-        },
-        getLastDayOfMonth(year, month) {
-            let date = new Date(year, month + 1, 0);
-            return date.getDate();
         }
+    },
+    getLastDayOfMonth(year, month) {
+        let date = new Date(year, month + 1, 0);
+        return date.getDate();
     }
+}
 }
 </script>
 
