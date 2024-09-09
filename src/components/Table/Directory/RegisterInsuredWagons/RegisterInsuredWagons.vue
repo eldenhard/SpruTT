@@ -107,7 +107,7 @@ export default {
                 { title: 'Страховая компания', data: 'insurance_company', },
                 { title: '№ договора', data: 'agr_number', },
                 { title: 'Дата договора', data: 'agr_date', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
-                { title: 'Дата прекращения действия договора страхования', data: 'agr_date_end', dateFormat: 'YYYY-MM-DD', correctFormat: true, width: 450 },
+                { title: 'Дата прекращения действия договора страхования', data: 'agr_date_end', type: 'date', dateFormat: 'YYYY-MM-DD', correctFormat: true, width: 450 },
 
             ],
             // dropdownMenuOptions: ['clear_column', 'filter_by_condition', 'filter_by_value'],
