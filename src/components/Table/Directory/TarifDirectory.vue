@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 85vh">
+  <div style="height: auto">
     <Loader :loader="loader" />
     <h3 class="explanation" style="font-size: 17px; margin-top: -1%">
       Перед использованием этого раздела обязательно выполнить

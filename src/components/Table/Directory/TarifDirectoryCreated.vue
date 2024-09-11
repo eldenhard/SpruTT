@@ -748,7 +748,16 @@ export default {
                 this.total_pages = response.data.total_pages;
                 this.total_objects = response.data.total_objects;
                 this.data = response.data.data;
-                // Так как с сервера приходят в виде мало сгруппированном, здесь происходить группировка приложений
+
+
+                // let second_promises = response.data.data[0].attachments.map((item) => {
+                    // if(item.agreement_number == '72'){
+                    //     return api.editStavkiRevenue(item.id, { on_date: '2024-01-01' });
+                    // }
+                // });
+
+                // await Promise.all(second_promises);
+
                 function groupAttachments(attachments) {
                     const groupedAttachments = {};
 
@@ -793,18 +802,18 @@ export default {
                     this.loader_mini = false;
                 });
 
-                let result = []
-                let data_for_senchakov = this.data.map((item) => {
-                    for(let attachment of item.attachments) {
-                        result.push({
-                            'Приложение': attachment.agreement_number,
-                            'Клиент': item.client,
-                            'Дата начала': attachment.attachments[0].on_date
-                        })
-                    }
-                    return result
-                })
-                console.log(this.data, data_for_senchakov)
+                // let result = []
+                // let data_for_senchakov = this.data.map((item) => {
+                //     for(let attachment of item.attachments) {
+                //         result.push({
+                //             'Приложение': attachment.agreement_number,
+                //             'Клиент': item.client,
+                //             'Дата начала': attachment.attachments[0].on_date
+                //         })
+                //     }
+                //     return result
+                // })
+                // console.log(this.data, data_for_senchakov)
             } catch (error) {
                 this.loader = false;
                 this.notifyHead = "Ошибка";
