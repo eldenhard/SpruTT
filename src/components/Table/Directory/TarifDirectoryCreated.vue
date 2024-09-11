@@ -737,7 +737,7 @@ export default {
         },
         //   Получение данных в таблицу для просмотра и редактировния
         async getStandardData() {
-            this.loader = true;
+            // this.loader = true;
             // this.loader_mini = true
             this.data = [];
 
@@ -749,11 +749,12 @@ export default {
                 this.total_objects = response.data.total_objects;
                 this.data = response.data.data;
 
-
+                // Изменение данные в приложениях
                 // let second_promises = response.data.data[0].attachments.map((item) => {
-                    // if(item.agreement_number == '72'){
-                    //     return api.editStavkiRevenue(item.id, { on_date: '2024-01-01' });
-                    // }
+                //     if(item.agreement_number == '82'){
+                //         console.log(item)
+                //         return api.editStavkiRevenue(item.id, { on_date: '2024-05-01' });
+                //     }
                 // });
 
                 // await Promise.all(second_promises);
