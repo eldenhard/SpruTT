@@ -2,9 +2,10 @@
     <div>
         <hr>
         <div style="display: flex; vertical-align: middle; align-items: center;">
-            <b-spinner  :variant="'secondary'" style="width: 2rem; height: 2rem;" v-show="is_mini_loader"></b-spinner>
-            <h4 v-show="getOwnWagonsCompareData.length > 0" class="air_block_header" >Перечень незастрахованных вагонов</h4>   
-           
+            <b-spinner :variant="'secondary'" style="width: 2rem; height: 2rem;" v-show="is_mini_loader"></b-spinner>
+            <h4 v-show="getOwnWagonsCompareData.length > 0" class="air_block_header">Перечень незастрахованных вагонов
+            </h4>
+
         </div>
         <div class="tables-container">
 
@@ -16,12 +17,10 @@
                     </label>
                 </div>
                 <span class="description-text">Для сохранения примечания нажмите ENTER</span>
-                <hot-table ref="hotTableComponent1" :data="checkApplication" :rowHeaders="true"
-                    :columns="columns" :manualRowMove="true" :manualColumnMove="true" :preventOverflow="'horizontal'"
-                    :filters="true" :language="'ru-RU'" :manualColumnResize="true" :height="'40vh'" :width="'100%'"
-                    :fillHandle="false" :dropdownMenu="dropdownMenuOptions" @afterSelection="handleSelection"
-                  
-                >
+                <hot-table ref="hotTableComponent1" :data="checkApplication" :rowHeaders="true" :columns="columns"
+                    :manualRowMove="true" :manualColumnMove="true" :preventOverflow="'horizontal'" :filters="true"
+                    :language="'ru-RU'" :manualColumnResize="true" :height="'40vh'" :width="'100%'" :fillHandle="false"
+                    :dropdownMenu="dropdownMenuOptions" @afterSelection="handleSelection">
                 </hot-table>
             </div>
             <div class="table-container">
@@ -35,6 +34,9 @@
                 </hot-table>
             </div>
         </div>
+        <br>
+        <button class="Request button" style="width: 30%; margin-left: auto;" @click="getInfoByWagons()">Подгрузить
+            данные</button>
         <br>
         <button class="Accept button" style="width: 30%; margin-left: auto;" @click="saveData()">Сохранить
             данные</button>
@@ -76,15 +78,15 @@ export default {
             is_show: false
 
         };
-        
+
     },
     computed: {
         checkApplication() {
             if (this.is_show) {
                 // Показывать только те данные, у которых есть примечание
                 return this.getOwnWagonsCompareData.filter(item => item['Примечание'] !== null && item['Примечание'] !== '');
-            } else if(!this.is_show) {
-                console.log('HERE',this.getOwnWagonsCompareData.filter(item => item['Примечание'] === null || item['Примечание'] === ''))
+            } else if (!this.is_show) {
+                console.log('HERE', this.getOwnWagonsCompareData.filter(item => item['Примечание'] === null || item['Примечание'] === ''))
                 // Показывать все данные, кроме тех, у которых есть примечание
                 return this.getOwnWagonsCompareData.filter(item => item['Примечание'] === null || item['Примечание'] === '');
             }
@@ -104,15 +106,17 @@ export default {
                 // Обновляем таблицу, если исходные данные изменились
                 this.$refs.hotTableComponent1.hotInstance.loadData(this.checkApplication);
                 this.saveEditCellsInRow(newData)
-                },
+            },
             deep: true,
         },
+
         insuredWagonsData: {
             handler(newData) {
                 this.updateTableData('hotTableComponent2', newData);
                 document.querySelectorAll('.hot-display-license-info').forEach(element => {
                     element.style.display = 'none';
                 });
+                console.log('newData', newData)
 
             },
             deep: true,
@@ -136,21 +140,21 @@ export default {
 
     methods: {
         async saveEditCellsInRow(val) {
-            let check_data= val.filter(item => item['Примечание'] != null)
-            if(Array.isArray(check_data) && check_data.length > 0) {
+            let check_data = val.filter(item => item['Примечание'] != null)
+            if (Array.isArray(check_data) && check_data.length > 0) {
                 this.$emit('startStopLoader', true)
-                try{
+                try {
                     let promises = val
-                    .filter(item => item['Примечание'] != null)
-                    .map(el => api_wagon.postInsuranceNote(el['Номер вагона'], {insurance_comment: el['Примечание']}));
-                  
+                        .filter(item => item['Примечание'] != null)
+                        .map(el => api_wagon.postInsuranceNote(el['Номер вагона'], { insurance_comment: el['Примечание'] }));
+
                     await Promise.all(promises)
                     this.checkApplication
                     this.$emit('startStopLoader', false)
                     this.$toast.success(`Данные по вагону сохранены`, {
                         timeout: 3000
                     })
-                } catch(err){
+                } catch (err) {
                     console.log(err)
                     this.$emit('startStopLoader', false)
                     this.$toast.error(`Данные не сохранены\n${err}`, {
@@ -159,6 +163,45 @@ export default {
                 }
             } else {
                 return
+            }
+        },
+        translateWagonType(type) {
+            switch (type) {
+                case 'Полувагон':
+                    return 'ПВ'
+                    break;
+                case 'Цистерна':
+                    return 'ЦС'
+
+            }
+        },
+        async getInfoByWagons(data) {
+            this.$emit('startStopLoader', true)
+            try {
+                console.log('insuredWagonsData', this.insuredWagonsData)
+                let promises = this.insuredWagonsData.map((item) => {
+                    return api_wagon.getWagon(item['wagon_number'])
+                })
+                let res = await Promise.all(promises)
+
+                for (let i in this.insuredWagonsData) {
+                    if (this.insuredWagonsData[i]['Номер вагона'] === res[i].data.wagon_number) {
+                        this.insuredWagonsData[i].wagon_type = this.translateWagonType(res[i].data.wagon_type)
+                        this.insuredWagonsData[i].owner_at_insurance_moment = res[i].data.last_owner
+                    }
+                }
+                this.updateTableData('hotTableComponent2', this.insuredWagonsData);
+                // await api_wagon.getWagon(data)
+                this.$emit('startStopLoader', false)
+
+            }
+            catch (err) {
+                console.log(err)
+                this.$emit('startStopLoader', false)
+            }
+            finally {
+                this.$emit('startStopLoader', false)
+
             }
         },
         async saveData() {
@@ -216,6 +259,7 @@ export default {
                 const [row, col, oldVal, newVal] = change;
                 if (this.columns_table_copy[col].data === 'wagon_number') {
                     hotInstance2.setDataAtCell(row, col, newVal);
+
                 }
             });
         },
