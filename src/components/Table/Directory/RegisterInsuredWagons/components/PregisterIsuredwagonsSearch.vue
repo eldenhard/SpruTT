@@ -61,6 +61,15 @@ export default {
                 this.$toast.success('Данные по застрахованным вагонам загружены\n Продолжается загрузка незастрахованных вагонов', {
                     timeout: 3000
                 })
+                allData.forEach(item => {
+                    item.agr_date =  item?.agr_date?.split('-').reverse().join('.') || null
+                    item.agr_date_end = item?.agr_date_end?.split('-').reverse().join('.')|| null
+                    item.build_date =  item?.build_date?.split('-').reverse().join('.')|| null
+                    item.last_operation_date = item?.last_operation_date?.split('-').reverse().join('.')|| null
+                    item.state_change_date = item?.state_change_date?.split('-').reverse().join('.')|| null
+                    item.lifetime = item?.lifetime?.split('-').reverse().join('.')|| null
+                })
+                
                 this.$emit('getInsuredWagons', allData);
                 this.$emit('getOwnWagonsCompare', response2)
                 this.isSearch = true
@@ -116,7 +125,8 @@ export default {
 
 .long_search button {
     
-   width: 13vw;
+   min-width: 13vw;
+   width: auto;
     height:4vh;
     /* position: absolute;
     top: 4px;

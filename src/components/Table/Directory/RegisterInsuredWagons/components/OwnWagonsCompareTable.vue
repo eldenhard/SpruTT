@@ -172,7 +172,7 @@ export default {
                     break;
                 case 'Цистерна':
                     return 'ЦС'
-
+                    break
             }
         },
         async getInfoByWagons(data) {

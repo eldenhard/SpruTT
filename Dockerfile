@@ -11,14 +11,16 @@ RUN npm install bootstrap-vue
 RUN npm install select2
 RUN npm install -save vue-xlsx
 RUN npm install vue-excel-xlsx
-RUN npm install @handsontable/vue
+# RUN npm install @handsontable/vue
+RUN npm install handsontable @handsontable/vue
+
 RUN npm install vue-select
 RUN npm install @amcharts/amcharts5
 RUN npm install @amcharts/amcharts4
 RUN npm i --save logrocket
 RUN npm i --save logrocket-vuex
 RUN npm install -save vue-xlsx
-
+RUN npm install moment
 # RUN npm i vuedraggable
 COPY ./ .
 RUN npm run build
