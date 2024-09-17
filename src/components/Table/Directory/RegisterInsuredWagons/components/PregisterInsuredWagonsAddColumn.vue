@@ -28,6 +28,17 @@ export default {
                     title: 'Дата разделки', data: 'cutting_date', dateFormat: 'DD.MM.YYYY',
                     correctFormat: true, // Принудительное применение формата
                     allowInvalid: false, // Отклоняет некорректные даты 
+                    datePickerConfig: {
+                        showWeekNumber: false,
+                        i18n: {
+                            previousMonth: 'Предыдущий месяц',
+                            nextMonth: 'Следующий месяц',
+                            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                            weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+                            weekdaysShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
+                        },
+                        format: 'DD.MM.YYYY'
+                    }
                 },
                 { title: 'Примечание 1', data: 'note1' },
                 { title: 'На балансе', data: 'on_balance' },
@@ -46,11 +57,33 @@ export default {
                     title: 'Дата изменения состояния', data: 'state_change_date', dateFormat: 'DD.MM.YYYY',
                     correctFormat: true, // Принудительное применение формата
                     allowInvalid: false, // Отклоняет некорректные даты 
+                    datePickerConfig: {
+                        showWeekNumber: false,
+                        i18n: {
+                            previousMonth: 'Предыдущий месяц',
+                            nextMonth: 'Следующий месяц',
+                            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                            weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+                            weekdaysShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
+                        },
+                        format: 'DD.MM.YYYY'
+                    }
                 },
                 {
                     title: 'Дата последней операции', data: 'last_operation_date', dateFormat: 'DD.MM.YYYY',
                     correctFormat: true, // Принудительное применение формата
                     allowInvalid: false, // Отклоняет некорректные даты 
+                    datePickerConfig: {
+                        showWeekNumber: false,
+                        i18n: {
+                            previousMonth: 'Предыдущий месяц',
+                            nextMonth: 'Следующий месяц',
+                            months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                            weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+                            weekdaysShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
+                        },
+                        format: 'DD.MM.YYYY'
+                    }
                 },
                 { title: '(Пр1)примечание по парку', data: '(Пр1)примечание по парку' },
                 { title: '(Пр7)примечание по парку 2', data: '(Пр7)примечание по парку 2' },

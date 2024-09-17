@@ -29,7 +29,7 @@
                 <div class="long_search">
                     <input type="text" placeholder="Введите номера вагонов..." v-model="search"
                         @input="IputProcessing(search)">
-                    <button class="Request" @click="getRequestToServerData(search)">
+                    <button class="Request" @click="getRequestFromServerData(search)">
                         <span v-if="isSearch">Найти</span>
                         <b-icon v-if="!isSearch" icon="three-dots" animation="cylon" font-scale="3"></b-icon>
                     </button>
@@ -382,12 +382,12 @@ export default {
         IputProcessing(val) {
             clearInterval(this.intervalResponse);
             this.intervalResponse = setTimeout(() => {
-                this.getRequestToServerData(val);
+                this.getRequestFromServerData(val);
             }, 500);
         },
 
 
-        async getRequestToServerData(search) {
+        async getRequestFromServerData(search) {
             this.isSearch = false
             let obj = { wagons: search.replace(/[^.\d]+/g, "").replace(/(\d{8})(?=\d)/g, '$1,') }
             let today = new Date().toISOString().slice(0, 10)
@@ -413,6 +413,7 @@ export default {
                             if (this.columns[col].readOnly === false) {
                                 TD.style.backgroundColor = '#fbfddd';
                             }
+                           
                         }
                     })
                     hotInstance.render()
