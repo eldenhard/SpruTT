@@ -180,10 +180,10 @@ export default {
             try {
                 console.log('insuredWagonsData', this.insuredWagonsData)
                 let promises = this.insuredWagonsData.map((item) => {
-                    return api_wagon.getFlights(item['wagon_number'])
+                    return api_wagon.getWagon(item['wagon_number'])
                 })
                 let res = await Promise.all(promises)
-                console.log('res', res)
+
                 for (let i in this.insuredWagonsData) {
                     if (this.insuredWagonsData[i]['Номер вагона'] === res[i].data.wagon_number) {
                         this.insuredWagonsData[i].wagon_type = this.translateWagonType(res[i].data.wagon_type)
