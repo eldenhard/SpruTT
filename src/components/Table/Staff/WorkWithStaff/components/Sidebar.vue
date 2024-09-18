@@ -25,13 +25,13 @@
         <img src="../assets/cake.png" alt="День рождения" />
         <p>Дни рождения</p>
       </div>
-      <div class="content_item">
+      <div class="content_item" @click="setActiveComponent('NewsModule')">
         <img src="../assets/news.png" alt="День рождения" />
         <p>Кадровые новости</p>
       </div>
     </div>
     <div class="sidebar_footer">
-      <b-button  class="new_request_btn">Подать новое заявление</b-button>
+      <b-button  class="new_request_btn" @click="setActiveComponent('NewApplicationModule')">Подать новое заявление</b-button>
       <router-link to="/" class="router-links logout" @click="logout">Выход</router-link>
     </div>
   </div>
@@ -43,6 +43,7 @@
 import { mapState } from "vuex";
 import { actionTypes } from '@/store/modules/auth'
 export default {
+  inject: ['setActiveComponent'], 
   data() {
     return {};
   },
