@@ -25,6 +25,10 @@
         <img src="../assets/cake.png" alt="День рождения" />
         <p>Дни рождения</p>
       </div>
+      <div class="content_item">
+        <img src="../assets/news.png" alt="День рождения" />
+        <p>Кадровые новости</p>
+      </div>
     </div>
     <div class="sidebar_footer">
       <b-button  class="new_request_btn">Подать новое заявление</b-button>
