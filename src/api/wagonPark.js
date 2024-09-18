@@ -163,7 +163,9 @@ const getCountries = (data) => {
 const getClient = () => {
     return api.get(`${resource}/flights/clients/`)
 }
-
+const getFlights = (wagon) => {
+    return api.get(`${resource}/flights/?wagons=${wagon}&page_size=500`)
+}
 const getAllCountries = (data) => {
     return api.get(`${resource}/dislocations/countries/`)
 }
@@ -243,7 +245,7 @@ export default {
     getWagonsThrow,
     getWagonsThrowTypes,
     getDropsAmount,
-    
+    getFlights,
     // Дислокация вагонов
     getwagonDislocation,
 

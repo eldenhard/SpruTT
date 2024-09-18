@@ -53,7 +53,9 @@
           <b-nav-item>
             <router-link to="/administration" class="router-links">Администрирование</router-link>
           </b-nav-item>
-
+          <b-nav-item>
+            <router-link to="/staff" class="router-links">Работа с персоналом</router-link>
+          </b-nav-item>
           <li class="nav-item" style="padding-top: 1px">
             <a class="nav-link" href="/" @click="logout"
               style="color: black; text-decoration: none; font-size: 15px;">Выход</a>

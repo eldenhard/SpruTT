@@ -15,6 +15,7 @@ import Fin_Operation from '../components/Table/Directory/Fin_Operation'
 import fines from '../views/Fines.vue'
 import main_page from '../views/MainPage.vue'
 import administration from '../views/Administartion.vue'
+import staff_component from '../views/WorkWithStaff.vue'
 // C:\Users\Asus\Desktop\VueTTRe\project\src\views\Fines.vue
 Vue.use(Router)
 
@@ -73,6 +74,10 @@ export default new Router({
     {
       path: '/administration',
       component: administration
+    },
+    {
+      path: '/staff',
+      component: staff_component
     },
     {
       path: '*',

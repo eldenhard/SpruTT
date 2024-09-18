@@ -1,0 +1,115 @@
+$white: #ffffff;
+$black: #1a1a1a;
+$light_grey: #9e9e9e;
+$purple: #dcdcfe;
+$purple_text: #4B486F;
+p {
+  font-family: "Montserrat", sans-serif;
+}
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  background: $white;
+  width: 20%;
+  height: 85vh;
+  box-shadow: 0px 4px 10px rgb(26, 26, 26, 0.25);
+  border-radius: 30px;
+  align-items: center;
+  padding: 1.5% 0;
+  .sidebar_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 90%;
+    .name_user {
+      margin-top: 2vh;
+      color: $black;
+      font-size: 1em;
+      font-weight: 600;
+      text-align: center;
+    }
+    .position {
+      margin-top: -1.5vh;
+      color: $light_grey;
+      font-size: 0.85em;
+      font-family: Inter;
+      font-weight: 400;
+      letter-spacing: 0%;
+      text-align: center;
+    }
+  }
+  .sidebar_content {
+    height: 60%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2vh;
+    padding-left: 5%;
+    .collapse{
+        display: flex;
+        p{
+            flex-grow: 1;
+        }
+    }
+    .content_item {
+      display: flex;
+      align-items: center; /* Центрируем элементы */
+      gap: 10px;
+      width: 92%;
+      transition: background 0.1s ease-in-out;
+      padding: 2%;
+      border-radius: 10px;
+      &:hover {
+        background: $purple;
+        color: $purple_text;
+      }
+      p {
+        margin: 0;
+        align-self: flex-end; /* Выровнять текст по нижней границе изображения */
+        font-size: 1.1em;
+      }
+      
+    }
+    img {
+      max-width: 60px;
+      display: block; /* Чтобы исключить влияние inline-стилей изображения */
+    }
+  }
+  .sidebar_footer {
+    height: 30%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-top: 1px solid #EDEDED;
+   align-items: center;
+    .new_request_btn{
+        border: 1.5px solid #766BF8;
+        border-radius: 5px;
+        background: transparent;
+        color: #67618E;
+        width: 100%;
+        margin-top: 4%;
+        font-weight: 600;
+        transition: (background, color) 0.1 ease-in-out;
+        &:hover{
+            background: #766BF8;
+            color: white
+        }
+        // margin: 0 auto;
+    }
+    .logout{
+        color: #C9C9C9;
+        outline: none;
+        text-decoration: none;
+        transition: color .1s ease-in;
+        
+        &:hover{
+            color: #67618E;
+        }
+    }
+  }
+}

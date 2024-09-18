@@ -156,7 +156,7 @@ export default {
       nameClient: [],
       is_save_row: false,
       columns: [
-        { title: "Номер вагона", data: "wagon_number", readOnly: true },
+        { title: "Номер вагона", data: "wagon_number", },
         {
           title: "Тип вагона",
           data: "wagon_type",
