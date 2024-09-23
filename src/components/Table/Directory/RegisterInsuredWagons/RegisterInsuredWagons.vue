@@ -54,7 +54,6 @@
                   v-show="getInsuredWagonsData.length > 0"
                 >
                   <b-spinner
-                    label="Spinning"
                     :variant="'secondary'"
                     style="width: 1.5rem; height: 1.5rem"
                     v-show="is_save_row"
