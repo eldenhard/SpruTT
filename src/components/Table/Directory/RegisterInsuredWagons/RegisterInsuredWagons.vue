@@ -136,6 +136,7 @@ import OwnWagonsCompareTable from "./components/OwnWagonsCompareTable.vue";
 import saveAccidientVue from "./components/saveAccidient.vue";
 import moment from "moment";
 import "moment/locale/ru";
+import debounce from 'lodash/debounce';
 import Pikaday from "pikaday";
 
 export default {
@@ -302,21 +303,7 @@ export default {
   },
 
   methods: {
-    // Обработка изменений ячейки
-    // onCellValueChange(changes, source) {
-    //   if (changes && source !== 'loadData') {
-    //       const hotInstance = this.$refs.hotTableComponent.hotInstance;
-    //       changes.forEach(([row, prop, oldValue, newValue]) => {
-    //         //   console.log(`Ячейка изменена: Строка ${row}, Колонка ${prop}, Старое значение: ${oldValue}, Новое значение: ${newValue}`);
-    //           // Получаем индекс строки в исходном наборе данных
-    //           const physicalRow = hotInstance.toPhysicalRow(row);
-    //           const rowData = hotInstance.getSourceDataAtRow(physicalRow);
-    //           rowData[prop] = newValue;
-    //           // Логика сохранения изменений
-    //           this.saveEditCellsInRow(rowData);
-    //       });
-    //   }
-    // },
+
     onCellValueChange(changes, source) {
       if (changes && source !== "loadData") {
         const hotInstance = this.$refs.hotTableComponent.hotInstance;
@@ -337,18 +324,7 @@ export default {
         });
       }
     },
-    // applyCustomWagonFilter() {
-    //   const filteredData = this.getInsuredWagonsData.filter((item) => {
-    //     const wagonNumbers = this.wagonFilter
-    //       .split(" ")
-    //       .filter((num) => num.trim() !== "");
-    //     return wagonNumbers.includes(item.wagon_number);
-    //   });
 
-    //   // Обновляем данные таблицы после фильтрации
-    //   const hotInstance = this.$refs.hotTableComponent.hotInstance;
-    //   hotInstance.loadData(filteredData); // Загружаем новые данные
-    // },
     applyCustomWagonFilter() {
       const wagonNumbers = this.wagonFilter
         .split(" ")
@@ -365,50 +341,57 @@ export default {
       const hotInstance = this.$refs.hotTableComponent.hotInstance;
       hotInstance.loadData(filteredData); // Загружаем отфильтрованные данные
     },
+
     async saveEditCellsInRow(updatedRow) {
-      try {
-        this.is_save_row = true;
+  this.is_save_row = true;
 
-        // Преобразование дат в нужный формат
-        updatedRow.build_date =
-          updatedRow?.build_date?.split(".").reverse().join("-") ?? null;
-        updatedRow.lifetime =
-          updatedRow?.lifetime?.split(".").reverse().join("-") ?? null;
-        updatedRow.cutting_date =
-          updatedRow?.cutting_date?.split(".").reverse().join("-") ?? null;
-        updatedRow.agr_date =
-          updatedRow?.agr_date?.split(".").reverse().join("-") ?? null;
-        updatedRow.agr_date_end =
-          updatedRow?.agr_date_end?.split(".").reverse().join("-") ?? null;
-        updatedRow.last_operation_date =
-          updatedRow?.last_operation_date?.split(".").reverse().join("-") ??
-          null;
-        updatedRow.state_change_date =
-          updatedRow?.state_change_date?.split(".").reverse().join("-") ?? null;
+  // Преобразуем даты
+  updatedRow.build_date = updatedRow?.build_date?.split(".").reverse().join("-") ?? null;
+  updatedRow.lifetime = updatedRow?.lifetime?.split(".").reverse().join("-") ?? null;
+  updatedRow.cutting_date = updatedRow?.cutting_date?.split(".").reverse().join("-") ?? null;
+  updatedRow.agr_date = updatedRow?.agr_date?.split(".").reverse().join("-") ?? null;
+  updatedRow.agr_date_end = updatedRow?.agr_date_end?.split(".").reverse().join("-") ?? null;
+  updatedRow.last_operation_date = updatedRow?.last_operation_date?.split(".").reverse().join("-") ?? null;
+  updatedRow.state_change_date = updatedRow?.state_change_date?.split(".").reverse().join("-") ?? null;
 
-        // Сохраняем данные на сервер
-        await api_directory.editInsuranceWagons(updatedRow.id, updatedRow);
+  console.log(updatedRow);
 
-        this.$toast.success(
-          `Данные по вагону ${updatedRow.wagon_number} сохранены`,
-          {
-            timeout: 3000,
-          }
-        );
+  // Добавляем каждый запрос в массив сохранений
+  this.saveQueue = this.saveQueue || [];
+  this.saveQueue.push(updatedRow);
 
-        this.is_save_row = false;
+  // Используем debounced сохранение
+  this.debouncedSaveAllRows(); // Вызываем debounced метод
+},
 
-        // После сохранения обновляем фильтр и таблицу
-        this.applyCustomWagonFilter();
-        this.updateHotTableData();
-      } catch (err) {
-        this.is_save_row = false;
+// Debounced функция для сохранения всех данных
+debouncedSaveAllRows: debounce(async function () {
+  this.loader = true;
+  try {
+    let savePromises = this.saveQueue.map((row) => api_directory.editInsuranceWagons(row.id, row));
 
-        this.$toast.error(`Данные не сохранены\n${err}`, {
-          timeout: 3000,
-        });
-      }
-    },
+    await Promise.all(savePromises);
+    
+    this.$toast.success("Все данные сохранены", {
+      timeout: 3000,
+    });
+
+    this.saveQueue = []; // Очищаем очередь после сохранения
+    this.loader = false;
+
+  } catch (err) {
+    this.$toast.error(`Ошибка сохранения данных: ${err}`, {
+      timeout: 3000,
+    });
+    this.loader = false;
+
+  } finally {
+    this.is_save_row = false;
+    this.loader = false;
+
+  }
+}, 0),
+
 
     DownloadExcel() {
       const hotInstance = this.$refs.hotTableComponent.hotInstance;
@@ -551,27 +534,6 @@ export default {
       this.updateHotTableData();
     },
 
-    // updateHotTableData() {
-    //   this.$nextTick(() => {
-    //     const hotInstance = this.$refs.hotTableComponent.hotInstance;
-    //     hotInstance.loadData(this.getInsuredWagonsData);
-    //     hotInstance.updateSettings({
-    //       data: this.getInsuredWagonsData,
-    //       afterRenderer: (TD, row, col, prop, value, cellProperties) => {
-    //         const rowData = this.getInsuredWagonsData[row]; // Получаем данные строки
-    //         const agrDateEnd = moment(rowData.agr_date_end, "DD.MM.YYYY"); // Преобразуем в дату
-    //         const today = moment(); // Текущая дата
-
-    //         // Проверяем, если дата окончания договора меньше текущей даты
-    //         if (agrDateEnd.isValid() && agrDateEnd.isBefore(today)) {
-    //           // Применяем стиль к всей строке
-    //           TD.style.backgroundColor = "#ffcccc"; // Красный цвет фона для просроченной строки
-    //         }
-    //       },
-    //     });
-    //     hotInstance.render();
-    //   });
-    // },
     updateHotTableData() {
       this.$nextTick(() => {
         const hotInstance = this.$refs.hotTableComponent.hotInstance;
