@@ -390,7 +390,7 @@ debouncedSaveAllRows: debounce(async function () {
     this.loader = false;
 
   }
-}, 0),
+}, 1000),
 
 
     DownloadExcel() {
