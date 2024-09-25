@@ -9,7 +9,7 @@
       <br />
       <b-card no-body >
         <b-tabs card >
-          <b-tab title="Застрахованные вагоны" active>
+          <b-tab title="Застрахованные вагоны"  active>
             <b-card-text >
               <div>
                 <div
@@ -51,6 +51,7 @@
                 <br />
                 <h4
                   class="air_block_header"
+
                   v-show="getInsuredWagonsData.length > 0"
                 >
                   <b-spinner
@@ -83,7 +84,7 @@
                   :manualColumnResize="true"
                   :autoWrapRow="true"
                   :autoWrapCol="true"
-                  :height="'40vh'"
+                  :height="'59vh'"
                   :width="'100%'"
                   :fillHandle="true"
                   :dropdownMenu="dropdownMenuOptions"
@@ -156,7 +157,7 @@ export default {
       nameClient: [],
       is_save_row: false,
       columns: [
-        { title: "Номер вагона", data: "wagon_number", width: '150px' },
+        { title: "Номер вагона", data: "wagon_number", width: '150px', minWidth: '150px' },
         {
           title: "Тип вагона",
           data: "wagon_type",
@@ -676,6 +677,13 @@ debouncedSaveAllRows: debounce(async function () {
 </script>
 
 <style scoped>
+.htCore td{
+  min-width: 100px !important;
+}
+.htCenter{
+    min-width: 100px !important;
+
+}
 .searchBlock {
   border: 1px solid #e1e1e1;
   width: 300px;
@@ -694,7 +702,7 @@ debouncedSaveAllRows: debounce(async function () {
 }
 
 .air_block_header {
-  padding: 1% 0 0 2%;
+  margin-top: -2%;
   color: #cacaca;
 }
 </style>
