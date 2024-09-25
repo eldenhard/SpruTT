@@ -20,8 +20,7 @@ export default {
             all_cols_elements: [
                 { title: 'Уведомлено', data: 'is_notified' },
                 { title: 'Модель вагона', data: 'wagon_model' },
-                { title: 'Дата постройки', data: 'build_date', dateFormat: 'YYYY-MM-DD', correctFormat: true },
-                { title: 'Срок службы', data: 'lifetime' },
+              
                 { title: 'Поставщик', data: 'provider' },
                 { title: '№ Договора поставки', data: 'delivery_agr_number' },
                 {
@@ -41,12 +40,12 @@ export default {
                     }
                 },
                 { title: 'Примечание 1', data: 'note1' },
-                { title: 'На балансе', data: 'on_balance' },
-                { title: 'Собственник', data: 'owner' },
+               
+               
                 { title: 'Собственник (ЭТРАН)', data: 'owner_etran' },
                 { title: 'Группа', data: 'group' },
 
-                { title: 'Страховая сумма, руб', data: 'insurance_sum' },
+               
                 { title: 'Франшиза', data: 'franchise' },
                 { title: 'Примечание 2', data: 'note2' },
                 { title: 'Финансисты', data: 'pr_33_finansists' },

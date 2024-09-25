@@ -50,8 +50,11 @@
             <router-link to="/personnel-service" class="router-links">Справочная информация</router-link>
           </b-nav-item>
 
-          <b-nav-item>
+          <!-- <b-nav-item>
             <router-link to="/administration" class="router-links">Администрирование</router-link>
+          </b-nav-item> -->
+          <b-nav-item>
+              <router-link to="/insurance" class="router-links">Страхование</router-link>
           </b-nav-item>
           <b-nav-item>
             <router-link to="/staff" class="router-links">Работа с персоналом</router-link>

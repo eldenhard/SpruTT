@@ -68,6 +68,7 @@ export default {
                     item.last_operation_date = item?.last_operation_date?.split('-').reverse().join('.')|| null
                     item.state_change_date = item?.state_change_date?.split('-').reverse().join('.')|| null
                     item.lifetime = item?.lifetime?.split('-').reverse().join('.')|| null
+                    item.insurance_sum = item?.insurance_sum?.toFixed(2) || null
                 })
                 
                 this.$emit('getInsuredWagons', allData);

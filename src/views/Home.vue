@@ -79,11 +79,11 @@
           <LoadingPlanAndFactVue />
         </b-card-text>
       </b-tab>
-      <b-tab title="Реестр застрахованных вагонов" >
+      <!-- <b-tab title="Реестр застрахованных вагонов" >
         <b-card-text>
           <RegisterInsuredWagons />
         </b-card-text>
-      </b-tab>
+      </b-tab> -->
       <b-tab title="Загрузка актов" >
         <b-card-text>
           <LoadingActs />

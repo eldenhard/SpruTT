@@ -1,16 +1,16 @@
 <template>
   <div>
     <Loader :loader="loader" />
-    <div class="air_block">
+    <div class="air_block" style="width: 98vw; margin: 1% 0 0 0;">
       <div class="air_block_header">
         <h4>Реестр застрахованных вагонов</h4>
       </div>
       <hr />
       <br />
-      <b-card no-body>
-        <b-tabs card>
+      <b-card no-body >
+        <b-tabs card >
           <b-tab title="Застрахованные вагоны" active>
-            <b-card-text>
+            <b-card-text >
               <div>
                 <div
                   style="
@@ -94,7 +94,7 @@
                 <OwnWagonsCompareTable
                   :getOwnWagonsCompareData="getOwnWagonsCompareData"
                   :columns="columns_own_wagons"
-                  :columns_table_copy="columns"
+                  :columns_table_copy="columns_table_copy"
                   @startStopLoader="startStopLoader"
                   :dropdownMenuOptions="dropdownMenuOptions"
                   :is_mini_loader="mini_loader"
@@ -156,12 +156,13 @@ export default {
       nameClient: [],
       is_save_row: false,
       columns: [
-        { title: "Номер вагона", data: "wagon_number", },
+        { title: "Номер вагона", data: "wagon_number", width: '150px' },
         {
           title: "Тип вагона",
           data: "wagon_type",
           editor: "select",
           selectOptions: ["ПВ", "ЦС"],
+          width: '150px' 
         },
         {
           title: "Собст. на момент страхования",
@@ -170,14 +171,16 @@ export default {
           selectOptions: [
             "ДЕЛОВОЙ ВИЗИТ, ООО",
             'ООО "ТРАНСПОРТНЫЕ ТЕХНОЛОГИИ"',
-          ],
+            'OОО TRANSPORT TECHNOLOGIES GP',
+          ]
         },
-        { title: "Страховая компания", data: "insurance_company" },
-        { title: "№ договора", data: "agr_number" },
+        { title: "Страховая компания", data: "insurance_company",   width: '200px'  },
+        { title: "№ договора", data: "agr_number",   width: '150px'  },
         {
           title: "Дата договора",
           data: "agr_date",
           type: "date",
+          width: '150px',
           dateFormat: "DD.MM.YYYY",
           correctFormat: true, // Принудительное применение формата
           allowInvalid: false, // Отклоняет некорректные даты
@@ -218,6 +221,117 @@ export default {
           title: "Дата прекращения действия договора страхования",
           data: "agr_date_end",
           type: "date",
+          width: '200px',
+          dateFormat: "DD.MM.YYYY",
+          correctFormat: true, // Принудительное применение формата
+          allowInvalid: false, // Отклоняет некорректные даты
+          width: 450,
+          datePickerConfig: {
+            showWeekNumber: false,
+            i18n: {
+              previousMonth: "Предыдущий месяц",
+              nextMonth: "Следующий месяц",
+              months: [
+                "Январь",
+                "Февраль",
+                "Март",
+                "Апрель",
+                "Май",
+                "Июнь",
+                "Июль",
+                "Август",
+                "Сентябрь",
+                "Октябрь",
+                "Ноябрь",
+                "Декабрь",
+              ],
+              weekdays: [
+                "Воскресенье",
+                "Понедельник",
+                "Вторник",
+                "Среда",
+                "Четверг",
+                "Пятница",
+                "Суббота",
+              ],
+              weekdaysShort: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            },
+            format: "DD.MM.YYYY",
+          },
+        },
+        { title: 'Собственник', data: 'owner',width: '150px'  },
+        { title: 'Страховая сумма, руб', data: 'insurance_sum', type: 'numeric',numericFormat: { pattern: '0 0.00' }, width: '200px'  },
+        { title: 'На балансе', data: 'on_balance', width: '150px'  },
+        { title: 'Дата постройки', data: 'build_date', dateFormat: 'YYYY-MM-DD', correctFormat: true, width: '150px'  },
+        { title: 'Срок службы', data: 'lifetime', width: '150px' },
+      ],
+      columns_table_copy: [
+      { title: "Номер вагона", data: "wagon_number", width: '150px' },
+        {
+          title: "Тип вагона",
+          data: "wagon_type",
+          editor: "select",
+          selectOptions: ["ПВ", "ЦС"],
+          width: '150px' 
+        },
+        {
+          title: "Собст. на момент страхования",
+          data: "owner_at_insurance_moment",
+          editor: "select",
+          selectOptions: [
+            "ДЕЛОВОЙ ВИЗИТ, ООО",
+            'ООО "ТРАНСПОРТНЫЕ ТЕХНОЛОГИИ"',
+            'OОО TRANSPORT TECHNOLOGIES GP',
+          ]
+        },
+        { title: "Страховая компания", data: "insurance_company",   width: '200px'  },
+        { title: "№ договора", data: "agr_number",   width: '150px'  },
+        {
+          title: "Дата договора",
+          data: "agr_date",
+          type: "date",
+          width: '150px',
+          dateFormat: "DD.MM.YYYY",
+          correctFormat: true, // Принудительное применение формата
+          allowInvalid: false, // Отклоняет некорректные даты
+          datePickerConfig: {
+            showWeekNumber: false,
+            i18n: {
+              previousMonth: "Предыдущий месяц",
+              nextMonth: "Следующий месяц",
+              months: [
+                "Январь",
+                "Февраль",
+                "Март",
+                "Апрель",
+                "Май",
+                "Июнь",
+                "Июль",
+                "Август",
+                "Сентябрь",
+                "Октябрь",
+                "Ноябрь",
+                "Декабрь",
+              ],
+              weekdays: [
+                "Воскресенье",
+                "Понедельник",
+                "Вторник",
+                "Среда",
+                "Четверг",
+                "Пятница",
+                "Суббота",
+              ],
+              weekdaysShort: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            },
+            format: "DD.MM.YYYY",
+          },
+        },
+        {
+          title: "Дата прекращения действия договора страхования",
+          data: "agr_date_end",
+          type: "date",
+          width: '200px',
           dateFormat: "DD.MM.YYYY",
           correctFormat: true, // Принудительное применение формата
           allowInvalid: false, // Отклоняет некорректные даты
@@ -266,7 +380,7 @@ export default {
 
       // Для маленькой таблицы незастрахованных вагонов
       columns_own_wagons: [
-        { title: "Номер вагона", data: "Номер вагона" },
+        { title: "Номер вагона", data: "Номер вагона"},
         {
           title: "Принадлежность СТЖ",
           data: "Принадлежность СТЖ",

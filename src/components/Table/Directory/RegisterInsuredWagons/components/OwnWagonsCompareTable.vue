@@ -179,17 +179,30 @@ export default {
             this.$emit('startStopLoader', true)
             try {
                 console.log('insuredWagonsData', this.insuredWagonsData)
-                let promises = this.insuredWagonsData.map((item) => {
-                    return api_wagon.getWagon(item['wagon_number'])
-                })
-                let res = await Promise.all(promises)
+               // Создаем массив промисов, каждый элемент из которых — результат Promise.all с двумя запросами
+                    let promises = this.insuredWagonsData.map((item) => {
+                    return Promise.all([
+                        api_wagon.getFlights(item['wagon_number']), 
+                        api_wagon.getWagon(item['wagon_number'])
+                    ]);
+                    });
 
-                for (let i in this.insuredWagonsData) {
-                    if (this.insuredWagonsData[i]['Номер вагона'] === res[i].data.wagon_number) {
-                        this.insuredWagonsData[i].wagon_type = this.translateWagonType(res[i].data.wagon_type)
-                        this.insuredWagonsData[i].owner_at_insurance_moment = res[i].data.last_owner
+                    // Ожидаем выполнения всех промисов
+                    let results = await Promise.all(promises);
+
+                    // Перебираем результаты и обрабатываем данные
+                    results.forEach(([res, wagon], index) => {
+                    // Сортируем данные из getFlights
+                    res.data.data.sort((a, b) => 
+                        a.arrival_next_loading_station_date > b.arrival_next_loading_station_date ? 1 : -1
+                    );
+                    
+                    // Проверяем номер вагона и обновляем данные
+                    if (this.insuredWagonsData[index]['Номер вагона'] === wagon.data.wagon_number) {
+                        this.insuredWagonsData[index].wagon_type = this.translateWagonType(wagon.data.wagon_type);
+                        this.insuredWagonsData[index].owner_at_insurance_moment = res.data.data.at(-1).in_control;
                     }
-                }
+                    });
                 this.updateTableData('hotTableComponent2', this.insuredWagonsData);
                 // await api_wagon.getWagon(data)
                 this.$emit('startStopLoader', false)
