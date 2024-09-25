@@ -39,5 +39,9 @@ display: flex;
 width: 90vw;
 margin: 0 auto;
 margin-top: 1.5%;
+gap: 4%;
+}
+.main_block:nth-child(2){
+  flex-grow: 1;
 }
 </style>

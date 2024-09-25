@@ -1,0 +1,93 @@
+.form {
+  width: 40vw;
+  height: 85vh;
+  border: none;
+  box-shadow: 0px 4px 10px rgba(128, 128, 128, 0.25);
+  .header_description {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    padding: 4%;
+    h5 {
+      font-family: "Times New Roman", Times, serif;
+      margin-left: auto;
+      font-weight: bold;
+    }
+    .input_block {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      gap: 5%;
+      label{
+        width: 45%;
+        text-align: center;
+        text-transform: lowercase;
+        font-size: 12px;
+      }
+      input {
+        margin-top: 2%;
+        background: rgb(212, 212, 212);
+        width: 100%;
+        color: black;
+      }
+    }
+  }
+}
+
+input {
+    margin-top: 2%;
+    background: rgb(235, 235, 235);
+    color: black;
+  }
+.text{
+    h4{
+        font-family: "Times New Roman", Times, serif;
+        font-weight: bold;
+    }
+    input{
+        width: 10%;
+        text-align: center;
+        color: black;
+    }
+    .text_text{
+     font-family: "Times New Roman", Times, serif;
+
+     font-size: 16px;
+      width: 80%;
+      margin: 0 auto;
+      text-indent: 1vw;
+      font-weight: 500;
+    }
+}
+
+.date_block{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 10%;
+    margin-top: 15%;
+    label{
+        width: 20%;
+        text-align: center;
+        text-transform: lowercase;
+        font-size: 12px;
+        input{
+            width: 100%;
+        }
+    }
+    input{
+        width: 20%;
+    }
+}
+
+.visa{
+    padding-left: 10%;
+    margin-top: 4%;
+    p{
+        font-weight: 500;
+        font-family: 'Times New Roman', Times, serif;
+    }
+    input{
+        width: 22%;
+    }
+}
