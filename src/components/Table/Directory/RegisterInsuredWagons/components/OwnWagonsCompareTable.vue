@@ -220,6 +220,10 @@ export default {
         async saveData() {
             this.$emit('startStopLoader', true)
             try {
+                this.insuredWagonsData.forEach((item) => {
+                    item.agr_date = item?.agr_date?.split('.').reverse().join('-') || null
+                    item.agr_date_end = item?.agr_date_end?.split('.').reverse().join('-') || null
+                })
                 await api.sendNewDataInsuranceWagons(this.insuredWagonsData)
 
                 this.$emit('startStopLoader', false)
