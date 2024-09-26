@@ -100,6 +100,9 @@ p {
             background: #766BF8;
             color: white
         }
+        &:focus{
+          box-shadow: none;
+        }
         // margin: 0 auto;
     }
     .logout{
@@ -159,3 +162,6 @@ p {
         width: 20vw;
     }
   }
+.disabled{
+  background: lightgray !important;
+}

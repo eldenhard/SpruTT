@@ -7,22 +7,28 @@
         <input type="text" placeholder="Поиск заявления..." @input="updateApplication($event.target.value)">
       </section>
       <div class="content">
-          <div class="application_item" v-for="application in filteredApplications" :key="JSON.stringify(application)"
-          @click="openForm(application.name)">
+          <div :class="['application_item', { disabled: application.extra_des == 'disabled' }]" v-for="application in filteredApplications" :key="JSON.stringify(application)"
+          @click="openForm(application.name, $event.target)">
               <p>{{ application.name }}</p>
           </div>
       </div>
     </div>
     <section class="forms">
-      <component :is="state"></component>
+      
+      <component :is="state" @clearForm="clearForm"></component>
     </section>
   </div>
 </template>
 
 <script>
+import DismissalFormVue from '../forms/DismissalForm.vue';
 import RestForm from '../forms/RestForm.vue'
+import RestWoMoneyForm from '../forms/RestWoMoneyForm.vue';
+import TransferForm from '../forms/TransferForm.vue';
+import DismissalForm from '../forms/DismissalForm.vue';
+import EducationalPaidLeaveForm from '../forms/EducationalPaidLeaveForm.vue'
 export default {
-  components: { RestForm },
+  components: { RestForm, RestWoMoneyForm, TransferForm, DismissalForm, EducationalPaidLeaveForm },
   data() {
     return {
       searchValue: "",
@@ -33,10 +39,10 @@ export default {
         { name: "Заявление на перевод", description: "", value_description: "" },
         { name: "Заявление на увольнение", description: "", value_description: "" },
         { name: "Заявление на учебный оплачиваемый отпуск", description: "", value_description: "" },
-        { name: "Акт передачи дел на период отпуска", description: "", value_description: "" },
-        { name: "Отчет по представительским расходам", description: "", value_description: "" },
-        { name: "План заявка", description: "", value_description: "" },
-        { name: "Отчет о командировке", description: "", value_description: "" },
+        { name: "Акт передачи дел на период отпуска", description: "", value_description: "", extra_des: 'disabled' },
+        { name: "Отчет по представительским расходам", description: "", value_description: "", extra_des: 'disabled'  },
+        { name: "План заявка", description: "", value_description: "" , extra_des: 'disabled' },
+        { name: "Отчет о командировке", description: "", value_description: "", extra_des: 'disabled'  },
       ],
     };
   },
@@ -46,36 +52,45 @@ export default {
     },
   },
   methods: {
-    openForm(name) {
+    openForm(name, e) {
+      if(e.classList.contains('disabled')){
+        this.$toast.info(`${name} находится в разработке`, {
+          timeout: 3500
+        })
+       return
+      }
       switch (name) {
         case "Ежегодный отпуск":
           this.state = "RestForm";
           break;
         case "Отпуск без сохранения заработной платы":
-          this.state = "RestForm";
+          this.state = "RestWoMoneyForm";
           break;
         case "Заявление на перевод":
-          this.state = "RestForm";
+          this.state = "TransferForm";
           break;
         case "Заявление на увольнение":
-          this.state = "RestForm";
+          this.state = "DismissalForm";
           break;
         case "Заявление на учебный оплачиваемый отпуск":
-          this.state = "RestForm";
+          this.state = "EducationalPaidLeaveForm";
           break;
-        case "Акт передачи дел на период отпуска":
-          this.state = "RestForm";
-          break;
-        case "Отчет по представительским расходам":
-          this.state = "RestForm";
-          break;
-        case "План заявка":
-          this.state = "RestForm";
-          break;
-        case "Отчет о командировке":
-          this.state = "RestForm";
-          break;
+        // case "Акт передачи дел на период отпуска":
+        //   this.state = "RestForm";
+        //   break;
+        // case "Отчет по представительским расходам":
+        //   this.state = "RestForm";
+        //   break;
+        // case "План заявка":
+        //   this.state = "RestForm";
+        //   break;
+        // case "Отчет о командировке":
+        //   this.state = "RestForm";
+        //   break;
       }
+    },
+    clearForm(val){
+      this.state = ""
     },
     updateApplication(searchValue) {
       this.searchValue = searchValue;

@@ -21,9 +21,11 @@
             <div class="text">
                 <h4 align="center">Заявление</h4>
                 <div class="text_text">
-    
-                    <p>Прошу Вас предоставить основной ежегодный оплачиваемый отпуск с "<input type="text">"<input type="text"> <input type="text"> г. по 
+                    <p>Прошу Вас предоставить учебный оплачиваемый отпуск с "<input type="text">"<input type="text"> <input type="text"> г. по 
                     "<input type="text">"<input type="text"> <input type="text"> г. на <input type="text"> календарных дней.</p>
+                </div>
+                <div class="text_text">
+                    <p>Справку-вызов №<input type="text"> от <input type="text">прилагаю.</p>
                 </div>
             </div>
             <div class="date_block">
@@ -66,7 +68,7 @@
       this.$nextTick(() => {
         html2pdf(element, {
           margin: 1,
-          filename: "Заявление на отпуск.pdf",
+          filename: "Заявление на учебный оплачиваемый отпуск.pdf",
         }).then(() => {
           // Возвращаем исходные стили после экспорта
           element.style.cssText = originalStyles;

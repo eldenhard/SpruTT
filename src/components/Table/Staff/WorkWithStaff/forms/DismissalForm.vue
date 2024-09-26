@@ -2,6 +2,9 @@
     <div>
         <div class="form"  id="element-to-convert" ref="form_1">
             <div class="header_description">
+                <span class="mini_text">Приложение 5 <br>
+                    к Приказу №  от «12» марта 2018г.
+                </span>
                 <h5>Генеральному директору <br> ООО "Транспортные Технологии" <br> Тертычному С.Н.</h5>
                 <div class="input_block">
                     <label for="">
@@ -14,7 +17,7 @@
                     </label>
                     <label for="">
                         <input type="text" ><br>
-                        (ФИО)
+                        (фамилия, имя, отчество)
                     </label>
                 </div>
             </div>
@@ -22,8 +25,8 @@
                 <h4 align="center">Заявление</h4>
                 <div class="text_text">
     
-                    <p>Прошу Вас предоставить основной ежегодный оплачиваемый отпуск с "<input type="text">"<input type="text"> <input type="text"> г. по 
-                    "<input type="text">"<input type="text"> <input type="text"> г. на <input type="text"> календарных дней.</p>
+                    <p>Прошу Вас уволить меня с"<input type="text">"<input type="text"> <input type="text"> г.
+                        <br> <input type="text" style="width: 100%;"> </p>
                 </div>
             </div>
             <div class="date_block">
@@ -66,7 +69,7 @@
       this.$nextTick(() => {
         html2pdf(element, {
           margin: 1,
-          filename: "Заявление на отпуск.pdf",
+          filename: "Заявление на увольнение.pdf",
         }).then(() => {
           // Возвращаем исходные стили после экспорта
           element.style.cssText = originalStyles;
