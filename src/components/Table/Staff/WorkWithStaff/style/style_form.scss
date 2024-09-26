@@ -1,6 +1,7 @@
 .form {
   width: 40vw;
-  height: 85vh;
+  height: 80vh;
+  overflow: auto;
   border: none;
   box-shadow: 0px 4px 10px rgba(128, 128, 128, 0.25);
   .header_description {
@@ -26,9 +27,6 @@
       }
       input {
         margin-top: 2%;
-        background: rgb(212, 212, 212);
-        width: 100%;
-        color: black;
       }
     }
   }
@@ -36,16 +34,23 @@
 
 input {
     margin-top: 2%;
-    background: rgb(235, 235, 235);
-    color: black;
+    border: none; /* Убираем стандартные границы */
+    border-bottom: 1px solid black !important; /* Только нижнее подчеркивание */
+    outline: none; /* Убираем контур при фокусе */
+    padding: 5px 0;
+    width: 100%;
+    text-align: center;
   }
 .text{
+  margin-top: 15%;
+  width: 90%;
+  margin-left: 5%;
     h4{
         font-family: "Times New Roman", Times, serif;
         font-weight: bold;
     }
     input{
-        width: 10%;
+        width: 15%;
         text-align: center;
         color: black;
     }
@@ -53,9 +58,9 @@ input {
      font-family: "Times New Roman", Times, serif;
 
      font-size: 16px;
-      width: 80%;
+      width: 98%;
       margin: 0 auto;
-      text-indent: 1vw;
+      text-indent: 2vw;
       font-weight: 500;
     }
 }
@@ -65,7 +70,7 @@ input {
     flex-direction: column;
     align-items: flex-end;
     margin-right: 10%;
-    margin-top: 15%;
+    margin-top: 25%;
     label{
         width: 20%;
         text-align: center;
@@ -82,7 +87,7 @@ input {
 
 .visa{
     padding-left: 10%;
-    margin-top: 4%;
+    margin-top: 7%;
     p{
         font-weight: 500;
         font-family: 'Times New Roman', Times, serif;

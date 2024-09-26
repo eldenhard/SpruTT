@@ -19,6 +19,7 @@
     "debounce": "^1.2.1",
     "file-saver": "^2.0.5",
     "handsontable": "^13.1.0",
+    "html2pdf.js": "^0.10.2",
     "jquery": "^3.7.1",
     "lodash": "^4.17.21",
     "logrocket": "^8.1.0",

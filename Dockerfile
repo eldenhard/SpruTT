@@ -21,6 +21,7 @@ RUN npm i --save logrocket
 RUN npm i --save logrocket-vuex
 RUN npm install -save vue-xlsx
 RUN npm install moment
+RUN npm install html2pdf.js
 # RUN npm i vuedraggable
 COPY ./ .
 RUN npm run build

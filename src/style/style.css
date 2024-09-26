@@ -240,7 +240,7 @@ option select {
 }
 
 input[type="text"] {
-  border: none !important;
+  border: none;
   /* border-bottom: 1px solid black !important; */
   outline: none !important;
   color: #757575;
