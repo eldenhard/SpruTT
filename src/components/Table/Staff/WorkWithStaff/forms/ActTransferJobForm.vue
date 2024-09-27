@@ -1,24 +1,142 @@
 <template>
   <div>
-    <div class="form" id="element-to-convert" ref="form_1" >
-      <div class="text_act" style="width: 95%; margin: 4% auto;">
-        <p align="center" style="font-weight: bold; font-size: 18px;">
+    <div class="form" id="element-to-convert" ref="form_1">
+      <div class="text_act" style="width: 95%; margin: 4% auto">
+        <p align="center" style="font-weight: bold; font-size: 18px">
           Общество с ограниченной ответственностью «Транспортные Технологии»
         </p>
         <br />
         <p align="center">АКТ</p>
-        <p align="center" style="font-size: 16px;">
+        <p align="center" style="font-size: 16px">
           передачи дополнительной работы в порядке исполнения обязанностей в
           период временно отсутствующего работника
         </p>
       </div>
       <div class="f_line">
-       
-            <p>р.п. Новоивановское МО</p>
+        <p>р.п. Новоивановское МО</p>
+        <p>
+          "<input type="text" style="width: 10%" />"<input
+            type="text"
+            style="width: 30%"
+          />
+          <input type="text" style="width: 25%" /> года
+        </p>
+      </div>
+      <div class="s_line">
+        <p>
+          Настоящий акт составлен о том, что в период временного отсутствия по
+          причине основного ежегодного оплачиваемого отпуска <br>
+        </p>
+        <label for="" style="width: 100%; text-align: center; padding: 0;">
+            <input type="text" style="width: 100%; height: 10%;"/><br>
+            (фио работника)
+        </label>
+
+        <p> в связи с необходимостью оперативного решения организационных вопросов
+          и в соответствии с достигнутой договоренностью, в период с   </p>
+          <div style="display: flex; justify-content: space-between; position: relative;">
+            <div style="display: flex; gap: 2px; align-items: baseline;  justify-content: space-evenly;">
+                <input type="text" style="width: 15%" />
+                <input type="text" style="width: 30%" />
+                <input type="text" style="width: 20%" />  <span style="font-size: 12px;">г.</span>
+                <span style="font-size: 12px;">
+                    по
+                </span>
+            </div>
+           
+            <div style="display: flex; gap: 2px; align-items: baseline; justify-content: space-evenly;">
+                <input type="text" style="width: 15%" />
+                <input type="text" style="width: 30%" />
+                <input type="text" style="width: 20%" /><span style="font-size: 12px;">г.</span>
+            </div>
+            </div>
       
-       
-            <p>"<input type="text" style="width: 10%">"<input type="text" style="width: 30%">  <input type="text" style="width: 25%"> года</p>
-      
+            <p style="display: flex; align-items: baseline;">
+                поручить исполнение обязанностей ,&nbsp; <br>
+            <label style="flex-grow: 1; display: flex; flex-direction: column;">
+                <input type="text" style="width: 100%; margin-bottom: 0;" />
+                <span style="font-size: 12px; margin-top: 4px; text-align: center;">
+                    (наименование должности отсутствующего должностного лица)                      
+                </span>
+            </label>
+        </p>
+        <p style="display: flex; align-items: baseline;">
+            работнику,&nbsp;
+            <label style="flex-grow: 1; display: flex; flex-direction: column;">
+                <input type="text" style="width: 100%; margin-bottom: 0;" />
+                <span style="font-size: 12px; margin-top: 4px; text-align: center;">
+                    (ФИО и должность работника, временно исполняющего обязанности)
+                </span>
+            </label>
+        </p>
+        <p style="display: flex; align-items: baseline;">
+            Я,&nbsp;
+            <label style="flex-grow: 1; display: flex; flex-direction: column;">
+                <input type="text" style="width: 100%; margin-bottom: 0;" />
+                <span style="font-size: 12px; margin-top: 4px; text-align: center;">
+                (Заполняется вручную! ФИО работника, временно исполняющего обязанности)
+                </span>
+            </label>
+        </p>
+        <p>выражаю свое согласие в указанный период исполнять обязанности 
+            <label style="flex-grow: 1; display: flex; flex-direction: column;">
+                <input type="text" style="width: 100%; margin-bottom: 0;" />
+                <span style="font-size: 12px; margin-top: 4px; text-align: center;">
+                    (наименование должности отсутствующего должностного лица) 
+                </span>
+            </label>
+        </p>
+        <div style="display: flex; gap: 4px; align-items: baseline;">
+  <label style="flex-grow: 1; position: relative; display: flex; align-items: baseline;">
+    <span style="white-space: nowrap;">"</span>
+    <input type="text" style="width: 100%; margin-bottom: 0; display: inline-block;" />
+    <span style="white-space: nowrap;">"</span>
+  </label>
+
+  <label style="flex-grow: 1;">
+    <input type="text" style="width: 100%; margin-bottom: 0;" />
+  </label>
+
+  <label style="flex-grow: 1; display: flex; align-items: baseline; white-space: nowrap;">
+    <input type="text" style="width: 100%; margin-bottom: 0;" />
+    <span style="margin-left: 4px;">г.</span>
+  </label>
+
+  <label style="flex-basis: 50%; display: flex; flex-direction: column;">
+    <input type="text" style="width: 100%; margin-bottom: 0;" />
+    <span style="font-size: 12px; margin-top: 4px; text-align: center;">
+      (подпись)
+    </span>
+  </label>
+
+  <label style="flex-basis: 60%; display: flex; flex-direction: column;">
+    <input type="text" style="width: 100%; margin-bottom: 0;" />
+    <span style="font-size: 12px; margin-top: 4px; text-align: center;">
+      (ФИО)
+    </span>
+  </label>
+</div>
+
+
+
+      </div>
+      <div class="s_line">
+        <p>
+          Настоящий акт составлен в двух экземплярах по одному экземпляру для
+          каждой стороны. Экземпляр Работодателя хранится в личном деле
+          Работника в Отделе по работе с персоналом ООО «Транспортные
+          Технологии».
+        </p>
+      </div>
+      <div class="f_line">
+        <label for=""
+            ><input type="text" style="width: 100%" /><br />
+            (фио руководителя)
+      </label>
+      <label for=""
+            ><input type="text" style="width: 100%" /><br />
+            (фио исполняющего обязанности)
+    </label>
       </div>
     </div>
     <div class="navigation">

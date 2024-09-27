@@ -4,6 +4,7 @@
   overflow: auto;
   border: none;
   box-shadow: 0px 4px 10px rgba(128, 128, 128, 0.25);
+
   .header_description {
     display: flex;
     justify-content: flex-end;
@@ -19,7 +20,7 @@
       flex-direction: column;
       align-items: end;
       gap: 5%;
-      label{
+      label {
         width: 45%;
         text-align: center;
         text-transform: lowercase;
@@ -27,117 +28,148 @@
       }
       input {
         margin-top: 2%;
+        font-size: inherit; // Наследуем размер шрифта
+        line-height: 1.5; // Задаём одинаковый line-height для input и текста
+        vertical-align: baseline; // Выравниваем по нижней линии текста
       }
     }
   }
 }
 
 input {
-    margin-top: 2%;
-    border: none; /* Убираем стандартные границы */
-    border-bottom: 1px solid black !important; /* Только нижнее подчеркивание */
-    outline: none; /* Убираем контур при фокусе */
-    padding: 5px 0;
-    width: 100%;
-    text-align: center;
-  }
-.text{
+  margin-top: 2%;
+  border: none; /* Убираем стандартные границы */
+  border-bottom: 1px solid black !important; /* Только нижнее подчеркивание */
+  outline: none; /* Убираем контур при фокусе */
+  padding: 5px 0;
+  width: 100%;
+  text-align: center;
+  font-size: inherit; /* Наследуем размер шрифта */
+  line-height: 1.5;
+  vertical-align: baseline;
+}
+
+.text {
   margin-top: 15%;
   width: 90%;
   margin-left: 5%;
-    h4{
-        font-family: "Times New Roman", Times, serif;
-        font-weight: bold;
-    }
-    input{
-        width: 15%;
-        text-align: center;
-        color: black;
-    }
-    .text_text{
-     font-family: "Times New Roman", Times, serif;
-
-     font-size: 16px;
-      width: 98%;
-      margin: 0 auto;
-      text-indent: 2vw;
-      font-weight: 500;
-    }
+  h4 {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+  }
+  input {
+    width: 15%;
+    text-align: center;
+    color: black;
+  }
+  .text_text {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    width: 98%;
+    margin: 0 auto;
+    text-indent: 2vw;
+    font-weight: 500;
+  }
 }
 
-.date_block{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-right: 10%;
-    margin-top: 25%;
-    label{
-        width: 20%;
-        text-align: center;
-        text-transform: lowercase;
-        font-size: 12px;
-        input{
-            width: 100%;
-        }
+.date_block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 10%;
+  margin-top: 25%;
+  label {
+    width: 20%;
+    text-align: center;
+    text-transform: lowercase;
+    font-size: 12px;
+    input {
+      width: 100%;
     }
-    input{
-        width: 20%;
-    }
+  }
+  input {
+    width: 20%;
+  }
 }
 
-.visa{
-    padding-left: 10%;
-    margin-top: 7%;
-    p{
-        font-weight: 500;
-        font-family: 'Times New Roman', Times, serif;
-    }
-    input{
-        width: 22%;
-    }
+.visa {
+  padding-left: 10%;
+  margin-top: 7%;
+  p {
+    font-weight: 500;
+    font-family: "Times New Roman", Times, serif;
+  }
+  input {
+    width: 22%;
+  }
 }
 
-.navigation{
+.navigation {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .back{
+  .back {
     color: grey;
     font-weight: 600;
-    transition: color .2s ease;
-    &:hover{
+    transition: color 0.2s ease;
+    &:hover {
       color: black;
     }
   }
 }
 
-.mini_text{
+.mini_text {
   margin-left: auto;
   font-size: 12px;
   margin-bottom: 2%;
   text-align: right;
 }
 
-.text_act{
+.text_act {
   margin-top: 4%;
-  p{
-    font-family: 'Times New Roman', Times, serif;
+  p {
+    font-family: "Times New Roman", Times, serif;
     padding: 0;
   }
 }
-.f_line{
+
+.f_line {
   display: flex;
   width: 90%;
   margin: 0 auto;
   justify-content: space-between;
-  p:first-child{
+  label{
+    font-size: 12px;
+    text-align: center;
+  }
+  p{
+    line-height: 15px;
+    font-size: 14px;
+
+  }
+  p:first-child {
     width: 30%;
   }
-  p:last-child{
+  p:last-child {
     display: flex;
     justify-content: flex-end;
     vertical-align: bottom;
     gap: 2px;
     width: 50%;
+  }
+}
+
+.s_line {
+  width: 90%;
+  margin: 0 auto;
+  label{
+    font-size: 12px;
+  }
+  p{
+    line-height: 15px;
+    font-size: 14px;
+  }
+  p:first-child {
+    text-indent: 2vw;
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="main_block">
-    <!-- <Sidebar /> -->
+    <Sidebar />
     <Workspace />
   </div>
 </template>
