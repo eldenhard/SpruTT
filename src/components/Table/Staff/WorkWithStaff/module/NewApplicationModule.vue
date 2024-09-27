@@ -27,8 +27,9 @@ import RestWoMoneyForm from '../forms/RestWoMoneyForm.vue';
 import TransferForm from '../forms/TransferForm.vue';
 import DismissalForm from '../forms/DismissalForm.vue';
 import EducationalPaidLeaveForm from '../forms/EducationalPaidLeaveForm.vue'
+import ActTransferJobForm from '../forms/ActTransferJobForm.vue'
 export default {
-  components: { RestForm, RestWoMoneyForm, TransferForm, DismissalForm, EducationalPaidLeaveForm },
+  components: { RestForm, RestWoMoneyForm, TransferForm, DismissalForm, EducationalPaidLeaveForm, ActTransferJobForm },
   data() {
     return {
       searchValue: "",
@@ -39,7 +40,7 @@ export default {
         { name: "Заявление на перевод", description: "", value_description: "" },
         { name: "Заявление на увольнение", description: "", value_description: "" },
         { name: "Заявление на учебный оплачиваемый отпуск", description: "", value_description: "" },
-        { name: "Акт передачи дел на период отпуска", description: "", value_description: "", extra_des: 'disabled' },
+        { name: "Акт передачи дел на период отпуска", description: "", value_description: ""},
         { name: "Отчет по представительским расходам", description: "", value_description: "", extra_des: 'disabled'  },
         { name: "План заявка", description: "", value_description: "" , extra_des: 'disabled' },
         { name: "Отчет о командировке", description: "", value_description: "", extra_des: 'disabled'  },
@@ -75,9 +76,9 @@ export default {
         case "Заявление на учебный оплачиваемый отпуск":
           this.state = "EducationalPaidLeaveForm";
           break;
-        // case "Акт передачи дел на период отпуска":
-        //   this.state = "RestForm";
-        //   break;
+        case "Акт передачи дел на период отпуска":
+          this.state = "ActTransferJobForm";
+          break;
         // case "Отчет по представительским расходам":
         //   this.state = "RestForm";
         //   break;

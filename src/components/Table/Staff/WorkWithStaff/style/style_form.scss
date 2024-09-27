@@ -117,3 +117,27 @@ input {
   margin-bottom: 2%;
   text-align: right;
 }
+
+.text_act{
+  margin-top: 4%;
+  p{
+    font-family: 'Times New Roman', Times, serif;
+    padding: 0;
+  }
+}
+.f_line{
+  display: flex;
+  width: 90%;
+  margin: 0 auto;
+  justify-content: space-between;
+  p:first-child{
+    width: 30%;
+  }
+  p:last-child{
+    display: flex;
+    justify-content: flex-end;
+    vertical-align: bottom;
+    gap: 2px;
+    width: 50%;
+  }
+}

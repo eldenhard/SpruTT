@@ -296,40 +296,6 @@ export default {
       }
     },
 
-    // async saveData() {
-    //         this.$emit('startStopLoader', true)
-    //         try {
-    //             this.insuredWagonsData.forEach((item) => {
-    //                 item.agr_date = item?.agr_date?.split('.').reverse().join('-') || null
-    //                 item.agr_date_end = item?.agr_date_end?.split('.').reverse().join('-') || null
-    //             })
-    //             let is_wagon_number = this.insuredWagonsData.map(item => api_wagon.getWagon(item['wagon_number']))
-    //             await Promise.all(is_wagon_number).then(res => {
-    //                 this.$emit('startStopLoader', false)
-    //                     this.$toast.success('Данные сохранены\nДля отображения данных в таблице "Застрахованные вагоны", запросите данные повторно', {
-    //                         timeout: 7000
-    //                     })
-    //                 this.insuredWagonsData = [{ title: 'Номер вагона', data: 'wagon_number' }]
-    //             }).catch(err => {
-    //                 this.$emit('startStopLoader', false)
-
-    //                 this.$toast.error(Вагона ${is_wagon_number} не найдены, {
-    //                     timeout: 3000
-    //                 })
-    //             })
-    //             console.log(this.insuredWagonsData)
-    //             // await api.sendNewDataInsuranceWagons(this.insuredWagonsData)
-
-                
-
-    //         } catch (err) {
-    //             console.log(err)
-    //             this.$emit('startStopLoader', false)
-    //             this.$toast.error('Данные не сохранены', {
-    //                 timeout: 3000
-    //             })
-    //         }
-    //     },
     async saveData() {
     this.$emit('startStopLoader', true);
     try {

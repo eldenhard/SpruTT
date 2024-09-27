@@ -1,6 +1,7 @@
 <template>
   <div>
-    <component :is="state.activeComponent"></component>
+    <h1>В разработке</h1>
+    <!-- <component :is="state.activeComponent"></component> -->
   </div>
 </template>
 
