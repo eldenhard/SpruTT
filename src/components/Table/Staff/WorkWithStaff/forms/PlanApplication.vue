@@ -1,468 +1,471 @@
 <template>
   <div>
     <div class="form" id="element-to-convert" ref="form_1">
-      <table>
-        <tr>
-          <td></td>
-          <td></td>
-          <td colspan="4" style="font-weight: bold">
-            Приложение 2. План-заявка на командировку работников
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td style="text-align: left !important; padding-left: 5px !important">
-            Утверждаю
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td
-            colspan="2"
-            style="text-align: left !important; padding-left: 5px !important"
-          >
-            Генеральный директор
-          </td>
-          <td>Тертычный С.Н.</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td colspan="6" style="font-weight: bold">
-            ПЛАН-ЗАЯВКА НА КОМАНДИРОВКУ РАБОТНИКОВ ООО "ТРАНСПОРТНЫЕ ТЕХНОЛОГИИ"
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td
-            colspan="6"
-            style="
-              text-align: left !important;
-              padding-left: 10px !important;
-              background: #bfbfbf;
-            "
-          >
-            <span style="font-weight: bold">1. Служебное задание</span> ( служит
-            основанием для оформления приказа )
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td
-            style="text-align: left !important; padding-left: 10px !important"
-          >
-            Дата заявки
-          </td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><input type="text" style="height: 100%;"/></td>
-        </tr>
-        <tr>
-          <td
-            style="text-align: left !important; padding-left: 10px !important"
-          >
-            ФИО работника полностью
-          </td>
-          <td></td>
-          <td colspan="4"><input type="text" /></td>
-        </tr>
-        <tr>
-          <td
-            style="
-              text-align: left !important;
-              padding-left: 10px !important;
-              white-space: nowrap;
-            "
-          >
-            Командировать работника <br />
-            ООО "Транспортные Технологии" в
-          </td>
-          <td>Страна</td>
-          <td colspan="4"><input type="text" /></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>Город</td>
-          <td colspan="4"><input type="text" /></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>Организация</td>
-          <td colspan="4"><input type="text" /></td>
-        </tr>
-        <tr>
-          <td
-            style="
-              text-align: left !important;
-              padding-left: 10px !important;
-              font-weight: bold;
-            "
-          >
-            Цель командировки
-          </td>
-          <td></td>
-          <td colspan="4"><input type="text" /></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td style="
-              text-align: left !important;
-              padding-left: 10px !important;
-              font-weight: bold;
-            ">Срок служебной командировки</td>
-          <td></td>
-          <td>c</td>
-          <td><input type="text" /></td>
-          <td>по</td>
-          <td><input type="text" /></td>
-        </tr>
-        <tr>
-          <td style="
-              text-align: left !important;
-              padding-left: 10px !important;
-              font-weight: bold;
-            ">Время командировки</td>
-          <td></td>
-          <td>c</td>
-          <td><input type="text" /></td>
-          <td>по</td>
-          <td><input type="text" /></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td style="
-              text-align: left !important;
-              padding-left: 10px !important;
-              font-weight: bold;
-            ">Всего дней</td>
-          <td><input type="text" /></td>
-        </tr>
-        <tr>
-            <td
-            colspan="6"
-            style="
-              text-align: left !important;
-              padding-left: 10px !important;
-              background: #bfbfbf;
-            "
-          >
-            <span style="font-weight: bold">2. Планируемые расходы</span>
-          </td>
-        </tr>
-        <tr>
-            <td colspan="6" style="border: 1px solid black; font-weight: bold;"> Планируемые расходы </td>
-        </tr>
-        <tr>
-          <td class="border_super">Наименование расхода</td>
-          <td class="border_super">Класс обслуживания <br> (для билетов)</td>
-          <td class="border_super">Тариф в сутки(для проживания), руб.</td>
-          <td class="border_super">Примечания</td>
-          <td class="border_super">Норма суточный в валюте <br> (выберите валюту)</td>
-          <td class="border_super">Сумма расхода</td>
-        </tr>
-        <tr>
-          <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Роуминг</td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Билеты</td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Проживание</td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Трансфер</td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Прочие расходы</td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Суточные по РФ</td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Суточные заграницей</td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Особые отметки</td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td class="border_super" colspan="3" style="text-align: right !important;">Всего расходов в рублях</td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td class="border_super" colspan="3" style="text-align: right !important;">Всего расходов в иностранной валюте</td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td class="border_super" colspan="3" style="text-align: right !important;">Необходимость заказа такси в аэропорту/на вокзал</td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td class="border_super" colspan="3" style="text-align: right !important;">Необходимость заказа такси из аэропорта/с вокзала</td>
-          <td class="border_super"><input type="text"></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </table>
+        <div style="width: 95%; margin: 0 auto;">
+
+            <table>
+              <tr>
+                <td></td>
+                <td></td>
+                <td colspan="4" style="font-weight: bold">
+                  Приложение 2. План-заявка на командировку работников
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: left !important; padding-left: 5px !important">
+                  Утверждаю
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td
+                  colspan="2"
+                  style="text-align: left !important; padding-left: 5px !important"
+                >
+                  Генеральный директор
+                </td>
+                <td>Тертычный С.Н.</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td colspan="6" style="font-weight: bold">
+                  ПЛАН-ЗАЯВКА НА КОМАНДИРОВКУ РАБОТНИКОВ ООО "ТРАНСПОРТНЫЕ ТЕХНОЛОГИИ"
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td
+                  colspan="6"
+                  style="
+                    text-align: left !important;
+                    padding-left: 10px !important;
+                    background: #bfbfbf;
+                  "
+                >
+                  <span style="font-weight: bold">1. Служебное задание</span> ( служит
+                  основанием для оформления приказа )
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td
+                  style="text-align: left !important; padding-left: 10px !important"
+                >
+                  Дата заявки
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="text" style="height: 100%;"/></td>
+              </tr>
+              <tr>
+                <td
+                  style="text-align: left !important; padding-left: 10px !important"
+                >
+                  ФИО работника полностью
+                </td>
+                <td></td>
+                <td colspan="4"><input type="text" /></td>
+              </tr>
+              <tr>
+                <td
+                  style="
+                    text-align: left !important;
+                    padding-left: 10px !important;
+                    white-space: nowrap;
+                  "
+                >
+                  Командировать работника <br />
+                  ООО "Транспортные Технологии" в
+                </td>
+                <td>Страна</td>
+                <td colspan="4"><input type="text" /></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>Город</td>
+                <td colspan="4"><input type="text" /></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>Организация</td>
+                <td colspan="4"><input type="text" /></td>
+              </tr>
+              <tr>
+                <td
+                  style="
+                    text-align: left !important;
+                    padding-left: 10px !important;
+                    font-weight: bold;
+                  "
+                >
+                  Цель командировки
+                </td>
+                <td></td>
+                <td colspan="4"><input type="text" /></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td style="
+                    text-align: left !important;
+                    padding-left: 10px !important;
+                    font-weight: bold;
+                  ">Срок служебной командировки</td>
+                <td></td>
+                <td>c</td>
+                <td><input type="text" /></td>
+                <td>по</td>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <td style="
+                    text-align: left !important;
+                    padding-left: 10px !important;
+                    font-weight: bold;
+                  ">Время командировки</td>
+                <td></td>
+                <td>c</td>
+                <td><input type="text" /></td>
+                <td>по</td>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="
+                    text-align: left !important;
+                    padding-left: 10px !important;
+                    font-weight: bold;
+                  ">Всего дней</td>
+                <td><input type="text" /></td>
+              </tr>
+              <tr>
+                  <td
+                  colspan="6"
+                  style="
+                    text-align: left !important;
+                    padding-left: 10px !important;
+                    background: #bfbfbf;
+                  "
+                >
+                  <span style="font-weight: bold">2. Планируемые расходы</span>
+                </td>
+              </tr>
+              <tr>
+                  <td colspan="6" style="border: 1px solid black; font-weight: bold;"> Планируемые расходы </td>
+              </tr>
+              <tr>
+                <td class="border_super">Наименование расхода</td>
+                <td class="border_super">Класс обслуживания <br> (для билетов)</td>
+                <td class="border_super">Тариф в сутки(для проживания), руб.</td>
+                <td class="border_super">Примечания</td>
+                <td class="border_super">Норма суточный в валюте <br> (выберите валюту)</td>
+                <td class="border_super">Сумма расхода</td>
+              </tr>
+              <tr>
+                <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Роуминг</td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Билеты</td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Проживание</td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Трансфер</td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Прочие расходы</td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Суточные по РФ</td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Суточные заграницей</td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Особые отметки</td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td class="border_super" colspan="3" style="text-align: right !important;">Всего расходов в рублях</td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td class="border_super" colspan="3" style="text-align: right !important;">Всего расходов в иностранной валюте</td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td class="border_super" colspan="3" style="text-align: right !important;">Необходимость заказа такси в аэропорту/на вокзал</td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td class="border_super" colspan="3" style="text-align: right !important;">Необходимость заказа такси из аэропорта/с вокзала</td>
+                <td class="border_super"><input type="text"></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </table>
+        </div>
     </div>
     <div class="navigation">
       <span class="back" @click="$emit('clearForm', true)"
@@ -529,4 +532,10 @@ export default {
     
     <style lang="scss" scoped>
 @import "../style/style_form.scss";
+td{
+    font-size: 12px !important;
+}
+.table{
+    width: 50%;
+}
 </style>
