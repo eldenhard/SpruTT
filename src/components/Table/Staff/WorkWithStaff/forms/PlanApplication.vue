@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="form" id="element-to-convert" ref="form_1">
-        <div style="width: 95% !important; margin: 0 auto !important;">
+        <div style="width: 95% !important; margin: 1% auto 0 !important;">
 
             <table>
               <tr>
