@@ -56,6 +56,7 @@
       // Изменяем стили для экспорта в PDF
       element.style.height = "auto";
       element.style.boxShadow = "none";
+      element.style.width = "796px";
 
       // Экспортируем в PDF
       this.$nextTick(() => {
