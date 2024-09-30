@@ -3,7 +3,7 @@
     <div class="form" id="element-to-convert" ref="form_1">
         <div style="width: 95% !important; margin: 1% auto 0 !important;">
 
-            <table>
+            <table >
               <tr>
                 <td></td>
                 <td></td>
@@ -11,22 +11,7 @@
                   Приложение 2. План-заявка на командировку работников
                 </td>
               </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+
               <tr>
                 <td></td>
                 <td></td>
@@ -49,27 +34,13 @@
                 </td>
                 <td>Тертычный С.Н.</td>
               </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+
               <tr>
                 <td colspan="6" style="font-weight: bold">
                   ПЛАН-ЗАЯВКА НА КОМАНДИРОВКУ РАБОТНИКОВ ООО "ТРАНСПОРТНЫЕ ТЕХНОЛОГИИ"
                 </td>
               </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+
               <tr>
                 <td
                   colspan="6"
@@ -83,14 +54,7 @@
                   основанием для оформления приказа )
                 </td>
               </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+
               <tr>
                 <td
                   style="text-align: left !important; padding-left: 10px !important"
@@ -149,14 +113,7 @@
                 <td></td>
                 <td colspan="4"><input type="text" /></td>
               </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+
               <tr>
                 <td style="
                     text-align: left !important;
@@ -205,19 +162,18 @@
                   <span style="font-weight: bold">2. Планируемые расходы</span>
                 </td>
               </tr>
+
+
               <tr>
-                  <td colspan="6" style="border: 1px solid black; font-weight: bold;"> Планируемые расходы </td>
+                <td class="border_super head" >Наименование расхода</td>
+                <td class="border_super head">Класс обслуживания <br> (для билетов)</td>
+                <td class="border_super head">Тариф в сутки(для проживания), руб.</td>
+                <td class="border_super head">Примечания</td>
+                <td class="border_super head">Норма суточных в валюте</td>
+                <td class="border_super head">Сумма расхода</td>
               </tr>
               <tr>
-                <td class="border_super">Наименование расхода</td>
-                <td class="border_super">Класс обслуживания <br> (для билетов)</td>
-                <td class="border_super">Тариф в сутки(для проживания), руб.</td>
-                <td class="border_super">Примечания</td>
-                <td class="border_super">Норма суточный в валюте <br> (выберите валюту)</td>
-                <td class="border_super">Сумма расхода</td>
-              </tr>
-              <tr>
-                <td class="border_super" style="text-align: right !important; padding-right: 10px !important;">Роуминг</td>
+                <td class="border_super" style="text-align: right !important; padding: 0 10px 0 0 !important;">Роуминг</td>
                 <td class="border_super"><input type="text"></td>
                 <td class="border_super"><input type="text"></td>
                 <td class="border_super"><input type="text"></td>
@@ -281,189 +237,117 @@
                 <td class="border_super"><input type="text"></td>
               </tr>
               <tr>
+
+                
                 <td></td>
                 <td></td>
-                <td class="border_super" colspan="3" style="text-align: right !important;">Всего расходов в рублях</td>
+                <td class="border_super head" colspan="3" style="text-align: right !important;">Всего расходов в рублях</td>
                 <td class="border_super"><input type="text"></td>
               </tr>
               <tr>
                 <td></td>
                 <td></td>
-                <td class="border_super" colspan="3" style="text-align: right !important;">Всего расходов в иностранной валюте</td>
+                <td class="border_super head" colspan="3" style="text-align: right !important;">Всего расходов в иностранной валюте</td>
                 <td class="border_super"><input type="text"></td>
               </tr>
               <tr>
                 <td></td>
                 <td></td>
-                <td class="border_super" colspan="3" style="text-align: right !important;">Необходимость заказа такси в аэропорту/на вокзал</td>
+                <td class="border_super head" colspan="3" style="text-align: right !important;">Необходимость заказа такси в аэропорту/на вокзал</td>
                 <td class="border_super"><input type="text"></td>
               </tr>
               <tr>
                 <td></td>
                 <td></td>
-                <td class="border_super" colspan="3" style="text-align: right !important;">Необходимость заказа такси из аэропорта/с вокзала</td>
+                <td class="border_super head" colspan="3" style="text-align: right !important;">Необходимость заказа такси из аэропорта/с вокзала</td>
                 <td class="border_super"><input type="text"></td>
               </tr>
+
               <tr>
+                <td style="text-align: left !important;">Подпись работника</td>
                 <td></td>
                 <td></td>
+                <td colspan="2">  
+                    <label style="flex-basis: 60%; display: flex; flex-direction: column">
+                        <input type="text" style="width: 100%; margin-bottom: 0; border: none; border-bottom: 1px solid #000;" />
+                        <span style="font-size: 12px; text-align: center">
+                        (подпись)
+                        </span>
+                    </label>
+                </td>
+                <td>
+                    <label style="flex-basis: 60%; display: flex; flex-direction: column">
+                        <input type="text" style="width: 100%; margin-bottom: 0" />
+                        <span style="font-size: 12px; text-align: center">
+                        (Расшифровка)
+                        </span>
+                </label>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: left !important;">Согласование</td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
+                <td colspan="2">  
+                    <label style="flex-basis: 60%; display: flex; flex-direction: column">
+                        <input type="text" style="width: 100%; margin-bottom: 0; border: none; border-bottom: 1px solid #000;" />
+                        <span style="font-size: 12px; text-align: center">
+                        (подпись)
+                        </span>
+                    </label>
+                </td>
+                <td>
+                    <label style="flex-basis: 60%; display: flex; flex-direction: column">
+                        <input type="text" style="width: 100%; margin-bottom: 0" placeholder="Непосред. рук-ль"/>
+                        <span style="font-size: 12px; text-align: center">
+                        (Расшифровка)
+                        </span>
+                </label>
+                </td>
               </tr>
               <tr>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td colspan="2">  
+                    <label style="flex-basis: 60%; display: flex; flex-direction: column">
+                        <input type="text" style="width: 100%; margin-bottom: 0; border: none; border-bottom: 1px solid #000;" />
+                        <span style="font-size: 12px; text-align: center">
+                        (подпись)
+                        </span>
+                    </label>
+                </td>
+                <td>Финансовая служба</td>
               </tr>
               <tr>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td colspan="2">  
+                    <label style="flex-basis: 60%; display: flex; flex-direction: column">
+                        <input type="text" style="width: 100%; margin-bottom: 0; border: none; border-bottom: 1px solid #000;" />
+                        <span style="font-size: 12px; text-align: center">
+                        (подпись)
+                        </span>
+                    </label>
+                </td>
+                <td>Отдел по работе с персоналом</td>
               </tr>
               <tr>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td colspan="2">  
+                    <label style="flex-basis: 60%; display: flex; flex-direction: column">
+                        <input type="text" style="width: 100%; margin-bottom: 0; border: none; border-bottom: 1px solid #000;" />
+                        <span style="font-size: 12px; text-align: center">
+                        (подпись)
+                        </span>
+                    </label>
+                </td>
+                <td>АХО</td>
               </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+
             </table>
         </div>
     </div>

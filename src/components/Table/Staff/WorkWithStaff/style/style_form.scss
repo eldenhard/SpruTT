@@ -243,14 +243,21 @@ td:not(.border_super){
 }
 .border_super{
   border: 1px solid black;
-  font-weight: bold;
-  padding: 0 auto;
+  margin: 0;
   font-family: "Times New Roman", Times, serif;
-  font-size: 14px;
+  font-size: 10px !important;
+ 
+  input{
+    border: none !important;
+  }
 }
 td{
   input{
-    height: 100%;
-    border: 1px solid black;
+    border: 1px solid black
   }
 }
+.head{
+  font-weight: bold;
+}
+
+
