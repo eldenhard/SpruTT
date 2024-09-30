@@ -29,8 +29,9 @@ import DismissalForm from '../forms/DismissalForm.vue';
 import EducationalPaidLeaveForm from '../forms/EducationalPaidLeaveForm.vue';
 import ActTransferJobForm from '../forms/ActTransferJobForm.vue';
 import ReportEntertainmentExpenses from '../forms/ReportEntertainmentExpenses.vue';
+import PlanApplication from '../forms/PlanApplication.vue';
 export default {
-  components: { RestForm, RestWoMoneyForm, TransferForm, DismissalForm, EducationalPaidLeaveForm, ActTransferJobForm, ReportEntertainmentExpenses },
+  components: { RestForm, RestWoMoneyForm, TransferForm, DismissalForm, EducationalPaidLeaveForm, ActTransferJobForm, ReportEntertainmentExpenses, PlanApplication },
   data() {
     return {
       searchValue: "",
@@ -43,7 +44,7 @@ export default {
         { name: "Заявление на учебный оплачиваемый отпуск", description: "", value_description: "" },
         { name: "Акт передачи дел на период отпуска", description: "", value_description: ""},
         { name: "Отчет по представительским расходам", description: "", value_description: ""  },
-        { name: "План заявка", description: "", value_description: "" , extra_des: 'disabled' },
+        { name: "План заявка", description: "", value_description: ""  },
         { name: "Отчет о командировке", description: "", value_description: "", extra_des: 'disabled'  },
       ],
     };
@@ -83,9 +84,9 @@ export default {
         case "Отчет по представительским расходам":
           this.state = "ReportEntertainmentExpenses";
           break;
-        // case "План заявка":
-        //   this.state = "RestForm";
-        //   break;
+        case "План заявка":
+          this.state = "PlanApplication";
+          break;
         // case "Отчет о командировке":
         //   this.state = "RestForm";
         //   break;

@@ -233,3 +233,24 @@ textarea{
     outline: red;
   }
 }
+tr{
+  border: none !important;
+}
+td:not(.border_super){
+  border: none !important;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 14px;
+}
+.border_super{
+  border: 1px solid black;
+  font-weight: bold;
+  padding: 0 auto;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 14px;
+}
+td{
+  input{
+    height: 100%;
+    border: 1px solid black;
+  }
+}
