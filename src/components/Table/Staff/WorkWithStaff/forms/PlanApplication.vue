@@ -264,7 +264,7 @@
               </tr>
 
               <tr>
-                <td style="text-align: left !important;">Подпись работника</td>
+                <td style="text-align: left !important; font-weight: bold;">Подпись работника</td>
                 <td></td>
                 <td></td>
                 <td colspan="2">  
@@ -285,7 +285,7 @@
                 </td>
               </tr>
               <tr>
-                <td style="text-align: left !important;">Согласование</td>
+                <td style="text-align: left !important; font-weight: bold;">Согласование</td>
                 <td></td>
                 <td></td>
                 <td colspan="2">  
