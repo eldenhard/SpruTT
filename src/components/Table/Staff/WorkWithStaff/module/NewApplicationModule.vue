@@ -9,7 +9,7 @@
       <div class="content">
           <div :class="['application_item', { disabled: application.extra_des == 'disabled' }]" v-for="application in filteredApplications" :key="JSON.stringify(application)"
           @click="openForm(application.name, $event.target)">
-              <p>{{ application.name }}</p>
+              <p style="color: #365E7D">{{ application.name }}</p>
           </div>
       </div>
     </div>
