@@ -26,10 +26,11 @@ import RestForm from '../forms/RestForm.vue'
 import RestWoMoneyForm from '../forms/RestWoMoneyForm.vue';
 import TransferForm from '../forms/TransferForm.vue';
 import DismissalForm from '../forms/DismissalForm.vue';
-import EducationalPaidLeaveForm from '../forms/EducationalPaidLeaveForm.vue'
-import ActTransferJobForm from '../forms/ActTransferJobForm.vue'
+import EducationalPaidLeaveForm from '../forms/EducationalPaidLeaveForm.vue';
+import ActTransferJobForm from '../forms/ActTransferJobForm.vue';
+import ReportEntertainmentExpenses from '../forms/ReportEntertainmentExpenses.vue';
 export default {
-  components: { RestForm, RestWoMoneyForm, TransferForm, DismissalForm, EducationalPaidLeaveForm, ActTransferJobForm },
+  components: { RestForm, RestWoMoneyForm, TransferForm, DismissalForm, EducationalPaidLeaveForm, ActTransferJobForm, ReportEntertainmentExpenses },
   data() {
     return {
       searchValue: "",
@@ -41,7 +42,7 @@ export default {
         { name: "Заявление на увольнение", description: "", value_description: "" },
         { name: "Заявление на учебный оплачиваемый отпуск", description: "", value_description: "" },
         { name: "Акт передачи дел на период отпуска", description: "", value_description: ""},
-        { name: "Отчет по представительским расходам", description: "", value_description: "", extra_des: 'disabled'  },
+        { name: "Отчет по представительским расходам", description: "", value_description: ""  },
         { name: "План заявка", description: "", value_description: "" , extra_des: 'disabled' },
         { name: "Отчет о командировке", description: "", value_description: "", extra_des: 'disabled'  },
       ],
@@ -79,9 +80,9 @@ export default {
         case "Акт передачи дел на период отпуска":
           this.state = "ActTransferJobForm";
           break;
-        // case "Отчет по представительским расходам":
-        //   this.state = "RestForm";
-        //   break;
+        case "Отчет по представительским расходам":
+          this.state = "ReportEntertainmentExpenses";
+          break;
         // case "План заявка":
         //   this.state = "RestForm";
         //   break;

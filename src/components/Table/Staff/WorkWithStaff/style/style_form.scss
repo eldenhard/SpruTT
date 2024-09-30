@@ -173,3 +173,63 @@ input {
     text-indent: 2vw;
   }
 }
+
+.text_report{
+  display: flex;
+  justify-content: space-between;
+  img{
+    height: 20%;
+    width: 30%;
+  }
+  .header_report{
+    h5{
+      font-weight: bold;
+    }
+    h5, p {
+      font-family: "Times New Roman", Times, serif;
+      text-align: right;
+    }
+    p{
+      font-size: 14px;
+    }
+    input{
+      color: black;
+    }
+  }
+}
+p, span{
+  font-family: "Times New Roman", Times, serif;
+}
+input{
+  color: black;
+}
+.f_line_report{
+  p{
+    text-align: center;
+  }
+}
+
+.description_report{
+  width: 90%;
+  margin: 0 auto;
+  input{
+    &::placeholder{
+      font-size: 12px;
+    }
+  }
+  p, b{
+    text-align: left;
+  }
+  p:nth-child(1){
+    text-indent: 2vw;
+  }
+}
+
+textarea{
+  // background: repeating-linear-gradient(to bottom, transparent 0%, transparent calc(20px), #ddd calc(20px), #ddd calc(21px));
+  border: lightgrey 1px solid;
+  &:focus{
+    border: 1px solid rgb(211, 211, 211);
+    outline: red;
+  }
+}
