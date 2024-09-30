@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="form" id="element-to-convert" ref="form_1">
-      <div class="text_report" style="width: 95%; margin: 4% auto">
+      <div class="text_report" style="width: 90%; margin: 4% auto">
         <img src="../assets/logo_tt.png" alt="" />
         <div class="header_report">
           <h5>Приложение 5</h5>
@@ -81,10 +81,11 @@
           </label>
           <b>Цель переговоров:</b>
           <label style="flex-grow: 1; display: flex; flex-direction: column">
+            <!--  placeholder="Указывается цель, например: «Согласование коммерческих требований пригодности вагонов под погрузку» " -->
             <input
               type="text"
               style="width: 100%; margin-bottom: 0"
-              placeholder="Указывается цель, например: «Согласование коммерческих требований пригодности вагонов под погрузку» "
+             
             />
             <span style="font-size: 12px; margin-top: 4px; text-align: center">
               (Цель переговоров)
@@ -164,16 +165,25 @@ export default {
       element.style.height = "auto";
       element.style.boxShadow = "none";
       element.style.width = "796px";
-
+    document.querySelectorAll("textarea").forEach((textarea) => {
+          textarea.style.border = "none";
+        });
       // Экспортируем в PDF
       this.$nextTick(() => {
-        html2pdf(element, {
-          margin: 1,
-          filename: "Отчет по представительским расходам.pdf",
-        }).then(() => {
-          // Возвращаем исходные стили после экспорта
-          element.style.cssText = originalStyles;
-        });
+        html2pdf()
+          .set({
+            margin: 1,
+            filename: "Отчет по представительским расходам.pdf", // Adjust extension to .pdf
+            image: { type: "jpeg", quality: 1 }, // Maximize image quality
+            html2canvas: { scale: 2 }, // Increase scale for better clarity
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          })
+          .from(element)
+          .save()
+          .then(() => {
+            // Restore original styles after PDF generation
+            element.style.cssText = originalStyles;
+          });
       });
     },
   },

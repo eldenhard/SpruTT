@@ -168,16 +168,21 @@ export default {
       element.style.height = "auto";
       element.style.boxShadow = "none";
       element.style.width = "796px";
-
-      // Экспортируем в PDF
       this.$nextTick(() => {
-        html2pdf(element, {
-          margin: 1,
-          filename: "Акт передачи дел на период отпуска.pdf",
-        }).then(() => {
-          // Возвращаем исходные стили после экспорта
-          element.style.cssText = originalStyles;
-        });
+        html2pdf()
+          .set({
+            margin: 1,
+            filename: "Акт передачи дел на период отпуска.pdf", // Adjust extension to .pdf
+            image: { type: "jpeg", quality: 1 }, // Maximize image quality
+            html2canvas: { scale: 2 }, // Increase scale for better clarity
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          })
+          .from(element)
+          .save()
+          .then(() => {
+            // Restore original styles after PDF generation
+            element.style.cssText = originalStyles;
+          });
       });
     },
   },
