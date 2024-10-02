@@ -20,6 +20,7 @@
           hover
           small
           :items="filteredUsersList"
+          :bordered="true"
           :fields="head_table"
           :per-page="perPage"
           :head-variant="'light'"
@@ -156,13 +157,11 @@ export default {
             this.totalRows = this.filteredUsersList.length;
         },
     rowClass(item) {
-      if (!item) return ""; // Защита от пустых данных
+      if (!item) return ""; 
       if (item.days_until_birthday === 0) {
-        // День рождения сегодня
-        return "table-warning"; // Жёлтый цвет
+        return "table-warning"; 
       } else if (item.days_until_birthday <= 7) {
-        // Осталось 3 дня или меньше до дня рождения
-        return "table-success"; // Зелёный цвет
+        return "table-success"; 
       }
       return "";
     },
@@ -172,4 +171,5 @@ export default {
 
 <style lang="scss" scoped>
 @import "../style/style.scss";
+
 </style>
