@@ -26,6 +26,7 @@
           :head-variant="'light'"
           :current-page="currentPage"
           :tbody-tr-class="rowClass"
+           class="table table-sm thead-light"
         >
           <template #head(birth_date)>
             День рождения
