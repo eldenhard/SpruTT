@@ -8,6 +8,9 @@ import StaffComponent from '../components/Table/Staff/WorkWithStaff/StaffCompone
 
 export default {
   components: { StaffComponent },
+  mounted() {
+    document.title = "Работа с персоналом";
+  }
 }
 </script>
 

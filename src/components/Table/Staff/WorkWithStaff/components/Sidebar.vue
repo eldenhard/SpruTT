@@ -21,7 +21,7 @@
         <img src="../assets/user.png" alt="Сотрудник" />
         <p>Для нового сотрудника</p>
       </div>
-      <div class="content_item">
+      <div class="content_item" @click="setActiveComponent('BirthdayModule')" >
         <img src="../assets/cake.png" alt="День рождения" />
         <p>Дни рождения</p>
       </div>

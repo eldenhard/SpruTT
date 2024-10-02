@@ -506,9 +506,7 @@ this.debouncedWatch = debounce((newValue, oldValue) => {
   background: lightgrey;
 }
 
-.disabled {
-  background: lightgrey;
-}
+
 
 sup {
   color: grey;

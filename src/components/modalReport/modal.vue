@@ -210,11 +210,11 @@
 </template>
 
 
-<style>
-.disabled,
+<style scoped>
+/* .disabled,
 .errors {
   background: grey;
-}
+} */
 
 .error {
   color: red;

@@ -10,8 +10,9 @@
 <script>
 import NewApplicationModule from "../module/NewApplicationModule.vue";
 import NewsModule from "../module/NewsModule.vue";
+import BirthdayModule from "../module/BirthdayModule.vue";
 export default {
-  components: { NewApplicationModule, NewsModule },
+  components: { NewApplicationModule, NewsModule, BirthdayModule },
   inject: ['state'], // Получаем реактивное состояние от родителя
   };
 </script>

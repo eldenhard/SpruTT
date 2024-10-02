@@ -10,6 +10,9 @@ import RegisterInsuredWagons from '@/components/Table/Directory/RegisterInsuredW
 export default {
     components: {
         RegisterInsuredWagons
-    }
+    },
+    mounted() {
+        document.title = "Страхование";
+    },
 }
 </script>
