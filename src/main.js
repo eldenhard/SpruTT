@@ -5,6 +5,8 @@ import store from './store'
 import Vuex from 'vuex'
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
+// import './node_modules/normalize.css/normalize.css';
+import '../node_modules/normalize.css/normalize.css';
 // import * as Sentry from "@sentry/vue";
 
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
