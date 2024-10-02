@@ -15,7 +15,7 @@ components: { Sidebar, Workspace },
 data() {
   return {
     state: Vue.observable({
-      activeComponent: 'NewsModule' // Делаем поле реактивным
+      activeComponent: '' // Делаем поле реактивным
     }),
   };
 },
