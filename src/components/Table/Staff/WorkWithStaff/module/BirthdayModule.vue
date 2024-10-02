@@ -7,6 +7,7 @@
         @updateApplication="updateTableStaff"
         >Дни рождения сотрудников</HeaderUIElement
       >
+
       <div
         class="content"
         style="
@@ -16,60 +17,85 @@
           flex-direction: column;
         "
       >
-        <b-table
-          hover
-          small
-          :items="filteredUsersList"
-          :bordered="true"
-          :fields="head_table"
-          :per-page="perPage"
-          :head-variant="'light'"
-          :current-page="currentPage"
-          :tbody-tr-class="rowClass"
-           class="table table-sm thead-light"
-        >
-          <template #head(birth_date)>
-            День рождения
-            <img
-              src="../assets/crown.png"
-              alt="Корона"
-              style="width: 16px; height: 16px; margin-left: 5px"
-            />
-          </template>
-          <!-- Слот для отображения дня рождения с короной -->
-          <template #cell(birth_date)="data">
-            <span>
-              <img
-                v-if="data.item.days_until_birthday === 0"
-                src="../assets/crown.png"
-                alt="Корона"
-                style="width: 16px; height: 16px; margin-left: 5px"
-              />
-
-              {{ data.item.birth_date }}
-              <!-- Отображаем корону, если она нужна (например, для ближайших дней рождения) -->
-              <img
-                v-if="data.item.days_until_birthday === 0"
-                src="../assets/crown.png"
-                alt="Корона"
-                style="width: 16px; height: 16px; margin-left: 5px"
-              />
-            </span>
-          </template>
-        </b-table>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Фамилия</th>
+              <th>Имя</th>
+              <th>Отчество</th>
+              <th>Отдел</th>
+              <th>День рождения</th>
+              <th>Дней до дня рождения</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="user in paginatedUsers"
+              :key="user.id"
+              :class="rowClass(user)"
+            >
+              <td :class="textClass(user)">{{ user.last_name }}</td>
+              <td :class="textClass(user)">{{ user.first_name }}</td>
+              <td :class="textClass(user)">{{ user.middle_name }}</td>
+              <td :class="textClass(user)">{{ user.post }}</td>
+              <td :class="textClass(user)">
+                <img
+                  v-if="user.days_until_birthday === 0"
+                  src="../assets/crown.png"
+                  alt="Корона"
+                  style="width: 16px; height: 16px; margin-left: 5px"
+                />
+                {{ formatBirthDate(user.birth_date) }}
+              </td>
+              <td :class="textClass(user)">
+                {{ user.days_until_birthday }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-
-      <b-pagination
-        v-model="currentPage"
+      <br />
+      <nav
         v-if="totalPages > 1"
-        :total-rows="totalRows"
-        :per-page="perPage"
-        last-number
-        style="margin-top: 4%"
-      ></b-pagination>
+        aria-label="Pagination"
+        style="display: flex; justify-content: center; align-items: center"
+      >
+        <ul class="pagination">
+          <li
+            class="page-item"
+            :class="{ disabled: currentPage === 1 }"
+            @click="changePage(currentPage - 1)"
+          >
+            <a class="page-link" href="#">
+              <b-icon icon="caret-left-fill"></b-icon
+            ></a>
+          </li>
+
+          <li
+            class="page-item"
+            v-for="page in totalPages"
+            :key="page"
+            :class="{ active: currentPage === page }"
+            @click="changePage(page)"
+          >
+            <a class="page-link" href="#">{{ page }}</a>
+          </li>
+
+          <li
+            class="page-item"
+            :class="{ disabled: currentPage === totalPages }"
+            @click="changePage(currentPage + 1)"
+          >
+            <a class="page-link" href="#">
+              <b-icon icon="caret-right-fill"></b-icon
+            ></a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </template>
+
 <script>
 import HeaderUIElement from "../ui/HeaderUIElement.vue";
 import api from "@/api/staff";
@@ -96,6 +122,16 @@ export default {
       totalRows: 0, // Общее количество строк
     };
   },
+  computed: {
+    totalPages() {
+      return Math.ceil(this.totalRows / this.perPage);
+    },
+    paginatedUsers() {
+      const start = (this.currentPage - 1) * this.perPage;
+      const end = start + this.perPage;
+      return this.filteredUsersList.slice(start, end);
+    },
+  },
   async mounted() {
     try {
       const staff = await api.getAllStaff({ page_size: 500 });
@@ -119,58 +155,60 @@ export default {
             return {
               ...element,
               days_until_birthday: Math.ceil(diffInTime / (1000 * 3600 * 24)),
-              birth_date: element.birth_date
-                .split("-")
-                .reverse()
-                .join(".")
+              birth_date: birthDate, // Оставляем объект Date для дальнейшей обработки
             };
           } else {
             return {
               ...element,
-              days_until_birthday: Infinity
+              days_until_birthday: Infinity,
             };
           }
         })
         .sort((a, b) => a.days_until_birthday - b.days_until_birthday);
 
       this.totalRows = this.users.length; // Общее количество строк для пагинации
-      this.filteredUsersList = [...this.users]
+      this.filteredUsersList = [...this.users];
     } catch (err) {
       this.loader = false;
     }
   },
-
-  computed: {
-  
-    totalPages() {
-      return Math.ceil(this.totalRows / this.perPage);
-    },
-  },
- 
   methods: {
-    updateTableStaff(search)  {
-            const query = search.toLowerCase();
-            this.filteredUsersList = this.users.filter(user =>
-                user.last_name.toLowerCase().includes(query) ||
-                user.first_name.toLowerCase().includes(query)
-             
-            );
-            this.totalRows = this.filteredUsersList.length;
-        },
+    updateTableStaff(search) {
+      const query = search.toLowerCase();
+      this.filteredUsersList = this.users.filter(
+        (user) =>
+          user.last_name.toLowerCase().includes(query) ||
+          user.first_name.toLowerCase().includes(query)
+      );
+      this.totalRows = this.filteredUsersList.length;
+      this.currentPage = 1; // Сбрасываем на первую страницу после фильтрации
+    },
+    changePage(page) {
+      if (page > 0 && page <= this.totalPages) {
+        this.currentPage = page;
+      }
+    },
     rowClass(item) {
-      if (!item) return ""; 
+      if (!item) return "";
       if (item.days_until_birthday === 0) {
-        return "table-warning"; 
-      } else if (item.days_until_birthday <= 7) {
-        return "table-success"; 
+        return "custom-success";
       }
       return "";
+    },
+    textClass(item) {
+      return item.days_until_birthday <= 0 && item.days_until_birthday !== 5
+        ? "custom-danger"
+        : "";
+    },
+    formatBirthDate(date) {
+      if (!date) return "";
+      const options = { day: "numeric", month: "long" };
+      return new Intl.DateTimeFormat("ru-RU", options).format(date);
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 @import "../style/style.scss";
-
 </style>
