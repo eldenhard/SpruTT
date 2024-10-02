@@ -24,7 +24,11 @@
               <th>Имя</th>
               <th>Отчество</th>
               <th>Отдел</th>
-              <th>День рождения</th>
+              <th>День рождения <img
+                  src="../assets/crown.png"
+                  alt="Корона"
+                  style="width: 16px; height: 16px; margin-left: 5px"
+                /></th>
               <th>Дней до дня рождения</th>
             </tr>
           </thead>
