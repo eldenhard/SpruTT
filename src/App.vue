@@ -103,7 +103,7 @@ export default {
             this.$toast.info(
             `Сегодня день рождения у следующих сотрудников:\n${employeesWithBirthdayToday
               .map((employee) => `${employee.last_name} ${employee.first_name}`)
-              .join(", ")}`,
+              .join(", ")} - ЭТО ПРОВЕРКА!`,
             { timeout: 6000, position: "top-left" }
           );
           localStorage.setItem("notificationBirthday", true);  

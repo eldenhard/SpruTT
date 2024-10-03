@@ -219,7 +219,7 @@ export default {
       return "";
     },
     textClass(item) {
-      return item.days_until_birthday < 0 && item.days_until_birthday !== 5
+      return item.days_until_birthday > 0 && item.days_until_birthday <= 5
         ? "custom-danger"
         : "";
     },
