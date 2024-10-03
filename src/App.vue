@@ -62,13 +62,66 @@ export default {
       localStorage.setItem("todayIsBirthdayForMe", true);
       this.todayIsBirthdayForMe = false;
     },
+    // checkBirthday(users) {
+    //   const today = new Date();
+    //   const todayString = `${today.getMonth() + 1}-${today.getDate()}`;
+    //   const currentUser = this.$store.state.auth.user.user;
+    //   const birthdayEmployees = users;
+    //   // Массив для хранения имен сотрудников, у кого день рождения сегодня
+
+    //   const employeesWithBirthdayToday = birthdayEmployees.filter(
+    //     (employee) => {
+    //       if (employee.birth_date) {
+    //         const birthDate = new Date(employee.birth_date);
+    //         const birthDateStringAnotherStaff = `${
+    //           birthDate.getMonth() + 1
+    //         }-${birthDate.getDate()}`;
+    //         return todayString === birthDateStringAnotherStaff;
+    //       }
+    //       return false;
+    //     }
+    //   );
+    //   console.log("Проверяю вводные данные ", employeesWithBirthdayToday);
+    //   if (currentUser.birth_date) {
+    //     const birthDate = new Date(currentUser.birth_date);
+    //     const birthDateString = `${
+    //       birthDate.getMonth() + 1
+    //     }-${birthDate.getDate()}`;
+
+    //     if (todayString === birthDateString) {
+    //       if (localStorage.getItem("todayIsBirthdayForMe") == "false") {
+    //         this.todayIsBirthdayForMe = true;
+    //         localStorage.setItem("todayIsBirthdayForMe", true);
+    //       }
+    //     } else {
+    //       localStorage.setItem("todayIsBirthdayForMe", false);
+    //     }
+    //   } else {
+    //     // Проверка, есть ли сотрудники с днем рождения сегодня
+    //     if (employeesWithBirthdayToday.length > 0) {
+    //       console.log(employeesWithBirthdayToday)
+    //       if(localStorage.getItem("notificationBirthday") == "false") {
+    //         alert('123')
+    //         this.$toast.info(
+    //         `Сегодня день рождения у следующих сотрудников:\n${employeesWithBirthdayToday
+    //           .map((employee) => `${employee.last_name} ${employee.first_name}`)
+    //           .join(", ")}`,
+    //         { timeout: 6000, position: "top-left" }
+    //       );
+    //       localStorage.setItem("notificationBirthday", true);
+    //       }
+
+    //     }
+    //   }
+    // },
+
     checkBirthday(users) {
       const today = new Date();
       const todayString = `${today.getMonth() + 1}-${today.getDate()}`;
       const currentUser = this.$store.state.auth.user.user;
       const birthdayEmployees = users;
-      // Массив для хранения имен сотрудников, у кого день рождения сегодня
 
+      // Массив для хранения сотрудников, у кого день рождения сегодня
       const employeesWithBirthdayToday = birthdayEmployees.filter(
         (employee) => {
           if (employee.birth_date) {
@@ -81,7 +134,10 @@ export default {
           return false;
         }
       );
+
       console.log("Проверяю вводные данные ", employeesWithBirthdayToday);
+
+      // Проверка дня рождения текущего пользователя
       if (currentUser.birth_date) {
         const birthDate = new Date(currentUser.birth_date);
         const birthDateString = `${
@@ -89,30 +145,33 @@ export default {
         }-${birthDate.getDate()}`;
 
         if (todayString === birthDateString) {
-          if (localStorage.getItem("todayIsBirthdayForMe") == "false") {
+          // Проверка, показано ли уведомление о дне рождения пользователя
+          if (!localStorage.getItem("todayIsBirthdayForMe")) {
             this.todayIsBirthdayForMe = true;
-            localStorage.setItem("todayIsBirthdayForMe", true);
+            localStorage.setItem("todayIsBirthdayForMe", "true");
           }
         } else {
-          localStorage.setItem("todayIsBirthdayForMe", false);
+          localStorage.setItem("todayIsBirthdayForMe", "false");
         }
-      } else {
-        // Проверка, есть ли сотрудники с днем рождения сегодня
-        if (employeesWithBirthdayToday.length > 0) {
-          if(localStorage.getItem("notificationBirthday") == "false") {
-            alert('123')
-            this.$toast.info(
+      }
+
+      // Проверка сотрудников с днями рождения сегодня
+      if (employeesWithBirthdayToday.length > 0) {
+        console.log(employeesWithBirthdayToday);
+
+        // Проверка, показано ли уведомление о дне рождения других сотрудников
+        if (localStorage.getItem("notificationBirthday") == 'false') {
+          this.$toast.info(
             `Сегодня день рождения у следующих сотрудников:\n${employeesWithBirthdayToday
               .map((employee) => `${employee.last_name} ${employee.first_name}`)
               .join(", ")}`,
             { timeout: 6000, position: "top-left" }
           );
-          localStorage.setItem("notificationBirthday", true);  
-          }
-
+          localStorage.setItem("notificationBirthday", "true");
         }
       }
     },
+
     async fetchData() {
       if (!window.location.href.includes("fin_operation")) {
         await Promise.all([
@@ -163,7 +222,7 @@ export default {
         this.$store.dispatch(actionTypes.logout);
         localStorage.setItem("portalReloaded", "true");
         localStorage.setItem("todayIsBirthdayForMe", false);
-        localStorage.setItem("notificationBirthday", false);  
+        localStorage.setItem("notificationBirthday", false);
         return window.location.reload();
       }
 
@@ -193,7 +252,7 @@ export default {
 
     try {
       localStorage.setItem("accessToken", JSON.stringify(this.token));
-      
+
       await this.fetchData();
     } catch (error) {
       console.error(error);
