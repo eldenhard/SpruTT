@@ -100,10 +100,11 @@ export default {
         // Проверка, есть ли сотрудники с днем рождения сегодня
         if (employeesWithBirthdayToday.length > 0) {
           if(localStorage.getItem("notificationBirthday") == "false") {
+            alert('123')
             this.$toast.info(
             `Сегодня день рождения у следующих сотрудников:\n${employeesWithBirthdayToday
               .map((employee) => `${employee.last_name} ${employee.first_name}`)
-              .join(", ")} - ЭТО ПРОВЕРКА!`,
+              .join(", ")}`,
             { timeout: 6000, position: "top-left" }
           );
           localStorage.setItem("notificationBirthday", true);  
