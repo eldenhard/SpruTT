@@ -262,7 +262,7 @@ export default {
         },
         { title: 'Собственник', data: 'owner',width: '150px'  },
         { title: 'Страховая сумма, руб', data: 'insurance_sum', type: 'numeric',numericFormat: { pattern: '0 0.00' }, width: '200px'  },
-        { title: 'На балансе', data: 'on_balance', width: '150px'  },
+        { title: 'На балансе', data: 'on_balance_1c', width: '150px'  },
         { title: 'Дата постройки', data: 'build_date', dateFormat: 'YYYY-MM-DD', correctFormat: true, width: '150px'  },
         { title: 'Срок службы', data: 'lifetime', width: '150px' },
       ],

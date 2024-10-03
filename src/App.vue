@@ -145,8 +145,10 @@ export default {
         }-${birthDate.getDate()}`;
 
         if (todayString === birthDateString) {
+          // console.log('!!!!!!!!!!!!!!!!!!!!')
           // Проверка, показано ли уведомление о дне рождения пользователя
-          if (!localStorage.getItem("todayIsBirthdayForMe")) {
+          if (localStorage.getItem("todayIsBirthdayForMe") == "false") {
+            // console.log('AAAAAAAAAAAAAAAAA')
             this.todayIsBirthdayForMe = true;
             localStorage.setItem("todayIsBirthdayForMe", "true");
           }

@@ -69,6 +69,7 @@ export default {
                     item.state_change_date = item?.state_change_date?.split('-').reverse().join('.')|| null
                     item.lifetime = item?.lifetime?.split('-').reverse().join('.')|| null
                     item.insurance_sum = item?.insurance_sum?.toFixed(2) || null
+                    item.on_balance_1c = item?.on_balance_1c ? 'Да' : 'Нет'
                 })
                 
                 this.$emit('getInsuredWagons', allData);
