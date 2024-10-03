@@ -1,14 +1,15 @@
 <template>
   <div>
-    <Loader :loader="loader"></Loader>
+    <Loader :loader="loader" />
     <UpNavbar />
     <loader_mini :loader="loader_mini" />
     <router-view />
-    <!-- <Birthday v-if="showBirthday && !showAuthorization" /> -->
-<!-- v-if="showAuthorization" -->
-    <Authorization  style="z-index: 9999999999999999999999999999999999999999999999999 !important;"/> 
-<!-- <Birthday /> -->
-   
+    <Authorization
+      style="
+        z-index: 9999999999999999999999999999999999999999999999999 !important;
+      "
+    />
+    <Birthday v-if="todayIsBirthdayForMe" @close="handleClose" />
   </div>
 </template>
 
@@ -21,11 +22,10 @@ import { actionTypes as cpActionTypes } from "./store/modules/counterparties";
 import { actionTypes as userActionTypes } from "./store/modules/users";
 import { mapState } from "vuex";
 import loader_mini from "./components/loader/loader_mini.vue";
-// import { actionTypes as stActionTypes } from './store/modules/stations';
-// import { actionTypes as dnActionTypes } from './store/modules/dog_number';
 import { actionTypes as ccActionTypes } from "./store/modules/cargo_code";
-import Birthday from './views/Birthday.vue';
+import Birthday from "./views/Birthday.vue";
 import LogRocket from "logrocket";
+
 export default {
   name: "App",
   components: { UpNavbar, Authorization, Loader, loader_mini, Birthday },
@@ -34,132 +34,82 @@ export default {
       loader: false,
       accessToken: localStorage.getItem("accessToken"),
       loader_mini: false,
-      showBirthday: false,  // Controls Birthday component visibility
-      showAuthorization: false,  // Controls Authorization component visibility
+      todayIsBirthdayForMe: false,
     };
   },
   computed: {
     ...mapState({
       token: (state) => state.auth.user.token,
+      users: (state) => state.auth.users.users,
     }),
-    // YUI(){
-    //   if(!window.location.href.includes('fin_operation')){
-    //     return false
-    //   } return true
-    // }
   },
-
   watch: {
     accessToken() {
-      console.log("111");
       localStorage.setItem("accessToken", JSON.stringify(this.token));
     },
   },
   beforeCreate() {
-    let date = new Date();
-    let limit = localStorage.getItem("first_entry_time");
-    // Получил количество часов
-    if (((date - new Date(limit)) / 3_600_000).toFixed(2) < 12) {
+    // Проверяем время последнего входа
+    const limit = localStorage.getItem("first_entry_time");
+    if (limit && (Date.now() - new Date(limit)) / 3_600_000 < 12) {
       return;
-    } else {
-      localStorage.setItem("first_entry_time", date);
-      location.reload();
     }
-    // localStorage.setItem('first_entry_time', date)
+    localStorage.setItem("first_entry_time", new Date());
+    location.reload();
   },
-  // Синхронизация
   methods: {
-    checkAuthorization() {
-      // Logic to check if authorization is needed
-      if (!this.token) {
-        this.showAuthorization = true;
+    handleClose() {
+      localStorage.setItem("todayIsBirthdayForMe", true);
+      this.todayIsBirthdayForMe = false;
+    },
+    checkBirthday(users) {
+      const today = new Date();
+      const todayString = `${today.getMonth() + 1}-${today.getDate()}`;
+      const currentUser = this.$store.state.auth.user.user;
+      const birthdayEmployees = users;
+      // Массив для хранения имен сотрудников, у кого день рождения сегодня
+
+      const employeesWithBirthdayToday = birthdayEmployees.filter(
+        (employee) => {
+          if (employee.birth_date) {
+            const birthDate = new Date(employee.birth_date);
+            const birthDateStringAnotherStaff = `${
+              birthDate.getMonth() + 1
+            }-${birthDate.getDate()}`;
+            return todayString === birthDateStringAnotherStaff;
+          }
+          return false;
+        }
+      );
+      console.log("Проверяю вводные данные ", employeesWithBirthdayToday);
+      if (currentUser.birth_date) {
+        const birthDate = new Date(currentUser.birth_date);
+        const birthDateString = `${
+          birthDate.getMonth() + 1
+        }-${birthDate.getDate()}`;
+
+        if (todayString === birthDateString) {
+          if (localStorage.getItem("todayIsBirthdayForMe") == "false") {
+            this.todayIsBirthdayForMe = true;
+            localStorage.setItem("todayIsBirthdayForMe", true);
+          }
+        } else {
+          localStorage.setItem("todayIsBirthdayForMe", false);
+        }
+      } else {
+        // Проверка, есть ли сотрудники с днем рождения сегодня
+        if (employeesWithBirthdayToday.length > 0) {
+          console.log(employeesWithBirthdayToday, 'все')
+          this.$toast.info(
+            `Сегодня день рождения у следующих сотрудников:\n${employeesWithBirthdayToday
+              .map((employee) => `${employee.last_name} ${employee.first_name}`)
+              .join(", ")}`,
+            { timeout: 6000, position: "top-left" }
+          );
+        }
       }
     },
-    showBirthdayComponent() {
-      // Show the Birthday component after the alert
-      this.showBirthday = true;
-
-      // Delay showing Authorization after Birthday (if needed)
-      setTimeout(() => {
-        this.checkAuthorization();
-      }, 2000);  // 2-second delay for example
-    },
-  },
- async mounted() {
-  // this.showBirthdayComponent();
-
-    let today = new Date().toISOString().split("T")[0];
-    if (!localStorage.getItem("alert_shown_date") ||
-      localStorage.getItem("alert_shown_date") !== today) {
-      localStorage.setItem("alert_shown_date", today);
-
-      // Show the Birthday component after the alert
-      this.showBirthdayComponent();
-    }
-   
-
-    let id_rocket = JSON.parse(localStorage.getItem("vuex")).auth.uid;
-
-    let { first_name, last_name, email } = JSON.parse(
-      localStorage.getItem("vuex")
-    ).auth.user.user;
-    LogRocket.init("fs2mx3/sprutt");
-    LogRocket.identify(id_rocket, {
-      name: `${first_name} ${last_name}`,
-      email: `${email}`,
-    });
-
-    this.loader_mini = true;
-    let objStation = {
-      ОКТЯБРЬСКАЯ: "ОКТ",
-      ЭСТОНСКАЯ: "ЭСТ",
-      ЛАТВИЙСКАЯ: "ЛАТ",
-      КАЛИНИНГРАДСКАЯ: "КЛГ",
-      МПС: "МПС",
-      ЛИТОВСКАЯ: "ЛИТ",
-      БЕЛОРУССКАЯ: "БЕЛ",
-      МОСКОВСКАЯ: "МСК",
-      ГОРЬКОВСКАЯ: "ГОР",
-      СЕВЕРНАЯ: "СЕВ",
-      "ЮГО-ЗАПАДНАЯ": "ЮЗП",
-      ЛЬВОВСКАЯ: "ЛЬВ",
-      МОЛДАВСКАЯ: "МЛД",
-      ОДЕССКАЯ: "ОДС",
-      ЮЖНАЯ: "ЮЖН",
-      ПРИДНЕПРОВСКАЯ: "ПДН",
-      ДОНЕЦКАЯ: "ДОН",
-      "СЕВЕРО-КАВКАЗСКАЯ": "СКВ",
-      АЗЕРБАЙДЖАНСКАЯ: "АЗР",
-      "ЗАО 'ЮЖНО-КАВКАЗСКАЯ ж. д.'": "ЮКЖ",
-      ГРУЗИНСКАЯ: "ГРЗ",
-      "ЮГО-ВОСТОЧНАЯ": "ЮВС",
-      ПРИВОЛЖСКАЯ: "ПРВ",
-      КУЙБЫШЕВСКАЯ: "КБШ",
-      КАЗАХСТАНСКИЕ: "КЗХ",
-      КЫРГЫЗСКАЯ: "КРГ",
-      УЗБЕКСКИЕ: "УЗБ",
-      ТАДЖИКСКАЯ: "ТДЖ",
-      ТУРКМЕНСКАЯ: "ТРК",
-      СВЕРДЛОВСКАЯ: "СВР",
-      "ЮЖНО-УРАЛЬСКАЯ": "ЮУР",
-      "Мелитопольская железная дорога": "МЕЛ",
-      "ЗАПАДНО-СИБИРСКАЯ": "ЗСБ",
-      "Луганская железная дорога": "ЛУГ",
-      "ФГУП 'КЖД'": "КРМ",
-      КРАСНОЯРСКАЯ: "КРС",
-      "Донецкая железная дорога": "ДОН",
-      "Херсонская железная дорога": "ХРС",
-      "АО 'АК'ЖЕЛЕЗНЫЕ ДОРОГИ ЯКУТИИ'": "ЖДЯ",
-      "ВОСТОЧНО-СИБИРСКАЯ": "ВСБ",
-      ЗАБАЙКАЛЬСКАЯ: "ЗАБ",
-      ДАЛЬНЕВОСТОЧНАЯ: "ДВС",
-      "ООО 'Рубикон'": "РБК",
-    };
-    localStorage.setItem("road", JSON.stringify(objStation));
-    if (document.title != "Транспортные") this.loader_mini = true;
-    // console.log(this.token)
-    try {
-      localStorage.setItem("accessToken", JSON.stringify(this.token));
+    async fetchData() {
       if (!window.location.href.includes("fin_operation")) {
         await Promise.all([
           this.$store.dispatch(actionTypes.getStaffGroups),
@@ -181,7 +131,64 @@ export default {
             clear: true,
           }),
         ]);
+
+        const updatedUsers = this.$store.state.users.users;
+        this.checkBirthday(updatedUsers);
       }
+    },
+    reloadPortal() {
+      const now = new Date();
+      const today = now.toISOString().split("T")[0];
+      const lastLoginDate = localStorage.getItem("lastLoginDate");
+
+      // Проверяем дату последнего входа
+      if (!lastLoginDate || lastLoginDate !== today) {
+        localStorage.setItem("lastLoginDate", today);
+        this.$store.dispatch(actionTypes.logout);
+        return window.location.reload();
+      }
+
+      // Проверяем время для перезагрузки
+      const reloadTime = new Date();
+      reloadTime.setHours(9, 0, 0, 0);
+      if (
+        now.getTime() > reloadTime.getTime() &&
+        localStorage.getItem("portalReloaded") !== "true"
+      ) {
+        localStorage.clear();
+        this.$store.dispatch(actionTypes.logout);
+        localStorage.setItem("portalReloaded", "true");
+        localStorage.setItem("todayIsBirthdayForMe", false);
+        return window.location.reload();
+      }
+
+      // Запускаем планировщик перезагрузки
+      this.scheduleDailyReload();
+    },
+    scheduleDailyReload() {
+      const now = new Date();
+      const nextReload = new Date();
+      nextReload.setHours(9, 0, 0, 0);
+      if (now.getTime() > nextReload.getTime()) {
+        nextReload.setDate(nextReload.getDate() + 1);
+      }
+
+      const timeToReload = nextReload.getTime() - now.getTime();
+      setTimeout(() => {
+        localStorage.clear();
+        this.$store.dispatch(actionTypes.logout);
+        window.location.reload();
+        this.scheduleDailyReload();
+      }, timeToReload);
+    },
+  },
+  async mounted() {
+    this.reloadPortal();
+    this.loader_mini = true;
+
+    try {
+      localStorage.setItem("accessToken", JSON.stringify(this.token));
+      await this.fetchData();
     } catch (error) {
       console.error(error);
     } finally {
@@ -190,6 +197,7 @@ export default {
   },
 };
 </script>
+
 
 <style>
 @import "./style/style.css";

@@ -92,9 +92,12 @@ const actions = {
             staff_api.staffGlobal()
                 .then((response) => {
                     context.commit(mutationTypes.staffGlobal, response.data.data)
+                    console.log("Проверка данных: ",response.data.data.filter((item) => {
+                        return item.id === 102
+                    }))
                     resolve(response.data.data)
                 }).catch(err => {
-                    reject(new Error('Ошибка полуения данных о персонале'))
+                    reject(new Error('Ошибка получения данных о персонале'))
                 })
         })
     }

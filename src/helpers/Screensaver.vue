@@ -26,9 +26,9 @@ export default {
             // setTimeout(() => {
             //     this.watch_block = false
             // },5000)
-
         } else {
             this.watch_block = true
+
         }
     }
 }
