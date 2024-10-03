@@ -99,13 +99,16 @@ export default {
       } else {
         // Проверка, есть ли сотрудники с днем рождения сегодня
         if (employeesWithBirthdayToday.length > 0) {
-          console.log(employeesWithBirthdayToday, 'все')
-          this.$toast.info(
+          if(localStorage.getItem("notificationBirthday") == "false") {
+            this.$toast.info(
             `Сегодня день рождения у следующих сотрудников:\n${employeesWithBirthdayToday
               .map((employee) => `${employee.last_name} ${employee.first_name}`)
               .join(", ")}`,
             { timeout: 6000, position: "top-left" }
           );
+          localStorage.setItem("notificationBirthday", true);  
+          }
+
         }
       }
     },
@@ -159,6 +162,7 @@ export default {
         this.$store.dispatch(actionTypes.logout);
         localStorage.setItem("portalReloaded", "true");
         localStorage.setItem("todayIsBirthdayForMe", false);
+        localStorage.setItem("notificationBirthday", false);  
         return window.location.reload();
       }
 
@@ -188,6 +192,7 @@ export default {
 
     try {
       localStorage.setItem("accessToken", JSON.stringify(this.token));
+      
       await this.fetchData();
     } catch (error) {
       console.error(error);
