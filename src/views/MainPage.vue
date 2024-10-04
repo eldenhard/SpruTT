@@ -119,11 +119,9 @@ export default {
   justify-content: center;
   
   background: rgba(0, 0, 0, 0.6);
-  font-family: 'Arial Black' sans-serif;
   transition: transform 0.3s; 
 }
 .main_page__block span{
-  font-family: 'Arial Black' sans-serif;
     color: rgb(228, 228, 228);
     font-size: 2em;
     margin-top: 2%;
@@ -137,7 +135,9 @@ span:hover{
 }
 .router-links {
   color: black;
-  text-decoration: none;
+  text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
   font-size: 15px;
 }
 .router-links:hover,
