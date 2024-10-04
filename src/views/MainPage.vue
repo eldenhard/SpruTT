@@ -113,7 +113,7 @@ export default {
   width: 30vw;
   height: 25vh;
   border-radius: 10px;
- display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -121,58 +121,50 @@ export default {
   background: rgba(0, 0, 0, 0.6);
   transition: transform 0.3s; 
 }
-.main_page__block span{
-    color: rgb(228, 228, 228);
-    font-size: 2em;
-    margin-top: 2%;
-    font-weight:lighter;
-    text-decoration: none !important;
-  border: none !important;
-  outline: none !important;
-    
+
+.main_page__block span {
+  color: rgb(228, 228, 228);
+  font-size: 2em;
+  margin-top: 2%;
+  font-weight: lighter;
+  text-decoration: none; /* Убираем подчеркивание */
+  border: none; /* Убираем границы */
+  outline: none; /* Убираем обводку */
 }
-.main_page__block:hover{
+
+.main_page__block:hover {
   transform: translate(0, -2%);
 }
+
 span:hover,
-a:hover{
+a:hover {
   outline: none !important;
-  text-decoration: none !important;
+  text-decoration: none !important; /* Убираем подчеркивание при наведении */
   border: none !important;
-  outline: none !important;
 }
+
 .router-links {
   color: black;
-  text-decoration: none !important;
+  text-decoration: none !important; /* Убираем подчеркивание */
   border: none !important;
   outline: none !important;
   font-size: 15px;
 }
+
 .router-links:hover,
-a:hover{
+a:hover {
+  text-decoration: none; /* Убираем подчеркивание при наведении */
+  outline: none;
+  border: none !important;
+}
+
+a.router-link {
   text-decoration: none;
   outline: none;
   border: none !important;
 }
 
-
-
-.disabled{
-  pointer-events: none;
-  /* background: #E4E4E4; */
-  color: #E4E4E4;
-  background: #F8F9FA !important;
-}
-a:hover{
-  color: rgba(66, 66, 66, 0.5)!important;
-}
-
-a.router-link{
-  text-decoration: none;
-  outline: none;
-  border: none !important;
-}
-a.router-links{
+a.router-links {
   text-decoration: none;
   outline: none;
   border: none !important;
