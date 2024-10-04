@@ -169,7 +169,12 @@ a:hover{
 
 a.router-link{
   text-decoration: none;
-  border-bottom: none;
+  outline: none;
+  border: none !important;
 }
-
+a.router-links{
+  text-decoration: none;
+  outline: none;
+  border: none !important;
+}
 </style>
