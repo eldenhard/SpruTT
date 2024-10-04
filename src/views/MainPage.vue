@@ -163,6 +163,10 @@ a.router-link {
   outline: none;
   border: none !important;
 }
+a.router-link{
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
 
 a.router-links {
   text-decoration: none;
