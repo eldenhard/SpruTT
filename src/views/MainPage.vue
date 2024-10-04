@@ -126,6 +126,10 @@ export default {
     font-size: 2em;
     margin-top: 2%;
     font-weight:lighter;
+    text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
+    
 }
 .main_page__block:hover{
   transform: translate(0, -2%);
