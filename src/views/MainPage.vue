@@ -130,7 +130,11 @@ export default {
 .main_page__block:hover{
   transform: translate(0, -2%);
 }
-span:hover{
+span:hover,
+a:hover{
+  outline: none !important;
+  text-decoration: none !important;
+  border: none !important;
   outline: none !important;
 }
 .router-links {
