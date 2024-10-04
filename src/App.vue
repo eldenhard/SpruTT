@@ -162,7 +162,7 @@ export default {
         console.log(employeesWithBirthdayToday);
 
         // Проверка, показано ли уведомление о дне рождения других сотрудников
-        if (localStorage.getItem("notificationBirthday") == 'false') {
+        if (localStorage.getItem("notificationBirthday") == "false") {
           this.$toast.info(
             `Сегодня день рождения у следующих сотрудников:\n${employeesWithBirthdayToday
               .map((employee) => `${employee.last_name} ${employee.first_name}`)
@@ -254,7 +254,16 @@ export default {
 
     try {
       localStorage.setItem("accessToken", JSON.stringify(this.token));
+      let id_rocket = JSON.parse(localStorage.getItem("vuex")).auth.uid;
 
+      let { first_name, last_name, email } = JSON.parse(
+        localStorage.getItem("vuex")
+      ).auth.user.user;
+      LogRocket.init("fs2mx3/sprutt");
+      LogRocket.identify(id_rocket, {
+        name: `${first_name} ${last_name}`,
+        email: `${email}`,
+      });
       await this.fetchData();
     } catch (error) {
       console.error(error);
