@@ -39,23 +39,22 @@
         </div>
       </router-link>
 
- 
+      <router-link to="/fines">
+        <div class="main_page__block block_main_page__blocks__pain">
+          <!-- <img src="../assets//penalty.png" alt="Штрафы"> -->
+          <span> Штрафы</span>
+        </div>
+      </router-link>
       <router-link to="/personnel-service">
         <div class="main_page__block block_main_page__blocks__inform">
           <!-- <img src="../assets//inform.png" alt="Справочная информаиця"> -->
           <span> Справочная информация</span>
         </div>
       </router-link>
-      <router-link to="/insurance">
-        <div class="main_page__block block_main_page__blocks__pain">
-          <!-- <img src="../assets//penalty.png" alt="Штрафы"> -->
-          <span>Страхование</span>
-        </div>
-      </router-link>
-      <router-link to="/staff">
+      <router-link to="/administration">
         <div class="main_page__block block_main_page__blocks__inform">
           <!-- <img src="../assets//6220416.png" alt="Администрирование"> -->
-          <span>Работа с персоналом</span>
+          <span> Администрирование</span>
         </div>
       </router-link>
 
@@ -85,7 +84,6 @@ export default {
 };
 </script>
 <style scoped>
-
 .block_main_page {
   background: url(../assets/back_img.webp) no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -113,64 +111,45 @@ export default {
   width: 30vw;
   height: 25vh;
   border-radius: 10px;
-  display: flex;
+ display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(8, 8, 8, 0.7);
   transition: transform 0.3s; 
 }
-
-.main_page__block span {
-  color: rgb(228, 228, 228);
-  font-size: 2em;
-  margin-top: 2%;
-  font-weight: lighter;
-  text-decoration: none; /* Убираем подчеркивание */
-  border: none; /* Убираем границы */
-  outline: none; /* Убираем обводку */
+.main_page__block span{
+    color: white;
+    font-size: 2em;
+    margin-top: 2%;
+    font-weight:lighter;
 }
-
-.main_page__block:hover {
+.main_page__block:hover{
   transform: translate(0, -2%);
-}
 
-span:hover,
-a:hover {
-  outline: none !important;
-  text-decoration: none !important; /* Убираем подчеркивание при наведении */
-  border: none !important;
 }
-
 .router-links {
   color: black;
-  text-decoration: none !important; /* Убираем подчеркивание */
-  border: none !important;
-  outline: none !important;
+  text-decoration: none;
   font-size: 15px;
 }
 
-.router-links:hover,
-a:hover {
-  text-decoration: none; /* Убираем подчеркивание при наведении */
-  outline: none;
-  border: none !important;
+
+
+.disabled{
+  pointer-events: none;
+  /* background: #E4E4E4; */
+  color: #E4E4E4;
+  background: #F8F9FA !important;
+}
+a:hover{
+  color: rgba(66, 66, 66, 0.5)!important;
 }
 
-a.router-link {
-  text-decoration: none;
-  outline: none;
-  border: none !important;
-}
 a.router-link{
-  text-decoration: none !important;
-  border-bottom: none !important;
+  text-decoration: none;
+  border-bottom: none;
 }
 
-a.router-links {
-  text-decoration: none;
-  outline: none;
-  border: none !important;
-}
 </style>
