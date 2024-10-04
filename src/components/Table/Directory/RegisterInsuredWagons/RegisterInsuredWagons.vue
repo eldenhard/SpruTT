@@ -707,7 +707,13 @@ export default {
 </script>
 
 <style scoped>
-
+.ht_clone_top .htCore thead tr th {
+  cursor: move;
+  height: 40px; /* Увеличение высоты заголовков */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .htCore td {
   min-width: 100px !important;
 }

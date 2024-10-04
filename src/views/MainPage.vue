@@ -3,58 +3,59 @@
     <div class="main_block_grid">
       <router-link to="/directory" @click="test()">
         <div class="main_page__block block_main_page__blocks__directory">
-          <img src="../assets//directrory.png" alt="Справочники">
+          <!-- <img src="../assets//directrory.png" alt="Справочники"> -->
           <span> Справочники</span>
         </div>
       </router-link>
       <router-link to="/wagonpark">
         <div class="main_page__block block_main_page__blocks__wagon_park">
-          <img src="../assets//wagon.png" alt=" Вагонный парк">
+          <!-- <img src="../assets//wagon.png" alt=" Вагонный парк"> -->
           <span>Вагонный парк</span>
         </div>
       </router-link>
       <router-link to="/lk">
         <div class="main_page__block block_main_page__blocks__lk">
-          <img src="../assets//lk.png" alt="Личный кабинет">
+          <!-- <img src="../assets//lk.png" alt="Личный кабинет"> -->
           <span> Личный кабинет</span>
         </div>
       </router-link>
       <router-link to="/report">
         <div class="main_page__block block_main_page__blocks__report">
-          <img src="../assets//report_img.png" alt="Отчеты">
+          <!-- <img src="../assets//report_img.png" alt="Отчеты"> -->
           <span> Отчеты</span>
         </div>
       </router-link>
       
       <router-link to="/key-facts">
         <div class="main_page__block block_main_page__blocks__key_facts">
-          <img src="../assets//keyfact.png" alt="Ключевые факты">
+          <!-- <img src="../assets//keyfact.png" alt="Ключевые факты"> -->
           <span> Ключевые факты</span>
         </div>
       </router-link>
       <router-link to="/management-reporting">
         <div class="main_page__block block_main_page__blocks__uoreport">
-          <img src="../assets//growth.png" alt="Управ. отчетность">
+          <!-- <img src="../assets//growth.png" alt="Управ. отчетность"> -->
           <span> Управ. отчетность</span>
         </div>
       </router-link>
 
-      <router-link to="/fines">
-        <div class="main_page__block block_main_page__blocks__pain">
-          <img src="../assets//penalty.png" alt="Штрафы">
-          <span> Штрафы</span>
-        </div>
-      </router-link>
+ 
       <router-link to="/personnel-service">
         <div class="main_page__block block_main_page__blocks__inform">
-          <img src="../assets//inform.png" alt="Справочная информаиця">
+          <!-- <img src="../assets//inform.png" alt="Справочная информаиця"> -->
           <span> Справочная информация</span>
         </div>
       </router-link>
-      <router-link to="/administration">
+      <router-link to="/insurance">
+        <div class="main_page__block block_main_page__blocks__pain">
+          <!-- <img src="../assets//penalty.png" alt="Штрафы"> -->
+          <span>Страхование</span>
+        </div>
+      </router-link>
+      <router-link to="/staff">
         <div class="main_page__block block_main_page__blocks__inform">
-          <img src="../assets//6220416.png" alt="Администрирование">
-          <span> Администрирование</span>
+          <!-- <img src="../assets//6220416.png" alt="Администрирование"> -->
+          <span>Работа с персоналом</span>
         </div>
       </router-link>
 
@@ -84,6 +85,7 @@ export default {
 };
 </script>
 <style scoped>
+
 .block_main_page {
   background: url(../assets/back_img.webp) no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -116,25 +118,33 @@ export default {
   align-items: center;
   justify-content: center;
   
-  background: rgba(66, 66, 66, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   font-family: 'Arial Black' sans-serif;
   transition: transform 0.3s; 
 }
 .main_page__block span{
   font-family: 'Arial Black' sans-serif;
-    color: white;
-    font-size: 18px;
+    color: rgb(228, 228, 228);
+    font-size: 2em;
     margin-top: 2%;
-    font-weight: 600;
+    font-weight:lighter;
 }
 .main_page__block:hover{
   transform: translate(0, -2%);
-
+}
+span:hover{
+  outline: none !important;
 }
 .router-links {
   color: black;
   text-decoration: none;
   font-size: 15px;
+}
+.router-links:hover,
+a:hover{
+  text-decoration: none;
+  outline: none;
+  border: none !important;
 }
 
 
