@@ -3,153 +3,134 @@
     <div class="main_block_grid">
       <router-link to="/directory" @click="test()">
         <div class="main_page__block block_main_page__blocks__directory">
-          <!-- <img src="../assets//directrory.png" alt="Справочники"> -->
           <span> Справочники</span>
         </div>
       </router-link>
       <router-link to="/wagonpark">
         <div class="main_page__block block_main_page__blocks__wagon_park">
-          <!-- <img src="../assets//wagon.png" alt=" Вагонный парк"> -->
           <span>Вагонный парк</span>
         </div>
       </router-link>
       <router-link to="/lk">
         <div class="main_page__block block_main_page__blocks__lk">
-          <!-- <img src="../assets//lk.png" alt="Личный кабинет"> -->
           <span> Личный кабинет</span>
         </div>
       </router-link>
       <router-link to="/report">
         <div class="main_page__block block_main_page__blocks__report">
-          <!-- <img src="../assets//report_img.png" alt="Отчеты"> -->
           <span> Отчеты</span>
         </div>
       </router-link>
-      
       <router-link to="/key-facts">
         <div class="main_page__block block_main_page__blocks__key_facts">
-          <!-- <img src="../assets//keyfact.png" alt="Ключевые факты"> -->
           <span> Ключевые факты</span>
         </div>
       </router-link>
       <router-link to="/management-reporting">
         <div class="main_page__block block_main_page__blocks__uoreport">
-          <!-- <img src="../assets//growth.png" alt="Управ. отчетность"> -->
           <span> Управ. отчетность</span>
         </div>
       </router-link>
-
       <router-link to="/fines">
         <div class="main_page__block block_main_page__blocks__pain">
-          <!-- <img src="../assets//penalty.png" alt="Штрафы"> -->
           <span> Штрафы</span>
         </div>
       </router-link>
       <router-link to="/personnel-service">
         <div class="main_page__block block_main_page__blocks__inform">
-          <!-- <img src="../assets//inform.png" alt="Справочная информаиця"> -->
           <span> Справочная информация</span>
         </div>
       </router-link>
       <router-link to="/administration">
-        <div class="main_page__block block_main_page__blocks__inform">
-          <!-- <img src="../assets//6220416.png" alt="Администрирование"> -->
+        <div class="main_page__block block_main_page__blocks__inform last">
           <span> Администрирование</span>
         </div>
       </router-link>
-
-      <!-- <router-link to="/home">
-        <div class="main_page__block block_main_page__blocks__inform">
-          <img src="../assets//inform.png" alt="Справочная информаиця">
-          <span> Администрирование</span>
-        </div>
-      </router-link> -->
     </div>
   </div>
 </template>
+
 <script>
 export default {
-  data() {
-    return {};
-  },
-  mounted(){
-  document.title= 'Главная'
-  },
-  methods: {
-    OpenPath(url) {
-      window.location.href(`/${url}`)
-    },
-
+  mounted() {
+    document.title = "Главная";
   },
 };
 </script>
+
 <style scoped>
 .block_main_page {
   background: url(../assets/back_img.webp) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
   background-size: cover;
   height: 100vh;
-  max-height: 100vh;
   width: 100%;
-  position: fixed;
-  top: 0;
-  z-index: -1;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 2%;
 }
+
 .main_block_grid {
   display: grid;
   gap: 2rem;
-  grid-template-columns: repeat(3, 1fr)
+  grid-template-columns: repeat(3, 1fr); /* Максимум 3 колонки */
+  width: 95%;
+  padding: 1rem;
+  max-height: auto;
+  overflow: auto;
 }
 
 .main_page__block {
-  width: 30vw;
-  height: 25vh;
+  background: rgba(8, 8, 8, 0.7);
+  height: 25vh; /* Высота блока */
   border-radius: 10px;
- display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
-  background: rgba(8, 8, 8, 0.7);
-  transition: transform 0.3s; 
+  transition: transform 0.3s;
 }
-.main_page__block span{
-    color: white;
-    font-size: 2em;
-    margin-top: 2%;
-    font-weight:lighter;
+
+.main_page__block span {
+  color: white;
+  font-size: 2em; /* Размер шрифта по умолчанию */
+  margin-top: 2%;
+  font-weight: lighter;
 }
-.main_page__block:hover{
+
+.main_page__block:hover {
   transform: translate(0, -2%);
-
-}
-.router-links {
-  color: black;
-  text-decoration: none;
-  font-size: 15px;
 }
 
+@media screen and (max-width: 850px) {
+  .main_block_grid {
+    grid-template-columns: repeat(3, 1fr); /* Максимум 3 колонки на планшетах */
+    gap: 10px;
+    height: 100vh !important;
+  }
 
-
-.disabled{
-  pointer-events: none;
-  /* background: #E4E4E4; */
-  color: #E4E4E4;
-  background: #F8F9FA !important;
+  .main_page__block {
+    height: 20vh; /* Высота блока на меньших экранах */
+  }
+  .last {
+    display: none;
+  }
+  .main_page__block span {
+    font-size: 1.5em; /* Уменьшаем размер текста */
+  }
 }
-a:hover{
-  color: rgba(66, 66, 66, 0.5)!important;
-}
 
-a.router-link{
-  text-decoration: none;
-  border-bottom: none;
-}
+@media screen and (max-width: 600px) {
+  .main_block_grid {
+    grid-template-columns: repeat(2, 1fr); /* Одна колонка на мобильных */
+  }
 
+  .main_page__block {
+    height: 15vh; /* Высота блока на мобильных */
+  }
+
+  .main_page__block span {
+    font-size: 1.2em; /* Уменьшаем размер текста еще больше */
+    text-align: center;
+  }
+}
 </style>

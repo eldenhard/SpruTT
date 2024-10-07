@@ -1,12 +1,20 @@
 <template>
-  <div v-show="visibleElement" style="z-index: 100;">
+  <div v-show="visibleElement" style="z-index: 100">
     <!-- <div>
       <button @click="cData()">Быстрая загрузка ПВ</button>
     </div> -->
-    <Modal_Notification :modal_notifications="modal_notifications" @close="close_modal" :data="data"/>
+    <Modal_Notification
+      :modal_notifications="modal_notifications"
+      @close="close_modal"
+      :data="data"
+    />
 
-    <b-navbar toggleable="lg" type="light" style="background: #F8F9FA !important;" ref="navbar">
-
+    <b-navbar
+      toggleable="lg"
+      type="light"
+      style="background: #f8f9fa !important"
+      ref="navbar"
+    >
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
@@ -15,15 +23,21 @@
             <router-link to="/main" class="router-links">Главная</router-link>
           </b-nav-item>
           <b-nav-item>
-            <router-link to="/directory" class="router-links">Справочники</router-link>
+            <router-link to="/directory" class="router-links"
+              >Справочники</router-link
+            >
           </b-nav-item>
 
           <b-nav-item>
-            <router-link to="/wagonpark" class="router-links"> Вагонный парк</router-link>
+            <router-link to="/wagonpark" class="router-links">
+              Вагонный парк</router-link
+            >
           </b-nav-item>
 
           <b-nav-item>
-            <router-link to="/lk" class="router-links">Личный кабинет</router-link>
+            <router-link to="/lk" class="router-links"
+              >Личный кабинет</router-link
+            >
           </b-nav-item>
 
           <b-nav-item>
@@ -35,11 +49,15 @@
           </b-nav-item> -->
 
           <b-nav-item>
-            <router-link to="/key-facts" class="router-links">Ключевые факты</router-link>
+            <router-link to="/key-facts" class="router-links"
+              >Ключевые факты</router-link
+            >
           </b-nav-item>
 
           <b-nav-item>
-            <router-link to="/management-reporting" class="router-links">Управ. отчетность</router-link>
+            <router-link to="/management-reporting" class="router-links"
+              >Управ. отчетность</router-link
+            >
           </b-nav-item>
 
           <b-nav-item>
@@ -47,54 +65,68 @@
           </b-nav-item>
 
           <b-nav-item>
-            <router-link to="/personnel-service" class="router-links">Справочная информация</router-link>
+            <router-link to="/personnel-service" class="router-links"
+              >Справочная информация</router-link
+            >
           </b-nav-item>
 
           <!-- <b-nav-item>
             <router-link to="/administration" class="router-links">Администрирование</router-link>
           </b-nav-item> -->
           <b-nav-item>
-              <router-link to="/insurance" class="router-links">Страхование</router-link>
+            <router-link to="/insurance" class="router-links"
+              >Страхование</router-link
+            >
           </b-nav-item>
           <b-nav-item>
-            <router-link to="/staff" class="router-links">Работа с персоналом</router-link>
+            <router-link to="/staff" class="router-links"
+              >Работа с персоналом</router-link
+            >
           </b-nav-item>
           <li class="nav-item" style="padding-top: 1px">
-            <a class="nav-link" href="/" @click="logout"
-              style="color: black; text-decoration: none; font-size: 15px;">Выход</a>
+            <a
+              class="nav-link"
+              href="/"
+              @click="logout"
+              style="color: black; text-decoration: none; font-size: 15px"
+              >Выход</a
+            >
           </li>
 
-          <li class="nav-item" style="padding-top: 1px; margin-left: auto;" @click="Notif()">
-            <i class=" block nav-link"><img src="@/assets/bell.png" alt="" >
+          <li
+            class="nav-item"
+            style="padding-top: 1px; margin-left: auto"
+            @click="Notif()"
+          >
+            <i class="block nav-link"
+              ><img src="@/assets/bell.png" alt="" />
               <div class="circle" v-if="notifications_queue">
                 <span class="circle_notif">{{ count }}</span>
               </div>
             </i>
-
           </li>
 
-          <li class="nav-item" style="padding-top: 1px; margin-left: auto !important; float: right; position: absolute; right: 0;" >
-            <i class=" block nav-link">
-              <img src="@/assets/logo2.png" height="10" alt="Логотип компании" style="margin-left: auto;" >
-    
+          <li class="nav-item last">
+            <i class="block nav-link">
+              <img
+                src="@/assets/logo2.png"
+                height="10"
+                alt="Логотип компании"
+              />
             </i>
-
           </li>
         </b-navbar-nav>
-
-
       </b-collapse>
     </b-navbar>
-
   </div>
 </template>
 <script>
-import { actionTypes } from '@/store/modules/auth'
-import Modal_Notification from '@/components/ui/Modal_Notification.vue';
-import api from '@/api/report'
+import { actionTypes } from "@/store/modules/auth";
+import Modal_Notification from "@/components/ui/Modal_Notification.vue";
+import api from "@/api/report";
 
 export default {
-  name: 'UpNavbar',
+  name: "UpNavbar",
   components: { Modal_Notification },
   data() {
     return {
@@ -102,82 +134,109 @@ export default {
       count: 0,
       modal_notifications: false,
       data: [],
-    }
+    };
   },
- 
-  mounted(){
-    if (!window.location.href.includes('fin_operation')){
+
+  mounted() {
+    if (!window.location.href.includes("fin_operation")) {
       this.getTasks();
     }
-  
   },
   computed: {
-    visibleElement(){
-     if(!window.location.href.includes('fin_operation')){
-        return true
-     } else {
-      return false
-     }
+    visibleElement() {
+      if (!window.location.href.includes("fin_operation")) {
+        return true;
+      } else {
+        return false;
+      }
     },
-    notification(){
-      if(this.count == 0){
-        return '@/assets/bell.png'
-      } return '@/assets/bell-color.png'
-    }
+    notification() {
+      if (this.count == 0) {
+        return "@/assets/bell.png";
+      }
+      return "@/assets/bell-color.png";
+    },
   },
   methods: {
-    async cData(){
-      let arr = ['АО "УРАЛЬСКАЯ СТАЛЬ"','Алоран', 'Газпром Нефть, ПАО'	, 'ДЕЛОВЫЕ ПРОГРАММЫ, ООО','КТС, ООО', 'МТК, ООО','Мечел-Транс', 'НАЦИОНАЛЬНАЯ ТРАНСПОРТНАЯ КОМПАНИЯ, АО', 'НЕРУДНАЯ ЛОГИСТИЧЕСКАЯ КОМПАНИЯ, ООО','НОВАЯ ГОРНАЯ УК, ООО', 'ООО "Альфа-транс"', 'ПЕРВООСНОВА, АО', 'ППО','РУССКИЙ УГОЛЬ, АО','СДС-Уголь','СПО, ООО', 'ТАТНЕФТЬ-ТРАНС, ООО', 'ТК РУТ Логистик', 'ТЭК УЛЬТИМА, ООО','ТрансКом ТОО', 'УГПХ, ООО', 'Уголь-Транс',   'ЧЭМК, АО', 'ЭЛСИ ЛОГИСТИКА СИБИРЬ, ООО' 	]
+    async cData() {
+      let arr = [
+        'АО "УРАЛЬСКАЯ СТАЛЬ"',
+        "Алоран",
+        "Газпром Нефть, ПАО",
+        "ДЕЛОВЫЕ ПРОГРАММЫ, ООО",
+        "КТС, ООО",
+        "МТК, ООО",
+        "Мечел-Транс",
+        "НАЦИОНАЛЬНАЯ ТРАНСПОРТНАЯ КОМПАНИЯ, АО",
+        "НЕРУДНАЯ ЛОГИСТИЧЕСКАЯ КОМПАНИЯ, ООО",
+        "НОВАЯ ГОРНАЯ УК, ООО",
+        'ООО "Альфа-транс"',
+        "ПЕРВООСНОВА, АО",
+        "ППО",
+        "РУССКИЙ УГОЛЬ, АО",
+        "СДС-Уголь",
+        "СПО, ООО",
+        "ТАТНЕФТЬ-ТРАНС, ООО",
+        "ТК РУТ Логистик",
+        "ТЭК УЛЬТИМА, ООО",
+        "ТрансКом ТОО",
+        "УГПХ, ООО",
+        "Уголь-Транс",
+        "ЧЭМК, АО",
+        "ЭЛСИ ЛОГИСТИКА СИБИРЬ, ООО",
+      ];
 
-      let promises = arr.map(item => api.vigrData(item, '2024-03-31', 'Полувагон'))
+      let promises = arr.map((item) =>
+        api.vigrData(item, "2024-03-31", "Полувагон")
+      );
       Promise.all(promises)
         .then((response) => {
-          console.log(response)
+          console.log(response);
         })
         .catch((error) => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     },
-    getTasks(){
+    getTasks() {
       const preid = JSON.parse(localStorage.getItem("vuex"));
-        const id = preid.auth.uid;
+      const id = preid.auth.uid;
       setInterval(() => {
-        api.personalTasks(id)
-        .then(response => {
-          this.data = response.data.data
-          // console.log(this.data)
-         let a = [...this.data]
-        let b = a.reduce((acc, item) => {
-            if(item.status == 'in_work'){
-             return  [...acc, item]
-            } else {
-              return acc
-            }
-         }, [])
-         this.count = b.length
-        }).catch(error => {
-          console.log(error)
-        })
-      }, 5000)
-     
+        api
+          .personalTasks(id)
+          .then((response) => {
+            this.data = response.data.data;
+            // console.log(this.data)
+            let a = [...this.data];
+            let b = a.reduce((acc, item) => {
+              if (item.status == "in_work") {
+                return [...acc, item];
+              } else {
+                return acc;
+              }
+            }, []);
+            this.count = b.length;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }, 5000);
     },
     logout() {
       //this.$store.commit('setUser', {})
       // storage.clear();
       localStorage.clear();
-      this.$store.dispatch(actionTypes.logout)
-
+      this.$store.dispatch(actionTypes.logout);
     },
     Notif() {
-      this.modal_notifications = true
+      this.modal_notifications = true;
 
-      console.log('Сообщение')
+      console.log("Сообщение");
     },
-    close_modal(){
-      this.modal_notifications = false
-    }
-  }
-}
+    close_modal() {
+      this.modal_notifications = false;
+    },
+  },
+};
 </script>
 
 
@@ -243,5 +302,18 @@ border-bottom: 2px solid #EC2332;
 a.router-link{
   text-decoration: none;
   border-bottom: none;
+}
+.last {
+  padding-top: 1px; margin-left: auto !important; float: right; position: absolute; right: 0;
+}
+@media screen and (max-width: 850px) {
+  .navbar-nav{
+  background: #F8F9FA !important;
+  padding-left: 2% !important;
+  position: absolute;
+  z-index: 10000000000000000 !important;
+  width: 95vw;
+}
+
 }
 </style>

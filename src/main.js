@@ -24,6 +24,12 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
 
+import LogRocket from 'logrocket';
+LogRocket.init('fs2mx3/sprutt');
+LogRocket.onerror = function(error)  {
+  console.log('LogRocket error',error)
+}
+
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Toast, {

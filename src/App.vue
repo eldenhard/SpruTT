@@ -25,7 +25,7 @@ import { mapState } from "vuex";
 import loader_mini from "./components/loader/loader_mini.vue";
 import { actionTypes as ccActionTypes } from "./store/modules/cargo_code";
 import Birthday from "./views/Birthday.vue";
-
+import LogRocket from "logrocket";
 
 export default {
   name: "App",
@@ -300,6 +300,16 @@ export default {
     localStorage.setItem('road', JSON.stringify(objStation))
     try {
       localStorage.setItem("accessToken", JSON.stringify(this.token));
+      let id_rocket = JSON.parse(localStorage.getItem("vuex")).auth.uid;
+
+      let { first_name, last_name, email } = JSON.parse(
+        localStorage.getItem("vuex")
+      ).auth.user.user;
+      LogRocket.init("fs2mx3/sprutt");
+      LogRocket.identify(id_rocket, {
+        name: `${first_name} ${last_name}`,
+        email: `${email}`,
+      });
       await this.fetchData();
     } catch (error) {
       console.error(error);
