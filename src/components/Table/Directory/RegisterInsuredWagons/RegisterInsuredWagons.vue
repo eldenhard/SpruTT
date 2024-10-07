@@ -286,6 +286,8 @@ export default {
           width: "150px",
         },
         { title: "Срок службы", data: "lifetime", width: "150px" },
+        { title: "Группа СТЖ", data: "group", width: "150px" },
+        { title: "Собственник СТЖ", data: "owner_at_insurance_moment" , width: "180px" },
       ],
       columns_table_copy: [
         { title: "Номер вагона", data: "wagon_number", width: "150px" },
@@ -502,6 +504,8 @@ export default {
         updatedRow?.last_operation_date?.split(".").reverse().join("-") ?? null;
       updatedRow.state_change_date =
         updatedRow?.state_change_date?.split(".").reverse().join("-") ?? null;
+      updatedRow.on_balance_1c =
+        updatedRow?.on_balance_1c == "Да" ? true : false;
 
       console.log(updatedRow);
 

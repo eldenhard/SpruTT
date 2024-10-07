@@ -40,8 +40,8 @@ export default {
                     }
                 },
                 { title: 'Примечание 1', data: 'note1' },
-               
-               
+            
+                { title: 'Примечание 1', data: 'note1' },
                 { title: 'Собственник (ЭТРАН)', data: 'owner_etran' },
                 { title: 'Группа', data: 'group' },
 

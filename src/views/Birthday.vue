@@ -1,6 +1,6 @@
 <template>
   <div class="img_block">
-    <p>С днем рождения, <br> {{ user_name }}</p>
+    <p align="center">С днем рождения, <br> {{ user_name }}</p>
     <img src="../assets/new_box.jpg" alt="" />
     <canvas id="canvas" ref="canvas"></canvas>
 
@@ -14,7 +14,7 @@
 export default {
   data() {
     return {
-      user_name: localStorage.getItem("vuex").auth.user.user?.first_name,
+      user_name: JSON.parse(localStorage.getItem("vuex")).auth.user.user.first_name,
       W: window.innerWidth,
       H: window.innerHeight,
       maxConfettis: 150,
@@ -38,6 +38,7 @@ export default {
   },
   methods: {
     closeCongratulation() {
+      // console.log("closeCongratulation", this.user_name); 
       this.$emit("close"); // Отправляем событие "close" родительскому компоненту
     },
     randomFromTo(from, to) {
@@ -134,7 +135,7 @@ export default {
 }
 p {
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-45%, -50%);
   font-family: "Great Vibes", cursive;
