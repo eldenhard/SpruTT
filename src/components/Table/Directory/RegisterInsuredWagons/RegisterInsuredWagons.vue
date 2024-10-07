@@ -88,6 +88,7 @@
                   :fillHandle="true"
                   :manualColumnMove="true"
                   :dropdownMenu="dropdownMenuOptions"
+                  :cells="cellConfig"
                 ></hot-table>
                 <br />
                 <!-- Перечень незастрахованных вагонов -->
@@ -448,6 +449,11 @@ export default {
   },
 
   methods: {
+    cellConfig(row, col) {
+      const cellProperties = {};
+      return cellProperties.className = 'myCustomClass';
+
+    },
     onCellValueChange(changes, source) {
       if (changes && source !== "loadData") {
         const hotInstance = this.$refs.hotTableComponent.hotInstance;
@@ -693,11 +699,9 @@ export default {
           data: this.getInsuredWagonsData,
           afterRenderer: (TD, row, col, prop, value, cellProperties) => {
             const rowData = this.getInsuredWagonsData[row]; // Получаем данные строки
-            const agrDateEnd = new Date(
-              rowData.agr_date_end.split(".").reverse().join("-")
-            ); // Преобразуем в дату
+            const agrDateEnd = new Date(rowData.agr_date_end.split(".").reverse().join("-") ); // Преобразуем в дату
             const today = new Date();
-
+            TD.style.fontSize = "12px"
             // Проверяем, если дата окончания договора меньше текущей даты
             if (agrDateEnd < today) {
               TD.style.backgroundColor = "#ffcccc"; // Красный цвет фона для просроченной строки
@@ -705,6 +709,7 @@ export default {
               TD.style.backgroundColor = ""; // Убираем красный фон, если договор не просрочен
             }
           },
+
         });
 
         hotInstance.render(); // Рендерим таблицу
@@ -715,6 +720,13 @@ export default {
 </script>
 
 <style scoped>
+th{
+  font-size:10px !important;
+}
+.myCustomClass {
+  background-color: #b40000; /* Пример: серый фон */
+  font-weight: bold; /* Пример: жирный текст */
+}
 .ht_clone_top .htCore thead tr th {
   cursor: move;
   height: 40px; /* Увеличение высоты заголовков */

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Loader v-if="loader" />
+    <Loader :loader="loader" />
     <div class="workspace" v-if="state === ''">
       <HeaderUIElement
         :placeholder_value="'Поиск сотрудника...'"
@@ -120,7 +120,7 @@ export default {
     return {
       state: "",
       users: [],
-      loader: true,
+      loader: false,
       filteredUsersList: [],
       head_table: [
         { key: "last_name", label: "Фамилия" },
@@ -146,6 +146,7 @@ export default {
     },
   },
   async mounted() {
+    this.loader = true;
   try {
     const staff = await api.getAllStaff({ page_size: 500 });
     const today = new Date(); // Текущая дата
@@ -192,6 +193,8 @@ export default {
     this.totalRows = this.users.length; // Общее количество строк для пагинации
     this.filteredUsersList = [...this.users];
   } catch (err) {
+    this.loader = false;
+  } finally{
     this.loader = false;
   }
 },
