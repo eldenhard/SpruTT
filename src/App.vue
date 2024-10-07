@@ -25,7 +25,7 @@ import { mapState } from "vuex";
 import loader_mini from "./components/loader/loader_mini.vue";
 import { actionTypes as ccActionTypes } from "./store/modules/cargo_code";
 import Birthday from "./views/Birthday.vue";
-import LogRocket from "logrocket";
+
 
 export default {
   name: "App",
@@ -136,7 +136,7 @@ export default {
         }
       );
 
-      console.log("Проверяю вводные данные ", employeesWithBirthdayToday);
+
 
       // Проверка дня рождения текущего пользователя
       if (currentUser.birth_date) {

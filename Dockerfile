@@ -17,8 +17,6 @@ RUN npm install lodash
 RUN npm install vue-select
 RUN npm install @amcharts/amcharts5
 RUN npm install @amcharts/amcharts4
-RUN npm i --save logrocket
-RUN npm i --save logrocket-vuex
 RUN npm install -save vue-xlsx
 RUN npm install moment
 RUN npm install html2pdf.js
