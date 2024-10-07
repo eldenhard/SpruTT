@@ -136,7 +136,7 @@ export default {
         }
       );
 
-
+      console.log("Проверяю вводные данные ", employeesWithBirthdayToday);
 
       // Проверка дня рождения текущего пользователя
       if (currentUser.birth_date) {
@@ -300,16 +300,6 @@ export default {
     localStorage.setItem('road', JSON.stringify(objStation))
     try {
       localStorage.setItem("accessToken", JSON.stringify(this.token));
-      let id_rocket = JSON.parse(localStorage.getItem("vuex")).auth.uid;
-
-      let { first_name, last_name, email } = JSON.parse(
-        localStorage.getItem("vuex")
-      ).auth.user.user;
-      LogRocket.init("fs2mx3/sprutt");
-      LogRocket.identify(id_rocket, {
-        name: `${first_name} ${last_name}`,
-        email: `${email}`,
-      });
       await this.fetchData();
     } catch (error) {
       console.error(error);
