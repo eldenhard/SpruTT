@@ -276,7 +276,8 @@ export default {
           numericFormat: { pattern: "0 0.00" },
           width: "200px",
         },
-        { title: "На балансе", data: "on_balance_1c", width: "150px" },
+        { title: "На балансе", data: "on_balance_1c", width: "150px", editor: "select",
+        selectOptions: ["Да", "Нет"], },
         {
           title: "Дата постройки",
           data: "build_date",
@@ -305,6 +306,8 @@ export default {
             "OОО TRANSPORT TECHNOLOGIES GP",
           ],
         },
+        { title: "На балансе 1С", data: "on_balance_1c", width: "150px",  editor: "select",
+        selectOptions: ["Да", "Нет"], },
         {
           title: "Страховая компания",
           data: "insurance_company",
@@ -394,6 +397,7 @@ export default {
             format: "DD.MM.YYYY",
           },
         },
+        
       ],
       // dropdownMenuOptions: ['clear_column', 'filter_by_condition', 'filter_by_value'],
       dropdownMenuOptions: [

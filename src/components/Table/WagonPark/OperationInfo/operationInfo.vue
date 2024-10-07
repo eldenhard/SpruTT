@@ -1139,6 +1139,12 @@ totalLoadingsAmount() {
                         this.data3 =  response4.data
                         this.budget_data = response5.data
                         this.fines_data = response6.data.data
+
+                        console.log(this.responseServerData, 'responseServerData')
+                        console.log(businessPlanData, 'businessPlanData')
+                        console.log(this.data3, 'data3')
+                        console.log(this.budget_data, 'budget_data')
+                        console.log(this.fines_data, 'fines_data')
                         this.responseServerData.report.forEach(item => {
                             // Проходимся по ключам первого массива
                             Object.keys(businessPlanData).forEach(key => {

@@ -202,9 +202,14 @@ const test = () => {
 const getAllRoads = (road_name) => {
     return api.get(`${resource}/roads/?page_size=500&search=${road_name}/`)
 }
+
+const getWagonsOnBalance = (queryParam) => {
+    return api.post(`${resource}/wagons/on-balance/`, queryParam )
+}
 // Получить все
 export default {
     postInsuranceNote,
+    getWagonsOnBalance,
     getWagons,
     getWagon,
     getPassport,

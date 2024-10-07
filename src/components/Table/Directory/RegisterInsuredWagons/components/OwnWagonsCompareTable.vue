@@ -257,14 +257,15 @@ export default {
           return Promise.all([
             api_wagon.getFlights(item["wagon_number"]),
             api_wagon.getWagon(item["wagon_number"]),
+            api_wagon.getWagonsOnBalance({wagons: [item["wagon_number"]]})
           ]);
         });
 
         // Ожидаем выполнения всех промисов
         let results = await Promise.all(promises);
-
         // Перебираем результаты и обрабатываем данные
-        results.forEach(([res, wagon], index) => {
+        results.forEach(([res, wagon, balance], index) => {
+          console.log("balance", balance);
           // Сортируем данные из getFlights
           res.data.data.sort((a, b) =>
             a.arrival_next_loading_station_date >
@@ -274,15 +275,10 @@ export default {
           );
 
           // Проверяем номер вагона и обновляем данные
-          if (
-            this.insuredWagonsData[index]["Номер вагона"] ===
-            wagon.data.wagon_number
-          ) {
-            this.insuredWagonsData[index].wagon_type = this.translateWagonType(
-              wagon.data.wagon_type
-            );
-            this.insuredWagonsData[index].owner_at_insurance_moment =
-              res.data.data.at(-1).in_control;
+          if (this.insuredWagonsData[index]["Номер вагона"] === wagon.data.wagon_number) {
+            this.insuredWagonsData[index].wagon_type = this.translateWagonType(wagon.data.wagon_type);
+            this.insuredWagonsData[index].owner_at_insurance_moment = res.data.data.at(-1).in_control;
+            this.insuredWagonsData[index].on_balance_1c = Object.values(balance.data) ? 'Да' : 'Нет';
           }
         });
         this.updateTableData("hotTableComponent2", this.insuredWagonsData);
@@ -302,6 +298,7 @@ export default {
         this.insuredWagonsData.forEach((item) => {
             item.agr_date = item?.agr_date?.split('.').reverse().join('-') || null;
             item.agr_date_end = item?.agr_date_end?.split('.').reverse().join('-') || null;
+            item.on_balance_1c = item?.on_balance_1c === 'Да' ? true : false;
         });
 
         let is_wagon_number = this.insuredWagonsData.map(item => api_wagon.getWagon(item['wagon_number']));

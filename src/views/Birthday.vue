@@ -1,7 +1,7 @@
 <template>
   <div class="img_block">
-    <p>С днем рождения</p>
-    <img src="../assets/te.jpeg" alt="" />
+    <p>С днем рождения, <br> {{ user_name }}</p>
+    <img src="../assets/new_box.jpg" alt="" />
     <canvas id="canvas" ref="canvas"></canvas>
 
     <button type="button" class="btn btn-danger" @click="closeCongratulation">
@@ -14,6 +14,7 @@
 export default {
   data() {
     return {
+      user_name: localStorage.getItem("vuex").auth.user.user?.first_name,
       W: window.innerWidth,
       H: window.innerHeight,
       maxConfettis: 150,
