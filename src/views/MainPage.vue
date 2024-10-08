@@ -45,7 +45,7 @@ export default {
         });
         return
       }
-      this.$router.push({ path: path.path });
+      this.$router.push({ path: path });
     },
   },
 };

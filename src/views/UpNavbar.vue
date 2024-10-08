@@ -120,7 +120,7 @@
       </b-collapse>
     </b-navbar>
 
-    <div class="phone_navbar" @click="$router.push('/main')" v-if="$route.path != '/main' ||  $route.path != '/'">
+    <div class="phone_navbar" @click="$router.push('/main')" v-if="$route.path != '/main' &&  $route.path != '/'">
       <span>На главную</span>
       <!-- <ul>
         <li>Главная</li>
@@ -247,15 +247,6 @@ export default {
 };
 </script>
 
-{ name: "Справочники", path: "/directory" },
-{ name: "Вагонный парк", path: "/wagonpark" },
-{ name: "Личный кабинет", path: "/lk" },
-{ name: "Отчеты", path: "/report" },
-{ name: "Ключевые факты", path: "/key-facts" },
-{ name: "Управ. отчетность", path: "/management-reporting" },
-{ name: "Штрафы", path: "/fines" },
-{ name: "Справочная информация", path: "/personnel-service" },
-{ name: "Администрирование", path: "/administration" },
 <style scoped>
 .block {
   position: relative;
