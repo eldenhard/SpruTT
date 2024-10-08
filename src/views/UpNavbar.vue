@@ -11,6 +11,7 @@
 
     <b-navbar
       toggleable="lg"
+      class="mobile"
       type="light"
       style="background: #f8f9fa !important"
       ref="navbar"
@@ -313,6 +314,9 @@ a.router-link{
   position: absolute;
   z-index: 10000000000000000 !important;
   width: 95vw;
+}
+.mobile{
+  display: none; 
 }
 
 }
