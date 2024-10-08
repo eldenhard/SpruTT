@@ -120,7 +120,7 @@
       </b-collapse>
     </b-navbar>
 
-    <div class="phone_navbar" @click="$router.push('/main')" v-if="$route.path != '/main'">
+    <div class="phone_navbar" @click="$router.push('/main')" v-if="$route.path != '/main' ||  $route.path != '/'">
       <span>На главную</span>
       <!-- <ul>
         <li>Главная</li>
