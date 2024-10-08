@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="block_main_page">
     <div class="main_block_grid">
       <router-link to="/directory" @click="test()">
@@ -131,6 +131,95 @@ export default {
   .main_page__block span {
     font-size: 1.2em; /* Уменьшаем размер текста еще больше */
     text-align: center;
+  }
+}
+</style> -->
+
+<template>
+  <div class="container_block">
+    <div class="content">
+      <div
+        class="content_item"
+        v-for="path in element_path"
+        :key="path.name"
+        @click="$router.push({ path: path.path })"
+      >
+        {{ path.name }}
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      element_path: [
+        { name: "Справочники", path: "/directory" },
+        { name: "Вагонный парк", path: "/wagonpark" },
+        { name: "Личный кабинет", path: "/lk" },
+        { name: "Отчеты", path: "/report" },
+        { name: "Ключевые факты", path: "/key-facts" },
+        { name: "Управ. отчетность", path: "/management-reporting" },
+        { name: "Штрафы", path: "/fines" },
+        { name: "Справочная информация", path: "/personnel-service" },
+        { name: "Администрирование", path: "/administration" },
+      ],
+    };
+  },
+};
+</script>
+
+
+<style scoped>
+.container_block {
+  height: 100dvh;
+  background: url(../assets/back_img.webp) no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+}
+.content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 95%;
+  gap: 2%;
+  height: 80%;
+  margin-top: 3.5%;
+}
+.content_item {
+  background: rgba(8, 8, 8, 0.7);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: lighter;
+  font-size: 1.4em;
+  transition: transform 0.3s;
+}
+.content_item:hover {
+  transform: translate(0, -2%);
+}
+@media screen and (min-width: 1024px) {
+  .content {
+    grid-template-columns: repeat(3, 1fr); /* Три колонки */
+  }
+}
+
+/* Стили для средних экранов (laptop, tablet landscape) */
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  .content {
+    margin-top: 5% !important;
+    grid-template-columns: repeat(2, 1fr); /* Две колонки */
+  }
+}
+
+/* Стили для маленьких экранов (mobile) */
+@media screen and (max-width: 767px) {
+  .content {
+    margin-top: 4%;
+    grid-template-columns: repeat(1, 1fr); /* Одна колонка */
   }
 }
 </style>
