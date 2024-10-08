@@ -17,7 +17,7 @@
       <b-tabs pills card vertical style="background: white">
         <b-container class="bv-example-row">
           <b-tab title="Отчеты KPI" active>
-            <b-card-text style="min-height: 100vh !important">
+            <b-card-text style="min-height: 100vh !important" class="phone_adapt">
               <h2>Отчеты KPI</h2>
               <br /><br />
 
@@ -29,8 +29,9 @@
                     height: 25px;
                      position: relative;
                       left: 50%;
+                      border: none;
                        transform: translate(-50%,0)" @click="showModal()" v-if="this.WatchMark">Для загрузки всех оценок <span style="color: blue;">&nbsp;нажмите сюда</span></button>
-              <div class="filterStaff" id="block-answer" style="width: 120% !important; background-color: white !important;">
+              <div class="filterStaff" id="block-answer" >
                 <div class="bg">
                   <select
                     class="textarea"
@@ -681,7 +682,7 @@
     </b-card>
 
     <!-- Модальное окно для дат -->
-    <b-modal ref="my-modal" hide-footer title="Выберите диапозон дат">
+    <b-modal ref="my-modal" size="sm" hide-footer title="Выберите диапозон дат">
       <div class="d-block text-center">
         <label for="a1">Начало периода</label>
         <input
@@ -1160,6 +1161,7 @@ export default {
 </script>
 
 <style>
+
 .form-btn {
   position: relative;
   left: 50%;
@@ -1279,6 +1281,34 @@ export default {
   .Action {
     width: 90% !important;
   }
+}
+.filterStaff{
+  width: 120% !important;
+  background: white;
+}
+@media screen and (max-width: 850px) {
+  .tabs .row .no-gutters{
+    display: none !important;
+  }
+  .filterStaff{
+    display: flex;
+    flex-direction: column;
+  }
+  .filterStaff label{
+    display: none;
+  }
+  /* .filterStaff select{
+    width: 100%;
+  } */
+   .bg select{
+    width: 100%;
+   }
+   .col-auto{
+    display: none !important;
+   }
+   .tab-pane .active .card-body{
+    width: 80% !important;
+   }
 }
 </style>
 

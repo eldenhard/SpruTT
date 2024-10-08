@@ -119,6 +119,13 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+
+    <div class="phone_navbar" @click="$router.push('/main')" v-if="$route.path != '/main'">
+      <span>На главную</span>
+      <!-- <ul>
+        <li>Главная</li>
+      </ul> -->
+    </div>
   </div>
 </template>
 <script>
@@ -240,7 +247,15 @@ export default {
 };
 </script>
 
-
+{ name: "Справочники", path: "/directory" },
+{ name: "Вагонный парк", path: "/wagonpark" },
+{ name: "Личный кабинет", path: "/lk" },
+{ name: "Отчеты", path: "/report" },
+{ name: "Ключевые факты", path: "/key-facts" },
+{ name: "Управ. отчетность", path: "/management-reporting" },
+{ name: "Штрафы", path: "/fines" },
+{ name: "Справочная информация", path: "/personnel-service" },
+{ name: "Администрирование", path: "/administration" },
 <style scoped>
 .block {
   position: relative;
@@ -260,7 +275,9 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-
+.phone_navbar{
+  display: none;
+}
 .circle_notif {
   color: orange;
   font-weight: bold;
@@ -318,6 +335,23 @@ a.router-link{
 .mobile{
   display: none; 
 }
-
+.phone_navbar{
+  display: block;
+  position: fixed;
+  bottom: 10px;
+  background: rgb(86, 162, 185);
+  width: 50%;
+  left: 25%;
+  border-radius: 20px;
+  height: 5vh;
+  z-index: 100 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.phone_navbar span{
+  color: white;
+  font-weight: 500;
+}
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="container_block">
     
     <div class="content">
-      <img src="@/assets/logo3.png" height="10" alt="Логотип компании" />
+      <img src="@/assets/logo3.png" height="7" alt="Логотип компании" />
       <div
         class="content_item"
         v-for="path in element_path"
@@ -90,8 +90,9 @@ img {
   }
   img {
     display: block;
-    width: 100%;
-    height: 50px;
+    width: 80%;
+    height: 40px;
+    margin: 0 auto;
   }
 }
 </style>
