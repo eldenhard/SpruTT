@@ -250,6 +250,9 @@ export default {
     },
   },
   async mounted() {
+    if(window.innerWidth < 500){
+      this.$router.push('/main')
+    }
     this.reloadPortal();
     this.loader_mini = true;
     let objStation = {

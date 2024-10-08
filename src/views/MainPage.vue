@@ -1,13 +1,12 @@
 <template>
   <div class="container_block">
-    
     <div class="content">
       <img src="@/assets/logo3.png" height="7" alt="Логотип компании" />
       <div
         class="content_item"
         v-for="path in element_path"
         :key="path.name"
-        @click="$router.push({ path: path.path })"
+        @click="goToPage(path.name, path.path)"
       >
         {{ path.name }}
       </div>
@@ -19,6 +18,7 @@
 export default {
   data() {
     return {
+      width_element: window.innerWidth,
       element_path: [
         { name: "Справочники", path: "/directory" },
         { name: "Вагонный парк", path: "/wagonpark" },
@@ -26,11 +26,27 @@ export default {
         { name: "Отчеты", path: "/report" },
         { name: "Ключевые факты", path: "/key-facts" },
         { name: "Управ. отчетность", path: "/management-reporting" },
-        { name: "Штрафы", path: "/fines" },
         { name: "Справочная информация", path: "/personnel-service" },
-        { name: "Администрирование", path: "/administration" },
+        { name: "Страхование", path: "/insurance" },
+        { name: "Работа с персоналом", path: "/staff" },
       ],
     };
+  },
+  mounted() {
+    console.log(this.width_element);
+    if (this.width_element < 550) {
+    }
+  },
+  methods: {
+    goToPage(name, path) {
+      if (this.width_element < 550 && name != "Отчеты") {
+        this.$toast.info("Это раздел доступен только на ПК\nВедется работа над адаптацией раздела", {
+          timeout: 5000,
+        });
+        return
+      }
+      this.$router.push({ path: path.path });
+    },
   },
 };
 </script>
