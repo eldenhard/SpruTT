@@ -36,9 +36,9 @@
                   </template>
                   <PregisterInsuredWagonsAddColumnVue
                     @add_column_el="addNewObjectInColumns"
-                    v-show="getInsuredWagonsData.length > 1"
                     style="width: 100%"
                   />
+                  <!--   v-show="getInsuredWagonsData.length > 1" -->
                 </div>
                 <br />
                 <b-button
@@ -89,6 +89,7 @@
                   :manualColumnMove="true"
                   :dropdownMenu="dropdownMenuOptions"
                   :cells="cellConfig"
+                  :afterColumnResize="onColumnResize"
                 ></hot-table>
                 <br />
                 <!-- Перечень незастрахованных вагонов -->
@@ -277,8 +278,13 @@ export default {
           numericFormat: { pattern: "0 0.00" },
           width: "200px",
         },
-        { title: "На балансе", data: "on_balance_1c", width: "150px", editor: "select",
-        selectOptions: ["Да", "Нет"], },
+        {
+          title: "На балансе",
+          data: "on_balance_1c",
+          width: "150px",
+          editor: "select",
+          selectOptions: ["Да", "Нет"],
+        },
         {
           title: "Дата постройки",
           data: "build_date",
@@ -288,7 +294,11 @@ export default {
         },
         { title: "Срок службы", data: "lifetime", width: "150px" },
         { title: "Группа СТЖ", data: "group", width: "150px" },
-        { title: "Собственник СТЖ", data: "owner_at_insurance_moment" , width: "180px" },
+        {
+          title: "Собственник СТЖ",
+          data: "owner_at_insurance_moment",
+          width: "180px",
+        },
       ],
       columns_table_copy: [
         { title: "Номер вагона", data: "wagon_number", width: "150px" },
@@ -309,8 +319,13 @@ export default {
             "OОО TRANSPORT TECHNOLOGIES GP",
           ],
         },
-        { title: "На балансе 1С", data: "on_balance_1c", width: "150px",  editor: "select",
-        selectOptions: ["Да", "Нет"], },
+        {
+          title: "На балансе 1С",
+          data: "on_balance_1c",
+          width: "150px",
+          editor: "select",
+          selectOptions: ["Да", "Нет"],
+        },
         {
           title: "Страховая компания",
           data: "insurance_company",
@@ -400,7 +415,6 @@ export default {
             format: "DD.MM.YYYY",
           },
         },
-        
       ],
       // dropdownMenuOptions: ['clear_column', 'filter_by_condition', 'filter_by_value'],
       dropdownMenuOptions: [
@@ -449,10 +463,18 @@ export default {
   },
 
   methods: {
+    onColumnResize(newSize, column) {
+    // Обновите ширину столбца в вашей конфигурации
+    this.columns[column].width = newSize + 'px';
+    
+    // Выводим новый размер в консоль
+    console.log(`Column ${column} resized to: ${newSize}px`);
+    this.columns[column].width = newSize + 'px';
+
+  },
     cellConfig(row, col) {
       const cellProperties = {};
-      return cellProperties.className = 'myCustomClass';
-
+      return (cellProperties.className = "myCustomClass");
     },
     onCellValueChange(changes, source) {
       if (changes && source !== "loadData") {
@@ -513,8 +535,6 @@ export default {
       updatedRow.on_balance_1c =
         updatedRow?.on_balance_1c == "Да" ? true : false;
 
-      console.log(updatedRow);
-
       // Добавляем каждый запрос в массив сохранений
       this.saveQueue = this.saveQueue || [];
       this.saveQueue.push(updatedRow);
@@ -571,42 +591,13 @@ export default {
     startStopLoader(value) {
       this.loader = value;
     },
-    // Добаление новых столбцов  в таблицы
+    // Добавление новых столбцов  в таблицы
     addNewObjectInColumns(data) {
       this.$nextTick(() => {
+        const newColumns = [...this.columns, ...data]
         const hotInstance = this.$refs.hotTableComponent.hotInstance;
-        this.columns = [
-          { title: "Номер вагона", data: "wagon_number" },
-          {
-            title: "Тип вагона",
-            data: "wagon_type",
-            editor: "select",
-            selectOptions: ["ПВ", "ЦС"],
-          },
-          {
-            title: "Собст. на момент страхования",
-            data: "owner_at_insurance_moment",
-          },
-          { title: "Страховая компания", data: "insurance_company" },
-          { title: "№ договора", data: "agr_number", type: "numeric" },
-          {
-            title: "Дата договора",
-            data: "agr_date",
-            type: "date",
-            dateFormat: "DD.MM.YYYY",
-            correctFormat: true, // Принудительное применение формата
-            allowInvalid: false, // Отклоняет некорректные даты
-          },
-          {
-            title: "Дата прекращения действия договора страхования",
-            data: "agr_date_end",
-            dateFormat: "DD-MM-YYYY",
-            correctFormat: true,
-            width: 450,
-          },
+        this.columns = newColumns;
 
-          ...data,
-        ];
         hotInstance.updateSettings({ columns: this.columns });
         hotInstance.render();
       });
@@ -640,7 +631,6 @@ export default {
           api.getWagons({ number: el["Номер вагона"] })
         );
         const results = await Promise.all(promises);
-        console.log("results", results);
         this.mini_loader = false;
         let compareDataMap2 = [];
         for (let i in results) {
@@ -658,7 +648,6 @@ export default {
           timeout: 3000,
         });
 
-        console.log("compareDataMap2:", compareDataMap2);
         this.getOwnWagonsCompareData = compareDataMap2;
         this.$nextTick(() => {
           const hotInstance = this.$refs.hotTableComponent.hotInstance;
@@ -720,8 +709,8 @@ export default {
 </script>
 
 <style scoped>
-th{
-  font-size:10px !important;
+th {
+  font-size: 10px !important;
 }
 .myCustomClass {
   background-color: #b40000; /* Пример: серый фон */
@@ -758,7 +747,7 @@ th{
 }
 
 .air_block_header {
-  margin-top: -2%;
+
   color: #cacaca;
 }
 </style>

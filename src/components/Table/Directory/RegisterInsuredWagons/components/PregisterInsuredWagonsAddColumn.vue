@@ -1,10 +1,7 @@
 <template>
     <div style="display: flex; align-items: flex-start;">
-
-        <!-- <label class="label_vselect" > -->
         <v-select v-model="add_column_el" :options="sort_cols_elements" label="title" style="width: 100%; "
             placeholder="Добавление столбцов" multiple></v-select>
-        <!-- </label> -->
     </div>
 </template>
 

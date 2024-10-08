@@ -76,7 +76,7 @@ export default {
   align-items: center;
   color: white;
   font-weight: lighter;
-  font-size: 1.4em;
+  font-size: 1.5em;
   transition: transform 0.3s;
 }
 .content_item:hover {

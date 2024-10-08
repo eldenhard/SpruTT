@@ -1292,6 +1292,7 @@ export default {
   }
   .filterStaff{
     display: flex;
+    width: 100%;
     flex-direction: column;
   }
   .filterStaff label{
