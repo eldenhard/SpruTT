@@ -16,7 +16,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 
-
 // import './assets/tailwind.css'
 
 import Toast from "vue-toastification";
@@ -29,6 +28,7 @@ LogRocket.init('fs2mx3/sprutt');
 LogRocket.onerror = function(error)  {
   console.log('LogRocket error',error)
 }
+
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)

@@ -24,11 +24,14 @@
               <th>Имя</th>
               <th>Отчество</th>
               <th>Отдел</th>
-              <th>День рождения <img
+              <th>
+                День рождения
+                <img
                   src="../assets/crown.png"
                   alt="Корона"
                   style="width: 16px; height: 16px; margin-left: 5px"
-                /></th>
+                />
+              </th>
               <th>Дней до дня рождения</th>
             </tr>
           </thead>
@@ -43,21 +46,20 @@
                   v-if="user.days_until_birthday === 0"
                   src="../assets/crown.png"
                   alt="Корона"
-                  style="width: 16px; height: 16px; "
+                  style="width: 16px; height: 16px"
                 />
                 {{ user.last_name }}
                 <img
                   v-if="user.days_until_birthday === 0"
                   src="../assets/crown.png"
                   alt="Корона"
-                  style="width: 16px; height: 16px; "
+                  style="width: 16px; height: 16px"
                 />
               </td>
               <td :class="textClass(user)">{{ user.first_name }}</td>
               <td :class="textClass(user)">{{ user.middle_name }}</td>
               <td :class="textClass(user)">{{ user.post }}</td>
               <td :class="textClass(user)">
-               
                 {{ formatBirthDate(user.birth_date) }}
               </td>
               <td :class="textClass(user)">
@@ -147,57 +149,58 @@ export default {
   },
   async mounted() {
     this.loader = true;
-  try {
-    const staff = await api.getAllStaff({ page_size: 500 });
-    const today = new Date(); // Текущая дата
+    try {
+      console.log(this.users);
+      const staff = await api.getAllStaff({ page_size: 500 });
+      const today = new Date(); // Текущая дата
 
-    this.users = staff.data.data
-      .map((element) => {
-        if (element.birth_date) {
-          const birthDate = new Date(element.birth_date);
-          const birthDayThisYear = new Date(
-            today.getFullYear(),
-            birthDate.getMonth(),
-            birthDate.getDate()
-          );
+      this.users = staff.data.data
+        .map((element) => {
+          if (element.birth_date) {
+            const birthDate = new Date(element.birth_date);
+            const birthDayThisYear = new Date(
+              today.getFullYear(),
+              birthDate.getMonth(),
+              birthDate.getDate()
+            );
 
-          // Устанавливаем days_until_birthday в 0, если день рождения сегодня
-          if (birthDayThisYear.toDateString() === today.toDateString()) {
+            // Устанавливаем days_until_birthday в 0, если день рождения сегодня
+            if (birthDayThisYear.toDateString() === today.toDateString()) {
+              return {
+                ...element,
+                days_until_birthday: 0,
+                birth_date: birthDate,
+              };
+            }
+
+            // Если день рождения уже прошел в этом году
+            if (birthDayThisYear < today) {
+              birthDayThisYear.setFullYear(today.getFullYear() + 1);
+            }
+
+            const diffInTime = birthDayThisYear - today;
             return {
               ...element,
-              days_until_birthday: 0,
+              days_until_birthday: Math.ceil(diffInTime / (1000 * 3600 * 24)),
               birth_date: birthDate,
             };
+          } else {
+            return {
+              ...element,
+              days_until_birthday: Infinity,
+            };
           }
+        })
+        .sort((a, b) => a.days_until_birthday - b.days_until_birthday);
 
-          // Если день рождения уже прошел в этом году
-          if (birthDayThisYear < today) {
-            birthDayThisYear.setFullYear(today.getFullYear() + 1);
-          }
-
-          const diffInTime = birthDayThisYear - today;
-          return {
-            ...element,
-            days_until_birthday: Math.ceil(diffInTime / (1000 * 3600 * 24)),
-            birth_date: birthDate,
-          };
-        } else {
-          return {
-            ...element,
-            days_until_birthday: Infinity,
-          };
-        }
-      })
-      .sort((a, b) => a.days_until_birthday - b.days_until_birthday);
-
-    this.totalRows = this.users.length; // Общее количество строк для пагинации
-    this.filteredUsersList = [...this.users];
-  } catch (err) {
-    this.loader = false;
-  } finally{
-    this.loader = false;
-  }
-},
+      this.totalRows = this.users.length; // Общее количество строк для пагинации
+      this.filteredUsersList = [...this.users];
+    } catch (err) {
+      this.loader = false;
+    } finally {
+      this.loader = false;
+    }
+  },
   methods: {
     updateTableStaff(search) {
       const query = search.toLowerCase();

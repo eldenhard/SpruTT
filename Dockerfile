@@ -23,6 +23,7 @@ RUN npm install -save vue-xlsx
 RUN npm install moment
 RUN npm install html2pdf.js
 RUN npm install normalize.css
+
 # RUN npm i vuedraggable
 COPY ./ .
 RUN npm run build

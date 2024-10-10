@@ -329,6 +329,7 @@
 import api from '@/api/directory';
 import apiWagon from "@/api/wagonPark";
 import cp_work_names from './testData.js'
+import cache from '@/mixins/cache'
 export default {
     props: ['bp_data', 'margin_income_data', 'budget_data', "date_begin", "fines_data"],
     data() {
@@ -341,7 +342,7 @@ export default {
             exampleObject: "",
             icon_type: "plus-square",
             itogoDataResult: {},
-
+            cacheTTL: 1000 * 60 * 60 * 168  // Время жизни кэша (7 дней)
         }
     },
     computed: {
@@ -689,6 +690,15 @@ export default {
         },
 
         async getRoadForStation(val, destination,) {
+
+            const cacheKey = `${val}_${destination}`;
+
+            // проверяю кэш, написал аналог vue-query
+            const cacheData = cache.get(cacheKey);
+            if(cacheData) {
+                return cacheData;
+            }
+
             const memoKey = `${val}_${destination}`;
             if (this.memo[memoKey]) {
                 return this.memo[memoKey];
@@ -708,6 +718,8 @@ export default {
 
                 this.memo[memoKey] = lowerCaseDirectory[lowerCaseRoadName];
 
+                 // Кэшируем результат на 1 день
+                cache.set(cacheKey, lowerCaseDirectory[lowerCaseRoadName], this.cacheTTL);
                 return this.memo[memoKey];
             } catch (error) {
                 console.error('Error fetching station data:', error);
