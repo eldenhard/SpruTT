@@ -248,6 +248,10 @@ export default {
 </script>
 
 <style scoped>
+a.router-links{
+  font-size: 1rem;
+  white-space: nowrap;
+}
 .block {
   position: relative;
   cursor: pointer;
@@ -315,7 +319,7 @@ a.router-link{
 .last {
   padding-top: 1px; margin-left: auto !important; float: right; position: absolute; right: 0;
 }
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 1000px) {
   .navbar-nav{
   background: #F8F9FA !important;
   padding-left: 2% !important;
@@ -344,5 +348,12 @@ a.router-link{
   color: white;
   font-weight: 500;
 }
+
+}
+@media screen and (max-width: 1550px) {
+  a.router-links{
+  font-size: .87em;
+}
+
 }
 </style>

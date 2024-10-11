@@ -128,7 +128,7 @@ export default {
         { key: "last_name", label: "Фамилия" },
         { key: "first_name", label: "Имя" },
         { key: "middle_name", label: "Отчество" },
-        { key: "post", label: "Отдел" },
+        { key: "post", label: "Должность" },
         { key: "birth_date", label: "День рождения" },
         { key: "days_until_birthday", label: "Дней до дня рождения" },
       ],

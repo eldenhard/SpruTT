@@ -86,6 +86,7 @@ img {
   display: none;
 }
 @media screen and (min-width: 1024px) {
+
   .content {
     grid-template-columns: repeat(3, 1fr); /* Три колонки */
   }
@@ -93,8 +94,20 @@ img {
 
 /* Стили для средних экранов (laptop, tablet landscape) */
 @media screen and (max-width: 1023px) and (min-width: 768px) {
+  img {
+    display: block;
+    width: 60%;
+    height: 40px;
+    margin: 0 auto;
+  }
   .content {
+    display: flex;
+    flex-direction: column;
     grid-template-columns: repeat(2, 1fr); /* Две колонки */
+    margin-top: 10%;
+  }
+  .content_item{
+    padding: 1% 0;
   }
 }
 
