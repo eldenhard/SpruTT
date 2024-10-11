@@ -1,0 +1,81 @@
+.company_structure{
+    width: 90%;
+    margin: 0 auto;
+
+    h4{
+        margin: 2% 0;
+        color: #4e4e4e;
+       
+    }
+    .text{
+        font-size: 0.8em;
+        font-family: "Golos Text", sans-serif;
+        color: #4e4e4e;
+    }
+    .manager{
+        font-weight: 0.8em;
+        font-weight: 600;
+        color: #4e4e4e;
+        font-family: "Golos Text", sans-serif;
+    }
+    .company_structure_content{
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2vh;
+    }
+    .list_item{
+        background: #f9f9f9;
+        border-radius: 15px;
+        padding: 4% 6% ;
+        display: flex;
+        cursor: pointer;
+        flex-direction: column;
+        dv
+        .description{
+            color: #4e4e4e;
+            font-family: "Golos Text", sans-serif;
+        }
+        .header{
+            font-weight: 600;
+            font-size: .85em;
+            color: #14949C;
+        }
+        .description{
+            font-weight: 400;
+            font-size: .82em;
+              flex: 1;
+        }
+        .test{
+            display: flex;
+            justify-content: flex-end;
+           
+        }
+    }
+}
+
+.backList{
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4%;
+    gap: .5vw;
+    color: #2e2e2e;
+}
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.4s ease-in;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active для Vue 2 */ {
+    opacity: 0;
+  }
+
+@media screen and (max-width: 800px) {
+      .company_structure{
+        .company_structure_content{
+            .list_item{
+                width: 90vw;
+            }
+        }
+      }  
+}

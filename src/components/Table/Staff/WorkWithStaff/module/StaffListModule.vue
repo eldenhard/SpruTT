@@ -1,9 +1,10 @@
 <script>
 import HeaderUIElement from "../ui/HeaderUIElement.vue";
 import api from "@/api/staff";
+import  OrganizationalStructureModule from "./OrganizationalStructureModule.vue";
 export default {
   name: "StaffList",
-  components: { HeaderUIElement },
+  components: { HeaderUIElement, OrganizationalStructureModule },
   data() {
     return {
       state: "",
@@ -30,7 +31,9 @@ export default {
       <b-card no-body>
         <b-tabs card>
           <b-tab title="Организационная структура" active>
-            <b-card-text>Организационная структура компании "Транспортные Технологии"</b-card-text>
+            <b-card-text>
+              <OrganizationalStructureModule/>
+            </b-card-text>
           </b-tab>
           <b-tab title="Временно отсутствующие сотрудники">
             <b-card-text>Сотрудники временно отсутствующие по уважительной причине</b-card-text>
