@@ -25,12 +25,16 @@
     }
     .list_item{
         background: #f9f9f9;
+        box-shadow: 2px 2px 5px #cfcfcf;
         border-radius: 15px;
         padding: 4% 6% ;
         display: flex;
         cursor: pointer;
         flex-direction: column;
-        dv
+        transition: transform .3s ease-in-out;
+        &:hover{
+            transform: translate(0, -5px);
+        }
         .description{
             color: #4e4e4e;
             font-family: "Golos Text", sans-serif;
@@ -78,4 +82,11 @@
             }
         }
       }  
+}
+
+.loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15%
 }
