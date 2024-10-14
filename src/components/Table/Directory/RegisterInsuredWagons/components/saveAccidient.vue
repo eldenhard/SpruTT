@@ -10,7 +10,7 @@
                     <h4>Данных нет</h4>
                 </div>
             </div>
-            <template #modal-footer="{ ok, cancel }">
+            <template #modal-footer="{  cancel }">
                 <b-form-checkbox id="checkbox-1"
                     v-show="is_insurances_cases != 'Новый страховой случай' && tableData.length > 0 && is_insurances_cases != 'Архивные страховые случаи'"
                     v-model="status" name="checkbox-1" unchecked-value="not_accepted">
@@ -90,6 +90,7 @@ export default {
             dropdownMenuOptions: ['filter_by_condition', 'filter_action_bar', 'filter_by_value', 'clear_column'],
 
             columns: [
+                { data: 'status', editor: 'select', selectOptions: ['Новый', 'Старый', 'Архивный'] },
                 { data: 'wagon_number', type: 'text', readOnly: false },
                 { data: 'wagon_type', readOnly: true },
                 { data: 'owner', type: 'text' },
@@ -114,69 +115,82 @@ export default {
                     }
                 },
 
+
                 { data: 'insure_case_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
                 { data: 'vu23_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
                 { data: 'vu36_date', type: 'date', dateFormat: 'YYYY-MM-DD' },
                 { data: 'fault_code', type: 'text' },
                 { data: 'repair_exclusion_loss', type: 'text' },
+
+
                 { data: 'damage_causer', type: 'text' },
                 { data: 'client', type: 'text' },
                 { data: 'sk_notification_date', type: 'date', dateFormat: 'YYYY-MM-DD', readOnly: false },
                 { data: 'out_application_number', type: 'text', readOnly: false },
                 { data: 'application_date', type: 'date', dateFormat: 'YYYY-MM-DD', readOnly: false },
+
+
                 { data: 'last_request_response_date', type: 'date', dateFormat: 'YYYY-MM-DD', readOnly: false },
                 { data: 'refund_date', type: 'date', dateFormat: 'YYYY-MM-DD', readOnly: false },
                 { data: 'estimated_insurance_indemnity', type: 'text' },
                 { data: 'franchise', type: 'text' },
                 { data: 'deduction_of_balances', type: 'numeric' },
+
+
                 { data: 'fact_insurance_indemnity', type: 'numeric' },
                 { data: 'refused', type: 'numeric' },
                 { data: 'repair_downtime_pending_amount', type: 'numeric' },
                 { data: 'railway_fare_to_from_repair', type: 'numeric' },
                 { data: 'additional_compensation_due', type: 'numeric' },
+
+
                 { data: 'total_loss_tt', type: 'numeric' },
                 { data: 'reimbursed', type: 'numeric' },
                 { data: 'reimbursed_ost', type: 'numeric' },
-                { data: 'status', editor: 'select', selectOptions: ['Новый', 'Старый', 'Архивный'] },
                 { data: 'comment', type: 'text' },
-                // { data: 'repair_kind', type: 'text' },
-                // { data: 'station_nrp_vu_23', type: 'text' },
-                // { data: 'road_nrp_vu_23', type: 'text' },
-                // { data: 'date_nrp_vu_23', type: 'date', dateFormat: 'YYYY-MM-DD' },
-                // { data: 'is_closed', type: 'dropdown', source: ['Да', 'Нет'] }
+
             ],
             colHeaders: [
+                'Статус',
                 'Номер вагона',
                 'Тип вагона',
                 'Собственник',
-                'Договор страхования',
-                'Дата договора',
+                'Страховая компания',
+                '№ Договора',
                 'Сумма франшизы',
-                'Условная/ Безусловная',
-                'Дата страхового случая (ВУ_25)',
+                'Условная/Безусловная',
+
+
+                "Дата страхового случая",
                 'Дата ВУ-23',
                 'Дата ВУ-36/ИСКЛ',
-                'Код неисправности',
+                "Код неисправности",
                 'Ремонт/исключение/утеря',
-                'Виновник в повреждении',
+
+
+                'Виновник повреждения',
                 'Клиент',
                 'Дата уведомления в СК',
                 'Исх. Номер заявления',
                 'Дата заявления',
-                'Дата направления ответа по крайнему запросу',
+
+
+                'Дата направления ответа по последнему запросу',
                 'Дата возмещения',
                 'Предполагаемое/ Причитающееся страховое возмещение',
                 'Франшиза',
                 'Вычет остатков',
+
+
                 'Факт возмещения от страховой, руб.',
-                'Отказано СК, руб.',
+                'Отказано',
                 'Сумма за простой в ремонте',
-                'ж.д тариф в/из ремонта',
+                'Ж/д тариф в/из ремонта',
                 'Причитающееся довозмещение',
+
                 'ИТОГО потери ТТ',
                 'Возмещено ВСЕГО',
                 'Осталось возместить',
-                'Статус',
                 'Примечание'
             ],
             ver_imp_data: "",
@@ -251,6 +265,7 @@ export default {
         async getData() {
             try {
                 this.$emit('startStopLoader', true);
+                console.log(this.colHeaders.length, this.columns.length)
                 let response = await api.getDataInsuranceCases();
                 this.earlyData = response.data.data;
                 this.$nextTick(() => {
