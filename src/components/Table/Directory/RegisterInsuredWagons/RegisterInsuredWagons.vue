@@ -2,17 +2,17 @@
   <div>
     <Loader :loader="loader" />
     <div class="air_block" style="width: 98vw; margin: 1% 0 0 0">
+      <modal />
       <div class="air_block_header">
         <h4>Реестр застрахованных вагонов</h4>
       </div>
       <hr />
-      <br />
       <b-card no-body>
         <b-tabs card>
           <b-tab title="Застрахованные вагоны" active>
-            <b-card-text>
+            <b-card-text style="margin-left: -5%; margin-top: -2%;">
               <div>
-                <div
+                <!-- <div
                   style="
                     display: flex;
                     justify-content: space-between;
@@ -38,17 +38,18 @@
                     @add_column_el="addNewObjectInColumns"
                     style="width: 100%"
                   />
-                  <!--   v-show="getInsuredWagonsData.length > 1" -->
-                </div>
+                
+                </div> -->
                 <br />
-                <b-button
+                <!-- <b-button
                   variant="info"
                   style="position: absolute; right: 2%"
                   v-if="getInsuredWagonsData.length > 1"
                   @click="DownloadExcel('test')"
                   >Выгрузить в EXCEL</b-button
-                >
+                > -->
                 <br />
+
                 <h4
                   class="air_block_header"
                   v-show="getInsuredWagonsData.length > 0"
@@ -60,6 +61,23 @@
                   />&nbsp;Застрахованные вагоны
                 </h4>
 
+                <div>
+                  <b-button-toolbar>
+                    <b-button-group>
+                      <b-button size="sm" class="mb-2 border rounded p-2 d-flex " style="min-width:150px !important" focusable="false">
+                        <b-icon icon="cloud-download" aria-hidden="true"></b-icon>
+                        <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons" @getOwnWagonsCompare="getOwnWagonsCompare" style="margin-left: 5px !important"/>
+                      </b-button>
+                       <b-button size="sm" class="mb-2 border rounded p-2" @click="$bvModal.show('modal-1234567')">
+                        <b-icon icon="file-earmark" aria-hidden="true"></b-icon> Внести данные
+                      </b-button>
+                      <b-button size="sm" class="mb-2 border rounded p-2">
+                        <b-icon icon="cloud-upload" aria-hidden="true"></b-icon> Выгрузить в Excel
+                      </b-button>
+                    </b-button-group>
+                  </b-button-toolbar>
+                </div>
+                
                 <span class="description-text"
                   >Всего записей {{ getInsuredWagonsData.length ?? 0 }}</span
                 >
@@ -71,7 +89,6 @@
                   placeholder="Введите номера вагонов через пробел"
                   class="searchBlock"
                 />
-
                 <hot-table
                   ref="hotTableComponent"
                   :data="getInsuredWagonsData"
@@ -90,6 +107,7 @@
                   :dropdownMenu="dropdownMenuOptions"
                   :cells="cellConfig"
                   :afterColumnResize="onColumnResize"
+                  :afterColumnMove="onColumnMove"
                 ></hot-table>
                 <br />
                 <!-- Перечень незастрахованных вагонов -->
@@ -130,6 +148,7 @@ import {
   getLanguagesDictionaries,
   ruRU,
 } from "handsontable/i18n";
+import modal from './modules/modal.vue'
 registerLanguageDictionary(ruRU);
 registerAllModules();
 // import 'handsontable/dist/handsontable.full.min.css';
@@ -149,6 +168,7 @@ export default {
     HotTable,
     OwnWagonsCompareTable,
     saveAccidientVue,
+    modal,
   },
   data() {
     return {
@@ -448,7 +468,20 @@ export default {
       ],
     };
   },
+  created() {
+  const savedColumnOrder = localStorage.getItem('userColumnOrder');
+  const savedColumnSettings = localStorage.getItem('userColumnSettings');
+  
+  if (savedColumnOrder) {
+    this.columns = JSON.parse(savedColumnOrder);
+  }
+
+  if (savedColumnSettings) {
+    this.columns = JSON.parse(savedColumnSettings);
+  }
+},
   mounted() {
+    
     document.querySelector(".hot-display-license-info").style =
       "display: none !important";
     const hotInstance = this.$refs.hotTableComponent.hotInstance;
@@ -463,14 +496,25 @@ export default {
   },
 
   methods: {
-    onColumnResize(newSize, column) {
-    // Обновите ширину столбца в вашей конфигурации
-    this.columns[column].width = newSize + 'px';
+    onColumnMove(startColumn, endColumn) {
+    const updatedColumns = [...this.columns];
+    const movedColumn = updatedColumns.splice(startColumn, 1)[0];
+    updatedColumns.splice(endColumn, 0, movedColumn);
     
-    // Выводим новый размер в консоль
-    console.log(`Column ${column} resized to: ${newSize}px`);
-    this.columns[column].width = newSize + 'px';
-
+    this.columns = updatedColumns;
+    
+    // Сохраняем новый порядок в LocalStorage
+    localStorage.setItem('userColumnOrder', JSON.stringify(this.columns));
+    
+    console.log("Updated column order:", this.columns);
+  },
+  onColumnResize(newSize, columnIndex) {
+    this.columns[columnIndex].width = newSize;
+    
+    // Сохраняем новые размеры в LocalStorage
+    localStorage.setItem('userColumnSettings', JSON.stringify(this.columns));
+    
+    console.log("Updated column size:", this.columns);
   },
     cellConfig(row, col) {
       const cellProperties = {};
@@ -515,6 +559,7 @@ export default {
     },
 
     async saveEditCellsInRow(updatedRow) {
+      console.log("saveEditCellsInRow", updatedRow);
       this.is_save_row = true;
 
       // Преобразуем даты
@@ -546,6 +591,7 @@ export default {
     // Debounced функция для сохранения всех данных
     debouncedSaveAllRows: debounce(async function () {
       this.loader = true;
+
       try {
         let savePromises = this.saveQueue.map((row) =>
           api_directory.editInsuranceWagons(row.id, row)
@@ -564,6 +610,7 @@ export default {
           timeout: 3000,
         });
         this.loader = false;
+        this.saveQueue = []; // Очищаем очередь в случае ошибки
       } finally {
         this.is_save_row = false;
         this.loader = false;

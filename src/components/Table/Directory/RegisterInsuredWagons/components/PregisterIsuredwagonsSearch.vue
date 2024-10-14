@@ -1,14 +1,14 @@
 <template>
-    <section class="search_bloc">
-        <div class="long_search">
+
+        <div class="long_search"  @click="getRequestToServerData(search)" style="width: 100%;">
             <!-- <input type="text" placeholder="Введите номера вагонов..." v-model="search" @input="IputProcessing(search)"> -->
-            <b-button variant="success" class="btn btn-success" @click="getRequestToServerData(search)" style="display: flex; align-items: center; justify-content: center;">
-                <span v-if="isSearch">Запросить данные по вагонам</span>
-                <b-icon v-if="!isSearch" icon="three-dots" animation="cylon" font-scale="3"></b-icon>
-            </b-button>
+            <!-- <b-button variant="success" class="btn btn-success" @click="getRequestToServerData(search)" style="display: flex; align-items: center; justify-content: center;"> -->
+                <span v-if="isSearch">Запросить данные</span>
+                <b-icon v-if="!isSearch" icon="three-dots" animation="cylon" font-scale="1.5"></b-icon>
+            <!-- </b-button> -->
         </div>
 
-    </section>
+
 </template>
 
 <script>
