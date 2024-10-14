@@ -64,12 +64,12 @@
                 <div>
                   <b-button-toolbar>
                     <b-button-group>
-                      <b-button size="sm" class="mb-2 border rounded p-2 d-flex " style="min-width:150px !important" focusable="false">
-                        <b-icon icon="cloud-download" aria-hidden="true"></b-icon>
+                      <b-button size="sm" class="mb-2 border rounded p-2 d-flex " style="min-width:150px !important" >
+                        <b-icon icon="cloud-download" aria-hidden="true" focusable="false"></b-icon>
                         <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons" @getOwnWagonsCompare="getOwnWagonsCompare" style="margin-left: 5px !important"/>
                       </b-button>
                        <b-button size="sm" class="mb-2 border rounded p-2" @click="$bvModal.show('modal-1234567')">
-                        <b-icon icon="file-earmark" aria-hidden="true"></b-icon> Внести данные
+                        <b-icon icon="file-earmark" aria-hidden="true" focusable="false"></b-icon> Внести данные
                       </b-button>
                       <b-button size="sm" class="mb-2 border rounded p-2">
                         <b-icon icon="cloud-upload" aria-hidden="true"></b-icon> Выгрузить в Excel
