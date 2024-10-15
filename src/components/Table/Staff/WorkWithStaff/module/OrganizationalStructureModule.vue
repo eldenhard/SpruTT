@@ -81,6 +81,7 @@ export default {
 
 <template>
   <div>
+    <!-- <pre>{{ orgStructure }}</pre> -->
     <div class="company_structure" v-if="orgStructure">
     <!-- Если нет выбранного отдела, отображаем все отделы -->
     <div v-if="!selectedDepartment ">

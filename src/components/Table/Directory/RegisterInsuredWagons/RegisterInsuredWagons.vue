@@ -2,7 +2,8 @@
   <div>
     <Loader :loader="loader" />
     <div class="air_block" style="width: 98vw; margin: 1% 0 0 0">
-      <modal />
+      <modal @startStopLoader="startStopLoader" :title="titleInsuredCase" :insuredCase="insuredCase" :DataForModal="DataForModal"/>
+      <!-- <ModalCreateNewInsured :title="is_insurances_cases_insured" :text="text" @startStopLoader="startStopLoader"/> -->
       <div class="air_block_header">
         <h4>Реестр застрахованных вагонов</h4>
       </div>
@@ -22,7 +23,7 @@
                 >
                   <template v-if="getInsuredWagonsData.length > 1">
                     <PregisterIsuredwagonsSearch
-                      @getInsuredWagons="getInsuredWagons"
+                      @getInsuredWagons="getInsuredWagons"@
                       @getOwnWagonsCompare="getOwnWagonsCompare"
                       style="width: 80%"
                     />
@@ -68,7 +69,7 @@
                         <b-icon icon="cloud-download" aria-hidden="true" focusable="false"></b-icon>
                         <PregisterIsuredwagonsSearch @getInsuredWagons="getInsuredWagons" @getOwnWagonsCompare="getOwnWagonsCompare" style="margin-left: 5px !important"/>
                       </b-button>
-                       <b-button size="sm" class="mb-2 border rounded p-2" @click="$bvModal.show('modal-1234567')">
+                       <b-button size="sm" class="mb-2 border rounded p-2" @click="openModal()">
                         <b-icon icon="file-earmark" aria-hidden="true" focusable="false"></b-icon> Внести данные
                       </b-button>
                       <b-button size="sm" class="mb-2 border rounded p-2">
@@ -108,6 +109,9 @@
                   :cells="cellConfig"
                   :afterColumnResize="onColumnResize"
                   :afterColumnMove="onColumnMove"
+                  :contextMenu="customContextMenu"
+                  :nestedRows= "true"
+                  :licenseKey="'non-commercial-and-evaluation'"
                 ></hot-table>
                 <br />
                 <!-- Перечень незастрахованных вагонов -->
@@ -169,20 +173,42 @@ export default {
     OwnWagonsCompareTable,
     saveAccidientVue,
     modal,
+
   },
   data() {
     return {
       wagonFilter: "",
+      text: "",
       loader: false,
       mini_loader: false,
       nameClient: [],
       is_save_row: false,
+      insuredCase: false,
+      titleInsuredCase: "",
+      DataForModal: [],
+      customContextMenu: {
+                items: {
+                    'new_case': {
+                        name: 'Новый страховой случай',
+                        callback: () => this.handleContextMenuClick('new')
+                    },
+
+                    'archived_cases': {
+                        name: 'Архивные страховые случаи',
+                        callback: () => this.handleContextMenuClick('archived')
+                    },
+
+                    // }
+                }
+            },
       columns: [
+
         {
           title: "Номер вагона",
           data: "wagon_number",
           width: "150px",
           minWidth: "150px",
+
         },
         {
           title: "Тип вагона",
@@ -481,9 +507,7 @@ export default {
   }
 },
   mounted() {
-    
-    document.querySelector(".hot-display-license-info").style =
-      "display: none !important";
+
     const hotInstance = this.$refs.hotTableComponent.hotInstance;
     moment.locale("ru");
 
@@ -516,6 +540,67 @@ export default {
     
     console.log("Updated column size:", this.columns);
   },
+  handleContextMenuClick(type) {
+    const hotInstance = this.$refs.hotTableComponent.hotInstance;
+    const selected = hotInstance.getSelectedLast();
+
+    if (selected) {
+        const rowIndex = selected[0];
+
+        // Получаем данные из отфильтрованной таблицы
+        const filteredRowData = hotInstance.getDataAtRow(rowIndex);
+
+        // Определяем номер вагона из отфильтрованной строки
+        const filteredWagonNumber = filteredRowData ? filteredRowData[0] : null;
+
+        // Находим полные данные из исходного набора данных
+        const fullRowData = this.getInsuredWagonsData.find(item => item.wagon_number === filteredWagonNumber);
+
+        // Если найдены полные данные, открываем модальное окно
+        if (fullRowData) {
+            this.titleInsuredCase = type == 'new' ? 'Новый страховой случай' : 'Архивные страховые случаи';
+            this.insuredCase = true;
+            this.DataForModal = [fullRowData]; // Передаем полные данные в модальное окно
+            this.openModalPage(fullRowData, type);
+        } else {
+            console.error('Не удалось найти полные данные для выбранного вагона.');
+        }
+    }
+},
+      async openModalPage(item, type) {
+        
+
+
+            let response;
+            let wagonNumber = item.wagon_number;
+            if (type === "new") {
+                // Открытие нового случая
+                this.DataForModal = [{ ...item, status: "Новый" }];
+                this.$nextTick(() => this.$bvModal.show("modal-12345678"));
+            } else if (type === "archived") {
+                // Открытие архивных случаев
+                response = await api_directory.getDataInsuranceCases({ wagon_number: wagonNumber, status: "Архивный" });
+                this.DataForModal = response.data.data;
+                this.$nextTick(() => this.$bvModal.show("modal-12345678"));
+                // this.$nextTick(() => this.initializeHotTable());
+            }
+        },
+
+        initializeHotTable() {
+            const hotInstance = this.$refs.modalHotTable?.hotInstance;
+            if (hotInstance) {
+
+                hotInstance.loadData(this.tableData);
+                hotInstance.updateSettings({ data: this.tableData });
+                hotInstance.render();
+            } else {
+                console.error('hotInstance не определен');
+            }
+        },
+      openModal(){
+        this.insuredCase = false
+        this.$nextTick(() =>   this.$bvModal.show("modal-1234567"))
+      },
     cellConfig(row, col) {
       const cellProperties = {};
       return (cellProperties.className = "myCustomClass");
@@ -731,6 +816,7 @@ export default {
       this.$nextTick(() => {
         const hotInstance = this.$refs.hotTableComponent.hotInstance;
 
+        console.log(this.getInsuredWagonsData, 'проверка')
         hotInstance.updateSettings({
           data: this.getInsuredWagonsData,
           afterRenderer: (TD, row, col, prop, value, cellProperties) => {

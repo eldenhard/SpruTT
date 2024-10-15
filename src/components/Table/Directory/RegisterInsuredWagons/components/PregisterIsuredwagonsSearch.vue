@@ -57,10 +57,10 @@ export default {
                 }
 
                 let today = new Date().toISOString().slice(0, 10);
-                let response2 = await api.getOwnWagonsCompare(today);
-                this.$toast.success('Данные по застрахованным вагонам загружены\n Продолжается загрузка незастрахованных вагонов', {
-                    timeout: 3000
-                })
+                // let response2 = await api.getOwnWagonsCompare(today);
+                // this.$toast.success('Данные по застрахованным вагонам загружены\n Продолжается загрузка незастрахованных вагонов', {
+                //     timeout: 3000
+                // })
                 allData.forEach(item => {
                     item.agr_date =  item?.agr_date?.split('-').reverse().join('.') || null
                     item.agr_date_end = item?.agr_date_end?.split('-').reverse().join('.')|| null
@@ -73,7 +73,7 @@ export default {
                 })
                 
                 this.$emit('getInsuredWagons', allData);
-                this.$emit('getOwnWagonsCompare', response2)
+                // this.$emit('getOwnWagonsCompare', response2)
                 this.isSearch = true
             }
             catch (err) {

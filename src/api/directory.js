@@ -224,6 +224,9 @@ const editInsuranceWagons = (id, data) => {
 const sendNewDataInsuranceWagons = (data) => {
     return api.post(`${finance}/insurance-wagons/save-many/`, data)
 }
+const getHistoryByWagon = (data) => {
+    return api.get(`${finance}/insurance-wagons/history?wagon_number=${data}`)
+}
 const getInsuranceWagons = () => {
     return api.get(`${finance}/insurance-wagons/`)
 }
@@ -329,6 +332,7 @@ export default {
     getWagonFlights,
     getDataInsuranceCases,
     getInsuranceWagons,
+    getHistoryByWagon,
     saveManyDataInsuranceCases,
     getAllcounterparties,
     putCounterparties,

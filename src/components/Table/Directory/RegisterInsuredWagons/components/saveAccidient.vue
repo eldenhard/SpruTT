@@ -4,7 +4,7 @@
             <div class="modal-table">
                 <hot-table ref="modalHotTable" v-if="tableData.length > 0" :data="tableData" :columns="columns"
                     :rowHeaders="false" :colHeaders="colHeaders" height="30vh" :manualColumnResize="true"
-                    :manualRowResize="true" :filters="true" :language="'ru-RU'" :dropdownMenu="dropdownMenuOptions">
+                    :manualRowResize="true" :filters="true" :language="'ru-RU'" :dropdownMenu="dropdownMenuOptions" :licenseKey="'non-commercial-and-evaluation'">
                 </hot-table>
                 <div v-else style="display: flex; align-items: center; justify-content: center">
                     <h4>Данных нет</h4>
@@ -39,26 +39,46 @@
         <br><br>
 
         <hot-table ref="hotTable" :data="responseData" :columns="columns" :colHeaders="colHeaders"
-            :contextMenu="customContextMenu" :manualColumnResize="true" :manualRowResize="true" :height="'30vh'"
-            :language="'ru-RU'" :filters="true" :dropdownMenu="dropdownMenuOptions" :className="'custom-table'">
+            :contextMenu="customContextMenu" :manualColumnResize="true" :manualRowResize="true" :height="'50vh'"
+            :language="'ru-RU'" :filters="true" :dropdownMenu="dropdownMenuOptions" :className="'custom-table'" :licenseKey="'non-commercial-and-evaluation'">
         </hot-table>
 
         <br><br>
         <hr>
         <div class="air_block_header">
             <h4>Ранее введенные данные</h4>
-            <div style="display: flex; flex-direction: column; gap: 25px">
-
-                <b-button variant="success" @click="getData()">Загрузить данные</b-button>
+            <!-- <div style="display: flex; justify-content: flex-end; gap: 25px">
+                <b-button variant="info" @click="getData()">Загрузить данные</b-button>
                 <b-button variant="info" v-show="earlyData.length > 0" @click="downloadToExcel()">Выгрузить в
                     EXCEL</b-button>
-            </div>
+                    <b-button variant="success" v-show="earlyData.length > 0" @click="saveData()">Сохранить изменения</b-button>
+            </div> -->
+            <div>
+                  <b-button-toolbar>
+                    <b-button-group>
+                      <b-button size="sm" class="mb-2 border rounded p-2 d-flex " @click="getData()" style="min-width:150px !important" >
+                        <b-icon icon="cloud-download" aria-hidden="true" focusable="false"></b-icon>Загрузить данные
+                      </b-button>
+                      <b-button size="sm" class="mb-2 border rounded p-2" v-show="earlyData.length > 0" @click="downloadToExcel()">
+                        <b-icon icon="cloud-upload" aria-hidden="true"></b-icon> Выгрузить в Excel
+                      </b-button>
+                      <b-button size="sm" class="mb-2 border rounded p-2" style="background: #264722" @click="saveData()">
+                        <b-icon icon="check-all" aria-hidden="true" focusable="false" v-show="earlyData.length > 0" ></b-icon>Сохранить изменения
+                      </b-button>
+                    </b-button-group>
+                  </b-button-toolbar>
+                  <div>
+                    <label for="range-2">Увеличение размера таблицы</label>
+                    <b-form-input id="range-2" v-model="rangeTable" type="range" min="0" max="10" step="0.1"></b-form-input>
+                    <div class="mt-2">Увеличение: x{{ rangeTable }}</div>
+                </div>
+                </div>
         </div>
 
         <br>
         <hot-table ref="hotTable2" :data="earlyData" :columns="columns" :colHeaders="colHeaders"
-            :contextMenu="customContextMenu" :manualColumnResize="true" :manualRowResize="true" :height="'30vh'"
-            :language="'ru-RU'" :filters="true" :dropdownMenu="dropdownMenuOptions">
+        :rowHeaders="true" :contextMenu="customContextMenu" :manualColumnResize="true"  :height="sizeTable"
+            :language="'ru-RU'" :filters="true" :dropdownMenu="dropdownMenuOptions" :nestedRows="true" :licenseKey="'non-commercial-and-evaluation'">
         </hot-table>
 
     </div>
@@ -79,18 +99,20 @@ export default {
     data() {
         return {
             isSearch: true,
+            rangeTable: 1,
             search: "",
             is_insurances_cases: "",
             intervalResponse: null,
             responseData: [],
             responseOldData: [],
             status: false,
-            earlyData: [],
+            earlyData: [{ data: 'status', editor: 'select', selectOptions: ['Новый', 'Старый', 'Архивный'] },],
             tableData: [],
             dropdownMenuOptions: ['filter_by_condition', 'filter_action_bar', 'filter_by_value', 'clear_column'],
 
             columns: [
-                { data: 'status', editor: 'select', selectOptions: ['Новый', 'Старый', 'Архивный'] },
+                { data: 'category', type: 'text', readOnly: true },
+                { data: 'status', editor: 'select', selectOptions: ['Новый', 'Архивный'] },
                 { data: 'wagon_number', type: 'text', readOnly: false },
                 { data: 'wagon_type', readOnly: true },
                 { data: 'owner', type: 'text' },
@@ -151,6 +173,7 @@ export default {
 
             ],
             colHeaders: [
+                'Группа по вагону',
                 'Статус',
                 'Номер вагона',
                 'Тип вагона',
@@ -219,18 +242,10 @@ export default {
             }
         }
     },
-    created() {
-        document.querySelectorAll('.hot-display-license-info').forEach(element => {
-            element.style.display = 'none';
-        });
-    },
-    mounted() {
-        document.querySelectorAll('.hot-display-license-info').forEach(element => {
-            element.style.display = 'none';
-        });
-
-
-
+    computed: {
+        sizeTable() {
+        return this.rangeTable * 10 + 40 + 'vh';
+    } 
     },
     methods: {
         downloadToExcel() {
@@ -252,6 +267,7 @@ export default {
         },
         handleContextMenuClick(type) {
             const selected = this.$refs.hotTable.hotInstance.getSelectedLast();
+            console.log(selected)
             if (selected) {
                 const rowIndex = selected[0];
                 const rowData = this.responseData[rowIndex];
@@ -261,44 +277,79 @@ export default {
                 console.log(`Selected row data for ${type}:`, rowData);
             }
         },
-
+        // Функция для создания объекта, где все значения будут null
+        nullifyObjectValues(obj) {
+            return Object.keys(obj).reduce((acc, key) => {
+                if(acc['wagon_number']){
+                    acc[key] = key;
+                }
+                return acc;
+            }, {});
+        },
         async getData() {
+            this.$emit('startStopLoader', true)
             try {
-                this.$emit('startStopLoader', true);
-                console.log(this.colHeaders.length, this.columns.length)
                 let response = await api.getDataInsuranceCases();
-                this.earlyData = response.data.data;
+                this.earlyData = response.data.data.reduce((acc, item) => {
+                    let existingCategory = acc.find(el => el.category === item.wagon_number);
+
+                    // Создаем копию item, где все значения будут null
+                    let nullifiedItem = this.nullifyObjectValues(item);
+
+                    if (!existingCategory) {
+                        // Если категории нет, добавляем объект с wagon_number и null-значениями
+                        acc.push({
+                            category: item.wagon_number,
+                            ...nullifiedItem,  // Применяем объект с null значениями
+                            __children: [{ ...item }]
+                        });
+                    } else {
+                        // Если категория уже существует, добавляем элемент в __children
+                        existingCategory.__children.push({ ...item });
+                    }
+
+                    return acc;
+                }, []);
+                console.log(this.earlyData)
                 this.$nextTick(() => {
                     const hotInstance = this.$refs.hotTable2.hotInstance;
                     hotInstance.loadData(this.earlyData);
+                    document.querySelector('.ht_nestingButton.ht_nestingCollapse').style = 'color: red !important; border: yellow !important; font-size: 20px !important;';
                     hotInstance.updateSettings({ data: this.earlyData });
                     hotInstance.render();
                 });
+                this.$emit('startStopLoader', false)
+
                 if (this.earlyData.length > 0) {
                     this.$toast.success('Данные загружены', { timeout: 3000 });
                 } else {
                     this.$toast.warning('Нет ранее введенных данных', { timeout: 4000 });
                 }
+
             } catch (err) {
+                this.$emit('startStopLoader', false)
+
                 this.$toast.error(`Данные не загружены\n ${err}`, { timeout: 3000 });
+                
             } finally {
                 this.$emit('startStopLoader', false);
             }
+        },
+
+        saveData(){
+            console.log(this.earlyData, "проверяю что сохраняю")
         },
         async saveAccidientByWagon() {
             try {
                 this.$emit('startStopLoader', true);
                 let wagonNumber = this.tableData[0].wagon_number;
-
                 // Преобразование перед сохранением: "Условная" -> true, "Безусловная" -> false
                 let dataToSave = this.tableData.map(item => ({
                     ...item,
                     conditional: item.conditional === 'Условная' ? true : false
                 }));
-
                 // Получаем все данные по вагону
                 let response = await api.getDataInsuranceCases({ wagon_number: wagonNumber });
-
                 if (this.is_insurances_cases === 'Новый страховой случай') {
                     // Сначала сохраняем новый страховой случай
                     await api.saveDataInsuranceCases(dataToSave);
@@ -382,9 +433,7 @@ export default {
         initializeHotTable() {
             const hotInstance = this.$refs.modalHotTable?.hotInstance;
             if (hotInstance) {
-                document.querySelectorAll('.hot-display-license-info').forEach(element => {
-                    element.style.display = 'none';
-                });
+
                 hotInstance.loadData(this.tableData);
                 hotInstance.updateSettings({ data: this.tableData });
                 hotInstance.render();

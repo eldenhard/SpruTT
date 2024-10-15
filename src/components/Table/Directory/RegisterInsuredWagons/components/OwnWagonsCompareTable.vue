@@ -44,6 +44,7 @@
           :fillHandle="false"
           :dropdownMenu="dropdownMenuOptions"
           @afterSelection="handleSelection"
+          :licenseKey="'non-commercial-and-evaluation'"
         >
         </hot-table>
       </div>
@@ -70,6 +71,7 @@
           :dropdownMenu="dropdownMenuOptions"
           @afterPaste="handlePaste"
           :contextMenu="contextMenuOptions"
+          :licenseKey="'non-commercial-and-evaluation'"
         >
         </hot-table>
       </div>
@@ -163,11 +165,7 @@ export default {
     getOwnWagonsCompareData: {
       async handler(newData) {
         this.updateTableData("hotTableComponent1", this.checkApplication);
-        document
-          .querySelectorAll(".hot-display-license-info")
-          .forEach((element) => {
-            element.style.display = "none";
-          });
+
         // Обновляем таблицу, если исходные данные изменились
         this.$refs.hotTableComponent1.hotInstance.loadData(
           this.checkApplication
@@ -190,21 +188,10 @@ export default {
       deep: true,
     },
   },
-  created() {
-    document
-      .querySelectorAll(".hot-display-license-info")
-      .forEach((element) => {
-        element.style.display = "none";
-      });
-  },
+
   mounted() {
     this.updateTableData("hotTableComponent1", this.checkApplication);
     this.updateTableData("hotTableComponent2", this.insuredWagonsData);
-    document
-      .querySelectorAll(".hot-display-license-info")
-      .forEach((element) => {
-        element.style.display = "none";
-      });
   },
 
   methods: {
@@ -333,22 +320,13 @@ export default {
 },
     updateTableData(componentRef, newData) {
       this.$nextTick(() => {
-        document
-          .querySelectorAll(".hot-display-license-info")
-          .forEach((element) => {
-            element.style.display = "none";
-          });
+
 
         const hotInstance = this.$refs[componentRef]?.hotInstance;
         if (hotInstance) {
           hotInstance.loadData(newData);
           hotInstance.updateSettings({ data: newData });
-          hotInstance.render();
-          document
-            .querySelectorAll(".hot-display-license-info")
-            .forEach((element) => {
-              element.style.display = "none";
-            });
+
         }
       });
     },
