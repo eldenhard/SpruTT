@@ -72,7 +72,7 @@
                        <b-button size="sm" class="mb-2 border rounded p-2" @click="openModal()">
                         <b-icon icon="file-earmark" aria-hidden="true" focusable="false"></b-icon> Внести данные
                       </b-button>
-                      <b-button size="sm" class="mb-2 border rounded p-2">
+                      <b-button size="sm" class="mb-2 border rounded p-2" @click="DownloadExcel('test')">
                         <b-icon icon="cloud-upload" aria-hidden="true"></b-icon> Выгрузить в Excel
                       </b-button>
                     </b-button-group>
@@ -95,6 +95,7 @@
                   :data="getInsuredWagonsData"
                   :rowHeaders="true"
                   :columns="columns"
+               
                   :preventOverflow="'horizontal'"
                   :filters="true"
                   :language="'ru-RU'"
@@ -110,9 +111,11 @@
                   :afterColumnResize="onColumnResize"
                   :afterColumnMove="onColumnMove"
                   :contextMenu="customContextMenu"
+                  
                   :nestedRows= "true"
                   :licenseKey="'non-commercial-and-evaluation'"
                 ></hot-table>
+                <!-- customContextMenu -->
                 <br />
                 <!-- Перечень незастрахованных вагонов -->
                 <OwnWagonsCompareTable
@@ -197,8 +200,10 @@ export default {
                         name: 'Архивные страховые случаи',
                         callback: () => this.handleContextMenuClick('archived')
                     },
-
-                    // }
+                    'get_history': {  
+                      name: 'История изменений по вагону',
+                      callback: () => this.handleContextMenuClick('history')
+                    }
                 }
             },
       columns: [
@@ -540,37 +545,60 @@ export default {
     
     console.log("Updated column size:", this.columns);
   },
-  handleContextMenuClick(type) {
-    const hotInstance = this.$refs.hotTableComponent.hotInstance;
-    const selected = hotInstance.getSelectedLast();
+        async handleContextMenuClick(type) {
+          const hotInstance = this.$refs.hotTableComponent.hotInstance;
+          const selected = hotInstance.getSelectedLast();
 
-    if (selected) {
-        const rowIndex = selected[0];
+          if (selected) {
+              const rowIndex = selected[0];
 
-        // Получаем данные из отфильтрованной таблицы
-        const filteredRowData = hotInstance.getDataAtRow(rowIndex);
+              // Получаем данные из отфильтрованной таблицы
+              const filteredRowData = hotInstance.getDataAtRow(rowIndex);
 
-        // Определяем номер вагона из отфильтрованной строки
-        const filteredWagonNumber = filteredRowData ? filteredRowData[0] : null;
+              // Определяем номер вагона из отфильтрованной строки
+              const filteredWagonNumber = filteredRowData ? filteredRowData[0] : null;
 
-        // Находим полные данные из исходного набора данных
-        const fullRowData = this.getInsuredWagonsData.find(item => item.wagon_number === filteredWagonNumber);
+              // Находим полные данные из исходного набора данных
+              const fullRowData = this.getInsuredWagonsData.find(item => item.wagon_number === filteredWagonNumber);
 
-        // Если найдены полные данные, открываем модальное окно
-        if (fullRowData) {
-            this.titleInsuredCase = type == 'new' ? 'Новый страховой случай' : 'Архивные страховые случаи';
-            this.insuredCase = true;
-            this.DataForModal = [fullRowData]; // Передаем полные данные в модальное окно
-            this.openModalPage(fullRowData, type);
-        } else {
-            console.error('Не удалось найти полные данные для выбранного вагона.');
-        }
-    }
-},
+              if (type == 'history' && fullRowData) {
+                  try {
+                      // Запрос на получение истории по номеру вагона
+                      let historyData = await api_directory.getHistoryByWagon(fullRowData.wagon_number);
+
+                      // Проверяем, что historyData.data и historyData.data.data существуют и не пусты
+                      if (historyData?.data && Array.isArray(historyData.data)) {
+                          // Добавляем данные истории в поле __children
+                          historyData.data.forEach(item => {
+                              fullRowData.__children.push(item.chaged_data);
+                          });
+                          console.log(fullRowData, 'Полные данные добавлены в __children');
+                      } else {
+                          console.warn('История по вагону пуста или данные отсутствуют.');
+                      }
+
+                      // Обновляем таблицу после изменения данных
+                      this.updateHotTableData();
+                  } catch (error) {
+                      console.error('Ошибка при получении данных истории:', error);
+                  }
+                  return;
+              }
+
+              // Если найдены полные данные, открываем модальное окно
+              if (fullRowData) {
+                  this.titleInsuredCase = type == 'new' ? 'Новый страховой случай' : 'Архивные страховые случаи';
+                  this.insuredCase = true;
+                  this.DataForModal = [fullRowData]; // Передаем полные данные в модальное окно
+                  this.openModalPage(fullRowData, type);
+              } else {
+                  console.error('Не удалось найти полные данные для выбранного вагона.');
+              }
+          }
+      },
+
       async openModalPage(item, type) {
         
-
-
             let response;
             let wagonNumber = item.wagon_number;
             if (type === "new") {
@@ -809,6 +837,13 @@ export default {
         return 0;
       });
 
+      // for(let i in this.getInsuredWagonsData) {
+      //   this.getInsuredWagonsData[i].__children = [this.getInsuredWagonsData[i]];
+      // }
+      // this.getInsuredWagonsData.forEach((wagon, index) => {
+      //   this.$set(wagon, '__children', [wagon])
+      // })
+      console.log('проверяем данные из getInsuredWagons', this.getInsuredWagonsData)
       this.updateHotTableData();
     },
 
@@ -816,7 +851,6 @@ export default {
       this.$nextTick(() => {
         const hotInstance = this.$refs.hotTableComponent.hotInstance;
 
-        console.log(this.getInsuredWagonsData, 'проверка')
         hotInstance.updateSettings({
           data: this.getInsuredWagonsData,
           afterRenderer: (TD, row, col, prop, value, cellProperties) => {
@@ -830,6 +864,7 @@ export default {
             } else {
               TD.style.backgroundColor = ""; // Убираем красный фон, если договор не просрочен
             }
+
           },
 
         });

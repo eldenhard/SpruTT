@@ -159,7 +159,7 @@
             </b-button>
           </b-button-group>
         </b-button-toolbar>
-        <div>
+        <div style="display: flex; flex-direction: column">
           <label for="range-2">Увеличение размера таблицы</label>
           <b-form-input
             id="range-2"

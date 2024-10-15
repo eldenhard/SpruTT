@@ -55,7 +55,9 @@ export default {
                     let res = await api.getAllInsuranceWagons(obj, last_page);
                     allData.push(...res.data.data)
                 }
-
+                for (let i of allData) {
+                        i.__children = [];
+                    }
                 let today = new Date().toISOString().slice(0, 10);
                 let response2 = await api.getOwnWagonsCompare(today);
                 this.$toast.success('Данные по застрахованным вагонам загружены\n Продолжается загрузка незастрахованных вагонов', {
@@ -73,7 +75,7 @@ export default {
                 })
                 
                 this.$emit('getInsuredWagons', allData);
-                this.$emit('getOwnWagonsCompare', response2)
+                // this.$emit('getOwnWagonsCompare', response2)
                 this.isSearch = true
             }
             catch (err) {

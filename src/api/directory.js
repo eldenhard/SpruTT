@@ -225,7 +225,7 @@ const sendNewDataInsuranceWagons = (data) => {
     return api.post(`${finance}/insurance-wagons/save-many/`, data)
 }
 const getHistoryByWagon = (data) => {
-    return api.get(`${finance}/insurance-wagons/history?wagon_number=${data}`)
+    return api.get(`${finance}/insurance-wagons/history-by-wagon/?wagon_number=${data}`)
 }
 const getInsuranceWagons = () => {
     return api.get(`${finance}/insurance-wagons/`)
