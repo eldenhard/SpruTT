@@ -325,8 +325,12 @@ const saveManyDataInsuranceCases = (id,data) => {
 const getDataInsuranceCases = (data) => {
     return api.get(`${finance}/insurance-cases/`, {params: data})
 }
+const editInsuranceEvent = (id,data) => {
+    return api.put(`${finance}/insurance-cases/${id}/`, data)
+}
 export default {
     saveDataInsuranceCases,
+    editInsuranceEvent,
     getAgreementAdvancedFilter,
     getAnnexesAgreementAdvancedFilter,
     getWagonFlights,
