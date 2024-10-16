@@ -75,7 +75,7 @@ export default {
                 })
                 
                 this.$emit('getInsuredWagons', allData);
-                this.$emit('getOwnWagonsCompare', response2)
+                // this.$emit('getOwnWagonsCompare', response2)
                 this.isSearch = true
             }
             catch (err) {

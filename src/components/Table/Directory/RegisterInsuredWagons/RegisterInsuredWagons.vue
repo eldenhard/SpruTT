@@ -213,6 +213,7 @@ export default {
           data: "wagon_number",
           width: "150px",
           minWidth: "150px",
+          readOnly: true
 
         },
         {
@@ -561,29 +562,75 @@ export default {
               // Находим полные данные из исходного набора данных
               const fullRowData = this.getInsuredWagonsData.find(item => item.wagon_number === filteredWagonNumber);
 
-              if (type == 'history' && fullRowData) {
+              if (type === 'history' && fullRowData) {
+                  this.loader = true;
                   try {
-                      // Запрос на получение истории по номеру вагона
-                      let historyData = await api_directory.getHistoryByWagon(fullRowData.wagon_number);
+                    // Запрос на получение истории по номеру вагона
+                    let historyData = await api_directory.getHistoryByWagon(fullRowData.wagon_number);
 
-                      // Проверяем, что historyData.data и historyData.data.data существуют и не пусты
-                      if (historyData?.data && Array.isArray(historyData.data)) {
-                          // Добавляем данные истории в поле __children
-                          historyData.data.forEach(item => {
-                              fullRowData.__children.push(item.chaged_data);
+                    // Проверяем, что historyData.data существует и является массивом
+                    if (historyData?.data && Array.isArray(historyData.data)) {
+                      // Добавляем данные истории в поле __children
+                      historyData.data.forEach(item => {
+                        // Проверяем, что chaged_data существует и является объектом
+                        if (item.chaged_data && typeof item.chaged_data === 'object') {
+                          // Для каждого ключа в объекте item.chaged_data добавляем #color:#dadada к строковым значениям
+                          Object.keys(item.chaged_data).forEach(key => {
+                            // Обрабатываем поле wagon_number
+                            if (item.chaged_data['wagon_number']) {
+                              item.chaged_data['wagon_number'] = "#color:#dadada";
+                            }
+
+                            // Массив полей с датами
+                            const dateKeys = [
+                              "build_date",
+                              "lifetime",
+                              "cutting_date",
+                              "agr_date",
+                              "agr_date_end",
+                              "last_operation_date",
+                              "state_change_date"
+                            ];
+
+                            // Обработка дат
+                            if (dateKeys.includes(key) && item.chaged_data[key]) {
+                              if (typeof item.chaged_data[key] === 'string') {
+                                item.chaged_data[key] = `${item.chaged_data[key].split("-").reverse().join(".")}#color:#dadada`;
+                              }
+                            }
+
+                            // Обработка поля on_balance_1c
+                            if (key === "on_balance_1c") {
+                              item.chaged_data[key] = `${item.chaged_data[key] === "Да" ? true : false}#color:#dadada`;
+                            }
+
+                            // Добавляем цвет к остальным строковым значениям
+                            if (typeof item.chaged_data[key] === 'string') {
+                              item.chaged_data[key] = `${item.chaged_data[key]}#color:#dadada`;
+                            }
                           });
-                          console.log(fullRowData, 'Полные данные добавлены в __children');
-                      } else {
-                          console.warn('История по вагону пуста или данные отсутствуют.');
-                      }
 
-                      // Обновляем таблицу после изменения данных
-                      this.updateHotTableData();
+                          // Добавляем обработанные данные в __children
+                          fullRowData.__children.push(item.chaged_data);
+                        }
+                      });
+
+                      console.log(fullRowData, 'Полные данные добавлены в __children');
+                      this.loader = false;
+                    } else {
+                      console.warn('История по вагону пуста или данные отсутствуют.');
+                      this.$toast.error('История по вагону пуста или данные отсутствуют.');
+                      this.loader = false;
+                    }
+
+                    // Обновляем таблицу после изменения данных
+                    this.updateHotTableData();
                   } catch (error) {
-                      console.error('Ошибка при получении данных истории:', error);
+                    console.error('Ошибка при получении данных истории:', error);
+                    this.loader = false; // Обязательно отключаем загрузку при ошибке
                   }
                   return;
-              }
+                }
 
               // Если найдены полные данные, открываем модальное окно
               if (fullRowData) {
@@ -847,31 +894,51 @@ export default {
       this.updateHotTableData();
     },
 
+
     updateHotTableData() {
-      this.$nextTick(() => {
-        const hotInstance = this.$refs.hotTableComponent.hotInstance;
+  this.$nextTick(() => {
+    const hotInstance = this.$refs.hotTableComponent.hotInstance;
 
-        hotInstance.updateSettings({
-          data: this.getInsuredWagonsData,
-          afterRenderer: (TD, row, col, prop, value, cellProperties) => {
-            const rowData = this.getInsuredWagonsData[row]; // Получаем данные строки
-            const agrDateEnd = new Date(rowData.agr_date_end.split(".").reverse().join("-") ); // Преобразуем в дату
-            const today = new Date();
-            TD.style.fontSize = "12px"
-            // Проверяем, если дата окончания договора меньше текущей даты
-            if (agrDateEnd < today) {
-              TD.style.backgroundColor = "#ffcccc"; // Красный цвет фона для просроченной строки
-            } else {
-              TD.style.backgroundColor = ""; // Убираем красный фон, если договор не просрочен
-            }
+    hotInstance.updateSettings({
+      data: this.getInsuredWagonsData,
+      afterRenderer: (TD, row, col, prop, value, cellProperties) => {
+        const rowData = this.getInsuredWagonsData[row]; // Получаем данные строки
+        const agrDateEnd = new Date(rowData.agr_date_end.split(".").reverse().join("-")); // Преобразуем в дату
+        const today = new Date();
+        TD.style.fontSize = "12px";
 
-          },
+        // Проверяем, если дата окончания договора меньше текущей даты
+        if (agrDateEnd < today) {
+          TD.style.backgroundColor = "#ffcccc"; // Красный цвет фона для просроченной строки
+        } else {
+          TD.style.backgroundColor = ""; // Убираем красный фон, если договор не просрочен
+        }
 
-        });
+        // Разбираем цвет из данных с помощью синтаксиса "#color:"
+        if (value && typeof value === 'string' && value.includes('#color:')) {
+          const [realValue, color] = value.split("#color:");
+          TD.style.backgroundColor = color; // Применяем цвет к ячейке
+          TD.innerHTML = realValue; // Отображаем только значение без цвета
+        } else {
+          TD.innerHTML = value; // Если нет цвета, просто показываем значение
+        }
 
-        hotInstance.render(); // Рендерим таблицу
-      });
-    },
+        // Устанавливаем readOnly для ячеек с дочерними элементами
+        if (rowData.children && rowData.children.length > 0) {
+          cellProperties.readOnly = true; // Делаем ячейки дочерних элементов недоступными для редактирования
+        }
+
+        // Дополнительно окрашиваем первый столбец в желтый цвет
+        if (col === 0) {
+          TD.style.backgroundColor = "#fbfddd"; // Желтый цвет для первого столбца
+        }
+      },
+    });
+
+    hotInstance.render(); // Рендерим таблицу
+  });
+}
+,
   },
 };
 </script>
