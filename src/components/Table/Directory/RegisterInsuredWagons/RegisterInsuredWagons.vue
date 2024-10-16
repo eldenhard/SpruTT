@@ -75,6 +75,14 @@
                       <b-button size="sm" class="mb-2 border rounded p-2" @click="DownloadExcel('test')">
                         <b-icon icon="cloud-upload" aria-hidden="true"></b-icon> Выгрузить в Excel
                       </b-button>
+                      <b-button size="sm" class="mb-2 border rounded p-2" style="background: #264722" @click="saveData()">
+                      <b-icon
+                        icon="check-all"
+                        aria-hidden="true"
+                        focusable="false"
+                      ></b-icon
+                      >Сохранить изменения
+                    </b-button>
                     </b-button-group>
                   </b-button-toolbar>
                 </div>
@@ -180,6 +188,8 @@ export default {
   },
   data() {
     return {
+      originalData: [], // исходные данные
+      modifiedRows: [], // измененные строки
       wagonFilter: "",
       text: "",
       loader: false,
@@ -517,7 +527,7 @@ export default {
     const hotInstance = this.$refs.hotTableComponent.hotInstance;
     moment.locale("ru");
 
-    hotInstance.addHook("afterChange", this.onCellValueChange);
+    hotInstance.addHook("afterChange", this.handleAfterChange);
   },
   computed: {
     ...mapState({
@@ -526,6 +536,79 @@ export default {
   },
 
   methods: {
+    async saveData() {
+      try{
+        this.loader = true
+        let result = []
+        for(let i in this.modifiedRows) {
+          if(this.modifiedRows[i].wagon_number === '#color:#dadada') {
+            continue
+          } else {
+            result.push(this.modifiedRows[i])
+          }
+        }
+        result?.forEach((updatedRow) => {
+            updatedRow.build_date =
+              updatedRow?.build_date?.split(".").reverse().join("-") ?? null;
+            updatedRow.lifetime =
+              updatedRow?.lifetime?.split(".").reverse().join("-") ?? null;
+            updatedRow.cutting_date =
+              updatedRow?.cutting_date?.split(".").reverse().join("-") ?? null;
+            updatedRow.agr_date =
+              updatedRow?.agr_date?.split(".").reverse().join("-") ?? null;
+            updatedRow.agr_date_end =
+              updatedRow?.agr_date_end?.split(".").reverse().join("-") ?? null;
+            updatedRow.last_operation_date =
+              updatedRow?.last_operation_date?.split(".").reverse().join("-") ??
+              null;
+            updatedRow.state_change_date =
+              updatedRow?.state_change_date?.split(".").reverse().join("-") ??
+              null;
+            updatedRow.on_balance_1c =
+              updatedRow?.on_balance_1c == "Да" ? true : false;
+          });
+          let promises = result.map((item) => api_directory.editInsuranceWagons(item.id, item));
+          await Promise.all(promises);
+          this.modifiedRows = [];
+          this.loader = false
+          this.$toast.success("Данные по застрахованным вагонам сохранены,\nДанные истории вагонов изменению не подлежат", {timeout: 5000})
+      }
+      catch(err){
+        console.log(err)
+        this.$toast.error(err.message, {timeout: 2000})
+        this.loader = false
+      }
+
+    },
+    handleAfterChange(changes, source) {
+  if (source === "edit" || source === "CopyPaste.paste" || source === "Autofill.fill") {
+    const hotInstance = this.$refs.hotTableComponent.hotInstance;
+    
+    changes.forEach(([row, prop, oldValue, newValue]) => {
+      if (oldValue !== newValue) {
+        const rowData = { ...hotInstance.getSourceDataAtRow(row) }; // Копируем данные строки
+
+        // Найти индекс строки в modifiedRows по id
+        const existingRowIndex = this.modifiedRows.findIndex(modifiedRow => modifiedRow.id === rowData.id);
+
+        if (existingRowIndex !== -1) {
+          // Обновляем только измененное поле, сохраняя все предыдущие данные
+          this.modifiedRows[existingRowIndex] = {
+            ...this.modifiedRows[existingRowIndex],
+            [prop]: newValue, // Обновляем только измененное поле
+          };
+        } else {
+          // Если запись не найдена, добавляем новую с измененным полем
+          const newRowData = {
+            ...rowData,   // Копируем все поля строки
+            [prop]: newValue // Обновляем измененное поле
+          };
+          this.modifiedRows.push(newRowData);
+        }
+      }
+    });
+  }
+},
     onColumnMove(startColumn, endColumn) {
     const updatedColumns = [...this.columns];
     const movedColumn = updatedColumns.splice(startColumn, 1)[0];
@@ -601,7 +684,7 @@ export default {
 
                             // Обработка поля on_balance_1c
                             if (key === "on_balance_1c") {
-                              item.chaged_data[key] = `${item.chaged_data[key] === "Да" ? true : false}#color:#dadada`;
+                              item.chaged_data[key] = `${item.chaged_data[key] === true ? "Да" : "Нет"}#color:#dadada`;
                             }
 
                             // Добавляем цвет к остальным строковым значениям
@@ -611,7 +694,7 @@ export default {
                           });
 
                           // Добавляем обработанные данные в __children
-                          fullRowData.__children.push(item.chaged_data);
+                          fullRowData.__children.push({...item.chaged_data, child: true });
                         }
                       });
 
@@ -680,26 +763,7 @@ export default {
       const cellProperties = {};
       return (cellProperties.className = "myCustomClass");
     },
-    onCellValueChange(changes, source) {
-      if (changes && source !== "loadData") {
-        const hotInstance = this.$refs.hotTableComponent.hotInstance;
-        changes.forEach(([row, prop, oldValue, newValue]) => {
-          // Получаем индекс строки в исходном наборе данных
-          const physicalRow = hotInstance.toPhysicalRow(row);
-          const rowData = hotInstance.getSourceDataAtRow(physicalRow);
 
-          // Обновляем значение в строке
-          rowData[prop] = newValue;
-
-          // Логика сохранения изменений
-          this.saveEditCellsInRow(rowData);
-
-          // Обновляем фильтр и перерисовываем таблицу после изменения
-          this.applyCustomWagonFilter();
-          this.updateHotTableData();
-        });
-      }
-    },
 
     applyCustomWagonFilter() {
       const wagonNumbers = this.wagonFilter
@@ -717,65 +781,6 @@ export default {
       const hotInstance = this.$refs.hotTableComponent.hotInstance;
       hotInstance.loadData(filteredData); // Загружаем отфильтрованные данные
     },
-
-    async saveEditCellsInRow(updatedRow) {
-      console.log("saveEditCellsInRow", updatedRow);
-      this.is_save_row = true;
-
-      // Преобразуем даты
-      updatedRow.build_date =
-        updatedRow?.build_date?.split(".").reverse().join("-") ?? null;
-      updatedRow.lifetime =
-        updatedRow?.lifetime?.split(".").reverse().join("-") ?? null;
-      updatedRow.cutting_date =
-        updatedRow?.cutting_date?.split(".").reverse().join("-") ?? null;
-      updatedRow.agr_date =
-        updatedRow?.agr_date?.split(".").reverse().join("-") ?? null;
-      updatedRow.agr_date_end =
-        updatedRow?.agr_date_end?.split(".").reverse().join("-") ?? null;
-      updatedRow.last_operation_date =
-        updatedRow?.last_operation_date?.split(".").reverse().join("-") ?? null;
-      updatedRow.state_change_date =
-        updatedRow?.state_change_date?.split(".").reverse().join("-") ?? null;
-      updatedRow.on_balance_1c =
-        updatedRow?.on_balance_1c == "Да" ? true : false;
-
-      // Добавляем каждый запрос в массив сохранений
-      this.saveQueue = this.saveQueue || [];
-      this.saveQueue.push(updatedRow);
-
-      // Используем debounced сохранение
-      this.debouncedSaveAllRows(); // Вызываем debounced метод
-    },
-
-    // Debounced функция для сохранения всех данных
-    debouncedSaveAllRows: debounce(async function () {
-      this.loader = true;
-
-      try {
-        let savePromises = this.saveQueue.map((row) =>
-          api_directory.editInsuranceWagons(row.id, row)
-        );
-
-        await Promise.all(savePromises);
-
-        this.$toast.success("Все данные сохранены", {
-          timeout: 3000,
-        });
-
-        this.saveQueue = []; // Очищаем очередь после сохранения
-        this.loader = false;
-      } catch (err) {
-        this.$toast.error(`Ошибка сохранения данных: ${err}`, {
-          timeout: 3000,
-        });
-        this.loader = false;
-        this.saveQueue = []; // Очищаем очередь в случае ошибки
-      } finally {
-        this.is_save_row = false;
-        this.loader = false;
-      }
-    }, 1000),
 
     DownloadExcel() {
       const hotInstance = this.$refs.hotTableComponent.hotInstance;
@@ -883,14 +888,7 @@ export default {
         // Если оба договора просрочены или оба действующие, оставляем их на месте
         return 0;
       });
-
-      // for(let i in this.getInsuredWagonsData) {
-      //   this.getInsuredWagonsData[i].__children = [this.getInsuredWagonsData[i]];
-      // }
-      // this.getInsuredWagonsData.forEach((wagon, index) => {
-      //   this.$set(wagon, '__children', [wagon])
-      // })
-      console.log('проверяем данные из getInsuredWagons', this.getInsuredWagonsData)
+      this.originalData = this.getInsuredWagonsData;
       this.updateHotTableData();
     },
 
@@ -899,10 +897,25 @@ export default {
   this.$nextTick(() => {
     const hotInstance = this.$refs.hotTableComponent.hotInstance;
 
+    // Создаем новую структуру данных с дочерними элементами
+    const modifiedData = this.getInsuredWagonsData.map(row => {
+      const newRow = { ...row }; // Копируем родительскую строку
+
+      if (Array.isArray(row.__children)) {
+        // Если есть дочерние элементы, добавляем их с полем readOnly
+        newRow.__children = row.__children.map(child => ({
+          ...child,
+          readOnly: true, // Устанавливаем readOnly для дочерних элементов
+        }));
+      }
+
+      return newRow;
+    });
+
     hotInstance.updateSettings({
-      data: this.getInsuredWagonsData,
+      data: modifiedData, // Используем новую структуру данных
       afterRenderer: (TD, row, col, prop, value, cellProperties) => {
-        const rowData = this.getInsuredWagonsData[row]; // Получаем данные строки
+        const rowData = modifiedData[row]; // Получаем данные строки
         const agrDateEnd = new Date(rowData.agr_date_end.split(".").reverse().join("-")); // Преобразуем в дату
         const today = new Date();
         TD.style.fontSize = "12px";
@@ -923,27 +936,24 @@ export default {
           TD.innerHTML = value; // Если нет цвета, просто показываем значение
         }
 
-        // Устанавливаем readOnly для ячеек с дочерними элементами
-        if (rowData.children && rowData.children.length > 0) {
-          cellProperties.readOnly = true; // Делаем ячейки дочерних элементов недоступными для редактирования
-        }
-
         // Дополнительно окрашиваем первый столбец в желтый цвет
         if (col === 0) {
           TD.style.backgroundColor = "#fbfddd"; // Желтый цвет для первого столбца
         }
       },
+
     });
 
     hotInstance.render(); // Рендерим таблицу
   });
 }
-,
+
   },
 };
 </script>
 
 <style scoped>
+
 th {
   font-size: 10px !important;
 }

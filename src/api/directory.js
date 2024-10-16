@@ -216,7 +216,7 @@ const deleteActs = (id, data) => {
 }
 
 const getAllInsuranceWagons = (data, page) => {
-    return api.post(`${finance}/insurance-wagons/filter/?page=${page}&page_size=300`, data)
+    return api.post(`${finance}/insurance-wagons/filter/?page=${page}&page_size=500`, data)
 }
 const editInsuranceWagons = (id, data) => {
     return api.patch(`${finance}/insurance-wagons/${id}/`, data)
