@@ -130,8 +130,10 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
 
 .img_block {
-  height: 94vh;
+  height: 100vh;
   width: 100vw;
+  position: fixed;
+  top: 0;
 }
 p {
   position: absolute;

@@ -1508,9 +1508,7 @@ export default {
 .Flipped .Content {
     transform: rotateX(180deg);
     -ms-transform: rotateX(180deg);
-    /* IE 9 */
     -webkit-transform: rotateX(180deg);
-    /* Safari and Chrome */
 }
 
 th,
