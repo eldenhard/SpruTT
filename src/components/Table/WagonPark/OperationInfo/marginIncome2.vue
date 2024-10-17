@@ -1509,7 +1509,7 @@ export default {
 
 .Content{
     height: auto;
-    max-height: 60vh;
+    max-height: 80vh;
     overflow: auto;
 }
 thead {
