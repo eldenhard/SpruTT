@@ -203,7 +203,7 @@
                                 <template v-if="!item.client.includes('Прочие')">
                                     <tr class="Total_blue" v-for="(station, sIndex) in stationList"
                                         :key="`${item.client}_${key}_${sIndex}`">
-                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;" class="pos_sticky"></td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;">{{ key }}</td>
@@ -245,7 +245,7 @@
                                 </template>
                                 <template v-else>
                                     <tr class="Total_blue">
-                                        <td style="border: 1px solid black;"></td>
+                                        <td style="border: 1px solid black;" class="pos_sticky"></td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;"></td>
                                         <td style="border: 1px solid black;">{{ stationList.station_name }}</td>
