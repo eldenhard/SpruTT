@@ -4,80 +4,99 @@
         <button class="Request button" style="width: 20%; margin-left: auto" @click="downloadExcel()">Скачать в
             Excel</button>
         <br>
-        <table>
-
-        </table>
+        <div style="display: flex; flex-direction: column; margin-left: auto; width: 20%;">
+          <label for="range-2">Увеличение размера таблицы</label>
+          <b-form-input
+            id="range-2"
+            v-model="rangeTable"
+            type="range"
+            min="1"
+            max="10"
+            step="0.1"
+          ></b-form-input>
+          <div class="mt-2">Увеличение: x{{ rangeTable }}</div>
+        </div>
         <div class="Container Flipped" ref="tableContainer">
-            <div class="Content" ref="scrollTableContent">
+            <div class="Content" ref="scrollTableContent" :style="{ height: sizeTable }">
                 <table ref="theTable">
                     <thead>
                         <tr class="TableHeader">
-                            <th rowspan="2">Клиент</th>
+                            <th rowspan="2" class="pos_sticky">Клиент</th>
                             <th rowspan="2">Отправление</th>
                             <th rowspan="2">Груз</th>
                             <th rowspan="2">Назначение</th>
-                            <th colspan="5">Объем</th>
-                            <th colspan="5">Выручка (без штрафов)</th>
-                            <th colspan="5">МД (без штрафов)</th>
-                            <th colspan="2">Стат нагрузка</th>
-                            <th colspan="2">Оборот</th>
-                            <th colspan="2">Штрафы</th>
-                            <th colspan="10">Доходность</th>
+                            <th rowspan="2" colspan="5">Объем</th>
+                            <th rowspan="2" colspan="5">Выручка (без штрафов)</th>
+                            <th rowspan="2" colspan="5">МД (без штрафов)</th>
+                            <th rowspan="2" colspan="2">Стат нагрузка</th>
+                            <th rowspan="2" colspan="2">Оборот</th>
+                            <th rowspan="2" colspan="2">Штрафы</th>
+                            <th  rowspan="2" colspan="10">Доходность</th>
                         </tr>
+                        <tr></tr>
                         <tr class="TableHeader">
-                            <th>БП</th>
-                            <th>Б</th>
-                            <th>Факт</th>
-                            <th>Откл. БП</th>
-                            <th>Откл. Б</th>
+                            <td class="pos_sticky"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td  >БП</td >
+                            <td >Б</td >
+                            <td  >Факт</td >
+                            <td >Откл. БП</td >
+                            <td >Откл. Б</td >
 
-                            <th>БП</th>
-                            <th>Б</th>
-                            <th>Факт</th>
-                            <th>Откл. БП</th>
-                            <th>Откл. Б</th>
+                            <td >БП</td >
+                            <td >Б</td >
+                            <td >Факт</td >
+                            <td >Откл. БП</td >
+                            <td >Откл. Б</td >
 
-                            <th>БП</th>
-                            <th>Б</th>
-                            <th>Факт</th>
-                            <th>Откл. БП</th>
-                            <th>Откл. Б</th>
+                            <td >БП</td >
+                            <td >Б</td >
+                            <td >Факт</td >
+                            <td >Откл. БП</td >
+                            <td >Откл. Б</td >
 
-                            <th>План</th>
-                            <th>Факт</th>
+                            <td >План</td >
+                            <td >Факт</td >
 
-                            <th>План</th>
-                            <th>Факт</th>
+                            <td >План</td >
+                            <td >Факт</td >
 
-                            <th>План</th>
-                            <th>Факт</th>
+                            <td >План</td >
+                            <td >Факт</td >
 
-                            <th>План(без штр) БП</th>
-                            <th>План(без штр) Б</th>
-                            <th>Факт(без штр)</th>
-                            <th>План (со штр) БП</th>
-                            <th>План (со штр) Б</th>
-                            <th>Факт (со штр)</th>
-                            <th>+/- БП(без штр)</th>
-                            <th>+/- Б(без штр)</th>
-                            <th>+/- БП(со штр)</th>
-                            <th>+/- Б(со штр)</th>
+                            <td >План(без штр) БП</td >
+                            <td >План(без штр) Б</td >
+                            <td >Факт(без штр)</td >
+                            <td >План (со штр) БП</td >
+                            <td >План (со штр) Б</td >
+                            <td >Факт (со штр)</td >
+                            <td >+/- БП(без штр)</td >
+                            <td >+/- Б(без штр)</td >
+                            <td >+/- БП(со штр)</td >
+                            <td >+/- Б(со штр)</td >
 
                         </tr>
                         <tr class="RowAlphabet">
-                            <td v-for="item in 35" :key="item">{{ item }}</td>
+                            <td v-for="item in 35" :key="item" :class="{pos_sticky: item == 1}" style="background-color: #FFD453 !important;">{{ item }}</td>
                         </tr>
                     </thead>
                     <tbody>
                         <template v-for="(item, index) in businessPlanData">
                             <tr :key="index" @click="toggleRow(index)"
                                 :class="{ Total_1: item.client.includes('Итого'), Total_grey: item.client.includes('Прочие') }">
-                                <td>
-                                    <b-icon :icon="item.expanded ? 'x-square-fill' : 'plus-square'" aria-hidden="true"
-                                        style="position: absolute; left: 10px; margin-top: 5px;"
-                                        v-if="item.station_group"></b-icon>
-                                    {{ item.client }}
-                                </td>
+                                <td class="pos_sticky">
+                                    <div style="display: flex; align-items: center; ">
+                                        <b-icon
+                                            :icon="item.expanded ? 'x-square-fill' : 'plus-square'"
+                                            aria-hidden="true"
+                                            v-if="item.station_group"
+                                            
+                                        ></b-icon>
+                                        <span style="flex-grow: 1">{{ item.client }}</span>
+                                    </div>
+                                    </td>
                                 <td></td>
                                 <td>{{ item?.product }}</td>
                                 <td>{{ item?.destination }}</td>
@@ -334,6 +353,7 @@ export default {
     props: ['bp_data', 'margin_income_data', 'budget_data', "date_begin", "fines_data"],
     data() {
         return {
+            rangeTable: 1,
             date_begin_create: "",
             businessPlanData: "",
             margin_income: "",
@@ -346,6 +366,9 @@ export default {
         }
     },
     computed: {
+        sizeTable() {
+            return this.rangeTable * 10 + 40 + "vh";
+        },
         filteredBusinessPlanData() {
             const result = [];
             for (let i = 0; i < this.businessPlanData.length; i++) {
@@ -1497,18 +1520,48 @@ export default {
 </script>
 
 <style scoped>
-.Container {
-    overflow-y: auto;
-    scrollbar-width: revert;
-    scrollbar-color: grey lightgrey;
-    /* Цвет скроллбара и его трека */
+
+.Content{
+    height: auto;
+    max-height: 60vh;
+    overflow: auto;
+}
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
-.Flipped,
-.Flipped .Content {
-    transform: rotateX(180deg);
-    -ms-transform: rotateX(180deg);
-    -webkit-transform: rotateX(180deg);
+thead tr:first-child > th,
+thead tr:first-child > td {
+  background: #EBEBEB !important;
+  z-index: 1;
+}
+
+.pos_sticky {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background-color: white !important;
+  border-right: 1px solid #ddd;
+}
+td.pos_sticky {
+    background: #EBEBEB !important;
+    border: 1px solid black !;
+}
+thead th.pos_sticky {
+  position: sticky;
+  top: 0; /* Закрепляем шапку */
+  left: 0; /* Закрепляем по горизонтали */
+  z-index: 4; /* Повышаем z-index, чтобы она оставалась над содержимым таблицы */
+  background-color: white !important;
+  border-right: 1px solid #ddd;
+}
+
+tbody td.pos_sticky {
+  background-color: white !important;
+  z-index: 2;
+  border-right: 1px solid #ddd;
 }
 
 th,
