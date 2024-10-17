@@ -203,6 +203,7 @@ export default {
       }
     },
     reloadPortal() {
+      localStorage.setItem("notificationBirthday", false);
       const now = new Date();
       const today = now.toISOString().split("T")[0];
       const lastLoginDate = localStorage.getItem("lastLoginDate");
@@ -225,7 +226,7 @@ export default {
         this.$store.dispatch(actionTypes.logout);
         localStorage.setItem("portalReloaded", "true");
         localStorage.setItem("todayIsBirthdayForMe", false);
-        localStorage.setItem("notificationBirthday", false);
+
         return window.location.reload();
       }
 
