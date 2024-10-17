@@ -4,20 +4,9 @@
         <button class="Request button" style="width: 20%; margin-left: auto" @click="downloadExcel()">Скачать в
             Excel</button>
         <br>
-        <div style="display: flex; flex-direction: column; margin-left: auto; width: 20%;">
-          <label for="range-2">Увеличение размера таблицы</label>
-          <b-form-input
-            id="range-2"
-            v-model="rangeTable"
-            type="range"
-            min="1"
-            max="10"
-            step="0.1"
-          ></b-form-input>
-          <div class="mt-2">Увеличение: x{{ rangeTable }}</div>
-        </div>
+
         <div class="Container Flipped" ref="tableContainer">
-            <div class="Content" ref="scrollTableContent" :style="{ height: sizeTable }">
+            <div class="Content" ref="scrollTableContent" >
                 <table ref="theTable">
                     <thead>
                         <tr class="TableHeader">
@@ -353,7 +342,6 @@ export default {
     props: ['bp_data', 'margin_income_data', 'budget_data', "date_begin", "fines_data"],
     data() {
         return {
-            rangeTable: 1,
             date_begin_create: "",
             businessPlanData: "",
             margin_income: "",
@@ -366,9 +354,7 @@ export default {
         }
     },
     computed: {
-        sizeTable() {
-            return this.rangeTable * 10 + 40 + "vh";
-        },
+ 
         filteredBusinessPlanData() {
             const result = [];
             for (let i = 0; i < this.businessPlanData.length; i++) {
