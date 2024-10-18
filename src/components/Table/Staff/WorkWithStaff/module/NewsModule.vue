@@ -39,6 +39,7 @@ export default {
 
 <template>
   <div>
+    <p v-if="this.newsData.length === 0">Происходит загрузка блока новостей...</p>
     <!-- Подключаем модальное окно -->
     <ModalModule ref="modal_news" :title="titleNews" :content="newsContent"/>
 
@@ -65,17 +66,9 @@ export default {
         "
       >
         <div class="news_block">
-          <div class="news" @click="openThisNews">
-            <h5 class="header">Изменения в коллективе</h5>
-            <footer class="news_footer">
-              <img src="../assets/logo_tt.png" alt="логотип" />
-              <span class="data_news">17.10.2024</span>
-            </footer>
-          </div>
           <div class="news" v-for="news in newsData.data.data" :key="JSON.stringify(news)"
           @click="openThisNews(news)">
             <h5 class="header">{{news.title}}</h5>
-            {{news}}
             <footer class="news_footer">
               <img src="../assets/logo_tt.png" alt="логотип" />
               <span class="data_news">{{ news.created_at.slice(0, 10).split("-").reverse().join(".") }}</span>

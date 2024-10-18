@@ -67,13 +67,12 @@
           this.$toast.success("Успешно!\nНовость создана", {
                 timeout: 4000,
             });
-            this.$emit("collapseElement", false)
+        this.$emit("collapseElement", false)
         }catch(err){
             this.$toast.error("Ошибка!\nНовость не создана", {
                 timeout: 4000,
             });
         }
-        await api.createNews(obj);
         console.log(markdownContent);
       },
     },
