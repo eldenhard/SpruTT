@@ -51,7 +51,7 @@ export default {
         Новости
       </HeaderUIElement>
       
-        <b-button size="sm" class="mb-2"  :variant="isMarkdownBlock ? 'danger' : 'info'"  style="margin: 2% auto" @click="isMarkdownBlock = !isMarkdownBlock">
+        <b-button size="sm" class="mb-2"  :variant="isMarkdownBlock ? 'danger' : 'info'"  style="margin: 2% auto; color: white !important;" @click="isMarkdownBlock = !isMarkdownBlock">
             <b-icon icon="plus-circle-fill" aria-hidden="true"></b-icon>
             {{ isMarkdownBlock ? "Закрыть создание новости" : "Добавить новость" }}
         </b-button>

@@ -11,6 +11,7 @@
           <input type="date" v-model="dateNews" />
         </label>
       </div>
+      <br>
       <toast-ui-editor
         ref="editor"
         :initialValue="content"
