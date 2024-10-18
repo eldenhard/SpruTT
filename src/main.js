@@ -15,7 +15,7 @@ import "./helpers/axios"
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-
+import '@toast-ui/editor/dist/toastui-editor.css';
 // import './assets/tailwind.css'
 
 import Toast from "vue-toastification";

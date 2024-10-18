@@ -33,7 +33,12 @@ const createStuff = (form) => {
     })
 }
 
-
+const createNews = (data) => {
+    return api.post(`${resource}/news/`, data)
+}
+const getNews = () => {
+    return api.get(`${resource}/news/`)
+}
 const searchUser = (data) => {
     return api.get(`${resource}/users/?search=${data}`)
 }
@@ -52,6 +57,7 @@ export default {
     getAllManager,
     createStuff,
     searchUser,
-
+    createNews,
     getUserByQuery,
+    getNews,
 }

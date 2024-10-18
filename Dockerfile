@@ -23,6 +23,8 @@ RUN npm install -save vue-xlsx
 RUN npm install moment
 RUN npm install html2pdf.js
 RUN npm install normalize.css
+RUN npm install @toast-ui/vue-editor @toast-ui/editor
+RUN npm install marked
 
 # RUN npm i vuedraggable
 COPY ./ .
