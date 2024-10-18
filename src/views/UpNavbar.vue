@@ -249,7 +249,7 @@ export default {
 
 <style scoped>
 a.router-links{
-  font-size: 1rem;
+  font-size: .9rem;
   white-space: nowrap;
 }
 .block {

@@ -13,6 +13,7 @@
 
 <script>
 import api from "@/api/directory";
+import api_wagon from "@/api/wagonPark";
 export default {
 
     data() {
@@ -59,8 +60,8 @@ export default {
                         i.__children = [];
                     }
                 let today = new Date().toISOString().slice(0, 10);
-                let response2 = await api.getOwnWagonsCompare(today);
-                this.$toast.success('Данные по застрахованным вагонам загружены\n Продолжается загрузка незастрахованных вагонов', {
+                let response2 = await api_wagon.getNotInsuredWagons(today);
+                this.$toast.success('Данные по разделу загружены', {
                     timeout: 3000
                 })
                 allData.forEach(item => {
@@ -75,7 +76,7 @@ export default {
                 })
                 
                 this.$emit('getInsuredWagons', allData);
-                // this.$emit('getOwnWagonsCompare', response2)
+                this.$emit('getOwnWagonsCompare', response2)
                 this.isSearch = true
             }
             catch (err) {

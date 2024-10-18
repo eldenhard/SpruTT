@@ -822,44 +822,45 @@ export default {
       }
     },
     async getOwnWagonsCompare(data) {
-      let preData = data.data;
-      let compareDataMap = {};
-      // Создаем карту для getInsuredWagonsData, чтобы быстро проверить наличие вагонов
-      this.getInsuredWagonsData.forEach((item) => {
-        compareDataMap[item.wagon_number] = true;
-      });
-      // Фильтруем preData, оставляя только те вагоны, которых нет в compareDataMap
-      preData = preData.filter((el) => {
-        return (
-          el["Принадлежность СТЖ"] === "С" &&
-          !compareDataMap[el["Номер вагона"]]
-        );
-      });
+      // let preData = data.data;
+      // let compareDataMap = {};
+      // // Создаем карту для getInsuredWagonsData, чтобы быстро проверить наличие вагонов
+      // this.getInsuredWagonsData.forEach((item) => {
+      //   compareDataMap[item.wagon_number] = true;
+      // });
+      // // Фильтруем preData, оставляя только те вагоны, которых нет в compareDataMap
+      // preData = preData.filter((el) => {
+      //   return (
+      //     el["Принадлежность СТЖ"] === "С" &&
+      //     !compareDataMap[el["Номер вагона"]]
+      //   );
+      // });
 
       try {
-        // this.loader = true
-        this.mini_loader = true;
-        let promises = preData.map((el) =>
-          api.getWagons({ number: el["Номер вагона"] })
-        );
-        const results = await Promise.all(promises);
-        this.mini_loader = false;
+        // // this.loader = true
+        // this.mini_loader = true;
+        // let promises = preData.map((el) =>
+        //   api.getWagons({ number: el["Номер вагона"] })
+        // );
+        // const results = await Promise.all(promises);
+        const results = data.data;
+        // this.mini_loader = false;
         let compareDataMap2 = [];
         for (let i in results) {
-          if (results[i].data.data[0].is_active === true) {
+          if (results[i]) {
             compareDataMap2.push({
-              "Номер вагона": results[i].data.data[0].number,
-              "В управлении компании": results[i].data.data[0].last_uk,
-              Тип: this.isType(results[i].data.data[0].wagon_type),
+              "Номер вагона": results[i].wagon_number,
+              "В управлении компании": results[i].in_control,
+              Тип: results[i].wagon_type,
               "Принадлежность СТЖ": "С",
-              Примечание: results[i].data.data[0].insurance_comment,
+              Примечание: results[i]?.insurance_comment ?? null,
             });
           }
         }
-        this.$toast.success("Данные по незастрахованным вагонам получены", {
-          timeout: 3000,
-        });
-
+        // this.$toast.success("Данные по незастрахованным вагонам получены", {
+        //   timeout: 3000,
+        // });
+        console.log(compareDataMap2);
         this.getOwnWagonsCompareData = compareDataMap2;
         this.$nextTick(() => {
           const hotInstance = this.$refs.hotTableComponent.hotInstance;

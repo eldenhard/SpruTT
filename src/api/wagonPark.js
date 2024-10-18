@@ -206,8 +206,13 @@ const getAllRoads = (road_name) => {
 const getWagonsOnBalance = (queryParam) => {
     return api.post(`${resource}/wagons/on-balance/`, queryParam )
 }
+// Незастрахованные вагоны
+const getNotInsuredWagons = (date) => {
+    return api.get(`${resource}/wagons/not-insured/?on_date=${date} 00:00:00`)
+}
 // Получить все
 export default {
+    getNotInsuredWagons,
     postInsuranceNote,
     getWagonsOnBalance,
     getWagons,
