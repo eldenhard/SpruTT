@@ -20,7 +20,7 @@
         :initialEditType="'markdown'"
         :language="'ru'"
       />
-      <b-button variant="info" @click="handleEditorChange" style="margin-top: 1%"
+      <b-button variant="info" @click="handleEditorChange" style="margin-top: 1%; color: white !important" 
         >Сохранить</b-button
       >
     </div>
