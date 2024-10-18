@@ -42,14 +42,7 @@ export default {
         <div class="w-100" style="display: flex; justify-content: space-between">
             <img class="float-left" src="../assets/logo_tt.png" style="height: 3vh !important" alt="логотип компании">
           <!-- <p class="float-left">Modal Footer Content</p> -->
-          <b-button
-            variant="danger"
-            size="md"
-            class="float-right"
-            @click="show=false"
-          >
-            Закрыть
-          </b-button>
+
         </div>
       </template>
     </b-modal>
