@@ -8,7 +8,7 @@
     :footer-bg-variant="'dark'"
     :footer-text-variant="'light'"
     scrollable
-    centered
+    
     :size="'md'"
   >
     <b-container fluid>
