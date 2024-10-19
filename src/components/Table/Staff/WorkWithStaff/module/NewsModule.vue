@@ -18,7 +18,9 @@ export default {
     };
   },
   async mounted() {
+    console.log('newsData', this.newsData)
      this.newsData = await api.getNews()
+     this.newsData = this.newsData.data.data
   },
   methods: {
     updateNewsModule(){},
@@ -39,8 +41,7 @@ export default {
 
 <template>
   <div>
-    <p v-if="this.newsData.length === 0">Происходит загрузка блока новостей...</p>
-    <!-- Подключаем модальное окно -->
+  <div >
     <ModalModule ref="modal_news" :title="titleNews" :content="newsContent"/>
 
     <div class="workspace" v-if="state === ''">
@@ -56,6 +57,9 @@ export default {
             {{ isMarkdownBlock ? "Закрыть создание новости" : "Добавить новость" }}
         </b-button>
         <MarkdownBlockVue v-if="isMarkdownBlock" @collapseElement="collapseElement"/>
+        <div v-if="newsData.length === 0" style="display: flex; align-items: center; justify-content: center; height: 100%">
+          <p>Происходит загрузка новостей...</p>
+        </div>
       <div
         class="content"
         style="
@@ -64,9 +68,10 @@ export default {
           display: flex;
           flex-direction: column;
         "
+        v-if="!isMarkdownBlock"
       >
         <div class="news_block">
-          <div class="news" v-for="news in newsData.data.data" :key="JSON.stringify(news)"
+          <div class="news" v-for="news in newsData" :key="JSON.stringify(news)"
           @click="openThisNews(news)">
             <h5 class="header">{{news.title}}</h5>
             <footer class="news_footer">
@@ -78,6 +83,8 @@ export default {
       </div>
     </div>
   </div>
+
+</div>
 </template>
 
 <style scoped lang="scss">

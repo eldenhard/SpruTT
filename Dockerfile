@@ -6,7 +6,7 @@ RUN npm install vuex
 RUN npm install vuex-persistedstate
 RUN npm install axios
 RUN npm install vue-router
-RUN npm install bootstrap
+# RUN npm install bootstrap
 RUN npm install bootstrap-vue
 RUN npm install select2
 RUN npm install -save vue-xlsx

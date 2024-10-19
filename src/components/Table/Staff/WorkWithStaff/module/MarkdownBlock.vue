@@ -1,4 +1,4 @@
-<template>
+   <template>
     <div>
       <br />
       <div style="display: flex; justify-content: space-between; gap: 5%">
@@ -11,38 +11,48 @@
           <input type="date" v-model="dateNews" />
         </label>
       </div>
-      <br>
-      <toast-ui-editor
-        ref="editor"
-        :initialValue="content"
-        :previewStyle="'vertical'"
-        :height="'500px'"
-        :initialEditType="'markdown'"
-        :language="'ru'"
-      />
-      <b-button variant="info" @click="handleEditorChange" style="margin-top: 1%; color: white !important" 
-        >Сохранить</b-button
-      >
-    </div>
-  </template>
+      <br />
   
-  <script>
-  import { Editor } from '@toast-ui/vue-editor';
-  // Импортируйте локализацию на русском языке
-  import { Editor as ToastEditor } from '@toast-ui/editor';
-  import api from "@/api/staff";
-  
-  export default {
-    components: {
-      'toast-ui-editor': Editor,
-    },
+    <toast-ui-editor
+      ref="editor"
+      :initialValue="content"
+      :previewStyle="'vertical'"
+      :height="'400px'"
+      :initialEditType="'markdown'"
+      :language="'ru-RU'"
+      :toolbarItems="toolbarItems"
+    />
+    <b-button variant="info" @click="handleEditorChange" style="margin-top: 1%; color: white !important">
+      Сохранить
+    </b-button>
+  </div>
+</template>
+
+<script>
+import { Editor } from '@toast-ui/vue-editor';
+import '@toast-ui/editor/dist/i18n/ru-ru'; // Импорт русской локализации
+
+
+export default {
+  components: {
+    'toast-ui-editor': Editor,
+  },
     data() {
       return {
         content: '### Привет, это создание новости',
         dateNews: new Date().toISOString().slice(0, 10),
         title: "",
+        toolbarItems: [
+        ['heading', 'bold', 'italic', 'strike'],
+        ['hr', 'quote'],
+        ['ul', 'ol', 'task', 'indent', 'outdent'],
+        ['table', 'image', 'link'],
+        ['code', 'codeblock'],
+        ['scrollSync'],
+      ]
       };
     },
+    
     methods: {
       async handleEditorChange() {
         // Проверка на наличие заголовка и даты
@@ -76,10 +86,6 @@
         }
         console.log(markdownContent);
       },
-    },
-    mounted() {
-      // Установка локализации после монтирования компонента
-      ToastEditor.setLanguage('ru'); // Установите язык
     },
   };
   </script>

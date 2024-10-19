@@ -8,6 +8,7 @@
     :footer-bg-variant="'dark'"
     :footer-text-variant="'light'"
     scrollable
+    centered
     :size="'md'"
   >
     <b-container fluid>
@@ -15,7 +16,7 @@
     </b-container>
 
     <template #modal-footer>
-      <div class="w-100" style="display: flex; justify-content: space-between">
+      <div class="w-100" style="display: flex; justify-content: center">
         <img class="float-left" src="../assets/logo_tt.png" style="height: 3vh !important" alt="логотип компании">
       </div>
     </template>
