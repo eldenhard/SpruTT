@@ -31,7 +31,7 @@
 <script>
 import { Editor } from '@toast-ui/vue-editor';
 import '@toast-ui/editor/dist/i18n/ru-ru'; // Импорт русской локализации
-
+import api from "@/api/staff";
 
 export default {
   components: {
@@ -62,16 +62,16 @@ export default {
             });
           return; // Прерываем выполнение метода
         }
-  
-        // Получение текста из редактора
-        const markdownContent = this.$refs.editor.invoke('getMarkdown');
-        let obj = {
-          title: this.title,
-          content: markdownContent,
-          d: this.dateNews
-        };
+
         // Сохранение новости
         try{
+          // Получение текста из редактора
+          const markdownContent = this.$refs.editor.invoke('getMarkdown');
+          let obj = {
+            title: this.title,
+            content: markdownContent,
+            d: this.dateNews
+          };
           await api.createNews(obj);
           this.title = ""
           this.content = ""
@@ -80,11 +80,11 @@ export default {
             });
         this.$emit("collapseElement", false)
         }catch(err){
+          console.error(err)
             this.$toast.error("Ошибка!\nНовость не создана", {
                 timeout: 4000,
             });
         }
-        console.log(markdownContent);
       },
     },
   };

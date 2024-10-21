@@ -42,6 +42,8 @@ export default {
     },
     async collapseElement(val){
         this.newsData = await api.getNews()
+        this.newsData = this.newsData.data.data
+        this.filteredNewsList = [...this.newsData]
         this.isMarkdownBlock = val
     }
   },

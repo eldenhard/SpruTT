@@ -865,9 +865,6 @@ export default {
                 // Создаем объект для мемоизации запросов
                 let listExcluded = ['revenue', 'weight', 'volume', 'amo', 'empty_tariff', 'fot', 'loaded_tariff', 'margin_income', 'other_charges', 'pps', 'repair', 'vagonosutki', 'vagonosutki_empty', 'vagonosutki_total', 'aid', 'shipments']
 
-
-
-
                 // Преобразование для быстрого доступа по ключам client
                 const finesDataMap = this.fines_data.reduce((acc, obj) => {
                     acc[obj.counterparty] = obj;
