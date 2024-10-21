@@ -17,6 +17,12 @@ $black: #353535;
         &:hover{
             transform: translate(0, -5px);
         }
+        .amount_el{
+            color: lightgray;
+            font-size: 12px;
+            display: flex;
+            justify-content: flex-start;
+        }
         .news_footer{
             height: 5vh;
             display: flex;

@@ -4,7 +4,7 @@ import Loader from "@/components/loader/loader.vue";
 import ModalModule from "./ModalModule.vue";
 import MarkdownBlockVue from './MarkdownBlock.vue';
 import api from "@/api/staff";
-
+import { mapState } from 'vuex'
 export default {
   components: { HeaderUIElement, Loader, ModalModule, MarkdownBlockVue },
 
@@ -22,6 +22,11 @@ export default {
      this.newsData = await api.getNews()
      this.newsData = this.newsData.data.data
      this.filteredNewsList = [...this.newsData]
+  },
+  computed: {
+    ...mapState({
+      user: state => state.auth.uid,
+    })
   },
   methods: {
     updateNewsModule(search){
@@ -56,7 +61,8 @@ export default {
         Новости
       </HeaderUIElement>
       
-        <b-button size="sm" class="mb-2"  :variant="isMarkdownBlock ? 'danger' : 'primary'"  style="margin: 2% auto; color: white !important;" @click="isMarkdownBlock = !isMarkdownBlock">
+        <b-button size="sm" class="mb-2"  :variant="isMarkdownBlock ? 'danger' : 'primary'"  style="margin: 2% auto; color: white !important;" @click="isMarkdownBlock = !isMarkdownBlock"
+        v-if="user === 104 || user === 102 || user === 30">
             <b-icon icon="plus-circle-fill" aria-hidden="true"></b-icon>
             {{ isMarkdownBlock ? "Закрыть создание новости" : "Добавить новость" }}
         </b-button>
