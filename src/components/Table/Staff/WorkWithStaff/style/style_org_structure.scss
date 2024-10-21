@@ -1,6 +1,7 @@
 .company_structure{
     width: 90%;
     margin: 0 auto;
+    height: 100%;
 
     h4{
         margin: 2% 0;
@@ -27,7 +28,7 @@
         background: #f9f9f9;
         box-shadow: 2px 2px 5px #cfcfcf;
         border-radius: 15px;
-        padding: 4% 6% ;
+        padding: 2% 6% ;
         display: flex;
         cursor: pointer;
         flex-direction: column;
@@ -89,4 +90,11 @@
     justify-content: center;
     align-items: center;
     margin-top: 15%
+}
+
+.description_second{
+    font-weight: 400;
+    font-size: .7em;
+    flex: 1;
+    color: grey;
 }

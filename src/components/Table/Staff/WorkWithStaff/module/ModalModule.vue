@@ -9,7 +9,7 @@
     :footer-text-variant="'light'"
     scrollable
     
-    :size="'md'"
+    :size="'lg'"
   >
     <b-container fluid>
       <div v-html="renderedContent" class="markdown-content"></div> <!-- Отображаем HTML-контент -->

@@ -82,12 +82,13 @@ export default {
 <template>
   <div>
     <!-- <pre>{{ orgStructure }}</pre> -->
-    <div class="company_structure" v-if="orgStructure">
+    <div class="company_structure" v-if="orgStructure" >
     <!-- Если нет выбранного отдела, отображаем все отделы -->
     <div v-if="!selectedDepartment ">
       <h4>Организационная структура ООО "Транспортные Технологии"</h4>
       <p class="manager">Генеральный директор: {{ findCEO().last_name }} {{ findCEO().first_name }}</p>
-      <div class="company_structure_content">
+      
+        <div class="company_structure_content">
         <template  v-for="department in departments">
         <div
           v-if="department.subordinates.length > 0"
@@ -96,9 +97,10 @@ export default {
           class="list_item"
         >
           <p class="header">{{ department.department }}</p>
-          <p class="description">
+          <p class="description" >
             Начальник: {{ department.first_name }} {{ department.last_name }}
           </p>
+          <p class="description_second" style="margin-top: -3% !important;">{{ department.post }}</p>
         </div>
       </template>
       </div>
@@ -126,6 +128,8 @@ export default {
          
         </tbody>
       </table>
+     
+
     </div>
 
     <!-- Если выбран отдел, отображаем начальника и либо подразделения, либо сотрудников -->
@@ -158,6 +162,7 @@ export default {
           <p class="description">
             Начальник:{{ sub.first_name }} {{ sub.last_name }}
           </p>
+          <p class="description_second">{{ sub.post }}</p>
           </div>
         </div>
       </div>

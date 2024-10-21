@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <!-- <h1>В разработке</h1> -->
     <component :is="state.activeComponent"></component>
   </div>

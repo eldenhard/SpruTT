@@ -14,18 +14,22 @@ export default {
       titleNews: "",
       isMarkdownBlock: false,
       newsData: [],
+      filteredNewsList: [],
       newsContent: ""
     };
   },
   async mounted() {
-    console.log('newsData', this.newsData)
      this.newsData = await api.getNews()
      this.newsData = this.newsData.data.data
+     this.filteredNewsList = [...this.newsData]
   },
   methods: {
-    updateNewsModule(){},
+    updateNewsModule(search){
+      console.log(search)
+      const query = search.toLowerCase();
+      this.filteredNewsList = this.newsData.filter((news) => news.title.toLowerCase().includes(query));   
+    },
     openThisNews(news) {
-        console.log(news)
         this.titleNews = news.title;
         this.newsContent = news.content;
       // Открываем модальное окно через ref
@@ -71,7 +75,7 @@ export default {
         v-if="!isMarkdownBlock"
       >
         <div class="news_block">
-          <div class="news" v-for="news in newsData" :key="JSON.stringify(news)"
+          <div class="news" v-for="news in filteredNewsList" :key="JSON.stringify(news)"
           @click="openThisNews(news)">
             <h5 class="header">{{news.title}}</h5>
             <footer class="news_footer">
